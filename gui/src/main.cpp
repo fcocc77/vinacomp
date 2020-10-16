@@ -1,8 +1,12 @@
 #include <vinacomp.hpp>
-
-#include <QDebug>
+#include <QApplication>
 
 int main(int argc, char *argv[])
 {
-    qDebug() << "welcome vinacomp";
+
+    QApplication a(argc, argv);
+    vinacomp _vinacomp;
+    _vinacomp.showMaximized();
+
+    return a.exec();
 }
