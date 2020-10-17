@@ -1,0 +1,3 @@
+gui:
+    node: 
+        ☐ que el nodo tenga un tamaño minimo, y si el texto es mas grande que el tamaño minimo, que el nodo se agrande, asi siempre el texto quedara dentro del nodo.
