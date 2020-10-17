@@ -30,4 +30,6 @@ void vinacomp::setup_ui()
 
     splitter_main->addWidget(splitter_top);
     splitter_main->addWidget(splitter_bottom);
+
+    splitter_main->setSizes({100, 100});
 }

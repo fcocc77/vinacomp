@@ -3,7 +3,10 @@
 
 #include <QWidget>
 #include <QGraphicsView>
+#include <QGraphicsScene>
 #include <QHBoxLayout>
+#include <QGraphicsPixmapItem>
+#include <QString>
 
 class viewer : public QWidget
 {
