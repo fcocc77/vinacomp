@@ -3,6 +3,8 @@ include(../config/config.pro)
 TEMPLATE = app
 TARGET = "vinacomp"
 
+RC_ICONS = ../resources/images/vinacomp.ico
+
 INCLUDES = ./includes
 
 INCLUDEPATH += $$INCLUDES

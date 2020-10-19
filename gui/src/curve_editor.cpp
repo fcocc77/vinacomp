@@ -1,4 +1,4 @@
-#include <curve_editor .hpp>
+#include <curve_editor.hpp>
 
 curve_editor ::curve_editor (/* args */)
 {
