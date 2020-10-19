@@ -3,6 +3,7 @@
 vinacomp::vinacomp(QWidget *parent) : QMainWindow(parent)
 {
     setup_ui();
+    setup_style();
 }
 
 vinacomp::~vinacomp()
@@ -32,4 +33,15 @@ void vinacomp::setup_ui()
     splitter_main->addWidget(splitter_bottom);
 
     splitter_main->setSizes({100, 100});
+}
+
+void vinacomp::setup_style()
+{
+
+    // Estilo de general
+    QString style = fread("./resources/css/style.css");
+    this->setStyleSheet(style.toStdString().c_str());
+
+    // Titulo de ventana principal
+    this->setWindowTitle("VinaComp");
 }

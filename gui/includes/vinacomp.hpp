@@ -8,6 +8,7 @@
 // VINA COMP
 #include <viewer.hpp>
 #include <node_graph.hpp>
+#include <util.hpp>
 
 class vinacomp : public QMainWindow
 {
@@ -21,6 +22,7 @@ public:
     ~vinacomp();
 
     void setup_ui();
+    void setup_style();
 };
 
 #endif // VINACOMP_H

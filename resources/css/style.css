@@ -1,2 +1,7 @@
 /* Black blue color */
+* {
+  background: #17191c; }
+
+#node_graph QGraphicsView {
+  background: #2e3238; }
 

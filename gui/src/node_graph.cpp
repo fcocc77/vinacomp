@@ -2,6 +2,7 @@
 
 node_graph::node_graph(/* args */)
 {
+    this->setObjectName("node_graph");
 
     QGraphicsScene *scene = new QGraphicsScene();
     QGraphicsView *graphics_view = new QGraphicsView();
