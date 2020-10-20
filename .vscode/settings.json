@@ -1,6 +1,10 @@
 {
     "files.associations": {
         "qlayout": "cpp",
-        "*.ipp": "cpp"
+        "*.ipp": "cpp",
+        "array": "cpp",
+        "bitset": "cpp",
+        "initializer_list": "cpp",
+        "valarray": "cpp"
     }
 }

@@ -2,13 +2,13 @@
 
 splitter::splitter(/* args */)
 {
-
     this->setObjectName("splitter");
 
     QWidget *top_buttons = new QWidget();
     setup_top_buttons(top_buttons);
 
     tab_section = new QWidget();
+
     tab_section->setObjectName("tab_section");
 
     QVBoxLayout *layout = new QVBoxLayout();
@@ -16,7 +16,10 @@ splitter::splitter(/* args */)
     layout->addWidget(top_buttons);
     layout->addWidget(tab_section);
 
-    this->setLayout(layout);
+    container = new QWidget();
+    container->setLayout(layout);
+
+    qt::add_widget(this, container);
 }
 
 splitter::~splitter()
@@ -37,15 +40,13 @@ void splitter::setup_top_buttons(QWidget *top_buttons)
     // Menu
     QAction *split_vertical = new QAction("split_vertical");
     connect(split_vertical, &QAction::triggered, this, [this]() {
-        QWidget *parent = new QWidget();
-        vertical_split(parent);
+        split(Qt::Vertical);
     });
     split_vertical->setIcon(QIcon("resources/images/split_vertically.png"));
 
     QAction *split_horizontal = new QAction("split_horizontal");
     connect(split_horizontal, &QAction::triggered, this, [this]() {
-        QWidget *parent = new QWidget();
-        horizontal_split(parent);
+        split(Qt::Horizontal);
     });
     split_horizontal->setIcon(QIcon("resources/images/split_horizontally.png"));
 
@@ -69,27 +70,17 @@ void splitter::setup_top_buttons(QWidget *top_buttons)
     top_buttons->setLayout(layout);
 }
 
-void splitter::horizontal_split(QWidget *parent)
+void splitter::split(Qt::Orientation orientation)
 {
-    print("horizontal_split");
-}
+    QSplitter *qsplitter = new QSplitter();
+    qsplitter->setOrientation(orientation);
 
-void splitter::vertical_split(QWidget *parent)
-{
-    QSplitter *splitter_main = new QSplitter(this);
-    splitter_main->setOrientation(Qt::Vertical);
+    container->parentWidget()->layout()->addWidget(qsplitter);
 
-    QSplitter *splitter_top = new QSplitter(this);
-    QSplitter *splitter_bottom = new QSplitter(this);
+    QWidget *old_splitter = new QWidget();
+    qt::add_widget(old_splitter, container);
+    splitter *new_splitter = new splitter();
 
-    splitter *_splitter = new splitter();
-    splitter_bottom->addWidget(_splitter);
-
-    splitter_main->addWidget(splitter_top);
-    splitter_main->addWidget(splitter_bottom);
-
-    QVBoxLayout *layout = new QVBoxLayout();
-    layout->addWidget(splitter_main);
-
-    tab_section->setLayout(layout);
+    qsplitter->addWidget(old_splitter);
+    qsplitter->addWidget(new_splitter);
 }

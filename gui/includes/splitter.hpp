@@ -17,10 +17,9 @@ class splitter : public QWidget
 private:
     void setup_top_buttons(QWidget *top_buttons);
 
-    void horizontal_split(QWidget *parent);
-    void vertical_split(QWidget *parent);
+    void split(Qt::Orientation orientation);
 
-
+    QWidget *container;
     QWidget *tab_section;
 
 public:
