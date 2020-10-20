@@ -1,4 +1,7 @@
 /* Black blue color */
+QMainWindow {
+  qproperty-windowIcon: url("/home/pancho/Documents/develop/vinacomp/resources/images/vinacomp.png"); }
+
 #node_graph QGraphicsView {
   background: #2e3238; }
 
