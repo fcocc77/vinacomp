@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "qlayout": "cpp"
+        "qlayout": "cpp",
+        "*.ipp": "cpp"
     }
 }

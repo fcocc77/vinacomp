@@ -12,6 +12,13 @@ vinacomp::~vinacomp()
 
 void vinacomp::setup_ui()
 {
+    _splitter = new splitter();
+
+
+    this->setCentralWidget(_splitter);
+
+
+    return;
 
     // Splitter
     QSplitter *splitter_main = new QSplitter(this);
@@ -37,8 +44,6 @@ void vinacomp::setup_ui()
 
 void vinacomp::setup_style()
 {
-
-    // Estilo de general
     QString style = fread("./resources/css/style.css");
     this->setStyleSheet(style.toStdString().c_str());
 
