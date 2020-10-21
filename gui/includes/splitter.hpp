@@ -16,14 +16,14 @@ class splitter : public QWidget
 {
 private:
     void setup_top_buttons(QWidget *top_buttons);
-
     void split(Qt::Orientation orientation);
+    void close_panel();
 
     QWidget *container;
     QWidget *tab_section;
 
 public:
-    splitter(/* args */);
+    splitter();
     ~splitter();
 };
 

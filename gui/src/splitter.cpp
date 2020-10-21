@@ -1,7 +1,8 @@
 #include <splitter.hpp>
 
-splitter::splitter(/* args */)
+splitter::splitter()
 {
+
     this->setObjectName("splitter");
 
     QWidget *top_buttons = new QWidget();
@@ -16,10 +17,7 @@ splitter::splitter(/* args */)
     layout->addWidget(top_buttons);
     layout->addWidget(tab_section);
 
-    container = new QWidget();
-    container->setLayout(layout);
-
-    qt::add_widget(this, container);
+    this->setLayout(layout);
 }
 
 splitter::~splitter()
@@ -50,11 +48,20 @@ void splitter::setup_top_buttons(QWidget *top_buttons)
     });
     split_horizontal->setIcon(QIcon("resources/images/split_horizontally.png"));
 
+    // Cerrar panel
+    QAction *close_panel_action = new QAction("Close Panel");
+    connect(close_panel_action, &QAction::triggered, this, [this]() {
+        close_panel();
+    });
+    close_panel_action->setIcon(QIcon("resources/images/close.png"));
+    //
+
     QMenu *menu = new QMenu(this);
 
     menu->addAction(split_vertical);
     menu->addAction(split_horizontal);
     menu->addSeparator();
+    menu->addAction(close_panel_action);
     //
     //
 
@@ -72,15 +79,69 @@ void splitter::setup_top_buttons(QWidget *top_buttons)
 
 void splitter::split(Qt::Orientation orientation)
 {
+
+    auto parent = this->parentWidget();
+
     QSplitter *qsplitter = new QSplitter();
     qsplitter->setOrientation(orientation);
 
-    container->parentWidget()->layout()->addWidget(qsplitter);
+    QLayout *layout = parent->layout();
 
-    QWidget *old_splitter = new QWidget();
-    qt::add_widget(old_splitter, container);
     splitter *new_splitter = new splitter();
 
-    qsplitter->addWidget(old_splitter);
-    qsplitter->addWidget(new_splitter);
+    QWidget *container_a = new QWidget();
+    container_a->setObjectName("widget_0");
+    QWidget *container_b = new QWidget();
+    container_b->setObjectName("widget_1");
+
+    qt::add_widget(container_a, this);
+    qt::add_widget(container_b, new_splitter);
+
+    container_a->setParent(qsplitter);
+    container_b->setParent(qsplitter);
+
+    qsplitter->addWidget(container_a);
+    qsplitter->addWidget(container_b);
+
+    layout->addWidget(qsplitter);
+}
+
+void splitter::close_panel()
+{
+
+    QWidget *container = this->parentWidget();
+
+    if (container->objectName() == "central_widget")
+        return;
+
+    QWidget *qsplitter = container->parentWidget();
+
+    QWidget *parent = qsplitter->parentWidget();
+
+    QWidget *keep_widget;
+    QWidget *to_delete;
+
+    if (container->objectName() == "widget_0")
+    {
+        keep_widget = qsplitter->findChild<QWidget *>("widget_1");
+        to_delete = qsplitter->findChild<QWidget *>("widget_0");
+    }
+    else
+    {
+        keep_widget = qsplitter->findChild<QWidget *>("widget_0");
+        to_delete = qsplitter->findChild<QWidget *>("widget_1");
+    }
+
+    to_delete->setParent(0);
+    to_delete->deleteLater();
+
+    splitter *_splitter = keep_widget->findChild<splitter *>();
+
+    parent->layout()->addWidget(_splitter);
+
+    parent->layout()->removeWidget(qsplitter);
+    qsplitter->setParent(0);
+    qsplitter->deleteLater();
+
+    parent->update();
 }

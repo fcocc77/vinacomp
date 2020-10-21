@@ -14,7 +14,12 @@ void vinacomp::setup_ui()
 {
 
     _splitter = new splitter();
-    this->setCentralWidget(_splitter);
+
+    QWidget *central_widget = new QWidget();
+    central_widget->setObjectName("central_widget");
+    qt::add_widget(central_widget, _splitter);
+
+    this->setCentralWidget(central_widget);
 }
 
 void vinacomp::setup_style()
