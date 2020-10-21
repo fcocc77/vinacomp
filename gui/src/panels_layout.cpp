@@ -4,9 +4,9 @@ panels_layout::panels_layout(/* args */)
 {
     this->setObjectName("panels_layout");
 
-    // QList <QSplitter*> splitters()
+    splitters = new QList<QSplitter *>;
 
-    panel *_panel = new panel();
+    panel *_panel = new panel(splitters);
 
     QWidget *central_widget = new QWidget();
     qt::add_widget(this, _panel);
@@ -26,16 +26,10 @@ void panels_layout::save_layout()
     QJsonObject json_layout = {
         {"hola", 20}};
 
-    for (int i = 0; i < 10; i++)
+    for (QSplitter *splitter : *splitters)
     {
-        QString name_a = "splitter:" + QString::number(i) + ":a";
-        QString name_b = "splitter:" + QString::number(i) + ":b";
-
-        QWidget *splitter_a = this->findChild<QWidget *>(name_a);
-
-        print(splitter_a);
+        print(splitter);
     }
-    print("-----------");
 
     json_layout["container_a"] = "container_a";
     json_layout["container_b"] = "container_b";

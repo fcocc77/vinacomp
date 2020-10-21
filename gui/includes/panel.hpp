@@ -19,11 +19,13 @@ private:
     void split(Qt::Orientation orientation);
     void close_panel();
 
+    QList<QSplitter *> *splitters;
+
     QWidget *container;
     QWidget *tab_section;
 
 public:
-    panel();
+    panel(QList<QSplitter *> *_splitters);
     ~panel();
 };
 

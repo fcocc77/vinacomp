@@ -1,7 +1,9 @@
 #include <panel.hpp>
 
-panel::panel()
+panel::panel(QList<QSplitter *> *_splitters)
 {
+
+    splitters = _splitters;
 
     QWidget *top_buttons = new QWidget();
     setup_top_buttons(top_buttons);
@@ -82,9 +84,12 @@ void panel::split(Qt::Orientation orientation)
     QLayout *layout = parent->layout();
 
     QSplitter *qsplitter = new QSplitter();
+    qsplitter->setObjectName("qsplitter" + util::hash());
+    splitters->push_back(qsplitter);
+
     qsplitter->setOrientation(orientation);
 
-    panel *new_panel = new panel();
+    panel *new_panel = new panel(splitters);
 
     QWidget *container_a = new QWidget();
     QWidget *container_b = new QWidget();
@@ -166,6 +171,18 @@ void panel::close_panel()
     // borra los widgets sin usar
     delete_widget->setParent(0);
     delete_widget->deleteLater();
+
+    // Borra el 'qsplitter' de la lista de 'splitters'
+    int i = 0;
+    for (QSplitter *splitter : *splitters)
+    {
+        if (splitter->objectName() == qsplitter->objectName())
+            break;
+        i++;
+    }
+    splitters->removeAt(i);
+    //
+    //
 
     parent->layout()->removeWidget(qsplitter);
     qsplitter->setParent(0);

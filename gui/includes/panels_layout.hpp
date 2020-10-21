@@ -15,6 +15,8 @@ public:
     panels_layout(/* args */);
     ~panels_layout();
 
+    QList<QSplitter *> *splitters;
+
     QAction *restore_default_action;
     QAction *save_current_action;
 };
