@@ -5,9 +5,9 @@ QMainWindow {
 #node_graph QGraphicsView {
   background: #2e3238; }
 
-#splitter #top_buttons {
+#panels_layout #top_buttons {
   background: green; }
 
-#splitter #tab_section {
+#panels_layout #tab_section {
   background: blue; }
 

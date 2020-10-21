@@ -2,14 +2,14 @@
 
 panels_layout::panels_layout(/* args */)
 {
-    // this->setObjectName("panels_layout");
+    this->setObjectName("panels_layout");
 
     // QList <QSplitter*> splitters()
 
-    splitter *_splitter = new splitter();
+    panel *_panel = new panel();
 
     QWidget *central_widget = new QWidget();
-    qt::add_widget(this, _splitter);
+    qt::add_widget(this, _panel);
 
     restore_default_action = new QAction("Restore Default Layout");
     save_current_action = new QAction("Save Current Layout");

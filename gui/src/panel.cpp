@@ -1,9 +1,7 @@
-#include <splitter.hpp>
+#include <panel.hpp>
 
-splitter::splitter()
+panel::panel()
 {
-
-    this->setObjectName("splitter");
 
     QWidget *top_buttons = new QWidget();
     setup_top_buttons(top_buttons);
@@ -20,11 +18,11 @@ splitter::splitter()
     this->setLayout(layout);
 }
 
-splitter::~splitter()
+panel::~panel()
 {
 }
 
-void splitter::setup_top_buttons(QWidget *top_buttons)
+void panel::setup_top_buttons(QWidget *top_buttons)
 {
 
     top_buttons->setObjectName("top_buttons");
@@ -77,7 +75,7 @@ void splitter::setup_top_buttons(QWidget *top_buttons)
     top_buttons->setLayout(layout);
 }
 
-void splitter::split(Qt::Orientation orientation)
+void panel::split(Qt::Orientation orientation)
 {
 
     auto parent = this->parentWidget();
@@ -86,15 +84,15 @@ void splitter::split(Qt::Orientation orientation)
     QSplitter *qsplitter = new QSplitter();
     qsplitter->setOrientation(orientation);
 
-    splitter *new_splitter = new splitter();
+    panel *new_panel = new panel();
 
     QWidget *container_a = new QWidget();
-    container_a->setObjectName("container_a");
     QWidget *container_b = new QWidget();
+    container_a->setObjectName("container_a");
     container_b->setObjectName("container_b");
 
     qt::add_widget(container_a, this);
-    qt::add_widget(container_b, new_splitter);
+    qt::add_widget(container_b, new_panel);
 
     container_a->setParent(qsplitter);
     container_b->setParent(qsplitter);
@@ -105,7 +103,7 @@ void splitter::split(Qt::Orientation orientation)
     layout->addWidget(qsplitter);
 }
 
-void splitter::close_panel()
+void panel::close_panel()
 {
     QWidget *container = this->parentWidget();
 
@@ -132,8 +130,8 @@ void splitter::close_panel()
         delete_widget = qsplitter->findChild<QWidget *>("container_b");
     }
 
-    splitter *_splitter = keep_widget->findChild<splitter *>();
-    parent->layout()->addWidget(_splitter);
+    panel *keep_panel = keep_widget->findChild<panel *>();
+    parent->layout()->addWidget(keep_panel);
 
     // borra los widgets sin usar
     delete_widget->setParent(0);

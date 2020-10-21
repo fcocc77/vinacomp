@@ -2,7 +2,7 @@
 #define PANELS_LAYOUT_HPP
 
 #include <QWidget>
-#include <splitter.hpp>
+#include <panel.hpp>
 
 class panels_layout : public QWidget
 {

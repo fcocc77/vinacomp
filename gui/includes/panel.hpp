@@ -1,5 +1,5 @@
-#ifndef SPLITTER_H
-#define SPLITTER_H
+#ifndef PANEL_HPP
+#define PANEL_HPP
 
 // QT5
 #include <QWidget>
@@ -12,7 +12,7 @@
 #include <qt.hpp>
 #include <util.hpp>
 
-class splitter : public QWidget
+class panel : public QWidget
 {
 private:
     void setup_top_buttons(QWidget *top_buttons);
@@ -23,8 +23,8 @@ private:
     QWidget *tab_section;
 
 public:
-    splitter();
-    ~splitter();
+    panel();
+    ~panel();
 };
 
-#endif // SPLITTER_H
+#endif // PANEL_HPP
