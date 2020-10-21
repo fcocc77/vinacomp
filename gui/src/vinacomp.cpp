@@ -13,13 +13,13 @@ vinacomp::~vinacomp()
 void vinacomp::setup_ui()
 {
 
-    _splitter = new splitter();
+    panels_layout *_layout = new panels_layout();
 
-    QWidget *central_widget = new QWidget();
-    central_widget->setObjectName("central_widget");
-    qt::add_widget(central_widget, _splitter);
+    // QWidget *central_widget = new QWidget();
+    // central_widget->setObjectName("central_widget");
+    // qt::add_widget(central_widget, _splitter);
 
-    this->setCentralWidget(central_widget);
+    this->setCentralWidget(_layout);
 }
 
 void vinacomp::setup_style()

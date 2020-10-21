@@ -9,7 +9,7 @@
 #include <viewer.hpp>
 #include <node_graph.hpp>
 #include <util.hpp>
-#include <splitter.hpp>
+#include <panels_layout.hpp>
 
 class vinacomp : public QMainWindow
 {
@@ -17,7 +17,6 @@ class vinacomp : public QMainWindow
 private:
     node_graph *_node_graph;
     viewer *_viewer;
-    splitter *_splitter;
 
 public:
     vinacomp(QWidget *parent = 0);

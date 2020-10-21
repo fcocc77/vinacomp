@@ -81,18 +81,17 @@ void splitter::split(Qt::Orientation orientation)
 {
 
     auto parent = this->parentWidget();
+    QLayout *layout = parent->layout();
 
     QSplitter *qsplitter = new QSplitter();
     qsplitter->setOrientation(orientation);
 
-    QLayout *layout = parent->layout();
-
     splitter *new_splitter = new splitter();
 
     QWidget *container_a = new QWidget();
-    container_a->setObjectName("widget_0");
+    container_a->setObjectName("container_a");
     QWidget *container_b = new QWidget();
-    container_b->setObjectName("widget_1");
+    container_b->setObjectName("container_b");
 
     qt::add_widget(container_a, this);
     qt::add_widget(container_b, new_splitter);
@@ -108,40 +107,39 @@ void splitter::split(Qt::Orientation orientation)
 
 void splitter::close_panel()
 {
-
     QWidget *container = this->parentWidget();
 
-    if (container->objectName() == "central_widget")
+    // si el container es el 'panels_layout' significa que es el
+    // ultimo widget, y no se puede eliminar.
+    if (container->objectName() == "panels_layout")
         return;
+    //
 
     QWidget *qsplitter = container->parentWidget();
-
     QWidget *parent = qsplitter->parentWidget();
 
     QWidget *keep_widget;
-    QWidget *to_delete;
+    QWidget *delete_widget;
 
-    if (container->objectName() == "widget_0")
+    if (container->objectName() == "container_a")
     {
-        keep_widget = qsplitter->findChild<QWidget *>("widget_1");
-        to_delete = qsplitter->findChild<QWidget *>("widget_0");
+        keep_widget = qsplitter->findChild<QWidget *>("container_b");
+        delete_widget = qsplitter->findChild<QWidget *>("container_a");
     }
     else
     {
-        keep_widget = qsplitter->findChild<QWidget *>("widget_0");
-        to_delete = qsplitter->findChild<QWidget *>("widget_1");
+        keep_widget = qsplitter->findChild<QWidget *>("container_a");
+        delete_widget = qsplitter->findChild<QWidget *>("container_b");
     }
 
-    to_delete->setParent(0);
-    to_delete->deleteLater();
-
     splitter *_splitter = keep_widget->findChild<splitter *>();
-
     parent->layout()->addWidget(_splitter);
+
+    // borra los widgets sin usar
+    delete_widget->setParent(0);
+    delete_widget->deleteLater();
 
     parent->layout()->removeWidget(qsplitter);
     qsplitter->setParent(0);
     qsplitter->deleteLater();
-
-    parent->update();
 }
