@@ -4,6 +4,7 @@
 // QT5
 #include <QMainWindow>
 #include <QSplitter>
+#include <QMenuBar>
 
 // VINA COMP
 #include <viewer.hpp>
@@ -17,6 +18,7 @@ class vinacomp : public QMainWindow
 private:
     node_graph *_node_graph;
     viewer *_viewer;
+    panels_layout *_layout;
 
 public:
     vinacomp(QWidget *parent = 0);
@@ -24,6 +26,7 @@ public:
 
     void setup_ui();
     void setup_style();
+    void main_menu();
 };
 
 #endif // VINACOMP_H

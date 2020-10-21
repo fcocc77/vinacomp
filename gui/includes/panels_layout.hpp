@@ -7,10 +7,16 @@
 class panels_layout : public QWidget
 {
 private:
-    /* data */
+    void save_layout();
+    void restore();
+    void restore_default();
+
 public:
     panels_layout(/* args */);
     ~panels_layout();
+
+    QAction *restore_default_action;
+    QAction *save_current_action;
 };
 
 #endif // PANELS_LAYOUT_HPP
