@@ -91,6 +91,28 @@ void panel::split(Qt::Orientation orientation)
     container_a->setObjectName("container_a");
     container_b->setObjectName("container_b");
 
+    // le agrega 1 un numero de profundidad al nombre de objecto,
+    // para poder iterar el layout y guardarlo.
+    QString name_a;
+    QString name_b;
+
+    if (parent->objectName() == "panels_layout")
+    {
+        name_a = "panel:0:a";
+        name_b = "panel:0:b";
+    }
+    else
+    {
+        int number = this->objectName().split(":")[1].toInt();
+        number++;
+        name_a = "panel:" + QString::number(number) + ":a";
+        name_b = "panel:" + QString::number(number) + ":b";
+    }
+    //
+
+    this->setObjectName(name_a);
+    new_panel->setObjectName(name_b);
+
     qt::add_widget(container_a, this);
     qt::add_widget(container_b, new_panel);
 
@@ -132,6 +154,14 @@ void panel::close_panel()
 
     panel *keep_panel = keep_widget->findChild<panel *>();
     parent->layout()->addWidget(keep_panel);
+
+    // Cambia el nombre del panel restandole el numero de profundidad
+    QString letter = parent->objectName().split("_")[1];
+    int number = keep_panel->objectName().split(":")[1].toInt();
+    QString new_name = "panel:" + QString::number(number--) + ":" + letter;
+    //
+
+    keep_panel->setObjectName(new_name);
 
     // borra los widgets sin usar
     delete_widget->setParent(0);
