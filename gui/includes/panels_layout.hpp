@@ -11,8 +11,7 @@ private:
     void load_layout();
     void restore_default();
 
-
-    void add_json(QSplitter *splitter, int deep, QString letter);
+    void update_json_layout(QSplitter *splitter, int deep = 0, QString letter = "", QStringList parents = {});
     QJsonObject json_layout;
 
 public:

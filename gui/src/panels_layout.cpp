@@ -21,17 +21,37 @@ panels_layout::~panels_layout()
 {
 }
 
-void panels_layout::add_json(QSplitter *_split, int deep, QString letter)
+void panels_layout::update_json_layout(QSplitter *splitter, int deep, QString letter, QStringList parents)
 {
-
-    if (_split != NULL)
+    if (splitter != NULL)
     {
+        if (!letter.isEmpty())
+        {
+            QWidget *container;
+            if (letter == "a")
+                container = splitter->widget(0);
+            else
+                container = splitter->widget(1);
 
-        QWidget *container_a = _split->widget(0);
-        QWidget *container_b = _split->widget(1);
+            QWidget *_panel = container->findChild<panel *>();
 
-        QWidget *widget_a = container_a->findChild<panel *>();
-        QWidget *widget_b = container_b->findChild<panel *>();
+            // si no es un panel es un QSplitter
+            if (_panel->objectName() != "panel")
+            {
+                for (QSplitter *_splitter : *splitters)
+                {
+                    if (_splitter->objectName() == _panel->objectName())
+                    {
+                        splitter = _splitter;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                return;
+            }
+        }
 
         deep++;
 
@@ -44,49 +64,26 @@ void panels_layout::add_json(QSplitter *_split, int deep, QString letter)
         QString splitter_name_a = "widget_a_" + QString::number(deep);
         QString splitter_name_b = "widget_b_" + QString::number(deep);
 
-        json_layout[parent_name] = {{{splitter_name_a, splitter_name_a},
-                                     {splitter_name_b, splitter_name_b}}};
+        QJsonObject split_obj = {{{splitter_name_a, QJsonObject()},
+                                  {splitter_name_b, QJsonObject()}}};
 
-        //
-        //
+        parents.push_back(parent_name);
+        qt::insert_json_deep(&json_layout, parents, split_obj);
 
-        // si no es un panel es un QSplitter
-        if (widget_a->objectName() != "panel")
-        {
-            for (QSplitter *splitter : *splitters)
-            {
-                if (splitter->objectName() == widget_a->objectName())
-                {
-
-                    add_json(splitter, deep, "a");
-                    break;
-                }
-            }
-        }
-
-        if (widget_b->objectName() != "panel")
-        {
-            for (QSplitter *splitter : *splitters)
-            {
-                if (splitter->objectName() == widget_b->objectName())
-                {
-                    add_json(splitter, deep, "b");
-                    break;
-                }
-            }
-        }
+        update_json_layout(splitter, deep, "a", parents);
+        update_json_layout(splitter, deep, "b", parents);
     }
 }
 
 void panels_layout::save_layout()
 {
+    QSplitter *main_splitter = this->findChild<QSplitter *>("splitter");
 
-    QSplitter *main_splitter = this->findChild<QSplitter *>("main_splitter");
-
+    // vaciar layout json
     json_layout = {};
+    //
 
-    add_json(main_splitter, 0, "None");
-
+    update_json_layout(main_splitter);
     jwrite("temp/layout.json", json_layout);
 }
 
