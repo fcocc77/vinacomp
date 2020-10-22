@@ -57,18 +57,20 @@ void panels_layout::update_json_layout(QSplitter *splitter, int deep, QString le
 
         QString parent_name;
         if (deep == 1)
-            parent_name = "widget";
+            parent_name = "splitter";
         else
-            parent_name = "widget_" + letter + "_" + QString::number(deep - 1);
+            parent_name = "splitter_" + letter;
 
-        QString splitter_name_a = "widget_a_" + QString::number(deep);
-        QString splitter_name_b = "widget_b_" + QString::number(deep);
+        int orientation = splitter->orientation();
+        auto sizes = splitter->sizes();
 
-        QJsonObject split_obj = {{{splitter_name_a, QJsonObject()},
-                                  {splitter_name_b, QJsonObject()}}};
+        QJsonObject splitter_json = {{{"orientation", orientation},
+                                      {"distribution", QJsonArray{sizes[0], sizes[1]}},
+                                      {"splitter_a", QJsonObject()},
+                                      {"splitter_b", QJsonObject()}}};
 
         parents.push_back(parent_name);
-        qt::insert_json_deep(&json_layout, parents, split_obj);
+        qt::insert_json_deep(&json_layout, parents, splitter_json);
 
         update_json_layout(splitter, deep, "a", parents);
         update_json_layout(splitter, deep, "b", parents);
