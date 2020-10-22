@@ -12,7 +12,10 @@ private:
     void restore_default();
 
     void update_json_layout(QSplitter *splitter, int deep = 0, QString letter = "", QStringList parents = {});
+    void load_splitter(QJsonObject splitter_obj, panel *panel_a);
     QJsonObject json_layout;
+
+    panel *first_panel;
 
 public:
     panels_layout(/* args */);

@@ -16,7 +16,6 @@ class panel : public QWidget
 {
 private:
     void setup_top_buttons(QWidget *top_buttons);
-    void split(Qt::Orientation orientation);
     void close_panel();
 
     QList<QSplitter *> *splitters;
@@ -27,6 +26,9 @@ private:
 public:
     panel(QList<QSplitter *> *_splitters);
     ~panel();
+
+    panel *split(Qt::Orientation orientation);
+    QSplitter *get_splitter();
 };
 
 #endif // PANEL_HPP

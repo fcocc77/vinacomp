@@ -78,7 +78,25 @@ void panel::setup_top_buttons(QWidget *top_buttons)
     top_buttons->setLayout(layout);
 }
 
-void panel::split(Qt::Orientation orientation)
+QSplitter *panel::get_splitter()
+{
+    QWidget *container = this->parentWidget();
+    QWidget *qsplitter = container->parentWidget();
+
+    QSplitter *splitter;
+    for (QSplitter *_splitter : *splitters)
+    {
+        if (_splitter->objectName() == qsplitter->objectName())
+        {
+            splitter = _splitter;
+            break;
+        }
+    }
+
+    return splitter;
+}
+
+panel *panel::split(Qt::Orientation orientation)
 {
 
     auto parent = this->parentWidget();
@@ -112,6 +130,8 @@ void panel::split(Qt::Orientation orientation)
     qsplitter->addWidget(container_b);
 
     layout->addWidget(qsplitter);
+
+    return new_panel;
 }
 
 void panel::close_panel()
