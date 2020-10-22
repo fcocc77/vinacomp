@@ -9,6 +9,7 @@
 #include <QMenu>
 #include <QSplitter>
 #include <QTabWidget>
+#include <QTabBar>
 
 #include <qt.hpp>
 #include <util.hpp>
@@ -20,6 +21,7 @@ class panel : public QWidget
 private:
     void setup_top_buttons(QWidget *top_buttons);
     void close_panel();
+    void add_tab(QString name);
 
     QList<QSplitter *> *splitters;
 
@@ -29,11 +31,16 @@ private:
     viewer *_viewer;
 
 public:
-    panel(QList<QSplitter *> *_splitters, node_graph *_node_graph, viewer *_viewer);
+    panel(QList<QSplitter *> *_splitters,
+          node_graph *_node_graph,
+          viewer *_viewer);
     ~panel();
+
+    QStringList tabs_list;
 
     panel *split(Qt::Orientation orientation);
     QSplitter *get_splitter();
+    void add_tabs(QStringList tabs_list);
 };
 
 #endif // PANEL_HPP

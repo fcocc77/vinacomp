@@ -1,6 +1,8 @@
 #include <panel.hpp>
 
-panel::panel(QList<QSplitter *> *_splitters, node_graph *__node_graph, viewer *__viewer)
+panel::panel(QList<QSplitter *> *_splitters,
+             node_graph *__node_graph,
+             viewer *__viewer)
 {
 
     _node_graph = __node_graph;
@@ -15,6 +17,8 @@ panel::panel(QList<QSplitter *> *_splitters, node_graph *__node_graph, viewer *_
 
     tab_section = new QTabWidget();
 
+    // tab_section->setCornerWidget(qToolButton);
+
     tab_section->setObjectName("tab_section");
 
     QVBoxLayout *layout = new QVBoxLayout();
@@ -28,6 +32,45 @@ panel::panel(QList<QSplitter *> *_splitters, node_graph *__node_graph, viewer *_
 
 panel::~panel()
 {
+}
+
+void panel::add_tabs(QStringList tabs_list)
+{
+    for (QString tab_name : tabs_list)
+    {
+        add_tab(tab_name);
+    }
+}
+
+void panel::add_tab(QString name)
+{
+
+    QWidget *tab;
+    QString label;
+    if (name == "node_graph")
+    {
+        tab = _node_graph;
+        label = "Node Graph";
+    }
+    else if (name == "viewer")
+    {
+        tab = _viewer;
+        label = "Viewer";
+    }
+    else
+        return;
+
+    int index = tab_section->addTab(tab, label);
+
+    tab_section->setCurrentIndex(index);
+
+    QPushButton *close = new QPushButton();
+
+    qt::set_icon(close, "resources/images/close_tab.png");
+
+    tab_section->tabBar()->setTabButton(index, QTabBar::RightSide, close);
+
+    tabs_list.push_back(name);
 }
 
 void panel::setup_top_buttons(QWidget *top_buttons)
@@ -65,16 +108,14 @@ void panel::setup_top_buttons(QWidget *top_buttons)
     // Add NodeGraph
     QAction *add_node_graph_action = new QAction("Node Graph");
     connect(add_node_graph_action, &QAction::triggered, this, [this]() {
-        int index = tab_section->addTab(_node_graph, "Node Graph");
-        tab_section->setCurrentIndex(index);
+        add_tab("node_graph");
     });
     //
 
     // Add Viewer
     QAction *add_viewer_action = new QAction("Viewer");
     connect(add_viewer_action, &QAction::triggered, this, [this]() {
-        int index = tab_section->addTab(_viewer, "Viewer");
-        tab_section->setCurrentIndex(index);
+        add_tab("viewer");
     });
     //
 
