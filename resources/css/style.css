@@ -5,9 +5,10 @@ QMainWindow {
 #node_graph QGraphicsView {
   background: #2e3238; }
 
-#panels_layout #top_buttons {
+#panels_layout {
   background: green; }
-
-#panels_layout #tab_section {
-  background: blue; }
+  #panels_layout #top_buttons {
+    background: red; }
+  #panels_layout #tab_section {
+    background: blue; }
 

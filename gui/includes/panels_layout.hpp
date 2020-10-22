@@ -3,6 +3,8 @@
 
 #include <QWidget>
 #include <panel.hpp>
+#include <node_graph.hpp>
+#include <viewer.hpp>
 
 class panels_layout : public QWidget
 {
@@ -18,7 +20,7 @@ private:
     panel *first_panel;
 
 public:
-    panels_layout(/* args */);
+    panels_layout(node_graph *_node_graph, viewer *_viewer);
     ~panels_layout();
 
     QList<QSplitter *> *splitters;

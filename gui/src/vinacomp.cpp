@@ -13,7 +13,14 @@ vinacomp::~vinacomp()
 void vinacomp::setup_ui()
 {
 
-    _layout = new panels_layout();
+    update_sylesheet_action = new QAction("Update StyleSheet");
+    update_sylesheet_action->setShortcut(QString("Ctrl+R"));
+    connect(update_sylesheet_action, &QAction::triggered, this, &vinacomp::setup_style);
+
+    _node_graph = new node_graph();
+    _viewer = new viewer();
+
+    _layout = new panels_layout(_node_graph, _viewer);
 
     // QWidget *central_widget = new QWidget();
     // central_widget->setObjectName("central_widget");
@@ -43,6 +50,7 @@ void vinacomp::main_menu()
 
     QMenu *edit_menu = new QMenu("Edit", menu_bar);
     menu_bar->addMenu(edit_menu);
+    edit_menu->addAction(update_sylesheet_action);
 
     QMenu *layout_menu = new QMenu("Layout", menu_bar);
     menu_bar->addMenu(layout_menu);

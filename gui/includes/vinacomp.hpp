@@ -20,6 +20,8 @@ private:
     viewer *_viewer;
     panels_layout *_layout;
 
+    QAction *update_sylesheet_action;
+
 public:
     vinacomp(QWidget *parent = 0);
     ~vinacomp();

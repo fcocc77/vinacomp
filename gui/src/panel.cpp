@@ -1,7 +1,11 @@
 #include <panel.hpp>
 
-panel::panel(QList<QSplitter *> *_splitters)
+panel::panel(QList<QSplitter *> *_splitters, node_graph *__node_graph, viewer *__viewer)
 {
+
+    _node_graph = __node_graph;
+    _viewer = __viewer;
+
     this->setObjectName("panel");
 
     splitters = _splitters;
@@ -9,11 +13,12 @@ panel::panel(QList<QSplitter *> *_splitters)
     QWidget *top_buttons = new QWidget();
     setup_top_buttons(top_buttons);
 
-    tab_section = new QWidget();
+    tab_section = new QTabWidget();
 
     tab_section->setObjectName("tab_section");
 
     QVBoxLayout *layout = new QVBoxLayout();
+    layout->setContentsMargins(0, 0, 0, 0);
 
     layout->addWidget(top_buttons);
     layout->addWidget(tab_section);
@@ -57,10 +62,29 @@ void panel::setup_top_buttons(QWidget *top_buttons)
     close_panel_action->setIcon(QIcon("resources/images/close.png"));
     //
 
+    // Add NodeGraph
+    QAction *add_node_graph_action = new QAction("Node Graph");
+    connect(add_node_graph_action, &QAction::triggered, this, [this]() {
+        int index = tab_section->addTab(_node_graph, "Node Graph");
+        tab_section->setCurrentIndex(index);
+    });
+    //
+
+    // Add Viewer
+    QAction *add_viewer_action = new QAction("Viewer");
+    connect(add_viewer_action, &QAction::triggered, this, [this]() {
+        int index = tab_section->addTab(_viewer, "Viewer");
+        tab_section->setCurrentIndex(index);
+    });
+    //
+
     QMenu *menu = new QMenu(this);
 
     menu->addAction(split_vertical);
     menu->addAction(split_horizontal);
+    menu->addSeparator();
+    menu->addAction(add_viewer_action);
+    menu->addAction(add_node_graph_action);
     menu->addSeparator();
     menu->addAction(close_panel_action);
     //
@@ -113,7 +137,7 @@ panel *panel::split(Qt::Orientation orientation)
 
     qsplitter->setOrientation(orientation);
 
-    panel *new_panel = new panel(splitters);
+    panel *new_panel = new panel(splitters, _node_graph, _viewer);
 
     QWidget *container_a = new QWidget();
     QWidget *container_b = new QWidget();

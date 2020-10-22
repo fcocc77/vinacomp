@@ -8,9 +8,12 @@
 #include <QPushButton>
 #include <QMenu>
 #include <QSplitter>
+#include <QTabWidget>
 
 #include <qt.hpp>
 #include <util.hpp>
+#include <node_graph.hpp>
+#include <viewer.hpp>
 
 class panel : public QWidget
 {
@@ -21,10 +24,12 @@ private:
     QList<QSplitter *> *splitters;
 
     QWidget *container;
-    QWidget *tab_section;
+    QTabWidget *tab_section;
+    node_graph *_node_graph;
+    viewer *_viewer;
 
 public:
-    panel(QList<QSplitter *> *_splitters);
+    panel(QList<QSplitter *> *_splitters, node_graph *_node_graph, viewer *_viewer);
     ~panel();
 
     panel *split(Qt::Orientation orientation);

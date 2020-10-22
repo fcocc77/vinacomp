@@ -1,12 +1,13 @@
 #include <panels_layout.hpp>
 
-panels_layout::panels_layout(/* args */)
+panels_layout::panels_layout(node_graph *_node_graph, viewer *_viewer)
 {
+
     this->setObjectName("panels_layout");
 
     splitters = new QList<QSplitter *>;
 
-    first_panel = new panel(splitters);
+    first_panel = new panel(splitters, _node_graph, _viewer);
 
     QWidget *central_widget = new QWidget();
     qt::add_widget(this, first_panel);
