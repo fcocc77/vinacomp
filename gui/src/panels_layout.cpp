@@ -120,7 +120,7 @@ void panels_layout::save_layout()
     //
 
     save_json_layout(main_splitter);
-    jwrite("temp/layout.json", json_layout);
+    jwrite("resources/data/layout.json", json_layout);
 }
 
 void panels_layout::load_splitter(QJsonObject splitter_obj, panel *panel_a)
@@ -153,7 +153,7 @@ void panels_layout::load_splitter(QJsonObject splitter_obj, panel *panel_a)
 
 void panels_layout::load_layout()
 {
-    QJsonObject layout = jread("temp/layout.json");
+    QJsonObject layout = jread("resources/data/layout.json");
     QJsonObject main = layout["splitter"].toObject();
 
     load_splitter(main, first_panel);
