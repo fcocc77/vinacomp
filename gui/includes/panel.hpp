@@ -29,9 +29,11 @@ private:
     QTabWidget *tab_section;
     node_graph *_node_graph;
     viewer *_viewer;
+    QWidget *panels_layout;
 
 public:
-    panel(QList<QSplitter *> *_splitters,
+    panel(QWidget *_panels_layout,
+          QList<QSplitter *> *_splitters,
           node_graph *_node_graph,
           viewer *_viewer);
     ~panel();

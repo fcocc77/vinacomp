@@ -1,10 +1,12 @@
 #include <panel.hpp>
 
-panel::panel(QList<QSplitter *> *_splitters,
+panel::panel(QWidget *_panels_layout,
+             QList<QSplitter *> *_splitters,
              node_graph *__node_graph,
              viewer *__viewer)
 {
 
+    panels_layout = _panels_layout;
     _node_graph = __node_graph;
     _viewer = __viewer;
 
@@ -69,6 +71,15 @@ void panel::add_tab(QString name)
     qt::set_icon(close, "resources/images/close_tab.png");
 
     tab_section->tabBar()->setTabButton(index, QTabBar::RightSide, close);
+
+    // el tab que se va a agregar en este panel se borra en
+    // todos los paneles, si es que esta en alguno.
+    QList<panel *> panels = panels_layout->findChildren<panel *>("panel");
+
+    for (panel *_panel : panels)
+        _panel->tabs_list.removeOne(name);
+    //
+    //
 
     tabs_list.push_back(name);
 }
@@ -178,7 +189,7 @@ panel *panel::split(Qt::Orientation orientation)
 
     qsplitter->setOrientation(orientation);
 
-    panel *new_panel = new panel(splitters, _node_graph, _viewer);
+    panel *new_panel = new panel(panels_layout, splitters, _node_graph, _viewer);
 
     QWidget *container_a = new QWidget();
     QWidget *container_b = new QWidget();

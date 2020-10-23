@@ -7,7 +7,7 @@ panels_layout::panels_layout(node_graph *_node_graph, viewer *_viewer)
 
     splitters = new QList<QSplitter *>;
 
-    first_panel = new panel(splitters, _node_graph, _viewer);
+    first_panel = new panel(this, splitters, _node_graph, _viewer);
 
     QWidget *central_widget = new QWidget();
     qt::add_widget(this, first_panel);
