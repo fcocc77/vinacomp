@@ -22,13 +22,19 @@ void vinacomp::setup_ui()
     _properties = new properties();
     _curve_editor = new curve_editor();
 
-    _layout = new panels_layout(_node_graph, _viewer, _script_editor, _properties, _curve_editor);
+    _panels_layout = new panels_layout(_node_graph, _viewer, _script_editor, _properties, _curve_editor);
 
-    // QWidget *central_widget = new QWidget();
-    // central_widget->setObjectName("central_widget");
-    // qt::add_widget(central_widget, _splitter);
+    _tool_bar = new tool_bar();
 
-    this->setCentralWidget(_layout);
+    QWidget *central_widget = new QWidget();
+    QHBoxLayout *layout = new QHBoxLayout();
+    layout->setContentsMargins(0, 0, 0, 0);
+    central_widget->setLayout(layout);
+
+    layout->addWidget(_tool_bar);
+    layout->addWidget(_panels_layout);
+
+    this->setCentralWidget(central_widget);
 
     main_menu();
 }
@@ -56,8 +62,8 @@ void vinacomp::main_menu()
 
     QMenu *layout_menu = new QMenu("Layout", menu_bar);
     menu_bar->addMenu(layout_menu);
-    layout_menu->addAction(_layout->restore_default_action);
-    layout_menu->addAction(_layout->save_current_action);
+    layout_menu->addAction(_panels_layout->restore_default_action);
+    layout_menu->addAction(_panels_layout->save_current_action);
 
     this->setMenuBar(menu_bar);
 }

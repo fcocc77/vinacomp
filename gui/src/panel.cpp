@@ -1,4 +1,5 @@
 #include <panel.hpp>
+#include <QToolButton>
 
 panel::panel(QWidget *_panels_layout,
              QList<QSplitter *> *_splitters,
@@ -22,24 +23,104 @@ panel::panel(QWidget *_panels_layout,
 
     splitters = _splitters;
 
-    QWidget *top_buttons = new QWidget();
-    setup_top_buttons(top_buttons);
+    QPushButton *cornel_button = setup_cornel_buttons();
+    cornel_button->setMinimumHeight(100);
 
     tab_section = new QTabWidget();
-
+    tab_section->setCornerWidget(cornel_button, Qt::TopLeftCorner);
     tab_section->setObjectName("tab_section");
 
-    QVBoxLayout *layout = new QVBoxLayout();
-    layout->setContentsMargins(0, 0, 0, 0);
-
-    layout->addWidget(top_buttons);
-    layout->addWidget(tab_section);
-
-    this->setLayout(layout);
+    qt::add_widget(this, tab_section);
 }
 
 panel::~panel()
 {
+}
+
+QPushButton *panel::setup_cornel_buttons()
+{
+    QPushButton *menu_button = new QPushButton();
+    menu_button->setMaximumWidth(100);
+
+    qt::set_icon(menu_button, "resources/images/layout.png");
+
+    // Menu
+    QAction *split_vertical = new QAction("split_vertical");
+    connect(split_vertical, &QAction::triggered, this, [this]() {
+        split(Qt::Vertical);
+    });
+    split_vertical->setIcon(QIcon("resources/images/split_vertically.png"));
+
+    QAction *split_horizontal = new QAction("split_horizontal");
+    connect(split_horizontal, &QAction::triggered, this, [this]() {
+        split(Qt::Horizontal);
+    });
+    split_horizontal->setIcon(QIcon("resources/images/split_horizontally.png"));
+
+    // Cerrar panel
+    QAction *close_panel_action = new QAction("Close Panel");
+    connect(close_panel_action, &QAction::triggered, this, [this]() {
+        close_panel();
+    });
+    close_panel_action->setIcon(QIcon("resources/images/close.png"));
+    //
+
+    // Add NodeGraph
+    QAction *add_node_graph_action = new QAction("Node Graph");
+    connect(add_node_graph_action, &QAction::triggered, this, [this]() {
+        add_tab("node_graph");
+    });
+    //
+
+    // Add Viewer
+    QAction *add_viewer_action = new QAction("Viewer");
+    connect(add_viewer_action, &QAction::triggered, this, [this]() {
+        add_tab("viewer");
+    });
+    //
+
+    // Add Script Editor
+    QAction *add_script_editor_action = new QAction("Script Editor");
+    connect(add_script_editor_action, &QAction::triggered, this, [this]() {
+        add_tab("script_editor");
+    });
+    //
+
+    // Add Curve Editor
+    QAction *add_curve_editor_action = new QAction("Curve Editor");
+    connect(add_curve_editor_action, &QAction::triggered, this, [this]() {
+        add_tab("curve_editor");
+    });
+    //
+
+    // Add Properties
+    QAction *add_properties_action = new QAction("Properties");
+    connect(add_properties_action, &QAction::triggered, this, [this]() {
+        add_tab("properties");
+    });
+    //
+
+    QMenu *menu = new QMenu(this);
+
+    menu->addAction(split_vertical);
+    menu->addAction(split_horizontal);
+    menu->addSeparator();
+    menu->addAction(add_viewer_action);
+    menu->addAction(add_node_graph_action);
+    menu->addAction(add_curve_editor_action);
+    menu->addAction(add_script_editor_action);
+    menu->addAction(add_properties_action);
+    menu->addSeparator();
+    menu->addAction(close_panel_action);
+    //
+    //
+
+    connect(menu_button, &QPushButton::clicked, this, [=]() {
+        menu->popup(QCursor::pos());
+        menu->show();
+    });
+
+    return menu_button;
 }
 
 void panel::add_tabs(QStringList tabs_list)
@@ -149,100 +230,6 @@ void panel::add_tab(QString name)
     //
 
     tabs_list.push_back(name);
-}
-
-void panel::setup_top_buttons(QWidget *top_buttons)
-{
-
-    top_buttons->setObjectName("top_buttons");
-    top_buttons->setMaximumHeight(70);
-
-    QPushButton *menu_button = new QPushButton();
-    menu_button->setMaximumWidth(100);
-
-    qt::set_icon(menu_button, "resources/images/layout.png");
-
-    // Menu
-    QAction *split_vertical = new QAction("split_vertical");
-    connect(split_vertical, &QAction::triggered, this, [this]() {
-        split(Qt::Vertical);
-    });
-    split_vertical->setIcon(QIcon("resources/images/split_vertically.png"));
-
-    QAction *split_horizontal = new QAction("split_horizontal");
-    connect(split_horizontal, &QAction::triggered, this, [this]() {
-        split(Qt::Horizontal);
-    });
-    split_horizontal->setIcon(QIcon("resources/images/split_horizontally.png"));
-
-    // Cerrar panel
-    QAction *close_panel_action = new QAction("Close Panel");
-    connect(close_panel_action, &QAction::triggered, this, [this]() {
-        close_panel();
-    });
-    close_panel_action->setIcon(QIcon("resources/images/close.png"));
-    //
-
-    // Add NodeGraph
-    QAction *add_node_graph_action = new QAction("Node Graph");
-    connect(add_node_graph_action, &QAction::triggered, this, [this]() {
-        add_tab("node_graph");
-    });
-    //
-
-    // Add Viewer
-    QAction *add_viewer_action = new QAction("Viewer");
-    connect(add_viewer_action, &QAction::triggered, this, [this]() {
-        add_tab("viewer");
-    });
-    //
-
-    // Add Script Editor
-    QAction *add_script_editor_action = new QAction("Script Editor");
-    connect(add_script_editor_action, &QAction::triggered, this, [this]() {
-        add_tab("script_editor");
-    });
-    //
-
-    // Add Curve Editor
-    QAction *add_curve_editor_action = new QAction("Curve Editor");
-    connect(add_curve_editor_action, &QAction::triggered, this, [this]() {
-        add_tab("curve_editor");
-    });
-    //
-
-    // Add Properties
-    QAction *add_properties_action = new QAction("Properties");
-    connect(add_properties_action, &QAction::triggered, this, [this]() {
-        add_tab("properties");
-    });
-    //
-
-    QMenu *menu = new QMenu(this);
-
-    menu->addAction(split_vertical);
-    menu->addAction(split_horizontal);
-    menu->addSeparator();
-    menu->addAction(add_viewer_action);
-    menu->addAction(add_node_graph_action);
-    menu->addAction(add_curve_editor_action);
-    menu->addAction(add_script_editor_action);
-    menu->addAction(add_properties_action);
-    menu->addSeparator();
-    menu->addAction(close_panel_action);
-    //
-    //
-
-    connect(menu_button, &QPushButton::clicked, this, [=]() {
-        menu->popup(QCursor::pos());
-        menu->show();
-    });
-
-    QHBoxLayout *layout = new QHBoxLayout();
-    layout->addWidget(menu_button);
-    layout->addStretch();
-
-    top_buttons->setLayout(layout);
 }
 
 QSplitter *panel::get_splitter()

@@ -14,6 +14,7 @@
 #include <curve_editor.hpp>
 #include <util.hpp>
 #include <panels_layout.hpp>
+#include <tool_bar.hpp>
 
 class vinacomp : public QMainWindow
 {
@@ -24,8 +25,9 @@ private:
     script_editor *_script_editor;
     properties *_properties;
     curve_editor *_curve_editor;
+    tool_bar *_tool_bar;
 
-    panels_layout *_layout;
+    panels_layout *_panels_layout;
 
     QAction *update_sylesheet_action;
 

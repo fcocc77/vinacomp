@@ -4,7 +4,7 @@
 // QT5
 #include <QWidget>
 
-class tool_bar
+class tool_bar : public QWidget
 {
 private:
     /* data */

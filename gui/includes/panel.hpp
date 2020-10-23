@@ -22,7 +22,7 @@
 class panel : public QWidget
 {
 private:
-    void setup_top_buttons(QWidget *top_buttons);
+    QPushButton *setup_cornel_buttons();
     void add_tab(QString name);
     QString get_tab_label(QString name);
 
