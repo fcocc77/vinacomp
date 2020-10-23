@@ -93,12 +93,22 @@ void panels_layout::save_json_layout(QSplitter *splitter, int deep, QString lett
         QJsonObject splitter_a;
         QJsonObject splitter_b;
         if (child_panel_a->objectName() == "panel")
-            value["panel_a"] = qt::list_to_array(child_panel_a->tabs_list);
+        {
+            QJsonObject panel_a_data;
+            panel_a_data["tabs"] = qt::list_to_array(child_panel_a->tabs_list);
+            panel_a_data["current_index"] = child_panel_a->tab_section->currentIndex();
+            value["panel_a"] = panel_a_data;
+        }
         else
             value["splitter_a"] = {};
 
         if (child_panel_b->objectName() == "panel")
-            value["panel_b"] = qt::list_to_array(child_panel_b->tabs_list);
+        {
+            QJsonObject panel_b_data;
+            panel_b_data["tabs"] = qt::list_to_array(child_panel_b->tabs_list);
+            panel_b_data["current_index"] = child_panel_b->tab_section->currentIndex();
+            value["panel_b"] = panel_b_data;
+        }
         else
             value["splitter_b"] = {};
         //
@@ -137,8 +147,8 @@ void panels_layout::load_splitter(QJsonObject splitter_obj, panel *panel_a)
     QJsonObject splitter_a = splitter_obj["splitter_a"].toObject();
     QJsonObject splitter_b = splitter_obj["splitter_b"].toObject();
 
-    QJsonArray panel_a_obj = splitter_obj["panel_a"].toArray();
-    QJsonArray panel_b_obj = splitter_obj["panel_b"].toArray();
+    QJsonObject panel_a_obj = splitter_obj["panel_a"].toObject();
+    QJsonObject panel_b_obj = splitter_obj["panel_b"].toObject();
 
     if (!splitter_a.isEmpty())
         load_splitter(splitter_a, panel_a);
@@ -146,9 +156,15 @@ void panels_layout::load_splitter(QJsonObject splitter_obj, panel *panel_a)
         load_splitter(splitter_b, panel_b);
 
     if (!panel_a_obj.isEmpty())
-        panel_a->add_tabs(qt::array_to_list(panel_a_obj));
+    {
+        panel_a->add_tabs(qt::array_to_list(panel_a_obj["tabs"].toArray()));
+        panel_a->tab_section->setCurrentIndex(panel_a_obj["current_index"].toInt());
+    }
     if (!panel_b_obj.isEmpty())
-        panel_b->add_tabs(qt::array_to_list(panel_b_obj));
+    {
+        panel_b->add_tabs(qt::array_to_list(panel_b_obj["tabs"].toArray()));
+        panel_b->tab_section->setCurrentIndex(panel_b_obj["current_index"].toInt());
+    }
 }
 
 void panels_layout::load_layout()

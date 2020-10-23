@@ -27,6 +27,7 @@ panel::panel(QWidget *_panels_layout,
     cornel_button->setMinimumHeight(100);
 
     tab_section = new QTabWidget();
+    tab_section->setMovable(true);
     tab_section->setCornerWidget(cornel_button, Qt::TopLeftCorner);
     tab_section->setObjectName("tab_section");
 

@@ -1,35 +1,47 @@
 {
     "splitter": {
         "distribution": [
-            1323,
-            593
+            1300,
+            583
         ],
         "orientation": 1,
-        "panel_b": [
-            "properties"
-        ],
+        "panel_b": {
+            "current_index": 0,
+            "tabs": [
+                "properties"
+            ]
+        },
         "splitter_a": {
             "distribution": [
-                509,
+                508,
                 484
             ],
             "orientation": 2,
-            "panel_b": [
-                "node_graph",
-                "curve_editor"
-            ],
+            "panel_b": {
+                "current_index": 0,
+                "tabs": [
+                    "node_graph",
+                    "curve_editor"
+                ]
+            },
             "splitter_a": {
                 "distribution": [
-                    691,
-                    628
+                    681,
+                    618
                 ],
                 "orientation": 1,
-                "panel_a": [
-                    "viewer"
-                ],
-                "panel_b": [
-                    "script_editor"
-                ]
+                "panel_a": {
+                    "current_index": 0,
+                    "tabs": [
+                        "viewer"
+                    ]
+                },
+                "panel_b": {
+                    "current_index": 0,
+                    "tabs": [
+                        "script_editor"
+                    ]
+                }
             }
         }
     }

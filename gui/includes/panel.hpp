@@ -29,7 +29,6 @@ private:
     QList<QSplitter *> *splitters;
 
     QWidget *container;
-    QTabWidget *tab_section;
 
     node_graph *_node_graph;
     viewer *_viewer;
@@ -50,6 +49,7 @@ public:
     ~panel();
 
     QStringList tabs_list;
+    QTabWidget *tab_section;
 
     panel *split(Qt::Orientation orientation);
     QSplitter *get_splitter();
