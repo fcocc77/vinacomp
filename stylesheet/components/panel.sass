@@ -1,6 +1,25 @@
+
+@mixin tabbar()
+    background: none
+    &::tab
+        border-top-left-radius: 3px
+        border-top-right-radius: 3px
+        background: $b15
+        padding: 3px 13px 3px 13px
+        margin-right: 5px
+        color: $c1
+        &:hover
+            color: $base
+        &:selected
+            background: $b20
+            color: $base
+    &::close-button
+
 #panels_layout
-    background: green
     #top_buttons
-        background: red
+        // background: pink
     #tab_section
-        background: blue
+        // background: blue
+
+    QTabBar
+        @include tabbar

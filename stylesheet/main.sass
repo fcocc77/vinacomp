@@ -1,10 +1,109 @@
 @import variables
 
 *
-    // background: $b10
+    background: $b10
 
 QMainWindow
     qproperty-windowIcon: url('#{$images}/vinacomp.png')
+
+QMenu 
+    background-color: $b17
+    color: $c1
+    border: 1px solid mix($base, $b15, 20%)
+    border-radius: 2px
+    &::item
+        padding: 4px 15px 4px 22px
+        &:selected
+            background-color: mix($base, $b15, 50%)
+            color: $c3
+        &:disabled
+            color: mix($c1, $b17, 50%)
+    &::separator
+        background-color: $b20
+        margin: 5px
+        height: 1px
+
+QMenuBar
+        background-color: $b15
+        border-bottom: 1px solid $b10
+        padding: 2px
+        color: $c1
+    &::item
+        background-color: transparent
+        &:selected
+            color: $base
+        &::pressed
+            background-color: $b22
+
+QSplitter
+    &::handle
+        $width: 1px
+        &::horizontal, &::vertical
+            background: $b10
+            &:hover
+                background: mix($base, $b10, 80%)
+        &::horizontal
+            width: $width
+        &::vertical
+            height: $width
+
+QScrollBar
+    $width: 20px
+            padding: 3px
+    &:vertical, &:horizontal
+        background: $b14
+    &:vertical
+        width: 15px
+        margin : 23px 0px 23px 0px
+    &:horizontal
+        height: 15px
+        margin : 0px 23px 0px 23px
+    &::handle
+        &:vertical, &:horizontal
+            background: $b20
+            border-radius: 4px
+            &:hover
+                background: mix($base, $b20, 50%)
+        &:vertical
+            min-height: $width
+        &:horizontal
+            min-width: $width
+    &::add-page, &::sub-page
+        &:vertical, &:horizontal
+            background: transparent
+    &::add-line
+        &:vertical, &:horizontal
+            background: $b18
+            subcontrol-origin: margin
+        &:vertical
+            height: $width
+            subcontrol-position: bottom
+        &:horizontal
+            width: $width
+            subcontrol-position: left
+    &::sub-line
+        &:vertical, &:horizontal
+            background: $b18
+            subcontrol-origin: margin
+        &:vertical
+            height: $width
+            subcontrol-position: top
+        &:horizontal
+            width: $width
+            subcontrol-position: right
+    &::up-arrow:vertical,
+    &::down-arrow:vertical,
+    &::left-arrow:horizontal,
+    &::right-arrow:horizontal
+        background: transparent
+    &::up-arrow:vertical
+        image : url('#{$images}/up_arrow.png')
+    &::down-arrow:vertical
+        image : url('#{$images}/down_arrow.png')
+    &::left-arrow:horizontal
+        image : url('#{$images}/right_arrow.png')
+    &::right-arrow:horizontal
+        image : url('#{$images}/left_arrow.png')
 
 @import components/node_graph
 @import components/curve_editor

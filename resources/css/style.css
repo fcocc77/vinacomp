@@ -1,14 +1,115 @@
 /* Black blue color */
+* {
+  background: #17191c; }
+
 QMainWindow {
   qproperty-windowIcon: url("/home/pancho/Documents/develop/vinacomp/resources/images/vinacomp.png"); }
+
+QMenu {
+  background-color: #272b2f;
+  color: #c7cbd1;
+  border: 1px solid #4f3121;
+  border-radius: 2px; }
+  QMenu::item {
+    padding: 4px 15px 4px 22px; }
+    QMenu::item:selected {
+      background-color: #914215;
+      color: #f1f2f3; }
+    QMenu::item:disabled {
+      color: #777b80; }
+  QMenu::separator {
+    background-color: #2e3238;
+    margin: 5px;
+    height: 1px; }
+
+QMenuBar {
+  background-color: #23262a;
+  border-bottom: 1px solid #17191c;
+  padding: 2px;
+  color: #c7cbd1; }
+  QMenuBar::item {
+    background-color: transparent; }
+    QMenuBar::item:selected {
+      color: #ff5e00; }
+    QMenuBar::item::pressed {
+      background-color: #33373d; }
+
+QSplitter::handle::horizontal, QSplitter::handle::vertical {
+  background: #17191c; }
+  QSplitter::handle::horizontal:hover, QSplitter::handle::vertical:hover {
+    background: #d15006; }
+
+QSplitter::handle::horizontal {
+  width: 1px; }
+
+QSplitter::handle::vertical {
+  height: 1px; }
+
+QScrollBar {
+  padding: 3px; }
+  QScrollBar:vertical, QScrollBar:horizontal {
+    background: #202327; }
+  QScrollBar:vertical {
+    width: 15px;
+    margin: 23px 0px 23px 0px; }
+  QScrollBar:horizontal {
+    height: 15px;
+    margin: 0px 23px 0px 23px; }
+  QScrollBar::handle:vertical, QScrollBar::handle:horizontal {
+    background: #2e3238;
+    border-radius: 4px; }
+    QScrollBar::handle:vertical:hover, QScrollBar::handle:horizontal:hover {
+      background: #97481c; }
+  QScrollBar::handle:vertical {
+    min-height: 20px; }
+  QScrollBar::handle:horizontal {
+    min-width: 20px; }
+  QScrollBar::add-page:vertical, QScrollBar::add-page:horizontal, QScrollBar::sub-page:vertical, QScrollBar::sub-page:horizontal {
+    background: transparent; }
+  QScrollBar::add-line:vertical, QScrollBar::add-line:horizontal {
+    background: #2a2d32;
+    subcontrol-origin: margin; }
+  QScrollBar::add-line:vertical {
+    height: 20px;
+    subcontrol-position: bottom; }
+  QScrollBar::add-line:horizontal {
+    width: 20px;
+    subcontrol-position: left; }
+  QScrollBar::sub-line:vertical, QScrollBar::sub-line:horizontal {
+    background: #2a2d32;
+    subcontrol-origin: margin; }
+  QScrollBar::sub-line:vertical {
+    height: 20px;
+    subcontrol-position: top; }
+  QScrollBar::sub-line:horizontal {
+    width: 20px;
+    subcontrol-position: right; }
+  QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left-arrow:horizontal, QScrollBar::right-arrow:horizontal {
+    background: transparent; }
+  QScrollBar::up-arrow:vertical {
+    image: url("/home/pancho/Documents/develop/vinacomp/resources/images/up_arrow.png"); }
+  QScrollBar::down-arrow:vertical {
+    image: url("/home/pancho/Documents/develop/vinacomp/resources/images/down_arrow.png"); }
+  QScrollBar::left-arrow:horizontal {
+    image: url("/home/pancho/Documents/develop/vinacomp/resources/images/right_arrow.png"); }
+  QScrollBar::right-arrow:horizontal {
+    image: url("/home/pancho/Documents/develop/vinacomp/resources/images/left_arrow.png"); }
 
 #node_graph QGraphicsView {
   background: #2e3238; }
 
-#panels_layout {
-  background: green; }
-  #panels_layout #top_buttons {
-    background: red; }
-  #panels_layout #tab_section {
-    background: blue; }
+#panels_layout QTabBar {
+  background: none; }
+  #panels_layout QTabBar::tab {
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    background: #23262a;
+    padding: 3px 13px 3px 13px;
+    margin-right: 5px;
+    color: #c7cbd1; }
+    #panels_layout QTabBar::tab:hover {
+      color: #ff5e00; }
+    #panels_layout QTabBar::tab:selected {
+      background: #2e3238;
+      color: #ff5e00; }
 
