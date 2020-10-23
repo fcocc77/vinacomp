@@ -171,5 +171,10 @@ void panels_layout::restore_default()
     QJsonObject layout = jread("resources/data/default_layout.json");
     QJsonObject main = layout["splitter"].toObject();
 
-    load_splitter(main, first_panel);
+    // encuentra el unico papel que queda después de eliminarlos todos,
+    // y a partir de este panel se construyen todos los demas.
+    panel *main_panel = this->findChild<panel *>("panel");
+    //
+
+    load_splitter(main, main_panel);
 }
