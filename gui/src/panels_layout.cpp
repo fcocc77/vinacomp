@@ -161,4 +161,15 @@ void panels_layout::load_layout()
 
 void panels_layout::restore_default()
 {
+    QList<panel *> panels = this->findChildren<panel *>("panel");
+    for (panel *_panel : panels)
+    {
+        _panel->remove_all_tab();
+        _panel->close_panel();
+    }
+
+    QJsonObject layout = jread("resources/data/default_layout.json");
+    QJsonObject main = layout["splitter"].toObject();
+
+    load_splitter(main, first_panel);
 }

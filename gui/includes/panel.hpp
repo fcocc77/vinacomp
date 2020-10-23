@@ -23,10 +23,8 @@ class panel : public QWidget
 {
 private:
     void setup_top_buttons(QWidget *top_buttons);
-    void close_panel();
     void add_tab(QString name);
     QString get_tab_label(QString name);
-    void remove_all_tab();
 
     QList<QSplitter *> *splitters;
 
@@ -57,6 +55,8 @@ public:
     QSplitter *get_splitter();
     void add_tabs(QStringList tabs_list);
     void remove_tab(QString name);
+    void close_panel();
+    void remove_all_tab();
 };
 
 #endif // PANEL_HPP
