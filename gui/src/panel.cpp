@@ -77,10 +77,10 @@ void panel::remove_tab(QString name)
     }
 
     QWidget *widget = tab_section->widget(index);
-    widget->setParent(0);
-
     tab_section->removeTab(index);
     tabs_list.removeOne(name);
+
+    widget->setParent(0);
 }
 
 QString panel::get_tab_label(QString name)
