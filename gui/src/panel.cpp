@@ -24,14 +24,19 @@ panel::panel(QWidget *_panels_layout,
     splitters = _splitters;
 
     QPushButton *cornel_button = setup_cornel_buttons();
-    cornel_button->setMinimumHeight(100);
 
     tab_section = new QTabWidget();
     tab_section->setMovable(true);
     tab_section->setCornerWidget(cornel_button, Qt::TopLeftCorner);
     tab_section->setObjectName("tab_section");
 
-    qt::add_widget(this, tab_section);
+    QVBoxLayout *layout = new QVBoxLayout();
+    layout->setContentsMargins(0, 10, 0, 0);
+    layout->addWidget(tab_section);
+
+    this->setLayout(layout);
+
+    // qt::add_widget(this, tab_section);
 }
 
 panel::~panel()
@@ -41,9 +46,10 @@ panel::~panel()
 QPushButton *panel::setup_cornel_buttons()
 {
     QPushButton *menu_button = new QPushButton();
-    menu_button->setMaximumWidth(100);
+    // menu_button->setMaximumWidth(100);
+    menu_button->setMinimumHeight(15);
 
-    qt::set_icon(menu_button, "resources/images/layout.png");
+    qt::set_icon(menu_button, "resources/images/layout.png", QSize(15, 15));
 
     // Menu
     QAction *split_vertical = new QAction("split_vertical");
@@ -212,7 +218,7 @@ void panel::add_tab(QString name)
     tab_section->setCurrentIndex(index);
 
     QPushButton *close_tab = new QPushButton();
-    qt::set_icon(close_tab, "resources/images/close_tab.png");
+    qt::set_icon(close_tab, "resources/images/close_a.png", QSize(10, 10));
 
     connect(close_tab, &QPushButton::clicked, this, [=]() {
         remove_tab(name);

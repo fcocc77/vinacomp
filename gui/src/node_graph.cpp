@@ -10,6 +10,7 @@ node_graph::node_graph(/* args */)
     graphics_view->setScene(scene);
 
     QHBoxLayout *layout = new QHBoxLayout();
+    layout->setContentsMargins(0, 0, 0, 0);
 
     node *node_a = new node();
     node *node_b = new node();

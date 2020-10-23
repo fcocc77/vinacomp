@@ -1,6 +1,11 @@
 /* Black blue color */
 * {
-  background: #17191c; }
+  background: #17191c;
+  border: none;
+  font-size: 11px; }
+
+QPushButton {
+  background: transparent; }
 
 QMainWindow {
   qproperty-windowIcon: url("/home/pancho/Documents/develop/vinacomp/resources/images/vinacomp.png"); }
