@@ -4,7 +4,7 @@
 // QT5
 #include <QWidget>
 
-class curve_editor
+class curve_editor : public QWidget
 {
 private:
     /* data */

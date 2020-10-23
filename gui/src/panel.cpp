@@ -3,12 +3,20 @@
 panel::panel(QWidget *_panels_layout,
              QList<QSplitter *> *_splitters,
              node_graph *__node_graph,
-             viewer *__viewer)
+             viewer *__viewer,
+             script_editor *__script_editor,
+             properties *__properties,
+             curve_editor *__curve_editor
+
+)
 {
 
     panels_layout = _panels_layout;
     _node_graph = __node_graph;
     _viewer = __viewer;
+    _script_editor = __script_editor;
+    _properties = __properties;
+    _curve_editor = __curve_editor;
 
     this->setObjectName("panel");
 
@@ -66,6 +74,16 @@ QString panel::get_tab_label(QString name)
 
     else if (name == "viewer")
         return "Viewer";
+
+    else if (name == "curve_editor")
+        return "Curve Editor";
+
+    else if (name == "script_editor")
+        return "Script Editor";
+
+    else if (name == "properties")
+        return "Properties";
+
     else
         return "";
 }
@@ -78,6 +96,16 @@ void panel::add_tab(QString name)
 
     else if (name == "viewer")
         tab = _viewer;
+
+    else if (name == "curve_editor")
+        tab = _curve_editor;
+
+    else if (name == "script_editor")
+        tab = _script_editor;
+
+    else if (name == "properties")
+        tab = _properties;
+
     else
         return;
 
@@ -153,6 +181,27 @@ void panel::setup_top_buttons(QWidget *top_buttons)
     });
     //
 
+    // Add Script Editor
+    QAction *add_script_editor_action = new QAction("Script Editor");
+    connect(add_script_editor_action, &QAction::triggered, this, [this]() {
+        add_tab("script_editor");
+    });
+    //
+
+    // Add Curve Editor
+    QAction *add_curve_editor_action = new QAction("Curve Editor");
+    connect(add_curve_editor_action, &QAction::triggered, this, [this]() {
+        add_tab("curve_editor");
+    });
+    //
+
+    // Add Properties
+    QAction *add_properties_action = new QAction("Properties");
+    connect(add_properties_action, &QAction::triggered, this, [this]() {
+        add_tab("properties");
+    });
+    //
+
     QMenu *menu = new QMenu(this);
 
     menu->addAction(split_vertical);
@@ -160,6 +209,9 @@ void panel::setup_top_buttons(QWidget *top_buttons)
     menu->addSeparator();
     menu->addAction(add_viewer_action);
     menu->addAction(add_node_graph_action);
+    menu->addAction(add_curve_editor_action);
+    menu->addAction(add_script_editor_action);
+    menu->addAction(add_properties_action);
     menu->addSeparator();
     menu->addAction(close_panel_action);
     //
@@ -212,7 +264,7 @@ panel *panel::split(Qt::Orientation orientation)
 
     qsplitter->setOrientation(orientation);
 
-    panel *new_panel = new panel(panels_layout, splitters, _node_graph, _viewer);
+    panel *new_panel = new panel(panels_layout, splitters, _node_graph, _viewer, _script_editor, _properties, _curve_editor);
 
     QWidget *container_a = new QWidget();
     QWidget *container_b = new QWidget();

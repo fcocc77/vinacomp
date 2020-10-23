@@ -15,6 +15,9 @@
 #include <util.hpp>
 #include <node_graph.hpp>
 #include <viewer.hpp>
+#include <script_editor.hpp>
+#include <properties.hpp>
+#include <curve_editor.hpp>
 
 class panel : public QWidget
 {
@@ -28,15 +31,23 @@ private:
 
     QWidget *container;
     QTabWidget *tab_section;
+
     node_graph *_node_graph;
     viewer *_viewer;
+    script_editor *_script_editor;
+    properties *_properties;
+    curve_editor *_curve_editor;
+
     QWidget *panels_layout;
 
 public:
     panel(QWidget *_panels_layout,
           QList<QSplitter *> *_splitters,
           node_graph *_node_graph,
-          viewer *_viewer);
+          viewer *_viewer,
+          script_editor *_script_editor,
+          properties *_properties,
+          curve_editor *_curve_editor);
     ~panel();
 
     QStringList tabs_list;

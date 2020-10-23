@@ -5,6 +5,9 @@
 #include <panel.hpp>
 #include <node_graph.hpp>
 #include <viewer.hpp>
+#include <script_editor.hpp>
+#include <properties.hpp>
+#include <curve_editor.hpp>
 
 class panels_layout : public QWidget
 {
@@ -22,7 +25,12 @@ private:
     panel *first_panel;
 
 public:
-    panels_layout(node_graph *_node_graph, viewer *_viewer);
+    panels_layout(
+        node_graph *_node_graph,
+        viewer *_viewer,
+        script_editor *_script_editor,
+        properties *_properties,
+        curve_editor *_curve_editor);
     ~panels_layout();
 
     QList<QSplitter *> *splitters;

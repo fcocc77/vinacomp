@@ -4,7 +4,7 @@
 // QT5
 #include <QWidget>
 
-class script_editor
+class script_editor : public QWidget
 {
 private:
     /* data */

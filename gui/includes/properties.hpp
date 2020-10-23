@@ -4,7 +4,7 @@
 // QT5
 #include <QWidget>
 
-class properties
+class properties : public QWidget
 {
 private:
     /* data */

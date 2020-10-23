@@ -12,15 +12,17 @@ vinacomp::~vinacomp()
 
 void vinacomp::setup_ui()
 {
-
     update_sylesheet_action = new QAction("Update StyleSheet");
     update_sylesheet_action->setShortcut(QString("Ctrl+R"));
     connect(update_sylesheet_action, &QAction::triggered, this, &vinacomp::setup_style);
 
     _node_graph = new node_graph();
     _viewer = new viewer();
+    _script_editor = new script_editor();
+    _properties = new properties();
+    _curve_editor = new curve_editor();
 
-    _layout = new panels_layout(_node_graph, _viewer);
+    _layout = new panels_layout(_node_graph, _viewer, _script_editor, _properties, _curve_editor);
 
     // QWidget *central_widget = new QWidget();
     // central_widget->setObjectName("central_widget");
