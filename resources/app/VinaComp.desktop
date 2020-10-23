@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=false
+Name=VinaComp
+Exec=sh /opt/vinacomp/vinacomp
+GenericName=Compositing software
+Comment=Node-graph based compositing software
+Icon=/opt/vinacomp/resources/images/vinacomp.png
+Categories=Graphics;2DGraphics;RasterGraphics;
+
