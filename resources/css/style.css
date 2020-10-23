@@ -98,6 +98,15 @@ QScrollBar {
 #node_graph QGraphicsView {
   background: #2e3238; }
 
+#curve_editor {
+  background: black; }
+
+#properties {
+  background: #2e3238; }
+
+#script_editor {
+  background: #2e3238; }
+
 #panels_layout QTabBar {
   background: none; }
   #panels_layout QTabBar::tab {
