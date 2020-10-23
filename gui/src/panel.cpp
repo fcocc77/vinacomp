@@ -19,8 +19,6 @@ panel::panel(QWidget *_panels_layout,
 
     tab_section = new QTabWidget();
 
-    // tab_section->setCornerWidget(qToolButton);
-
     tab_section->setObjectName("tab_section");
 
     QVBoxLayout *layout = new QVBoxLayout();
@@ -44,33 +42,57 @@ void panel::add_tabs(QStringList tabs_list)
     }
 }
 
-void panel::add_tab(QString name)
+void panel::remove_tab(QString name)
 {
 
-    QWidget *tab;
-    QString label;
+    int index = 0;
+    for (int i = 0; i < tab_section->count(); i++)
+    {
+        if (tab_section->tabText(i) == get_tab_label(name))
+        {
+            index = i;
+            break;
+        }
+    }
+
+    tab_section->removeTab(index);
+    tabs_list.removeOne(name);
+}
+
+QString panel::get_tab_label(QString name)
+{
     if (name == "node_graph")
-    {
-        tab = _node_graph;
-        label = "Node Graph";
-    }
+        return "Node Graph";
+
     else if (name == "viewer")
-    {
+        return "Viewer";
+    else
+        return "";
+}
+
+void panel::add_tab(QString name)
+{
+    QWidget *tab;
+    if (name == "node_graph")
+        tab = _node_graph;
+
+    else if (name == "viewer")
         tab = _viewer;
-        label = "Viewer";
-    }
     else
         return;
 
-    int index = tab_section->addTab(tab, label);
+    int index = tab_section->addTab(tab, get_tab_label(name));
 
     tab_section->setCurrentIndex(index);
 
-    QPushButton *close = new QPushButton();
+    QPushButton *close_tab = new QPushButton();
+    qt::set_icon(close_tab, "resources/images/close_tab.png");
 
-    qt::set_icon(close, "resources/images/close_tab.png");
+    connect(close_tab, &QPushButton::clicked, this, [=]() {
+        remove_tab(name);
+    });
 
-    tab_section->tabBar()->setTabButton(index, QTabBar::RightSide, close);
+    tab_section->tabBar()->setTabButton(index, QTabBar::RightSide, close_tab);
 
     // el tab que se va a agregar en este panel se borra en
     // todos los paneles, si es que esta en alguno.
@@ -78,6 +100,7 @@ void panel::add_tab(QString name)
 
     for (panel *_panel : panels)
         _panel->tabs_list.removeOne(name);
+
     //
     //
 

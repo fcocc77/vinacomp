@@ -22,6 +22,7 @@ private:
     void setup_top_buttons(QWidget *top_buttons);
     void close_panel();
     void add_tab(QString name);
+    QString get_tab_label(QString name);
 
     QList<QSplitter *> *splitters;
 
@@ -43,6 +44,7 @@ public:
     panel *split(Qt::Orientation orientation);
     QSplitter *get_splitter();
     void add_tabs(QStringList tabs_list);
+    void remove_tab(QString name);
 };
 
 #endif // PANEL_HPP
