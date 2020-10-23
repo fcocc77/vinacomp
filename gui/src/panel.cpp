@@ -296,6 +296,8 @@ panel *panel::split(Qt::Orientation orientation)
     qsplitter->addWidget(container_a);
     qsplitter->addWidget(container_b);
 
+    qsplitter->setSizes({100, 100});
+
     layout->addWidget(qsplitter);
 
     return new_panel;
