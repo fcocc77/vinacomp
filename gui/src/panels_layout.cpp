@@ -25,35 +25,39 @@ panels_layout::~panels_layout()
 {
 }
 
+panel *panels_layout::get_child_panel(QSplitter *splitter, QString _letter)
+{
+    // Obtiene el widget hijo del splitter 'a' o 'b'
+    QWidget *container;
+    if (_letter == "a")
+        container = splitter->widget(0);
+    else
+        container = splitter->widget(1);
+
+    return container->findChild<panel *>();
+}
+
 void panels_layout::update_json_layout(QSplitter *splitter, int deep, QString letter, QStringList parents)
 {
+
     if (splitter != NULL)
     {
         if (!letter.isEmpty())
         {
-            QWidget *container;
-            if (letter == "a")
-                container = splitter->widget(0);
+            panel *child_panel = get_child_panel(splitter, letter);
+
+            if (child_panel->objectName() == "panel")
+                return;
             else
-                container = splitter->widget(1);
-
-            QWidget *_panel = container->findChild<panel *>();
-
-            // si no es un panel es un QSplitter
-            if (_panel->objectName() != "panel")
             {
                 for (QSplitter *_splitter : *splitters)
                 {
-                    if (_splitter->objectName() == _panel->objectName())
+                    if (_splitter->objectName() == child_panel->objectName())
                     {
                         splitter = _splitter;
                         break;
                     }
                 }
-            }
-            else
-            {
-                return;
             }
         }
 
@@ -64,17 +68,38 @@ void panels_layout::update_json_layout(QSplitter *splitter, int deep, QString le
             parent_name = "splitter";
         else
             parent_name = "splitter_" + letter;
+        parents.push_back(parent_name);
 
         int orientation = splitter->orientation();
         auto sizes = splitter->sizes();
+        //
+        //
 
-        QJsonObject splitter_json = {{{"orientation", orientation},
-                                      {"distribution", QJsonArray{sizes[0], sizes[1]}},
-                                      {"splitter_a", QJsonObject()},
-                                      {"splitter_b", QJsonObject()}}};
+        QJsonObject value;
 
-        parents.push_back(parent_name);
-        qt::insert_json_deep(&json_layout, parents, splitter_json);
+        value["orientation"] = orientation;
+        value["distribution"] = QJsonArray{sizes[0], sizes[1]};
+
+        // Crea los objetos a y b de un splitter y si el hijo es un panel,
+        // guarda los datos de los 'tabs' del panel.
+        panel *child_panel_a = get_child_panel(splitter, "a");
+        panel *child_panel_b = get_child_panel(splitter, "b");
+
+        QJsonObject splitter_a;
+        QJsonObject splitter_b;
+        if (child_panel_a->objectName() == "panel")
+            value["panel_a"] = qt::list_to_array(child_panel_a->tabs_list);
+        else
+            value["splitter_a"] = {};
+
+        if (child_panel_b->objectName() == "panel")
+            value["panel_b"] = qt::list_to_array(child_panel_b->tabs_list);
+        else
+            value["splitter_b"] = {};
+        //
+        //
+
+        qt::insert_json_deep(&json_layout, parents, value);
 
         update_json_layout(splitter, deep, "a", parents);
         update_json_layout(splitter, deep, "b", parents);
@@ -107,10 +132,18 @@ void panels_layout::load_splitter(QJsonObject splitter_obj, panel *panel_a)
     QJsonObject splitter_a = splitter_obj["splitter_a"].toObject();
     QJsonObject splitter_b = splitter_obj["splitter_b"].toObject();
 
+    QJsonArray panel_a_obj = splitter_obj["panel_a"].toArray();
+    QJsonArray panel_b_obj = splitter_obj["panel_b"].toArray();
+
     if (!splitter_a.isEmpty())
         load_splitter(splitter_a, panel_a);
     if (!splitter_b.isEmpty())
         load_splitter(splitter_b, panel_b);
+
+    if (!panel_a_obj.isEmpty())
+        panel_a->add_tabs(qt::array_to_list(panel_a_obj));
+    if (!panel_b_obj.isEmpty())
+        panel_b->add_tabs(qt::array_to_list(panel_b_obj));
 }
 
 void panels_layout::load_layout()
