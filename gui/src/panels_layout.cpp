@@ -37,7 +37,7 @@ panel *panels_layout::get_child_panel(QSplitter *splitter, QString _letter)
     return container->findChild<panel *>();
 }
 
-void panels_layout::update_json_layout(QSplitter *splitter, int deep, QString letter, QStringList parents)
+void panels_layout::save_json_layout(QSplitter *splitter, int deep, QString letter, QStringList parents)
 {
 
     if (splitter != NULL)
@@ -101,8 +101,8 @@ void panels_layout::update_json_layout(QSplitter *splitter, int deep, QString le
 
         qt::insert_json_deep(&json_layout, parents, value);
 
-        update_json_layout(splitter, deep, "a", parents);
-        update_json_layout(splitter, deep, "b", parents);
+        save_json_layout(splitter, deep, "a", parents);
+        save_json_layout(splitter, deep, "b", parents);
     }
 }
 
@@ -114,7 +114,7 @@ void panels_layout::save_layout()
     json_layout = {};
     //
 
-    update_json_layout(main_splitter);
+    save_json_layout(main_splitter);
     jwrite("temp/layout.json", json_layout);
 }
 

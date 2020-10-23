@@ -15,7 +15,7 @@ private:
 
     panel *get_child_panel(QSplitter *__splitter, QString _letter);
 
-    void update_json_layout(QSplitter *splitter, int deep = 0, QString letter = "", QStringList parents = {});
+    void save_json_layout(QSplitter *splitter, int deep = 0, QString letter = "", QStringList parents = {});
     void load_splitter(QJsonObject splitter_obj, panel *panel_a);
     QJsonObject json_layout;
 
