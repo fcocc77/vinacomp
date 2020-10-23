@@ -26,6 +26,7 @@ private:
     void close_panel();
     void add_tab(QString name);
     QString get_tab_label(QString name);
+    void remove_all_tab();
 
     QList<QSplitter *> *splitters;
 

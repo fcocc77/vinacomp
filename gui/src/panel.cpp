@@ -50,6 +50,19 @@ void panel::add_tabs(QStringList tabs_list)
     }
 }
 
+void panel::remove_all_tab()
+{
+    QList<QWidget *> widgets;
+    for (int i = 0; i < tab_section->count(); i++)
+        widgets.push_back(tab_section->widget(i));
+
+    for (QWidget *widget : widgets)
+        widget->setParent(0);
+
+    tab_section->clear();
+    tabs_list.clear();
+}
+
 void panel::remove_tab(QString name)
 {
 
@@ -62,6 +75,9 @@ void panel::remove_tab(QString name)
             break;
         }
     }
+
+    QWidget *widget = tab_section->widget(index);
+    widget->setParent(0);
 
     tab_section->removeTab(index);
     tabs_list.removeOne(name);
@@ -294,6 +310,8 @@ void panel::close_panel()
     if (container->objectName() == "panels_layout")
         return;
     //
+
+    remove_all_tab();
 
     QWidget *qsplitter = container->parentWidget();
     QWidget *parent = qsplitter->parentWidget();
