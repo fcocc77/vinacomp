@@ -20,22 +20,24 @@ class node_graph : public QGraphicsView
 {
     Q_OBJECT
 private:
-    /* data */
-public:
-    node_graph(/* args */);
-    ~node_graph();
-
     QGraphicsScene *scene;
-    QGraphicsRectItem *rectangle;
 
     bool panning;
     bool pressed;
     int panning_start_x, panning_start_y;
+    QList<node *> *nodes;
 
+    // Events
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     void wheelEvent(QWheelEvent *event);
+
+public:
+    node_graph(/* args */);
+    ~node_graph();
+
+    void add_node(QString name, int x, int y);
 
 protected:
     virtual void paintEvent(QPaintEvent *event) override;

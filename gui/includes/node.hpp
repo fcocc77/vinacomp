@@ -4,14 +4,33 @@
 #include <QWidget>
 #include <QLabel>
 #include <QHBoxLayout>
+#include <QGraphicsRectItem>
+#include <QPen>
+#include <QGraphicsScene>
+#include <QGraphicsProxyWidget>
 
-class node : public QWidget
+#include <util.hpp>
+
+class node : public QGraphicsRectItem
 {
 private:
-    /* data */
+    QList<QGraphicsLineItem *> *inputs;
+    QGraphicsScene *scene;
+
+    int width;
+    int height;
+    QLabel *label;
+
 public:
-    node(/* args */);
+    node(QGraphicsScene *_scene);
     ~node();
+
+    void inputs_refresh();
+    QGraphicsLineItem get_input(int index);
+    void add_input();
+    void connect_input(int index, node *_node);
+    void set_name(QString name);
+    void set_position(int x, int y);
 };
 
 #endif // NODE_H
