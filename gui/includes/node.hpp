@@ -19,6 +19,11 @@ private:
     QList<QGraphicsLineItem *> *inputs;
     QGraphicsScene *scene;
     QList<node *> *nodes;
+    QList<node *> *selected_nodes;
+
+    QList<node *> *connected_nodes;
+
+    void input_line_connect(int index);
 
     int width;
     int height;
@@ -26,14 +31,15 @@ private:
     bool selected;
 
 public:
-    node(QGraphicsScene *_scene, QList<node *> *_nodes);
+    node(QGraphicsScene *_scene, QList<node *> *_selected_nodes);
     ~node();
 
-    void inputs_refresh();
+    void refresh();
     QGraphicsLineItem get_input(int index);
     void add_input();
     void connect_input(int index, node *_node);
     void set_name(QString name);
+    QString get_name();
     void set_position(int x, int y);
     void select(bool _selected);
 

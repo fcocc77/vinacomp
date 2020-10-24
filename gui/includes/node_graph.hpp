@@ -22,6 +22,7 @@ class node_graph : public QGraphicsView
     Q_OBJECT
 private:
     void select_all(bool select);
+    void refresh_selected_nodes();
     void setup_shortcut();
     QGraphicsScene *scene;
 
@@ -29,6 +30,7 @@ private:
     bool pressed;
     int panning_start_x, panning_start_y;
     QList<node *> *nodes;
+    QList<node *> *selected_nodes;
 
     // Events
     void mousePressEvent(QMouseEvent *event);
@@ -40,7 +42,7 @@ public:
     node_graph(/* args */);
     ~node_graph();
 
-    void add_node(QString name, int x, int y);
+    node *add_node(QString name, int x, int y);
 };
 
 #endif // NODE_GRAPH_H

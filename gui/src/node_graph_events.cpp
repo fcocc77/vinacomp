@@ -2,11 +2,6 @@
 
 void node_graph::mousePressEvent(QMouseEvent *event)
 {
-    // print(scene->selectedItems());
-    if (event->button() == Qt::RightButton)
-    {
-        nodes->value(0)->connect_input(0, nodes->value(1));
-    }
 
     pressed = true;
     if (event->button() == Qt::MidButton)
@@ -23,6 +18,8 @@ void node_graph::mousePressEvent(QMouseEvent *event)
 
 void node_graph::mouseReleaseEvent(QMouseEvent *event)
 {
+    this->refresh_selected_nodes();
+
     pressed = false;
     if (event->button() == Qt::MidButton)
     {
@@ -36,8 +33,11 @@ void node_graph::mouseReleaseEvent(QMouseEvent *event)
 
 void node_graph::mouseMoveEvent(QMouseEvent *event)
 {
+    this->refresh_selected_nodes();
+
     if (panning)
     {
+
         horizontalScrollBar()->setValue(horizontalScrollBar()->value() - (event->x() - panning_start_x));
         verticalScrollBar()->setValue(verticalScrollBar()->value() - (event->y() - panning_start_y));
         panning_start_x = event->x();

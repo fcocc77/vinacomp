@@ -1,11 +1,12 @@
 #include <node.hpp>
 
-node::node(QGraphicsScene *_scene, QList<node *> *_nodes)
+node::node(QGraphicsScene *_scene, QList<node *> *_selected_nodes)
 {
     scene = _scene;
-    nodes = _nodes;
+    selected_nodes = _selected_nodes;
 
     inputs = new QList<QGraphicsLineItem *>;
+    connected_nodes = new QList<node *>;
 
     label = new QLabel("Nodo");
     selected = false;
@@ -35,8 +36,10 @@ node::~node()
 void node::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     // deseleccionar todos los nodos antes de seleccionar este
-    for (node *_node : *nodes)
+    for (node *_node : *selected_nodes)
         _node->select(false);
+    selected_nodes->clear();
+    //
 
     this->select(true);
 }
@@ -52,6 +55,8 @@ void node::select(bool _selected)
         this->setPen(pen);
 
         inputs->value(0)->setPen(pen);
+
+        selected_nodes->push_back(this);
     }
     else
     {
@@ -64,11 +69,33 @@ void node::select(bool _selected)
     }
 }
 
-void node::inputs_refresh()
+void node::refresh()
 {
-    // actualiza la posicion de las lineas
+    int input_index = 0;
+    input_line_connect(input_index);
+}
 
-    inputs->value(0)->setLine(0, 0, 200, 50);
+void node::input_line_connect(int index)
+{
+    node *connected_node = connected_nodes->value(index);
+
+    int src_x, src_y, dst_x, dst_y;
+
+    src_x = this->x() + width / 2;
+    src_y = this->y() + height / 2;
+
+    if (connected_node != NULL)
+    {
+        dst_x = connected_node->x() + width / 2;
+        dst_y = connected_node->y() + height / 2;
+    }
+    else
+    {
+        dst_x = src_x;
+        dst_y = src_y - 50;
+    }
+
+    inputs->value(index)->setLine(src_x, src_y, dst_x, dst_y);
 }
 
 void node::add_input()
@@ -87,14 +114,7 @@ QGraphicsLineItem node::get_input(int index)
 
 void node::connect_input(int index, node *_node)
 {
-
-    int src_x = this->x() + width / 2;
-    int src_y = this->y() + height / 2;
-
-    int dst_x = _node->x() + width / 2;
-    int dst_y = _node->y() + height / 2;
-
-    inputs->value(index)->setLine(src_x, src_y, dst_x, dst_y);
+    connected_nodes->push_back(_node);
 }
 
 void node::set_name(QString name)
@@ -102,15 +122,14 @@ void node::set_name(QString name)
     label->setText(name);
 }
 
+QString node::get_name()
+{
+    return label->text();
+}
+
 void node::set_position(int x, int y)
 {
     this->setPos(x, y);
 
-    int src_x = x + width / 2;
-    int src_y = y + height / 2;
-
-    int dst_x = src_x;
-    int dst_y = src_y - 50;
-
-    inputs->value(0)->setLine(src_x, src_y, dst_x, dst_y);
+    input_line_connect(0);
 }
