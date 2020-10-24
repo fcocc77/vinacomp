@@ -11,27 +11,16 @@ node_graph::node_graph(/* args */)
     node *node_a = new node();
     node *node_b = new node();
 
-    scene->addWidget(node_b);
+    QGraphicsProxyWidget *proxy = scene->addWidget(node_a);
 
-    QBrush red(Qt::red);
     QPen pen(Qt::black);
     pen.setWidth(1);
 
-    QGraphicsRectItem *rectangle = new QGraphicsRectItem();
-    QGraphicsProxyWidget *proxy = new QGraphicsProxyWidget();
-    QLabel *label = new QLabel("Nodo");
-
-    // proxy->setWidget(label);
-
-    // scene->addRect(-100, 100, 50, 50, pen, red);
     rectangle = scene->addRect(100, 100, 50, 50, pen, Qt::red);
-    rectangle->setFlag(QGraphicsItem::ItemIsMovable);
+    rectangle->setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
     rectangle->setRect(0, 0, 77, 26);
 
-    // proxy->setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
-
-    // proxy->setPos(100, 500);
-    // scene->addItem(proxy);
+    proxy->setParentItem(rectangle);
 
     // desabilita el scroll
     this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -42,15 +31,36 @@ node_graph::node_graph(/* args */)
     scene->setSceneRect(-500000, -500000, 1000000, 1000000);
 
     panning = false;
+
+    pressed = false;
 }
 
 node_graph::~node_graph()
 {
 }
 
-void node_graph::mousePressEvent(QMouseEvent *event)
+void node_graph::paintEvent(QPaintEvent *event)
 {
 
+    QPainter painter(this->viewport());
+    QPen line_pen(Qt::black);
+    line_pen.setWidth(3);
+    painter.setPen(line_pen);
+
+    int x = rectangle->x();
+    int y = rectangle->y();
+
+    int pos_x = -horizontalScrollBar()->value();
+    int pox_y = -verticalScrollBar()->value();
+
+    painter.drawLine(pos_x + x, pox_y + y, 200, 200);
+
+    QGraphicsView::paintEvent(event);
+}
+
+void node_graph::mousePressEvent(QMouseEvent *event)
+{
+    pressed = true;
     if (event->button() == Qt::MidButton)
     {
         panning = true;
@@ -60,15 +70,19 @@ void node_graph::mousePressEvent(QMouseEvent *event)
         return;
     }
     event->ignore();
+    QGraphicsView::mousePressEvent(event);
 }
+
 void node_graph::mouseReleaseEvent(QMouseEvent *event)
 {
+    pressed = false;
     if (event->button() == Qt::MidButton)
     {
         panning = false;
         event->accept();
         return;
     }
+    QGraphicsView::mouseReleaseEvent(event);
     event->ignore();
 }
 
@@ -83,6 +97,7 @@ void node_graph::mouseMoveEvent(QMouseEvent *event)
         event->accept();
         return;
     }
+    QGraphicsView::mouseMoveEvent(event);
     event->ignore();
 }
 

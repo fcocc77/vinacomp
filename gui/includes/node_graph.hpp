@@ -10,6 +10,7 @@
 #include <QGraphicsProxyWidget>
 #include <QHBoxLayout>
 #include <QScrollBar>
+#include <QPainter>
 
 // VINA COMP
 #include <node.hpp>
@@ -17,6 +18,7 @@
 
 class node_graph : public QGraphicsView
 {
+    Q_OBJECT
 private:
     /* data */
 public:
@@ -24,14 +26,19 @@ public:
     ~node_graph();
 
     QGraphicsScene *scene;
+    QGraphicsRectItem *rectangle;
 
     bool panning;
+    bool pressed;
     int panning_start_x, panning_start_y;
 
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     void wheelEvent(QWheelEvent *event);
+
+protected:
+    virtual void paintEvent(QPaintEvent *event) override;
 };
 
 #endif // NODE_GRAPH_H
