@@ -4,18 +4,14 @@ node_graph::node_graph(/* args */)
 {
     this->setObjectName("node_graph");
 
-    QGraphicsScene *scene = new QGraphicsScene();
-    QGraphicsView *graphics_view = new QGraphicsView();
+    scene = new QGraphicsScene();
 
-    graphics_view->setScene(scene);
-
-    QHBoxLayout *layout = new QHBoxLayout();
-    layout->setContentsMargins(0, 0, 0, 0);
+    this->setScene(scene);
 
     node *node_a = new node();
     node *node_b = new node();
 
-    // scene->addWidget(node_b);
+    scene->addWidget(node_b);
 
     QBrush red(Qt::red);
     QPen pen(Qt::black);
@@ -37,10 +33,63 @@ node_graph::node_graph(/* args */)
     // proxy->setPos(100, 500);
     // scene->addItem(proxy);
 
-    layout->addWidget(graphics_view);
-    this->setLayout(layout);
+    // desabilita el scroll
+    this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    //
+    //
+
+    scene->setSceneRect(-500000, -500000, 1000000, 1000000);
+
+    panning = false;
 }
 
 node_graph::~node_graph()
 {
+}
+
+void node_graph::mousePressEvent(QMouseEvent *event)
+{
+
+    if (event->button() == Qt::MidButton)
+    {
+        panning = true;
+        panning_start_x = event->x();
+        panning_start_y = event->y();
+        event->accept();
+        return;
+    }
+    event->ignore();
+}
+void node_graph::mouseReleaseEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::MidButton)
+    {
+        panning = false;
+        event->accept();
+        return;
+    }
+    event->ignore();
+}
+
+void node_graph::mouseMoveEvent(QMouseEvent *event)
+{
+    if (panning)
+    {
+        horizontalScrollBar()->setValue(horizontalScrollBar()->value() - (event->x() - panning_start_x));
+        verticalScrollBar()->setValue(verticalScrollBar()->value() - (event->y() - panning_start_y));
+        panning_start_x = event->x();
+        panning_start_y = event->y();
+        event->accept();
+        return;
+    }
+    event->ignore();
+}
+
+void node_graph::wheelEvent(QWheelEvent *event)
+{
+    if (event->delta() > 0)
+        scale(1.25, 1.25);
+    else
+        scale(0.8, 0.8);
 }

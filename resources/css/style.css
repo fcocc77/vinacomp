@@ -100,7 +100,7 @@ QScrollBar {
   QScrollBar::right-arrow:horizontal {
     image: url("/home/pancho/Documents/develop/vinacomp/resources/images/left_arrow.png"); }
 
-#node_graph QGraphicsView {
+#node_graph {
   background: #2e3238; }
 
 #curve_editor {
