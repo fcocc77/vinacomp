@@ -11,6 +11,7 @@
 #include <QHBoxLayout>
 #include <QScrollBar>
 #include <QPainter>
+#include <QShortcut>
 
 // VINA COMP
 #include <node.hpp>
@@ -20,6 +21,8 @@ class node_graph : public QGraphicsView
 {
     Q_OBJECT
 private:
+    void select_all(bool select);
+    void setup_shortcut();
     QGraphicsScene *scene;
 
     bool panning;
@@ -38,9 +41,6 @@ public:
     ~node_graph();
 
     void add_node(QString name, int x, int y);
-
-protected:
-    virtual void paintEvent(QPaintEvent *event) override;
 };
 
 #endif // NODE_GRAPH_H

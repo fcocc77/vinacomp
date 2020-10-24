@@ -1,33 +1,10 @@
 #include <node_graph.hpp>
 
-void node_graph::paintEvent(QPaintEvent *event)
-{
-
-    // QPainter painter(this->viewport());
-    // QPen line_pen(Qt::black);
-    // line_pen.setWidth(3);
-    // painter.setPen(line_pen);
-
-    // int x = rectangle->x();
-    // int y = rectangle->y();
-
-    // int pos_x = -horizontalScrollBar()->value();
-    // int pox_y = -verticalScrollBar()->value();
-
-    // line->setPos(x, y);
-
-    // painter.drawLine(pos_x + x, pox_y + y, 200, 200);
-
-    QGraphicsView::paintEvent(event);
-}
-
 void node_graph::mousePressEvent(QMouseEvent *event)
 {
-
+    // print(scene->selectedItems());
     if (event->button() == Qt::RightButton)
     {
-
-        print(scene->selectedItems());
         nodes->value(0)->connect_input(0, nodes->value(1));
     }
 

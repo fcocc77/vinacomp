@@ -1,35 +1,67 @@
 #include <node.hpp>
 
-node::node(QGraphicsScene *_scene)
+node::node(QGraphicsScene *_scene, QList<node *> *_nodes)
 {
-
     scene = _scene;
+    nodes = _nodes;
 
     inputs = new QList<QGraphicsLineItem *>;
 
     label = new QLabel("Nodo");
+    selected = false;
 
     width = 100;
     height = 30;
 
-    this->setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
+    this->setFlags(QGraphicsItem::ItemIsMovable);
     this->setRect(0, 0, width, height);
 
     QGraphicsProxyWidget *proxy = scene->addWidget(label);
 
-    QPen pen(Qt::green);
-    pen.setWidth(3);
+    QPen pen(Qt::white);
+    pen.setWidth(1);
     this->setPen(pen);
 
     scene->addItem(this);
     add_input();
 
-    // line->setParentItem(this);
     proxy->setParentItem(this);
 }
 
 node::~node()
 {
+}
+
+void node::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    // deseleccionar todos los nodos antes de seleccionar este
+    for (node *_node : *nodes)
+        _node->select(false);
+
+    this->select(true);
+}
+
+void node::select(bool _selected)
+{
+    selected = _selected;
+
+    if (selected)
+    {
+        QPen pen(Qt::green);
+        pen.setWidth(3);
+        this->setPen(pen);
+
+        inputs->value(0)->setPen(pen);
+    }
+    else
+    {
+        QPen pen(Qt::white);
+        pen.setWidth(1);
+        this->setPen(pen);
+
+        QPen pen_input(Qt::black);
+        inputs->value(0)->setPen(pen_input);
+    }
 }
 
 void node::inputs_refresh()
@@ -64,6 +96,7 @@ void node::connect_input(int index, node *_node)
 
     inputs->value(index)->setLine(src_x, src_y, dst_x, dst_y);
 }
+
 void node::set_name(QString name)
 {
     label->setText(name);
