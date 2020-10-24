@@ -19,12 +19,16 @@ node::node(QGraphicsScene *_scene, QList<node *> *_selected_nodes)
 
     QGraphicsProxyWidget *proxy = scene->addWidget(label);
 
-    QPen pen(Qt::white);
+    QPen pen(Qt::black);
+    QBrush color(QColor(150, 150, 150));
     pen.setWidth(1);
+    this->setBrush(color);
     this->setPen(pen);
 
     scene->addItem(this);
     add_input();
+
+    this->setZValue(2);
 
     proxy->setParentItem(this);
 }
@@ -50,7 +54,7 @@ void node::select(bool _selected)
 
     if (selected)
     {
-        QPen pen(Qt::green);
+        QPen pen(Qt::white);
         pen.setWidth(3);
         this->setPen(pen);
 
@@ -60,7 +64,7 @@ void node::select(bool _selected)
     }
     else
     {
-        QPen pen(Qt::white);
+        QPen pen(Qt::black);
         pen.setWidth(1);
         this->setPen(pen);
 
