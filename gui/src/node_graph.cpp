@@ -18,9 +18,6 @@ node_graph::node_graph(/* args */)
 
     scene->setSceneRect(-500000, -500000, 1000000, 1000000);
 
-    panning = false;
-    pressed = false;
-
     node *node1 = add_node("Crop", -100, 0);
     node *node2 = add_node("Transform", 100, 0);
 
@@ -38,13 +35,11 @@ node_graph::~node_graph()
 
 void node_graph::setup_shortcut()
 {
-    QShortcut *deselect_all_shortcut = new QShortcut(QKeySequence("Escape"), this);
-    QObject::connect(deselect_all_shortcut, &QShortcut::activated, this, [this]() {
+    qt::shortcut("Escape", this, [this]() {
         this->select_all(false);
     });
 
-    QShortcut *select_all_shortcut = new QShortcut(QKeySequence("Ctrl+A"), this);
-    QObject::connect(select_all_shortcut, &QShortcut::activated, this, [this]() {
+    qt::shortcut("Ctrl+A", this, [this]() {
         this->select_all(true);
     });
 }

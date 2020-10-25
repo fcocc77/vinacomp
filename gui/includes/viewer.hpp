@@ -8,17 +8,17 @@
 #include <QGraphicsPixmapItem>
 #include <QString>
 #include <QComboBox>
+#include <graphics_view.hpp>
 
 #include <qt.hpp>
 
-class graphics_view : public QGraphicsView
+class viewer_graphics_view : public graphics_view
 {
 private:
-    void wheelEvent(QWheelEvent *event);
 
 public:
-    graphics_view(/* args */);
-    ~graphics_view();
+    viewer_graphics_view(/* args */);
+    ~viewer_graphics_view();
 };
 
 class viewer : public QWidget

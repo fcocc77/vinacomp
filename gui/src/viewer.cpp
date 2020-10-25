@@ -3,7 +3,7 @@
 viewer::viewer(/* args */)
 {
 
-    graphics_view *_graphics_view = new graphics_view();
+    viewer_graphics_view *_viewer_graphics_view = new viewer_graphics_view();
 
     QVBoxLayout *layout = new QVBoxLayout();
     layout->setContentsMargins(0, 0, 0, 0);
@@ -18,7 +18,7 @@ viewer::viewer(/* args */)
 
     layout->addWidget(controls);
     layout->addWidget(image_correction);
-    layout->addWidget(_graphics_view);
+    layout->addWidget(_viewer_graphics_view);
     layout->addWidget(info);
     layout->addWidget(timeline);
     layout->addWidget(player);
@@ -119,17 +119,19 @@ QWidget *viewer::player_setup_ui()
     return widget;
 }
 
-graphics_view::graphics_view(/* args */)
+viewer_graphics_view::viewer_graphics_view(/* args */)
 {
 
-    QGraphicsScene *graphics_scene = new QGraphicsScene();
+    QGraphicsScene *scene = new QGraphicsScene();
 
     QString image_file = "/home/pancho/Pictures/pexels-leonardo-vazquez-3742854.jpg";
 
     QImage image(image_file);
 
     QGraphicsPixmapItem *item = new QGraphicsPixmapItem(QPixmap::fromImage(image));
-    graphics_scene->addItem(item);
+    scene->addItem(item);
+
+    scene->setSceneRect(-500000, -500000, 1000000, 1000000);
 
     // desabilita el scroll
     this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -137,17 +139,9 @@ graphics_view::graphics_view(/* args */)
     //
     //
 
-    this->setScene(graphics_scene);
+    this->setScene(scene);
 }
 
-graphics_view::~graphics_view()
+viewer_graphics_view::~viewer_graphics_view()
 {
-}
-
-void graphics_view::wheelEvent(QWheelEvent *event)
-{
-    if (event->delta() > 0)
-        scale(1.25, 1.25);
-    else
-        scale(0.8, 0.8);
 }

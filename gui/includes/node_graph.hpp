@@ -14,10 +14,12 @@
 #include <QShortcut>
 
 // VINA COMP
+#include <graphics_view.hpp>
 #include <node.hpp>
 #include <util.hpp>
+#include <qt.hpp>
 
-class node_graph : public QGraphicsView
+class node_graph : public graphics_view
 {
     Q_OBJECT
 private:
@@ -26,17 +28,12 @@ private:
     void setup_shortcut();
     QGraphicsScene *scene;
 
-    bool panning;
-    bool pressed;
-    int panning_start_x, panning_start_y;
     QList<node *> *nodes;
     QList<node *> *selected_nodes;
 
     // Events
-    void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
-    void wheelEvent(QWheelEvent *event);
 
 public:
     node_graph(/* args */);
