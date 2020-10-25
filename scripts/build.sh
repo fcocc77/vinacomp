@@ -11,7 +11,7 @@ sed -i "s|{{path}}|$path|g" $css
 #
 
 # conversion de svg a png
-sh scripts/svg_converter.sh
+# sh scripts/svg_converter.sh
 #
 #
 

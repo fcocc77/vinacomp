@@ -85,11 +85,14 @@ QWidget *viewer::player_setup_ui()
     widget->setLayout(layout);
     //
 
-    QPushButton *play_forward = new QPushButton("play_forward");
+    QPushButton *play_forward = new QPushButton();
     QPushButton *play_backward = new QPushButton("play_backward");
+    qt::set_icon(play_forward, "play_arrow_a");
 
-    QPushButton *first_frame = new QPushButton("first_frame");
-    QPushButton *last_frame = new QPushButton("last_frame");
+    QPushButton *first_frame = new QPushButton();
+    QPushButton *last_frame = new QPushButton();
+    qt::set_icon(first_frame, "skip_previous_a");
+    qt::set_icon(last_frame, "skip_next_a");
 
     QPushButton *next_frame = new QPushButton("next_frame");
     QPushButton *previous_frame = new QPushButton("previous_frame");
