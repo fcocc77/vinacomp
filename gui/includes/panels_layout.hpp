@@ -2,6 +2,8 @@
 #define PANELS_LAYOUT_HPP
 
 #include <QWidget>
+#include <QApplication>
+
 #include <panel.hpp>
 #include <node_graph.hpp>
 #include <viewer.hpp>
@@ -15,6 +17,8 @@ private:
     void save_layout();
     void load_layout();
     void restore_default();
+    void isolate_panel();
+    void set_visible_panels(bool visible);
 
     panel *get_child_panel(QSplitter *__splitter, QString _letter);
 
@@ -22,10 +26,13 @@ private:
     void load_splitter(QJsonObject splitter_obj, panel *panel_a);
     QJsonObject json_layout;
 
+    bool isolate;
     panel *first_panel;
+    QApplication *app;
 
 public:
     panels_layout(
+        QApplication *_app,
         node_graph *_node_graph,
         viewer *_viewer,
         script_editor *_script_editor,

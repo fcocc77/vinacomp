@@ -5,6 +5,7 @@
 #include <QMainWindow>
 #include <QSplitter>
 #include <QMenuBar>
+#include <QApplication>
 
 // VINA COMP
 #include <viewer.hpp>
@@ -27,12 +28,14 @@ private:
     curve_editor *_curve_editor;
     tool_bar *_tool_bar;
 
+    QApplication *app;
+
     panels_layout *_panels_layout;
 
     QAction *update_sylesheet_action;
 
 public:
-    vinacomp(QWidget *parent = 0);
+    vinacomp(QApplication *_app);
     ~vinacomp();
 
     void setup_ui();

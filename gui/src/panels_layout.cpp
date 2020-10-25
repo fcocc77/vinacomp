@@ -1,12 +1,15 @@
 #include <panels_layout.hpp>
 
 panels_layout::panels_layout(
+    QApplication *_app,
     node_graph *_node_graph,
     viewer *_viewer,
     script_editor *_script_editor,
     properties *_properties,
     curve_editor *_curve_editor)
 {
+
+    app = _app;
 
     this->setObjectName("panels_layout");
 
@@ -24,6 +27,11 @@ panels_layout::panels_layout(
     connect(restore_default_action, &QAction::triggered, this, &panels_layout::restore_default);
 
     load_layout();
+
+    isolate = false;
+    qt::shortcut("Space", this, [this]() {
+        isolate_panel();
+    });
 }
 
 panels_layout::~panels_layout()
@@ -40,6 +48,51 @@ panel *panels_layout::get_child_panel(QSplitter *splitter, QString _letter)
         container = splitter->widget(1);
 
     return container->findChild<panel *>();
+}
+
+void panels_layout::isolate_panel()
+{
+    set_visible_panels(true);
+
+    // encuentra el container del panel
+    QWidget *container = app->widgetAt(QCursor::pos());
+    while (container != NULL)
+    {
+        QString name = container->objectName();
+        if (name == "container_a" || name == "container_b")
+            break;
+
+        container = container->parentWidget();
+    }
+
+    if (container == NULL)
+        return;
+
+    isolate = !isolate;
+
+    if (isolate)
+    {
+        set_visible_panels(false);
+        QWidget *parent = container;
+        while (parent != NULL)
+        {
+            parent->setVisible(true);
+            parent = parent->parentWidget();
+        }
+    }
+}
+
+void panels_layout::set_visible_panels(bool visible)
+{
+    // ajusta visibilidad de todos los container a y b
+    QList<QWidget *> containers_a = this->findChildren<QWidget *>("container_a");
+    for (QWidget *container : containers_a)
+        container->setVisible(visible);
+
+    QList<QWidget *> containers_b = this->findChildren<QWidget *>("container_b");
+    for (QWidget *container : containers_b)
+        container->setVisible(visible);
+    //
 }
 
 void panels_layout::save_json_layout(QSplitter *splitter, int deep, QString letter, QStringList parents)

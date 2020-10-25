@@ -4,9 +4,9 @@
 int main(int argc, char *argv[])
 {
 
-    QApplication a(argc, argv);
-    vinacomp _vinacomp;
+    QApplication app(argc, argv);
+    vinacomp _vinacomp(&app);
     _vinacomp.showMaximized();
 
-    return a.exec();
+    return app.exec();
 }

@@ -1,7 +1,8 @@
 #include <vinacomp.hpp>
 
-vinacomp::vinacomp(QWidget *parent) : QMainWindow(parent)
+vinacomp::vinacomp(QApplication *_app)
 {
+    app = _app;
     setup_ui();
     setup_style();
 }
@@ -22,7 +23,7 @@ void vinacomp::setup_ui()
     _properties = new properties();
     _curve_editor = new curve_editor();
 
-    _panels_layout = new panels_layout(_node_graph, _viewer, _script_editor, _properties, _curve_editor);
+    _panels_layout = new panels_layout(app, _node_graph, _viewer, _script_editor, _properties, _curve_editor);
 
     _tool_bar = new tool_bar();
 
