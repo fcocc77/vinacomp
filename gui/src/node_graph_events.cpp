@@ -51,8 +51,29 @@ void node_graph::mouseMoveEvent(QMouseEvent *event)
 
 void node_graph::wheelEvent(QWheelEvent *event)
 {
+    // Zoom Factorl
+    float zoom_in_factor = 1.25;
+    float zoom_out_factor = 1 / zoom_in_factor;
+
+    // Set Anchors
+    this->setTransformationAnchor(QGraphicsView::NoAnchor);
+    this->setResizeAnchor(QGraphicsView::NoAnchor);
+
+    // Save the scene pos
+    QPointF old_pos = this->mapToScene(event->pos());
+
+    // Zoom
+    float zoom_factor;
     if (event->delta() > 0)
-        scale(1.25, 1.25);
+        zoom_factor = zoom_in_factor;
     else
-        scale(0.8, 0.8);
+        zoom_factor = zoom_out_factor;
+    this->scale(zoom_factor, zoom_factor);
+
+    // Get the new position
+    QPointF new_pos = this->mapToScene(event->pos());
+
+    // Move scene to old position
+    QPointF delta = new_pos - old_pos;
+    this->translate(delta.x(), delta.y());
 }
