@@ -18,9 +18,7 @@ class node : public QGraphicsRectItem
 private:
     QList<QGraphicsLineItem *> *inputs;
     QGraphicsScene *scene;
-    QList<node *> *nodes;
     QList<node *> *selected_nodes;
-
     QList<node *> *connected_nodes;
 
     void input_line_connect(int index);

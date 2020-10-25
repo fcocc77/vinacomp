@@ -31,7 +31,7 @@ panel::panel(QWidget *_panels_layout,
     tab_section->setObjectName("tab_section");
 
     QVBoxLayout *layout = new QVBoxLayout();
-    layout->setContentsMargins(0, 10, 0, 0);
+    layout->setContentsMargins(0, 4, 0, 0);
     layout->addWidget(tab_section);
 
     this->setLayout(layout);

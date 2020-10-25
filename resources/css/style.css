@@ -115,6 +115,23 @@ QScrollBar {
 #tool_bar {
   background: #23262a; }
 
+#viewer #player {
+  background: #2a2d32; }
+  #viewer #player QPushButton {
+    color: white; }
+
+#viewer #timeline {
+  background: #1c1e21; }
+
+#viewer #info {
+  background: black; }
+
+#viewer #controls {
+  background: #2e3238; }
+
+#viewer #image_correction {
+  background: #23262a; }
+
 #panels_layout QTabBar {
   background: none; }
   #panels_layout QTabBar::tab {
