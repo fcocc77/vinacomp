@@ -1,7 +1,6 @@
-#ifndef PROPERTIES_HPP
-#define PROPERTIES_HPP
+#ifndef TRIM_PANEL_HPP
+#define TRIM_PANEL_HPP
 
-// QT5
 #include <QWidget>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -11,15 +10,15 @@
 #include <trim_panel.hpp>
 #include <qt.hpp>
 
-class properties : public QWidget
+class trim_panel : public QWidget
 {
 private:
     void setup_ui();
     QWidget *top_buttons_setup_ui();
 
 public:
-    properties(/* args */);
-    ~properties();
+    trim_panel(/* args */);
+    ~trim_panel();
 };
 
-#endif // PROPERTIES_HPP
+#endif //TRIM_PANEL_HPP

@@ -138,9 +138,15 @@ QScrollBar {
 
 #properties {
   background: #2e3238; }
+  #properties #butttons {
+    background: #2e3238; }
 
 #script_editor {
   background: #2e3238; }
+  #script_editor #QCodeEditorLineWidget {
+    background-color: #1c1e21; }
+  #script_editor #tools {
+    background: #2e3238; }
 
 #tool_bar {
   background: #23262a; }

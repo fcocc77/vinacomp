@@ -3,7 +3,7 @@
 tool_bar::tool_bar(/* args */)
 {
     this->setObjectName("tool_bar");
-    // this->setMinimumWidth(30);
+    this->setMaximumWidth(40);
 
     layout = new QVBoxLayout();
     layout->setContentsMargins(2, 10, 2, 10);

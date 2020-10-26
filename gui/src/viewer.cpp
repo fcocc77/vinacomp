@@ -56,6 +56,10 @@ QWidget *viewer::control_setup_ui()
 
     layout->addStretch();
 
+    QPushButton *free_ram = new QPushButton();
+    qt::set_icon(free_ram, "free_ram_a", icon_size);
+    layout->addWidget(free_ram);
+
     QPushButton *out_frame = new QPushButton();
     qt::set_icon(out_frame, "out_frame_a", icon_size);
     layout->addWidget(out_frame);
