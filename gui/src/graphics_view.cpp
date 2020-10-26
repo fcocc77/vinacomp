@@ -125,3 +125,10 @@ void graphics_view::keyReleaseEvent(QKeyEvent *event)
     zooming = false;
     pressed_alt = false;
 }
+
+void graphics_view::focusOutEvent(QFocusEvent *event)
+{
+    panning = false;
+    zooming = false;
+    pressed_alt = false;
+}
