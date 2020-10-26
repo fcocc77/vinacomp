@@ -9,6 +9,8 @@
 #include <QString>
 #include <QComboBox>
 #include <graphics_view.hpp>
+#include <QPushButton>
+#include <QLineEdit>
 
 #include <qt.hpp>
 

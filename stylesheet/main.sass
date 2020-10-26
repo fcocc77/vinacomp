@@ -12,6 +12,17 @@ QPushButton
 QMainWindow
     qproperty-windowIcon: url('#{$images}/vinacomp.png')
 
+QLineEdit
+    color: $b70
+    padding: 3px
+    border-radius: 3px
+    background: $b12
+    border: 1px solid transparent
+
+    &:focus
+        border-color: mix($base, $b12, 50)
+
+
 QMenu 
     background-color: $b17
     color: $c1

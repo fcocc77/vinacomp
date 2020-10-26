@@ -10,6 +10,15 @@ QPushButton {
 QMainWindow {
   qproperty-windowIcon: url("/home/pancho/Documents/develop/vinacomp/resources/images/vinacomp.png"); }
 
+QLineEdit {
+  color: #acb1b9;
+  padding: 3px;
+  border-radius: 3px;
+  background: #1c1e21;
+  border: 1px solid transparent; }
+  QLineEdit:focus {
+    border-color: #8d3e11; }
+
 QMenu {
   background-color: #272b2f;
   color: #c7cbd1;
@@ -114,6 +123,9 @@ QScrollBar {
 
 #tool_bar {
   background: #23262a; }
+
+#viewer #viewer_graphics {
+  background: black; }
 
 #viewer #player {
   background: #2a2d32; }

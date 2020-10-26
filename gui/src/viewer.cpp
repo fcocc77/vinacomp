@@ -4,6 +4,7 @@ viewer::viewer(/* args */)
 {
 
     viewer_graphics_view *_viewer_graphics_view = new viewer_graphics_view();
+    _viewer_graphics_view->setObjectName("viewer_graphics");
 
     QVBoxLayout *layout = new QVBoxLayout();
     layout->setContentsMargins(0, 0, 0, 0);
@@ -33,8 +34,37 @@ QWidget *viewer::image_correction_setup_ui()
     QWidget *widget = new QWidget();
     widget->setObjectName("image_correction");
     QHBoxLayout *layout = new QHBoxLayout();
+    layout->setContentsMargins(5, 5, 5, 5);
     widget->setLayout(layout);
     //
+
+    int icon_size = 25;
+
+    QPushButton *gain = new QPushButton();
+    qt::set_icon(gain, "gain_a", icon_size);
+    layout->addWidget(gain);
+
+    QLineEdit *gain_edit = new QLineEdit();
+    gain_edit->setMaximumWidth(50);
+    layout->addWidget(gain_edit);
+
+    QSlider *gain_slider = new QSlider();
+    gain_slider->setOrientation(Qt::Horizontal);
+    layout->addWidget(gain_slider);
+
+    QPushButton *gamma = new QPushButton();
+    qt::set_icon(gamma, "gamma_a", icon_size);
+    layout->addWidget(gamma);
+
+    QLineEdit *gamma_edit = new QLineEdit();
+    gamma_edit->setMaximumWidth(50);
+    layout->addWidget(gamma_edit);
+
+    QSlider *gamma_slider = new QSlider();
+    gamma_slider->setOrientation(Qt::Horizontal);
+    layout->addWidget(gamma_slider);
+
+    layout->addStretch();
 
     return widget;
 }
@@ -44,11 +74,40 @@ QWidget *viewer::control_setup_ui()
     QWidget *widget = new QWidget();
     widget->setObjectName("controls");
     QHBoxLayout *layout = new QHBoxLayout();
+    layout->setContentsMargins(5, 5, 5, 5);
     widget->setLayout(layout);
     //
 
-    QComboBox *channels = new QComboBox();
-    layout->addWidget(channels);
+    // QComboBox *channels = new QComboBox();
+    // layout->addWidget(channels);
+
+    int icon_size = 25;
+
+    layout->addStretch();
+
+    QPushButton *out_frame = new QPushButton();
+    qt::set_icon(out_frame, "out_frame_a", icon_size);
+    layout->addWidget(out_frame);
+
+    QPushButton *render_area = new QPushButton();
+    qt::set_icon(render_area, "render_area_a", icon_size);
+    layout->addWidget(render_area);
+
+    QPushButton *proxy = new QPushButton();
+    qt::set_icon(proxy, "proxy_a", icon_size);
+    layout->addWidget(proxy);
+
+    QPushButton *multi_lines = new QPushButton();
+    qt::set_icon(multi_lines, "multi_lines_a", icon_size);
+    layout->addWidget(multi_lines);
+
+    QPushButton *refresh = new QPushButton();
+    qt::set_icon(refresh, "refresh_a", icon_size);
+    layout->addWidget(refresh);
+
+    QPushButton *pause = new QPushButton();
+    qt::set_icon(pause, "pause_a", icon_size);
+    layout->addWidget(pause);
 
     return widget;
 }

@@ -49,7 +49,7 @@ QPushButton *panel::setup_cornel_buttons()
     // menu_button->setMaximumWidth(100);
     menu_button->setMinimumHeight(15);
 
-    qt::set_icon(menu_button, "layout", QSize(15, 15));
+    qt::set_icon(menu_button, "layout", 15);
 
     // Menu
     QAction *split_vertical = new QAction("split_vertical");
@@ -218,7 +218,7 @@ void panel::add_tab(QString name)
     tab_section->setCurrentIndex(index);
 
     QPushButton *close_tab = new QPushButton();
-    qt::set_icon(close_tab, "close_a", QSize(10, 10));
+    qt::set_icon(close_tab, "close_a", 10);
 
     connect(close_tab, &QPushButton::clicked, this, [=]() {
         remove_tab(name);
