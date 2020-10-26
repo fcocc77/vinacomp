@@ -31,6 +31,7 @@ private:
     QApplication *app;
 
     panels_layout *_panels_layout;
+    bool fullscreen = false;
 
     QAction *update_sylesheet_action;
 

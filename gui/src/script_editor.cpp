@@ -18,19 +18,26 @@ void script_editor::setup_ui()
     QWidget *tools = tools_setup_ui();
 
     QPlainTextEdit *output = new QPlainTextEdit();
+    output->setObjectName("output");
     kgl::QCodeEditor *input = new kgl::QCodeEditor();
 
     // esto es para que el editor tenga colores
-    kgl::QCodeEditorDesign design(":/design.xml");
-    QList<kgl::QSyntaxRule> rules = kgl::QSyntaxRules::loadFromFile(":/rule_cpp.xml", design);
+    kgl::QCodeEditorDesign design("libs/QCodeEditor/files/design.xml");
+    QList<kgl::QSyntaxRule> rules = kgl::QSyntaxRules::loadFromFile("libs/QCodeEditor/files/rule_cpp.xml", design);
     input->setDesign(design);
     input->setRules(rules);
     input->setKeywords({"printf", "scanf", "atoi", "mbtoa", "strlen", "memcpy", "memset"});
     //
 
     layout->addWidget(tools);
-    layout->addWidget(output);
-    layout->addWidget(input);
+
+    QSplitter *splitter = new QSplitter();
+    splitter->setOrientation(Qt::Vertical);
+
+    splitter->addWidget(output);
+    splitter->addWidget(input);
+
+    layout->addWidget(splitter);
 }
 
 QWidget *script_editor::tools_setup_ui()

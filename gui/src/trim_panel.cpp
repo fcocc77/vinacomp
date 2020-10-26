@@ -2,7 +2,7 @@
 
 trim_panel::trim_panel(/* args */)
 {
-
+    this->setObjectName("trim_panel");
     setup_ui();
 }
 

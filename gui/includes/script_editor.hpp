@@ -7,6 +7,7 @@
 #include <QHBoxLayout>
 #include <QPlainTextEdit>
 #include <QPushButton>
+#include <QSplitter>
 #include <KGL/Widgets/QCodeEditor.hpp>
 
 #include <qt.hpp>

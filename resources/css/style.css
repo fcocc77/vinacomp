@@ -134,7 +134,11 @@ QScrollBar {
   background: #2e3238; }
 
 #curve_editor {
-  background: black; }
+  background: #2e3238; }
+  #curve_editor #knobs_tree {
+    background: #2e3238; }
+  #curve_editor #graphics_view {
+    background: #101213; }
 
 #properties {
   background: #2e3238; }
@@ -147,6 +151,8 @@ QScrollBar {
     background-color: #1c1e21; }
   #script_editor #tools {
     background: #2e3238; }
+  #script_editor #output {
+    background: #23262a; }
 
 #tool_bar {
   background: #23262a; }
@@ -185,4 +191,7 @@ QScrollBar {
     #panels_layout QTabBar::tab:selected {
       background: #2e3238;
       color: #ff5e00; }
+
+#trim_panel {
+  background: #2a2d32; }
 
