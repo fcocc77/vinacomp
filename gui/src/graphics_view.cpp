@@ -2,10 +2,11 @@
 
 graphics_view::graphics_view(/* args */)
 {
-
     panning = false;
-    pressed = false;
     zooming = false;
+    pressed_alt = false;
+
+    this->setTransformationAnchor(QGraphicsView::NoAnchor);
 }
 
 graphics_view::~graphics_view()
@@ -14,35 +15,70 @@ graphics_view::~graphics_view()
 
 void graphics_view::mousePressEvent(QMouseEvent *event)
 {
-    pressed = true;
+    click_position = event->pos();
+
     if (event->button() == Qt::MidButton)
     {
-        panning = true;
-        panning_start_x = event->x();
-        panning_start_y = event->y();
+        if (pressed_alt)
+        {
+            zooming = true;
+            last_mouse_position = event->pos();
+        }
+        else
+        {
+            panning = true;
+            panning_start_x = event->x();
+            panning_start_y = event->y();
+        }
         event->accept();
         return;
-    };
-    event->ignore();
+    }
+    else if (event->button() == Qt::LeftButton)
+    {
+        if (pressed_alt)
+        {
+            panning = true;
+            panning_start_x = event->x();
+            panning_start_y = event->y();
+            event->accept();
+            return;
+        }
+    }
+
     QGraphicsView::mousePressEvent(event);
 }
 
 void graphics_view::mouseReleaseEvent(QMouseEvent *event)
 {
-    pressed = false;
+
     if (event->button() == Qt::MidButton)
     {
         panning = false;
+        zooming = false;
         event->accept();
         return;
     }
+    else if (event->button() == Qt::LeftButton)
+    {
+        panning = false;
+    }
+
     QGraphicsView::mouseReleaseEvent(event);
     event->ignore();
 }
 
 void graphics_view::mouseMoveEvent(QMouseEvent *event)
 {
-    if (panning)
+    if (zooming)
+    {
+        int delta = 2 * ((event->x() - last_mouse_position.x()) - (event->y() - last_mouse_position.y()));
+        zoom(delta, this->click_position);
+
+        last_mouse_position = event->pos();
+        event->accept();
+    }
+
+    else if (panning)
     {
         horizontalScrollBar()->setValue(horizontalScrollBar()->value() - (event->x() - panning_start_x));
         verticalScrollBar()->setValue(verticalScrollBar()->value() - (event->y() - panning_start_y));
@@ -51,53 +87,57 @@ void graphics_view::mouseMoveEvent(QMouseEvent *event)
         event->accept();
         return;
     }
+
     QGraphicsView::mouseMoveEvent(event);
     event->ignore();
 }
 
+void graphics_view::zoom(int delta, QPoint position)
+{
+    QPointF old_pos = mapToScene(position);
+    float wheel_zoom_per_delta = 1.00152;
+
+    double scale_factor = pow(wheel_zoom_per_delta, delta);
+    QTransform _transform = transform();
+    double current_zoom_factor = _transform.mapRect(QRectF(0, 0, 1, 1)).width();
+    double new_zoom_factor = current_zoom_factor * scale_factor;
+
+    // limita el zoom in y out
+    if (((new_zoom_factor < 0.1) && (scale_factor < 1.)) || ((new_zoom_factor > 10) && (scale_factor > 1.)))
+        return;
+    //
+    //
+
+    this->scale(scale_factor, scale_factor);
+
+    QPointF new_pos = this->mapToScene(position);
+    QPointF _delta = new_pos - old_pos;
+    this->translate(_delta.x(), _delta.y());
+}
+
 void graphics_view::wheelEvent(QWheelEvent *event)
 {
-    // Zoom Factorl
-    float zoom_in_factor = 1.25;
-    float zoom_out_factor = 1 / zoom_in_factor;
-
-    // Set Anchors
-    this->setTransformationAnchor(QGraphicsView::NoAnchor);
-    this->setResizeAnchor(QGraphicsView::NoAnchor);
-
-    // Save the scene pos
-    QPointF old_pos = this->mapToScene(event->pos());
-
-    // Zoom
-    float zoom_factor;
-    if (event->delta() > 0)
-        zoom_factor = zoom_in_factor;
-    else
-        zoom_factor = zoom_out_factor;
-    this->scale(zoom_factor, zoom_factor);
-
-    // Get the new position
-    QPointF new_pos = this->mapToScene(event->pos());
-
-    // Move scene to old position
-    QPointF delta = new_pos - old_pos;
-    this->translate(delta.x(), delta.y());
+    zoom(event->delta(), event->pos());
 }
 
 void graphics_view::keyPressEvent(QKeyEvent *event)
 {
-
     int key = event->key();
 
     if (key == Qt::Key_Alt)
-        zooming = true;
+        pressed_alt = true;
 
-    if (key == 43)
-    { //zoom in
-        print("zoom in");
+    if (key == Qt::Key_F)
+    {
+        //fit
+        this->setTransform(QTransform());
     }
-    if (key == 45)
-    { //zoom out
-        print("zoom out");
-    }
+}
+
+void graphics_view::keyReleaseEvent(QKeyEvent *event)
+{
+    int key = event->key();
+
+    if (key == Qt::Key_Alt)
+        pressed_alt = false;
 }
