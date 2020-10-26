@@ -49,27 +49,27 @@ QPushButton *panel::setup_cornel_buttons()
     // menu_button->setMaximumWidth(100);
     menu_button->setMinimumHeight(15);
 
-    qt::set_icon(menu_button, "layout", 15);
+    qt::set_icon(menu_button, "layout_a", 25);
 
     // Menu
-    QAction *split_vertical = new QAction("split_vertical");
+    QAction *split_vertical = new QAction("Vertical Split");
     connect(split_vertical, &QAction::triggered, this, [this]() {
-        split(Qt::Vertical);
-    });
-    split_vertical->setIcon(QIcon("resources/images/split_vertically.png"));
-
-    QAction *split_horizontal = new QAction("split_horizontal");
-    connect(split_horizontal, &QAction::triggered, this, [this]() {
         split(Qt::Horizontal);
     });
-    split_horizontal->setIcon(QIcon("resources/images/split_horizontally.png"));
+    split_vertical->setIcon(QIcon("resources/images/vertical_split_a.png"));
+
+    QAction *split_horizontal = new QAction("Horizontal Split");
+    connect(split_horizontal, &QAction::triggered, this, [this]() {
+        split(Qt::Vertical);
+    });
+    split_horizontal->setIcon(QIcon("resources/images/horizontal_split_a.png"));
 
     // Cerrar panel
     QAction *close_panel_action = new QAction("Close Panel");
     connect(close_panel_action, &QAction::triggered, this, [this]() {
         close_panel();
     });
-    close_panel_action->setIcon(QIcon("resources/images/close.png"));
+    close_panel_action->setIcon(QIcon("resources/images/close_a.png"));
     //
 
     // Add NodeGraph
@@ -77,6 +77,7 @@ QPushButton *panel::setup_cornel_buttons()
     connect(add_node_graph_action, &QAction::triggered, this, [this]() {
         add_tab("node_graph");
     });
+    add_node_graph_action->setIcon(QIcon("resources/images/node_graph_a.png"));
     //
 
     // Add Viewer
@@ -84,6 +85,7 @@ QPushButton *panel::setup_cornel_buttons()
     connect(add_viewer_action, &QAction::triggered, this, [this]() {
         add_tab("viewer");
     });
+    add_viewer_action->setIcon(QIcon("resources/images/viewer_a.png"));
     //
 
     // Add Script Editor
@@ -91,6 +93,7 @@ QPushButton *panel::setup_cornel_buttons()
     connect(add_script_editor_action, &QAction::triggered, this, [this]() {
         add_tab("script_editor");
     });
+    add_script_editor_action->setIcon(QIcon("resources/images/script_editor_a.png"));
     //
 
     // Add Curve Editor
@@ -98,6 +101,7 @@ QPushButton *panel::setup_cornel_buttons()
     connect(add_curve_editor_action, &QAction::triggered, this, [this]() {
         add_tab("curve_editor");
     });
+    add_curve_editor_action->setIcon(QIcon("resources/images/curve_editor_a.png"));
     //
 
     // Add Properties
@@ -105,6 +109,7 @@ QPushButton *panel::setup_cornel_buttons()
     connect(add_properties_action, &QAction::triggered, this, [this]() {
         add_tab("properties");
     });
+    add_properties_action->setIcon(QIcon("resources/images/properties_a.png"));
     //
 
     QMenu *menu = new QMenu(this);

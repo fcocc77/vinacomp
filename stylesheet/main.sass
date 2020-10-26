@@ -4,6 +4,7 @@
     background: $b10
     border: none
     font-size: 11px
+    color: $b70
     
 
 QPushButton
@@ -21,7 +22,29 @@ QLineEdit
 
     &:focus
         border-color: mix($base, $b12, 50)
+QComboBox
+    margin-right: 10px
+    background-color: $b15
+    border: 1px solid transparent
+    padding: 3px
+    border-radius: 2px
 
+    &::down-arrow
+        // image: url(#{$images}/down_arrow.png)
+    &:focus 
+        border-color: mix($base, $b12, 50)
+    &::drop-down 
+        width: 20px
+        background-color: $b25
+
+    QAbstractItemView 
+        background-color: $b13
+    &:item
+        font-size: 13px
+        &:selected 
+            background-color: $b20
+            color: $base
+            padding-left: 0px
 
 QMenu 
     background-color: $b17

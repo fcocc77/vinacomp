@@ -2,7 +2,8 @@
 * {
   background: #17191c;
   border: none;
-  font-size: 11px; }
+  font-size: 11px;
+  color: #acb1b9; }
 
 QPushButton {
   background: transparent; }
@@ -18,6 +19,26 @@ QLineEdit {
   border: 1px solid transparent; }
   QLineEdit:focus {
     border-color: #8d3e11; }
+
+QComboBox {
+  margin-right: 10px;
+  background-color: #23262a;
+  border: 1px solid transparent;
+  padding: 3px;
+  border-radius: 2px; }
+  QComboBox:focus {
+    border-color: #8d3e11; }
+  QComboBox::drop-down {
+    width: 20px;
+    background-color: #3a3f45; }
+  QComboBox QAbstractItemView {
+    background-color: #1e2124; }
+  QComboBox:item {
+    font-size: 13px; }
+    QComboBox:item:selected {
+      background-color: #2e3238;
+      color: #ff5e00;
+      padding-left: 0px; }
 
 QMenu {
   background-color: #272b2f;

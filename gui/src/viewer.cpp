@@ -29,6 +29,60 @@ viewer::~viewer()
 {
 }
 
+QWidget *viewer::control_setup_ui()
+{
+    QWidget *widget = new QWidget();
+    widget->setObjectName("controls");
+    QHBoxLayout *layout = new QHBoxLayout();
+    layout->setContentsMargins(5, 5, 5, 5);
+    widget->setLayout(layout);
+    //
+
+    // QComboBox *channels = new QComboBox();
+    // layout->addWidget(channels);
+
+    int icon_size = 25;
+
+    combo_box *layers = new combo_box();
+    layout->addWidget(layers);
+
+    combo_box *display_channel = new combo_box();
+    display_channel->addItem("RGB");
+    display_channel->addItem("Red");
+    display_channel->addItem("Green");
+    display_channel->addItem("Blue");
+    display_channel->addItem("Alpha");
+    layout->addWidget(display_channel);
+
+    layout->addStretch();
+
+    QPushButton *out_frame = new QPushButton();
+    qt::set_icon(out_frame, "out_frame_a", icon_size);
+    layout->addWidget(out_frame);
+
+    QPushButton *render_area = new QPushButton();
+    qt::set_icon(render_area, "render_area_a", icon_size);
+    layout->addWidget(render_area);
+
+    QPushButton *proxy = new QPushButton();
+    qt::set_icon(proxy, "proxy_a", icon_size);
+    layout->addWidget(proxy);
+
+    QPushButton *multi_lines = new QPushButton();
+    qt::set_icon(multi_lines, "multi_lines_a", icon_size);
+    layout->addWidget(multi_lines);
+
+    QPushButton *refresh = new QPushButton();
+    qt::set_icon(refresh, "refresh_a", icon_size);
+    layout->addWidget(refresh);
+
+    QPushButton *pause = new QPushButton();
+    qt::set_icon(pause, "pause_a", icon_size);
+    layout->addWidget(pause);
+
+    return widget;
+}
+
 QWidget *viewer::image_correction_setup_ui()
 {
     QWidget *widget = new QWidget();
@@ -69,49 +123,6 @@ QWidget *viewer::image_correction_setup_ui()
     return widget;
 }
 
-QWidget *viewer::control_setup_ui()
-{
-    QWidget *widget = new QWidget();
-    widget->setObjectName("controls");
-    QHBoxLayout *layout = new QHBoxLayout();
-    layout->setContentsMargins(5, 5, 5, 5);
-    widget->setLayout(layout);
-    //
-
-    // QComboBox *channels = new QComboBox();
-    // layout->addWidget(channels);
-
-    int icon_size = 25;
-
-    layout->addStretch();
-
-    QPushButton *out_frame = new QPushButton();
-    qt::set_icon(out_frame, "out_frame_a", icon_size);
-    layout->addWidget(out_frame);
-
-    QPushButton *render_area = new QPushButton();
-    qt::set_icon(render_area, "render_area_a", icon_size);
-    layout->addWidget(render_area);
-
-    QPushButton *proxy = new QPushButton();
-    qt::set_icon(proxy, "proxy_a", icon_size);
-    layout->addWidget(proxy);
-
-    QPushButton *multi_lines = new QPushButton();
-    qt::set_icon(multi_lines, "multi_lines_a", icon_size);
-    layout->addWidget(multi_lines);
-
-    QPushButton *refresh = new QPushButton();
-    qt::set_icon(refresh, "refresh_a", icon_size);
-    layout->addWidget(refresh);
-
-    QPushButton *pause = new QPushButton();
-    qt::set_icon(pause, "pause_a", icon_size);
-    layout->addWidget(pause);
-
-    return widget;
-}
-
 QWidget *viewer::info_setup_ui()
 {
     QWidget *widget = new QWidget();
@@ -145,8 +156,9 @@ QWidget *viewer::player_setup_ui()
     //
 
     QPushButton *play_forward = new QPushButton();
-    QPushButton *play_backward = new QPushButton("play_backward");
+    QPushButton *play_backward = new QPushButton();
     qt::set_icon(play_forward, "play_arrow_a");
+    qt::set_icon(play_backward, "play_arrow_a");
 
     QPushButton *first_frame = new QPushButton();
     QPushButton *last_frame = new QPushButton();
@@ -156,24 +168,37 @@ QWidget *viewer::player_setup_ui()
     QPushButton *next_frame = new QPushButton("next_frame");
     QPushButton *previous_frame = new QPushButton("previous_frame");
 
-    QPushButton *next_key_frame = new QPushButton("next_key_frame");
-    QPushButton *previous_key_frame = new QPushButton("previous_key_frame");
+    QPushButton *next_key_frame = new QPushButton();
+    QPushButton *previous_key_frame = new QPushButton();
+    qt::set_icon(next_key_frame, "next_key_frame_a");
+    qt::set_icon(previous_key_frame, "previous_key_frame_a");
 
-    QPushButton *skip_forward = new QPushButton("skip_forward");
-    QPushButton *skip_backward = new QPushButton("skip_backward");
+    QPushButton *skip_forward = new QPushButton();
+    QPushButton *skip_backward = new QPushButton();
+    qt::set_icon(skip_forward, "skip_forward_a");
+    qt::set_icon(skip_backward, "skip_backward_a");
+
+    QLineEdit *frame_edit = new QLineEdit();
+    frame_edit->setMaximumWidth(30);
+
+    layout->addStretch();
 
     layout->addWidget(first_frame);
     layout->addWidget(previous_key_frame);
     layout->addWidget(previous_frame);
-    layout->addWidget(play_backward);
-
     layout->addWidget(play_forward);
+
+    layout->addWidget(frame_edit);
+
+    layout->addWidget(play_backward);
     layout->addWidget(next_frame);
     layout->addWidget(next_key_frame);
     layout->addWidget(last_frame);
 
-    layout->addWidget(skip_forward);
     layout->addWidget(skip_backward);
+    layout->addWidget(skip_forward);
+
+    layout->addStretch();
 
     return widget;
 }
