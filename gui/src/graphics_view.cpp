@@ -50,21 +50,10 @@ void graphics_view::mousePressEvent(QMouseEvent *event)
 
 void graphics_view::mouseReleaseEvent(QMouseEvent *event)
 {
-
-    if (event->button() == Qt::MidButton)
-    {
-        panning = false;
-        zooming = false;
-        event->accept();
-        return;
-    }
-    else if (event->button() == Qt::LeftButton)
-    {
-        panning = false;
-    }
+    panning = false;
+    zooming = false;
 
     QGraphicsView::mouseReleaseEvent(event);
-    event->ignore();
 }
 
 void graphics_view::mouseMoveEvent(QMouseEvent *event)
@@ -89,13 +78,12 @@ void graphics_view::mouseMoveEvent(QMouseEvent *event)
     }
 
     QGraphicsView::mouseMoveEvent(event);
-    event->ignore();
 }
 
 void graphics_view::zoom(int delta, QPoint position)
 {
     QPointF old_pos = mapToScene(position);
-    float wheel_zoom_per_delta = 1.00152;
+    float wheel_zoom_per_delta = 1.002;
 
     double scale_factor = pow(wheel_zoom_per_delta, delta);
     QTransform _transform = transform();
@@ -128,16 +116,12 @@ void graphics_view::keyPressEvent(QKeyEvent *event)
         pressed_alt = true;
 
     if (key == Qt::Key_F)
-    {
-        //fit
-        this->setTransform(QTransform());
-    }
+        this->setTransform(QTransform()); //fit
 }
 
 void graphics_view::keyReleaseEvent(QKeyEvent *event)
 {
-    int key = event->key();
-
-    if (key == Qt::Key_Alt)
-        pressed_alt = false;
+    panning = false;
+    zooming = false;
+    pressed_alt = false;
 }
