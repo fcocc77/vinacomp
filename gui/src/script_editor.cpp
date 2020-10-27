@@ -10,6 +10,16 @@ script_editor::~script_editor()
 {
 }
 
+QCodeEditor *script_editor::code_editor()
+{
+    QCodeEditor *editor = new QCodeEditor();
+
+    QPythonHighlighter *python_highlighter = new QPythonHighlighter();
+    editor->setHighlighter(python_highlighter);
+
+    return editor;
+}
+
 void script_editor::setup_ui()
 {
     QVBoxLayout *layout = new QVBoxLayout();
@@ -19,15 +29,7 @@ void script_editor::setup_ui()
 
     QPlainTextEdit *output = new QPlainTextEdit();
     output->setObjectName("output");
-    kgl::QCodeEditor *input = new kgl::QCodeEditor();
-
-    // esto es para que el editor tenga colores
-    kgl::QCodeEditorDesign design("libs/QCodeEditor/files/design.xml");
-    QList<kgl::QSyntaxRule> rules = kgl::QSyntaxRules::loadFromFile("libs/QCodeEditor/files/rule_cpp.xml", design);
-    input->setDesign(design);
-    input->setRules(rules);
-    input->setKeywords({"printf", "scanf", "atoi", "mbtoa", "strlen", "memcpy", "memset"});
-    //
+    QCodeEditor *input = code_editor();
 
     layout->addWidget(tools);
 

@@ -8,7 +8,8 @@
 #include <QPlainTextEdit>
 #include <QPushButton>
 #include <QSplitter>
-#include <KGL/Widgets/QCodeEditor.hpp>
+#include <QCodeEditor.hpp>
+#include <QPythonHighlighter.hpp>
 
 #include <qt.hpp>
 
@@ -17,6 +18,7 @@ class script_editor : public QWidget
 private:
     void setup_ui();
     QWidget *tools_setup_ui();
+    QCodeEditor *code_editor();
 
 public:
     script_editor(/* args */);
