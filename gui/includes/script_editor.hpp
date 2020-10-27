@@ -9,6 +9,8 @@
 #include <QPushButton>
 #include <QSplitter>
 #include <QJsonObject>
+#include <QSlider>
+#include <QLabel>
 
 // Libs
 #include <QCodeEditor.hpp>

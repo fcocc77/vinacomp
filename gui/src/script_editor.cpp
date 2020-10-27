@@ -79,5 +79,11 @@ QWidget *script_editor::tools_setup_ui()
 
     layout->addStretch();
 
+    QLabel *font_size_label = new QLabel("Font Size:");
+    layout->addWidget(font_size_label);
+    QSlider *font_size = new QSlider();
+    font_size->setOrientation(Qt::Horizontal);
+    layout->addWidget(font_size);
+
     return widget;
 }
