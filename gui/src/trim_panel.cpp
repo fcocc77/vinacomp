@@ -13,17 +13,15 @@ trim_panel::~trim_panel()
 void trim_panel::setup_ui()
 {
     QVBoxLayout *layout = new QVBoxLayout();
-    layout->setContentsMargins(0, 0, 0, 0);
+    layout->setMargin(0);
     this->setLayout(layout);
 
     QWidget *butttons = top_buttons_setup_ui();
 
     layout->addWidget(butttons);
 
-    QWidget *knobs = new QWidget();
-    QVBoxLayout *knobs_layout = new QVBoxLayout();
-    knobs->setLayout(knobs_layout);
-    layout->addWidget(knobs);
+    QTabWidget *tabs = tabs_ui();
+    layout->addWidget(tabs);
     //
     //
 }
@@ -32,9 +30,10 @@ QWidget *trim_panel::top_buttons_setup_ui()
 {
     QWidget *widget = new QWidget();
     widget->setObjectName("butttons");
-    widget->setMaximumHeight(50);
+    widget->setMaximumHeight(30);
+
     QHBoxLayout *layout = new QHBoxLayout();
-    layout->setContentsMargins(0, 0, 0, 0);
+    layout->setMargin(5);
 
     widget->setLayout(layout);
     //
@@ -74,4 +73,18 @@ QWidget *trim_panel::top_buttons_setup_ui()
     layout->addWidget(close);
 
     return widget;
+}
+
+QTabWidget *trim_panel::tabs_ui()
+{
+
+    QTabWidget *tabs = new QTabWidget();
+
+    QWidget *controls = new QWidget();
+    QWidget *node = new QWidget();
+
+    tabs->addTab(controls, "Controls");
+    tabs->addTab(node, "Node");
+
+    return tabs;
 }

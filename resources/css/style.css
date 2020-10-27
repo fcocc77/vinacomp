@@ -194,4 +194,6 @@ QScrollBar {
 
 #trim_panel {
   background: #2a2d32; }
+  #trim_panel #butttons {
+    background: #23262a; }
 
