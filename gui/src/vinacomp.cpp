@@ -4,7 +4,6 @@ vinacomp::vinacomp(QApplication *_app)
 {
     app = _app;
     setup_ui();
-    setup_style();
 }
 
 vinacomp::~vinacomp()
@@ -13,9 +12,6 @@ vinacomp::~vinacomp()
 
 void vinacomp::setup_ui()
 {
-    update_sylesheet_action = new QAction("Update StyleSheet");
-    update_sylesheet_action->setShortcut(QString("Ctrl+R"));
-    connect(update_sylesheet_action, &QAction::triggered, this, &vinacomp::setup_style);
 
     _node_graph = new node_graph();
     _viewer = new viewer();
@@ -38,6 +34,11 @@ void vinacomp::setup_ui()
     this->setCentralWidget(central_widget);
 
     main_menu();
+
+    update_sylesheet_action = new QAction("Update StyleSheet");
+    update_sylesheet_action->setShortcut(QString("Ctrl+R"));
+    connect(update_sylesheet_action, &QAction::triggered, this, &vinacomp::setup_style);
+    setup_style();
 }
 
 void vinacomp::setup_style()

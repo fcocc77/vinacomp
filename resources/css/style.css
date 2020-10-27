@@ -147,8 +147,8 @@ QScrollBar {
 
 #script_editor {
   background: #2e3238; }
-  #script_editor #QCodeEditorLineWidget {
-    background-color: #1c1e21; }
+  #script_editor * {
+    font-size: 15px; }
   #script_editor #tools {
     background: #2e3238; }
   #script_editor #output {
