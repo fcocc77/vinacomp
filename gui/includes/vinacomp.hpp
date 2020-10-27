@@ -6,6 +6,7 @@
 #include <QSplitter>
 #include <QMenuBar>
 #include <QApplication>
+#include <QFileDialog>
 
 // VINA COMP
 #include <viewer.hpp>
@@ -35,6 +36,14 @@ private:
 
     QAction *update_sylesheet_action;
 
+    // en este json estara todo el proyecto actual, aqui se guardara todo,
+    // para guardarlo en un archivo o enviarlo al motor de render.
+    bool project_opened = false;
+    QString current_project = "";
+    QJsonObject *project;
+    //
+    //
+
 public:
     vinacomp(QApplication *_app);
     ~vinacomp();
@@ -42,6 +51,9 @@ public:
     void setup_ui();
     void setup_style();
     void main_menu();
+    void save_as();
+    void save_project();
+    void open_project();
 };
 
 #endif // VINACOMP_H

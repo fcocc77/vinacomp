@@ -12,6 +12,7 @@
 #include <QScrollBar>
 #include <QPainter>
 #include <QShortcut>
+#include <QJsonObject>
 
 // VINA COMP
 #include <graphics_view.hpp>
@@ -30,13 +31,14 @@ private:
 
     QList<node *> *nodes;
     QList<node *> *selected_nodes;
+    QJsonObject *project;
 
     // Events
     void mouseReleaseEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
 
 public:
-    node_graph(/* args */);
+    node_graph(QJsonObject *_project);
     ~node_graph();
 
     node *add_node(QString name, int x, int y);

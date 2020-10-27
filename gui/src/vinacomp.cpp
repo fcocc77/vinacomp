@@ -3,6 +3,7 @@
 vinacomp::vinacomp(QApplication *_app)
 {
     app = _app;
+    project = new QJsonObject();
     setup_ui();
 }
 
@@ -13,9 +14,9 @@ vinacomp::~vinacomp()
 void vinacomp::setup_ui()
 {
 
-    _node_graph = new node_graph();
+    _node_graph = new node_graph(project);
     _viewer = new viewer();
-    _script_editor = new script_editor();
+    _script_editor = new script_editor(project);
     _properties = new properties();
     _curve_editor = new curve_editor();
 
@@ -33,12 +34,12 @@ void vinacomp::setup_ui()
 
     this->setCentralWidget(central_widget);
 
-    main_menu();
-
     update_sylesheet_action = new QAction("Update StyleSheet");
     update_sylesheet_action->setShortcut(QString("Ctrl+R"));
     connect(update_sylesheet_action, &QAction::triggered, this, &vinacomp::setup_style);
     setup_style();
+
+    main_menu();
 }
 
 void vinacomp::setup_style()
@@ -63,23 +64,27 @@ void vinacomp::main_menu()
     new_project->setIcon(QIcon("resources/images/add_a.png"));
     file_menu->addAction(new_project);
 
-    QAction *open_project = new QAction("Open Project");
-    open_project->setIcon(QIcon("resources/images/folder_a.png"));
-    open_project->setShortcut(QString("Ctrl+O"));
-    file_menu->addAction(open_project);
+    QAction *open_project_action = new QAction("Open Project");
+    open_project_action->setIcon(QIcon("resources/images/folder_a.png"));
+    open_project_action->setShortcut(QString("Ctrl+O"));
+    connect(open_project_action, &QAction::triggered, this, &vinacomp::open_project);
+
+    file_menu->addAction(open_project_action);
 
     QAction *recent_projects = new QAction("Recent Projects");
     file_menu->addAction(recent_projects);
 
     file_menu->addSeparator();
 
-    QAction *save_project = new QAction("Save Project");
-    save_project->setIcon(QIcon("resources/images/save_a.png"));
-    save_project->setShortcut(QString("Ctrl+S"));
-    file_menu->addAction(save_project);
+    QAction *save_project_action = new QAction("Save Project");
+    save_project_action->setIcon(QIcon("resources/images/save_a.png"));
+    save_project_action->setShortcut(QString("Ctrl+S"));
+    connect(save_project_action, &QAction::triggered, this, &vinacomp::save_project);
+    file_menu->addAction(save_project_action);
 
     QAction *save_project_as = new QAction("Save Project As...");
     save_project_as->setShortcut(QString("Ctrl+Shift+S"));
+    connect(save_project_as, &QAction::triggered, this, &vinacomp::save_as);
     file_menu->addAction(save_project_as);
 
     file_menu->addSeparator();
@@ -140,4 +145,48 @@ void vinacomp::main_menu()
     //
 
     this->setMenuBar(menu_bar);
+}
+
+void vinacomp::open_project()
+{
+    QFileDialog dialog(this);
+    dialog.setFileMode(QFileDialog::AnyFile);
+
+    dialog.setNameFilter(tr("VinaComp Project (*.vina)"));
+
+    if (dialog.exec())
+    {
+        current_project = dialog.selectedFiles()[0];
+        project_opened = true;
+
+        (*project) = jread(current_project);
+
+        // actualiza componentes con el proyecto cargado
+        _script_editor->open_script_from_project();
+    }
+}
+
+void vinacomp::save_project()
+{
+    if (!project_opened)
+    {
+        save_as();
+        return;
+    }
+
+    jwrite(current_project, *project);
+}
+
+void vinacomp::save_as()
+{
+    QFileDialog dialog(this);
+    dialog.setFileMode(QFileDialog::AnyFile);
+    dialog.setNameFilter(tr("VinaComp Project (*.vina)"));
+    dialog.setAcceptMode(QFileDialog::AcceptSave);
+
+    if (dialog.exec())
+    {
+        QString file_to_save = dialog.selectedFiles()[0];
+        jwrite(file_to_save + ".vina", *project);
+    }
 }

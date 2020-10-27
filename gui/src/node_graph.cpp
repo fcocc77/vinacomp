@@ -1,7 +1,8 @@
 #include <node_graph.hpp>
 
-node_graph::node_graph(/* args */)
+node_graph::node_graph(QJsonObject *_project)
 {
+    project = _project;
     scene = new QGraphicsScene();
 
     this->setObjectName("node_graph");

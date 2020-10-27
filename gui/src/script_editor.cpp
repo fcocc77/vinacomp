@@ -1,7 +1,9 @@
 #include <script_editor.hpp>
 
-script_editor::script_editor(/* args */)
+script_editor::script_editor(QJsonObject *_project)
 {
+
+    project = _project;
     this->setObjectName("script_editor");
     setup_ui();
 }
@@ -10,12 +12,24 @@ script_editor::~script_editor()
 {
 }
 
+void script_editor::open_script_from_project()
+{
+    // abre el script guardado en el proyecto
+    QString texts = project->take("script_editor").toString();
+    editor->setPlainText(texts);
+}
+
 QCodeEditor *script_editor::code_editor()
 {
-    QCodeEditor *editor = new QCodeEditor();
+    editor = new QCodeEditor();
 
     QPythonHighlighter *python_highlighter = new QPythonHighlighter();
     editor->setHighlighter(python_highlighter);
+
+    connect(editor, &QTextEdit::textChanged, this, [this]() {
+        // guarda el script escrito en el proyecto
+        project->insert("script_editor", editor->toPlainText());
+    });
 
     return editor;
 }
@@ -59,6 +73,8 @@ QWidget *script_editor::tools_setup_ui()
 
     QPushButton *run = new QPushButton();
     qt::set_icon(run, "run_script_a", icon_size);
+    connect(run, &QPushButton::clicked, this, [this]() {
+    });
     layout->addWidget(run);
 
     layout->addStretch();
