@@ -86,6 +86,9 @@ void vinacomp::main_menu()
     QAction *quit = new QAction("Quit");
     quit->setIcon(QIcon("resources/images/quit_a.png"));
     quit->setShortcut(QString("Ctrl+Q"));
+    connect(quit, &QAction::triggered, this, [this]() {
+        this->close();
+    });
     file_menu->addAction(quit);
     //
     //

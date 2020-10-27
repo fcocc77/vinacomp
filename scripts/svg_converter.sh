@@ -27,6 +27,9 @@ function export_png() {
         # cambia el color 'fill'
         svg_temp
         sed -i "s|fill=\"none\"|fill=\"$color\"|g" $svg_temp
+        sed -i "s|fill:none|fill:$color|g" $svg_temp
+        sed -i "s|stroke:none|stroke:$color|g" $svg_temp
+
         #
 
         # cambia tamaño
