@@ -15,11 +15,14 @@ function install() {
     cp -rf ./bin $install_dir
     cp -rf ./config $install_dir
     cp -rf ./resources $install_dir
+    cp -rf ./libs $install_dir
 
     cp ./resources/app/vinacomp.sh $install_dir/vinacomp
     cp ./resources/app/VinaComp.desktop /usr/local/share/applications/VinaComp.desktop
     #
     #
+
+    chmod 755 -R $install_dir
 }
 
 function uninstall() {
