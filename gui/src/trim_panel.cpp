@@ -101,6 +101,12 @@ QTabWidget *trim_panel::tabs_ui()
     knob_color *_knob_color = new knob_color();
     controls_layout->addWidget(_knob_color);
 
+    knob_check_box *_knob_check_box = new knob_check_box();
+    controls_layout->addWidget(_knob_check_box);
+
+    knob_file *_knob_file = new knob_file();
+    controls_layout->addWidget(_knob_file);
+
     controls_layout->addStretch();
 
     return tabs;

@@ -181,20 +181,22 @@ QScrollBar {
 #viewer #image_correction {
   background: #23262a; }
 
-#panels_layout QTabBar {
-  background: none; }
-  #panels_layout QTabBar::tab {
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-    background: #23262a;
-    padding: 3px 13px 3px 13px;
-    margin-right: 5px;
-    color: #c7cbd1; }
-    #panels_layout QTabBar::tab:hover {
-      color: #ff5e00; }
-    #panels_layout QTabBar::tab:selected {
-      background: #2e3238;
-      color: #ff5e00; }
+#panels_layout {
+  background: #17191c; }
+  #panels_layout QTabBar {
+    background: none; }
+    #panels_layout QTabBar::tab {
+      border-top-left-radius: 3px;
+      border-top-right-radius: 3px;
+      background: #23262a;
+      padding: 3px 13px 3px 13px;
+      margin-right: 5px;
+      color: #c7cbd1; }
+      #panels_layout QTabBar::tab:hover {
+        color: #ff5e00; }
+      #panels_layout QTabBar::tab:selected {
+        background: #2e3238;
+        color: #ff5e00; }
 
 #trim_panel {
   background: #2a2d32; }
@@ -202,6 +204,8 @@ QScrollBar {
     background: #23262a; }
   #trim_panel #controls {
     background: #2e3238; }
+    #trim_panel #controls > QWidget {
+      background: #2e3238; }
     #trim_panel #controls #knob_color {
       background: #2a2d32; }
       #trim_panel #controls #knob_color QPushButton {

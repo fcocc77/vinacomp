@@ -12,6 +12,8 @@
 #include <trim_panel.hpp>
 #include <qt.hpp>
 #include <knob_color.hpp>
+#include <knob_check_box.hpp>
+#include <knob_file.hpp>
 
 class trim_panel : public QWidget
 {
