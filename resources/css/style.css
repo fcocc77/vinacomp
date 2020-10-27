@@ -6,6 +6,9 @@
   font-size: 11px;
   color: #acb1b9; }
 
+QLabel {
+  background: transparent; }
+
 QPushButton {
   background: transparent; }
 
@@ -197,4 +200,10 @@ QScrollBar {
   background: #2a2d32; }
   #trim_panel #butttons {
     background: #23262a; }
+  #trim_panel #controls {
+    background: #2e3238; }
+    #trim_panel #controls #knob_color {
+      background: #2a2d32; }
+      #trim_panel #controls #knob_color QPushButton {
+        background: #464b53; }
 

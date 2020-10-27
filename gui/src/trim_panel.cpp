@@ -20,7 +20,7 @@ void trim_panel::setup_ui()
 
     layout->addWidget(butttons);
 
-    QTabWidget *tabs = tabs_ui();
+    tabs = tabs_ui();
     layout->addWidget(tabs);
     //
     //
@@ -60,9 +60,16 @@ QWidget *trim_panel::top_buttons_setup_ui()
 
     layout->addStretch();
 
+    // Minimize
     QPushButton *minimize = new QPushButton();
+    connect(minimize, &QPushButton::clicked, this, [this]() {
+        is_minimize = !is_minimize;
+        tabs->setVisible(!is_minimize);
+    });
     qt::set_icon(minimize, "minimize_a", icon_size);
     layout->addWidget(minimize);
+    // Minimize
+    //
 
     QPushButton *maximize = new QPushButton();
     qt::set_icon(maximize, "maximize_a", icon_size);
@@ -81,10 +88,20 @@ QTabWidget *trim_panel::tabs_ui()
     QTabWidget *tabs = new QTabWidget();
 
     QWidget *controls = new QWidget();
+    QVBoxLayout *controls_layout = new QVBoxLayout();
+    controls->setLayout(controls_layout);
+    controls->setObjectName("controls");
+
     QWidget *node = new QWidget();
 
     tabs->addTab(controls, "Controls");
     tabs->addTab(node, "Node");
+
+    //
+    knob_color *_knob_color = new knob_color();
+    controls_layout->addWidget(_knob_color);
+
+    controls_layout->addStretch();
 
     return tabs;
 }

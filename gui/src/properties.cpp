@@ -13,7 +13,7 @@ properties::~properties()
 void properties::setup_ui()
 {
     QVBoxLayout *layout = new QVBoxLayout();
-    layout->setContentsMargins(0, 0, 0, 0);
+    layout->setMargin(0);
     this->setLayout(layout);
 
     QWidget *butttons = top_buttons_setup_ui();
@@ -25,6 +25,7 @@ void properties::setup_ui()
     trim_panels_layout->setContentsMargins(0, 0, 0, 0);
     trim_panels->setLayout(trim_panels_layout);
     layout->addWidget(trim_panels);
+    layout->addStretch();
     //
     //
 
