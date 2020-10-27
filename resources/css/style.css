@@ -1,6 +1,7 @@
 /* Black blue color */
 * {
   background: #17191c;
+  selection-background-color: #583b2c;
   border: none;
   font-size: 11px;
   color: #acb1b9; }
