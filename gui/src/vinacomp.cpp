@@ -19,6 +19,7 @@ void vinacomp::setup_ui()
     _script_editor = new script_editor(project);
     _properties = new properties();
     _curve_editor = new curve_editor();
+    _settings = new settings();
 
     _panels_layout = new panels_layout(app, _node_graph, _viewer, _script_editor, _properties, _curve_editor);
 
@@ -103,11 +104,15 @@ void vinacomp::main_menu()
     QMenu *edit_menu = new QMenu("Edit", menu_bar);
     menu_bar->addMenu(edit_menu);
 
-    QAction *settings = new QAction("Settings...");
-    settings->setShortcut(QString("Shift+S"));
-    settings->setIcon(QIcon("resources/images/settings_a.png"));
+    QAction *settings_action = new QAction("Settings...");
+    connect(settings_action, &QAction::triggered, this, [this]() {
+        _settings->show();
+    });
 
-    edit_menu->addAction(settings);
+    settings_action->setShortcut(QString("Shift+S"));
+    settings_action->setIcon(QIcon("resources/images/settings_a.png"));
+
+    edit_menu->addAction(settings_action);
 
     edit_menu->addAction(update_sylesheet_action);
     //
