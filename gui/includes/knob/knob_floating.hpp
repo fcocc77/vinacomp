@@ -2,6 +2,13 @@
 #define KNOB_FLOATING_HPP
 
 #include <QWidget>
+#include <QLabel>
+#include <QHBoxLayout>
+#include <QPushButton>
+#include <QLineEdit>
+
+#include <slider.hpp>
+#include <qt.hpp>
 
 class knob_floating : public QWidget
 {

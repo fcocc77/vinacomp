@@ -1,16 +1,16 @@
-#ifndef KNOB_SEPARATOR_HPP
-#define KNOB_SEPARATOR_HPP
+#ifndef KNOB_COLOR_HPP
+#define KNOB_COLOR_HPP
 
 #include <QWidget>
 #include <QLabel>
 #include <QLineEdit>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
-#include <QSlider>
 #include <QPushButton>
 
 // VINACOMP
 #include <qt.hpp>
+#include <slider.hpp>
 
 class knob_color : public QWidget
 {
@@ -19,7 +19,7 @@ private:
     QWidget *_separate_colors_box;
     QWidget *_separate_colors_slider;
     QLineEdit *value;
-    QSlider *slider;
+    slider *_slider;
 
     bool is_separate_colors_box = false;
     bool is_separate_colors_slider = false;
@@ -33,4 +33,4 @@ public:
     ~knob_color();
 };
 
-#endif //KNOB_SEPARATOR_HPP
+#endif //KNOB_COLOR_HPP

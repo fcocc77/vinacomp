@@ -2,6 +2,9 @@
 #define KNOB_TEXT_HPP
 
 #include <QWidget>
+#include <QLineEdit>
+#include <QHBoxLayout>
+#include <QLabel>
 
 class knob_text : public QWidget
 {

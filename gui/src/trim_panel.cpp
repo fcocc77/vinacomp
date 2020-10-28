@@ -107,6 +107,33 @@ QTabWidget *trim_panel::tabs_ui()
     knob_file *_knob_file = new knob_file();
     controls_layout->addWidget(_knob_file);
 
+    knob_choice *_knob_choice = new knob_choice();
+    controls_layout->addWidget(_knob_choice);
+
+    knob_text *_knob_text = new knob_text();
+    controls_layout->addWidget(_knob_text);
+
+    knob_label *_knob_label = new knob_label();
+    controls_layout->addWidget(_knob_label);
+
+    knob_button *_knob_button = new knob_button();
+    controls_layout->addWidget(_knob_button);
+
+    knob_group *_knob_group = new knob_group();
+    controls_layout->addWidget(_knob_group);
+
+    knob_integer *_knob_integer = new knob_integer();
+    controls_layout->addWidget(_knob_integer);
+
+    knob_floating *_knob_floating = new knob_floating();
+    controls_layout->addWidget(_knob_floating);
+
+    knob_separator *_knob_separator = new knob_separator();
+    controls_layout->addWidget(_knob_separator);
+
+    knob_position *_knob_position = new knob_position();
+    controls_layout->addWidget(_knob_position);
+
     controls_layout->addStretch();
 
     return tabs;

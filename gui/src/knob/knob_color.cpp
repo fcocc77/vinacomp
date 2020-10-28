@@ -26,9 +26,8 @@ void knob_color::setup_ui()
     value->setMaximumWidth(50);
     layout->addWidget(value);
 
-    slider = new QSlider();
-    slider->setOrientation(Qt::Horizontal);
-    layout->addWidget(slider);
+    _slider = new slider();
+    layout->addWidget(_slider);
 
     _separate_colors_slider = separate_colors_slider();
     _separate_colors_slider->hide();
@@ -48,7 +47,7 @@ void knob_color::setup_ui()
     connect(picker, &QPushButton::clicked, this, [this]() {
         is_separate_colors_slider = !is_separate_colors_slider;
 
-        slider->setVisible(!is_separate_colors_slider);
+        _slider->setVisible(!is_separate_colors_slider);
         value->setVisible(!is_separate_colors_slider);
         _separate_colors_slider->setVisible(is_separate_colors_slider);
     });
@@ -60,7 +59,7 @@ void knob_color::setup_ui()
     connect(switch_color, &QPushButton::clicked, this, [this]() {
         is_separate_colors_box = !is_separate_colors_box;
 
-        slider->setVisible(!is_separate_colors_box);
+        _slider->setVisible(!is_separate_colors_box);
         value->setVisible(!is_separate_colors_box);
         _separate_colors_box->setVisible(is_separate_colors_box);
     });
@@ -102,20 +101,16 @@ QWidget *knob_color::separate_colors_slider()
     QVBoxLayout *layout = new QVBoxLayout(widget);
     layout->setMargin(0);
 
-    QSlider *red = new QSlider();
-    red->setOrientation(Qt::Horizontal);
+    slider *red = new slider();
     layout->addWidget(red);
 
-    QSlider *green = new QSlider();
-    green->setOrientation(Qt::Horizontal);
+    slider *green = new slider();
     layout->addWidget(green);
 
-    QSlider *blue = new QSlider();
-    blue->setOrientation(Qt::Horizontal);
+    slider *blue = new slider();
     layout->addWidget(blue);
 
-    QSlider *alpha = new QSlider();
-    alpha->setOrientation(Qt::Horizontal);
+    slider *alpha = new slider();
     layout->addWidget(alpha);
 
     return widget;

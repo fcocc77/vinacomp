@@ -11,9 +11,19 @@
 // VinaComp
 #include <trim_panel.hpp>
 #include <qt.hpp>
+
 #include <knob_color.hpp>
 #include <knob_check_box.hpp>
 #include <knob_file.hpp>
+#include <knob_choice.hpp>
+#include <knob_text.hpp>
+#include <knob_label.hpp>
+#include <knob_button.hpp>
+#include <knob_group.hpp>
+#include <knob_integer.hpp>
+#include <knob_floating.hpp>
+#include <knob_separator.hpp>
+#include <knob_position.hpp>
 
 class trim_panel : public QWidget
 {

@@ -14,6 +14,7 @@
 
 #include <qt.hpp>
 #include <combo_box.hpp>
+#include <slider.hpp>
 
 class viewer_graphics_view : public graphics_view
 {

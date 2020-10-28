@@ -2,6 +2,8 @@
 #define KNOB_BUTTON_HPP
 
 #include <QWidget>
+#include <QPushButton>
+#include <QHBoxLayout>
 
 class knob_button : public QWidget
 {

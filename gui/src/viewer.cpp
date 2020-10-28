@@ -108,8 +108,7 @@ QWidget *viewer::image_correction_setup_ui()
     gain_edit->setMaximumWidth(50);
     layout->addWidget(gain_edit);
 
-    QSlider *gain_slider = new QSlider();
-    gain_slider->setOrientation(Qt::Horizontal);
+    slider *gain_slider = new slider();
     layout->addWidget(gain_slider);
 
     QPushButton *gamma = new QPushButton();
@@ -120,8 +119,7 @@ QWidget *viewer::image_correction_setup_ui()
     gamma_edit->setMaximumWidth(50);
     layout->addWidget(gamma_edit);
 
-    QSlider *gamma_slider = new QSlider();
-    gamma_slider->setOrientation(Qt::Horizontal);
+    slider *gamma_slider = new slider();
     layout->addWidget(gamma_slider);
 
     layout->addStretch();

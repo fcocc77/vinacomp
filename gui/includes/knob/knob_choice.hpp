@@ -2,6 +2,10 @@
 #define KNOB_CHOICE_HPP
 
 #include <QWidget>
+#include <QLabel>
+#include <QHBoxLayout>
+
+#include <combo_box.hpp>
 
 class knob_choice : public QWidget
 {

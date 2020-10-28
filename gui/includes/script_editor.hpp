@@ -9,7 +9,6 @@
 #include <QPushButton>
 #include <QSplitter>
 #include <QJsonObject>
-#include <QSlider>
 #include <QLabel>
 
 // Libs
@@ -18,6 +17,7 @@
 
 //VinaComp
 #include <qt.hpp>
+#include <slider.hpp>
 
 class script_editor : public QWidget
 {
