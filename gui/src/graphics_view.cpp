@@ -4,7 +4,6 @@ graphics_view::graphics_view(/* args */)
 {
     panning = false;
     zooming = false;
-    pressed_alt = false;
 
     this->setTransformationAnchor(QGraphicsView::NoAnchor);
 }
@@ -19,7 +18,7 @@ void graphics_view::mousePressEvent(QMouseEvent *event)
 
     if (event->button() == Qt::MidButton)
     {
-        if (pressed_alt)
+        if (qt::alt())
         {
             zooming = true;
             last_mouse_position = event->pos();
@@ -35,7 +34,7 @@ void graphics_view::mousePressEvent(QMouseEvent *event)
     }
     else if (event->button() == Qt::LeftButton)
     {
-        if (pressed_alt)
+        if (qt::alt())
         {
             panning = true;
             panning_start_x = event->x();
@@ -112,9 +111,6 @@ void graphics_view::keyPressEvent(QKeyEvent *event)
 {
     int key = event->key();
 
-    if (key == Qt::Key_Alt)
-        pressed_alt = true;
-
     if (key == Qt::Key_F)
         this->setTransform(QTransform()); //fit
 }
@@ -123,12 +119,10 @@ void graphics_view::keyReleaseEvent(QKeyEvent *event)
 {
     panning = false;
     zooming = false;
-    pressed_alt = false;
 }
 
 void graphics_view::focusOutEvent(QFocusEvent *event)
 {
     panning = false;
     zooming = false;
-    pressed_alt = false;
 }

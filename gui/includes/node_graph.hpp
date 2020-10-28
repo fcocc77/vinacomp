@@ -36,6 +36,7 @@ private:
     // Events
     void mouseReleaseEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
+    void mousePressEvent(QMouseEvent *event);
 
 public:
     node_graph(QJsonObject *_project);

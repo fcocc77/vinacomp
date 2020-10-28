@@ -5,6 +5,7 @@
 #include <QScrollBar>
 
 #include <util.hpp>
+#include <qt.hpp>
 
 class graphics_view : public QGraphicsView
 {
@@ -15,7 +16,6 @@ private:
 
     bool panning;
     bool zooming;
-    bool pressed_alt;
     int panning_start_x, panning_start_y;
 
     void zoom(int delta, QPoint position);
