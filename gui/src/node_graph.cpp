@@ -25,13 +25,15 @@ node_graph::node_graph(QJsonObject *_project)
 
     nodes = new QList<node *>;
     selected_nodes = new QList<node *>;
+    current_z_value = new int();
 
     scene->setSceneRect(-500000, -500000, 1000000, 1000000);
 
-    node *node1 = add_node("Shuffle", "shuffle_a", -100, 0);
-    node *node2 = add_node("Transform Mask", "transform_a", 100, 0);
+    node *node1 = add_node("Shuffle", "shuffle_a", -100, 0,
+                           "este es el tool tips\nOtra linea para probar");
+    node *node2 = add_node("Transform Mask", "transform_a", 100, 0, "tips otro");
 
-    node1->connect_input(0, node2);
+    // node1->connect_input(0, node2);
     add_node("Grade", "grade_a", 300, 0);
 
     this->setRenderHint(QPainter::Antialiasing);
@@ -84,13 +86,14 @@ void node_graph::change_node_name()
     node_rename_edit->hide();
 }
 
-node *node_graph::add_node(QString name, QString icon_name, int x, int y)
+node *node_graph::add_node(QString name, QString icon_name, int x, int y, QString tips)
 {
 
-    node *_node = new node(scene, selected_nodes);
+    node *_node = new node(scene, selected_nodes, current_z_value);
     _node->set_name(name);
     _node->set_position(x, y);
     _node->set_icon(icon_name);
+    _node->set_tips(tips);
 
     nodes->push_back(_node);
 

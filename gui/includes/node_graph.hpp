@@ -33,6 +33,7 @@ private:
     QList<node *> *nodes;
     QList<node *> *selected_nodes;
     QJsonObject *project;
+    int *current_z_value;
 
     QLineEdit *node_rename_edit;
 
@@ -45,7 +46,7 @@ public:
     node_graph(QJsonObject *_project);
     ~node_graph();
 
-    node *add_node(QString name, QString icon_name, int x, int y);
+    node *add_node(QString name, QString icon_name, int x, int y, QString tips = "");
     void change_node_name_dialog();
     void change_node_name();
 };

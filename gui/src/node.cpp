@@ -1,12 +1,16 @@
 #include <node.hpp>
 
-node::node(QGraphicsScene *_scene, QList<node *> *_selected_nodes)
+node::node(QGraphicsScene *_scene,
+           QList<node *> *_selected_nodes,
+           int *_current_z_value)
 {
     scene = _scene;
     selected_nodes = _selected_nodes;
+    current_z_value = _current_z_value;
 
-    inputs = new QList<QGraphicsLineItem *>;
+    links = new QList<node_link *>;
     connected_nodes = new QList<node *>;
+    center_position = new QPoint;
 
     selected = false;
 
@@ -24,19 +28,15 @@ node::node(QGraphicsScene *_scene, QList<node *> *_selected_nodes)
     // Texto
     {
         name = new QGraphicsTextItem;
-
         QFont font;
         font.setPointSize(15);
         name->setFont(font);
         name->setParentItem(this);
 
-        QGraphicsTextItem *tips = new QGraphicsTextItem;
-
-        QFont font2;
-        font.setPointSize(5);
-        tips->setPlainText("este es el tool tips");
-        tips->setFont(font2);
-        tips->setPos(50, 20);
+        tips = new QGraphicsTextItem;
+        QFont font_tips;
+        font_tips.setPointSize(10);
+        tips->setFont(font_tips);
         tips->setParentItem(this);
     }
     //
@@ -60,9 +60,9 @@ node::node(QGraphicsScene *_scene, QList<node *> *_selected_nodes)
     //
 
     scene->addItem(this);
-    add_input();
+    add_link();
 
-    this->setZValue(2);
+    this->setZValue((*current_z_value) + 1);
 }
 
 node::~node()
@@ -113,9 +113,13 @@ void node::select(bool _selected)
         pen.setWidth(3);
         this->setPen(pen);
 
-        inputs->value(0)->setPen(pen);
+        links->value(0)->setPen(pen);
 
         selected_nodes->push_back(this);
+
+        // con esto se mantiene siempre el nodo seleccionado sobre los demas
+        (*current_z_value)++;
+        this->setZValue(*current_z_value);
     }
     else
     {
@@ -124,7 +128,8 @@ void node::select(bool _selected)
         this->setPen(pen);
 
         QPen pen_input(Qt::black);
-        inputs->value(0)->setPen(pen_input);
+        pen_input.setWidth(25);
+        links->value(0)->setPen(pen_input);
     }
 }
 
@@ -134,37 +139,40 @@ void node::refresh()
     input_line_connect(input_index);
 }
 
+QPoint node::get_center_position()
+{
+    int x = this->x() + current_width / 2;
+    int y = this->y() + current_height / 2;
+
+    *center_position = {x, y};
+
+    return *center_position;
+}
+
 void node::input_line_connect(int index)
 {
     node *connected_node = connected_nodes->value(index);
+    QPoint src_pos, dst_pos;
 
-    int src_x, src_y, dst_x, dst_y;
-
-    src_x = this->x() + current_width / 2;
-    src_y = this->y() + current_height / 2;
-
+    src_pos = this->get_center_position();
     if (connected_node != NULL)
-    {
-        dst_x = connected_node->x() + connected_node->get_size().value(0) / 2;
-        dst_y = connected_node->y() + connected_node->get_size().value(1) / 2;
-    }
+        dst_pos = connected_node->get_center_position();
     else
-    {
-        dst_x = src_x;
-        dst_y = src_y - 50;
-    }
+        dst_pos = {src_pos.x(), src_pos.y() - 50};
 
-    inputs->value(index)->setLine(src_x, src_y, dst_x, dst_y);
+    links->value(index)->setLine(src_pos.x(), src_pos.y(), dst_pos.x(), dst_pos.y());
 }
 
-void node::add_input()
+void node::add_link()
 {
 
     QPen pen(Qt::black);
     pen.setWidth(2);
-    QGraphicsLineItem *input = scene->addLine(0, 0, 100, 50, pen);
+    node_link *input = new node_link(center_position);
 
-    inputs->push_back(input);
+    scene->addItem(input);
+
+    links->push_back(input);
 }
 
 QGraphicsLineItem node::get_input(int index)
@@ -202,8 +210,10 @@ QString node::get_name()
     return name->toPlainText();
 }
 
-void node::set_tips(QString tips)
+void node::set_tips(QString _tips)
 {
+    tips->setPlainText(_tips);
+    tips->setPos(60, 20);
 }
 
 QList<int> node::get_size()
