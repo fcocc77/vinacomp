@@ -2,7 +2,13 @@
 
 void node_graph::mouseReleaseEvent(QMouseEvent *event)
 {
+    
+    
+    print(*link_connecting);
     this->refresh_selected_nodes();
+
+    
+
     graphics_view::mouseReleaseEvent(event);
 }
 
@@ -14,9 +20,11 @@ void node_graph::mouseMoveEvent(QMouseEvent *event)
 
 void node_graph::mousePressEvent(QMouseEvent *event)
 {
+
     if (!qt::alt())
     {
-        select_all(false);
+        if (!qt::shift())
+            select_all(false);
 
         QString node_name = get_node_name_from_position(event->pos());
         select_node(node_name, true);

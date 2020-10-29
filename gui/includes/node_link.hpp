@@ -5,6 +5,7 @@
 #include <QGraphicsLineItem>
 #include <QGraphicsScene>
 #include <QPoint>
+#include <QString>
 
 #include <util.hpp>
 #include <node.hpp>
@@ -14,6 +15,9 @@ class node_link : public QGraphicsLineItem
 private:
     QGraphicsScene *scene;
     node *_node;
+    node *connected_node;
+    QString *link_connecting;
+    int index;
 
     // Event
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
@@ -21,10 +25,16 @@ private:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 
 public:
-    node_link(QGraphicsScene *_scene, node *_node);
+    node_link(int _index,
+              QGraphicsScene *_scene,
+              node *_node,
+              QString *_link_connecting);
     ~node_link();
 
     void refresh();
+    void update_connection();
+    void connect_node(node *_node);
+    void disconnect_node();
 };
 
 #endif // NODE_LINK_H

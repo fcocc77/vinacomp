@@ -35,10 +35,10 @@ private:
     QGraphicsScene *scene;
 
     QMap<QString, node *> *nodes;
+    QMap<QString, node *> *selected_nodes;
     QMap<QString, QList<node_link *> *> *nodes_links;
 
-    QMap<QString, node *> *selected_nodes;
-    QMap<QString, QList<node_link *> *> *selected_nodes_links;
+    QString *link_connecting;
 
     QJsonObject *project;
     int *current_z_value;
@@ -58,7 +58,6 @@ public:
     void change_node_name_dialog();
     void change_node_name();
     void select_node(QString name, bool select);
-
 };
 
 #endif // NODE_GRAPH_H

@@ -26,7 +26,7 @@ node_graph::node_graph(QJsonObject *_project)
     nodes = new QMap<QString, node *>;
     nodes_links = new QMap<QString, QList<node_link *> *>;
     selected_nodes = new QMap<QString, node *>;
-    selected_nodes_links = new QMap<QString, QList<node_link *> *>;
+    link_connecting = new QString();
 
     current_z_value = new int();
 
@@ -85,7 +85,21 @@ void node_graph::change_node_name()
     if (selected_node == NULL)
         return;
 
-    selected_node->set_name(node_rename_edit->text());
+    QString old_name = selected_node->get_name();
+    QString new_name = node_rename_edit->text();
+
+    selected_node->set_name(new_name);
+
+    nodes->remove(old_name);
+    nodes->insert(new_name, selected_node);
+
+    selected_nodes->remove(old_name);
+    selected_nodes->insert(new_name, selected_node);
+
+    auto node_links = nodes_links->value(old_name);
+    nodes_links->remove(old_name);
+    nodes_links->insert(new_name, node_links);
+
     node_rename_edit->hide();
 }
 
@@ -103,7 +117,7 @@ node *node_graph::add_node(QString name, QString icon_name, int x, int y, QStrin
     QList<node_link *> *links = new QList<node_link *>;
     for (int i = 0; i < link_count; i++)
     {
-        node_link *link = new node_link(scene, _node);
+        node_link *link = new node_link(i, scene, _node, link_connecting);
         links->push_back(link);
     }
     //
@@ -155,19 +169,16 @@ void node_graph::select_all(bool select)
 
 void node_graph::refresh_selected_nodes()
 {
-
     // refresca los link de cada nodo seleccionado
     for (node *_node : *selected_nodes)
     {
-        QList<node_link *> *links = selected_nodes_links->value(_node->get_name());
+        QList<node_link *> *links = nodes_links->value(_node->get_name());
 
         if (links == NULL)
             continue;
 
-        print(*links);
-        // for (node_link *_node_link : *links)
-        //     _node_link->refresh();
+        for (node_link *_node_link : *links)
+            _node_link->refresh();
     }
-
     //
 }
