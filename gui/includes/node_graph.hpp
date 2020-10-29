@@ -13,6 +13,7 @@
 #include <QPainter>
 #include <QShortcut>
 #include <QJsonObject>
+#include <QLineEdit>
 
 // VINA COMP
 #include <graphics_view.hpp>
@@ -33,6 +34,8 @@ private:
     QList<node *> *selected_nodes;
     QJsonObject *project;
 
+    QLineEdit *node_rename_edit;
+
     // Events
     void mouseReleaseEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
@@ -42,7 +45,8 @@ public:
     node_graph(QJsonObject *_project);
     ~node_graph();
 
-    node *add_node(QString name, int x, int y);
+    node *add_node(QString name, QString icon_name, int x, int y);
+    void change_node_name();
 };
 
 #endif // NODE_GRAPH_H

@@ -8,33 +8,89 @@ node::node(QGraphicsScene *_scene, QList<node *> *_selected_nodes)
     inputs = new QList<QGraphicsLineItem *>;
     connected_nodes = new QList<node *>;
 
-    label = new QLabel("Nodo");
     selected = false;
 
-    width = 100;
-    height = 30;
+    minimum_width = 150;
+    minimum_height = 50;
+    current_width = minimum_width;
+    current_height = minimum_height;
+
+    icon_area_width = 45;
 
     this->setFlags(QGraphicsItem::ItemIsMovable);
-    this->setRect(0, 0, width, height);
 
-    QGraphicsProxyWidget *proxy = scene->addWidget(label);
+    //
+    //
 
-    QPen pen(Qt::black);
-    QBrush color(QColor(150, 150, 150));
-    pen.setWidth(1);
-    this->setBrush(color);
-    this->setPen(pen);
+    // Texto
+    {
+        name = new QGraphicsTextItem;
+
+        QFont font;
+        font.setPointSize(15);
+        name->setFont(font);
+        name->setParentItem(this);
+
+        QGraphicsTextItem *tips = new QGraphicsTextItem;
+
+        QFont font2;
+        font.setPointSize(5);
+        tips->setPlainText("este es el tool tips");
+        tips->setFont(font2);
+        tips->setPos(50, 20);
+        tips->setParentItem(this);
+    }
+    //
+    //
+
+    // Rectangulo Forma
+    {
+        change_size_rectangle(minimum_width, minimum_height);
+
+        QPen pen(Qt::black);
+        QLinearGradient ramp(0, 0, icon_area_width * 2, 0);
+        ramp.setColorAt(0.5000, QColor(50, 50, 50));
+        ramp.setColorAt(0.5001, QColor(150, 150, 150));
+
+        QBrush color(ramp);
+        pen.setWidth(1);
+        this->setBrush(color);
+        this->setPen(pen);
+    }
+    //
+    //
 
     scene->addItem(this);
     add_input();
 
     this->setZValue(2);
-
-    proxy->setParentItem(this);
 }
 
 node::~node()
 {
+}
+
+void node::set_icon(QString icon_name)
+{
+    QImage image("resources/images/" + icon_name + ".png");
+    QPixmap icon = QPixmap::fromImage(image);
+    icon = icon.scaledToHeight(40, Qt::SmoothTransformation);
+    QGraphicsPixmapItem *item = new QGraphicsPixmapItem(icon);
+    item->setPos(2, 5);
+    item->setParentItem(this);
+}
+
+void node::change_size_rectangle(int _width, int _height)
+{
+    if (_width < minimum_width)
+        _width = minimum_width;
+
+    current_width = _width;
+
+    int radius = 3;
+    QPainterPath rectangle;
+    rectangle.addRoundedRect(QRectF(0, 0, _width, _height), radius, radius);
+    this->setPath(rectangle);
 }
 
 void node::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -85,13 +141,13 @@ void node::input_line_connect(int index)
 
     int src_x, src_y, dst_x, dst_y;
 
-    src_x = this->x() + width / 2;
-    src_y = this->y() + height / 2;
+    src_x = this->x() + current_width / 2;
+    src_y = this->y() + current_height / 2;
 
     if (connected_node != NULL)
     {
-        dst_x = connected_node->x() + width / 2;
-        dst_y = connected_node->y() + height / 2;
+        dst_x = connected_node->x() + connected_node->get_size().value(0) / 2;
+        dst_y = connected_node->y() + connected_node->get_size().value(1) / 2;
     }
     else
     {
@@ -121,14 +177,39 @@ void node::connect_input(int index, node *_node)
     connected_nodes->push_back(_node);
 }
 
-void node::set_name(QString name)
+void node::set_name(QString _name)
 {
-    label->setText(name);
+    name->setPlainText(_name);
+
+    int text_width = name->boundingRect().width();
+    int new_width = text_width + icon_area_width;
+
+    if (new_width < minimum_width)
+        new_width = minimum_width;
+
+    // centra texto al area de texto
+    int text_area = new_width - icon_area_width;
+    int text_pos_x = (text_area - text_width) / 2;
+
+    name->setPos(icon_area_width + text_pos_x, 0);
+    //
+    //
+
+    change_size_rectangle(new_width, current_height);
 }
 
 QString node::get_name()
 {
-    return label->text();
+    return name->toPlainText();
+}
+
+void node::set_tips(QString tips)
+{
+}
+
+QList<int> node::get_size()
+{
+    return {current_width, current_height};
 }
 
 void node::set_position(int x, int y)
