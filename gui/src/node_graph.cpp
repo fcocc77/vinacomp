@@ -23,15 +23,18 @@ node_graph::node_graph(QJsonObject *_project)
     //
     //
 
-    nodes = new QList<node *>;
-    selected_nodes = new QList<node *>;
+    nodes = new QMap<QString, node *>;
+    nodes_links = new QMap<QString, QList<node_link *> *>;
+    selected_nodes = new QMap<QString, node *>;
+    selected_nodes_links = new QMap<QString, QList<node_link *> *>;
+
     current_z_value = new int();
 
     scene->setSceneRect(-500000, -500000, 1000000, 1000000);
 
     node *node1 = add_node("Shuffle", "shuffle_a", -100, 0,
                            "este es el tool tips\nOtra linea para probar");
-    node *node2 = add_node("Transform Mask", "transform_a", 100, 0, "tips otro");
+    node *node2 = add_node("Transform_Mask", "transform_a", 100, 0, "tips otro");
 
     // node1->connect_input(0, node2);
     add_node("Grade", "grade_a", 300, 0);
@@ -95,9 +98,51 @@ node *node_graph::add_node(QString name, QString icon_name, int x, int y, QStrin
     _node->set_icon(icon_name);
     _node->set_tips(tips);
 
-    nodes->push_back(_node);
+    // crea los links para el nodo
+    int link_count = 1;
+    QList<node_link *> *links = new QList<node_link *>;
+    for (int i = 0; i < link_count; i++)
+    {
+        node_link *link = new node_link(scene, _node);
+        links->push_back(link);
+    }
+    //
+    //
+
+    nodes->insert(name, _node);
+    nodes_links->insert(name, links);
 
     return _node;
+}
+
+void node_graph::select_node(QString name, bool select)
+{
+    node *_node = nodes->value(name);
+    if (_node == NULL)
+        return;
+
+    _node->set_selected_style(select);
+
+    if (select)
+        selected_nodes->insert(name, _node);
+    else
+        selected_nodes->remove(name);
+}
+
+QString node_graph::get_node_name_from_position(QPoint position)
+{
+    // ya que el nodo esta compuesto por muchos hijos, al dar click puede ser un hijo,
+    // y si es un hijo obtiene el nodo padre para poder extraer el nombre del nodo.
+    QGraphicsItem *item = scene->itemAt(mapToScene(position), QTransform());
+    if (item == NULL)
+        return "";
+
+    QGraphicsItem *parent_item = item->parentItem();
+    if (parent_item != NULL)
+        item = parent_item;
+    //
+    //
+    return item->data(0).toString();
 }
 
 void node_graph::select_all(bool select)
@@ -105,11 +150,24 @@ void node_graph::select_all(bool select)
     selected_nodes->clear();
 
     for (node *_node : *nodes)
-        _node->select(select);
+        select_node(_node->get_name(), select);
 }
 
 void node_graph::refresh_selected_nodes()
 {
+
+    // refresca los link de cada nodo seleccionado
     for (node *_node : *selected_nodes)
-        _node->refresh();
+    {
+        QList<node_link *> *links = selected_nodes_links->value(_node->get_name());
+
+        if (links == NULL)
+            continue;
+
+        print(*links);
+        // for (node_link *_node_link : *links)
+        //     _node_link->refresh();
+    }
+
+    //
 }

@@ -14,10 +14,12 @@
 #include <QShortcut>
 #include <QJsonObject>
 #include <QLineEdit>
+#include <QPoint>
 
 // VINA COMP
 #include <graphics_view.hpp>
 #include <node.hpp>
+#include <node_link.hpp>
 #include <util.hpp>
 #include <qt.hpp>
 
@@ -28,10 +30,16 @@ private:
     void select_all(bool select);
     void refresh_selected_nodes();
     void setup_shortcut();
+    QString get_node_name_from_position(QPoint position);
+
     QGraphicsScene *scene;
 
-    QList<node *> *nodes;
-    QList<node *> *selected_nodes;
+    QMap<QString, node *> *nodes;
+    QMap<QString, QList<node_link *> *> *nodes_links;
+
+    QMap<QString, node *> *selected_nodes;
+    QMap<QString, QList<node_link *> *> *selected_nodes_links;
+
     QJsonObject *project;
     int *current_z_value;
 
@@ -49,6 +57,8 @@ public:
     node *add_node(QString name, QString icon_name, int x, int y, QString tips = "");
     void change_node_name_dialog();
     void change_node_name();
+    void select_node(QString name, bool select);
+
 };
 
 #endif // NODE_GRAPH_H

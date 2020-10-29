@@ -15,7 +15,12 @@ void node_graph::mouseMoveEvent(QMouseEvent *event)
 void node_graph::mousePressEvent(QMouseEvent *event)
 {
     if (!qt::alt())
+    {
         select_all(false);
+
+        QString node_name = get_node_name_from_position(event->pos());
+        select_node(node_name, true);
+    }
 
     node_rename_edit->hide();
 
