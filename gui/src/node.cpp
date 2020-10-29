@@ -18,7 +18,6 @@ node::node(QGraphicsScene *_scene, QList<node *> *_selected_nodes)
     icon_area_width = 45;
 
     this->setFlags(QGraphicsItem::ItemIsMovable);
-
     //
     //
 

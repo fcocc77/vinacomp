@@ -4,7 +4,15 @@ node_graph::node_graph(QJsonObject *_project)
 {
     project = _project;
     scene = new QGraphicsScene();
+
+    // cuadro de cambio de nombre de nodo
     node_rename_edit = new QLineEdit(this);
+    connect(node_rename_edit, &QLineEdit::returnPressed, this, [this] {
+        change_node_name();
+    });
+    node_rename_edit->hide();
+    //
+    //
 
     this->setObjectName("node_graph");
     this->setScene(scene);
@@ -39,6 +47,7 @@ void node_graph::setup_shortcut()
 {
     qt::shortcut("Escape", this, [this]() {
         this->select_all(false);
+        node_rename_edit->hide();
     });
 
     qt::shortcut("Ctrl+A", this, [this]() {
@@ -46,35 +55,33 @@ void node_graph::setup_shortcut()
     });
 
     qt::shortcut("N", this, [this]() {
-        this->change_node_name();
+        this->change_node_name_dialog();
     });
+}
+
+void node_graph::change_node_name_dialog()
+{
+    node *selected_node = selected_nodes->last();
+    if (selected_node == NULL)
+        return;
+
+    node_rename_edit->setText(selected_node->get_name());
+    QPoint position = this->mapFromGlobal(QCursor::pos());
+
+    node_rename_edit->move(position);
+    node_rename_edit->setFocus();
+    node_rename_edit->show();
 }
 
 void node_graph::change_node_name()
 {
     // cambia el nombre al ultimo nodo seleccionado
     node *selected_node = selected_nodes->last();
-
     if (selected_node == NULL)
         return;
 
-    QString name = "Nodos";
-
-    node_rename_edit->setText("hola");
-
-    // get the position relative to the scene
-    QPointF sp = selected_node->scenePos();
-    // or use
-    sp = selected_node->mapToScene(selected_node->pos());
-
-    // find the global (screen) position of the item
-    QPoint global = this->mapToGlobal(this->mapFromScene(sp));
-
-    node_rename_edit->move(sp.x(), sp.y());
-    node_rename_edit->show();
-    // selected_node->set_name(name);
-
-    print(selected_node);
+    selected_node->set_name(node_rename_edit->text());
+    node_rename_edit->hide();
 }
 
 node *node_graph::add_node(QString name, QString icon_name, int x, int y)

@@ -46,6 +46,7 @@ public:
     ~node_graph();
 
     node *add_node(QString name, QString icon_name, int x, int y);
+    void change_node_name_dialog();
     void change_node_name();
 };
 

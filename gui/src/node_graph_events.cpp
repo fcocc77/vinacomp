@@ -17,5 +17,7 @@ void node_graph::mousePressEvent(QMouseEvent *event)
     if (!qt::alt())
         select_all(false);
 
+    node_rename_edit->hide();
+
     graphics_view::mousePressEvent(event);
 }
