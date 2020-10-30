@@ -124,6 +124,39 @@ node *node_graph::add_node(QString name, QString icon_name, int x, int y, QStrin
     return _node;
 }
 
+void node_graph::connect_node(QPoint position_node)
+{
+    // si un enlace input de un nodo esta siendo arrastrado para  conectarlo a otro nodo,
+    // 'link_connecting' no estara vacio y se determinara
+    // si se conecta o no al nodo de destino.
+    if (!link_connecting->empty())
+    {
+        QString node_name = link_connecting->value("name").toString();
+        int link_index = link_connecting->value("index").toInt();
+
+        node *from_node = nodes->value(node_name);
+        node_link *link = get_node_link(from_node, link_index);
+
+        node *to_node = get_node_from_position(position_node);
+        if (!to_node)
+            link->disconnect_node();
+        else
+        {
+            // evita que se conecte asi mismo
+            if (from_node != to_node)
+            {
+                link->connect_node(to_node);
+                to_node->add_output_node(from_node);
+            }
+            else
+                link->disconnect_node();
+        }
+        *link_connecting = {};
+    }
+    //
+    //
+}
+
 void node_graph::select_node(QString name, bool select)
 {
     node *_node = nodes->value(name);

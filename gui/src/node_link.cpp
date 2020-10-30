@@ -15,10 +15,6 @@ node_link::node_link(
 
     link_size = 70;
 
-    // nombre para identificar que es un link
-    this->setData(0, "link");
-    //
-
     QPen pen(Qt::black);
     pen.setWidth(4);
 
@@ -26,6 +22,18 @@ node_link::node_link(
     this->setLine(0, 0, 0, link_size);
 
     scene->addItem(this);
+    //
+
+    // Flecha
+    arrow = new QGraphicsPolygonItem();
+    arrow->setParentItem(this);
+    //
+    //
+
+    // nombre para identificar que es un link
+    this->setData(0, "link");
+    arrow->setData(0, "link");
+    //
 
     refresh();
 }
@@ -56,6 +64,47 @@ void node_link::set_selected(bool enable)
     }
 }
 
+void node_link::arrow_refresh(QPointF point_a, QPointF point_b)
+{
+    float width = 10;
+    float height = 30;
+
+    QPolygonF triangle;
+    triangle.append(QPointF(-width, 0));
+    triangle.append(QPointF(0., height));
+    triangle.append(QPointF(width, 0));
+    triangle.append(QPointF(-width, 0));
+
+    arrow->setPolygon(triangle);
+
+    QBrush arrow_brush(Qt::black);
+    arrow->setBrush(arrow_brush);
+
+    // calcular la rotacion
+    double delta_y = (point_a.y() - point_b.y());
+    double delta_x = (point_b.x() - point_a.x());
+
+    float rotation = atan2(delta_x, delta_y) * 180 / M_PI;
+    arrow->setRotation(rotation);
+    //
+
+    // calcular la distancia entre el centro del nodo hasta el border
+    auto node_size = _node->get_size();
+    float node_width_x = node_size.value(0) / 2;
+    float node_width_y = node_size.value(1) / 2;
+
+    float max_angle = atan2(node_width_x, node_width_y) * 180 / M_PI;
+
+    // float distance_form_angle = (node_width_y + ((diagonal - node_width_y) * (rotation / max_angle)));
+    //
+
+    node_width_x *= rotation / max_angle;
+    int diagonal = sqrt(pow(node_width_x, 2) + pow(node_width_y, 2));
+
+    arrow->setPos(point_a.x(), point_a.y() - diagonal - 30);
+    arrow->setTransformOriginPoint(0, diagonal + 30);
+}
+
 void node_link::update_connection()
 {
     QPointF src_pos, dst_pos;
@@ -67,6 +116,8 @@ void node_link::update_connection()
         dst_pos = {src_pos.x(), src_pos.y() - link_size};
 
     this->setLine(src_pos.x(), src_pos.y(), dst_pos.x(), dst_pos.y());
+
+    arrow_refresh(src_pos, dst_pos);
 }
 
 void node_link::connect_node(node *_node)
@@ -106,6 +157,7 @@ void node_link::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     float y = node_position.y();
 
     this->setLine(x, y, pos.x(), pos.y());
+    arrow_refresh(node_position, pos);
 
     *link_connecting = {{"name", _node->get_name()},
                         {"index", index}};

@@ -31,6 +31,7 @@ private:
     void refresh_selected_nodes();
     void setup_shortcut();
     node *get_node_from_position(QPoint position);
+    void connect_node(QPoint position_node);
 
     QGraphicsScene *scene;
 

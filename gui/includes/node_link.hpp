@@ -4,8 +4,11 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsLineItem>
 #include <QGraphicsScene>
+#include <QGraphicsPolygonItem>
 #include <QPoint>
 #include <QString>
+
+#include <math.h>
 
 #include <util.hpp>
 #include <node.hpp>
@@ -19,6 +22,10 @@ private:
     QJsonObject *link_connecting;
     int link_size;
     int index;
+
+    QGraphicsPolygonItem *arrow;
+
+    void arrow_refresh(QPointF point_a, QPointF point_b);
 
     // Event
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
