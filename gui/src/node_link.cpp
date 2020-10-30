@@ -27,6 +27,8 @@ node_link::node_link(
     // Flecha
     arrow = new QGraphicsPolygonItem();
     arrow->setParentItem(this);
+    QBrush arrow_brush(Qt::black);
+    arrow->setBrush(arrow_brush);
     //
     //
 
@@ -52,15 +54,25 @@ void node_link::set_selected(bool enable)
 {
     if (_node->is_selected())
     {
-        QPen pen(Qt::white);
-        pen.setWidth(6);
-        this->setPen(pen);
+        QPen link_pen(Qt::white);
+        link_pen.setWidth(6);
+        this->setPen(link_pen);
+
+        QBrush arrow_brush(Qt::white);
+        QPen arrow_pen(Qt::white);
+        arrow->setBrush(arrow_brush);
+        arrow->setPen(arrow_pen);
     }
     else
     {
-        QPen pen(Qt::black);
-        pen.setWidth(4);
-        this->setPen(pen);
+        QPen link_pen(Qt::black);
+        link_pen.setWidth(4);
+        this->setPen(link_pen);
+
+        QBrush arrow_brush(Qt::black);
+        QPen arrow_pen(Qt::black);
+        arrow->setBrush(arrow_brush);
+        arrow->setPen(arrow_pen);
     }
 }
 
@@ -68,6 +80,7 @@ void node_link::arrow_refresh(QPointF point_a, QPointF point_b)
 {
     float width = 10;
     float height = 30;
+    int center_separation = 35;
 
     QPolygonF triangle;
     triangle.append(QPointF(-width, 0));
@@ -76,9 +89,6 @@ void node_link::arrow_refresh(QPointF point_a, QPointF point_b)
     triangle.append(QPointF(-width, 0));
 
     arrow->setPolygon(triangle);
-
-    QBrush arrow_brush(Qt::black);
-    arrow->setBrush(arrow_brush);
 
     // calcular la rotacion
     double delta_y = (point_a.y() - point_b.y());
@@ -95,14 +105,24 @@ void node_link::arrow_refresh(QPointF point_a, QPointF point_b)
 
     float max_angle = atan2(node_width_x, node_width_y) * 180 / M_PI;
 
-    // float distance_form_angle = (node_width_y + ((diagonal - node_width_y) * (rotation / max_angle)));
+    int diagonal;
+
+    int bottom_box = max_angle + (90 - max_angle) * 2;
+    if (rotation < max_angle && rotation > -max_angle || rotation > bottom_box || rotation < -bottom_box)
+    {
+        int _width = (tan(rotation * M_PI / 180)) * node_width_y;
+        diagonal = sqrt(pow(_width, 2) + pow(node_width_y, 2));
+    }
+    else
+    {
+        int _height = (tan((rotation + 90) * M_PI / 180)) * node_width_x;
+        diagonal = sqrt(pow(_height, 2) + pow(node_width_x, 2));
+    }
+    //
     //
 
-    node_width_x *= rotation / max_angle;
-    int diagonal = sqrt(pow(node_width_x, 2) + pow(node_width_y, 2));
-
-    arrow->setPos(point_a.x(), point_a.y() - diagonal - 30);
-    arrow->setTransformOriginPoint(0, diagonal + 30);
+    arrow->setPos(point_a.x(), point_a.y() - diagonal - center_separation);
+    arrow->setTransformOriginPoint(0, diagonal + center_separation);
 }
 
 void node_link::update_connection()
