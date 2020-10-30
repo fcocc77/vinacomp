@@ -11,14 +11,17 @@ void node_graph::mouseReleaseEvent(QMouseEvent *event)
         QString node_name = link_connecting->value("name").toString();
         int link_index = link_connecting->value("index").toInt();
 
-        node_link *link = get_node_link(node_name, link_index);
+        node *from_node = nodes->value(node_name);
+        node_link *link = get_node_link(from_node, link_index);
 
-        node *_node = get_node_from_position(event->pos());
-        if (_node == NULL)
+        node *to_node = get_node_from_position(event->pos());
+        if (!to_node)
             link->disconnect_node();
         else
-            link->connect_node(_node);
-
+        {
+            link->connect_node(to_node);
+            to_node->add_output_node(from_node);
+        }
         *link_connecting = {};
     }
     //
@@ -37,14 +40,13 @@ void node_graph::mouseMoveEvent(QMouseEvent *event)
 
 void node_graph::mousePressEvent(QMouseEvent *event)
 {
-
     if (!qt::alt())
     {
         if (!qt::shift())
             select_all(false);
 
         node *_node = get_node_from_position(event->pos());
-        if (_node != NULL)
+        if (_node)
             select_node(_node->get_name(), true);
     }
 

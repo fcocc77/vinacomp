@@ -18,7 +18,7 @@ class node : public QGraphicsPathItem
 {
 private:
     QGraphicsScene *scene;
-    QMap<QString, node *> *selected_nodes;
+    QMap<QString, node *> *nodes_connected_to_the_output;
 
     QPoint *center_position;
 
@@ -37,7 +37,6 @@ private:
 
 public:
     node(QGraphicsScene *_scene,
-         QMap<QString, node *> *_selected_nodes,
          int *_current_z_value);
     ~node();
 
@@ -49,7 +48,9 @@ public:
     QList<int> get_size();
     void set_icon(QString icon_name);
     void set_selected_style(bool enable);
-
+    QMap<QString, node *> *get_output_nodes();
+    void add_output_node(node *_node);
+    void remove_output_node(node *_node);
 };
 
 #endif // NODE_H

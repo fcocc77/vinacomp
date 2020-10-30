@@ -58,7 +58,7 @@ public:
     void change_node_name_dialog();
     void change_node_name();
     void select_node(QString name, bool select);
-    node_link *get_node_link(QString node_name, int link_index);
+    node_link *get_node_link(node *_node, int link_index);
 };
 
 #endif // NODE_GRAPH_H

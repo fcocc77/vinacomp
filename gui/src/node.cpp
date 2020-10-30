@@ -1,14 +1,13 @@
 #include <node.hpp>
 
 node::node(QGraphicsScene *_scene,
-           QMap<QString, node *> *_selected_nodes,
            int *_current_z_value)
 {
     scene = _scene;
-    selected_nodes = _selected_nodes;
     current_z_value = _current_z_value;
 
     center_position = new QPoint;
+    nodes_connected_to_the_output = new QMap<QString, node *>;
 
     minimum_width = 150;
     minimum_height = 50;
@@ -158,4 +157,19 @@ QList<int> node::get_size()
 void node::set_position(int x, int y)
 {
     this->setPos(x, y);
+}
+
+void node::add_output_node(node *_node)
+{
+    nodes_connected_to_the_output->insert(_node->get_name(), _node);
+}
+
+void node::remove_output_node(node *_node)
+{
+    nodes_connected_to_the_output->remove(_node->get_name());
+}
+
+QMap<QString, node *> *node::get_output_nodes()
+{
+    return nodes_connected_to_the_output;
 }

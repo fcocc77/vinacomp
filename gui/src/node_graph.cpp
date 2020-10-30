@@ -50,11 +50,6 @@ node_graph::~node_graph()
 
 void node_graph::setup_shortcut()
 {
-    qt::shortcut("Escape", this, [this]() {
-        this->select_all(false);
-        node_rename_edit->hide();
-    });
-
     qt::shortcut("Ctrl+A", this, [this]() {
         this->select_all(true);
     });
@@ -106,7 +101,7 @@ void node_graph::change_node_name()
 node *node_graph::add_node(QString name, QString icon_name, int x, int y, QString tips)
 {
 
-    node *_node = new node(scene, selected_nodes, current_z_value);
+    node *_node = new node(scene, current_z_value);
     _node->set_name(name);
     _node->set_position(x, y);
     _node->set_icon(icon_name);
@@ -148,11 +143,11 @@ node *node_graph::get_node_from_position(QPoint position)
     // ya que el nodo esta compuesto por muchos hijos, al dar click puede ser un hijo,
     // y si es un hijo obtiene el nodo padre para poder extraer el nombre del nodo.
     QGraphicsItem *item = scene->itemAt(mapToScene(position), QTransform());
-    if (item == NULL)
+    if (!item)
         return NULL;
 
     QGraphicsItem *parent_item = item->parentItem();
-    if (parent_item != NULL)
+    if (parent_item)
         item = parent_item;
     //
     //
@@ -161,13 +156,12 @@ node *node_graph::get_node_from_position(QPoint position)
     return nodes->value(node_name);
 }
 
-node_link *node_graph::get_node_link(QString node_name, int link_index)
+node_link *node_graph::get_node_link(node *_node, int link_index)
 {
-    node *_node = nodes->value(node_name);
-    if (_node == NULL)
+    if (!_node)
         return NULL;
 
-    auto links = nodes_links->value(node_name);
+    auto links = nodes_links->value(_node->get_name());
 
     node_link *link = links->value(link_index);
 
@@ -184,16 +178,22 @@ void node_graph::select_all(bool select)
 
 void node_graph::refresh_selected_nodes()
 {
-    // refresca los link de cada nodo seleccionado
-    for (node *_node : *selected_nodes)
-    {
+    auto refresh_node_link = [this](node *_node) {
         QList<node_link *> *links = nodes_links->value(_node->get_name());
-
-        if (links == NULL)
-            continue;
+        if (!links)
+            return;
 
         for (node_link *_node_link : *links)
             _node_link->refresh();
+    };
+
+    // refresca los link de cada nodo seleccionado y los
+    // link de los nodos que estan conectados a la salida.
+    for (node *selected_node : *selected_nodes)
+    {
+        refresh_node_link(selected_node);
+        for (node *output_node : *selected_node->get_output_nodes())
+            refresh_node_link(output_node);
     }
     //
 }

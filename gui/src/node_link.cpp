@@ -57,6 +57,9 @@ void node_link::connect_node(node *_node)
 
 void node_link::disconnect_node()
 {
+    if (connected_node)
+        connected_node->remove_output_node(_node);
+
     connected_node = NULL;
     update_connection();
 }
