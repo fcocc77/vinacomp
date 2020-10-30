@@ -6,7 +6,7 @@ node::node(QGraphicsScene *_scene,
     scene = _scene;
     current_z_value = _current_z_value;
 
-    center_position = new QPoint;
+    center_position = new QPointF;
     nodes_connected_to_the_output = new QMap<QString, node *>;
 
     minimum_width = 150;
@@ -106,10 +106,10 @@ void node::set_selected_style(bool enable)
     }
 }
 
-QPoint node::get_center_position()
+QPointF node::get_center_position()
 {
-    int x = this->x() + current_width / 2;
-    int y = this->y() + current_height / 2;
+    float x = this->x() + current_width / 2;
+    float y = this->y() + current_height / 2;
 
     *center_position = {x, y};
 

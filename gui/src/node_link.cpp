@@ -35,7 +35,7 @@ void node_link::refresh()
 
 void node_link::update_connection()
 {
-    QPoint src_pos, dst_pos;
+    QPointF src_pos, dst_pos;
 
     src_pos = _node->get_center_position();
     if (connected_node != NULL)
@@ -77,10 +77,10 @@ void node_link::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 void node_link::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     QPointF pos = mapToScene(event->pos());
-    QPoint node_position = _node->get_center_position();
+    QPointF node_position = _node->get_center_position();
 
-    int x = node_position.x();
-    int y = node_position.y();
+    float x = node_position.x();
+    float y = node_position.y();
 
     this->setLine(x, y, pos.x(), pos.y());
 

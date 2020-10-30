@@ -20,7 +20,7 @@ private:
     QGraphicsScene *scene;
     QMap<QString, node *> *nodes_connected_to_the_output;
 
-    QPoint *center_position;
+    QPointF *center_position;
 
     int minimum_width;
     int minimum_height;
@@ -44,7 +44,7 @@ public:
     void set_tips(QString tips);
     QString get_name();
     void set_position(int x, int y);
-    QPoint get_center_position();
+    QPointF get_center_position();
     QList<int> get_size();
     void set_icon(QString icon_name);
     void set_selected_style(bool enable);
