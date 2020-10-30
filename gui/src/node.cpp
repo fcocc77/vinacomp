@@ -86,8 +86,9 @@ void node::change_size_rectangle(int _width, int _height)
     this->setPath(rectangle);
 }
 
-void node::set_selected_style(bool enable)
+void node::set_selected(bool enable)
 {
+    selected = enable;
     if (enable)
     {
         QPen pen(Qt::white);
@@ -104,6 +105,11 @@ void node::set_selected_style(bool enable)
         pen.setWidth(1);
         this->setPen(pen);
     }
+}
+
+bool node::is_selected()
+{
+    return selected;
 }
 
 QPointF node::get_center_position()

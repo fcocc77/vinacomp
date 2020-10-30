@@ -13,11 +13,17 @@ node_link::node_link(
     connected_node = NULL;
     index = _index;
 
+    link_size = 70;
+
+    // nombre para identificar que es un link
+    this->setData(0, "link");
+    //
+
     QPen pen(Qt::black);
-    pen.setWidth(5);
+    pen.setWidth(4);
 
     this->setPen(pen);
-    this->setLine(0, 0, 0, 50);
+    this->setLine(0, 0, 0, link_size);
 
     scene->addItem(this);
 
@@ -30,7 +36,24 @@ node_link::~node_link()
 
 void node_link::refresh()
 {
+    set_selected(_node->is_selected());
     update_connection();
+}
+
+void node_link::set_selected(bool enable)
+{
+    if (_node->is_selected())
+    {
+        QPen pen(Qt::white);
+        pen.setWidth(6);
+        this->setPen(pen);
+    }
+    else
+    {
+        QPen pen(Qt::black);
+        pen.setWidth(4);
+        this->setPen(pen);
+    }
 }
 
 void node_link::update_connection()
@@ -41,7 +64,7 @@ void node_link::update_connection()
     if (connected_node != NULL)
         dst_pos = connected_node->get_center_position();
     else
-        dst_pos = {src_pos.x(), src_pos.y() - 50};
+        dst_pos = {src_pos.x(), src_pos.y() - link_size};
 
     this->setLine(src_pos.x(), src_pos.y(), dst_pos.x(), dst_pos.y());
 }

@@ -17,6 +17,7 @@ private:
     node *_node;
     node *connected_node;
     QJsonObject *link_connecting;
+    int link_size;
     int index;
 
     // Event
@@ -35,6 +36,7 @@ public:
     void update_connection();
     void connect_node(node *_node);
     void disconnect_node();
+    void set_selected(bool enable);
 };
 
 #endif // NODE_LINK_H

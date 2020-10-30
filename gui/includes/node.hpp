@@ -21,6 +21,7 @@ private:
     QMap<QString, node *> *nodes_connected_to_the_output;
 
     QPointF *center_position;
+    bool selected = false;
 
     int minimum_width;
     int minimum_height;
@@ -47,10 +48,11 @@ public:
     QPointF get_center_position();
     QList<int> get_size();
     void set_icon(QString icon_name);
-    void set_selected_style(bool enable);
+    void set_selected(bool enable);
     QMap<QString, node *> *get_output_nodes();
     void add_output_node(node *_node);
     void remove_output_node(node *_node);
+    bool is_selected();
 };
 
 #endif // NODE_H

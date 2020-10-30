@@ -42,12 +42,19 @@ void node_graph::mousePressEvent(QMouseEvent *event)
 {
     if (!qt::alt())
     {
-        if (!qt::shift())
-            select_all(false);
+        QGraphicsItem *item = scene->itemAt(mapToScene(event->pos()), QTransform());
+        QString item_name = item->data(0).toString();
 
-        node *_node = get_node_from_position(event->pos());
-        if (_node)
-            select_node(_node->get_name(), true);
+        // impide la seleccion de nodos si se hizo el click en un link
+        if (item_name != "link")
+        {
+            if (!qt::shift())
+                select_all(false);
+
+            node *_node = get_node_from_position(event->pos());
+            if (_node)
+                select_node(_node->get_name(), true);
+        }
     }
 
     node_rename_edit->hide();

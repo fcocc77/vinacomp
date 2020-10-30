@@ -130,7 +130,10 @@ void node_graph::select_node(QString name, bool select)
     if (_node == NULL)
         return;
 
-    _node->set_selected_style(select);
+    _node->set_selected(select);
+
+    for (node_link *link : *nodes_links->value(name))
+        link->set_selected(select);
 
     if (select)
         selected_nodes->insert(name, _node);
