@@ -26,7 +26,7 @@ node_graph::node_graph(QJsonObject *_project)
     nodes = new QMap<QString, node *>;
     nodes_links = new QMap<QString, QList<node_link *> *>;
     selected_nodes = new QMap<QString, node *>;
-    link_connecting = new QString();
+    link_connecting = new QJsonObject();
 
     current_z_value = new int();
 
@@ -143,20 +143,35 @@ void node_graph::select_node(QString name, bool select)
         selected_nodes->remove(name);
 }
 
-QString node_graph::get_node_name_from_position(QPoint position)
+node *node_graph::get_node_from_position(QPoint position)
 {
     // ya que el nodo esta compuesto por muchos hijos, al dar click puede ser un hijo,
     // y si es un hijo obtiene el nodo padre para poder extraer el nombre del nodo.
     QGraphicsItem *item = scene->itemAt(mapToScene(position), QTransform());
     if (item == NULL)
-        return "";
+        return NULL;
 
     QGraphicsItem *parent_item = item->parentItem();
     if (parent_item != NULL)
         item = parent_item;
     //
     //
-    return item->data(0).toString();
+    QString node_name = item->data(0).toString();
+
+    return nodes->value(node_name);
+}
+
+node_link *node_graph::get_node_link(QString node_name, int link_index)
+{
+    node *_node = nodes->value(node_name);
+    if (_node == NULL)
+        return NULL;
+
+    auto links = nodes_links->value(node_name);
+
+    node_link *link = links->value(link_index);
+
+    return link;
 }
 
 void node_graph::select_all(bool select)

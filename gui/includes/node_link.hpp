@@ -16,7 +16,7 @@ private:
     QGraphicsScene *scene;
     node *_node;
     node *connected_node;
-    QString *link_connecting;
+    QJsonObject *link_connecting;
     int index;
 
     // Event
@@ -28,7 +28,7 @@ public:
     node_link(int _index,
               QGraphicsScene *_scene,
               node *_node,
-              QString *_link_connecting);
+              QJsonObject *_link_connecting);
     ~node_link();
 
     void refresh();

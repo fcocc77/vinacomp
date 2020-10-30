@@ -4,7 +4,7 @@ node_link::node_link(
     int _index,
     QGraphicsScene *_scene,
     node *__node,
-    QString *_link_connecting)
+    QJsonObject *_link_connecting)
 {
 
     scene = _scene;
@@ -48,6 +48,9 @@ void node_link::update_connection()
 
 void node_link::connect_node(node *_node)
 {
+    if (_node == NULL)
+        return;
+
     connected_node = _node;
     update_connection();
 }
@@ -78,5 +81,6 @@ void node_link::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
     this->setLine(x, y, pos.x(), pos.y());
 
-    *link_connecting = _node->get_name() + QString::number(index);
+    *link_connecting = {{"name", _node->get_name()},
+                        {"index", index}};
 }

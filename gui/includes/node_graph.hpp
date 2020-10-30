@@ -30,7 +30,7 @@ private:
     void select_all(bool select);
     void refresh_selected_nodes();
     void setup_shortcut();
-    QString get_node_name_from_position(QPoint position);
+    node *get_node_from_position(QPoint position);
 
     QGraphicsScene *scene;
 
@@ -38,7 +38,7 @@ private:
     QMap<QString, node *> *selected_nodes;
     QMap<QString, QList<node_link *> *> *nodes_links;
 
-    QString *link_connecting;
+    QJsonObject *link_connecting;
 
     QJsonObject *project;
     int *current_z_value;
@@ -58,6 +58,7 @@ public:
     void change_node_name_dialog();
     void change_node_name();
     void select_node(QString name, bool select);
+    node_link *get_node_link(QString node_name, int link_index);
 };
 
 #endif // NODE_GRAPH_H
