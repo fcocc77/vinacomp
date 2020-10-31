@@ -25,7 +25,9 @@ private:
 
     QGraphicsPolygonItem *arrow;
 
-    void arrow_refresh(QPointF point_a, QPointF point_b);
+    float arrow_refresh(QPointF point_a, QPointF point_b);
+    void link_refresh(QPointF point_a, QPointF point_b);
+    QLineF subtract_distance_line(QLineF line, float distance);
 
     // Event
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
