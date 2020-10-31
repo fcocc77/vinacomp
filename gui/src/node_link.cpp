@@ -42,6 +42,17 @@ node_link::node_link(
     //
     //
 
+    //  Texto
+    text = new QGraphicsTextItem();
+    QFont font;
+    font.setPointSize(10);
+    text->setFont(font);
+    text->setPlainText("Input");
+    text->setDefaultTextColor(QColor(200, 200, 200));
+    scene->addItem(text);
+    //
+    //
+
     // nombre para identificar que es un link
     this->setData(0, "link");
     link->setData(0, "link");
@@ -78,6 +89,14 @@ float node_link::get_long(QPointF point_a, QPointF point_b)
     return sqrt(x + y);
 }
 
+QPointF node_link::get_center(QPointF point_a, QPointF point_b)
+{
+    float x = (point_a.x() + point_b.x()) / 2;
+    float y = (point_a.y() + point_b.y()) / 2;
+
+    return {x, y};
+}
+
 void node_link::set_selected(bool enable)
 {
     if (_node->is_selected())
@@ -102,6 +121,19 @@ void node_link::set_selected(bool enable)
         arrow->setBrush(arrow_brush);
         arrow->setPen(arrow_pen);
     }
+}
+
+void node_link::text_refresh(QPointF point_a, QPointF point_b)
+{
+    QPointF center = get_center(point_a, point_b);
+
+    int text_width = text->boundingRect().width();
+    int text_height = text->boundingRect().height();
+
+    if (dragging || connected_node)
+        text->setPos(center.x() - (text_width / 2), center.y() - (text_height / 2));
+    else
+        text->setPos(point_b.x() - (text_width / 2), point_b.y() - text_height);
 }
 
 float node_link::arrow_refresh(QPointF point_a, QPointF point_b)
@@ -173,6 +205,7 @@ void node_link::link_refresh(QPointF point_a, QPointF point_b)
     link->setLine(line);
 
     bbox_refresh(point_a, point_b);
+    text_refresh(point_a, point_b);
 }
 
 QLineF node_link::subtract_distance_line(QLineF line, float distance)
@@ -225,11 +258,14 @@ void node_link::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void node_link::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
+    dragging = false;
     update_connection();
 }
 
 void node_link::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
+    dragging = true;
+
     QPointF pos = mapToScene(event->pos());
     QPointF node_position = _node->get_center_position();
 
