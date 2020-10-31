@@ -131,9 +131,22 @@ void node_link::text_refresh(QPointF point_a, QPointF point_b)
     int text_height = text->boundingRect().height();
 
     if (dragging || connected_node)
+    {
         text->setPos(center.x() - (text_width / 2), center.y() - (text_height / 2));
+
+        if (!dragging)
+        {
+            if (get_long(point_a, point_b) > (text_width + 250))
+                text->show();
+            else
+                text->hide();
+        }
+    }
     else
+    {
         text->setPos(point_b.x() - (text_width / 2), point_b.y() - text_height);
+        text->show();
+    }
 }
 
 float node_link::arrow_refresh(QPointF point_a, QPointF point_b)
