@@ -134,7 +134,11 @@ void node_link::text_refresh(QPointF point_a, QPointF point_b)
     {
         text->setPos(center.x() - (text_width / 2), center.y() - (text_height / 2));
 
-        if (!dragging)
+        if (dragging)
+        {
+            text->show();
+        }
+        else
         {
             if (get_long(point_a, point_b) > (text_width + 250))
                 text->show();
