@@ -5,6 +5,7 @@
 #include <QGraphicsLineItem>
 #include <QGraphicsScene>
 #include <QGraphicsPolygonItem>
+#include <QGraphicsRectItem>
 #include <QPoint>
 #include <QString>
 
@@ -13,7 +14,7 @@
 #include <util.hpp>
 #include <node.hpp>
 
-class node_link : public QGraphicsLineItem
+class node_link : public QGraphicsRectItem
 {
 private:
     QGraphicsScene *scene;
@@ -22,12 +23,16 @@ private:
     QJsonObject *link_connecting;
     int link_size;
     int index;
+    QGraphicsLineItem *link;
 
     QGraphicsPolygonItem *arrow;
 
     float arrow_refresh(QPointF point_a, QPointF point_b);
     void link_refresh(QPointF point_a, QPointF point_b);
+    void bbox_refresh(QPointF point_a, QPointF point_b);
     QLineF subtract_distance_line(QLineF line, float distance);
+    float get_rotation(QPointF point_a, QPointF point_b);
+    float get_long(QPointF point_a, QPointF point_b);
 
     // Event
     void mousePressEvent(QGraphicsSceneMouseEvent *event);

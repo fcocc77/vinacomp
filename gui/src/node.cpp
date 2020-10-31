@@ -47,7 +47,7 @@ node::node(QGraphicsScene *_scene,
         ramp.setColorAt(0.5001, QColor(150, 150, 150));
 
         QBrush color(ramp);
-        pen.setWidth(1);
+        pen.setWidth(0);
         this->setBrush(color);
         this->setPen(pen);
     }
@@ -102,7 +102,7 @@ void node::set_selected(bool enable)
     else
     {
         QPen pen(Qt::black);
-        pen.setWidth(1);
+        pen.setWidth(0);
         this->setPen(pen);
     }
 }

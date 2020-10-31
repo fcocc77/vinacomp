@@ -13,27 +13,38 @@ node_link::node_link(
     connected_node = NULL;
     index = _index;
 
+    // Link
     link_size = 70;
-
+    link = new QGraphicsLineItem();
     QPen pen(Qt::black);
     pen.setWidth(4);
+    link->setPen(pen);
+    link->setLine(0, 0, 0, link_size);
+    scene->addItem(link);
+    //
+    //
 
-    this->setPen(pen);
-    this->setLine(0, 0, 0, link_size);
-
+    // Ajuste del rectangulo, el rectangulo es esta misma clase
+    // y es transparente, por que es solo
+    // para que el agarre de la flecha funcione mejor.
+    QPen rectangle_pen(Qt::transparent);
+    rectangle_pen.setWidth(1);
+    this->setPen(rectangle_pen);
     scene->addItem(this);
+    //
     //
 
     // Flecha
     arrow = new QGraphicsPolygonItem();
-    arrow->setParentItem(this);
     QBrush arrow_brush(Qt::black);
     arrow->setBrush(arrow_brush);
+    scene->addItem(arrow);
     //
     //
 
     // nombre para identificar que es un link
     this->setData(0, "link");
+    link->setData(0, "link");
     arrow->setData(0, "link");
     //
 
@@ -50,13 +61,30 @@ void node_link::refresh()
     update_connection();
 }
 
+float node_link::get_rotation(QPointF point_a, QPointF point_b)
+{
+    // calcular la rotacion a partir de 2 puntos
+    double delta_y = (point_a.y() - point_b.y());
+    double delta_x = (point_b.x() - point_a.x());
+
+    return atan2(delta_x, delta_y) * 180 / M_PI;
+}
+
+float node_link::get_long(QPointF point_a, QPointF point_b)
+{
+    float x = pow(point_b.x() - point_a.x(), 2);
+    float y = pow(point_b.y() - point_a.y(), 2);
+
+    return sqrt(x + y);
+}
+
 void node_link::set_selected(bool enable)
 {
     if (_node->is_selected())
     {
         QPen link_pen(Qt::white);
         link_pen.setWidth(5);
-        this->setPen(link_pen);
+        link->setPen(link_pen);
 
         QBrush arrow_brush(Qt::white);
         QPen arrow_pen(Qt::white);
@@ -66,8 +94,8 @@ void node_link::set_selected(bool enable)
     else
     {
         QPen link_pen(Qt::black);
-        link_pen.setWidth(3);
-        this->setPen(link_pen);
+        link_pen.setWidth(2);
+        link->setPen(link_pen);
 
         QBrush arrow_brush(Qt::black);
         QPen arrow_pen(Qt::black);
@@ -90,11 +118,7 @@ float node_link::arrow_refresh(QPointF point_a, QPointF point_b)
 
     arrow->setPolygon(triangle);
 
-    // calcular la rotacion
-    double delta_y = (point_a.y() - point_b.y());
-    double delta_x = (point_b.x() - point_a.x());
-
-    float rotation = atan2(delta_x, delta_y) * 180 / M_PI;
+    float rotation = get_rotation(point_a, point_b);
     arrow->setRotation(rotation);
     //
 
@@ -127,12 +151,28 @@ float node_link::arrow_refresh(QPointF point_a, QPointF point_b)
     return diagonal;
 }
 
+void node_link::bbox_refresh(QPointF point_a, QPointF point_b)
+{
+    int width = 40;
+    int height = get_long(point_a, point_b);
+
+    QRect rect(-width / 2, -height, width, height);
+
+    this->setRect(rect);
+    this->setPos(point_a.x(), point_a.y());
+
+    float rotation = get_rotation(point_a, point_b);
+    this->setRotation(rotation);
+}
+
 void node_link::link_refresh(QPointF point_a, QPointF point_b)
 {
     float diagonal = arrow_refresh(point_a, point_b);
 
     QLineF line = subtract_distance_line(QLineF(point_a, point_b), diagonal + 20);
-    this->setLine(line);
+    link->setLine(line);
+
+    bbox_refresh(point_a, point_b);
 }
 
 QLineF node_link::subtract_distance_line(QLineF line, float distance)
