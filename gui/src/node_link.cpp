@@ -55,7 +55,7 @@ void node_link::set_selected(bool enable)
     if (_node->is_selected())
     {
         QPen link_pen(Qt::white);
-        link_pen.setWidth(6);
+        link_pen.setWidth(5);
         this->setPen(link_pen);
 
         QBrush arrow_brush(Qt::white);
@@ -66,7 +66,7 @@ void node_link::set_selected(bool enable)
     else
     {
         QPen link_pen(Qt::black);
-        link_pen.setWidth(4);
+        link_pen.setWidth(3);
         this->setPen(link_pen);
 
         QBrush arrow_brush(Qt::black);
@@ -131,7 +131,7 @@ void node_link::link_refresh(QPointF point_a, QPointF point_b)
 {
     float diagonal = arrow_refresh(point_a, point_b);
 
-    QLineF line = subtract_distance_line(QLineF(point_a, point_b), diagonal + 30);
+    QLineF line = subtract_distance_line(QLineF(point_a, point_b), diagonal + 20);
     this->setLine(line);
 }
 
