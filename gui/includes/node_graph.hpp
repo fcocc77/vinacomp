@@ -27,12 +27,6 @@ class node_graph : public graphics_view
 {
     Q_OBJECT
 private:
-    void select_all(bool select);
-    void refresh_selected_nodes();
-    void setup_shortcut();
-    node *get_node_from_position(QPoint position);
-    void connect_node(QPoint position_node);
-
     QGraphicsScene *scene;
 
     QMap<QString, node *> *nodes;
@@ -40,11 +34,20 @@ private:
     QMap<QString, QList<node_link *> *> *nodes_links;
 
     QJsonObject *link_connecting;
+    bool selecting = false;
+    QPointF selection_start_point;
 
     QJsonObject *project;
     int *current_z_value;
 
     QLineEdit *node_rename_edit;
+
+    void select_all(bool select);
+    void refresh_selected_nodes();
+    void setup_shortcut();
+    node *get_node_from_position(QPoint position);
+    void connect_node(QPoint position_node);
+    void select_nodes_by_area(QPointF selection_end_point);
 
     // Events
     void mouseReleaseEvent(QMouseEvent *event);

@@ -23,6 +23,11 @@ node_graph::node_graph(QJsonObject *_project)
     //
     //
 
+    // activacion de area de seleccion
+    this->setDragMode(QGraphicsView::RubberBandDrag);
+    //
+    //
+
     nodes = new QMap<QString, node *>;
     nodes_links = new QMap<QString, QList<node_link *> *>;
     selected_nodes = new QMap<QString, node *>;
@@ -191,7 +196,7 @@ node *node_graph::get_node_from_position(QPoint position)
     //
     QString node_name = item->data(0).toString();
 
-    return nodes->value(node_name);
+    return get_node(node_name);
 }
 
 node_link *node_graph::get_node_link(node *_node, int link_index)
@@ -212,6 +217,32 @@ void node_graph::select_all(bool select)
 
     for (node *_node : *nodes)
         select_node(_node->get_name(), select);
+}
+
+void node_graph::select_nodes_by_area(QPointF selection_end_point)
+{
+    QPainterPath rectangle;
+
+    int start_x = selection_start_point.x();
+    int start_y = selection_start_point.y();
+
+    int end_x = selection_end_point.x();
+    int end_y = selection_end_point.y();
+
+    int width = end_x - start_x;
+    int height = end_y - start_y;
+
+    QRectF rect(start_x, start_y, width, height);
+    rectangle.addRect(rect);
+
+    select_all(false);
+
+    QList<QGraphicsItem *> selected_items = scene->items(rectangle);
+    for (QGraphicsItem *item : selected_items)
+    {
+        QString node_name = item->data(0).toString();
+        select_node(node_name, true);
+    }
 }
 
 void node_graph::refresh_selected_nodes()
