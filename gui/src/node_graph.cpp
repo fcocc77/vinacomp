@@ -237,7 +237,8 @@ void node_graph::select_nodes_by_area(QPointF selection_end_point)
     QRectF rect(start_x, start_y, width, height);
     rectangle.addRect(rect);
 
-    select_all(false);
+    if (!qt::shift())
+        select_all(false);
 
     QList<QGraphicsItem *> selected_items = scene->items(rectangle);
     for (QGraphicsItem *item : selected_items)

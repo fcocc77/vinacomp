@@ -57,6 +57,7 @@ public:
     void connect_node(node *_node);
     void disconnect_node();
     void set_selected(bool enable);
+    node *get_connected_node();
 };
 
 #endif // NODE_LINK_H

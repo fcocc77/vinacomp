@@ -21,6 +21,11 @@ void node_graph::mousePressEvent(QMouseEvent *event)
 
                 select_node(_node->get_name(), true);
             }
+            else
+            {
+                if (!qt::shift())
+                    select_all(false);
+            }
         }
 
         // si el click no fue en un nodo, comienza el area de seleccion
@@ -50,6 +55,8 @@ void node_graph::mouseMoveEvent(QMouseEvent *event)
         if (!qt::alt())
             select_nodes_by_area(mapToScene(event->pos()));
 
-    this->refresh_selected_nodes();
+    if (!qt::alt())
+        this->refresh_selected_nodes();
+
     graphics_view::mouseMoveEvent(event);
 }

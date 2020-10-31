@@ -264,6 +264,11 @@ void node_link::connect_node(node *to_node)
     update_connection();
 }
 
+node *node_link::get_connected_node()
+{
+    return connected_node;
+}
+
 void node_link::disconnect_node()
 {
     if (connected_node)
