@@ -19,7 +19,7 @@ class node_link : public QGraphicsRectItem
 {
 private:
     QGraphicsScene *scene;
-    node *_node;
+    node *this_node;
     node *connected_node;
     QJsonObject *link_connecting;
     int link_size;

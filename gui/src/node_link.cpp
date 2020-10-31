@@ -8,7 +8,7 @@ node_link::node_link(
 {
 
     scene = _scene;
-    _node = __node;
+    this_node = __node;
     link_connecting = _link_connecting;
     connected_node = NULL;
     index = _index;
@@ -68,7 +68,7 @@ node_link::~node_link()
 
 void node_link::refresh()
 {
-    set_selected(_node->is_selected());
+    set_selected(this_node->is_selected());
     update_connection();
 }
 
@@ -99,7 +99,7 @@ QPointF node_link::get_center(QPointF point_a, QPointF point_b)
 
 void node_link::set_selected(bool enable)
 {
-    if (_node->is_selected())
+    if (this_node->is_selected())
     {
         QPen link_pen(Qt::white);
         link_pen.setWidth(5);
@@ -155,7 +155,7 @@ float node_link::arrow_refresh(QPointF point_a, QPointF point_b)
     //
 
     // calcular la distancia entre el centro del nodo hasta el borde
-    auto node_size = _node->get_size();
+    auto node_size = this_node->get_size();
     float node_width_x = node_size.value(0) / 2;
     float node_width_y = node_size.value(1) / 2;
 
@@ -224,7 +224,7 @@ void node_link::update_connection()
 {
     QPointF src_pos, dst_pos;
 
-    src_pos = _node->get_center_position();
+    src_pos = this_node->get_center_position();
     if (connected_node != NULL)
         dst_pos = connected_node->get_center_position();
     else
@@ -233,19 +233,24 @@ void node_link::update_connection()
     link_refresh(src_pos, dst_pos);
 }
 
-void node_link::connect_node(node *_node)
+void node_link::connect_node(node *to_node)
 {
-    if (_node == NULL)
+    if (to_node == NULL)
         return;
 
-    connected_node = _node;
+    if (connected_node)
+        connected_node->remove_output_node(this_node);
+
+    to_node->add_output_node(this_node);
+
+    connected_node = to_node;
     update_connection();
 }
 
 void node_link::disconnect_node()
 {
     if (connected_node)
-        connected_node->remove_output_node(_node);
+        connected_node->remove_output_node(this_node);
 
     connected_node = NULL;
     update_connection();
@@ -267,13 +272,13 @@ void node_link::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     dragging = true;
 
     QPointF pos = mapToScene(event->pos());
-    QPointF node_position = _node->get_center_position();
+    QPointF node_position = this_node->get_center_position();
 
     float x = node_position.x();
     float y = node_position.y();
 
     link_refresh(node_position, pos);
 
-    *link_connecting = {{"name", _node->get_name()},
+    *link_connecting = {{"name", this_node->get_name()},
                         {"index", index}};
 }

@@ -134,7 +134,7 @@ void node_graph::connect_node(QPoint position_node)
         QString node_name = link_connecting->value("name").toString();
         int link_index = link_connecting->value("index").toInt();
 
-        node *from_node = nodes->value(node_name);
+        node *from_node = get_node(node_name);
         node_link *link = get_node_link(from_node, link_index);
 
         node *to_node = get_node_from_position(position_node);
@@ -144,10 +144,7 @@ void node_graph::connect_node(QPoint position_node)
         {
             // evita que se conecte asi mismo
             if (from_node != to_node)
-            {
                 link->connect_node(to_node);
-                to_node->add_output_node(from_node);
-            }
             else
                 link->disconnect_node();
         }
@@ -157,9 +154,14 @@ void node_graph::connect_node(QPoint position_node)
     //
 }
 
+node *node_graph::get_node(QString name)
+{
+    return nodes->value(name);
+}
+
 void node_graph::select_node(QString name, bool select)
 {
-    node *_node = nodes->value(name);
+    node *_node = get_node(name);
     if (_node == NULL)
         return;
 

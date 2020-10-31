@@ -59,6 +59,7 @@ public:
     void change_node_name_dialog();
     void change_node_name();
     void select_node(QString name, bool select);
+    node *get_node(QString name);
     node_link *get_node_link(node *_node, int link_index);
 };
 
