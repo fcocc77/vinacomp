@@ -180,3 +180,13 @@ QMap<QString, node *> *node::get_output_nodes()
 {
     return nodes_connected_to_the_output;
 }
+
+void node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    // con esto desabilitamos el borde de puntos que genera un item al estar seleccionado
+    QStyleOptionGraphicsItem myOption(*option);
+    myOption.state &= ~QStyle::State_Selected;
+    QGraphicsPathItem::paint(painter, &myOption, widget);
+    //
+    //
+}

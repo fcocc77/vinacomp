@@ -11,6 +11,7 @@
 #include <QPen>
 #include <QPainter>
 #include <QFocusEvent>
+#include <QStyleOptionGraphicsItem>
 
 #include <util.hpp>
 
@@ -35,6 +36,9 @@ private:
     QGraphicsTextItem *tips;
 
     void change_size_rectangle(int _width, int _height);
+
+    // eventos
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
 public:
     node(QGraphicsScene *_scene,
