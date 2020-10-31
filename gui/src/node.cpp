@@ -16,7 +16,7 @@ node::node(QGraphicsScene *_scene,
 
     icon_area_width = 45;
 
-    this->setFlags(QGraphicsItem::ItemIsMovable);
+    this->setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
     //
     //
 
@@ -88,6 +88,7 @@ void node::change_size_rectangle(int _width, int _height)
 
 void node::set_selected(bool enable)
 {
+    this->setSelected(enable);
     selected = enable;
     if (enable)
     {
@@ -160,7 +161,7 @@ QList<int> node::get_size()
     return {current_width, current_height};
 }
 
-void node::set_position(int x, int y)
+void node::set_position(float x, float y)
 {
     this->setPos(x, y);
 }

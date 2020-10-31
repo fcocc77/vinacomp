@@ -2,6 +2,8 @@
 
 void node_graph::mousePressEvent(QMouseEvent *event)
 {
+    click_position = event->pos();
+
     if (!qt::alt() && event->button() == Qt::LeftButton)
     {
         QGraphicsItem *item = scene->itemAt(mapToScene(event->pos()), QTransform());
@@ -10,20 +12,20 @@ void node_graph::mousePressEvent(QMouseEvent *event)
         // impide la seleccion de nodos si se hizo el click en un link
         if (item_name != "link")
         {
-            if (!qt::shift())
-                select_all(false);
-
             node *_node = get_node_from_position(event->pos());
             if (_node)
+            {
+                if (!qt::shift())
+                    if (!_node->is_selected())
+                        select_all(false);
+
                 select_node(_node->get_name(), true);
+            }
         }
 
         // si el click no fue en un nodo, comienza el area de seleccion
         if (!item)
-        {
             selecting = true;
-            selection_start_point = mapToScene(event->pos());
-        }
     }
 
     node_rename_edit->hide();

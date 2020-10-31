@@ -35,7 +35,7 @@ private:
 
     QJsonObject *link_connecting;
     bool selecting = false;
-    QPointF selection_start_point;
+    QPoint click_position;
 
     QJsonObject *project;
     int *current_z_value;

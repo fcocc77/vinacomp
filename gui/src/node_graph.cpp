@@ -221,6 +221,8 @@ void node_graph::select_all(bool select)
 
 void node_graph::select_nodes_by_area(QPointF selection_end_point)
 {
+    QPointF selection_start_point = mapToScene(click_position);
+
     QPainterPath rectangle;
 
     int start_x = selection_start_point.x();

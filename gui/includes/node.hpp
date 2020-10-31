@@ -44,7 +44,7 @@ public:
     void set_name(QString name);
     void set_tips(QString tips);
     QString get_name();
-    void set_position(int x, int y);
+    void set_position(float x, float y);
     QPointF get_center_position();
     QList<int> get_size();
     void set_icon(QString icon_name);
