@@ -20,9 +20,12 @@ class node : public QGraphicsPathItem
 private:
     QGraphicsScene *scene;
     QMap<QString, node *> *nodes_connected_to_the_output;
+    QMap<QString, node *> *selected_nodes;
 
     QPointF *center_position;
     bool selected = false;
+
+    QPointF click_position_on_node;
 
     int minimum_width;
     int minimum_height;
@@ -39,10 +42,13 @@ private:
 
     // eventos
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 
 public:
     node(QGraphicsScene *_scene,
-         int *_current_z_value);
+         int *_current_z_value,
+         QMap<QString, node *> *_selected_nodes);
     ~node();
 
     void set_name(QString name);

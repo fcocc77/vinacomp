@@ -119,7 +119,7 @@ node *node_graph::create_node(QString name, QString icon_name, QPointF position,
         position = this->mapToScene(origin);
     }
 
-    node *_node = new node(scene, current_z_value);
+    node *_node = new node(scene, current_z_value, selected_nodes);
     auto size = _node->get_size();
     _node->set_name(name);
     _node->set_position(position.x() - (size[0] / 2), position.y() - (size[1] / 2));

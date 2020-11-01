@@ -1,10 +1,12 @@
 #include <node.hpp>
 
 node::node(QGraphicsScene *_scene,
-           int *_current_z_value)
+           int *_current_z_value,
+           QMap<QString, node *> *_selected_nodes)
 {
     scene = _scene;
     current_z_value = _current_z_value;
+    selected_nodes = _selected_nodes;
 
     center_position = new QPointF;
     nodes_connected_to_the_output = new QMap<QString, node *>;
@@ -189,4 +191,35 @@ void node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     QGraphicsPathItem::paint(painter, &myOption, widget);
     //
     //
+}
+
+void node::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    click_position_on_node = mapToScene(event->pos()) - this->pos();
+}
+
+void node::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    int snap = 50;
+
+    if (selected_nodes->count() <= 1)
+    {
+        QPointF position = mapToScene(event->pos());
+
+        float x = position.x() - click_position_on_node.x();
+        float y = position.y() - click_position_on_node.y();
+
+        for (node *connected_node : *nodes_connected_to_the_output)
+        {
+            float pos_x = abs(connected_node->x() - x);
+
+            if (pos_x < snap)
+            {
+                this->setPos(connected_node->x(), y);
+                return;
+            }
+        }
+    }
+
+    QGraphicsItem::mouseMoveEvent(event);
 }
