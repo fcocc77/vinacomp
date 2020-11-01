@@ -200,24 +200,47 @@ void node::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void node::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    int snap = 50;
+    int snap = 30;
 
     if (selected_nodes->count() <= 1)
     {
         QPointF position = mapToScene(event->pos());
 
-        float x = position.x() - click_position_on_node.x();
-        float y = position.y() - click_position_on_node.y();
+        float this_node_x = position.x() - click_position_on_node.x();
+        float this_node_y = position.y() - click_position_on_node.y();
 
+        float x_snap = NULL;
+        float y_snap = NULL;
+
+        // busca el snap en cada nodo conectado
         for (node *connected_node : *nodes_connected_to_the_output)
         {
-            float pos_x = abs(connected_node->x() - x);
+            float x_difference = abs(connected_node->x() - this_node_x);
+            float y_difference = abs(connected_node->y() - this_node_y);
 
-            if (pos_x < snap)
-            {
-                this->setPos(connected_node->x(), y);
-                return;
-            }
+            if (x_difference < snap)
+                x_snap = connected_node->x();
+
+            else if (y_difference < snap)
+                y_snap = connected_node->y();
+        }
+        //
+        //
+
+        if (x_snap && y_snap)
+        {
+            this->setPos(x_snap, y_snap);
+            return;
+        }
+        else if (x_snap)
+        {
+            this->setPos(x_snap, this_node_y);
+            return;
+        }
+        else if (y_snap)
+        {
+            this->setPos(this_node_x, y_snap);
+            return;
         }
     }
 
