@@ -58,12 +58,18 @@ public:
     node_graph(QJsonObject *_project);
     ~node_graph();
 
-    node *add_node(QString name, QString icon_name, int x, int y, QString tips = "");
+    node *create_node(
+        QString name,
+        QString icon_name,
+        float x, float y,
+        QString tips = "");
     void change_node_name_dialog();
     void change_node_name();
     void select_node(QString name, bool select);
     node *get_node(QString name);
     node_link *get_node_link(node *_node, int link_index);
+    QJsonObject get_tree();
+    void restore_tree(QJsonObject nodes);
 };
 
 #endif // NODE_GRAPH_H

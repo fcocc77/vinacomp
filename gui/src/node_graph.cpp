@@ -36,14 +36,6 @@ node_graph::node_graph(QJsonObject *_project)
     current_z_value = new int();
 
     scene->setSceneRect(-500000, -500000, 1000000, 1000000);
-
-    node *node1 = add_node("Shuffle", "shuffle_a", -100, 0,
-                           "este es el tool tips\nOtra linea para probar");
-    node *node2 = add_node("Transform_Mask", "transform_a", 100, 0, "tips otro");
-
-    // node1->connect_input(0, node2);
-    add_node("Grade", "grade_a", 300, 0);
-
     this->setRenderHint(QPainter::Antialiasing);
 
     setup_shortcut();
@@ -61,6 +53,18 @@ void node_graph::setup_shortcut()
 
     qt::shortcut("N", this, [this]() {
         this->change_node_name_dialog();
+    });
+
+    qt::shortcut("G", this, [this]() {
+        for (int i = 0; i < 1000; i++)
+        {
+            QString name = "Grade" + QString::number(i);
+            if (!get_node(name))
+            {
+                create_node(name, "grade_a", 0, 0);
+                break;
+            }
+        }
     });
 }
 
@@ -103,7 +107,7 @@ void node_graph::change_node_name()
     node_rename_edit->hide();
 }
 
-node *node_graph::add_node(QString name, QString icon_name, int x, int y, QString tips)
+node *node_graph::create_node(QString name, QString icon_name, float x, float y, QString tips)
 {
 
     node *_node = new node(scene, current_z_value);
@@ -267,5 +271,77 @@ void node_graph::refresh_selected_nodes()
         for (node *output_node : *selected_node->get_output_nodes())
             refresh_node_link(output_node);
     }
+    //
+}
+
+QJsonObject node_graph::get_tree()
+{
+    // genera un arbol con todos los nodos con su informacion,
+    // para guardarla en el proyecto.
+    QJsonObject tree = {};
+
+    for (node *_node : *nodes)
+    {
+        auto *links = nodes_links->value(_node->get_name());
+        QJsonArray inputs = {};
+
+        for (node_link *link : *links)
+        {
+            node *connected_node = link->get_connected_node();
+            QString _connected_node = "NULL";
+            if (connected_node)
+                _connected_node = connected_node->get_name();
+
+            QJsonObject link_data = {
+                {"connected_node", _connected_node}};
+
+            inputs.push_back(link_data);
+        }
+
+        QJsonObject data = {
+            {"position", QJsonArray{_node->x(), _node->y()}},
+            {"color", QJsonArray{30, 30, 30}},
+            {"inputs", inputs}};
+
+        tree[_node->get_name()] = data;
+    }
+
+    return tree;
+}
+
+void node_graph::restore_tree(QJsonObject nodes)
+{
+
+    for (QString name : nodes.keys())
+    {
+        QJsonObject data = nodes.value(name).toObject();
+
+        create_node(
+            name,
+            "grade_a",
+            data["position"].toArray()[0].toDouble(),
+            data["position"].toArray()[1].toDouble());
+    }
+
+    // conecta todos los nodos
+    for (QString name : nodes.keys())
+    {
+        QJsonObject data = nodes.value(name).toObject();
+        auto *links = nodes_links->value(name);
+
+        QJsonArray inputs = data["inputs"].toArray();
+
+        for (int i = 0; i < inputs.count(); i++)
+        {
+            QJsonObject link_data = inputs[i].toObject();
+            QString connected_node = link_data["connected_node"].toString();
+            node *node_to_connect = get_node(connected_node);
+
+            node_link *link = links->value(i);
+            if (link)
+                link->connect_node(node_to_connect);
+        }
+    }
+
     //
 }

@@ -167,6 +167,7 @@ void vinacomp::open_project()
         (*project) = jread(current_project);
 
         // actualiza componentes con el proyecto cargado
+        _node_graph->restore_tree(project->value("nodes").toObject());
         _script_editor->open_script_from_project();
     }
 }
@@ -179,6 +180,7 @@ void vinacomp::save_project()
         return;
     }
 
+    project->insert("nodes", _node_graph->get_tree());
     jwrite(current_project, *project);
 }
 
