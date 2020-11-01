@@ -249,20 +249,15 @@ void node::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         //
 
         if (x_snap && y_snap)
-        {
             this->setPos(x_snap, y_snap);
-            return;
-        }
         else if (x_snap)
-        {
             this->setPos(x_snap, this_node_y);
-            return;
-        }
         else if (y_snap)
-        {
             this->setPos(this_node_x, y_snap);
-            return;
-        }
+        else
+            this->setPos(this_node_x, this_node_y);
+
+        return;
     }
 
     QGraphicsItem::mouseMoveEvent(event);
