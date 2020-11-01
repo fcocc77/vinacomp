@@ -19,7 +19,7 @@ node::node(QGraphicsScene *_scene,
 
     icon_area_width = 45;
 
-    this->setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
+    this->setFlags(QGraphicsItem::ItemIsMovable);
     //
     //
 
@@ -91,7 +91,6 @@ void node::change_size_rectangle(int _width, int _height)
 
 void node::set_selected(bool enable)
 {
-    this->setSelected(enable);
     selected = enable;
     if (enable)
     {
@@ -194,71 +193,82 @@ void node::remove_input_node(node *_node)
     nodes_connected_to_the_inputs->remove(_node->get_name());
 }
 
-void node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-{
-    // con esto desabilitamos el borde de puntos que genera un item al estar seleccionado
-    QStyleOptionGraphicsItem myOption(*option);
-    myOption.state &= ~QStyle::State_Selected;
-    QGraphicsPathItem::paint(painter, &myOption, widget);
-    //
-    //
-}
-
 void node::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    click_position_on_node = mapToScene(event->pos()) - this->pos();
+    start_position = this->pos();
+    click_position = mapToScene(event->pos());
+
+    selected_nodes_start_position.clear();
+    for (node *selected_node : *selected_nodes)
+        selected_nodes_start_position[selected_node->get_name()] = selected_node->pos();
 }
 
 void node::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     int snap = 20;
 
-    if (selected_nodes->count() <= 1)
+    QPointF position = mapToScene(event->pos());
+    QPointF click_position_on_node = click_position - start_position;
+
+    float this_node_x = position.x() - click_position_on_node.x();
+    float this_node_y = position.y() - click_position_on_node.y();
+
+    float x_snap = NULL;
+    float y_snap = NULL;
+
+    auto to_snap = [&](node *connected_node) {
+        if (selected_nodes->contains(connected_node->get_name()))
+            return;
+
+        float size_x_difference = (connected_node->get_size()[0] - this->get_size()[0]) / 2;
+        float size_y_difference = (connected_node->get_size()[1] - this->get_size()[1]) / 2;
+
+        float _this_node_x = this_node_x - size_x_difference;
+        float _this_node_y = this_node_y - size_y_difference;
+
+        float x_difference = abs(connected_node->x() - _this_node_x);
+        float y_difference = abs(connected_node->y() - _this_node_y);
+
+        if (x_difference < snap)
+            x_snap = connected_node->x() + size_x_difference;
+
+        else if (y_difference < snap)
+            y_snap = connected_node->y() + size_y_difference;
+    };
+
+    // busca el snap en cada nodo conectado
+    for (node *connected_node : *nodes_connected_to_the_inputs)
+        to_snap(connected_node);
+    for (node *connected_node : *nodes_connected_to_the_output)
+        to_snap(connected_node);
+    //
+    //
+
+    QPointF position_with_snap;
+
+    if (x_snap && y_snap)
+        position_with_snap = {x_snap, y_snap};
+    else if (x_snap)
+        position_with_snap = {x_snap, this_node_y};
+    else if (y_snap)
+        position_with_snap = {this_node_x, y_snap};
+    else
+        position_with_snap = {this_node_x, this_node_y};
+
+    this->setPos(position_with_snap.x(), position_with_snap.y());
+    //
+    //
+
+    // Mueve los nodos seleccionados en relacion a este nodo
+    QPointF difference = start_position - position_with_snap;
+    for (node *selected_node : *selected_nodes)
     {
-        QPointF position = mapToScene(event->pos());
-
-        float this_node_x = position.x() - click_position_on_node.x();
-        float this_node_y = position.y() - click_position_on_node.y();
-
-        float x_snap = NULL;
-        float y_snap = NULL;
-
-        auto to_snap = [&](node *connected_node) {
-            float size_x_difference = (connected_node->get_size()[0] - this->get_size()[0]) / 2;
-            float size_y_difference = (connected_node->get_size()[1] - this->get_size()[1]) / 2;
-
-            float _this_node_x = this_node_x - size_x_difference;
-            float _this_node_y = this_node_y - size_y_difference;
-
-            float x_difference = abs(connected_node->x() - _this_node_x);
-            float y_difference = abs(connected_node->y() - _this_node_y);
-
-            if (x_difference < snap)
-                x_snap = connected_node->x() + size_x_difference;
-
-            else if (y_difference < snap)
-                y_snap = connected_node->y() + size_y_difference;
-        };
-
-        // busca el snap en cada nodo conectado
-        for (node *connected_node : *nodes_connected_to_the_inputs)
-            to_snap(connected_node);
-        for (node *connected_node : *nodes_connected_to_the_output)
-            to_snap(connected_node);
-        //
-        //
-
-        if (x_snap && y_snap)
-            this->setPos(x_snap, y_snap);
-        else if (x_snap)
-            this->setPos(x_snap, this_node_y);
-        else if (y_snap)
-            this->setPos(this_node_x, y_snap);
-        else
-            this->setPos(this_node_x, this_node_y);
-
-        return;
+        if (selected_node != this)
+        {
+            QPointF new_position = selected_nodes_start_position.value(selected_node->get_name());
+            selected_node->setPos(new_position - difference);
+        }
     }
-
-    QGraphicsItem::mouseMoveEvent(event);
+    //
+    //
 }

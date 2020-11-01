@@ -22,11 +22,13 @@ private:
     QMap<QString, node *> *nodes_connected_to_the_inputs;
     QMap<QString, node *> *nodes_connected_to_the_output;
     QMap<QString, node *> *selected_nodes;
+    QMap<QString, QPointF> selected_nodes_start_position;
 
     QPointF *center_position;
     bool selected = false;
 
-    QPointF click_position_on_node;
+    QPointF start_position;
+    QPointF click_position;
 
     int minimum_width;
     int minimum_height;
@@ -42,7 +44,6 @@ private:
     void change_size_rectangle(int _width, int _height);
 
     // eventos
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 

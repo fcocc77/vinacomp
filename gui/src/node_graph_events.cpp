@@ -33,13 +33,6 @@ void node_graph::mousePressEvent(QMouseEvent *event)
             selecting = true;
     }
 
-    // Seleccionamos el QGraphicsItem de todos los nodos seleccionados, ya que esta selección
-    // es la que nos permite mover todos los nodos juntos.
-    for (node *selected_node : *selected_nodes)
-        selected_node->setSelected(true);
-    //
-    //
-
     node_rename_edit->hide();
 
     graphics_view::mousePressEvent(event);
