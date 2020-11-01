@@ -211,7 +211,7 @@ void node::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void node::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    int snap = 30;
+    int snap = 20;
 
     if (selected_nodes->count() <= 1)
     {
@@ -224,14 +224,20 @@ void node::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         float y_snap = NULL;
 
         auto to_snap = [&](node *connected_node) {
-            float x_difference = abs(connected_node->x() - this_node_x);
-            float y_difference = abs(connected_node->y() - this_node_y);
+            float size_x_difference = (connected_node->get_size()[0] - this->get_size()[0]) / 2;
+            float size_y_difference = (connected_node->get_size()[1] - this->get_size()[1]) / 2;
+
+            float _this_node_x = this_node_x - size_x_difference;
+            float _this_node_y = this_node_y - size_y_difference;
+
+            float x_difference = abs(connected_node->x() - _this_node_x);
+            float y_difference = abs(connected_node->y() - _this_node_y);
 
             if (x_difference < snap)
-                x_snap = connected_node->x();
+                x_snap = connected_node->x() + size_x_difference;
 
             else if (y_difference < snap)
-                y_snap = connected_node->y();
+                y_snap = connected_node->y() + size_y_difference;
         };
 
         // busca el snap en cada nodo conectado
