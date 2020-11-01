@@ -61,7 +61,7 @@ void node_graph::setup_shortcut()
             QString name = "Grade" + QString::number(i);
             if (!get_node(name))
             {
-                create_node(name, "grade_a", QPointF(0, 0));
+                create_node(name, "grade_a");
                 break;
             }
         }
@@ -112,11 +112,17 @@ void node_graph::change_node_name()
 
 node *node_graph::create_node(QString name, QString icon_name, QPointF position, QString tips)
 {
-    // QPointF position = mapToScene(QCursor::pos());
+    if (position.isNull())
+    {
+        // crea el nodo en la posicion del puntero del mouse
+        QPoint origin = this->mapFromGlobal(QCursor::pos());
+        position = this->mapToScene(origin);
+    }
 
     node *_node = new node(scene, current_z_value);
+    auto size = _node->get_size();
     _node->set_name(name);
-    _node->set_position(position.x(), position.y());
+    _node->set_position(position.x() - (size[0] / 2), position.y() - (size[1] / 2));
     _node->set_icon(icon_name);
     _node->set_tips(tips);
 
