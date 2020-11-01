@@ -168,6 +168,7 @@ void vinacomp::open_project()
 
         // actualiza componentes con el proyecto cargado
         _node_graph->restore_tree(project->value("nodes").toObject());
+        _node_graph->restore_scene_data(project->value("scene").toObject());
         _script_editor->open_script_from_project();
     }
 }
@@ -181,6 +182,8 @@ void vinacomp::save_project()
     }
 
     project->insert("nodes", _node_graph->get_tree());
+    project->insert("scene", _node_graph->get_scene_data());
+
     jwrite(current_project, *project);
 }
 

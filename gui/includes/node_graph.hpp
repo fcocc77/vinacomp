@@ -61,7 +61,7 @@ public:
     node *create_node(
         QString name,
         QString icon_name,
-        float x, float y,
+        QPointF position,
         QString tips = "");
     void change_node_name_dialog();
     void change_node_name();
@@ -70,6 +70,8 @@ public:
     node_link *get_node_link(node *_node, int link_index);
     QJsonObject get_tree();
     void restore_tree(QJsonObject nodes);
+    QJsonObject get_scene_data();
+    void restore_scene_data(QJsonObject scene_data);
 };
 
 #endif // NODE_GRAPH_H

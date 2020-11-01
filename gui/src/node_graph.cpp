@@ -61,7 +61,7 @@ void node_graph::setup_shortcut()
             QString name = "Grade" + QString::number(i);
             if (!get_node(name))
             {
-                create_node(name, "grade_a", 0, 0);
+                create_node(name, "grade_a", QPointF(0, 0));
                 break;
             }
         }
@@ -70,6 +70,9 @@ void node_graph::setup_shortcut()
 
 void node_graph::change_node_name_dialog()
 {
+    if (selected_nodes->empty())
+        return;
+
     node *selected_node = selected_nodes->last();
     if (selected_node == NULL)
         return;
@@ -107,12 +110,13 @@ void node_graph::change_node_name()
     node_rename_edit->hide();
 }
 
-node *node_graph::create_node(QString name, QString icon_name, float x, float y, QString tips)
+node *node_graph::create_node(QString name, QString icon_name, QPointF position, QString tips)
 {
+    // QPointF position = mapToScene(QCursor::pos());
 
     node *_node = new node(scene, current_z_value);
     _node->set_name(name);
-    _node->set_position(x, y);
+    _node->set_position(position.x(), position.y());
     _node->set_icon(icon_name);
     _node->set_tips(tips);
 
@@ -316,11 +320,12 @@ void node_graph::restore_tree(QJsonObject nodes)
     {
         QJsonObject data = nodes.value(name).toObject();
 
+        QPointF position = {data["position"].toArray()[0].toDouble(),
+                            data["position"].toArray()[1].toDouble()};
         create_node(
             name,
             "grade_a",
-            data["position"].toArray()[0].toDouble(),
-            data["position"].toArray()[1].toDouble());
+            position);
     }
 
     // conecta todos los nodos
@@ -344,4 +349,42 @@ void node_graph::restore_tree(QJsonObject nodes)
     }
 
     //
+}
+
+QJsonObject node_graph::get_scene_data()
+{
+    QJsonObject matrix = {
+        {"m11", this->transform().m11()},
+        {"m12", this->transform().m12()},
+        {"m13", this->transform().m13()},
+        {"m21", this->transform().m21()},
+        {"m22", this->transform().m22()},
+        {"m23", this->transform().m23()},
+        {"m31", this->transform().m31()},
+        {"m32", this->transform().m32()},
+        {"m33", this->transform().m33()}};
+
+    QJsonObject scene_data = {};
+
+    scene_data["matrix"] = matrix;
+
+    return scene_data;
+}
+
+void node_graph::restore_scene_data(QJsonObject scene_data)
+{
+    QJsonObject matrix = scene_data["matrix"].toObject();
+
+    QTransform _transform(
+        matrix["m11"].toDouble(),
+        matrix["m12"].toDouble(),
+        matrix["m13"].toDouble(),
+        matrix["m21"].toDouble(),
+        matrix["m22"].toDouble(),
+        matrix["m23"].toDouble(),
+        matrix["m31"].toDouble(),
+        matrix["m32"].toDouble(),
+        matrix["m33"].toDouble());
+
+    this->setTransform(_transform);
 }
