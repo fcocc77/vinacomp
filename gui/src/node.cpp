@@ -10,6 +10,7 @@ node::node(QGraphicsScene *_scene,
 
     center_position = new QPointF;
     nodes_connected_to_the_output = new QMap<QString, node *>;
+    nodes_connected_to_the_inputs = new QMap<QString, node *>;
 
     minimum_width = 150;
     minimum_height = 50;
@@ -181,6 +182,16 @@ void node::remove_output_node(node *_node)
 QMap<QString, node *> *node::get_output_nodes()
 {
     return nodes_connected_to_the_output;
+}
+
+void node::add_input_node(node *_node)
+{
+    nodes_connected_to_the_inputs->insert(_node->get_name(), _node);
+}
+
+void node::remove_input_node(node *_node)
+{
+    nodes_connected_to_the_inputs->remove(_node->get_name());
 }
 
 void node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)

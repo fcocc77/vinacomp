@@ -260,6 +260,8 @@ void node_link::connect_node(node *to_node)
 
     to_node->add_output_node(this_node);
 
+    this_node->add_input_node(to_node);
+
     connected_node = to_node;
     update_connection();
 }
@@ -272,7 +274,10 @@ node *node_link::get_connected_node()
 void node_link::disconnect_node()
 {
     if (connected_node)
+    {
         connected_node->remove_output_node(this_node);
+        this_node->remove_input_node(connected_node);
+    }
 
     connected_node = NULL;
     update_connection();

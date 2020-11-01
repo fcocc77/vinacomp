@@ -19,6 +19,7 @@ class node : public QGraphicsPathItem
 {
 private:
     QGraphicsScene *scene;
+    QMap<QString, node *> *nodes_connected_to_the_inputs;
     QMap<QString, node *> *nodes_connected_to_the_output;
     QMap<QString, node *> *selected_nodes;
 
@@ -62,6 +63,8 @@ public:
     QMap<QString, node *> *get_output_nodes();
     void add_output_node(node *_node);
     void remove_output_node(node *_node);
+    void add_input_node(node *_node);
+    void remove_input_node(node *_node);
     bool is_selected();
 };
 
