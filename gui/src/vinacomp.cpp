@@ -49,7 +49,7 @@ void vinacomp::setup_style()
     this->setStyleSheet(style.toStdString().c_str());
 
     // Titulo de ventana principal
-    this->setWindowTitle("VinaComp");
+    this->setWindowTitle("Untitled - VinaComp");
 }
 
 void vinacomp::main_menu()
@@ -238,6 +238,8 @@ void vinacomp::open_project(QString project_path)
     _node_graph->restore_tree(project->value("nodes").toObject());
     _node_graph->restore_scene_data(project->value("scene").toObject());
     _script_editor->open_script_from_project();
+
+    this->setWindowTitle(os::basename(project_path) + " - VinaComp");
 }
 
 void vinacomp::to_save_project()
@@ -276,4 +278,6 @@ void vinacomp::save_project(QString project_path)
     jwrite(project_path, *project);
 
     project_opened = true;
+
+    this->setWindowTitle(os::basename(project_path) + " - VinaComp");
 }
