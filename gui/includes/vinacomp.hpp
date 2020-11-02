@@ -46,16 +46,22 @@ private:
     //
     //
 
-public:
-    vinacomp(QApplication *_app);
-    ~vinacomp();
-
+    QMenu *recent_projects_menu;
+    QJsonArray get_recent_projects();
+    void update_recent_projects();
+    void recorder_recent_projects(QString project_path);
+    void open_project(QString project_path);
+    void open_project_dialog();
     void setup_ui();
     void setup_style();
     void main_menu();
     void save_as();
-    void save_project();
-    void open_project();
+    void to_save_project();
+    void save_project(QString project_path);
+
+public:
+    vinacomp(QApplication *_app);
+    ~vinacomp();
 };
 
 #endif // VINACOMP_H
