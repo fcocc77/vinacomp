@@ -4,6 +4,7 @@ node_graph::node_graph(QJsonObject *_project)
 {
     project = _project;
     scene = new QGraphicsScene();
+    finder = new node_finder(this);
 
     // cuadro de cambio de nombre de nodo
     node_rename_edit = new QLineEdit(this);
@@ -55,6 +56,14 @@ void node_graph::setup_shortcut()
         this->change_node_name_dialog();
     });
 
+    qt::shortcut("Escape", this, [this]() {
+        finder->hide();
+    });
+
+    qt::shortcut("Tab", this, [this]() {
+        show_finder();
+    });
+
     qt::shortcut("G", this, [this]() {
         for (int i = 0; i < 1000; i++)
         {
@@ -66,6 +75,18 @@ void node_graph::setup_shortcut()
             }
         }
     });
+}
+
+void node_graph::show_finder()
+{
+    finder->clear();
+    finder->set_focus();
+    QPoint position = this->mapFromGlobal(QCursor::pos());
+
+    int mid_width = 130;
+
+    finder->move(position.x() - mid_width, position.y());
+    finder->show();
 }
 
 void node_graph::change_node_name_dialog()
