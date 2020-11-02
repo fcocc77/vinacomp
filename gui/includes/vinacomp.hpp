@@ -18,6 +18,7 @@
 #include <panels_layout.hpp>
 #include <tool_bar.hpp>
 #include <settings.hpp>
+#include <maker.hpp>
 
 class vinacomp : public QMainWindow
 {
@@ -30,6 +31,7 @@ private:
     curve_editor *_curve_editor;
     tool_bar *_tool_bar;
     settings *_settings;
+    maker *_maker;
 
     QApplication *app;
 

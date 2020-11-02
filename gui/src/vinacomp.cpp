@@ -14,6 +14,7 @@ vinacomp::~vinacomp()
 void vinacomp::setup_ui()
 {
 
+    _maker = new maker();
     _node_graph = new node_graph(project);
     _viewer = new viewer();
     _script_editor = new script_editor(project);
