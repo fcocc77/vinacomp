@@ -1,7 +1,8 @@
 #include <maker.hpp>
 
-maker::maker(/* args */)
+maker::maker(node_graph *__node_graph)
 {
+    _node_graph = __node_graph;
 
     QString json_nodes_path = "engine/nodes/json";
 
@@ -16,17 +17,61 @@ maker::maker(/* args */)
     //
     //
 
-    create_fx("grsade");
+    finder = new node_finder(_node_graph);
+    setup_shortcut();
 }
 
 maker::~maker()
 {
 }
 
+void maker::setup_shortcut()
+{
+    qt::shortcut("Tab", _node_graph, [this]() {
+        finder->show_finder();
+    });
+
+    qt::shortcut("Escape", _node_graph, [this]() {
+        finder->hide();
+    });
+
+    qt::shortcut("G", _node_graph, [this]() {
+        create_fx("grade");
+    });
+
+    qt::shortcut("T", _node_graph, [this]() {
+        create_fx("transform");
+    });
+
+    qt::shortcut("B", _node_graph, [this]() {
+        create_fx("blur");
+    });
+}
+
 void maker::create_fx(QString type)
 {
-    QJsonObject effect = get_effect(type);
-    print(effect);
+    QJsonObject effect = this->get_effect(type);
+    if (effect.empty())
+        return;
+
+    QString label = effect["label"].toString();
+    QString icon_name = effect["icon"].toString();
+
+    // Creación del nodo, con un número que no se ha utilizado.
+    int node_number = 1;
+    while (true)
+    {
+        QString name = label + QString::number(node_number);
+        if (!_node_graph->get_node(name))
+        {
+            _node_graph->create_node(name, icon_name);
+            break;
+        }
+
+        node_number++;
+    }
+    //
+    //
 }
 
 QJsonObject maker::get_effect(QString type)
@@ -37,4 +82,8 @@ QJsonObject maker::get_effect(QString type)
 QJsonObject maker::get_effects()
 {
     return effects;
+}
+
+QColor maker::default_color(QString effect_name)
+{
 }

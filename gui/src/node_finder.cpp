@@ -1,8 +1,9 @@
 #include <node_finder.hpp>
 
-node_finder::node_finder(QWidget *parent)
+node_finder::node_finder(node_graph *__node_graph)
 {
-    this->setParent(parent);
+    _node_graph = __node_graph;
+    this->setParent(_node_graph);
     search_field = new QLineEdit(this);
     connect(search_field, &QLineEdit::textChanged, this, &node_finder::update_tree);
 
@@ -28,6 +29,7 @@ node_finder::node_finder(QWidget *parent)
     }
 
     this->hide();
+
 }
 
 node_finder::~node_finder()
@@ -61,4 +63,16 @@ void node_finder::set_focus()
 void node_finder::clear()
 {
     search_field->setText("");
+}
+
+void node_finder::show_finder()
+{
+    this->clear();
+    this->set_focus();
+    QPoint position = _node_graph->mapFromGlobal(QCursor::pos());
+
+    int mid_width = 130;
+
+    this->move(position.x() - mid_width, position.y());
+    this->show();
 }

@@ -1,6 +1,7 @@
 {
     "type": "transform",
     "label": "Transform",
+    "icon": "transform_a",
     "knobs": {
         "mix": {
             "name": "mix",

@@ -1,6 +1,7 @@
 {
     "type": "grade",
-    "label": "Gamma",
+    "label": "Grade",
+    "icon": "grade_a",
     "knobs": {
         "gamma": {
             "name": "gamma",

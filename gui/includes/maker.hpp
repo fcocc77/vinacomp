@@ -2,17 +2,26 @@
 #define MAKER_HPP
 
 #include <QJsonObject>
+#include <QWidget>
 
 #include <util.hpp>
 #include <os.hpp>
+#include <qt.hpp>
+#include <node_graph.hpp>
+#include <node_finder.hpp>
 
-class maker
+class maker : public QWidget
 {
 private:
     QJsonObject effects;
+    node_graph *_node_graph;
+    node_finder *finder;
+
+    void setup_shortcut();
+    QColor default_color(QString effect_name);
 
 public:
-    maker(/* args */);
+    maker(node_graph *_node_graph);
     ~maker();
 
     void create_fx(QString type);

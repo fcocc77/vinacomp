@@ -22,14 +22,12 @@
 #include <node_link.hpp>
 #include <util.hpp>
 #include <qt.hpp>
-#include <node_finder.hpp>
 
 class node_graph : public graphics_view
 {
     Q_OBJECT
 private:
     QGraphicsScene *scene;
-    node_finder *finder;
 
     QMap<QString, node *> *nodes;
     QMap<QString, node *> *selected_nodes;
@@ -50,7 +48,6 @@ private:
     node *get_node_from_position(QPoint position);
     void connect_node(QPoint position_node);
     void select_nodes_by_area(QPointF selection_end_point);
-    void show_finder();
 
     // Events
     void mouseReleaseEvent(QMouseEvent *event);

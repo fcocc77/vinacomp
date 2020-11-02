@@ -4,7 +4,6 @@ node_graph::node_graph(QJsonObject *_project)
 {
     project = _project;
     scene = new QGraphicsScene();
-    finder = new node_finder(this);
 
     // cuadro de cambio de nombre de nodo
     node_rename_edit = new QLineEdit(this);
@@ -55,38 +54,6 @@ void node_graph::setup_shortcut()
     qt::shortcut("N", this, [this]() {
         this->change_node_name_dialog();
     });
-
-    qt::shortcut("Escape", this, [this]() {
-        finder->hide();
-    });
-
-    qt::shortcut("Tab", this, [this]() {
-        show_finder();
-    });
-
-    qt::shortcut("G", this, [this]() {
-        for (int i = 0; i < 1000; i++)
-        {
-            QString name = "Grade" + QString::number(i);
-            if (!get_node(name))
-            {
-                create_node(name, "grade_a");
-                break;
-            }
-        }
-    });
-}
-
-void node_graph::show_finder()
-{
-    finder->clear();
-    finder->set_focus();
-    QPoint position = this->mapFromGlobal(QCursor::pos());
-
-    int mid_width = 130;
-
-    finder->move(position.x() - mid_width, position.y());
-    finder->show();
 }
 
 void node_graph::change_node_name_dialog()
