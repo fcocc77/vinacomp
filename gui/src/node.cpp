@@ -3,8 +3,9 @@
 node::node(QGraphicsScene *_scene,
            int *_current_z_value,
            QMap<QString, node *> *_selected_nodes,
-           QColor color)
+           QColor _color)
 {
+    color = _color;
     scene = _scene;
     current_z_value = _current_z_value;
     selected_nodes = _selected_nodes;
@@ -162,6 +163,11 @@ void node::set_tips(QString _tips)
 QList<int> node::get_size()
 {
     return {current_width, current_height};
+}
+
+QColor node::get_color()
+{
+    return color;
 }
 
 void node::set_position(float x, float y)

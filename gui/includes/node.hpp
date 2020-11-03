@@ -27,6 +27,8 @@ private:
     QPointF *center_position;
     bool selected = false;
 
+    QColor color;
+
     QPointF start_position;
     QPointF click_position;
 
@@ -68,6 +70,7 @@ public:
     void add_input_node(node *_node);
     void remove_input_node(node *_node);
     bool is_selected();
+    QColor get_color();
 };
 
 #endif // NODE_H

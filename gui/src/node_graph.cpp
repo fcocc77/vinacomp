@@ -304,10 +304,10 @@ QJsonObject node_graph::get_tree()
 
             inputs.push_back(link_data);
         }
-
+        QColor color = _node->get_color();
         QJsonObject data = {
             {"position", QJsonArray{_node->x(), _node->y()}},
-            {"color", QJsonArray{30, 30, 30}},
+            {"color", QJsonArray{color.red(), color.green(), color.blue()}},
             {"inputs", inputs}};
 
         tree[_node->get_name()] = data;
@@ -323,12 +323,16 @@ void node_graph::restore_tree(QJsonObject nodes)
     {
         QJsonObject data = nodes.value(name).toObject();
 
+        QJsonArray color = data["color"].toArray();
+        int red = color[0].toInt();
+        int green = color[1].toInt();
+        int blue = color[2].toInt();
         QPointF position = {data["position"].toArray()[0].toDouble(),
                             data["position"].toArray()[1].toDouble()};
         create_node(
             name,
             "grade_a",
-            QColor(150, 150, 150),
+            QColor(red, green, blue),
             position);
     }
 
