@@ -1,5 +1,6 @@
 {
-    "type": "grade",
+    "group": "color",
+    "id": "grade",
     "label": "Grade",
     "icon": "grade_a",
     "knobs": {

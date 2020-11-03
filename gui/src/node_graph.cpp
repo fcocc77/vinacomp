@@ -98,7 +98,12 @@ void node_graph::change_node_name()
     node_rename_edit->hide();
 }
 
-node *node_graph::create_node(QString name, QString icon_name, QPointF position, QString tips)
+node *node_graph::create_node(
+    QString name,
+    QString icon_name,
+    QColor color,
+    QPointF position,
+    QString tips)
 {
     if (position.isNull())
     {
@@ -107,7 +112,11 @@ node *node_graph::create_node(QString name, QString icon_name, QPointF position,
         position = this->mapToScene(origin);
     }
 
-    node *_node = new node(scene, current_z_value, selected_nodes);
+    node *_node = new node(
+        scene,
+        current_z_value,
+        selected_nodes,
+        color);
     auto size = _node->get_size();
     _node->set_name(name);
     _node->set_position(position.x() - (size[0] / 2), position.y() - (size[1] / 2));
@@ -319,6 +328,7 @@ void node_graph::restore_tree(QJsonObject nodes)
         create_node(
             name,
             "grade_a",
+            QColor(150, 150, 150),
             position);
     }
 

@@ -7,6 +7,7 @@
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
 #include <node_graph.hpp>
+#include <QJsonObject>
 
 #include <util.hpp>
 #include <qt.hpp>
@@ -15,15 +16,16 @@ class node_finder : public QWidget
 {
 private:
     QLineEdit *search_field;
-    QTreeWidget *tree;
-
+    QJsonObject *effects;
     node_graph *_node_graph;
 
     void update_tree();
 
 public:
-    node_finder(node_graph *_node_graph);
+    node_finder(node_graph *_node_graph, QJsonObject *_effects);
     ~node_finder();
+
+    QTreeWidget *tree;
 
     void set_focus();
     void clear();

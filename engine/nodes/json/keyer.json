@@ -1,0 +1,17 @@
+{
+    "group": "keyer",
+    "id": "keyer",
+    "label": "Keyer",
+    "icon": "keyer_a",
+    "knobs": {
+        "mix": {
+            "name": "mix",
+            "type": "floating",
+            "label": "Mix",
+            "tooltip": "",
+            "minimum": 0,
+            "maximum": 1,
+            "default": 0.5
+        }
+    }
+}

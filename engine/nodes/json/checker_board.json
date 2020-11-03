@@ -1,0 +1,17 @@
+{
+    "group": "image",
+    "id": "checker_board",
+    "label": "CheckerBoard",
+    "icon": "checker_a",
+    "knobs": {
+        "mix": {
+            "name": "mix",
+            "type": "floating",
+            "label": "Mix",
+            "tooltip": "",
+            "minimum": 0,
+            "maximum": 1,
+            "default": 0.5
+        }
+    }
+}

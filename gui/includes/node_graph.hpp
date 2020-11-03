@@ -61,6 +61,7 @@ public:
     node *create_node(
         QString name,
         QString icon_name,
+        QColor color,
         QPointF position = QPointF(),
         QString tips = "");
     void change_node_name_dialog();

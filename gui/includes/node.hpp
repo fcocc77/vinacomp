@@ -50,7 +50,8 @@ private:
 public:
     node(QGraphicsScene *_scene,
          int *_current_z_value,
-         QMap<QString, node *> *_selected_nodes);
+         QMap<QString, node *> *_selected_nodes,
+         QColor color);
     ~node();
 
     void set_name(QString name);

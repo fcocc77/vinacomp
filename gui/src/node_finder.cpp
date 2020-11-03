@@ -1,8 +1,9 @@
 #include <node_finder.hpp>
 
-node_finder::node_finder(node_graph *__node_graph)
+node_finder::node_finder(node_graph *__node_graph, QJsonObject *_effects)
 {
     _node_graph = __node_graph;
+    effects = _effects;
     this->setParent(_node_graph);
     search_field = new QLineEdit(this);
     connect(search_field, &QLineEdit::textChanged, this, &node_finder::update_tree);
@@ -15,21 +16,18 @@ node_finder::node_finder(node_graph *__node_graph)
     layout->addWidget(search_field);
     layout->addWidget(tree);
 
-    QStringList nodes = {
-        "Tranform",
-        "Crop",
-        "Grade",
-        "Position"};
-
-    for (QString node : nodes)
+    for (QJsonValue value : *effects)
     {
+        QString node_name = value.toObject()["label"].toString();
+        QString node_id = value.toObject()["id"].toString();
         QTreeWidgetItem *item = new QTreeWidgetItem();
-        item->setText(0, node);
+
+        item->setText(1, node_id);
+        item->setText(0, node_name);
         tree->addTopLevelItem(item);
     }
 
     this->hide();
-
 }
 
 node_finder::~node_finder()

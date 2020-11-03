@@ -18,14 +18,14 @@ private:
     node_finder *finder;
 
     void setup_shortcut();
-    QColor default_color(QString effect_name);
+    QColor default_color(QString effect_group);
 
 public:
     maker(node_graph *_node_graph);
     ~maker();
 
-    void create_fx(QString type);
-    QJsonObject get_effect(QString type);
+    void create_fx(QString id);
+    QJsonObject get_effect(QString id);
     QJsonObject get_effects();
 };
 

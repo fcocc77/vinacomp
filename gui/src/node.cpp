@@ -2,7 +2,8 @@
 
 node::node(QGraphicsScene *_scene,
            int *_current_z_value,
-           QMap<QString, node *> *_selected_nodes)
+           QMap<QString, node *> *_selected_nodes,
+           QColor color)
 {
     scene = _scene;
     current_z_value = _current_z_value;
@@ -47,11 +48,11 @@ node::node(QGraphicsScene *_scene,
         QPen pen(Qt::black);
         QLinearGradient ramp(0, 0, icon_area_width * 2, 0);
         ramp.setColorAt(0.5000, QColor(50, 50, 50));
-        ramp.setColorAt(0.5001, QColor(150, 150, 150));
+        ramp.setColorAt(0.5001, color);
 
-        QBrush color(ramp);
+        QBrush brush(ramp);
         pen.setWidth(0);
-        this->setBrush(color);
+        this->setBrush(brush);
         this->setPen(pen);
     }
     //

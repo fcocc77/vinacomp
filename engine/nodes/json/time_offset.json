@@ -1,0 +1,17 @@
+{
+    "group": "time",
+    "id": "time_offset",
+    "label": "TimeOffset",
+    "icon": "time_offset_a",
+    "knobs": {
+        "mix": {
+            "name": "mix",
+            "type": "floating",
+            "label": "Mix",
+            "tooltip": "",
+            "minimum": 0,
+            "maximum": 1,
+            "default": 0.5
+        }
+    }
+}
