@@ -16,6 +16,8 @@ function install() {
     cp -rf ./config $install_dir
     cp -rf ./resources $install_dir
     cp -rf ./libs $install_dir
+    cp -rf ./engine $install_dir
+    cp -rf ./temp $install_dir
 
     cp ./resources/app/vinacomp.sh $install_dir/vinacomp
     cp ./resources/app/VinaComp.desktop /usr/local/share/applications/VinaComp.desktop
