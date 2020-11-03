@@ -1,7 +1,12 @@
 #include <trim_panel.hpp>
 
-trim_panel::trim_panel(/* args */)
+trim_panel::trim_panel(
+    QString _name,
+    QString _icon_name)
 {
+    name = _name;
+    icon_name = _icon_name;
+
     this->setObjectName("trim_panel");
     setup_ui();
 }
@@ -52,10 +57,11 @@ QWidget *trim_panel::top_buttons_setup_ui()
     layout->addStretch();
 
     QPushButton *icon_node = new QPushButton();
-    qt::set_icon(icon_node, "transform_a", icon_size);
+    qt::set_icon(icon_node, icon_name, icon_size);
     layout->addWidget(icon_node);
 
     QLineEdit *node_name = new QLineEdit();
+    node_name->setText(name);
     layout->addWidget(node_name);
 
     layout->addStretch();
@@ -76,6 +82,10 @@ QWidget *trim_panel::top_buttons_setup_ui()
     layout->addWidget(maximize);
 
     QPushButton *close = new QPushButton();
+    connect(close, &QPushButton::clicked, this, [this]() {
+        this->hide();
+        this->setParent(0);
+    });
     qt::set_icon(close, "close_a", icon_size);
     layout->addWidget(close);
 

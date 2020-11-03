@@ -13,12 +13,13 @@ vinacomp::~vinacomp()
 
 void vinacomp::setup_ui()
 {
-    _node_graph = new node_graph(project);
-    _maker = new maker(_node_graph);
+
+    _properties = new properties();
+    _node_graph = new node_graph(project, _properties);
+    _maker = new maker(_node_graph, _properties);
     _tool_bar = new tool_bar(_maker);
     _viewer = new viewer();
     _script_editor = new script_editor(project);
-    _properties = new properties();
     _curve_editor = new curve_editor();
     _settings = new settings();
 

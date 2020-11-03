@@ -31,12 +31,17 @@ private:
     QTabWidget *tabs;
     bool is_minimize = false;
 
+    QString name;
+    QString icon_name;
+
     void setup_ui();
     QWidget *top_buttons_setup_ui();
     QTabWidget *tabs_ui();
 
 public:
-    trim_panel(/* args */);
+    trim_panel(
+        QString _name,
+        QString _icon_name);
     ~trim_panel();
 };
 

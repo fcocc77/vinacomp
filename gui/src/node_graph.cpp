@@ -1,8 +1,9 @@
 #include <node_graph.hpp>
 
-node_graph::node_graph(QJsonObject *_project)
+node_graph::node_graph(QJsonObject *_project, properties *__properties)
 {
     project = _project;
+    _properties = __properties;
     scene = new QGraphicsScene();
 
     // cuadro de cambio de nombre de nodo
@@ -100,6 +101,7 @@ void node_graph::change_node_name()
 
 node *node_graph::create_node(
     QString name,
+    trim_panel *panel,
     QString icon_name,
     QColor color,
     QPointF position,
@@ -116,7 +118,9 @@ node *node_graph::create_node(
         scene,
         current_z_value,
         selected_nodes,
-        color);
+        color,
+        panel,
+        _properties);
     auto size = _node->get_size();
     _node->set_name(name);
     _node->set_position(position.x() - (size[0] / 2), position.y() - (size[1] / 2));
@@ -331,6 +335,7 @@ void node_graph::restore_tree(QJsonObject nodes)
                             data["position"].toArray()[1].toDouble()};
         create_node(
             name,
+            NULL,
             "grade_a",
             QColor(red, green, blue),
             position);

@@ -3,8 +3,12 @@
 node::node(QGraphicsScene *_scene,
            int *_current_z_value,
            QMap<QString, node *> *_selected_nodes,
-           QColor _color)
+           QColor _color,
+           trim_panel *_panel,
+           properties *__properties)
 {
+    panel = _panel;
+    _properties = __properties;
     color = _color;
     scene = _scene;
     current_z_value = _current_z_value;
@@ -198,6 +202,12 @@ void node::add_input_node(node *_node)
 void node::remove_input_node(node *_node)
 {
     nodes_connected_to_the_inputs->remove(_node->get_name());
+}
+
+void node::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+{
+    _properties->add_trim_panel(panel);
+    panel->show();
 }
 
 void node::mousePressEvent(QGraphicsSceneMouseEvent *event)

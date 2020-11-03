@@ -14,10 +14,15 @@
 #include <QStyleOptionGraphicsItem>
 
 #include <util.hpp>
+#include <properties.hpp>
+#include <trim_panel.hpp>
 
 class node : public QGraphicsPathItem
 {
 private:
+    trim_panel *panel;
+    properties *_properties;
+
     QGraphicsScene *scene;
     QMap<QString, node *> *nodes_connected_to_the_inputs;
     QMap<QString, node *> *nodes_connected_to_the_output;
@@ -48,12 +53,15 @@ private:
     // eventos
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
 
 public:
     node(QGraphicsScene *_scene,
          int *_current_z_value,
          QMap<QString, node *> *_selected_nodes,
-         QColor color);
+         QColor color,
+         trim_panel *_panel,
+         properties *_properties);
     ~node();
 
     void set_name(QString name);

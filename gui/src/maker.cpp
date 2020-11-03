@@ -1,8 +1,9 @@
 #include <maker.hpp>
 
-maker::maker(node_graph *__node_graph)
+maker::maker(node_graph *__node_graph, properties *__properties)
 {
     _node_graph = __node_graph;
+    _properties = __properties;
 
     QString json_nodes_path = "engine/nodes/json";
 
@@ -81,19 +82,29 @@ void maker::create_fx(QString id)
     QString icon_name = effect["icon"].toString();
     QColor color = default_color(group);
 
-    // Creación del nodo, con un número que no se ha utilizado.
+    // Encuentra un nombre disponible
+    QString name;
     int node_number = 1;
     while (true)
     {
-        QString name = label + QString::number(node_number);
+        name = label + QString::number(node_number);
         if (!_node_graph->get_node(name))
-        {
-            _node_graph->create_node(name, icon_name, color);
             break;
-        }
-
         node_number++;
     }
+    //
+    //
+
+    // Crear Knob
+    trim_panel *panel = new trim_panel(
+        name,
+        icon_name);
+    _properties->add_trim_panel(panel);
+    //
+    //
+
+    // Creación del nodo, con un número que no se ha utilizado.
+    _node_graph->create_node(name, panel, icon_name, color);
     //
     //
 }

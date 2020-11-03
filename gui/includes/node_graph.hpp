@@ -22,12 +22,15 @@
 #include <node_link.hpp>
 #include <util.hpp>
 #include <qt.hpp>
+#include <trim_panel.hpp>
+#include <properties.hpp>
 
 class node_graph : public graphics_view
 {
     Q_OBJECT
 private:
     QGraphicsScene *scene;
+    properties *_properties;
 
     QMap<QString, node *> *nodes;
     QMap<QString, node *> *selected_nodes;
@@ -55,11 +58,14 @@ private:
     void mousePressEvent(QMouseEvent *event);
 
 public:
-    node_graph(QJsonObject *_project);
+    node_graph(
+        QJsonObject *_project,
+        properties *_properties);
     ~node_graph();
 
     node *create_node(
         QString name,
+        trim_panel *panel,
         QString icon_name,
         QColor color,
         QPointF position = QPointF(),
