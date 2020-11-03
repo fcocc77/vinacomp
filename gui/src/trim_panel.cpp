@@ -1,9 +1,11 @@
 #include <trim_panel.hpp>
 
 trim_panel::trim_panel(
+    properties *__properties,
     QString _name,
     QString _icon_name)
 {
+    _properties = __properties;
     name = _name;
     icon_name = _icon_name;
 
@@ -17,9 +19,8 @@ trim_panel::~trim_panel()
 
 void trim_panel::setup_ui()
 {
-    QVBoxLayout *layout = new QVBoxLayout();
+    QVBoxLayout *layout = new QVBoxLayout(this);
     layout->setMargin(0);
-    this->setLayout(layout);
 
     QWidget *butttons = top_buttons_setup_ui();
 
@@ -27,64 +28,61 @@ void trim_panel::setup_ui()
 
     tabs = tabs_ui();
     layout->addWidget(tabs);
-    //
-    //
 }
 
 QWidget *trim_panel::top_buttons_setup_ui()
 {
-    QWidget *widget = new QWidget();
+    QWidget *widget = new QWidget(this);
     widget->setObjectName("butttons");
     widget->setMaximumHeight(30);
 
-    QHBoxLayout *layout = new QHBoxLayout();
+    QHBoxLayout *layout = new QHBoxLayout(widget);
     layout->setMargin(5);
-
-    widget->setLayout(layout);
     //
     //
 
     int icon_size = 20;
 
-    QPushButton *settings = new QPushButton();
+    QPushButton *settings = new QPushButton(widget);
     qt::set_icon(settings, "settings_a", icon_size);
     layout->addWidget(settings);
 
-    QPushButton *center_node = new QPushButton();
+    QPushButton *center_node = new QPushButton(widget);
     qt::set_icon(center_node, "center_a", icon_size);
     layout->addWidget(center_node);
 
     layout->addStretch();
 
-    QPushButton *icon_node = new QPushButton();
+    QPushButton *icon_node = new QPushButton(widget);
     qt::set_icon(icon_node, icon_name, icon_size);
     layout->addWidget(icon_node);
 
-    QLineEdit *node_name = new QLineEdit();
+    QLineEdit *node_name = new QLineEdit(widget);
     node_name->setText(name);
     layout->addWidget(node_name);
 
     layout->addStretch();
 
     // Minimize
-    QPushButton *minimize = new QPushButton();
+    QPushButton *minimize = new QPushButton(widget);
     connect(minimize, &QPushButton::clicked, this, [this]() {
         is_minimize = !is_minimize;
+        _properties->hide();
         tabs->setVisible(!is_minimize);
+        _properties->show();
     });
     qt::set_icon(minimize, "minimize_a", icon_size);
     layout->addWidget(minimize);
     // Minimize
     //
 
-    QPushButton *maximize = new QPushButton();
+    QPushButton *maximize = new QPushButton(widget);
     qt::set_icon(maximize, "maximize_a", icon_size);
     layout->addWidget(maximize);
 
-    QPushButton *close = new QPushButton();
+    QPushButton *close = new QPushButton(widget);
     connect(close, &QPushButton::clicked, this, [this]() {
-        this->hide();
-        this->setParent(0);
+        _properties->close_trim_panel(this);
     });
     qt::set_icon(close, "close_a", icon_size);
     layout->addWidget(close);
@@ -98,8 +96,7 @@ QTabWidget *trim_panel::tabs_ui()
     QTabWidget *tabs = new QTabWidget();
 
     QWidget *controls = new QWidget();
-    QVBoxLayout *controls_layout = new QVBoxLayout();
-    controls->setLayout(controls_layout);
+    QVBoxLayout *controls_layout = new QVBoxLayout(controls);
     controls->setObjectName("controls");
 
     QWidget *node = new QWidget();
@@ -147,4 +144,9 @@ QTabWidget *trim_panel::tabs_ui()
     controls_layout->addStretch();
 
     return tabs;
+}
+
+QString trim_panel::get_name()
+{
+    return name;
 }

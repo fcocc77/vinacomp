@@ -10,6 +10,7 @@
 
 // VinaComp
 #include <trim_panel.hpp>
+#include <properties.hpp>
 #include <qt.hpp>
 
 #include <knob_color.hpp>
@@ -30,6 +31,7 @@ class trim_panel : public QWidget
 private:
     QTabWidget *tabs;
     bool is_minimize = false;
+    properties *_properties;
 
     QString name;
     QString icon_name;
@@ -40,9 +42,12 @@ private:
 
 public:
     trim_panel(
+        properties *_properties,
         QString _name,
         QString _icon_name);
     ~trim_panel();
+
+    QString get_name();
 };
 
 #endif //TRIM_PANEL_HPP

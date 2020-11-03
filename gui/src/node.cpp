@@ -207,7 +207,6 @@ void node::remove_input_node(node *_node)
 void node::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
     _properties->add_trim_panel(panel);
-    panel->show();
 }
 
 void node::mousePressEvent(QGraphicsSceneMouseEvent *event)

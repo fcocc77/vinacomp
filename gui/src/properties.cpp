@@ -1,4 +1,5 @@
 #include <properties.hpp>
+#include <trim_panel.hpp>
 
 properties::properties(/* args */)
 {
@@ -12,37 +13,25 @@ properties::~properties()
 
 void properties::setup_ui()
 {
-    QVBoxLayout *layout = new QVBoxLayout();
+    QVBoxLayout *layout = new QVBoxLayout(this);
     layout->setMargin(0);
-    this->setLayout(layout);
 
     QWidget *butttons = top_buttons_setup_ui();
 
     layout->addWidget(butttons);
 
-    QWidget *trim_panels = new QWidget();
-    trim_panels_layout = new QVBoxLayout();
+    trim_panels = new QWidget(this);
+    trim_panels_layout = new QVBoxLayout(trim_panels);
     trim_panels_layout->setContentsMargins(0, 0, 0, 0);
     trim_panels_layout->setDirection(QBoxLayout::BottomToTop);
-    trim_panels->setLayout(trim_panels_layout);
-        // layout->addWidget(trim_panels);
-    //
-    //
+    trim_panels_layout->addStretch();
 
     QScrollArea *scrollArea = new QScrollArea(this);
     scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     scrollArea->setWidgetResizable(true);
-    // scrollArea->setGeometry(10, 10, 200, 200);
     scrollArea->setWidget(trim_panels);
 
     layout->addWidget(scrollArea);
-
-    // layout->addStretch();
-}
-
-void properties::add_trim_panel(trim_panel *_trim_panel)
-{
-    trim_panels_layout->addWidget(_trim_panel);
 }
 
 QWidget *properties::top_buttons_setup_ui()

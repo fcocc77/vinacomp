@@ -97,6 +97,7 @@ void maker::create_fx(QString id)
 
     // Crear Knob
     trim_panel *panel = new trim_panel(
+        _properties,
         name,
         icon_name);
     _properties->add_trim_panel(panel);
