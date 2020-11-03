@@ -3,8 +3,8 @@
     "id": "bbox_adjust",
     "label": "BBoxAdjust",
     "icon": "bbox_adjust_a",
-    "knobs": {
-        "mix": {
+    "knobs": [
+        {
             "name": "mix",
             "type": "floating",
             "label": "Mix",
@@ -13,5 +13,5 @@
             "maximum": 1,
             "default": 0.5
         }
-    }
+    ]
 }

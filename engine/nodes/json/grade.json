@@ -3,8 +3,8 @@
     "id": "grade",
     "label": "Grade",
     "icon": "grade_a",
-    "knobs": {
-        "gamma": {
+    "knobs": [
+        {
             "name": "gamma",
             "type": "color",
             "label": "Gamma",
@@ -19,7 +19,7 @@
                 255
             ]
         },
-        "mix": {
+        {
             "name": "mix",
             "type": "floating",
             "label": "Mix",
@@ -28,5 +28,5 @@
             "maximum": 1,
             "default": 0.5
         }
-    }
+    ]
 }
