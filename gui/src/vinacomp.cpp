@@ -15,6 +15,7 @@ void vinacomp::setup_ui()
 {
     _node_graph = new node_graph(project);
     _maker = new maker(_node_graph);
+    _tool_bar = new tool_bar(_maker);
     _viewer = new viewer();
     _script_editor = new script_editor(project);
     _properties = new properties();
@@ -22,8 +23,6 @@ void vinacomp::setup_ui()
     _settings = new settings();
 
     _panels_layout = new panels_layout(app, _node_graph, _viewer, _script_editor, _properties, _curve_editor);
-
-    _tool_bar = new tool_bar();
 
     QWidget *central_widget = new QWidget();
     QHBoxLayout *layout = new QHBoxLayout();

@@ -6,18 +6,22 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 #include <QMenu>
+#include <QJsonObject>
 
 #include <qt.hpp>
+#include <maker.hpp>
 
 class tool_bar : public QWidget
 {
 private:
-    void setup_ui();
-
     QVBoxLayout *layout;
+    maker *_maker;
+
+    void setup_ui();
+    void add_menu(QString group, QString icon_group);
 
 public:
-    tool_bar(/* args */);
+    tool_bar(maker *_maker);
     ~tool_bar();
 };
 

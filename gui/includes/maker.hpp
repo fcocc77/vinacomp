@@ -26,7 +26,7 @@ public:
 
     void create_fx(QString id);
     QJsonObject get_effect(QString id);
-    QJsonObject get_effects();
+    QJsonObject get_effects(QString group = "");
 };
 
 #endif //MAKER_HPP

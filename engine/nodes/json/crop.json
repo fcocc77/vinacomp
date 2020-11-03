@@ -2,7 +2,7 @@
     "group": "transform",
     "id": "crop",
     "label": "Crop",
-    "icon": "CornelPin",
+    "icon": "crop_a",
     "knobs": [
         {
             "name": "mix",

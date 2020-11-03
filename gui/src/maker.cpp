@@ -64,7 +64,7 @@ void maker::setup_shortcut()
     qt::shortcut("W", _node_graph, [this]() {
         create_fx("write");
     });
-    
+
     qt::shortcut("K", _node_graph, [this]() {
         create_fx("copy");
     });
@@ -103,9 +103,20 @@ QJsonObject maker::get_effect(QString id)
     return effects.value(id).toObject();
 }
 
-QJsonObject maker::get_effects()
+QJsonObject maker::get_effects(QString group)
 {
-    return effects;
+    if (group.isEmpty())
+        return effects;
+
+    QJsonObject group_effects;
+    for (QJsonValue value : effects)
+    {
+        QJsonObject effect = value.toObject();
+        if (effect["group"].toString() == group)
+            group_effects.insert(effect["id"].toString(), effect);
+    }
+
+    return group_effects;
 }
 
 QColor maker::default_color(QString effect_group)
