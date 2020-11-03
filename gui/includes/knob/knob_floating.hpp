@@ -13,9 +13,13 @@
 class knob_floating : public QWidget
 {
 private:
-    /* data */
+    QString label;
+    float default_value;
+
 public:
-    knob_floating(/* args */);
+    knob_floating(
+        QString _label,
+        float _default_value);
     ~knob_floating();
 };
 

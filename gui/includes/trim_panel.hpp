@@ -7,6 +7,7 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include <QTabWidget>
+#include <QJsonArray>
 
 // VinaComp
 #include <trim_panel.hpp>
@@ -33,6 +34,8 @@ private:
     bool is_minimize = false;
     properties *_properties;
 
+    QVBoxLayout *controls_layout;
+
     QString name;
     QString icon_name;
 
@@ -44,10 +47,12 @@ public:
     trim_panel(
         properties *_properties,
         QString _name,
-        QString _icon_name);
+        QString _icon_name,
+        QJsonArray *_knobs);
     ~trim_panel();
 
     QString get_name();
+    void setup_knobs(QJsonArray *knobs);
 };
 
 #endif //TRIM_PANEL_HPP

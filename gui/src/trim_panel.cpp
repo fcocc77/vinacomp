@@ -3,7 +3,8 @@
 trim_panel::trim_panel(
     properties *__properties,
     QString _name,
-    QString _icon_name)
+    QString _icon_name,
+    QJsonArray *_knobs)
 {
     _properties = __properties;
     name = _name;
@@ -11,6 +12,8 @@ trim_panel::trim_panel(
 
     this->setObjectName("trim_panel");
     setup_ui();
+
+    setup_knobs(_knobs);
 }
 
 trim_panel::~trim_panel()
@@ -28,6 +31,103 @@ void trim_panel::setup_ui()
 
     tabs = tabs_ui();
     layout->addWidget(tabs);
+}
+
+void trim_panel::setup_knobs(QJsonArray *knobs)
+{
+
+    for (int i = 0; i < knobs->count(); i++)
+    {
+        QJsonObject knob = knobs->at(i).toObject();
+        QString type = knob.value("type").toString();
+        QString label = knob.value("label").toString();
+
+        if (type == "color")
+        {
+            QJsonArray _default = knob.value("default").toArray();
+            knob_color *_knob_color = new knob_color(
+                label,
+                QColor(
+                    _default.at(0).toInt(),
+                    _default.at(1).toInt(),
+                    _default.at(2).toInt()));
+            controls_layout->addWidget(_knob_color);
+        }
+
+        else if (type == "check_box")
+        {
+            bool _default = knob.value("default").toBool();
+            knob_check_box *_knob_check_box = new knob_check_box(
+                label,
+                _default);
+            controls_layout->addWidget(_knob_check_box);
+        }
+
+        else if (type == "file")
+        {
+            knob_file *_knob_file = new knob_file();
+            controls_layout->addWidget(_knob_file);
+        }
+
+        else if (type == "choice")
+        {
+            knob_choice *_knob_choice = new knob_choice();
+            controls_layout->addWidget(_knob_choice);
+        }
+
+        else if (type == "text")
+        {
+            knob_text *_knob_text = new knob_text();
+            controls_layout->addWidget(_knob_text);
+        }
+
+        else if (type == "label")
+        {
+            knob_label *_knob_label = new knob_label();
+            controls_layout->addWidget(_knob_label);
+        }
+
+        else if (type == "button")
+        {
+            knob_button *_knob_button = new knob_button();
+            controls_layout->addWidget(_knob_button);
+        }
+
+        else if (type == "group")
+        {
+            knob_group *_knob_group = new knob_group();
+            controls_layout->addWidget(_knob_group);
+        }
+
+        else if (type == "integer")
+        {
+            knob_integer *_knob_integer = new knob_integer();
+            controls_layout->addWidget(_knob_integer);
+        }
+
+        else if (type == "floating")
+        {
+            float _default = knob.value("default").toDouble();
+            knob_floating *_knob_floating = new knob_floating(
+                label,
+                _default);
+            controls_layout->addWidget(_knob_floating);
+        }
+
+        else if (type == "separator")
+        {
+            knob_separator *_knob_separator = new knob_separator();
+            controls_layout->addWidget(_knob_separator);
+        }
+
+        else if (type == "position")
+        {
+            knob_position *_knob_position = new knob_position();
+            controls_layout->addWidget(_knob_position);
+        }
+    }
+
+    controls_layout->addStretch();
 }
 
 QWidget *trim_panel::top_buttons_setup_ui()
@@ -92,56 +192,16 @@ QWidget *trim_panel::top_buttons_setup_ui()
 
 QTabWidget *trim_panel::tabs_ui()
 {
-
     QTabWidget *tabs = new QTabWidget();
 
-    QWidget *controls = new QWidget();
-    QVBoxLayout *controls_layout = new QVBoxLayout(controls);
-    controls->setObjectName("controls");
+    QWidget *controls_tab = new QWidget();
+    controls_layout = new QVBoxLayout(controls_tab);
+    controls_tab->setObjectName("controls");
 
     QWidget *node = new QWidget();
 
-    tabs->addTab(controls, "Controls");
+    tabs->addTab(controls_tab, "Controls");
     tabs->addTab(node, "Node");
-
-    //
-    knob_color *_knob_color = new knob_color();
-    controls_layout->addWidget(_knob_color);
-
-    knob_check_box *_knob_check_box = new knob_check_box();
-    controls_layout->addWidget(_knob_check_box);
-
-    knob_file *_knob_file = new knob_file();
-    controls_layout->addWidget(_knob_file);
-
-    knob_choice *_knob_choice = new knob_choice();
-    controls_layout->addWidget(_knob_choice);
-
-    knob_text *_knob_text = new knob_text();
-    controls_layout->addWidget(_knob_text);
-
-    knob_label *_knob_label = new knob_label();
-    controls_layout->addWidget(_knob_label);
-
-    knob_button *_knob_button = new knob_button();
-    controls_layout->addWidget(_knob_button);
-
-    knob_group *_knob_group = new knob_group();
-    controls_layout->addWidget(_knob_group);
-
-    knob_integer *_knob_integer = new knob_integer();
-    controls_layout->addWidget(_knob_integer);
-
-    knob_floating *_knob_floating = new knob_floating();
-    controls_layout->addWidget(_knob_floating);
-
-    knob_separator *_knob_separator = new knob_separator();
-    controls_layout->addWidget(_knob_separator);
-
-    knob_position *_knob_position = new knob_position();
-    controls_layout->addWidget(_knob_position);
-
-    controls_layout->addStretch();
 
     return tabs;
 }

@@ -1,7 +1,12 @@
 #include <knob_color.hpp>
 
-knob_color::knob_color(/* args */)
+knob_color::knob_color(
+    QString _label,
+    QColor _default_value)
 {
+    label = _label;
+    default_value = _default_value;
+
     this->setObjectName("knob_color");
 
     setup_ui();
@@ -19,10 +24,10 @@ void knob_color::setup_ui()
     QHBoxLayout *layout = new QHBoxLayout(this);
     // this->setMaximumHeight(50);
 
-    label = new QLabel("saturation");
-    layout->addWidget(label);
+    label_widget = new QLabel(label);
+    layout->addWidget(label_widget);
 
-    value = new QLineEdit();
+    value = new QLineEdit(QString::number(default_value.red()));
     value->setMaximumWidth(50);
     layout->addWidget(value);
 

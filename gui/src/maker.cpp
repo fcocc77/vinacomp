@@ -80,6 +80,7 @@ void maker::create_fx(QString id)
     QString group = effect["group"].toString();
     QString label = effect["label"].toString();
     QString icon_name = effect["icon"].toString();
+    QJsonArray knobs = effect["knobs"].toArray();
     QColor color = default_color(group);
 
     // Encuentra un nombre disponible
@@ -99,7 +100,8 @@ void maker::create_fx(QString id)
     trim_panel *panel = new trim_panel(
         _properties,
         name,
-        icon_name);
+        icon_name,
+        &knobs);
     _properties->add_trim_panel(panel);
     //
     //

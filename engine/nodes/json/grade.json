@@ -5,6 +5,96 @@
     "icon": "grade_a",
     "knobs": [
         {
+            "name": "blackpoint",
+            "type": "color",
+            "label": "Black Point",
+            "tooltip": "",
+            "new_line": true,
+            "minimum": 0,
+            "maximum": 255,
+            "visible": true,
+            "default": [
+                20,
+                255,
+                255
+            ]
+        },
+        {
+            "name": "whitepoint",
+            "type": "color",
+            "label": "White Point",
+            "tooltip": "",
+            "new_line": true,
+            "minimum": 0,
+            "maximum": 255,
+            "visible": true,
+            "default": [
+                20,
+                255,
+                255
+            ]
+        },
+        {
+            "name": "lift",
+            "type": "color",
+            "label": "Lift",
+            "tooltip": "",
+            "new_line": true,
+            "minimum": 0,
+            "maximum": 255,
+            "visible": true,
+            "default": [
+                20,
+                255,
+                255
+            ]
+        },
+        {
+            "name": "gain",
+            "type": "color",
+            "label": "Gain",
+            "tooltip": "",
+            "new_line": true,
+            "minimum": 0,
+            "maximum": 255,
+            "visible": true,
+            "default": [
+                20,
+                255,
+                255
+            ]
+        },
+        {
+            "name": "multiply",
+            "type": "color",
+            "label": "Multiply",
+            "tooltip": "",
+            "new_line": true,
+            "minimum": 0,
+            "maximum": 255,
+            "visible": true,
+            "default": [
+                20,
+                255,
+                255
+            ]
+        },
+        {
+            "name": "offset",
+            "type": "color",
+            "label": "Offset",
+            "tooltip": "",
+            "new_line": true,
+            "minimum": 0,
+            "maximum": 255,
+            "visible": true,
+            "default": [
+                20,
+                255,
+                255
+            ]
+        },
+        {
             "name": "gamma",
             "type": "color",
             "label": "Gamma",
@@ -18,6 +108,24 @@
                 255,
                 255
             ]
+        },
+        {
+            "name": "black_clamp",
+            "type": "check_box",
+            "label": "Black Clamp",
+            "tooltip": "",
+            "minimum": 0,
+            "maximum": 1,
+            "default": false
+        },
+        {
+            "name": "white_clamp",
+            "type": "check_box",
+            "label": "White Clamp",
+            "tooltip": "",
+            "minimum": 0,
+            "maximum": 1,
+            "default": true
         },
         {
             "name": "mix",
