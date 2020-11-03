@@ -17,18 +17,24 @@ private:
     void setup_ui();
     QWidget *top_buttons_setup_ui();
 
+    QMap<QString, QWidget *> *panels;
+
     QVBoxLayout *trim_panels_layout;
     QWidget *trim_panels;
+
+    bool is_maximize = true;
+
+    void minimize_all_panels();
+    void close_all();
 
 public:
     properties(/* args */);
     ~properties();
 
-    template <class T>
-    void add_trim_panel(T *_trim_panel);
+    void close_trim_panel(QString panel_name);
 
     template <class T>
-    void close_trim_panel(T *_trim_panel);
+    void add_trim_panel(T *_trim_panel);
 };
 //
 //
@@ -37,17 +43,13 @@ public:
 template <class T>
 void properties::add_trim_panel(T *_trim_panel)
 {
+    panels->insert(_trim_panel->get_name(), _trim_panel);
+    _trim_panel->maximize(true);
+
     this->hide();
     _trim_panel->show();
     trim_panels_layout->addWidget(_trim_panel);
     this->show();
-}
-
-template <class T>
-void properties::close_trim_panel(T *_trim_panel)
-{
-    _trim_panel->setParent(0);
-    _trim_panel->hide();
 }
 
 #endif // PROPERTIES_HPP

@@ -31,7 +31,7 @@ class trim_panel : public QWidget
 {
 private:
     QTabWidget *tabs;
-    bool is_minimize = false;
+    bool is_maximize = true;
     properties *_properties;
 
     QVBoxLayout *controls_layout;
@@ -53,6 +53,7 @@ public:
 
     QString get_name();
     void setup_knobs(QJsonArray *knobs);
+    void maximize(bool _maximize);
 };
 
 #endif //TRIM_PANEL_HPP

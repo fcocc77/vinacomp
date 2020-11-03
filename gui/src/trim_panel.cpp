@@ -165,24 +165,21 @@ QWidget *trim_panel::top_buttons_setup_ui()
 
     // Minimize
     QPushButton *minimize = new QPushButton(widget);
-    connect(minimize, &QPushButton::clicked, this, [this]() {
-        is_minimize = !is_minimize;
-        _properties->hide();
-        tabs->setVisible(!is_minimize);
-        _properties->show();
+    connect(minimize, &QPushButton::clicked, this, [=]() {
+        this->maximize(!is_maximize);
     });
     qt::set_icon(minimize, "minimize_a", icon_size);
     layout->addWidget(minimize);
     // Minimize
     //
 
-    QPushButton *maximize = new QPushButton(widget);
-    qt::set_icon(maximize, "maximize_a", icon_size);
-    layout->addWidget(maximize);
+    QPushButton *maximize_button = new QPushButton(widget);
+    qt::set_icon(maximize_button, "maximize_a", icon_size);
+    layout->addWidget(maximize_button);
 
     QPushButton *close = new QPushButton(widget);
     connect(close, &QPushButton::clicked, this, [this]() {
-        _properties->close_trim_panel(this);
+        _properties->close_trim_panel(this->get_name());
     });
     qt::set_icon(close, "close_a", icon_size);
     layout->addWidget(close);
@@ -209,4 +206,13 @@ QTabWidget *trim_panel::tabs_ui()
 QString trim_panel::get_name()
 {
     return name;
+}
+
+void trim_panel::maximize(bool _maximize)
+{
+    _properties->hide();
+    tabs->setVisible(_maximize);
+    _properties->show();
+
+    is_maximize = _maximize;
 }

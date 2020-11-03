@@ -5,6 +5,8 @@ properties::properties(/* args */)
 {
     this->setObjectName("properties");
     setup_ui();
+
+    panels = new QMap<QString, QWidget *>;
 }
 
 properties::~properties()
@@ -53,6 +55,7 @@ QWidget *properties::top_buttons_setup_ui()
     layout->addWidget(max_panels);
 
     QPushButton *clear = new QPushButton();
+    connect(clear, &QPushButton::clicked, this, &properties::close_all);
     qt::set_icon(clear, "close_a", icon_size);
     layout->addWidget(clear);
 
@@ -61,10 +64,37 @@ QWidget *properties::top_buttons_setup_ui()
     layout->addWidget(lock);
 
     QPushButton *maximize_all = new QPushButton();
+    connect(maximize_all, &QPushButton::clicked, this, &properties::minimize_all_panels);
     qt::set_icon(maximize_all, "maximize_a", icon_size);
     layout->addWidget(maximize_all);
 
     layout->addStretch();
 
     return widget;
+}
+
+void properties::minimize_all_panels()
+{
+    is_maximize = !is_maximize;
+    for (QWidget *panel : *panels)
+    {
+        trim_panel *_trim_panel = dynamic_cast<trim_panel *>(panel);
+        _trim_panel->maximize(is_maximize);
+    }
+}
+
+void properties::close_all()
+{
+    for (QString panel_name : panels->keys())
+        close_trim_panel(panel_name);
+}
+
+void properties::close_trim_panel(QString panel_name)
+{
+    QWidget *panel = panels->value(panel_name);
+    trim_panel *_trim_panel = dynamic_cast<trim_panel *>(panel);
+
+    panels->remove(panel_name);
+    _trim_panel->setParent(0);
+    _trim_panel->hide();
 }
