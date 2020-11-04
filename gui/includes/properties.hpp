@@ -23,9 +23,11 @@ private:
     QWidget *trim_panels;
 
     bool is_maximize = true;
+    int max_panels = 10;
 
     void minimize_all_panels();
     void close_all();
+    void limit_panels(int amount);
 
 public:
     properties(/* args */);
@@ -43,6 +45,8 @@ public:
 template <class T>
 void properties::add_trim_panel(T *_trim_panel)
 {
+    limit_panels(max_panels - 1);
+
     panels->insert(_trim_panel->get_name(), _trim_panel);
     _trim_panel->maximize(true);
 

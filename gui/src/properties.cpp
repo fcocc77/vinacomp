@@ -50,9 +50,19 @@ QWidget *properties::top_buttons_setup_ui()
 
     int icon_size = 20;
 
-    QLineEdit *max_panels = new QLineEdit();
-    max_panels->setMaximumWidth(50);
-    layout->addWidget(max_panels);
+    QLineEdit *max_panels_edit = new QLineEdit();
+    max_panels_edit->setText(QString::number(max_panels));
+    connect(max_panels_edit, &QLineEdit::editingFinished, this, [=]() {
+        int max = max_panels_edit->text().toInt();
+        if (max < 1)
+            max_panels_edit->setText(QString::number(max_panels));
+        else
+            max_panels = max;
+        limit_panels(max_panels);
+    });
+
+    max_panels_edit->setMaximumWidth(50);
+    layout->addWidget(max_panels_edit);
 
     QPushButton *clear = new QPushButton();
     connect(clear, &QPushButton::clicked, this, &properties::close_all);
@@ -97,4 +107,25 @@ void properties::close_trim_panel(QString panel_name)
     panels->remove(panel_name);
     _trim_panel->setParent(0);
     _trim_panel->hide();
+}
+
+void properties::limit_panels(int amount)
+{
+    // limita la cantidad de paneles que puede tener las propiedades
+    int count = trim_panels_layout->count();
+
+    while (count > amount + 1)
+    {
+        QLayoutItem *layout_item = trim_panels_layout->itemAt(1);
+        if (layout_item)
+        {
+            QWidget *widget = layout_item->widget();
+            trim_panel *first_panel = dynamic_cast<trim_panel *>(widget);
+
+            if (first_panel)
+                close_trim_panel(first_panel->get_name());
+        }
+
+        count = trim_panels_layout->count();
+    }
 }
