@@ -4,8 +4,7 @@ knob_choice::knob_choice(/* args */)
 {
     QHBoxLayout *layout = new QHBoxLayout(this);
 
-    QLabel *label = new QLabel("Choice");
-    layout->addWidget(label);
+    layout->addWidget(init_space);
 
     combo_box *choice = new combo_box();
     layout->addWidget(choice);

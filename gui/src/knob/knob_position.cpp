@@ -5,8 +5,7 @@ knob_position::knob_position(/* args */)
 
     QHBoxLayout *layout = new QHBoxLayout(this);
 
-    QLabel *label = new QLabel("Floating");
-    layout->addWidget(label);
+    layout->addWidget(init_space);
 
     QLineEdit *value_x = new QLineEdit();
     value_x->setMaximumWidth(50);

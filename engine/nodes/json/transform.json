@@ -5,6 +5,86 @@
     "icon": "position_a",
     "knobs": [
         {
+            "name": "translate",
+            "type": "position",
+            "label": "Translate",
+            "tooltip": "Translate",
+            "minimum": null,
+            "maximum": null,
+            "default": [
+                10,
+                20
+            ]
+        },
+        {
+            "name": "rotate",
+            "type": "integer",
+            "label": "Rotate",
+            "tooltip": "Rotate",
+            "minimum": -180,
+            "maximum": 180,
+            "default": 0
+        },
+        {
+            "name": "scale",
+            "type": "floating",
+            "label": "Scale",
+            "tooltip": "Scale",
+            "minimum": 0.1,
+            "maximum": 10,
+            "default": 1,
+            "dimension": 2
+        },
+        {
+            "name": "skew_x",
+            "type": "floating",
+            "label": "Skew X",
+            "tooltip": "Skew X",
+            "minimum": -1,
+            "maximum": 1,
+            "default": 0
+        },
+        {
+            "name": "skew_y",
+            "type": "floating",
+            "label": "Skew Y",
+            "tooltip": "Skew Y",
+            "minimum": -1,
+            "maximum": 1,
+            "default": 0
+        },
+        {
+            "name": "center",
+            "type": "position",
+            "label": "Center",
+            "tooltip": "Center",
+            "minimum": null,
+            "maximum": null,
+            "default": [
+                0,
+                0
+            ]
+        },
+        {
+            "name": "filter",
+            "type": "choice",
+            "label": "Filter",
+            "tooltip": "Filter",
+            "items": [
+                "item1",
+                "item2"
+            ],
+            "default": 0
+        },
+        {
+            "name": "black_outside",
+            "type": "check_box",
+            "label": "Black Outside",
+            "tooltip": "Black Outside",
+            "over_line": true,
+            "default": true
+        },
+        {
             "name": "mix",
             "type": "floating",
             "label": "Mix",

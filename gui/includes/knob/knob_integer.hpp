@@ -9,8 +9,9 @@
 
 #include <slider.hpp>
 #include <qt.hpp>
+#include <knob.hpp>
 
-class knob_integer : public QWidget
+class knob_integer : public knob
 {
 private:
     /* data */

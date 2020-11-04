@@ -45,11 +45,16 @@ void trim_panel::setup_knobs(QJsonArray *knobs)
     {
         QJsonObject knob_object = knobs->at(i).toObject();
         QString label = knob_object.value("label").toString();
-        QLabel _label(label);
-        int width = _label.fontMetrics().boundingRect(_label.text()).width();
+        bool over_line = knob_object.value("over_line").toBool();
 
-        if (width > init_space_width)
-            init_space_width = width;
+        if (!over_line)
+        {
+            QLabel _label(label);
+            int width = _label.fontMetrics().boundingRect(_label.text()).width();
+
+            if (width > init_space_width)
+                init_space_width = width;
+        }
     }
     //
     //

@@ -6,8 +6,9 @@
 #include <QHBoxLayout>
 
 #include <combo_box.hpp>
+#include <knob.hpp>
 
-class knob_choice : public QWidget
+class knob_choice : public knob
 {
 private:
     /* data */
