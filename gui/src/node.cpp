@@ -127,10 +127,6 @@ void node::set_selected(bool enable)
         QPen pen(Qt::white);
         pen.setWidth(3);
         this->setPen(pen);
-
-        // con esto se mantiene siempre el nodo seleccionado sobre los demas
-        (*current_z_value)++;
-        this->setZValue(*current_z_value);
     }
     else
     {
@@ -237,6 +233,12 @@ void node::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 
 void node::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+    // con esto se mantiene siempre este nodo sobre los demas
+    (*current_z_value)++;
+    this->setZValue(*current_z_value);
+    //
+    //
+
     start_position = this->pos();
     click_position = mapToScene(event->pos());
 
