@@ -11,16 +11,18 @@
 // VINACOMP
 #include <qt.hpp>
 #include <slider.hpp>
+#include <init_space.hpp>
 
 class knob_color : public QWidget
 {
 private:
-    QLabel *label_widget;
     QWidget *_separate_colors_box;
     QWidget *_separate_colors_slider;
     QLineEdit *value;
     slider *_slider;
 
+
+    int init_space_width;
     QString label;
     QColor default_value;
 
@@ -33,6 +35,7 @@ private:
 
 public:
     knob_color(
+        int _init_space_width,
         QString _label,
         QColor _default_value);
     ~knob_color();

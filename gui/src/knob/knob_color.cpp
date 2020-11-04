@@ -1,9 +1,11 @@
 #include <knob_color.hpp>
 
 knob_color::knob_color(
+    int _init_space_width,
     QString _label,
     QColor _default_value)
 {
+    init_space_width = _init_space_width;
     label = _label;
     default_value = _default_value;
 
@@ -22,9 +24,8 @@ void knob_color::setup_ui()
     int icon_size = 20;
 
     QHBoxLayout *layout = new QHBoxLayout(this);
-    // this->setMaximumHeight(50);
 
-    label_widget = new QLabel(label);
+    init_space *label_widget = new init_space(init_space_width, label);
     layout->addWidget(label_widget);
 
     value = new QLineEdit(QString::number(default_value.red()));

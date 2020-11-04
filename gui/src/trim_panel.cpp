@@ -38,6 +38,22 @@ void trim_panel::setup_ui()
 
 void trim_panel::setup_knobs(QJsonArray *knobs)
 {
+    // Obtiene el ancho maximo a partir de las 'label'
+    // para usarlo en el espacio inicial de cada parametro.
+    int init_space_width = 0;
+    for (int i = 0; i < knobs->count(); i++)
+    {
+        QJsonObject knob = knobs->at(i).toObject();
+        QString label = knob.value("label").toString();
+        QLabel _label(label);
+        int width = _label.fontMetrics().boundingRect(_label.text()).width();
+
+        if (width > init_space_width)
+            init_space_width = width;
+    }
+    //
+    //
+
     for (int i = 0; i < knobs->count(); i++)
     {
         QJsonObject knob = knobs->at(i).toObject();
@@ -48,6 +64,7 @@ void trim_panel::setup_knobs(QJsonArray *knobs)
         {
             QJsonArray _default = knob.value("default").toArray();
             knob_color *_knob_color = new knob_color(
+                init_space_width,
                 label,
                 QColor(
                     _default.at(0).toInt(),
@@ -60,6 +77,7 @@ void trim_panel::setup_knobs(QJsonArray *knobs)
         {
             bool _default = knob.value("default").toBool();
             knob_check_box *_knob_check_box = new knob_check_box(
+                init_space_width,
                 label,
                 _default);
             controls_layout->addWidget(_knob_check_box);
@@ -111,6 +129,7 @@ void trim_panel::setup_knobs(QJsonArray *knobs)
         {
             float _default = knob.value("default").toDouble();
             knob_floating *_knob_floating = new knob_floating(
+                init_space_width,
                 label,
                 _default);
             controls_layout->addWidget(_knob_floating);
