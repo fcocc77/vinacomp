@@ -96,6 +96,8 @@ void node_graph::change_node_name()
     nodes_links->remove(old_name);
     nodes_links->insert(new_name, node_links);
 
+    selected_node->refresh();
+
     node_rename_edit->hide();
 }
 

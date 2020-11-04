@@ -82,6 +82,7 @@ public:
     void remove_input_node(node *_node);
     bool is_selected();
     QColor get_color();
+    void refresh();
 };
 
 #endif // NODE_H
