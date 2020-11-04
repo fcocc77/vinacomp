@@ -175,6 +175,8 @@ void node::set_name(QString _name)
     //
 
     change_size_rectangle(new_width, current_height);
+
+    panel->set_name(_name);
 }
 
 QString node::get_name()
@@ -300,7 +302,6 @@ void node::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     //
     //
 
-    
     // Mueve los nodos seleccionados en relacion a este nodo
     QPointF difference = start_position - position_with_snap;
     for (node *selected_node : *selected_nodes)

@@ -35,6 +35,7 @@ private:
     properties *_properties;
 
     QVBoxLayout *controls_layout;
+    QLineEdit *name_edit;
 
     QString name;
     QString icon_name;
@@ -54,6 +55,7 @@ public:
     QString get_name();
     void setup_knobs(QJsonArray *knobs);
     void maximize(bool _maximize);
+    void set_name(QString _name);
 };
 
 #endif //TRIM_PANEL_HPP

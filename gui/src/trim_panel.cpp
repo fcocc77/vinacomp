@@ -157,9 +157,9 @@ QWidget *trim_panel::top_buttons_setup_ui()
     qt::set_icon(icon_node, icon_name, icon_size);
     layout->addWidget(icon_node);
 
-    QLineEdit *node_name = new QLineEdit(widget);
-    node_name->setText(name);
-    layout->addWidget(node_name);
+    name_edit = new QLineEdit(widget);
+    name_edit->setText(name);
+    layout->addWidget(name_edit);
 
     layout->addStretch();
 
@@ -206,6 +206,12 @@ QTabWidget *trim_panel::tabs_ui()
 QString trim_panel::get_name()
 {
     return name;
+}
+
+void trim_panel::set_name(QString _name)
+{
+    name = _name;
+    name_edit->setText(name);
 }
 
 void trim_panel::maximize(bool _maximize)
