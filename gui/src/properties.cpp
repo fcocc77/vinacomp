@@ -23,6 +23,7 @@ void properties::setup_ui()
     layout->addWidget(butttons);
 
     trim_panels = new QWidget(this);
+    trim_panels->setObjectName("trim_panels");
     trim_panels_layout = new QVBoxLayout(trim_panels);
     trim_panels_layout->setContentsMargins(0, 0, 0, 0);
     trim_panels_layout->setDirection(QBoxLayout::BottomToTop);
@@ -42,7 +43,7 @@ QWidget *properties::top_buttons_setup_ui()
     widget->setObjectName("butttons");
     widget->setMaximumHeight(50);
     QHBoxLayout *layout = new QHBoxLayout();
-    layout->setContentsMargins(0, 0, 0, 0);
+    layout->setContentsMargins(10, 5, 0, 0);
 
     widget->setLayout(layout);
     //

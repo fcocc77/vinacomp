@@ -11,6 +11,8 @@ trim_panel::trim_panel(
     icon_name = _icon_name;
 
     this->setObjectName("trim_panel");
+    this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
     setup_ui();
 
     setup_knobs(_knobs);
@@ -30,12 +32,12 @@ void trim_panel::setup_ui()
     layout->addWidget(butttons);
 
     tabs = tabs_ui();
+    tabs->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     layout->addWidget(tabs);
 }
 
 void trim_panel::setup_knobs(QJsonArray *knobs)
 {
-
     for (int i = 0; i < knobs->count(); i++)
     {
         QJsonObject knob = knobs->at(i).toObject();
@@ -126,8 +128,6 @@ void trim_panel::setup_knobs(QJsonArray *knobs)
             controls_layout->addWidget(_knob_position);
         }
     }
-
-    controls_layout->addStretch();
 }
 
 QWidget *trim_panel::top_buttons_setup_ui()
