@@ -43,8 +43,8 @@ void trim_panel::setup_knobs(QJsonArray *knobs)
     int init_space_width = 0;
     for (int i = 0; i < knobs->count(); i++)
     {
-        QJsonObject knob = knobs->at(i).toObject();
-        QString label = knob.value("label").toString();
+        QJsonObject knob_object = knobs->at(i).toObject();
+        QString label = knob_object.value("label").toString();
         QLabel _label(label);
         int width = _label.fontMetrics().boundingRect(_label.text()).width();
 
@@ -56,96 +56,87 @@ void trim_panel::setup_knobs(QJsonArray *knobs)
 
     for (int i = 0; i < knobs->count(); i++)
     {
-        QJsonObject knob = knobs->at(i).toObject();
-        QString type = knob.value("type").toString();
-        QString label = knob.value("label").toString();
+        QJsonObject knob_object = knobs->at(i).toObject();
+        QString type = knob_object.value("type").toString();
+        QString label = knob_object.value("label").toString();
 
+        QWidget *widget;
         if (type == "color")
         {
-            QJsonArray _default = knob.value("default").toArray();
-            knob_color *_knob_color = new knob_color(
-                init_space_width,
-                label,
+            QJsonArray _default = knob_object.value("default").toArray();
+            widget = new knob_color(
                 QColor(
                     _default.at(0).toInt(),
                     _default.at(1).toInt(),
                     _default.at(2).toInt()));
-            controls_layout->addWidget(_knob_color);
         }
 
         else if (type == "check_box")
         {
-            bool _default = knob.value("default").toBool();
-            knob_check_box *_knob_check_box = new knob_check_box(
-                init_space_width,
+            bool _default = knob_object.value("default").toBool();
+            widget = new knob_check_box(
                 label,
                 _default);
-            controls_layout->addWidget(_knob_check_box);
+
+            label = "";
         }
 
         else if (type == "file")
         {
-            knob_file *_knob_file = new knob_file();
-            controls_layout->addWidget(_knob_file);
+            widget = new knob_file();
         }
 
         else if (type == "choice")
         {
-            knob_choice *_knob_choice = new knob_choice();
-            controls_layout->addWidget(_knob_choice);
+            widget = new knob_choice();
         }
 
         else if (type == "text")
         {
-            knob_text *_knob_text = new knob_text();
-            controls_layout->addWidget(_knob_text);
+            widget = new knob_text();
         }
 
         else if (type == "label")
         {
-            knob_label *_knob_label = new knob_label();
-            controls_layout->addWidget(_knob_label);
+            widget = new knob_label();
         }
 
         else if (type == "button")
         {
-            knob_button *_knob_button = new knob_button();
-            controls_layout->addWidget(_knob_button);
+            widget = new knob_button();
         }
 
         else if (type == "group")
         {
-            knob_group *_knob_group = new knob_group();
-            controls_layout->addWidget(_knob_group);
+            widget = new knob_group();
         }
 
         else if (type == "integer")
         {
-            knob_integer *_knob_integer = new knob_integer();
-            controls_layout->addWidget(_knob_integer);
+            widget = new knob_integer();
         }
 
         else if (type == "floating")
         {
-            float _default = knob.value("default").toDouble();
-            knob_floating *_knob_floating = new knob_floating(
-                init_space_width,
-                label,
-                _default);
-            controls_layout->addWidget(_knob_floating);
+            float _default = knob_object.value("default").toDouble();
+            widget = new knob_floating(_default);
         }
 
         else if (type == "separator")
         {
-            knob_separator *_knob_separator = new knob_separator();
-            controls_layout->addWidget(_knob_separator);
+            widget = new knob_separator();
         }
 
         else if (type == "position")
         {
-            knob_position *_knob_position = new knob_position();
-            controls_layout->addWidget(_knob_position);
+            widget = new knob_position();
         }
+
+        knob *_knob = dynamic_cast<knob *>(widget);
+        if (_knob)
+            _knob->set_init_space(init_space_width, label);
+
+        controls_layout->addWidget(widget);
     }
 }
 

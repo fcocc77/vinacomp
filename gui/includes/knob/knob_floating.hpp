@@ -9,20 +9,16 @@
 
 #include <slider.hpp>
 #include <qt.hpp>
-#include <init_space.hpp>
+#include <knob.hpp>
 
-class knob_floating : public QWidget
+class knob_floating : public knob
 {
 private:
     QString label;
     float default_value;
 
-    int init_space_width;
-
 public:
     knob_floating(
-        int _init_space_width,
-        QString _label,
         float _default_value);
     ~knob_floating();
 };

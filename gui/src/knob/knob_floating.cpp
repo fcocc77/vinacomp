@@ -1,18 +1,14 @@
 #include <knob_floating.hpp>
 
 knob_floating::knob_floating(
-    int _init_space_width,
-    QString _label,
     float _default_value)
 {
-    init_space_width = _init_space_width;
-    label = _label;
+
     default_value = _default_value;
 
     QHBoxLayout *layout = new QHBoxLayout(this);
 
-    init_space *label_widget = new init_space(init_space_width, label);
-    layout->addWidget(label_widget);
+    layout->addWidget(init_space);
 
     QLineEdit *value = new QLineEdit(QString::number(default_value));
     value->setMaximumWidth(50);

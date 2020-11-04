@@ -1,12 +1,8 @@
 #include <knob_color.hpp>
 
 knob_color::knob_color(
-    int _init_space_width,
-    QString _label,
     QColor _default_value)
 {
-    init_space_width = _init_space_width;
-    label = _label;
     default_value = _default_value;
 
     this->setObjectName("knob_color");
@@ -25,8 +21,8 @@ void knob_color::setup_ui()
 
     QHBoxLayout *layout = new QHBoxLayout(this);
 
-    init_space *label_widget = new init_space(init_space_width, label);
-    layout->addWidget(label_widget);
+    // init_space *label_widget = new init_space(init_space_width, label);
+    layout->addWidget(init_space);
 
     value = new QLineEdit(QString::number(default_value.red()));
     value->setMaximumWidth(50);

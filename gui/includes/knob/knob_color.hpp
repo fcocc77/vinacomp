@@ -9,11 +9,12 @@
 #include <QPushButton>
 
 // VINACOMP
+#include <knob.hpp>
 #include <qt.hpp>
 #include <slider.hpp>
 #include <init_space.hpp>
 
-class knob_color : public QWidget
+class knob_color : public knob
 {
 private:
     QWidget *_separate_colors_box;
@@ -21,9 +22,6 @@ private:
     QLineEdit *value;
     slider *_slider;
 
-
-    int init_space_width;
-    QString label;
     QColor default_value;
 
     bool is_separate_colors_box = false;
@@ -35,8 +33,6 @@ private:
 
 public:
     knob_color(
-        int _init_space_width,
-        QString _label,
         QColor _default_value);
     ~knob_color();
 };

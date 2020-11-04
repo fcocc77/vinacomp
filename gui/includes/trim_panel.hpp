@@ -14,6 +14,7 @@
 #include <properties.hpp>
 #include <qt.hpp>
 
+#include <knob.hpp>
 #include <knob_color.hpp>
 #include <knob_check_box.hpp>
 #include <knob_file.hpp>
