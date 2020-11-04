@@ -5,8 +5,6 @@ properties::properties(/* args */)
 {
     this->setObjectName("properties");
     setup_ui();
-
-    panels = new QMap<QString, QWidget *>;
 }
 
 properties::~properties()
@@ -87,27 +85,61 @@ QWidget *properties::top_buttons_setup_ui()
 void properties::minimize_all_panels()
 {
     is_maximize = !is_maximize;
-    for (QWidget *panel : *panels)
+    for (QWidget *widget : get_trim_panels())
     {
-        trim_panel *_trim_panel = dynamic_cast<trim_panel *>(panel);
+        trim_panel *_trim_panel = dynamic_cast<trim_panel *>(widget);
         _trim_panel->maximize(is_maximize);
     }
 }
 
 void properties::close_all()
 {
-    for (QString panel_name : panels->keys())
-        close_trim_panel(panel_name);
+    for (QWidget *widget : get_trim_panels())
+    {
+        trim_panel *_trim_panel = dynamic_cast<trim_panel *>(widget);
+        close_trim_panel(_trim_panel->get_name());
+    }
 }
 
 void properties::close_trim_panel(QString panel_name)
 {
-    QWidget *panel = panels->value(panel_name);
+    QWidget *panel = get_trim_panel(panel_name);
     trim_panel *_trim_panel = dynamic_cast<trim_panel *>(panel);
 
-    panels->remove(panel_name);
-    _trim_panel->setParent(0);
+    if (!_trim_panel)
+        return;
+
     _trim_panel->hide();
+    _trim_panel->setParent(0);
+}
+
+QWidget *properties::get_trim_panel(QString panel_name)
+{
+    // encuentra un 'trim_panel' en el layout, a partir de un nombre,
+    // si no esta devuelve un NULL.
+    for (QWidget *widget : get_trim_panels())
+    {
+        trim_panel *_trim_panel = dynamic_cast<trim_panel *>(widget);
+        if (_trim_panel)
+            if (_trim_panel->get_name() == panel_name)
+                return widget;
+    }
+
+    return NULL;
+}
+
+QList<QWidget *> properties::get_trim_panels()
+{
+    QList<QWidget *> panels;
+    for (int i = 0; i < trim_panels_layout->count(); i++)
+    {
+        QWidget *widget = trim_panels_layout->itemAt(i)->widget();
+        trim_panel *_trim_panel = dynamic_cast<trim_panel *>(widget);
+        if (_trim_panel)
+            panels.push_back(_trim_panel);
+    }
+
+    return panels;
 }
 
 void properties::limit_panels(int amount)
