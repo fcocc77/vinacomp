@@ -34,7 +34,7 @@ private:
 
     QMap<QString, node *> *nodes;
     QMap<QString, node *> *selected_nodes;
-    QMap<QString, QList<node_link *> *> *nodes_links;
+    QMap<QString, QList<QGraphicsRectItem *> *> *nodes_links;
 
     QJsonObject *link_connecting;
     bool selecting = false;
@@ -46,7 +46,6 @@ private:
     QLineEdit *node_rename_edit;
 
     void select_all(bool select);
-    void refresh_selected_nodes();
     void setup_shortcut();
     node *get_node_from_position(QPoint position);
     void connect_node(QPoint position_node);

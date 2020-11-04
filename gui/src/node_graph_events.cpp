@@ -44,8 +44,6 @@ void node_graph::mouseReleaseEvent(QMouseEvent *event)
 
     connect_node(event->pos());
 
-    this->refresh_selected_nodes();
-
     graphics_view::mouseReleaseEvent(event);
 }
 
@@ -54,9 +52,6 @@ void node_graph::mouseMoveEvent(QMouseEvent *event)
     if (selecting)
         if (!qt::alt())
             select_nodes_by_area(mapToScene(event->pos()));
-
-    if (!qt::alt())
-        this->refresh_selected_nodes();
 
     graphics_view::mouseMoveEvent(event);
 }

@@ -12,6 +12,7 @@
 #include <QPainter>
 #include <QFocusEvent>
 #include <QStyleOptionGraphicsItem>
+#include <QGraphicsRectItem>
 
 #include <util.hpp>
 #include <properties.hpp>
@@ -28,6 +29,7 @@ private:
     QMap<QString, node *> *nodes_connected_to_the_output;
     QMap<QString, node *> *selected_nodes;
     QMap<QString, QPointF> selected_nodes_start_position;
+    QMap<QString, QList<QGraphicsRectItem *> *> *nodes_links;
 
     QPointF *center_position;
     bool selected = false;
@@ -59,6 +61,7 @@ public:
     node(QGraphicsScene *_scene,
          int *_current_z_value,
          QMap<QString, node *> *_selected_nodes,
+         QMap<QString, QList<QGraphicsRectItem *> *> *_nodes_links,
          QColor color,
          trim_panel *_panel,
          properties *_properties);

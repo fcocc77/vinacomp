@@ -30,7 +30,7 @@ node_graph::node_graph(QJsonObject *_project, properties *__properties)
     //
 
     nodes = new QMap<QString, node *>;
-    nodes_links = new QMap<QString, QList<node_link *> *>;
+    nodes_links = new QMap<QString, QList<QGraphicsRectItem *> *>;
     selected_nodes = new QMap<QString, node *>;
     link_connecting = new QJsonObject();
 
@@ -118,6 +118,7 @@ node *node_graph::create_node(
         scene,
         current_z_value,
         selected_nodes,
+        nodes_links,
         color,
         panel,
         _properties);
@@ -129,10 +130,10 @@ node *node_graph::create_node(
 
     // crea los links para el nodo
     int link_count = 1;
-    QList<node_link *> *links = new QList<node_link *>;
+    QList<QGraphicsRectItem *> *links = new QList<QGraphicsRectItem *>;
     for (int i = 0; i < link_count; i++)
     {
-        node_link *link = new node_link(i, scene, _node, link_connecting);
+        QGraphicsRectItem *link = new node_link(i, scene, _node, link_connecting);
         links->push_back(link);
     }
     //
@@ -187,8 +188,8 @@ void node_graph::select_node(QString name, bool select)
 
     _node->set_selected(select);
 
-    for (node_link *link : *nodes_links->value(name))
-        link->set_selected(select);
+    for (QGraphicsRectItem *link : *nodes_links->value(name))
+        dynamic_cast<node_link *>(link)->set_selected(select);
 
     if (select)
         selected_nodes->insert(name, _node);
@@ -220,10 +221,9 @@ node_link *node_graph::get_node_link(node *_node, int link_index)
         return NULL;
 
     auto links = nodes_links->value(_node->get_name());
+    auto link = links->value(link_index);
 
-    node_link *link = links->value(link_index);
-
-    return link;
+    return dynamic_cast<node_link *>(link);
 }
 
 void node_graph::select_all(bool select)
@@ -263,28 +263,6 @@ void node_graph::select_nodes_by_area(QPointF selection_end_point)
     }
 }
 
-void node_graph::refresh_selected_nodes()
-{
-    auto refresh_node_link = [this](node *_node) {
-        QList<node_link *> *links = nodes_links->value(_node->get_name());
-        if (!links)
-            return;
-
-        for (node_link *_node_link : *links)
-            _node_link->refresh();
-    };
-
-    // refresca los link de cada nodo seleccionado y los
-    // link de los nodos que estan conectados a la salida.
-    for (node *selected_node : *selected_nodes)
-    {
-        refresh_node_link(selected_node);
-        for (node *output_node : *selected_node->get_output_nodes())
-            refresh_node_link(output_node);
-    }
-    //
-}
-
 QJsonObject node_graph::get_tree()
 {
     // genera un arbol con todos los nodos con su informacion,
@@ -296,8 +274,10 @@ QJsonObject node_graph::get_tree()
         auto *links = nodes_links->value(_node->get_name());
         QJsonArray inputs = {};
 
-        for (node_link *link : *links)
+        for (auto _link : *links)
         {
+            node_link *link = dynamic_cast<node_link *>(_link);
+
             node *connected_node = link->get_connected_node();
             QString _connected_node = "NULL";
             if (connected_node)
@@ -320,12 +300,12 @@ QJsonObject node_graph::get_tree()
     return tree;
 }
 
-void node_graph::restore_tree(QJsonObject nodes)
+void node_graph::restore_tree(QJsonObject _nodes)
 {
 
-    for (QString name : nodes.keys())
+    for (QString name : _nodes.keys())
     {
-        QJsonObject data = nodes.value(name).toObject();
+        QJsonObject data = _nodes.value(name).toObject();
 
         QJsonArray color = data["color"].toArray();
         int red = color[0].toInt();
@@ -342,10 +322,10 @@ void node_graph::restore_tree(QJsonObject nodes)
     }
 
     // conecta todos los nodos
-    for (QString name : nodes.keys())
+    for (QString name : _nodes.keys())
     {
-        QJsonObject data = nodes.value(name).toObject();
-        auto *links = nodes_links->value(name);
+        QJsonObject data = _nodes.value(name).toObject();
+        node *_node = nodes->value(name);
 
         QJsonArray inputs = data["inputs"].toArray();
 
@@ -355,7 +335,7 @@ void node_graph::restore_tree(QJsonObject nodes)
             QString connected_node = link_data["connected_node"].toString();
             node *node_to_connect = get_node(connected_node);
 
-            node_link *link = links->value(i);
+            node_link *link = get_node_link(_node, i);
             if (link)
                 link->connect_node(node_to_connect);
         }

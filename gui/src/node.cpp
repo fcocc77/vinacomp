@@ -1,8 +1,10 @@
 #include <node.hpp>
+#include <node_link.hpp>
 
 node::node(QGraphicsScene *_scene,
            int *_current_z_value,
            QMap<QString, node *> *_selected_nodes,
+           QMap<QString, QList<QGraphicsRectItem *> *> *_nodes_links,
            QColor _color,
            trim_panel *_panel,
            properties *__properties)
@@ -13,6 +15,7 @@ node::node(QGraphicsScene *_scene,
     scene = _scene;
     current_z_value = _current_z_value;
     selected_nodes = _selected_nodes;
+    nodes_links = _nodes_links;
 
     center_position = new QPointF;
     nodes_connected_to_the_output = new QMap<QString, node *>;
@@ -275,6 +278,28 @@ void node::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     //
     //
 
+    // Actualizacion de todos lo links conectados al nodo
+    auto refresh_links = [this](node *_node) {
+        auto links = nodes_links->value(_node->get_name());
+        if (!links)
+            return;
+
+        for (auto _node_link : *links)
+            dynamic_cast<node_link *>(_node_link)->refresh();
+    };
+
+    auto refresh_node_link = [=](node *_node) {
+        refresh_links(_node);
+        // refresca los link de cada nodo seleccionado y los
+        // link de los nodos que estan conectados a la salida.
+        for (node *output_node : *_node->get_output_nodes())
+            refresh_links(output_node);
+    };
+    //
+    //
+
+    refresh_node_link(this);
+
     // Mueve los nodos seleccionados en relacion a este nodo
     QPointF difference = start_position - position_with_snap;
     for (node *selected_node : *selected_nodes)
@@ -283,6 +308,7 @@ void node::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         {
             QPointF new_position = selected_nodes_start_position.value(selected_node->get_name());
             selected_node->setPos(new_position - difference);
+            refresh_node_link(selected_node);
         }
     }
     //
