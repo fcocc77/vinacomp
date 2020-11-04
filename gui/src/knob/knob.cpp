@@ -22,8 +22,12 @@ knob::~knob()
 
 void knob::set_init_space(int space, QString label)
 {
-    init_space->setMaximumWidth(space);
-    init_space->setMinimumWidth(space);
-
-    label_widget->setText(label);
+    if (space == 0)
+        init_space->hide();
+    else
+    {
+        init_space->setMaximumWidth(space);
+        init_space->setMinimumWidth(space);
+        label_widget->setText(label);
+    }
 }

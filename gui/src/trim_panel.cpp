@@ -54,11 +54,13 @@ void trim_panel::setup_knobs(QJsonArray *knobs)
     //
     //
 
+    QList<knob *> knob_list;
     for (int i = 0; i < knobs->count(); i++)
     {
         QJsonObject knob_object = knobs->at(i).toObject();
         QString type = knob_object.value("type").toString();
         QString label = knob_object.value("label").toString();
+        bool over_line = knob_object.value("over_line").toBool();
 
         QWidget *widget;
         if (type == "color")
@@ -134,9 +136,39 @@ void trim_panel::setup_knobs(QJsonArray *knobs)
 
         knob *_knob = dynamic_cast<knob *>(widget);
         if (_knob)
-            _knob->set_init_space(init_space_width, label);
+        {
+            if (over_line)
+            {
+                // si el parametro tiene 'over_line', crea un widget de linea
+                // e inserta todos los knob anteriores que tengan 'over_line'
+                QWidget *line_widget = new QWidget();
+                QHBoxLayout *line_layout = new QHBoxLayout(line_widget);
 
-        controls_layout->addWidget(widget);
+                line_layout->setMargin(0);
+
+                for (knob *last_knob : knob_list)
+                {
+                    line_layout->addWidget(last_knob);
+                    last_knob->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+                }
+
+                _knob->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+
+                line_layout->addWidget(_knob);
+                line_layout->addStretch();
+
+                _knob->set_init_space(0);
+                controls_layout->addWidget(line_widget);
+            }
+            else
+            {
+                knob_list.clear();
+                _knob->set_init_space(init_space_width, label);
+
+                controls_layout->addWidget(_knob);
+            }
+        }
+        knob_list.push_back(_knob);
     }
 }
 
