@@ -12,7 +12,6 @@
 #include <knob.hpp>
 #include <qt.hpp>
 #include <slider.hpp>
-#include <init_space.hpp>
 
 class knob_color : public knob
 {
