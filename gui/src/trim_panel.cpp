@@ -95,7 +95,9 @@ void trim_panel::setup_knobs(QJsonArray *knobs)
 
         else if (type == "choice")
         {
-            widget = new knob_choice();
+            QJsonArray items = knob_object.value("items").toArray();
+            widget = new knob_choice(qt::array_to_list(items));
+            
         }
 
         else if (type == "text")

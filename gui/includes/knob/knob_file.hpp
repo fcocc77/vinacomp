@@ -9,8 +9,9 @@
 #include <QFileDialog>
 
 #include <qt.hpp>
+#include <knob.hpp>
 
-class knob_file : public QWidget
+class knob_file : public knob
 {
 private:
     void open_file();

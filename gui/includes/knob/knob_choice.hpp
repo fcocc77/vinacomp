@@ -11,10 +11,13 @@
 class knob_choice : public knob
 {
 private:
-    /* data */
+    combo_box *choice;
+
 public:
-    knob_choice(/* args */);
+    knob_choice(QStringList _list);
     ~knob_choice();
+
+    void add_items(QStringList list);
 };
 
 #endif //KNOB_CHOICE_HPP

@@ -5,13 +5,18 @@
     "icon": "read_a",
     "knobs": [
         {
-            "name": "mix",
-            "type": "floating",
-            "label": "Mix",
+            "name": "file",
+            "type": "file",
+            "label": "File",
             "tooltip": "",
-            "minimum": 0,
-            "maximum": 1,
-            "default": 0.5
+            "default": ""
+        },
+        {
+            "name": "proxy",
+            "type": "file",
+            "label": "Proxy",
+            "tooltip": "",
+            "default": ""
         }
     ]
 }

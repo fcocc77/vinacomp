@@ -4,8 +4,7 @@ knob_file::knob_file(/* args */)
 {
     QHBoxLayout *layout = new QHBoxLayout(this);
 
-    QLabel *label = new QLabel("Filename");
-    layout->addWidget(label);
+    layout->addWidget(init_space);
 
     QLineEdit *filename = new QLineEdit("Filename");
     layout->addWidget(filename);

@@ -5,13 +5,39 @@
     "icon": "checker_a",
     "knobs": [
         {
-            "name": "mix",
+            "name": "box_size",
             "type": "floating",
-            "label": "Mix",
+            "label": "Box Size",
+            "tooltip": "Box Size",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 50
+        },
+        {
+            "name": "color_a",
+            "type": "color",
+            "label": "Color A",
             "tooltip": "",
             "minimum": 0,
             "maximum": 1,
-            "default": 0.5
+            "default": [
+                1,
+                1,
+                1
+            ]
+        },
+        {
+            "name": "color_b",
+            "type": "color",
+            "label": "Color B",
+            "tooltip": "",
+            "minimum": 0,
+            "maximum": 1,
+            "default": [
+                0,
+                0,
+                0
+            ]
         }
     ]
 }

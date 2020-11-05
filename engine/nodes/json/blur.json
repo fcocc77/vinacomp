@@ -5,6 +5,37 @@
     "icon": "noise_a",
     "knobs": [
         {
+            "name": "size",
+            "type": "floating",
+            "label": "Size",
+            "tooltip": "",
+            "minimum": 0,
+            "maximum": 100,
+            "default": 0,
+            "dimension": 2
+        },
+        {
+            "name": "filter",
+            "type": "choice",
+            "label": "Filter",
+            "tooltip": "Filter",
+            "items": [
+                "Box",
+                "Triangle",
+                "Quadratic",
+                "Gaussian"
+            ],
+            "default": 3
+        },
+        {
+            "name": "crop",
+            "type": "check_box",
+            "label": "Crop To Format",
+            "tooltip": "",
+            "over_line": true,
+            "default": false
+        },
+        {
             "name": "mix",
             "type": "floating",
             "label": "Mix",
