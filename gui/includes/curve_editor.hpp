@@ -15,6 +15,11 @@
 class curve_view : public QOpenGLWidget, public QOpenGLFunctions
 {
 
+private:
+    QPointF point;
+
+    QPointF map_position(QPoint position);
+
 public:
     curve_view(/* args */);
     ~curve_view();
@@ -23,6 +28,9 @@ protected:
     void initializeGL() override;
     void paintGL() override;
     void resizeGL(int w, int h) override;
+
+    // Eventos
+    void mousePressEvent(QMouseEvent *event);
 };
 
 class curve_editor : public QWidget
