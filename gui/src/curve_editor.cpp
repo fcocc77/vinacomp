@@ -56,3 +56,31 @@ curve_view::~curve_view()
 {
 }
 
+void curve_view::initializeGL()
+{
+    initializeOpenGLFunctions();
+    glClearColor(0, .1, 0, 1);
+
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_MULTISAMPLE);
+    glEnable(GL_LINE_SMOOTH);
+
+    QSurfaceFormat format;
+    format.setSamples(10);
+    setFormat(format);
+}
+
+void curve_view::paintGL()
+{
+    glBegin(GL_LINES);
+    glColor3f(1, 0, 0);
+    glVertex2f(0.0f, 1.0f);
+    glVertex2f(1.0f, 0.0f);
+    glEnd();
+}
+
+void curve_view::resizeGL(int w, int h)
+{
+
+    glViewport(0, 0, w, h);
+}

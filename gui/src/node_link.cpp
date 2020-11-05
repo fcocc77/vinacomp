@@ -1,9 +1,10 @@
 #include <node_link.hpp>
+#include <node.hpp>
 
 node_link::node_link(
     int _index,
     QGraphicsScene *_scene,
-    node *__node,
+    QGraphicsItem *__node,
     QJsonObject *_link_connecting)
 {
 
@@ -68,7 +69,8 @@ node_link::~node_link()
 
 void node_link::refresh()
 {
-    set_selected(this_node->is_selected());
+    node *_this_node = dynamic_cast<node *>(this_node);
+    set_selected(_this_node->is_selected());
     update_connection();
 }
 
@@ -99,7 +101,7 @@ QPointF node_link::get_center(QPointF point_a, QPointF point_b)
 
 void node_link::set_selected(bool enable)
 {
-    if (this_node->is_selected())
+    if (enable)
     {
         QPen link_pen(Qt::white);
         link_pen.setWidth(5);
@@ -172,7 +174,7 @@ float node_link::arrow_refresh(QPointF point_a, QPointF point_b)
     //
 
     // calcular la distancia entre el centro del nodo hasta el borde
-    auto node_size = this_node->get_size();
+    auto node_size = dynamic_cast<node *>(this_node)->get_size();
     float node_width_x = node_size.width() / 2;
     float node_width_y = node_size.height() / 2;
 
@@ -239,34 +241,44 @@ QLineF node_link::subtract_distance_line(QLineF line, float distance)
 
 void node_link::update_connection()
 {
+    node *_this_node = dynamic_cast<node *>(this_node);
+
     QPointF src_pos, dst_pos;
 
-    src_pos = this_node->get_center_position();
+    src_pos = _this_node->get_center_position();
     if (connected_node != NULL)
-        dst_pos = connected_node->get_center_position();
+    {
+        node *_connected_node = dynamic_cast<node *>(connected_node);
+        dst_pos = _connected_node->get_center_position();
+    }
     else
         dst_pos = {src_pos.x(), src_pos.y() - link_size};
 
     link_refresh(src_pos, dst_pos);
 }
 
-void node_link::connect_node(node *to_node)
+void node_link::connect_node(QGraphicsItem *to_node)
 {
     if (to_node == NULL)
         return;
 
+    node *_to_node = dynamic_cast<node *>(to_node);
+    node *_this_node = dynamic_cast<node *>(this_node);
+
     if (connected_node)
-        connected_node->remove_output_node(this_node);
+    {
+        node *_connected_node = dynamic_cast<node *>(connected_node);
+        _connected_node->remove_output_node(_this_node);
+    }
 
-    to_node->add_output_node(this_node);
+    _to_node->add_output_node(_this_node);
+    _this_node->add_input_node(_to_node);
 
-    this_node->add_input_node(to_node);
-
-    connected_node = to_node;
+    connected_node = _to_node;
     update_connection();
 }
 
-node *node_link::get_connected_node()
+QGraphicsItem *node_link::get_connected_node()
 {
     return connected_node;
 }
@@ -275,8 +287,11 @@ void node_link::disconnect_node()
 {
     if (connected_node)
     {
-        connected_node->remove_output_node(this_node);
-        this_node->remove_input_node(connected_node);
+        node *_connected_node = dynamic_cast<node *>(connected_node);
+        node *_this_node = dynamic_cast<node *>(this_node);
+
+        _connected_node->remove_output_node(_this_node);
+        _this_node->remove_input_node(_connected_node);
     }
 
     connected_node = NULL;
@@ -296,16 +311,18 @@ void node_link::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void node_link::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
+    node *_this_node = dynamic_cast<node *>(this_node);
+
     dragging = true;
 
     QPointF pos = mapToScene(event->pos());
-    QPointF node_position = this_node->get_center_position();
+    QPointF node_position = _this_node->get_center_position();
 
     float x = node_position.x();
     float y = node_position.y();
 
     link_refresh(node_position, pos);
 
-    *link_connecting = {{"name", this_node->get_name()},
+    *link_connecting = {{"name", _this_node->get_name()},
                         {"index", index}};
 }

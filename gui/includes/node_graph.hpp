@@ -34,7 +34,6 @@ private:
 
     QMap<QString, node *> *nodes;
     QMap<QString, node *> *selected_nodes;
-    QMap<QString, QList<QGraphicsRectItem *> *> *nodes_links;
 
     QJsonObject *link_connecting;
     bool selecting = false;
@@ -51,7 +50,6 @@ private:
     void connect_node(QPoint position_node);
     void select_nodes_by_area(QPointF selection_end_point);
     void align_selected_nodes();
-
 
     // Events
     void mouseReleaseEvent(QMouseEvent *event);

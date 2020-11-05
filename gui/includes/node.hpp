@@ -17,6 +17,7 @@
 #include <util.hpp>
 #include <properties.hpp>
 #include <trim_panel.hpp>
+#include <node_link.hpp>
 
 class node : public QGraphicsPathItem
 {
@@ -28,8 +29,9 @@ private:
     QMap<QString, node *> *nodes_connected_to_the_inputs;
     QMap<QString, node *> *nodes_connected_to_the_output;
     QMap<QString, node *> *selected_nodes;
+    QList<node_link *> *links;
+
     QMap<QString, QPointF> selected_nodes_start_position;
-    QMap<QString, QList<QGraphicsRectItem *> *> *nodes_links;
 
     QPointF *center_position;
     bool selected = false;
@@ -60,8 +62,9 @@ private:
 public:
     node(QGraphicsScene *_scene,
          int *_current_z_value,
+         QJsonObject *_link_connecting,
          QMap<QString, node *> *_selected_nodes,
-         QMap<QString, QList<QGraphicsRectItem *> *> *_nodes_links,
+         int inputs,
          QColor color,
          trim_panel *_panel,
          properties *_properties);
@@ -83,6 +86,7 @@ public:
     bool is_selected();
     QColor get_color();
     void refresh();
+    QList<node_link *> *get_links();
 };
 
 #endif // NODE_H

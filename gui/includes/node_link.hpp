@@ -13,14 +13,13 @@
 #include <math.h>
 
 #include <util.hpp>
-#include <node.hpp>
 
 class node_link : public QGraphicsRectItem
 {
 private:
     QGraphicsScene *scene;
-    node *this_node;
-    node *connected_node;
+    QGraphicsItem *this_node;
+    QGraphicsItem *connected_node;
     QJsonObject *link_connecting;
     int link_size;
     int index;
@@ -48,16 +47,16 @@ private:
 public:
     node_link(int _index,
               QGraphicsScene *_scene,
-              node *_node,
+              QGraphicsItem *_node,
               QJsonObject *_link_connecting);
     ~node_link();
 
     void refresh();
     void update_connection();
-    void connect_node(node *_node);
+    void connect_node(QGraphicsItem *_node);
     void disconnect_node();
     void set_selected(bool enable);
-    node *get_connected_node();
+    QGraphicsItem *get_connected_node();
 };
 
 #endif // NODE_LINK_H

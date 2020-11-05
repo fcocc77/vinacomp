@@ -30,7 +30,6 @@ node_graph::node_graph(QJsonObject *_project, properties *__properties)
     //
 
     nodes = new QMap<QString, node *>;
-    nodes_links = new QMap<QString, QList<QGraphicsRectItem *> *>;
     selected_nodes = new QMap<QString, node *>;
     link_connecting = new QJsonObject();
 
@@ -115,10 +114,6 @@ void node_graph::change_node_name()
     selected_nodes->remove(old_name);
     selected_nodes->insert(new_name, selected_node);
 
-    auto node_links = nodes_links->value(old_name);
-    nodes_links->remove(old_name);
-    nodes_links->insert(new_name, node_links);
-
     selected_node->refresh();
 
     node_rename_edit->hide();
@@ -142,8 +137,9 @@ node *node_graph::create_node(
     node *_node = new node(
         scene,
         current_z_value,
+        link_connecting,
         selected_nodes,
-        nodes_links,
+        1,
         color,
         panel,
         _properties);
@@ -153,26 +149,14 @@ node *node_graph::create_node(
     _node->set_icon(icon_name);
     _node->set_tips(tips);
 
-    // crea los links para el nodo
-    int link_count = 1;
-    QList<QGraphicsRectItem *> *links = new QList<QGraphicsRectItem *>;
-    for (int i = 0; i < link_count; i++)
-    {
-        QGraphicsRectItem *link = new node_link(i, scene, _node, link_connecting);
-        links->push_back(link);
-    }
-    //
-    //
-
     nodes->insert(name, _node);
-    nodes_links->insert(name, links);
 
     return _node;
 }
 
 void node_graph::connect_node(QPoint position_node)
 {
-    // si un enlace input de un nodo esta siendo arrastrado para  conectarlo a otro nodo,
+    // si un enlace input de un nodo esta siendo arrastrado para conectarlo a otro nodo,
     // 'link_connecting' no estara vacio y se determinara
     // si se conecta o no al nodo de destino.
     if (!link_connecting->empty())
@@ -213,9 +197,6 @@ void node_graph::select_node(QString name, bool select)
 
     _node->set_selected(select);
 
-    for (QGraphicsRectItem *link : *nodes_links->value(name))
-        dynamic_cast<node_link *>(link)->set_selected(select);
-
     if (select)
         selected_nodes->insert(name, _node);
     else
@@ -245,10 +226,9 @@ node_link *node_graph::get_node_link(node *_node, int link_index)
     if (!_node)
         return NULL;
 
-    auto links = nodes_links->value(_node->get_name());
-    auto link = links->value(link_index);
+    node_link *link = _node->get_links()->value(link_index);
 
-    return dynamic_cast<node_link *>(link);
+    return link;
 }
 
 void node_graph::select_all(bool select)
@@ -296,14 +276,11 @@ QJsonObject node_graph::get_tree()
 
     for (node *_node : *nodes)
     {
-        auto *links = nodes_links->value(_node->get_name());
         QJsonArray inputs = {};
 
-        for (auto _link : *links)
+        for (node_link *link : *_node->get_links())
         {
-            node_link *link = dynamic_cast<node_link *>(_link);
-
-            node *connected_node = link->get_connected_node();
+            node *connected_node = dynamic_cast<node *>(link->get_connected_node());
             QString _connected_node = "NULL";
             if (connected_node)
                 _connected_node = connected_node->get_name();

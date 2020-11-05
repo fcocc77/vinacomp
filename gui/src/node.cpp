@@ -1,10 +1,10 @@
 #include <node.hpp>
-#include <node_link.hpp>
 
 node::node(QGraphicsScene *_scene,
            int *_current_z_value,
+           QJsonObject *_link_connecting,
            QMap<QString, node *> *_selected_nodes,
-           QMap<QString, QList<QGraphicsRectItem *> *> *_nodes_links,
+           int inputs,
            QColor _color,
            trim_panel *_panel,
            properties *__properties)
@@ -15,7 +15,6 @@ node::node(QGraphicsScene *_scene,
     scene = _scene;
     current_z_value = _current_z_value;
     selected_nodes = _selected_nodes;
-    nodes_links = _nodes_links;
 
     center_position = new QPointF;
     nodes_connected_to_the_output = new QMap<QString, node *>;
@@ -66,6 +65,18 @@ node::node(QGraphicsScene *_scene,
     //
     //
 
+    // Crea los links para el nodo
+    {
+        links = new QList<node_link *>;
+        for (int i = 0; i < inputs; i++)
+        {
+            node_link *link = new node_link(i, scene, this, _link_connecting);
+            links->push_back(link);
+        }
+    }
+    //
+    //
+
     scene->addItem(this);
 
     this->setZValue((*current_z_value) + 1);
@@ -79,12 +90,8 @@ void node::refresh()
 {
     // Actualizacion de todos lo links conectados al nodo
     auto refresh_links = [this](node *_node) {
-        auto links = nodes_links->value(_node->get_name());
-        if (!links)
-            return;
-
-        for (auto _node_link : *links)
-            dynamic_cast<node_link *>(_node_link)->refresh();
+        for (node_link *_node_link : *_node->get_links())
+            _node_link->refresh();
     };
 
     refresh_links(this);
@@ -134,6 +141,9 @@ void node::set_selected(bool enable)
         pen.setWidth(0);
         this->setPen(pen);
     }
+
+    for (node_link *link : *links)
+        link->set_selected(enable);
 }
 
 bool node::is_selected()
@@ -225,6 +235,11 @@ void node::add_input_node(node *_node)
 void node::remove_input_node(node *_node)
 {
     nodes_connected_to_the_inputs->remove(_node->get_name());
+}
+
+QList<node_link *> *node::get_links()
+{
+    return links;
 }
 
 void node::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
