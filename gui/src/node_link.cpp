@@ -70,8 +70,19 @@ node_link::~node_link()
 void node_link::refresh()
 {
     node *_this_node = dynamic_cast<node *>(this_node);
-    set_selected(_this_node->is_selected());
-    update_connection();
+
+    QPointF src_pos, dst_pos;
+
+    src_pos = _this_node->get_center_position();
+    if (connected_node != NULL)
+    {
+        node *_connected_node = dynamic_cast<node *>(connected_node);
+        dst_pos = _connected_node->get_center_position();
+    }
+    else
+        dst_pos = {src_pos.x(), src_pos.y() - link_size};
+
+    link_refresh(src_pos, dst_pos);
 }
 
 float node_link::get_rotation(QPointF point_a, QPointF point_b)
@@ -239,24 +250,6 @@ QLineF node_link::subtract_distance_line(QLineF line, float distance)
     return {line.p2(), {px, py}};
 }
 
-void node_link::update_connection()
-{
-    node *_this_node = dynamic_cast<node *>(this_node);
-
-    QPointF src_pos, dst_pos;
-
-    src_pos = _this_node->get_center_position();
-    if (connected_node != NULL)
-    {
-        node *_connected_node = dynamic_cast<node *>(connected_node);
-        dst_pos = _connected_node->get_center_position();
-    }
-    else
-        dst_pos = {src_pos.x(), src_pos.y() - link_size};
-
-    link_refresh(src_pos, dst_pos);
-}
-
 void node_link::connect_node(QGraphicsItem *to_node)
 {
     if (to_node == NULL)
@@ -275,7 +268,7 @@ void node_link::connect_node(QGraphicsItem *to_node)
     _this_node->add_input_node(_to_node);
 
     connected_node = _to_node;
-    update_connection();
+    refresh();
 }
 
 QGraphicsItem *node_link::get_connected_node()
@@ -295,7 +288,7 @@ void node_link::disconnect_node()
     }
 
     connected_node = NULL;
-    update_connection();
+    refresh();
 }
 
 // Events:
@@ -306,7 +299,7 @@ void node_link::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void node_link::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     dragging = false;
-    update_connection();
+    refresh();
 }
 
 void node_link::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
