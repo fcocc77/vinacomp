@@ -55,6 +55,29 @@ void node_graph::setup_shortcut()
     qt::shortcut("N", this, [this]() {
         this->change_node_name_dialog();
     });
+
+    qt::shortcut("L", this, [this]() {
+        this->align_selected_nodes();
+    });
+}
+
+void node_graph::align_selected_nodes()
+{
+    if (selected_nodes->empty())
+        return;
+
+    // obtiene el primer item seleccionado para sacar la posicion del nodo
+    node *first_node = selected_nodes->first();
+    //
+
+    int separation = 20;
+    int pos_x = first_node->x();
+    int pos_y = first_node->y();
+    for (node *selected_node : *selected_nodes)
+    {
+        selected_node->set_position(pos_x, pos_y);
+        pos_x += separation + selected_node->get_size().width();
+    }
 }
 
 void node_graph::change_node_name_dialog()
@@ -126,7 +149,7 @@ node *node_graph::create_node(
         _properties);
     auto size = _node->get_size();
     _node->set_name(name);
-    _node->set_position(position.x() - (size[0] / 2), position.y() - (size[1] / 2));
+    _node->set_position(position.x() - (size.width() / 2), position.y() - (size.height() / 2));
     _node->set_icon(icon_name);
     _node->set_tips(tips);
 

@@ -186,9 +186,9 @@ void node::set_tips(QString _tips)
     tips->setPos(60, 20);
 }
 
-QList<int> node::get_size()
+QSize node::get_size()
 {
-    return {current_width, current_height};
+    return QSize(current_width, current_height);
 }
 
 QColor node::get_color()
@@ -199,6 +199,7 @@ QColor node::get_color()
 void node::set_position(float x, float y)
 {
     this->setPos(x, y);
+    this->refresh();
 }
 
 void node::add_output_node(node *_node)
@@ -264,8 +265,8 @@ void node::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         if (selected_nodes->contains(connected_node->get_name()))
             return;
 
-        float size_x_difference = (connected_node->get_size()[0] - this->get_size()[0]) / 2;
-        float size_y_difference = (connected_node->get_size()[1] - this->get_size()[1]) / 2;
+        float size_x_difference = (connected_node->get_size().width() - this->get_size().width()) / 2;
+        float size_y_difference = (connected_node->get_size().height() - this->get_size().height()) / 2;
 
         float _this_node_x = this_node_x - size_x_difference;
         float _this_node_y = this_node_y - size_y_difference;
@@ -299,8 +300,7 @@ void node::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     else
         position_with_snap = {this_node_x, this_node_y};
 
-    this->setPos(position_with_snap.x(), position_with_snap.y());
-    this->refresh();
+    this->set_position(position_with_snap.x(), position_with_snap.y());
     //
     //
 
@@ -310,9 +310,8 @@ void node::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     {
         if (selected_node != this)
         {
-            QPointF new_position = selected_nodes_start_position.value(selected_node->get_name());
-            selected_node->setPos(new_position - difference);
-            selected_node->refresh();
+            QPointF new_position = selected_nodes_start_position.value(selected_node->get_name()) - difference;
+            selected_node->set_position(new_position.x(), new_position.y());
         }
     }
     //

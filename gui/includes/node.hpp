@@ -72,7 +72,7 @@ public:
     QString get_name();
     void set_position(float x, float y);
     QPointF get_center_position();
-    QList<int> get_size();
+    QSize get_size();
     void set_icon(QString icon_name);
     void set_selected(bool enable);
     QMap<QString, node *> *get_output_nodes();

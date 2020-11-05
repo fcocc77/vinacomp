@@ -173,8 +173,8 @@ float node_link::arrow_refresh(QPointF point_a, QPointF point_b)
 
     // calcular la distancia entre el centro del nodo hasta el borde
     auto node_size = this_node->get_size();
-    float node_width_x = node_size.value(0) / 2;
-    float node_width_y = node_size.value(1) / 2;
+    float node_width_x = node_size.width() / 2;
+    float node_width_y = node_size.height() / 2;
 
     float max_angle = atan2(node_width_x, node_width_y) * 180 / M_PI;
 
