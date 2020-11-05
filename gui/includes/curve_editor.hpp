@@ -7,14 +7,14 @@
 #include <QTreeWidget>
 #include <QGraphicsScene>
 #include <QPainter>
+#include <QOpenGLWidget>
+#include <QOpenGLFunctions>
 
 #include <graphics_view.hpp>
 
-class curve_view : public graphics_view
+class curve_view : public QOpenGLWidget, public QOpenGLFunctions
 {
 protected:
-    virtual void drawBackground(QPainter *painter, const QRectF &rect);
-
 public:
     curve_view(/* args */);
     ~curve_view();
