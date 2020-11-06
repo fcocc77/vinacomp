@@ -35,21 +35,57 @@ void gl_view::resizeGL(int width, int height)
 
 void gl_view::zoom()
 {
-
-    int range = 1000;
-
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
     float aspect = float(height()) / width();
 
-    float move = cursor_x * zoom_scale * 0.5;
+    // glScaled(zoom_scale * aspect, zoom_scale, 1);
 
-    glTranslatef(coord.x(), coord.y(), 0);
-    // print(cursor_x);
+    float range = 1000;
 
-    // glTranslatef(-move, 0.0, 0);
-    glScaled(zoom_scale * aspect, zoom_scale, 1);
+    // float left = -0.5 * range * zoom_scale;
+    // float right = 0.5 * range * zoom_scale;
+    // float bottom = -0.5 * aspect * range * zoom_scale;
+    // float top = 0.5 * aspect * range * zoom_scale;
+    // float near = 5.0 + range;
+    // float far = -5.0 * range;
+
+    // left -= coord.x() * (zoom_scale * 500);
+    // right -= coord.x() * (zoom_scale * 500);
+
+    // float anchor_x = 0.5;
+
+    // glTranslatef(anchor_x, 0, 0);
+
+    // glScaled(zoom_scale * aspect, zoom_scale, 1);
+
+    // // glOrtho(left, right, bottom, top, near, far);
+    // // glOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
+
+    // glTranslatef(-anchor_x/2, 0, 0);
+
+    print(zoom_scale * 2);
+
+    float zoom_value = zoom_scale * 2;
+
+    float cameraX = -coord.x();
+    float cameraY = -coord.y();
+
+    // glTranslatef(coord.x(), 0, 0);
+
+    // float screenX = width();
+    // float screenY = height();
+
+    // cameraX += (cameraX - 0.1) * 0.5f;
+    // cameraY += (cameraY - 0.1) * 0.5f;
+    // zoom_scale += 0.5f;
+
+    float left = cameraX - zoom_value;
+    float right = cameraX + zoom_value;
+    float top = cameraY + zoom_value;
+    float bottom = cameraY - zoom_value;
+    glOrtho(left, right, bottom, top, -1.f, 1.f);
 
     glMatrixMode(GL_MODELVIEW);
 }
@@ -77,6 +113,10 @@ QPointF gl_view::get_coordinate(QPoint cursor_position)
     float x = 2.0f * (cursor_position.x() + 0.5) / this->width() - 1.0;
     float y = 2.0f * (cursor_position.y() + 0.5) / this->height() - 1.0;
 
+    float zoom_value = zoom_scale * 2;
+    x *= zoom_value;
+    y *= zoom_value;
+
     return {x, -y};
 }
 
@@ -84,24 +124,10 @@ void gl_view::wheelEvent(QWheelEvent *event)
 {
 
     QPoint numDegrees = event->angleDelta();
-    if (numDegrees.y() < 0)
+    if (numDegrees.y() > 0)
         zoom_scale = zoom_scale / 1.1;
     else
         zoom_scale = zoom_scale * 1.1;
-
-    int x_pos = event->pos().x();
-    int y_pos = event->pos().y();
-
-    float x1_percent = x_pos * 100 / this->width();
-    float x2_percent = 100 - x1_percent;
-
-    x1_range = x1_percent;
-    x2_range = x2_percent;
-
-    // float last_cursor_x = cursor_x;
-    cursor_x = 2.0f * (x_pos + 0.5) / this->width() - 1.0;
-    // cursor_x -= last_cursor_x;
-    cursor_y = 2.0f * (y_pos + 0.5) / this->height() - 1.0;
 
     update();
 }
@@ -148,13 +174,14 @@ void gl_view::mouseMoveEvent(QMouseEvent *event)
         QPointF coord_to_add = get_coordinate(event->pos()) - get_coordinate(click_position);
         //
         coord = click_coord + coord_to_add;
+
         update();
     }
     if (zooming)
     {
         float zoom_to_add = event->pos().x() - click_position.x();
-        float zoom_speed = 1.005;
-        double scale_factor = pow(zoom_speed, zoom_to_add);
+        float zoom_speed = 1.007;
+        scale_factor = pow(zoom_speed, zoom_to_add);
 
         zoom_scale = click_zoom_scale * scale_factor;
 
@@ -164,6 +191,10 @@ void gl_view::mouseMoveEvent(QMouseEvent *event)
         else if (zoom_scale > 7.0)
             zoom_scale = 7.0;
         //
+
+        // float x_move = (1 - scale_factor) / 5;
+        // QPointF coord_to_add = {x_move, 0};
+        // coord = click_coord - coord_to_add;
 
         update();
     }

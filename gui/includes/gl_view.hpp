@@ -17,11 +17,7 @@ private:
 
     float zoom_scale;
     float click_zoom_scale;
-
-    int x1_range = 1000;
-    int x2_range = 1000;
-    float cursor_x = 0;
-    float cursor_y = 0;
+    double scale_factor;
 
     QPointF coord;
     QPointF click_coord;
