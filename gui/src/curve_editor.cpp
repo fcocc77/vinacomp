@@ -70,51 +70,53 @@ void curve_view::initializeGL()
     format().setSamples(10);
 }
 
+void curve_view::draw_line(QPointF src, QPointF dst, QColor color)
+{
+    glBegin(GL_LINES);
+    glColor3f(color.red() / 255.0, color.green() / 255.0, color.blue() / 255.0);
+    glVertex2f(src.x(), src.y());
+    glVertex2f(dst.x(), dst.y());
+    glEnd();
+}
+
 void curve_view::draw_grid()
 {
 
-    QPointF a = map_position({10, 100});
-    QPointF b = map_position({100, 100});
+    QPointF up_a = map_position({10, 100});
+    QPointF up_b = map_position({800, 100});
 
-    glBegin(GL_LINES);
-    glColor3f(1, 0, 0);
-    glVertex2f(a.x(), a.y());
-    glVertex2f(b.x(), b.y());
-    glEnd();
+    draw_line(up_a, up_b, QColor(255, 0, 0));
 
-    return;
+    QPointF down_a = map_position({10, 400});
+    QPointF down_b = map_position({800, 400});
 
-    int count = 100000;
-    int separation = 10;
+    draw_line(down_a, down_b, QColor(255, 0, 0));
+
+    int count = 1000;
+    int separation = 1;
 
     float total = float(count) / 2 * separation;
 
-    float y = -total;
+    float y = 0;
     for (int i = 0; i < count; i++)
     {
-
-        glBegin(GL_LINES);
-        glColor3f(0, 0.5, 0);
-        glVertex2f(-total, y);
-        glVertex2f(total, y);
-        glEnd();
-
+        draw_line({-total, y}, {total, y}, QColor(0, 100, 0));
         y += separation;
     }
 
-    float x = -total;
+    // float x = -total;
 
-    for (int i = 0; i < count; i++)
-    {
+    // for (int i = 0; i < count; i++)
+    // {
 
-        glBegin(GL_LINES);
-        glColor3f(0, 0.5, 0);
-        glVertex2f(x, -total);
-        glVertex2f(x, total);
-        glEnd();
+    //     glBegin(GL_LINES);
+    //     glColor3f(0, 0.5, 0);
+    //     glVertex2f(x, -total);
+    //     glVertex2f(x, total);
+    //     glEnd();
 
-        x += separation;
-    }
+    //     x += separation;
+    // }
 }
 
 void curve_view::paintGL()
@@ -133,11 +135,7 @@ void curve_view::paintGL()
     //
 
     // Eje Y
-    glBegin(GL_LINES);
-    glColor3f(0, 1, 0);
-    glVertex2f(0.0f, -1.0f);
-    glVertex2f(0.0f, 1.0f);
-    glEnd();
+    draw_line({0.0, -1.0}, {0.0, 1.0}, QColor(0, 255, 0));
     //
     //
 
