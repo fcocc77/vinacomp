@@ -23,12 +23,11 @@ private:
     QPointF coord;
     QPointF click_coord;
 
-    QPointF get_coordinate(QPoint cursor_position);
-
 public:
     gl_view();
     ~gl_view();
 
+    QPointF get_coordinate(QPoint cursor_position);
     QPointF map_position(QPoint mouse_position);
 
 protected:

@@ -16,6 +16,9 @@ class curve_view : public gl_view
 private:
     QPointF point;
 
+
+    void draw_grid();
+
 public:
     curve_view(/* args */);
     ~curve_view();

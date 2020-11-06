@@ -70,16 +70,65 @@ void curve_view::initializeGL()
     format().setSamples(10);
 }
 
+void curve_view::draw_grid()
+{
+
+    QPointF a = map_position({10, 100});
+    QPointF b = map_position({100, 100});
+
+    glBegin(GL_LINES);
+    glColor3f(1, 0, 0);
+    glVertex2f(a.x(), a.y());
+    glVertex2f(b.x(), b.y());
+    glEnd();
+
+    return;
+
+    int count = 100000;
+    int separation = 10;
+
+    float total = float(count) / 2 * separation;
+
+    float y = -total;
+    for (int i = 0; i < count; i++)
+    {
+
+        glBegin(GL_LINES);
+        glColor3f(0, 0.5, 0);
+        glVertex2f(-total, y);
+        glVertex2f(total, y);
+        glEnd();
+
+        y += separation;
+    }
+
+    float x = -total;
+
+    for (int i = 0; i < count; i++)
+    {
+
+        glBegin(GL_LINES);
+        glColor3f(0, 0.5, 0);
+        glVertex2f(x, -total);
+        glVertex2f(x, total);
+        glEnd();
+
+        x += separation;
+    }
+}
+
 void curve_view::paintGL()
 {
     gl_view::paintGL();
 
+    draw_grid();
+
     // Eje X
-    glBegin(GL_LINES);
-    glColor3f(1, 0, 0);
-    glVertex2f(-1.0f, 0.0f);
-    glVertex2f(1.0f, 0.0f);
-    glEnd();
+    // glBegin(GL_LINES);
+    // glColor3f(1, 0, 0);
+    // glVertex2f(-1.0f, 0.0f);
+    // glVertex2f(1.0f, 0.0f);
+    // glEnd();
     //
     //
 
@@ -96,7 +145,7 @@ void curve_view::paintGL()
     glColor3f(0, 0, 1);
     glVertex2f(0.5, 0.2);
     glVertex2f(0.5, 0.5);
-    // glVertex2f(point.x(), point.y());
+    glVertex2f(point.x(), point.y());
     glEnd();
 
     float cx = 0;

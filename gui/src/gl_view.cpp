@@ -51,19 +51,10 @@ void gl_view::resizeGL(int width, int height)
 
 QPointF gl_view::map_position(QPoint mouse_position)
 {
-    // Calcula la posicion del mouse a la posicion de la escena OpenGl
-    float zoom_val = 1.0;
-    QList<float> ortho_2d = {-zoom_val, +zoom_val, -zoom_val, +zoom_val};
+    float aspect = float(height()) / width();
 
-    // Primero, calcular las coordenadas "normalizadas" del mouse dividiendo por tamaño
-    float mouse_norm_x = float(mouse_position.x()) / size().width();
-    float mouse_norm_y = float(mouse_position.y()) / size().height();
-
-    // Mapear coordenadas al rango de proyección ortográfica
-    float mouse_ortho_x = (mouse_norm_x * (ortho_2d[1] - ortho_2d[0])) + ortho_2d[0];
-    float mouse_ortho_y = (mouse_norm_y * (ortho_2d[3] - ortho_2d[2])) + ortho_2d[2];
-
-    return {mouse_ortho_x, -mouse_ortho_y};
+    QPointF coordinate = -get_coordinate(mouse_position) + coord;
+    return {coordinate.x(), coordinate.y() * aspect};
 }
 
 QPointF gl_view::get_coordinate(QPoint cursor_position)
@@ -92,6 +83,8 @@ void gl_view::wheelEvent(QWheelEvent *event)
         zoom_scale = zoom_scale / 1.1;
     else
         zoom_scale = zoom_scale * 1.1;
+
+    update();
 }
 
 void gl_view::mousePressEvent(QMouseEvent *event)
