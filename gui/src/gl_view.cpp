@@ -45,9 +45,10 @@ void gl_view::zoom()
 
     float move = cursor_x * zoomScale * 0.5;
 
-    print(move);
+    glTranslatef(coord.x(), coord.y(), 0);
+    // print(cursor_x);
 
-    glTranslatef(-move, 0.0, 0);
+    // glTranslatef(-move, 0.0, 0);
     glScaled(zoomScale * aspect, zoomScale, 1);
 
     glMatrixMode(GL_MODELVIEW);
@@ -70,9 +71,17 @@ QPointF gl_view::map_position(QPoint mouse_position)
     return {mouse_ortho_x, -mouse_ortho_y};
 }
 
+QPointF gl_view::get_coordinate(QPoint cursor_position)
+{
+    // obtiene las cordenadas x, y del viewer del openGL, a partir de la posicion del cursor.
+    float x = 2.0f * (cursor_position.x() + 0.5) / this->width() - 1.0;
+    float y = 2.0f * (cursor_position.y() + 0.5) / this->height() - 1.0;
+
+    return {x, -y};
+}
+
 void gl_view::wheelEvent(QWheelEvent *event)
 {
-    print("well");
 
     QPoint numDegrees = event->angleDelta();
     if (numDegrees.y() < 0)
@@ -95,4 +104,32 @@ void gl_view::wheelEvent(QWheelEvent *event)
     cursor_y = 2.0f * (y_pos + 0.5) / this->height() - 1.0;
 
     update();
+}
+
+void gl_view::mousePressEvent(QMouseEvent *event)
+{
+    click_position = event->pos();
+    last_coord = coord;
+
+    if (qt::alt())
+        panning = true;
+}
+
+void gl_view::mouseReleaseEvent(QMouseEvent *event)
+{
+    panning = false;
+
+    update();
+}
+
+void gl_view::mouseMoveEvent(QMouseEvent *event)
+{
+    if (panning)
+    {
+        // le resta la cordenada del click para que el paneo comience en 0
+        QPointF coord_to_add = get_coordinate(event->pos()) - get_coordinate(click_position);
+        //
+        coord = last_coord + coord_to_add;
+        update();
+    }
 }

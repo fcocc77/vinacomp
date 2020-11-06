@@ -5,18 +5,27 @@
 #include <QOpenGLFunctions>
 
 #include <util.hpp>
+#include <qt.hpp>
 
-class gl_view : public QOpenGLWidget, public QOpenGLFunctions
+class gl_view : public QOpenGLWidget,
+                public QOpenGLFunctions
 {
 private:
+    QPoint click_position;
+    bool panning = false;
+
     float zoomScale;
 
     int x1_range = 1000;
     int x2_range = 1000;
-    float cursor_x;
-    float cursor_y;
+    float cursor_x = 0;
+    float cursor_y = 0;
+
+    QPointF coord;
+    QPointF last_coord;
 
     void zoom();
+    QPointF get_coordinate(QPoint cursor_position);
 
 public:
     gl_view(/* args */);
@@ -31,6 +40,9 @@ protected:
 
     // Eventos
     void wheelEvent(QWheelEvent *event);
+    void mousePressEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
 };
 
 #endif //GL_VIEW_HPP

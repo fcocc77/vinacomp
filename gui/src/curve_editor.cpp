@@ -125,4 +125,6 @@ void curve_view::mousePressEvent(QMouseEvent *event)
     point = {position.x(), position.y()};
 
     update();
+
+    gl_view::mousePressEvent(event);
 }
