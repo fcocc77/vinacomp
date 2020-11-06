@@ -2,7 +2,7 @@
 
 gl_view::gl_view(/* args */)
 {
-    zoomScale = 1;
+    zoom_scale = 1;
 }
 
 gl_view::~gl_view()
@@ -43,13 +43,13 @@ void gl_view::zoom()
 
     float aspect = float(height()) / width();
 
-    float move = cursor_x * zoomScale * 0.5;
+    float move = cursor_x * zoom_scale * 0.5;
 
     glTranslatef(coord.x(), coord.y(), 0);
     // print(cursor_x);
 
     // glTranslatef(-move, 0.0, 0);
-    glScaled(zoomScale * aspect, zoomScale, 1);
+    glScaled(zoom_scale * aspect, zoom_scale, 1);
 
     glMatrixMode(GL_MODELVIEW);
 }
@@ -85,9 +85,9 @@ void gl_view::wheelEvent(QWheelEvent *event)
 
     QPoint numDegrees = event->angleDelta();
     if (numDegrees.y() < 0)
-        zoomScale = zoomScale / 1.1;
+        zoom_scale = zoom_scale / 1.1;
     else
-        zoomScale = zoomScale * 1.1;
+        zoom_scale = zoom_scale * 1.1;
 
     int x_pos = event->pos().x();
     int y_pos = event->pos().y();
@@ -109,15 +109,33 @@ void gl_view::wheelEvent(QWheelEvent *event)
 void gl_view::mousePressEvent(QMouseEvent *event)
 {
     click_position = event->pos();
-    last_coord = coord;
+    click_coord = coord;
+    click_zoom_scale = zoom_scale;
 
-    if (qt::alt())
-        panning = true;
+    if (event->button() == Qt::MidButton)
+    {
+        if (qt::alt())
+        {
+            zooming = true;
+        }
+        else
+        {
+            panning = true;
+        }
+    }
+    else if (event->button() == Qt::LeftButton)
+    {
+        if (qt::alt())
+        {
+            panning = true;
+        }
+    }
 }
 
 void gl_view::mouseReleaseEvent(QMouseEvent *event)
 {
     panning = false;
+    zooming = false;
 
     update();
 }
@@ -129,7 +147,24 @@ void gl_view::mouseMoveEvent(QMouseEvent *event)
         // le resta la cordenada del click para que el paneo comience en 0
         QPointF coord_to_add = get_coordinate(event->pos()) - get_coordinate(click_position);
         //
-        coord = last_coord + coord_to_add;
+        coord = click_coord + coord_to_add;
+        update();
+    }
+    if (zooming)
+    {
+        float zoom_to_add = event->pos().x() - click_position.x();
+        float zoom_speed = 1.005;
+        double scale_factor = pow(zoom_speed, zoom_to_add);
+
+        zoom_scale = click_zoom_scale * scale_factor;
+
+        // limitar zoom
+        if (zoom_scale < 0.2)
+            zoom_scale = 0.2;
+        else if (zoom_scale > 7.0)
+            zoom_scale = 7.0;
+        //
+
         update();
     }
 }

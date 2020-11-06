@@ -13,8 +13,10 @@ class gl_view : public QOpenGLWidget,
 private:
     QPoint click_position;
     bool panning = false;
+    bool zooming = false;
 
-    float zoomScale;
+    float zoom_scale;
+    float click_zoom_scale;
 
     int x1_range = 1000;
     int x2_range = 1000;
@@ -22,7 +24,7 @@ private:
     float cursor_y = 0;
 
     QPointF coord;
-    QPointF last_coord;
+    QPointF click_coord;
 
     void zoom();
     QPointF get_coordinate(QPoint cursor_position);
