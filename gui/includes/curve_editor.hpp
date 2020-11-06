@@ -7,18 +7,14 @@
 #include <QTreeWidget>
 #include <QGraphicsScene>
 #include <QPainter>
-#include <QOpenGLWidget>
-#include <QOpenGLFunctions>
 
-#include <graphics_view.hpp>
+#include <gl_view.hpp>
 
-class curve_view : public QOpenGLWidget, public QOpenGLFunctions
+class curve_view : public gl_view
 {
 
 private:
     QPointF point;
-
-    QPointF map_position(QPoint position);
 
 public:
     curve_view(/* args */);
@@ -27,9 +23,7 @@ public:
 protected:
     void initializeGL() override;
     void paintGL() override;
-    void resizeGL(int w, int h) override;
 
-    // Eventos
     void mousePressEvent(QMouseEvent *event);
 };
 

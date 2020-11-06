@@ -65,6 +65,7 @@ void curve_view::initializeGL()
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_MULTISAMPLE);
     glEnable(GL_LINE_SMOOTH);
+    glEnable(GL_MODELVIEW);
     glShadeModel(GL_SMOOTH);
 
     format().setSamples(10);
@@ -72,6 +73,8 @@ void curve_view::initializeGL()
 
 void curve_view::paintGL()
 {
+    gl_view::paintGL();
+
     // Eje X
     glBegin(GL_LINES);
     glColor3f(1, 0, 0);
@@ -112,28 +115,6 @@ void curve_view::paintGL()
         glVertex2f(x + cx, y + cy);                                        //output vertex
     }
     glEnd();
-}
-
-void curve_view::resizeGL(int w, int h)
-{
-
-    glViewport(0, 0, w, h);
-}
-
-QPointF curve_view::map_position(QPoint mouse_position)
-{
-    float zoom_val = 1.0;
-    QList<float> ortho_2d = {-zoom_val, +zoom_val, -zoom_val, +zoom_val};
-
-    // Primero, calcular las coordenadas "normalizadas" del mouse dividiendo por tamaño
-    float mouse_norm_x = float(mouse_position.x()) / size().width();
-    float mouse_norm_y = float(mouse_position.y()) / size().height();
-
-    // Mapear coordenadas al rango de proyección ortográfica
-    float mouse_ortho_x = (mouse_norm_x * (ortho_2d[1] - ortho_2d[0])) + ortho_2d[0];
-    float mouse_ortho_y = (mouse_norm_y * (ortho_2d[3] - ortho_2d[2])) + ortho_2d[2];
-
-    return {mouse_ortho_x, -mouse_ortho_y};
 }
 
 void curve_view::mousePressEvent(QMouseEvent *event)
