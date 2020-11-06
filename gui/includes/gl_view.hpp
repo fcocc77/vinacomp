@@ -17,7 +17,6 @@ private:
 
     float zoom_scale;
     float click_zoom_scale;
-    double scale_factor;
 
     QPointF coord;
     QPointF click_coord;

@@ -95,9 +95,9 @@ void curve_view::paintGL()
 
     glBegin(GL_LINE_STRIP);
     glColor3f(0, 0, 1);
-    glVertex2f(0.5, -0.2);
-    glVertex2f(-0.2, 0.5);
-    glVertex2f(point.x(), point.y());
+    glVertex2f(0.5, 0.2);
+    glVertex2f(0.5, 0.5);
+    // glVertex2f(point.x(), point.y());
     glEnd();
 
     float cx = 0;

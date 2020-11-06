@@ -40,51 +40,11 @@ void gl_view::zoom()
 
     float aspect = float(height()) / width();
 
-    // glScaled(zoom_scale * aspect, zoom_scale, 1);
+    float left = coord.x() - zoom_scale * 2;
+    float right = coord.x() + zoom_scale * 2;
+    float top = (coord.y() * aspect) + (zoom_scale * 2) * aspect;
+    float bottom = (coord.y() * aspect) - (zoom_scale * 2) * aspect;
 
-    float range = 1000;
-
-    // float left = -0.5 * range * zoom_scale;
-    // float right = 0.5 * range * zoom_scale;
-    // float bottom = -0.5 * aspect * range * zoom_scale;
-    // float top = 0.5 * aspect * range * zoom_scale;
-    // float near = 5.0 + range;
-    // float far = -5.0 * range;
-
-    // left -= coord.x() * (zoom_scale * 500);
-    // right -= coord.x() * (zoom_scale * 500);
-
-    // float anchor_x = 0.5;
-
-    // glTranslatef(anchor_x, 0, 0);
-
-    // glScaled(zoom_scale * aspect, zoom_scale, 1);
-
-    // // glOrtho(left, right, bottom, top, near, far);
-    // // glOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
-
-    // glTranslatef(-anchor_x/2, 0, 0);
-
-    print(zoom_scale * 2);
-
-    float zoom_value = zoom_scale * 2;
-
-    float cameraX = -coord.x();
-    float cameraY = -coord.y();
-
-    // glTranslatef(coord.x(), 0, 0);
-
-    // float screenX = width();
-    // float screenY = height();
-
-    // cameraX += (cameraX - 0.1) * 0.5f;
-    // cameraY += (cameraY - 0.1) * 0.5f;
-    // zoom_scale += 0.5f;
-
-    float left = cameraX - zoom_value;
-    float right = cameraX + zoom_value;
-    float top = cameraY + zoom_value;
-    float bottom = cameraY - zoom_value;
     glOrtho(left, right, bottom, top, -1.f, 1.f);
 
     glMatrixMode(GL_MODELVIEW);
@@ -117,12 +77,11 @@ QPointF gl_view::get_coordinate(QPoint cursor_position)
     x *= zoom_value;
     y *= zoom_value;
 
-    return {x, -y};
+    return {-x, y};
 }
 
 void gl_view::wheelEvent(QWheelEvent *event)
 {
-
     QPoint numDegrees = event->angleDelta();
     if (numDegrees.y() > 0)
         zoom_scale = zoom_scale / 1.1;
@@ -135,17 +94,23 @@ void gl_view::wheelEvent(QWheelEvent *event)
 void gl_view::mousePressEvent(QMouseEvent *event)
 {
     click_position = event->pos();
-    click_coord = coord;
-    click_zoom_scale = zoom_scale;
 
     if (event->button() == Qt::MidButton)
     {
         if (qt::alt())
         {
             zooming = true;
+            click_zoom_scale = zoom_scale;
+
+            // se resta la posicion del click, a la cordenada,
+            // y despues se suma en el 'mouseMoveEvent', y asi se logra el pundo de
+            // anclaje donde esta el cursor.
+            click_coord = coord - get_coordinate(click_position);
+            //
         }
         else
         {
+            click_coord = coord;
             panning = true;
         }
     }
@@ -153,6 +118,7 @@ void gl_view::mousePressEvent(QMouseEvent *event)
     {
         if (qt::alt())
         {
+            click_coord = coord;
             panning = true;
         }
     }
@@ -174,14 +140,13 @@ void gl_view::mouseMoveEvent(QMouseEvent *event)
         QPointF coord_to_add = get_coordinate(event->pos()) - get_coordinate(click_position);
         //
         coord = click_coord + coord_to_add;
-
         update();
     }
     if (zooming)
     {
-        float zoom_to_add = event->pos().x() - click_position.x();
+        float zoom_to_add = click_position.x() - event->pos().x();
         float zoom_speed = 1.007;
-        scale_factor = pow(zoom_speed, zoom_to_add);
+        double scale_factor = pow(zoom_speed, zoom_to_add);
 
         zoom_scale = click_zoom_scale * scale_factor;
 
@@ -192,9 +157,9 @@ void gl_view::mouseMoveEvent(QMouseEvent *event)
             zoom_scale = 7.0;
         //
 
-        // float x_move = (1 - scale_factor) / 5;
-        // QPointF coord_to_add = {x_move, 0};
-        // coord = click_coord - coord_to_add;
+        // punto de anclaje
+        coord = click_coord + get_coordinate(click_position);
+        //
 
         update();
     }
