@@ -1,9 +1,8 @@
 #include <curve_editor.hpp>
 
-curve_editor ::curve_editor(/* args */)
+curve_editor ::curve_editor()
 {
     this->setObjectName("curve_editor");
-
     setup_ui();
 }
 

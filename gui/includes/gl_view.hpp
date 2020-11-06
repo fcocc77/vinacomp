@@ -15,17 +15,18 @@ private:
     bool panning = false;
     bool zooming = false;
 
-    float zoom_scale;
-    float click_zoom_scale;
+    bool zoom_lock;
+
+    QPointF zoom_scale;
+    QPointF click_zoom_scale;
 
     QPointF coord;
     QPointF click_coord;
 
-    void zoom();
     QPointF get_coordinate(QPoint cursor_position);
 
 public:
-    gl_view(/* args */);
+    gl_view();
     ~gl_view();
 
     QPointF map_position(QPoint mouse_position);
@@ -34,6 +35,8 @@ protected:
     void initializeGL() override;
     void paintGL() override;
     void resizeGL(int w, int h) override;
+
+    virtual void set_zoom_lock(bool enable);
 
     // Eventos
     void wheelEvent(QWheelEvent *event);

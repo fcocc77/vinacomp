@@ -1,8 +1,9 @@
 #include <gl_view.hpp>
 
-gl_view::gl_view(/* args */)
+gl_view::gl_view()
 {
-    zoom_scale = 1;
+    zoom_lock = false;
+    zoom_scale = {1.0, 1.0};
 }
 
 gl_view::~gl_view()
@@ -25,29 +26,27 @@ void gl_view::initializeGL()
 
 void gl_view::paintGL()
 {
-    zoom();
-}
-
-void gl_view::resizeGL(int width, int height)
-{
-    glViewport(0, 0, width, height);
-}
-
-void gl_view::zoom()
-{
+    // zoom y paneo
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
     float aspect = float(height()) / width();
 
-    float left = coord.x() - zoom_scale * 2;
-    float right = coord.x() + zoom_scale * 2;
-    float top = (coord.y() * aspect) + (zoom_scale * 2) * aspect;
-    float bottom = (coord.y() * aspect) - (zoom_scale * 2) * aspect;
+    float left = coord.x() - zoom_scale.x() * 2;
+    float right = coord.x() + zoom_scale.x() * 2;
+    float top = (coord.y() * aspect) + (zoom_scale.y() * 2) * aspect;
+    float bottom = (coord.y() * aspect) - (zoom_scale.y() * 2) * aspect;
 
     glOrtho(left, right, bottom, top, -1.f, 1.f);
 
     glMatrixMode(GL_MODELVIEW);
+    //
+    //
+}
+
+void gl_view::resizeGL(int width, int height)
+{
+    glViewport(0, 0, width, height);
 }
 
 QPointF gl_view::map_position(QPoint mouse_position)
@@ -73,22 +72,26 @@ QPointF gl_view::get_coordinate(QPoint cursor_position)
     float x = 2.0f * (cursor_position.x() + 0.5) / this->width() - 1.0;
     float y = 2.0f * (cursor_position.y() + 0.5) / this->height() - 1.0;
 
-    float zoom_value = zoom_scale * 2;
-    x *= zoom_value;
-    y *= zoom_value;
+    float zoom_value_x = zoom_scale.x() * 2;
+    float zoom_value_y = zoom_scale.y() * 2;
+
+    x *= zoom_value_x;
+    y *= zoom_value_y;
 
     return {-x, y};
 }
 
+void gl_view::set_zoom_lock(bool enable)
+{
+    zoom_lock = enable;
+}
+
 void gl_view::wheelEvent(QWheelEvent *event)
 {
-    QPoint numDegrees = event->angleDelta();
-    if (numDegrees.y() > 0)
+    if (event->angleDelta().y() > 0)
         zoom_scale = zoom_scale / 1.1;
     else
         zoom_scale = zoom_scale * 1.1;
-
-    update();
 }
 
 void gl_view::mousePressEvent(QMouseEvent *event)
@@ -144,17 +147,27 @@ void gl_view::mouseMoveEvent(QMouseEvent *event)
     }
     if (zooming)
     {
-        float zoom_to_add = click_position.x() - event->pos().x();
         float zoom_speed = 1.007;
-        double scale_factor = pow(zoom_speed, zoom_to_add);
 
-        zoom_scale = click_zoom_scale * scale_factor;
+        float zoom_x_to_add = click_position.x() - event->pos().x();
+        float zoom_y_to_add = event->pos().y() - click_position.y();
+
+        double scale_factor_x = pow(zoom_speed, zoom_x_to_add);
+        double scale_factor_y = pow(zoom_speed, zoom_y_to_add);
+
+        float zoom_scale_x = click_zoom_scale.x() * scale_factor_x;
+        float zoom_scale_y = click_zoom_scale.y() * scale_factor_y;
+
+        if (zoom_lock)
+            zoom_scale_y = zoom_scale_x;
+
+        zoom_scale = {zoom_scale_x, zoom_scale_y};
 
         // limitar zoom
-        if (zoom_scale < 0.2)
-            zoom_scale = 0.2;
-        else if (zoom_scale > 7.0)
-            zoom_scale = 7.0;
+        // if (zoom_scale < 0.2)
+        //     zoom_scale = 0.2;
+        // else if (zoom_scale > 7.0)
+        //     zoom_scale = 7.0;
         //
 
         // punto de anclaje
