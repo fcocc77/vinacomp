@@ -77,6 +77,11 @@ void gl_view::set_zoom_lock(bool enable)
     zoom_lock = enable;
 }
 
+QPointF gl_view::get_scale()
+{
+    return zoom_scale;
+}
+
 void gl_view::wheelEvent(QWheelEvent *event)
 {
     if (event->angleDelta().y() > 0)

@@ -59,7 +59,7 @@ curve_view::~curve_view()
 void curve_view::initializeGL()
 {
     initializeOpenGLFunctions();
-    glClearColor(0, .1, 0, 1);
+    glClearColor(0, 0, 0, 1);
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_MULTISAMPLE);
@@ -84,39 +84,47 @@ void curve_view::draw_grid()
 
     QPointF up_a = map_position({10, 100});
     QPointF up_b = map_position({800, 100});
-
     draw_line(up_a, up_b, QColor(255, 0, 0));
 
     QPointF down_a = map_position({10, 400});
     QPointF down_b = map_position({800, 400});
-
     draw_line(down_a, down_b, QColor(255, 0, 0));
+    //
+    //
+    //
+    float scale_y = get_scale().y();
 
-    int count = 1000;
-    int separation = 1;
+    auto rango_to_level = [](float a, float b, float value) {
+        return 255 - (255.0 * (value - a) / abs(a - b));
+    };
 
-    float total = float(count) / 2 * separation;
+    float up_limit = up_a.y();
+    float down_limit = down_a.y();
 
-    float y = 0;
-    for (int i = 0; i < count; i++)
-    {
-        draw_line({-total, y}, {total, y}, QColor(0, 100, 0));
-        y += separation;
-    }
+    auto grid = [=](float separation) {
+        float scale = scale_y / separation;
+        if (scale < 20 && scale > 1)
+        {
+            float caben = (abs(down_limit - up_limit) / separation) * separation;
+            float start = down_limit;
+            float end = caben + start;
 
-    // float x = -total;
+            start /= separation;
+            end /= separation;
 
-    // for (int i = 0; i < count; i++)
-    // {
+            float level = rango_to_level(1, 20, scale);
+            for (int i = start; i < end; i++)
+            {
+                float value = i * separation;
+                draw_line({-2, value}, {2, value}, QColor(0, level, 0));
+            }
+        }
+    };
 
-    //     glBegin(GL_LINES);
-    //     glColor3f(0, 0.5, 0);
-    //     glVertex2f(x, -total);
-    //     glVertex2f(x, total);
-    //     glEnd();
-
-    //     x += separation;
-    // }
+    grid(125);
+    grid(25);
+    grid(5);
+    grid(1);
 }
 
 void curve_view::paintGL()
@@ -133,18 +141,18 @@ void curve_view::paintGL()
     // glEnd();
     //
     //
-
+    return;
     // Eje Y
     draw_line({0.0, -1.0}, {0.0, 1.0}, QColor(0, 255, 0));
     //
     //
 
-    glBegin(GL_LINE_STRIP);
-    glColor3f(0, 0, 1);
-    glVertex2f(0.5, 0.2);
-    glVertex2f(0.5, 0.5);
-    glVertex2f(point.x(), point.y());
-    glEnd();
+    // glBegin(GL_LINE_STRIP);
+    // glColor3f(0, 0, 1);
+    // glVertex2f(0.5, 0.2);
+    // glVertex2f(0.5, 0.5);
+    // glVertex2f(point.x(), point.y());
+    // glEnd();
 
     float cx = 0;
     float cy = 0;
