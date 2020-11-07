@@ -35,6 +35,13 @@ void gl_view::paintGL()
     //
     //
 }
+void gl_view::set_default()
+{
+    coord = {0, 0};
+    zoom_scale = {1.0, 1.0};
+
+    update();
+}
 
 void gl_view::resizeGL(int width, int height)
 {
@@ -52,8 +59,8 @@ QPointF gl_view::map_position(QPoint mouse_position)
 QPointF gl_view::get_coordinate(QPoint cursor_position)
 {
     // obtiene las cordenadas x, y del viewer del openGL, a partir de la posicion del cursor.
-    float x = 2.0f * (cursor_position.x() + 0.5) / this->width() - 1.0;
-    float y = 2.0f * (cursor_position.y() + 0.5) / this->height() - 1.0;
+    float x = 2.0f * (float(cursor_position.x()) + 0.5) / this->width() - 1.0;
+    float y = 2.0f * (float(cursor_position.y()) + 0.5) / this->height() - 1.0;
 
     float zoom_value_x = zoom_scale.x() * 2;
     float zoom_value_y = zoom_scale.y() * 2;

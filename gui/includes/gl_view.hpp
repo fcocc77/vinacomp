@@ -30,6 +30,7 @@ public:
     QPointF get_coordinate(QPoint cursor_position);
     QPointF map_position(QPoint mouse_position);
     QPointF get_scale();
+    void set_default();
 
 protected:
     void initializeGL() override;

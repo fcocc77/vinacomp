@@ -4,6 +4,10 @@ curve_editor ::curve_editor()
 {
     this->setObjectName("curve_editor");
     setup_ui();
+
+    qt::shortcut("F", this, [this]() {
+        view->set_default();
+    });
 }
 
 curve_editor ::~curve_editor()
@@ -20,16 +24,9 @@ void curve_editor::setup_ui()
 
     layout->addWidget(knobs_tree);
 
-    curve_view *view = new curve_view();
+    view = new curve_view();
     view->setObjectName("graphics_view");
     layout->addWidget(view);
-
-    // create a scene and add it your view
-    QGraphicsScene *scene = new QGraphicsScene;
-    scene->setSceneRect(-500000, -500000, 1000000, 1000000);
-
-    // view->setScene(scene);
-
     //
     //
 }
@@ -67,7 +64,7 @@ void curve_view::initializeGL()
 void curve_view::draw_line(QPointF src, QPointF dst, QColor color)
 {
     glBegin(GL_LINES);
-    glColor3f(color.red() / 255.0, color.green() / 255.0, color.blue() / 255.0);
+    glColor4f(color.red() / 255.0, color.green() / 255.0, color.blue() / 255.0, 0.0);
     glVertex2f(src.x(), src.y());
     glVertex2f(dst.x(), dst.y());
     glEnd();
@@ -75,24 +72,19 @@ void curve_view::draw_line(QPointF src, QPointF dst, QColor color)
 
 void curve_view::draw_grid()
 {
+    auto color_from_level = [](float a, float b, float value, QColor color) {
+        float level = 1.0 - (1.0 * (value - a) / abs(a - b));
 
-    QPointF up_a = map_position({100, 100});
-    QPointF up_b = map_position({800, 100});
-    draw_line(up_a, up_b, QColor(255, 0, 0));
+        int red = color.red() * level;
+        int green = color.green() * level;
+        int blue = color.blue() * level;
 
-    QPointF down_a = map_position({100, 400});
-    QPointF down_b = map_position({800, 400});
-    draw_line(down_a, down_b, QColor(255, 0, 0));
-    //
-    //
-    //
-
-    auto rango_to_level = [](float a, float b, float value) {
-        return 255 - (255.0 * (value - a) / abs(a - b));
+        return QColor(red, green, blue);
     };
 
-    QPointF top_left_point = map_position({100, 100});
-    QPointF down_right_point = map_position({800, 400});
+    int out_frame = 100;
+    QPointF top_left_point = map_position({-out_frame, -out_frame});
+    QPointF down_right_point = map_position({width() + out_frame, height() + out_frame});
 
     float up_limit = top_left_point.y();
     float left_limit = top_left_point.x();
@@ -100,10 +92,10 @@ void curve_view::draw_grid()
     float down_limit = down_right_point.y();
     float right_limit = down_right_point.x();
 
-    int life_start = 1;
-    int life_end = 50;
+    float life_start = 0.5;
+    float life_end = 70;
 
-    auto horizontal_lines = [=](float separation) {
+    auto horizontal_lines = [=](float separation, QColor color) {
         float scale = get_scale().y() / separation;
 
         if (scale < life_end && scale > life_start)
@@ -115,16 +107,16 @@ void curve_view::draw_grid()
             start /= separation;
             end /= separation;
 
-            float level = rango_to_level(life_start, life_end, scale);
+            QColor _color = color_from_level(life_start, life_end, scale, color);
             for (int i = start; i < end; i++)
             {
                 float value = i * separation;
-                draw_line({left_limit, value}, {right_limit, value}, QColor(0, level, 0));
+                draw_line({left_limit, value}, {right_limit, value}, _color);
             }
         }
     };
 
-    auto vertical_lines = [=](float separation) {
+    auto vertical_lines = [=](float separation, QColor color) {
         float scale = get_scale().x() / separation;
 
         if (scale < life_end && scale > life_start)
@@ -136,22 +128,59 @@ void curve_view::draw_grid()
             start /= separation;
             end /= separation;
 
-            float level = rango_to_level(life_start, life_end, scale);
+            QColor _color = color_from_level(life_start, life_end, scale, color);
             for (int i = start; i < end; i++)
             {
                 float value = i * separation;
-                draw_line({value, down_limit}, {value, up_limit}, QColor(0, level, 0));
+                draw_line({value, down_limit}, {value, up_limit}, _color);
             }
         }
     };
 
-    print(get_scale().x());
+    // Eje X e Y
+    draw_line({left_limit, 0.0}, {right_limit, 0.0}, QColor(0, 120, 20));
+    draw_line({0.0, down_limit}, {0.0, up_limit}, QColor(0, 120, 20));
+    //
+    //
+
     QList<float> separations = {100000, 10000, 1000, 100, 10, 1, 0.1, 0.01};
+    QList<float> separations2 = {50000, 5000, 500, 50, 5, 0.5, 0.05, 0.005};
+
     for (float separation : separations)
     {
-        horizontal_lines(separation);
-        vertical_lines(separation);
+        horizontal_lines(separation, QColor(0, 55, 10));
+        vertical_lines(separation, QColor(0, 55, 10));
     }
+
+    for (float separation : separations2)
+    {
+        horizontal_lines(separation, QColor(0, 40, 10));
+        vertical_lines(separation, QColor(0, 40, 10));
+    }
+
+    // float min = 0.01;
+    // float max = 100000;
+
+    // for (float i = max; i > (min - 0.001); i /= 10)
+    // {
+    //     horizontal_lines(i, QColor(0, 100, 20));
+    //     vertical_lines(i, QColor(0, 100, 20));
+    // }
+
+    // for (float i = max; i > (min - 0.001); i /= 3)
+    // {
+    //     horizontal_lines(i, QColor(0, 70, 10));
+    //     vertical_lines(i, QColor(0, 70, 10));
+    // }
+
+    // for (float i = max; i > (min - 0.001); i /= 2)
+    // {
+    //     horizontal_lines(i, QColor(0, 50, 7));
+    //     vertical_lines(i, QColor(0, 50, 7));
+    // }
+
+    //
+    //
 }
 
 void curve_view::paintGL()

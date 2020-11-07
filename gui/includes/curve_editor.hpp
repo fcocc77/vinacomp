@@ -33,6 +33,8 @@ protected:
 class curve_editor : public QWidget
 {
 private:
+    curve_view *view;
+
     void setup_ui();
     QTreeWidget *knobs_tree_setup_ui();
 
