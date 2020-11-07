@@ -101,15 +101,15 @@ void curve_view::draw_grid()
     float up_limit = up_a.y();
     float down_limit = down_a.y();
 
-    auto grid = [=](float separation) {
+    auto horizontal_lines = [=](float separation) {
         float scale = scale_y / separation;
         int life_start = 1;
         int life_end = 50;
         if (scale < life_end && scale > life_start)
         {
-            float rango = (abs(down_limit - up_limit) / separation) * separation;
+            float range = (abs(down_limit - up_limit) / separation) * separation;
             float start = down_limit;
-            float end = rango + start;
+            float end = range + start;
 
             start /= separation;
             end /= separation;
@@ -123,12 +123,12 @@ void curve_view::draw_grid()
         }
     };
 
-    grid(1000);
-    grid(100);
-    grid(10);
-    grid(1);
-    grid(0.1);
-    grid(0.01);
+    horizontal_lines(1000);
+    horizontal_lines(100);
+    horizontal_lines(10);
+    horizontal_lines(1);
+    horizontal_lines(0.1);
+    horizontal_lines(0.01);
 }
 
 void curve_view::paintGL()
