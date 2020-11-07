@@ -58,7 +58,7 @@ void curve_view::initializeGL()
     initializeOpenGLFunctions();
     glClearColor(0, 0, 0, 1);
 
-    glEnable(GL_DEPTH_TEST);
+    // glEnable(GL_DEPTH_TEST);
 }
 
 void curve_view::draw_line(QPointF src, QPointF dst, QColor color)
@@ -67,6 +67,27 @@ void curve_view::draw_line(QPointF src, QPointF dst, QColor color)
     glColor4f(color.red() / 255.0, color.green() / 255.0, color.blue() / 255.0, 0.0);
     glVertex2f(src.x(), src.y());
     glVertex2f(dst.x(), dst.y());
+    glEnd();
+}
+
+void curve_view::draw_circle()
+{
+    float cx = 0;
+    float cy = 0;
+    float r = 0.7;
+    int num_segments = 100;
+
+    glBegin(GL_LINE_LOOP);
+
+    glColor4f(1, 0, 0, 0);
+
+    for (int ii = 0; ii < num_segments; ii++)
+    {
+        float theta = 2.0f * 3.1415926f * float(ii) / float(num_segments); //get the current angle
+        float x = r * cosf(theta);                                         //calculate the x component
+        float y = r * sinf(theta);                                         //calculate the y component
+        glVertex2f(x + cx, y + cy);                                        //output vertex
+    }
     glEnd();
 }
 
@@ -137,9 +158,11 @@ void curve_view::draw_grid()
         }
     };
 
+    glEnable(GL_DEPTH_TEST);
+
     // Eje X e Y
-    draw_line({left_limit, 0.0}, {right_limit, 0.0}, QColor(0, 120, 20));
-    draw_line({0.0, down_limit}, {0.0, up_limit}, QColor(0, 120, 20));
+    draw_line({left_limit, 0.0}, {right_limit, 0.0}, QColor(120, 30, 30));
+    draw_line({0.0, down_limit}, {0.0, up_limit}, QColor(20, 120, 20));
     //
     //
 
@@ -185,46 +208,24 @@ void curve_view::draw_grid()
 
 void curve_view::paintGL()
 {
+
     gl_view::paintGL();
 
     draw_grid();
 
-    // Eje X
-    // glBegin(GL_LINES);
-    // glColor3f(1, 0, 0);
-    // glVertex2f(-1.0f, 0.0f);
-    // glVertex2f(1.0f, 0.0f);
-    // glEnd();
-    //
-    //
-    return;
-    // Eje Y
-    draw_line({0.0, -1.0}, {0.0, 1.0}, QColor(0, 255, 0));
-    //
-    //
+    // glClear(GL_COLOR_BUFFER_BIT);
+    QPainter painter(this);
+    painter.setPen(Qt::red);
+    painter.setFont(QFont("Arial", 16));
 
-    // glBegin(GL_LINE_STRIP);
-    // glColor3f(0, 0, 1);
-    // glVertex2f(0.5, 0.2);
-    // glVertex2f(0.5, 0.5);
-    // glVertex2f(point.x(), point.y());
-    // glEnd();
+    QPointF position = get_position({10, 10});
 
-    float cx = 0;
-    float cy = 0;
-    float r = 0.7;
-    int num_segments = 100;
+    painter.drawText(position.x(), position.y(), 100, 30, Qt::AlignCenter, "Hello World!");
+    painter.end();
 
-    glBegin(GL_LINE_LOOP);
+    draw_line({0, 0}, {10, 10}, QColor(0, 0, 255));
 
-    for (int ii = 0; ii < num_segments; ii++)
-    {
-        float theta = 2.0f * 3.1415926f * float(ii) / float(num_segments); //get the current angle
-        float x = r * cosf(theta);                                         //calculate the x component
-        float y = r * sinf(theta);                                         //calculate the y component
-        glVertex2f(x + cx, y + cy);                                        //output vertex
-    }
-    glEnd();
+    // draw_circle();
 }
 
 void curve_view::mousePressEvent(QMouseEvent *event)

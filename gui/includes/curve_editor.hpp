@@ -16,6 +16,7 @@ class curve_view : public gl_view
 private:
     QPointF point;
 
+    void draw_circle();
     void draw_grid();
     void draw_line(QPointF src, QPointF dst, QColor color);
 

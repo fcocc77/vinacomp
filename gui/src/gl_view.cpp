@@ -56,11 +56,35 @@ QPointF gl_view::map_position(QPoint mouse_position)
     return {coordinate.x(), coordinate.y() * aspect};
 }
 
+QPointF gl_view::get_position(QPointF coordinate)
+{
+    // esta funcion es el reverso de 'map_position'
+    // obtiene la posicion en el visor, a partir de la cordenada de la escena.
+    float aspect = float(height()) / width();
+
+    float x = coordinate.x();
+    float y = coordinate.y() / aspect;
+
+    x += -coord.x();
+    y += -coord.y();
+
+    float zoom_value_x = zoom_scale.x() * 2;
+    float zoom_value_y = -zoom_scale.y() * 2;
+
+    x /= zoom_value_x;
+    y /= zoom_value_y;
+
+    x = (x + 1.0) * this->width() / 2.0 - 0.5;
+    y = (y + 1.0) * this->height() / 2.0 - 0.5;
+
+    return {x, y};
+}
+
 QPointF gl_view::get_coordinate(QPoint cursor_position)
 {
     // obtiene las cordenadas x, y del viewer del openGL, a partir de la posicion del cursor.
-    float x = 2.0f * (float(cursor_position.x()) + 0.5) / this->width() - 1.0;
-    float y = 2.0f * (float(cursor_position.y()) + 0.5) / this->height() - 1.0;
+    float x = 2.0f * (cursor_position.x() + 0.5) / this->width() - 1.0;
+    float y = 2.0f * (cursor_position.y() + 0.5) / this->height() - 1.0;
 
     float zoom_value_x = zoom_scale.x() * 2;
     float zoom_value_y = zoom_scale.y() * 2;
