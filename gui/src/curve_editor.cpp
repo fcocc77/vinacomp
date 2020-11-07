@@ -62,12 +62,6 @@ void curve_view::initializeGL()
     glClearColor(0, 0, 0, 1);
 
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_MULTISAMPLE);
-    glEnable(GL_LINE_SMOOTH);
-    glEnable(GL_MODELVIEW);
-    glShadeModel(GL_SMOOTH);
-
-    format().setSamples(10);
 }
 
 void curve_view::draw_line(QPointF src, QPointF dst, QColor color)
@@ -82,29 +76,36 @@ void curve_view::draw_line(QPointF src, QPointF dst, QColor color)
 void curve_view::draw_grid()
 {
 
-    QPointF up_a = map_position({10, 100});
+    QPointF up_a = map_position({100, 100});
     QPointF up_b = map_position({800, 100});
     draw_line(up_a, up_b, QColor(255, 0, 0));
 
-    QPointF down_a = map_position({10, 400});
+    QPointF down_a = map_position({100, 400});
     QPointF down_b = map_position({800, 400});
     draw_line(down_a, down_b, QColor(255, 0, 0));
     //
     //
     //
-    float scale_y = get_scale().y();
 
     auto rango_to_level = [](float a, float b, float value) {
         return 255 - (255.0 * (value - a) / abs(a - b));
     };
 
-    float up_limit = up_a.y();
-    float down_limit = down_a.y();
+    QPointF top_left_point = map_position({100, 100});
+    QPointF down_right_point = map_position({800, 400});
+
+    float up_limit = top_left_point.y();
+    float left_limit = top_left_point.x();
+
+    float down_limit = down_right_point.y();
+    float right_limit = down_right_point.x();
+
+    int life_start = 1;
+    int life_end = 50;
 
     auto horizontal_lines = [=](float separation) {
-        float scale = scale_y / separation;
-        int life_start = 1;
-        int life_end = 50;
+        float scale = get_scale().y() / separation;
+
         if (scale < life_end && scale > life_start)
         {
             float range = (abs(down_limit - up_limit) / separation) * separation;
@@ -118,17 +119,39 @@ void curve_view::draw_grid()
             for (int i = start; i < end; i++)
             {
                 float value = i * separation;
-                draw_line({-2, value}, {2, value}, QColor(0, level, 0));
+                draw_line({left_limit, value}, {right_limit, value}, QColor(0, level, 0));
             }
         }
     };
 
-    horizontal_lines(1000);
-    horizontal_lines(100);
-    horizontal_lines(10);
-    horizontal_lines(1);
-    horizontal_lines(0.1);
-    horizontal_lines(0.01);
+    auto vertical_lines = [=](float separation) {
+        float scale = get_scale().x() / separation;
+
+        if (scale < life_end && scale > life_start)
+        {
+            float range = (abs(left_limit - right_limit) / separation) * separation;
+            float start = left_limit;
+            float end = range + start;
+
+            start /= separation;
+            end /= separation;
+
+            float level = rango_to_level(life_start, life_end, scale);
+            for (int i = start; i < end; i++)
+            {
+                float value = i * separation;
+                draw_line({value, down_limit}, {value, up_limit}, QColor(0, level, 0));
+            }
+        }
+    };
+
+    print(get_scale().x());
+    QList<float> separations = {100000, 10000, 1000, 100, 10, 1, 0.1, 0.01};
+    for (float separation : separations)
+    {
+        horizontal_lines(separation);
+        vertical_lines(separation);
+    }
 }
 
 void curve_view::paintGL()

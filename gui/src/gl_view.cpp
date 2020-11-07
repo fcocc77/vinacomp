@@ -13,15 +13,7 @@ gl_view::~gl_view()
 void gl_view::initializeGL()
 {
     initializeOpenGLFunctions();
-    glClearColor(0, .1, 0, 1);
-
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_MULTISAMPLE);
-    glEnable(GL_LINE_SMOOTH);
-    glEnable(GL_MODELVIEW);
-    glShadeModel(GL_SMOOTH);
-
-    format().setSamples(10);
+    glClearColor(0, 0, 0, 1);
 }
 
 void gl_view::paintGL()
@@ -159,14 +151,24 @@ void gl_view::mouseMoveEvent(QMouseEvent *event)
         if (zoom_lock)
             zoom_scale_y = zoom_scale_x;
 
-        zoom_scale = {zoom_scale_x, zoom_scale_y};
+        float min = 0.02;
+        float max = 100000;
 
-        // limitar zoom
-        // if (zoom_scale < 0.2)
-        //     zoom_scale = 0.2;
-        // else if (zoom_scale > 7.0)
-        //     zoom_scale = 7.0;
+        // limitar zoom Horizontal
+        if (zoom_scale_x < min)
+            zoom_scale_x = min;
+        else if (zoom_scale_x > max)
+            zoom_scale_x = max;
         //
+
+        // limitar zoom Vertical
+        if (zoom_scale_y < min)
+            zoom_scale_y = min;
+        else if (zoom_scale_y > max)
+            zoom_scale_y = max;
+        //
+
+        zoom_scale = {zoom_scale_x, zoom_scale_y};
 
         // punto de anclaje
         coord = click_coord + get_coordinate(click_position);
