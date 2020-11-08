@@ -18,7 +18,9 @@ private:
 
     void draw_circle();
     void draw_grid();
+    void draw_coordinate_numbers();
     void draw_line(QPointF src, QPointF dst, QColor color);
+    QList<float> generate_coord_range(float separation, Qt::Orientation orientation);
 
 public:
     curve_view(/* args */);

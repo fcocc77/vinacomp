@@ -61,6 +61,48 @@ void curve_view::initializeGL()
     // glEnable(GL_DEPTH_TEST);
 }
 
+QList<float> curve_view::generate_coord_range(float separation, Qt::Orientation orientation)
+{
+    // genera un rango de cordenadas, pero estos valores son los que se ven dentro de cuadro,
+    // los valores que esta fuera de cuadro no los muestra, esto sirve para que
+    // las iteraciones no sean tan largas ya que no renderiza las que estan fuera de cuadro.
+
+    int out_frame = -100;
+    QPointF top_left_point = map_position({-out_frame, -out_frame});
+    QPointF down_right_point = map_position({width() + out_frame, height() + out_frame});
+
+    float up_limit = top_left_point.y();
+    float left_limit = top_left_point.x();
+
+    float down_limit = down_right_point.y();
+    float right_limit = down_right_point.x();
+
+    float a_limit, b_limit;
+    if (orientation == Qt::Vertical)
+    {
+        a_limit = down_limit;
+        b_limit = up_limit;
+    }
+    else
+    {
+        a_limit = left_limit;
+        b_limit = right_limit;
+    }
+
+    float range = (abs(a_limit - b_limit) / separation) * separation;
+    float start = a_limit;
+    float end = range + start;
+
+    start /= separation;
+    end /= separation;
+
+    QList<float> coords;
+    for (int i = start; i < end; i++)
+        coords.push_back(i * separation);
+
+    return coords;
+}
+
 void curve_view::draw_line(QPointF src, QPointF dst, QColor color)
 {
     glBegin(GL_LINES);
@@ -103,7 +145,7 @@ void curve_view::draw_grid()
         return QColor(red, green, blue);
     };
 
-    int out_frame = 100;
+    int out_frame = -100;
     QPointF top_left_point = map_position({-out_frame, -out_frame});
     QPointF down_right_point = map_position({width() + out_frame, height() + out_frame});
 
@@ -121,19 +163,9 @@ void curve_view::draw_grid()
 
         if (scale < life_end && scale > life_start)
         {
-            float range = (abs(down_limit - up_limit) / separation) * separation;
-            float start = down_limit;
-            float end = range + start;
-
-            start /= separation;
-            end /= separation;
-
             QColor _color = color_from_level(life_start, life_end, scale, color);
-            for (int i = start; i < end; i++)
-            {
-                float value = i * separation;
+            for (float value : generate_coord_range(separation, Qt::Vertical))
                 draw_line({left_limit, value}, {right_limit, value}, _color);
-            }
         }
     };
 
@@ -142,19 +174,9 @@ void curve_view::draw_grid()
 
         if (scale < life_end && scale > life_start)
         {
-            float range = (abs(left_limit - right_limit) / separation) * separation;
-            float start = left_limit;
-            float end = range + start;
-
-            start /= separation;
-            end /= separation;
-
             QColor _color = color_from_level(life_start, life_end, scale, color);
-            for (int i = start; i < end; i++)
-            {
-                float value = i * separation;
+            for (float value : generate_coord_range(separation, Qt::Horizontal))
                 draw_line({value, down_limit}, {value, up_limit}, _color);
-            }
         }
     };
 
@@ -206,22 +228,47 @@ void curve_view::draw_grid()
     //
 }
 
+void curve_view::draw_coordinate_numbers()
+{
+
+    int out_frame = -100;
+    QPointF top_left_point = map_position({-out_frame, -out_frame});
+    QPointF down_right_point = map_position({width() + out_frame, height() + out_frame});
+
+    float up_limit = top_left_point.y();
+    float left_limit = top_left_point.x();
+
+    float down_limit = down_right_point.y();
+    float right_limit = down_right_point.x();
+
+    float min = down_right_point.y();
+    float max = top_left_point.y();
+
+    float separation = 0.1;
+    int font_size = 10;
+
+    for (float value : generate_coord_range(separation, Qt::Vertical))
+    {
+
+        QPainter painter(this);
+        painter.setPen(Qt::green);
+        painter.setFont(QFont("Arial", font_size));
+        QPointF position = get_position({0, value});
+
+        painter.drawText(0, position.y() - (font_size / 2), 100, font_size, Qt::AlignCenter, QString::number(value));
+        painter.end();
+    }
+
+    // glClear(GL_COLOR_BUFFER_BIT);
+}
+
 void curve_view::paintGL()
 {
 
     gl_view::paintGL();
 
     draw_grid();
-
-    // glClear(GL_COLOR_BUFFER_BIT);
-    QPainter painter(this);
-    painter.setPen(Qt::red);
-    painter.setFont(QFont("Arial", 16));
-
-    QPointF position = get_position({10, 10});
-
-    painter.drawText(position.x(), position.y(), 100, 30, Qt::AlignCenter, "Hello World!");
-    painter.end();
+    draw_coordinate_numbers();
 
     draw_line({0, 0}, {10, 10}, QColor(0, 0, 255));
 
