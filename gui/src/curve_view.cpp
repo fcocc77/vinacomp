@@ -70,8 +70,8 @@ void curve_view::draw_grid()
     //
     //
 
-    QList<float> separations_2 = {0.005, 0.05, 0.5, 5, 50, 500, 5000, 50000};
-    for (float separation : separations_2)
+    QList<float> separations = {0.005, 0.05, 0.5, 5, 50, 500, 5000, 50000};
+    for (float separation : separations)
     {
         horizontal_lines(separation, QColor(0, 60, 10));
         vertical_lines(separation, QColor(0, 60, 10));
