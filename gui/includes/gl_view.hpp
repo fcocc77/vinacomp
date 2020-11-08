@@ -3,6 +3,7 @@
 
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions>
+#include <QPainter>
 
 #include <util.hpp>
 #include <qt.hpp>
@@ -26,6 +27,19 @@ private:
 public:
     gl_view();
     ~gl_view();
+
+    void draw_text(
+        QString text,
+        QColor color,
+        QPointF coords,
+        QPointF viewer_position = {-1, -1});
+
+    void draw_line(QPointF src, QPointF dst, QColor color);
+    QList<float> generate_coord_range(
+        float separation,
+        Qt::Orientation orientation,
+        QColor &color,
+        QPointF life_range = {0.5, 70});
 
     QPointF get_coordinate(QPoint cursor_position);
     QPointF get_position(QPointF coordinate);

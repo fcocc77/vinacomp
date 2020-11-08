@@ -6,7 +6,6 @@
 #include <QHBoxLayout>
 #include <QTreeWidget>
 #include <QGraphicsScene>
-#include <QPainter>
 
 #include <gl_view.hpp>
 
@@ -19,19 +18,6 @@ private:
     void draw_circle();
     void draw_grid();
     void draw_coordinate_numbers();
-
-    void draw_text(
-        QString text,
-        QColor color,
-        QPointF coords,
-        QPointF viewer_position = {-1, -1});
-
-    void draw_line(QPointF src, QPointF dst, QColor color);
-    QList<float> generate_coord_range(
-        float separation,
-        Qt::Orientation orientation,
-        QColor &color,
-        QPointF life_range = {0.5, 70});
 
 public:
     curve_view(/* args */);
