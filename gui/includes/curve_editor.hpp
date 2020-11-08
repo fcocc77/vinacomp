@@ -19,6 +19,8 @@ private:
     void draw_circle();
     void draw_grid();
     void draw_coordinate_numbers();
+    bool limit_by_separation(float separation, Qt::Orientation orientation, QColor &color, QPointF life_range = {0.5, 70});
+
     void draw_line(QPointF src, QPointF dst, QColor color);
     QList<float> generate_coord_range(float separation, Qt::Orientation orientation);
 
