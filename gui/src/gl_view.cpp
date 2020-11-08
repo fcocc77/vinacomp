@@ -152,13 +152,12 @@ QList<float> gl_view::generate_coord_range(
     QPointF life_range)
 {
     // retorna un vacio si es que la separacion de 2 cordenadas no esta dentro del rango de vida,
-    float zoom;
+    float life;
     if (orientation == Qt::Vertical)
-        zoom = get_scale().y();
+        // calcula la vida en relacion a la separacion en el visor, tomando como promedio 1000px
+        life = (get_scale().y() / separation) * 1000 / height();
     else
-        zoom = get_scale().x();
-
-    float life = zoom / separation;
+        life = (get_scale().x() / separation) * 1000 / width();
 
     float life_start = life_range.x();
     float life_end = life_range.y();
