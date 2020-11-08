@@ -158,59 +158,49 @@ QList<float> gl_view::generate_coord_range(
     else
         zoom = get_scale().x();
 
-    float scale = zoom / separation;
+    float life = zoom / separation;
 
     float life_start = life_range.x();
     float life_end = life_range.y();
 
-    if (scale > life_end || scale < life_start)
+    if (life > life_end || life < life_start)
         return {};
     //
     //
 
-    // cambia el nivel de opacidad del color entrante
-    float level = 1.0 - (1.0 * (scale - life_start) / abs(life_start - life_end));
+    // cambia el nivel de opacidad del color entrante, con un  'fade out' a negro
+    float alpha = 1.0 - (life - life_start) / abs(life_start - life_end);
+    color.setRed(color.red() * alpha);
+    color.setGreen(color.green() * alpha);
+    color.setBlue(color.blue() * alpha);
 
-    int red = color.red() * level;
-    int green = color.green() * level;
-    int blue = color.blue() * level;
-
-    color = QColor(red, green, blue);
+    color.setAlpha(color.alpha() * alpha);
     //
     //
 
     // genera un rango de cordenadas, pero estos valores son los que se ven dentro de cuadro,
     // los valores que esta fuera de cuadro no los muestra, esto sirve para que
     // las iteraciones no sean tan largas ya que no renderiza las que estan fuera de cuadro.
-
     int out_frame = 50;
     QPointF top_left_point = map_position({-out_frame, -out_frame});
     QPointF down_right_point = map_position({width() + out_frame, height() + out_frame});
 
-    float up_limit = top_left_point.y();
-    float left_limit = top_left_point.x();
-
-    float down_limit = down_right_point.y();
-    float right_limit = down_right_point.x();
-
     float a_limit, b_limit;
     if (orientation == Qt::Vertical)
     {
-        a_limit = down_limit;
-        b_limit = up_limit;
+        a_limit = down_right_point.y();
+        b_limit = top_left_point.y();
     }
     else
     {
-        a_limit = left_limit;
-        b_limit = right_limit;
+        a_limit = top_left_point.x();
+        b_limit = down_right_point.x();
     }
 
     float range = (abs(a_limit - b_limit) / separation) * separation;
-    float start = a_limit;
-    float end = range + start;
 
-    start /= separation;
-    end /= separation;
+    float start = a_limit / separation;
+    float end = (range + a_limit) / separation;
 
     QList<float> coords;
     for (int i = start; i < end; i++)

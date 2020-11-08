@@ -132,7 +132,7 @@ void curve_view::draw_coordinate_numbers()
 {
     auto vertical_numbers = [=](float separation) {
         QColor color = Qt::green;
-        for (float value : generate_coord_range(separation, Qt::Vertical, color, {0.5, 20}))
+        for (float value : generate_coord_range(separation, Qt::Vertical, color, {0.0, 10}))
             draw_text(QString::number(value), color, {0, value}, {0, -1});
     };
 
@@ -142,7 +142,7 @@ void curve_view::draw_coordinate_numbers()
             draw_text(QString::number(value), color, {value, 0}, {-1, height() - 20});
     };
 
-    QList<float> separations = {0.1, 1, 10};
+    QList<float> separations = {0.01, 0.05, 0.1, 0.5, 1, 5, 10, 50, 100, 500, 1000, 5000, 10000, 50000, 100000};
     for (float separation : separations)
     {
         vertical_numbers(separation);
