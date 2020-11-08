@@ -3,7 +3,7 @@
 gl_view::gl_view()
 {
     zoom_lock = false;
-    zoom_scale = {1.0, 1.0};
+    set_default();
 }
 
 gl_view::~gl_view()
@@ -37,8 +37,8 @@ void gl_view::paintGL()
 }
 void gl_view::set_default()
 {
-    coord = {0, 0};
-    zoom_scale = {1.0, 1.0};
+    coord = {2, 2};
+    zoom_scale = {1.3, 1.3};
 
     update();
 }

@@ -208,30 +208,36 @@ void curve_view::draw_grid()
         horizontal_lines(separation, QColor(0, 40, 10));
         vertical_lines(separation, QColor(0, 40, 10));
     }
+}
 
-    // float min = 0.01;
-    // float max = 100000;
+void curve_view::draw_text(QString text, QColor color, QPointF coords, QPointF viewer_position)
+{
+    int font_size = 10;
 
-    // for (float i = max; i > (min - 0.001); i /= 10)
-    // {
-    //     horizontal_lines(i, QColor(0, 100, 20));
-    //     vertical_lines(i, QColor(0, 100, 20));
-    // }
+    QPainter painter(this);
+    painter.setPen(color);
+    painter.setFont(QFont("Arial", font_size));
 
-    // for (float i = max; i > (min - 0.001); i /= 3)
-    // {
-    //     horizontal_lines(i, QColor(0, 70, 10));
-    //     vertical_lines(i, QColor(0, 70, 10));
-    // }
+    // posicion en el visor
+    QPointF position_from_coords = get_position(coords);
+    //
 
-    // for (float i = max; i > (min - 0.001); i /= 2)
-    // {
-    //     horizontal_lines(i, QColor(0, 50, 7));
-    //     vertical_lines(i, QColor(0, 50, 7));
-    // }
+    // Determina la posicion si es desde el visor o desde las cordenadas
+    float x, y;
+    if (viewer_position.x() >= 0)
+        x = viewer_position.x();
+    else
+        x = position_from_coords.x();
 
+    if (viewer_position.y() >= 0)
+        y = viewer_position.y();
+    else
+        y = position_from_coords.y();
     //
     //
+
+    painter.drawText(x, y, 50, font_size, Qt::AlignCenter, text);
+    painter.end();
 }
 
 void curve_view::draw_coordinate_numbers()
@@ -250,41 +256,34 @@ void curve_view::draw_coordinate_numbers()
     float min = down_right_point.y();
     float max = top_left_point.y();
 
-    int font_size = 10;
-
     auto vertical_numbers = [=](float separation) {
         QColor color = Qt::green;
         if (limit_by_separation(separation, Qt::Vertical, color, {0.5, 20}))
-        {
             for (float value : generate_coord_range(separation, Qt::Vertical))
-            {
-                QPainter painter(this);
-                painter.setPen(color);
-                painter.setFont(QFont("Arial", font_size));
-                QPointF position = get_position({0, value});
-
-                painter.drawText(0, position.y() - (font_size / 2), 50, font_size, Qt::AlignCenter, QString::number(value));
-                painter.end();
-            }
-        }
+                draw_text(QString::number(value), color, {0, value}, {0, -1});
     };
 
-    vertical_numbers(0.1);
-    vertical_numbers(1);
-    vertical_numbers(10);
+    auto horizontal_numbers = [=](float separation) {
+        QColor color = Qt::red;
+        if (limit_by_separation(separation, Qt::Horizontal, color, {0.5, 20}))
+            for (float value : generate_coord_range(separation, Qt::Horizontal))
+                draw_text(QString::number(value), color, {value, 0}, {-1, height() - 20});
+    };
+
+    QList<float> separations = {0.1, 1, 10};
+    for (float separation : separations)
+    {
+        vertical_numbers(separation);
+        horizontal_numbers(separation);
+    }
 }
 
 void curve_view::paintGL()
 {
-
     gl_view::paintGL();
 
     draw_grid();
     draw_coordinate_numbers();
-
-    draw_line({0, 0}, {10, 10}, QColor(0, 0, 255));
-
-    // draw_circle();
 }
 
 void curve_view::mousePressEvent(QMouseEvent *event)
