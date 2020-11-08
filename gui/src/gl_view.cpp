@@ -10,12 +10,6 @@ gl_view::~gl_view()
 {
 }
 
-void gl_view::initializeGL()
-{
-    initializeOpenGLFunctions();
-    glClearColor(0, 0, 0, 1);
-}
-
 void gl_view::paintGL()
 {
     // zoom y paneo
@@ -38,7 +32,7 @@ void gl_view::paintGL()
 
 void gl_view::set_default()
 {
-    coord = {1.5, 1.5};
+    coord = {1.7, 1.7};
     zoom_scale = {1.0, 1.0};
 
     update();
@@ -109,7 +103,7 @@ QPointF gl_view::get_scale()
 void gl_view::draw_line(QPointF src, QPointF dst, QColor color)
 {
     glBegin(GL_LINES);
-    glColor4f(color.red() / 255.0, color.green() / 255.0, color.blue() / 255.0, 0.0);
+    glColor4f(color.red() / 255.0, color.green() / 255.0, color.blue() / 255.0, 1);
     glVertex2f(src.x(), src.y());
     glVertex2f(dst.x(), dst.y());
     glEnd();
@@ -152,15 +146,32 @@ QList<float> gl_view::generate_coord_range(
     float separation,
     Qt::Orientation orientation,
     QColor &color,
-    QPointF life_range)
+    QPointF life_range,
+    bool separation_by_coord)
 {
     // retorna un vacio si es que la separacion de 2 cordenadas no esta dentro del rango de vida,
+
+    float zoom_x = get_scale().x();
+    float zoom_y = get_scale().y();
+
     float life;
     if (orientation == Qt::Vertical)
-        // calcula la vida en relacion a la separacion en el visor, tomando como promedio 1000px
-        life = (get_scale().y() / separation) * 1000 / height();
+    {
+        if (separation_by_coord)
+            life = zoom_y;
+        else
+            // calcula la vida en relacion a la separacion en el visor, tomando como promedio 1000px
+            life = zoom_y * 1000 / height();
+    }
     else
-        life = (get_scale().x() / separation) * 1000 / width();
+    {
+        if (separation_by_coord)
+            life = zoom_x;
+        else
+            life = zoom_x * 1000 / width();
+    }
+
+    life /= separation;
 
     float life_start = life_range.x();
     float life_end = life_range.y();

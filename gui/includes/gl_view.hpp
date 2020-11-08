@@ -39,7 +39,8 @@ public:
         float separation,
         Qt::Orientation orientation,
         QColor &color,
-        QPointF life_range = {0.5, 70});
+        QPointF life_range = {0.5, 70},
+        bool separation_by_coord = false);
 
     QPointF get_coordinate(QPoint cursor_position);
     QPointF get_position(QPointF coordinate);
@@ -48,7 +49,6 @@ public:
     void set_default();
 
 protected:
-    void initializeGL() override;
     void paintGL() override;
     void resizeGL(int w, int h) override;
 

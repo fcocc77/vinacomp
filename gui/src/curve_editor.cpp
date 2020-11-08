@@ -57,8 +57,6 @@ void curve_view::initializeGL()
 {
     initializeOpenGLFunctions();
     glClearColor(0, 0, 0, 1);
-
-    // glEnable(GL_DEPTH_TEST);
 }
 
 void curve_view::draw_circle()
@@ -95,16 +93,14 @@ void curve_view::draw_grid()
     float right_limit = down_right_point.x();
 
     auto horizontal_lines = [=](float separation, QColor color) {
-        for (float value : generate_coord_range(separation, Qt::Vertical, color))
+        for (float value : generate_coord_range(separation, Qt::Vertical, color, {0, 40}, true))
             draw_line({left_limit, value}, {right_limit, value}, color);
     };
 
     auto vertical_lines = [=](float separation, QColor color) {
-        for (float value : generate_coord_range(separation, Qt::Horizontal, color))
+        for (float value : generate_coord_range(separation, Qt::Horizontal, color, {0, 40}, true))
             draw_line({value, down_limit}, {value, up_limit}, color);
     };
-
-    glEnable(GL_DEPTH_TEST);
 
     // Eje X e Y
     draw_line({left_limit, 0.0}, {right_limit, 0.0}, QColor(120, 30, 30));
@@ -112,34 +108,31 @@ void curve_view::draw_grid()
     //
     //
 
-    QList<float> separations = {100000, 10000, 1000, 100, 10, 1, 0.1, 0.01};
-    QList<float> separations2 = {50000, 5000, 500, 50, 5, 0.5, 0.05, 0.005};
+    // Activa la la mezcla en openGL, para que siempre se vea la linea mas luminosa 'GL_MAX'.
+    glEnable(GL_BLEND);
+    glBlendEquation(GL_MAX);
+    //
+    //
 
-    for (float separation : separations)
+    QList<float> separations_2 = {0.005, 0.05, 0.5, 5, 50, 500, 5000, 50000};
+    for (float separation : separations_2)
     {
-        horizontal_lines(separation, QColor(0, 55, 10));
-        vertical_lines(separation, QColor(0, 55, 10));
-    }
-
-    for (float separation : separations2)
-    {
-        horizontal_lines(separation, QColor(0, 40, 10));
-        vertical_lines(separation, QColor(0, 40, 10));
+        horizontal_lines(separation, QColor(0, 60, 10));
+        vertical_lines(separation, QColor(0, 60, 10));
     }
 }
 
 void curve_view::draw_coordinate_numbers()
 {
-    int life = 15;
     auto vertical_numbers = [=](float separation) {
-        QColor color = Qt::green;
-        for (float value : generate_coord_range(separation, Qt::Vertical, color, {0.0, life}))
+        QColor color = QColor(0, 200, 0);
+        for (float value : generate_coord_range(separation, Qt::Vertical, color, {0.0, 15}))
             draw_text(QString::number(value), color, {0, value}, {20, -1});
     };
 
     auto horizontal_numbers = [=](float separation) {
-        QColor color = Qt::red;
-        for (float value : generate_coord_range(separation, Qt::Horizontal, color, {0.0, life}))
+        QColor color = QColor(200, 0, 0);
+        for (float value : generate_coord_range(separation, Qt::Horizontal, color, {0.0, 10}))
             draw_text(QString::number(value), color, {value, 0}, {-1, height() - 20});
     };
 
