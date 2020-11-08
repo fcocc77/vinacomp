@@ -130,11 +130,11 @@ void curve_view::draw_grid()
 
 void curve_view::draw_coordinate_numbers()
 {
-    int life = 20;
+    int life = 15;
     auto vertical_numbers = [=](float separation) {
         QColor color = Qt::green;
         for (float value : generate_coord_range(separation, Qt::Vertical, color, {0.0, life}))
-            draw_text(QString::number(value), color, {0, value}, {0, -1});
+            draw_text(QString::number(value), color, {0, value}, {20, -1});
     };
 
     auto horizontal_numbers = [=](float separation) {

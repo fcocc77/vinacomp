@@ -38,8 +38,8 @@ void gl_view::paintGL()
 
 void gl_view::set_default()
 {
-    coord = {2, 2};
-    zoom_scale = {1.3, 1.3};
+    coord = {1.5, 1.5};
+    zoom_scale = {1.0, 1.0};
 
     update();
 }
@@ -119,6 +119,9 @@ void gl_view::draw_text(QString text, QColor color, QPointF coords, QPointF view
 {
     int font_size = 10;
 
+    int size_x = 50;
+    int size_y = 10;
+
     QPainter painter(this);
     painter.setPen(color);
     painter.setFont(QFont("Arial", font_size));
@@ -141,7 +144,7 @@ void gl_view::draw_text(QString text, QColor color, QPointF coords, QPointF view
     //
     //
 
-    painter.drawText(x, y, 50, font_size, Qt::AlignCenter, text);
+    painter.drawText(x - (size_x / 2), y - (size_y / 2), size_x, size_y, Qt::AlignCenter, text);
     painter.end();
 }
 
@@ -172,8 +175,6 @@ QList<float> gl_view::generate_coord_range(
     color.setRed(color.red() * alpha);
     color.setGreen(color.green() * alpha);
     color.setBlue(color.blue() * alpha);
-
-    color.setAlpha(color.alpha() * alpha);
     //
     //
 
