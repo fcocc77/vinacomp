@@ -165,13 +165,27 @@ void curve_view::draw_curve()
     }
 }
 
+QPointF curve_view::cubic_bezier(QPointF point_a, QPointF point_b, float value, float exaggeration)
+{
+    float distance = abs(point_b.x() - point_a.x()) * exaggeration;
+
+    QPointF point_a2 = {point_a.x() + distance, point_a.y()};
+    QPointF point_b2 = {point_b.x() - distance, point_b.y()};
+
+    // Algoritmo bezier
+    QPointF L1 = ((1 - value) * point_a) + (value * point_a2);
+    QPointF L2 = ((1 - value) * point_a2) + (value * point_b2);
+    QPointF L3 = ((1 - value) * point_b2) + (value * point_b);
+
+    QPointF Q1 = ((1 - value) * L1) + (L2 * value);
+    QPointF Q2 = ((1 - value) * L2) + (L3 * value);
+
+    return ((1 - value) * Q1) + (Q2 * value);
+    //
+}
+
 void curve_view::draw_bezier(QPointF src_key, QPointF dst_key)
 {
-    float handler_distance = abs(dst_key.x() - src_key.x()) / 3;
-
-    QPointF src_handler = {src_key.x() + handler_distance, src_key.y()};
-    QPointF dst_handler = {dst_key.x() - handler_distance, dst_key.y()};
-
     glBegin(GL_LINE_STRIP);
     glColor3f(1, 1, 0);
 
@@ -181,15 +195,7 @@ void curve_view::draw_bezier(QPointF src_key, QPointF dst_key)
 
     for (int i = 0; i <= segments; i++)
     {
-        QPointF L1 = ((1 - t) * src_key) + (t * src_handler);
-        QPointF L2 = ((1 - t) * src_handler) + (t * dst_handler);
-        QPointF L3 = ((1 - t) * dst_handler) + (t * dst_key);
-
-        QPointF Q1 = ((1 - t) * L1) + (L2 * t);
-        QPointF Q2 = ((1 - t) * L2) + (L3 * t);
-
-        QPointF point = ((1 - t) * Q1) + (Q2 * t);
-
+        QPointF point = cubic_bezier(src_key, dst_key, t);
         glVertex2f(point.x(), point.y());
 
         t += segment;

@@ -11,6 +11,7 @@ private:
     {
         QPointF pos;
         int rotation;
+        float exaggeration; // 0.0 - 1.0
         int interpolation;
         // 0: Linear
         // 1: Horizontal
@@ -35,6 +36,11 @@ private:
     void create_curve();
     void draw_curve();
     void draw_bezier(QPointF src_key, QPointF dst_key);
+    QPointF cubic_bezier(
+        QPointF point_a,
+        QPointF point_b,
+        float value,
+        float exaggeration = 0.34);
 
 public:
     curve_view(/* args */);
