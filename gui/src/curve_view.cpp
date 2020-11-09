@@ -193,10 +193,13 @@ void curve_view::mouseMoveEvent(QMouseEvent *event)
 {
     if (is_drag)
     {
-        if (curves.contains(drag_curve))
+        if (!qt::alt())
         {
-            curves[drag_curve][drag_index] = get_coords(event->pos());
-            update();
+            if (curves.contains(drag_curve))
+            {
+                curves[drag_curve][drag_index] = get_coords(event->pos());
+                update();
+            }
         }
     }
 
