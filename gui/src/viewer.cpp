@@ -11,9 +11,10 @@ viewer::viewer(/* args */)
     this->setLayout(layout);
     this->setObjectName("viewer");
 
+    time_line *_time_line = new time_line();
+
     QWidget *info = info_setup_ui();
     QWidget *player = player_setup_ui();
-    QWidget *timeline = timeline_setup_ui();
     QWidget *controls = control_setup_ui();
     QWidget *image_correction = image_correction_setup_ui();
 
@@ -21,7 +22,7 @@ viewer::viewer(/* args */)
     layout->addWidget(image_correction);
     layout->addWidget(_viewer_gl);
     layout->addWidget(info);
-    layout->addWidget(timeline);
+    layout->addWidget(_time_line);
     layout->addWidget(player);
 }
 
@@ -137,19 +138,6 @@ QWidget *viewer::info_setup_ui()
     QHBoxLayout *layout = new QHBoxLayout();
     widget->setLayout(layout);
     widget->setMinimumHeight(10);
-    //
-
-    return widget;
-}
-
-QWidget *viewer::timeline_setup_ui()
-{
-    QWidget *widget = new QWidget();
-    widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    widget->setObjectName("timeline");
-    QHBoxLayout *layout = new QHBoxLayout();
-    widget->setLayout(layout);
-    widget->setMinimumHeight(50);
     //
 
     return widget;
