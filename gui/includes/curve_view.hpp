@@ -1,7 +1,6 @@
 #ifndef CURVE_VIEW_HPP
 #define CURVE_VIEW_HPP
 
-#include <QHoverEvent>
 #include <gl_view.hpp>
 
 class curve_view : public gl_view
@@ -35,6 +34,7 @@ private:
     void draw_point(QPointF coords);
     void create_curve();
     void draw_curve();
+    void draw_bezier(QPointF src_key, QPointF dst_key);
 
 public:
     curve_view(/* args */);

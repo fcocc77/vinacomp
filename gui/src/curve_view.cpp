@@ -122,16 +122,25 @@ void curve_view::draw_curve()
 {
     for (auto curve : curves)
     {
-        // Lines
-        glBegin(GL_LINE_STRIP);
-        glColor3f(0, 0, 1);
-        glVertex2f(-1000000, curve.first().pos.y());
+        // Infinite Lines
+        draw_line({-1000000, curve.first().pos.y()}, curve.first().pos, Qt::red);
+        draw_line(curve.last().pos, {1000000, curve.last().pos.y()}, Qt::red);
+        //
+        //
 
+        // Beziers
+        key_frame last_key;
+        bool is_first = true;
         for (key_frame key : curve)
-            glVertex2f(key.pos.x(), key.pos.y());
+        {
+            if (!is_first)
+                draw_bezier(last_key.pos, key.pos);
 
-        glVertex2f(1000000, curve.last().pos.y());
-        glEnd();
+            last_key = key;
+            is_first = false;
+        }
+
+        //
         //
 
         // Interpolations
@@ -154,6 +163,39 @@ void curve_view::draw_curve()
             draw_point(key.pos);
         //
     }
+}
+
+void curve_view::draw_bezier(QPointF src_key, QPointF dst_key)
+{
+    float handler_distance = abs(dst_key.x() - src_key.x()) / 3;
+
+    QPointF src_handler = {src_key.x() + handler_distance, src_key.y()};
+    QPointF dst_handler = {dst_key.x() - handler_distance, dst_key.y()};
+
+    glBegin(GL_LINE_STRIP);
+    glColor3f(1, 1, 0);
+
+    int segments = 100;
+    float segment = 1.0 / segments;
+    float t = 0;
+
+    for (int i = 0; i <= segments; i++)
+    {
+        QPointF L1 = ((1 - t) * src_key) + (t * src_handler);
+        QPointF L2 = ((1 - t) * src_handler) + (t * dst_handler);
+        QPointF L3 = ((1 - t) * dst_handler) + (t * dst_key);
+
+        QPointF Q1 = ((1 - t) * L1) + (L2 * t);
+        QPointF Q2 = ((1 - t) * L2) + (L3 * t);
+
+        QPointF point = ((1 - t) * Q1) + (Q2 * t);
+
+        glVertex2f(point.x(), point.y());
+
+        t += segment;
+    }
+
+    glEnd();
 }
 
 void curve_view::create_curve()
