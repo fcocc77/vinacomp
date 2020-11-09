@@ -8,21 +8,13 @@
 #include <QGraphicsPixmapItem>
 #include <QString>
 #include <QComboBox>
-#include <graphics_view.hpp>
 #include <QPushButton>
 #include <QLineEdit>
 
 #include <qt.hpp>
 #include <combo_box.hpp>
 #include <slider.hpp>
-
-class viewer_graphics_view : public graphics_view
-{
-private:
-public:
-    viewer_graphics_view(/* args */);
-    ~viewer_graphics_view();
-};
+#include <viewer_gl.hpp>
 
 class viewer : public QWidget
 {

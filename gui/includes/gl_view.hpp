@@ -47,6 +47,7 @@ public:
     QPointF get_coords(QPoint mouse_position);
     QPointF get_scale();
     void set_default();
+    void set_coord(QPointF coords, QPointF zoom);
 
 protected:
     void paintGL() override;

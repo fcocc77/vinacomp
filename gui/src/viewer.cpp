@@ -3,8 +3,8 @@
 viewer::viewer(/* args */)
 {
 
-    viewer_graphics_view *_viewer_graphics_view = new viewer_graphics_view();
-    _viewer_graphics_view->setObjectName("viewer_graphics");
+    viewer_gl *_viewer_gl = new viewer_gl();
+    _viewer_gl->setObjectName("viewer_graphics");
 
     QVBoxLayout *layout = new QVBoxLayout();
     layout->setContentsMargins(0, 0, 0, 0);
@@ -19,7 +19,7 @@ viewer::viewer(/* args */)
 
     layout->addWidget(controls);
     layout->addWidget(image_correction);
-    layout->addWidget(_viewer_graphics_view);
+    layout->addWidget(_viewer_gl);
     layout->addWidget(info);
     layout->addWidget(timeline);
     layout->addWidget(player);
@@ -32,6 +32,7 @@ viewer::~viewer()
 QWidget *viewer::control_setup_ui()
 {
     QWidget *widget = new QWidget();
+    widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     widget->setObjectName("controls");
     QHBoxLayout *layout = new QHBoxLayout();
     layout->setSpacing(2);
@@ -91,6 +92,7 @@ QWidget *viewer::control_setup_ui()
 QWidget *viewer::image_correction_setup_ui()
 {
     QWidget *widget = new QWidget();
+    widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     widget->setObjectName("image_correction");
     QHBoxLayout *layout = new QHBoxLayout();
     layout->setSpacing(2);
@@ -130,6 +132,7 @@ QWidget *viewer::image_correction_setup_ui()
 QWidget *viewer::info_setup_ui()
 {
     QWidget *widget = new QWidget();
+    widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     widget->setObjectName("info");
     QHBoxLayout *layout = new QHBoxLayout();
     widget->setLayout(layout);
@@ -142,6 +145,7 @@ QWidget *viewer::info_setup_ui()
 QWidget *viewer::timeline_setup_ui()
 {
     QWidget *widget = new QWidget();
+    widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     widget->setObjectName("timeline");
     QHBoxLayout *layout = new QHBoxLayout();
     widget->setLayout(layout);
@@ -154,6 +158,7 @@ QWidget *viewer::timeline_setup_ui()
 QWidget *viewer::player_setup_ui()
 {
     QWidget *widget = new QWidget();
+    widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     widget->setObjectName("player");
     QHBoxLayout *layout = new QHBoxLayout();
     layout->setSpacing(2);
@@ -232,31 +237,4 @@ QWidget *viewer::player_setup_ui()
     layout->addWidget(output_frame_edit);
 
     return widget;
-}
-
-viewer_graphics_view::viewer_graphics_view(/* args */)
-{
-
-    QGraphicsScene *scene = new QGraphicsScene();
-
-    QString image_file = "/home/pancho/Pictures/pexels-leonardo-vazquez-3742854.jpg";
-
-    QImage image(image_file);
-
-    QGraphicsPixmapItem *item = new QGraphicsPixmapItem(QPixmap::fromImage(image));
-    scene->addItem(item);
-
-    scene->setSceneRect(-500000, -500000, 1000000, 1000000);
-
-    // desabilita el scroll
-    this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    //
-    //
-
-    this->setScene(scene);
-}
-
-viewer_graphics_view::~viewer_graphics_view()
-{
 }

@@ -38,6 +38,14 @@ void gl_view::set_default()
     update();
 }
 
+void gl_view::set_coord(QPointF _coord, QPointF zoom)
+{
+    coord = _coord;
+    zoom_scale = zoom;
+
+    update();
+}
+
 void gl_view::resizeGL(int width, int height)
 {
     glViewport(0, 0, width, height);
