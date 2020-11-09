@@ -43,7 +43,7 @@ void gl_view::resizeGL(int width, int height)
     glViewport(0, 0, width, height);
 }
 
-QPointF gl_view::map_position(QPoint mouse_position)
+QPointF gl_view::get_coords(QPoint mouse_position)
 {
     float aspect = float(height()) / width();
 
@@ -53,7 +53,7 @@ QPointF gl_view::map_position(QPoint mouse_position)
 
 QPointF gl_view::get_position(QPointF coordinate)
 {
-    // esta funcion es el reverso de 'map_position'
+    // esta funcion es el reverso de 'get_coords'
     // obtiene la posicion en el visor, a partir de la cordenada de la escena.
     float aspect = float(height()) / width();
 
@@ -193,8 +193,8 @@ QList<float> gl_view::generate_coord_range(
     // los valores que esta fuera de cuadro no los muestra, esto sirve para que
     // las iteraciones no sean tan largas ya que no renderiza las que estan fuera de cuadro.
     int out_frame = 50;
-    QPointF top_left_point = map_position({-out_frame, -out_frame});
-    QPointF down_right_point = map_position({width() + out_frame, height() + out_frame});
+    QPointF top_left_point = get_coords({-out_frame, -out_frame});
+    QPointF down_right_point = get_coords({width() + out_frame, height() + out_frame});
 
     float a_limit, b_limit;
     if (orientation == Qt::Vertical)

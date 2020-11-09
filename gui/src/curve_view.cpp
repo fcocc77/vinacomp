@@ -2,7 +2,8 @@
 
 curve_view::curve_view(/* args */)
 {
-    point = {-0.3, 0.3};
+    this->setMouseTracking(true);
+    create_curve();
 }
 
 curve_view::~curve_view()
@@ -39,8 +40,8 @@ void curve_view::draw_circle()
 void curve_view::draw_grid()
 {
     int out_frame = 50;
-    QPointF top_left_point = map_position({-out_frame, -out_frame});
-    QPointF down_right_point = map_position({width() + out_frame, height() + out_frame});
+    QPointF top_left_point = get_coords({-out_frame, -out_frame});
+    QPointF down_right_point = get_coords({width() + out_frame, height() + out_frame});
 
     float up_limit = top_left_point.y();
     float left_limit = top_left_point.x();
@@ -92,12 +93,61 @@ void curve_view::draw_coordinate_numbers()
             draw_text(QString::number(value), color, {value, 0}, {-1, height() - 20});
     };
 
-    QList<float> separations = {0.01, 0.05, 0.1, 0.5, 1, 5, 10, 50, 100, 500, 1000, 5000, 10000, 50000, 100000};
-    for (float separation : separations)
-    {
+    QList<float> value_separations = {0.01, 0.05, 0.1, 0.5, 1, 5, 10, 50, 100, 500, 1000, 5000, 10000, 50000, 100000};
+    for (float separation : value_separations)
         vertical_numbers(separation);
+
+    QList<float> time_separations = {1, 5, 10, 50, 100, 500, 1000, 5000, 10000, 50000, 100000};
+    for (float separation : time_separations)
         horizontal_numbers(separation);
+}
+
+void curve_view::draw_point(QPointF coord)
+{
+    glEnable(GL_POINT_SMOOTH);
+    glPointSize(7);
+    glBegin(GL_POINTS);
+    glColor3f(0, 0, 1);
+    glVertex2f(coord.x(), coord.y());
+    glEnd();
+}
+
+void curve_view::create_handle(QPoint position)
+{
+
+    QPointF coord = get_coords(position);
+}
+
+void curve_view::draw_curve()
+{
+    for (auto curve : curves)
+    {
+        glBegin(GL_LINE_STRIP);
+        glColor3f(0, 0, 1);
+
+        glVertex2f(-1000000, curve.first().y());
+
+        for (QPointF key : curve)
+            glVertex2f(key.x(), key.y());
+
+        glVertex2f(1000000, curve.last().y());
+
+        glEnd();
+
+        for (QPointF key : curve)
+            draw_point(key);
     }
+}
+
+void curve_view::create_curve()
+{
+    QPointF key1 = {0.1, 0.2};
+    QPointF key2 = {0.5, 1};
+    QPointF key3 = {1, 0.3};
+
+    curves.insert("translate_x", {key1, key2, key3});
+
+    update();
 }
 
 void curve_view::paintGL()
@@ -106,16 +156,49 @@ void curve_view::paintGL()
 
     draw_grid();
     draw_coordinate_numbers();
+    draw_curve();
 }
 
 void curve_view::mousePressEvent(QMouseEvent *event)
 {
+    int draw_tolerance = 10; // Pixels
+    for (auto curve : curves.keys())
+    {
+        auto keys = curves[curve];
+        for (int i = 0; i < keys.count(); i++)
+        {
+            QPointF key = keys[i];
+            QPointF key_position = get_position(key);
+            float distance = qt::distance_points(key_position, event->pos());
+            if (distance < draw_tolerance)
+            {
+                drag_curve = curve;
+                drag_index = i;
+                is_drag = true;
 
-    QPointF position = map_position(event->pos());
-
-    point = {position.x(), position.y()};
-
-    update();
+                break;
+            }
+        }
+    }
 
     gl_view::mousePressEvent(event);
+}
+void curve_view::mouseReleaseEvent(QMouseEvent *event)
+{
+    is_drag = false;
+    gl_view::mouseReleaseEvent(event);
+}
+
+void curve_view::mouseMoveEvent(QMouseEvent *event)
+{
+    if (is_drag)
+    {
+        if (curves.contains(drag_curve))
+        {
+            curves[drag_curve][drag_index] = get_coords(event->pos());
+            update();
+        }
+    }
+
+    gl_view::mouseMoveEvent(event);
 }

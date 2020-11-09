@@ -44,7 +44,7 @@ public:
 
     QPointF get_coordinate(QPoint cursor_position);
     QPointF get_position(QPointF coordinate);
-    QPointF map_position(QPoint mouse_position);
+    QPointF get_coords(QPoint mouse_position);
     QPointF get_scale();
     void set_default();
 
