@@ -122,28 +122,46 @@ void curve_view::draw_curve()
 {
     for (auto curve : curves)
     {
+        // Lines
         glBegin(GL_LINE_STRIP);
         glColor3f(0, 0, 1);
+        glVertex2f(-1000000, curve.first().pos.y());
 
-        glVertex2f(-1000000, curve.first().y());
+        for (key_frame key : curve)
+            glVertex2f(key.pos.x(), key.pos.y());
 
-        for (QPointF key : curve)
-            glVertex2f(key.x(), key.y());
-
-        glVertex2f(1000000, curve.last().y());
-
+        glVertex2f(1000000, curve.last().pos.y());
         glEnd();
+        //
 
-        for (QPointF key : curve)
-            draw_point(key);
+        // Interpolations
+        float separation = 0.2;
+        for (key_frame key : curve)
+        {
+            float point_a_x = key.pos.x() - separation;
+            float point_b_x = key.pos.x() + separation;
+
+            QPointF point_a = {point_a_x, key.pos.y()};
+            QPointF point_b = {point_b_x, key.pos.y()};
+            draw_line(point_a, point_b, Qt::red);
+            draw_point(point_a);
+            draw_point(point_b);
+        }
+        //
+
+        // Points
+        for (key_frame key : curve)
+            draw_point(key.pos);
+        //
     }
 }
 
 void curve_view::create_curve()
 {
-    QPointF key1 = {0.1, 0.2};
-    QPointF key2 = {0.5, 1};
-    QPointF key3 = {1, 0.3};
+
+    key_frame key1 = {{0.1, 0.2}, 0, 0};
+    key_frame key2 = {{0.5, 1}, 0, 0};
+    key_frame key3 = {{1, 0.3}, 0, 0};
 
     curves.insert("translate_x", {key1, key2, key3});
 
@@ -167,7 +185,7 @@ void curve_view::mousePressEvent(QMouseEvent *event)
         auto keys = curves[curve];
         for (int i = 0; i < keys.count(); i++)
         {
-            QPointF key = keys[i];
+            QPointF key = keys[i].pos;
             QPointF key_position = get_position(key);
             float distance = qt::distance_points(key_position, event->pos());
             if (distance < draw_tolerance)
@@ -183,6 +201,7 @@ void curve_view::mousePressEvent(QMouseEvent *event)
 
     gl_view::mousePressEvent(event);
 }
+
 void curve_view::mouseReleaseEvent(QMouseEvent *event)
 {
     is_drag = false;
@@ -197,7 +216,7 @@ void curve_view::mouseMoveEvent(QMouseEvent *event)
         {
             if (curves.contains(drag_curve))
             {
-                curves[drag_curve][drag_index] = get_coords(event->pos());
+                curves[drag_curve][drag_index].pos = get_coords(event->pos());
                 update();
             }
         }

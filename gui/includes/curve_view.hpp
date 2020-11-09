@@ -8,7 +8,19 @@ class curve_view : public gl_view
 {
 
 private:
-    QMap<QString, QList<QPointF>> curves;
+    struct key_frame
+    {
+        QPointF pos;
+        int rotation;
+        int interpolation;
+        // 0: Linear
+        // 1: Horizontal
+        // 2: Smooth
+        // 3: Break
+        // 4: Custom
+    };
+
+    QMap<QString, QList<key_frame>> curves;
 
     // Drag KeyFrame
     QString drag_curve;
