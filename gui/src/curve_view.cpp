@@ -345,16 +345,15 @@ void curve_view::mouseMoveEvent(QMouseEvent *event)
             if (curves.contains(drag_curve))
             {
                 key_frame &key = curves[drag_curve][drag_index];
-                QPointF coords = get_coords(event->pos());
                 QLineF handler = get_handler_points(key);
 
                 if (drag_handler == 1)
-                    key.angle = 90 - get_angle_two_points(coords, key.pos);
+                    key.angle = get_angle_two_points(event->pos(), get_position(key.pos)) - 90;
 
                 else if (drag_handler == 2)
-                    key.angle = 270 - get_angle_two_points(coords, key.pos);
+                    key.angle = get_angle_two_points(event->pos(), get_position(key.pos)) - 270;
                 else
-                    key.pos = coords;
+                    key.pos = get_coords(event->pos());
 
                 update();
             }
