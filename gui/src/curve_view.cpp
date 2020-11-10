@@ -36,17 +36,32 @@ void curve_view::draw_circle()
     glEnd();
 }
 
-QPointF curve_view::rotate_point(QPointF point, QPointF anchor_point, float angle)
+QPointF curve_view::rotate_point(QPointF point, QPointF anchor_point, float angle, bool keep_aspect)
 {
     // rota un punto alrededor de otro punto (punto de anclaje).
     float distance = qt::distance_points(point, anchor_point);
 
     angle = (M_PI * 2.0) * angle / 360.0;
 
-    float x = (distance * cosf(angle)) + anchor_point.x();
-    float y = (distance * sinf(angle)) + anchor_point.y();
+    float x = distance * cosf(angle);
+    float y = distance * sinf(angle);
+
+    if (keep_aspect)
+        y = y * (get_scale().y() / get_scale().x());
+
+    x += anchor_point.x();
+    y += anchor_point.y();
 
     return {x, y};
+}
+
+float curve_view::get_angle_two_points(QPointF point_a, QPointF point_b)
+{
+    // calcular la rotacion a partir de 2 puntos
+    double delta_y = (point_a.y() - point_b.y());
+    double delta_x = (point_b.x() - point_a.x());
+
+    return atan2(delta_x, delta_y) * 180 / M_PI;
 }
 
 void curve_view::draw_grid()
@@ -124,10 +139,39 @@ void curve_view::draw_point(QPointF coord)
     glEnd();
 }
 
-void curve_view::create_handle(QPoint position)
+float curve_view::get_angle_orientation(float angle)
 {
+    // calcula si un angulo es vertical u horizontal, tomando
+    // como horizontal el 0 - 180 y vertical 90 - 270
+    // retornando una gradiente entre 0 - 1, ej:
+    // con retornos: 45 = 0.5,  90 = 1.0, 135 = 0.5
+    angle = abs(angle);
 
-    QPointF coord = get_coords(position);
+    if (angle <= 90)
+        return angle / 90;
+    else if (angle <= 180)
+        return 1.0 - ((angle - 90) / 90);
+    else if (angle <= 270)
+        return (angle - 180) / 90;
+    else
+        return 1.0 - ((angle - 270) / 90);
+}
+
+QLineF curve_view::get_handler_points(key_frame key)
+{
+    // obtiene los dos puntos del manejador
+    float separation = 0.2;
+
+    float point_a_x = key.pos.x() - separation;
+    float point_b_x = key.pos.x() + separation;
+
+    QPointF point_a = {point_a_x, key.pos.y()};
+    QPointF point_b = {point_b_x, key.pos.y()};
+
+    point_a = rotate_point(point_a, key.pos, 180 - key.angle, true);
+    point_b = rotate_point(point_b, key.pos, -key.angle, true);
+
+    return {point_a, point_b};
 }
 
 void curve_view::draw_curve()
@@ -151,22 +195,17 @@ void curve_view::draw_curve()
             last_key = key;
             is_first = false;
         }
-
         //
         //
 
-        // Interpolations
-        float separation = 0.2;
+        // Handler
         for (key_frame key : curve)
         {
-            float point_a_x = key.pos.x() - separation;
-            float point_b_x = key.pos.x() + separation;
+            QLineF handler = get_handler_points(key);
 
-            QPointF point_a = {point_a_x, key.pos.y()};
-            QPointF point_b = {point_b_x, key.pos.y()};
-            draw_line(point_a, point_b, Qt::red);
-            draw_point(point_a);
-            draw_point(point_b);
+            draw_line(handler.p1(), handler.p2(), Qt::red);
+            draw_point(handler.p1());
+            draw_point(handler.p2());
         }
         //
 
@@ -220,7 +259,7 @@ void curve_view::create_curve()
 {
 
     key_frame key1 = {{0.1, 0.2}, 0, 0};
-    key_frame key2 = {{0.5, 1}, 30, 0};
+    key_frame key2 = {{0.5, 1}, 45, 0};
     key_frame key3 = {{1, 0.3}, 0, 0};
 
     curves.insert("translate_x", {key1, key2, key3});
@@ -237,28 +276,57 @@ void curve_view::paintGL()
     draw_curve();
 }
 
-void curve_view::mousePressEvent(QMouseEvent *event)
+void curve_view::key_press(QPoint cursor_position)
 {
+    // si el click del mouse fue presionado en algun keyframe o en
+    // alguno de los 2 puntos del manejador, los asigna a las variables de 'drag'
+
     int draw_tolerance = 10; // Pixels
     for (auto curve : curves.keys())
     {
         auto keys = curves[curve];
         for (int i = 0; i < keys.count(); i++)
         {
-            QPointF key = keys[i].pos;
-            QPointF key_position = get_position(key);
-            float distance = qt::distance_points(key_position, event->pos());
+            key_frame key = keys[i];
+            QLineF handler = get_handler_points(key);
+
+            drag_index = i;
+            drag_curve = curve;
+            drag_handler = 0;
+
+            // verifica si el click se hizo en el key point
+            QPointF key_position = get_position(key.pos);
+            float distance = qt::distance_points(key_position, cursor_position);
+            if (distance < draw_tolerance)
+                is_drag = true;
+            //
+            //
+
+            // verifica si el click se hizo en alguno de los 2 puntos manejadores
+            distance = qt::distance_points(get_position(handler.p1()), cursor_position);
             if (distance < draw_tolerance)
             {
-                drag_curve = curve;
-                drag_index = i;
+                drag_handler = 1;
                 is_drag = true;
-
-                break;
             }
+            distance = qt::distance_points(get_position(handler.p2()), cursor_position);
+            if (distance < draw_tolerance)
+            {
+                drag_handler = 2;
+                is_drag = true;
+            }
+            //
+            //
+
+            if (is_drag)
+                break;
         }
     }
+}
 
+void curve_view::mousePressEvent(QMouseEvent *event)
+{
+    key_press(event->pos());
     gl_view::mousePressEvent(event);
 }
 
@@ -276,7 +344,18 @@ void curve_view::mouseMoveEvent(QMouseEvent *event)
         {
             if (curves.contains(drag_curve))
             {
-                curves[drag_curve][drag_index].pos = get_coords(event->pos());
+                key_frame &key = curves[drag_curve][drag_index];
+                QPointF coords = get_coords(event->pos());
+                QLineF handler = get_handler_points(key);
+
+                if (drag_handler == 1)
+                    key.angle = 90 - get_angle_two_points(coords, key.pos);
+
+                else if (drag_handler == 2)
+                    key.angle = 270 - get_angle_two_points(coords, key.pos);
+                else
+                    key.pos = coords;
+
                 update();
             }
         }

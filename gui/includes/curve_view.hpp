@@ -10,7 +10,7 @@ private:
     struct key_frame
     {
         QPointF pos;
-        int rotation;
+        int angle;
         float exaggeration; // 0.0 - 1.0
         int interpolation;
         // 0: Linear
@@ -25,17 +25,21 @@ private:
     // Drag KeyFrame
     QString drag_curve;
     int drag_index;
-    bool is_drag;
+    int drag_handler;
+    bool is_drag = false;
     //
 
     void draw_circle();
     void draw_grid();
     void draw_coordinate_numbers();
-    void create_handle(QPoint position);
     void draw_point(QPointF coords);
     void create_curve();
     void draw_curve();
-    QPointF rotate_point(QPointF point, QPointF anchor_point, float angle);
+    void key_press(QPoint cursor_position);
+    QLineF get_handler_points(key_frame key);
+    QPointF rotate_point(QPointF point, QPointF anchor_point, float angle, bool keep_aspect = false);
+    float get_angle_two_points(QPointF a, QPointF b);
+    float get_angle_orientation(float angle);
     void draw_bezier(QPointF src_key, QPointF dst_key);
     QPointF cubic_bezier(
         QPointF point_a,
