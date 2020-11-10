@@ -18,23 +18,35 @@ void curve_view::initializeGL()
 
 void curve_view::draw_circle()
 {
-    float cx = 0;
-    float cy = 0;
-    float r = 0.7;
     int num_segments = 100;
+    float radio = 1.0;
 
-    glBegin(GL_LINE_LOOP);
-
+    glBegin(GL_LINE_STRIP);
     glColor4f(1, 0, 0, 0);
 
-    for (int ii = 0; ii < num_segments; ii++)
+    float segment = 360.0 / num_segments;
+    float angle = 0;
+    for (int i = 0; i <= num_segments; i++)
     {
-        float theta = 2.0f * 3.1415926f * float(ii) / float(num_segments); //get the current angle
-        float x = r * cosf(theta);                                         //calculate the x component
-        float y = r * sinf(theta);                                         //calculate the y component
-        glVertex2f(x + cx, y + cy);                                        //output vertex
+        QPointF point = rotate_point({radio, 0}, {0.0, 0.0}, angle);
+        glVertex2f(point.x(), point.y());
+
+        angle += segment;
     }
     glEnd();
+}
+
+QPointF curve_view::rotate_point(QPointF point, QPointF anchor_point, float angle)
+{
+    // rota un punto alrededor de otro punto (punto de anclaje).
+    float distance = qt::distance_points(point, anchor_point);
+
+    angle = (M_PI * 2.0) * angle / 360.0;
+
+    float x = (distance * cosf(angle)) + anchor_point.x();
+    float y = (distance * sinf(angle)) + anchor_point.y();
+
+    return {x, y};
 }
 
 void curve_view::draw_grid()
@@ -208,7 +220,7 @@ void curve_view::create_curve()
 {
 
     key_frame key1 = {{0.1, 0.2}, 0, 0};
-    key_frame key2 = {{0.5, 1}, 0, 0};
+    key_frame key2 = {{0.5, 1}, 30, 0};
     key_frame key3 = {{1, 0.3}, 0, 0};
 
     curves.insert("translate_x", {key1, key2, key3});

@@ -35,6 +35,7 @@ private:
     void draw_point(QPointF coords);
     void create_curve();
     void draw_curve();
+    QPointF rotate_point(QPointF point, QPointF anchor_point, float angle);
     void draw_bezier(QPointF src_key, QPointF dst_key);
     QPointF cubic_bezier(
         QPointF point_a,
