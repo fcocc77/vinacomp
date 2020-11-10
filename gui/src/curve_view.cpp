@@ -36,34 +36,6 @@ void curve_view::draw_circle()
     glEnd();
 }
 
-QPointF curve_view::rotate_point(QPointF point, QPointF anchor_point, float angle, bool keep_aspect)
-{
-    // rota un punto alrededor de otro punto (punto de anclaje).
-    float distance = qt::distance_points(point, anchor_point);
-
-    angle = (M_PI * 2.0) * angle / 360.0;
-
-    float x = distance * cosf(angle);
-    float y = distance * sinf(angle);
-
-    if (keep_aspect)
-        y = y * (get_scale().y() / get_scale().x());
-
-    x += anchor_point.x();
-    y += anchor_point.y();
-
-    return {x, y};
-}
-
-float curve_view::get_angle_two_points(QPointF point_a, QPointF point_b)
-{
-    // calcular la rotacion a partir de 2 puntos
-    double delta_y = (point_a.y() - point_b.y());
-    double delta_x = (point_b.x() - point_a.x());
-
-    return atan2(delta_x, delta_y) * 180 / M_PI;
-}
-
 void curve_view::draw_grid()
 {
     int out_frame = 50;
@@ -127,34 +99,6 @@ void curve_view::draw_coordinate_numbers()
     QList<float> time_separations = {1, 5, 10, 50, 100, 500, 1000, 5000, 10000, 50000, 100000};
     for (float separation : time_separations)
         horizontal_numbers(separation);
-}
-
-void curve_view::draw_point(QPointF coord)
-{
-    glEnable(GL_POINT_SMOOTH);
-    glPointSize(7);
-    glBegin(GL_POINTS);
-    glColor3f(0, 0, 1);
-    glVertex2f(coord.x(), coord.y());
-    glEnd();
-}
-
-float curve_view::get_angle_orientation(float angle)
-{
-    // calcula si un angulo es vertical u horizontal, tomando
-    // como horizontal el 0 - 180 y vertical 90 - 270
-    // retornando una gradiente entre 0 - 1, ej:
-    // con retornos: 45 = 0.5,  90 = 1.0, 135 = 0.5
-    angle = abs(angle);
-
-    if (angle <= 90)
-        return angle / 90;
-    else if (angle <= 180)
-        return 1.0 - ((angle - 90) / 90);
-    else if (angle <= 270)
-        return (angle - 180) / 90;
-    else
-        return 1.0 - ((angle - 270) / 90);
 }
 
 QLineF curve_view::get_handler_points(key_frame key)
@@ -257,7 +201,6 @@ void curve_view::draw_bezier(QPointF src_key, QPointF dst_key)
 
 void curve_view::create_curve()
 {
-
     key_frame key1 = {{0.1, 0.2}, 0, 0};
     key_frame key2 = {{0.5, 1}, 45, 0};
     key_frame key3 = {{1, 0.3}, 0, 0};

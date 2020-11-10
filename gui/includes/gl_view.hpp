@@ -34,6 +34,8 @@ public:
         QPointF coords,
         QPointF viewer_position = {-1, -1});
 
+    void draw_point(QPointF coords);
+
     void draw_line(QPointF src, QPointF dst, QColor color);
     QList<float> generate_coord_range(
         float separation,
@@ -48,6 +50,10 @@ public:
     QPointF get_scale();
     void set_default();
     void set_coord(QPointF coords, QPointF zoom);
+
+    QPointF rotate_point(QPointF point, QPointF anchor_point, float angle, bool keep_aspect = false);
+    float get_angle_two_points(QPointF a, QPointF b);
+    float get_angle_orientation(float angle);
 
 protected:
     void paintGL() override;

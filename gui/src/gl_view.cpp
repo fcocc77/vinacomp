@@ -108,6 +108,16 @@ QPointF gl_view::get_scale()
     return zoom_scale;
 }
 
+void gl_view::draw_point(QPointF coord)
+{
+    glEnable(GL_POINT_SMOOTH);
+    glPointSize(7);
+    glBegin(GL_POINTS);
+    glColor3f(0, 0, 1);
+    glVertex2f(coord.x(), coord.y());
+    glEnd();
+}
+
 void gl_view::draw_line(QPointF src, QPointF dst, QColor color)
 {
     glBegin(GL_LINES);
@@ -148,6 +158,52 @@ void gl_view::draw_text(QString text, QColor color, QPointF coords, QPointF view
 
     painter.drawText(x - (size_x / 2), y - (size_y / 2), size_x, size_y, Qt::AlignCenter, text);
     painter.end();
+}
+
+QPointF gl_view::rotate_point(QPointF point, QPointF anchor_point, float angle, bool keep_aspect)
+{
+    // rota un punto alrededor de otro punto (punto de anclaje).
+    float distance = qt::distance_points(point, anchor_point);
+
+    angle = (M_PI * 2.0) * angle / 360.0;
+
+    float x = distance * cosf(angle);
+    float y = distance * sinf(angle);
+
+    if (keep_aspect)
+        y = y * (get_scale().y() / get_scale().x());
+
+    x += anchor_point.x();
+    y += anchor_point.y();
+
+    return {x, y};
+}
+
+float gl_view::get_angle_orientation(float angle)
+{
+    // calcula si un angulo es vertical u horizontal, tomando
+    // como horizontal el 0 - 180 y vertical 90 - 270
+    // retornando una gradiente entre 0 - 1, ej:
+    // con retornos: 45 = 0.5,  90 = 1.0, 135 = 0.5
+    angle = abs(angle);
+
+    if (angle <= 90)
+        return angle / 90;
+    else if (angle <= 180)
+        return 1.0 - ((angle - 90) / 90);
+    else if (angle <= 270)
+        return (angle - 180) / 90;
+    else
+        return 1.0 - ((angle - 270) / 90);
+}
+
+float gl_view::get_angle_two_points(QPointF point_a, QPointF point_b)
+{
+    // calcular la rotacion a partir de 2 puntos
+    float delta_y = (point_a.y() - point_b.y());
+    float delta_x = (point_b.x() - point_a.x());
+
+    return atan2(delta_x, delta_y) * 180.0 / M_PI;
 }
 
 QList<float> gl_view::generate_coord_range(

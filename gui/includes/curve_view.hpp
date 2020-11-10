@@ -10,7 +10,7 @@ private:
     struct key_frame
     {
         QPointF pos;
-        int angle;
+        float angle;
         float exaggeration; // 0.0 - 1.0
         int interpolation;
         // 0: Linear
@@ -32,14 +32,10 @@ private:
     void draw_circle();
     void draw_grid();
     void draw_coordinate_numbers();
-    void draw_point(QPointF coords);
     void create_curve();
     void draw_curve();
     void key_press(QPoint cursor_position);
     QLineF get_handler_points(key_frame key);
-    QPointF rotate_point(QPointF point, QPointF anchor_point, float angle, bool keep_aspect = false);
-    float get_angle_two_points(QPointF a, QPointF b);
-    float get_angle_orientation(float angle);
     void draw_bezier(QPointF src_key, QPointF dst_key);
     QPointF cubic_bezier(
         QPointF point_a,
