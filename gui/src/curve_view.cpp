@@ -112,19 +112,37 @@ QLineF curve_view::get_handler_points(key_frame key, bool infinite)
     QPointF point_a = {point_a_x, key.pos.y()};
     QPointF point_b = {point_b_x, key.pos.y()};
 
-    if (infinite)
+    // genera el punto vertical infinito donde apunta el manejador
+    float tangent = tan(key.angle * M_PI / 180);
+    QPointF infinite_point_a = {point_a.x(), point_a.y() + (tangent * separation)};
+    QPointF infinite_point_b = {point_b.x(), point_b.y() - (tangent * separation)};
+    //
+
+    if (!infinite)
     {
-        float tangent = tan(key.angle * M_PI / 180);
-        point_a.setY(point_a.y() + (tangent * separation));
-        point_b.setY(point_b.y() - (tangent * separation));
-    }
-    else
-    {
-        point_a = rotate_point(point_a, key.pos, 180 - key.angle, true);
-        point_b = rotate_point(point_b, key.pos, -key.angle, true);
+        // antes de rotar el manejador, transforma el punto de key y los
+        // 2 puntos del manejador de cordenadas a puntos en la
+        // position del visor, con esto logramos que el manejador
+        // siempre quede del mismo tamaño.
+        QPointF view_point_a = get_position(point_a);
+        QPointF view_point_b = get_position(point_b);
+
+        QPointF view_infinite = get_position(infinite_point_a);
+        QPointF view_anchor_point = get_position(key.pos);
+
+        float angle = get_angle_two_points(view_infinite, view_anchor_point) - 90;
+
+        view_point_a = rotate_point(view_point_a, view_anchor_point, angle - 180);
+        view_point_b = rotate_point(view_point_b, view_anchor_point, angle);
+
+        point_a = get_coords({view_point_a.x(), view_point_a.y()});
+        point_b = get_coords({view_point_b.x(), view_point_b.y()});
     }
 
-    return {point_a, point_b};
+    if (infinite)
+        return {infinite_point_a, infinite_point_b};
+    else
+        return {point_a, point_b};
 }
 
 void curve_view::draw_curve()
