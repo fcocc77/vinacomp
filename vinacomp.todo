@@ -3,3 +3,5 @@ gui:
         ✔ que el nodo tenga un tamaño minimo, y si el texto es mas grande que el tamaño minimo, que el nodo se agrande, asi siempre el texto quedara dentro del nodo. @done (10/30/2020, 10:58:14 AM)
     node_graph:
         ✔ al mover un nodo y esta presionado el escape, el link no se mueve con el nodo @done (10/30/2020, 11:15:48 AM)
+    settings_projects:
+        ☐ el proxy va a remplazar el rscale de videovina
