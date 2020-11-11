@@ -108,12 +108,12 @@ QPointF gl_view::get_scale()
     return zoom_scale;
 }
 
-void gl_view::draw_point(QPointF coord)
+void gl_view::draw_point(QPointF coord, QColor color, int size)
 {
     glEnable(GL_POINT_SMOOTH);
-    glPointSize(7);
+    glPointSize(size);
     glBegin(GL_POINTS);
-    glColor3f(0, 0, 1);
+    glColor3f(color.red() / 255.0, color.green() / 255.0, color.blue() / 255.0);
     glVertex2f(coord.x(), coord.y());
     glEnd();
 }

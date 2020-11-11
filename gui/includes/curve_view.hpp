@@ -11,6 +11,7 @@ private:
     {
         QPointF pos;
         float angle;
+        bool selected;
         float exaggeration; // 0.0 - 1.0
         int interpolation;
         // 0: Linear

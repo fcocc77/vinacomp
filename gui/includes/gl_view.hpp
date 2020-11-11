@@ -34,7 +34,7 @@ public:
         QPointF coords,
         QPointF viewer_position = {-1, -1});
 
-    void draw_point(QPointF coords);
+    void draw_point(QPointF coords, QColor color = Qt::white, int size = 7);
 
     void draw_line(QPointF src, QPointF dst, QColor color);
     QList<float> generate_coord_range(

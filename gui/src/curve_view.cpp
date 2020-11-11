@@ -155,35 +155,39 @@ void curve_view::draw_curve()
         //
         //
 
-        // Beziers
         key_frame last_key;
         bool is_first = true;
         for (key_frame key : curve)
         {
+            // Beziers
             if (!is_first)
                 draw_bezier(last_key, key);
 
             last_key = key;
             is_first = false;
+            //
+            //
+
+            // Points
+            if (key.selected)
+                draw_point(key.pos);
+            else
+                draw_point(key.pos, Qt::red);
+            //
+            //
+
+            // Handler
+            if (key.selected)
+            {
+                QLineF handler = get_handler_points(key);
+
+                draw_line(handler.p1(), handler.p2(), Qt::red);
+                draw_point(handler.p1());
+                draw_point(handler.p2());
+            }
+            //
+            //
         }
-        //
-        //
-
-        // Handler
-        for (key_frame key : curve)
-        {
-            QLineF handler = get_handler_points(key);
-
-            draw_line(handler.p1(), handler.p2(), Qt::red);
-            draw_point(handler.p1());
-            draw_point(handler.p2());
-        }
-        //
-
-        // Points
-        for (key_frame key : curve)
-            draw_point(key.pos);
-        //
     }
 }
 
@@ -210,7 +214,6 @@ void curve_view::draw_bezier(key_frame src_key, key_frame dst_key)
     QLineF src_handler = get_handler_points(src_key, true);
     QLineF dst_handler = get_handler_points(dst_key, true);
 
-    draw_point(dst_handler.p1());
     glBegin(GL_LINE_STRIP);
     glColor3f(1, 1, 0);
 
@@ -231,9 +234,9 @@ void curve_view::draw_bezier(key_frame src_key, key_frame dst_key)
 
 void curve_view::create_curve()
 {
-    key_frame key1 = {{0.1, 0.2}, 0, 0};
-    key_frame key2 = {{0.5, 1}, 45, 0};
-    key_frame key3 = {{1, 0.3}, 0, 0};
+    key_frame key1 = {{0.1, 0.2}, 0, false, 0, 0};
+    key_frame key2 = {{0.5, 1}, 45, false, 0, 0};
+    key_frame key3 = {{1, 0.3}, 0, false, 0, 0};
 
     curves.insert("translate_x", {key1, key2, key3});
 
@@ -257,49 +260,55 @@ void curve_view::key_press(QPoint cursor_position)
     int draw_tolerance = 10; // Pixels
     for (auto curve : curves.keys())
     {
-        auto keys = curves[curve];
-        for (int i = 0; i < keys.count(); i++)
+        for (int i = 0; i < curves[curve].count(); i++)
         {
-            key_frame key = keys[i];
+            key_frame &key = curves[curve][i];
             QLineF handler = get_handler_points(key);
 
-            drag_index = i;
-            drag_curve = curve;
-            drag_handler = 0;
-
-            // verifica si el click se hizo en el key point
-            QPointF key_position = get_position(key.pos);
-            float distance = qt::distance_points(key_position, cursor_position);
-            if (distance < draw_tolerance)
-                is_drag = true;
-            //
-            //
+            int handler_point = 0;
 
             // verifica si el click se hizo en alguno de los 2 puntos manejadores
-            distance = qt::distance_points(get_position(handler.p1()), cursor_position);
+            float distance = qt::distance_points(get_position(handler.p1()), cursor_position);
             if (distance < draw_tolerance)
-            {
-                drag_handler = 1;
-                is_drag = true;
-            }
+                handler_point = 1;
+
             distance = qt::distance_points(get_position(handler.p2()), cursor_position);
             if (distance < draw_tolerance)
+                handler_point = 2;
+            //
+            //
+
+            // verifica si el click se hizo en el key point
+            if (!handler_point)
             {
-                drag_handler = 2;
-                is_drag = true;
+                QPointF key_position = get_position(key.pos);
+                float distance = qt::distance_points(key_position, cursor_position);
+                if (distance < draw_tolerance)
+                    key.selected = true;
+
+                else
+                    key.selected = false;
             }
             //
             //
 
-            if (is_drag)
-                break;
+            if (key.selected)
+            {
+                drag_index = i;
+                drag_curve = curve;
+                drag_handler = handler_point;
+                is_drag = true;
+            }
         }
     }
 }
 
 void curve_view::mousePressEvent(QMouseEvent *event)
 {
-    key_press(event->pos());
+    if (!qt::alt())
+        key_press(event->pos());
+
+    update();
     gl_view::mousePressEvent(event);
 }
 
