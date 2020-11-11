@@ -30,23 +30,39 @@ private:
     int drag_handler;
     bool is_drag = false;
     //
+    //
 
-    void draw_circle();
-    void draw_grid();
-    void draw_coordinate_numbers();
+    bool show_selector = false;
+    QLineF selector;
+
+    //
+    bool is_point_in_rectangle(QPointF point, QLineF rectangle);
+    void selector_move(QPoint cursor_position);
     void create_curve();
-    void draw_curve();
     void key_press(QPoint cursor_position);
+    void key_move(QPoint cursor_position);
+
     QLineF get_handler_points(
         key_frame key,
         key_frame previous_key = {},
         key_frame next_key = {},
         bool infinite = false);
-    void draw_bezier(key_frame src_key, key_frame dst_key);
     QPointF cubic_bezier(
         QPointF p1, QPointF p2,
         QPointF p3, QPointF p4,
         float value);
+    //
+    //
+
+    // Paint
+    void draw_circle();
+    void draw_grid();
+    void draw_coordinate_numbers();
+    void draw_curve();
+    void draw_bezier(key_frame src_key, key_frame dst_key);
+    void draw_selector();
+    //
+    //
 
 public:
     curve_view(/* args */);

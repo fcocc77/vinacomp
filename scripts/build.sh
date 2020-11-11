@@ -18,4 +18,4 @@ sh scripts/svg_converter.sh
 qmake-qt5
 make -j 4
 
-gui/release/vinacomp
+optirun gui/release/vinacomp
