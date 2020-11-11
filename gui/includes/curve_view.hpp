@@ -12,6 +12,7 @@ private:
         QPointF pos;
         float angle;
         bool selected;
+        bool init;          // Inicializacion
         float exaggeration; // 0.0 - 1.0
         int interpolation;
         // 0: Linear
@@ -36,7 +37,11 @@ private:
     void create_curve();
     void draw_curve();
     void key_press(QPoint cursor_position);
-    QLineF get_handler_points(key_frame key, bool infinite = false);
+    QLineF get_handler_points(
+        key_frame key,
+        key_frame previous_key = {},
+        key_frame next_key = {},
+        bool infinite = false);
     void draw_bezier(key_frame src_key, key_frame dst_key);
     QPointF cubic_bezier(
         QPointF p1, QPointF p2,

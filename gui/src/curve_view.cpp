@@ -101,21 +101,33 @@ void curve_view::draw_coordinate_numbers()
         horizontal_numbers(separation);
 }
 
-QLineF curve_view::get_handler_points(key_frame key, bool infinite)
+QLineF curve_view::get_handler_points(
+    key_frame key,
+    key_frame previous_key,
+    key_frame next_key,
+    bool infinite)
 {
-    // obtiene los dos puntos del manejador
-    float separation = 0.2;
+    float separation_a = (key.pos.x() - previous_key.pos.x()) * key.exaggeration;
+    float separation_b = (next_key.pos.x() - key.pos.x()) * key.exaggeration;
 
-    float point_a_x = key.pos.x() - separation;
-    float point_b_x = key.pos.x() + separation;
+    // si es el primer o ultimo keyframe, le asigna la separacion del lado contrario
+    if (!previous_key.init)
+        separation_a = separation_b;
+    if (!next_key.init)
+        separation_b = separation_a;
+    //
+    //
+
+    float point_a_x = key.pos.x() - separation_a;
+    float point_b_x = key.pos.x() + separation_b;
 
     QPointF point_a = {point_a_x, key.pos.y()};
     QPointF point_b = {point_b_x, key.pos.y()};
 
     // genera el punto vertical infinito donde apunta el manejador
     float tangent = tan(key.angle * M_PI / 180);
-    QPointF infinite_point_a = {point_a.x(), point_a.y() + (tangent * separation)};
-    QPointF infinite_point_b = {point_b.x(), point_b.y() - (tangent * separation)};
+    QPointF infinite_point_a = {point_a.x(), point_a.y() + (tangent * separation_a)};
+    QPointF infinite_point_b = {point_b.x(), point_b.y() - (tangent * separation_b)};
     //
 
     if (!infinite)
@@ -155,20 +167,19 @@ void curve_view::draw_curve()
         //
         //
 
-        key_frame last_key;
-        bool is_first = true;
-        for (key_frame key : curve)
+        for (int i = 0; i < curve.count(); i++)
         {
+            key_frame key = curve.value(i);
+            key_frame previous_key = curve.value(i - 1);
+            key_frame next_key = curve.value(i + 1);
+
             // Beziers
-            if (!is_first)
-                draw_bezier(last_key, key);
-
-            last_key = key;
-            is_first = false;
+            if (previous_key.init)
+                draw_bezier(previous_key, key);
             //
             //
 
-            // Points
+            // Point
             if (key.selected)
                 draw_point(key.pos);
             else
@@ -179,7 +190,7 @@ void curve_view::draw_curve()
             // Handler
             if (key.selected)
             {
-                QLineF handler = get_handler_points(key);
+                QLineF handler = get_handler_points(key, previous_key, next_key);
 
                 draw_line(handler.p1(), handler.p2(), Qt::red);
                 draw_point(handler.p1());
@@ -211,8 +222,8 @@ QPointF curve_view::cubic_bezier(
 
 void curve_view::draw_bezier(key_frame src_key, key_frame dst_key)
 {
-    QLineF src_handler = get_handler_points(src_key, true);
-    QLineF dst_handler = get_handler_points(dst_key, true);
+    QLineF src_handler = get_handler_points(src_key, {}, dst_key, true);
+    QLineF dst_handler = get_handler_points(dst_key, src_key, {}, true);
 
     glBegin(GL_LINE_STRIP);
     glColor3f(1, 1, 0);
@@ -234,9 +245,9 @@ void curve_view::draw_bezier(key_frame src_key, key_frame dst_key)
 
 void curve_view::create_curve()
 {
-    key_frame key1 = {{0.1, 0.2}, 0, false, 0, 0};
-    key_frame key2 = {{0.5, 1}, 45, false, 0, 0};
-    key_frame key3 = {{1, 0.3}, 0, false, 0, 0};
+    key_frame key1 = {{0.1, 0.2}, 10, false, true, 1, 0};
+    key_frame key2 = {{0.5, 1}, 45, false, true, 0.3, 0};
+    key_frame key3 = {{1, 0.3}, 0, false, true, 0.5, 0};
 
     curves.insert("translate_x", {key1, key2, key3});
 
@@ -258,12 +269,17 @@ void curve_view::key_press(QPoint cursor_position)
     // alguno de los 2 puntos del manejador, los asigna a las variables de 'drag'
 
     int draw_tolerance = 10; // Pixels
-    for (auto curve : curves.keys())
+    for (auto curve_name : curves.keys())
     {
-        for (int i = 0; i < curves[curve].count(); i++)
+        auto &curve = curves[curve_name];
+        for (int i = 0; i < curve.count(); i++)
         {
-            key_frame &key = curves[curve][i];
-            QLineF handler = get_handler_points(key);
+            key_frame previous_key = curve.value(i - 1);
+            key_frame next_key = curve.value(i + 1);
+
+            key_frame &key = curve[i];
+
+            QLineF handler = get_handler_points(key, previous_key, next_key);
 
             int handler_point = 0;
 
@@ -295,7 +311,7 @@ void curve_view::key_press(QPoint cursor_position)
             if (key.selected)
             {
                 drag_index = i;
-                drag_curve = curve;
+                drag_curve = curve_name;
                 drag_handler = handler_point;
                 is_drag = true;
             }
