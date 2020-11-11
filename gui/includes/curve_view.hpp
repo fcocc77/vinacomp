@@ -35,13 +35,12 @@ private:
     void create_curve();
     void draw_curve();
     void key_press(QPoint cursor_position);
-    QLineF get_handler_points(key_frame key);
-    void draw_bezier(QPointF src_key, QPointF dst_key);
+    QLineF get_handler_points(key_frame key, bool infinite = false);
+    void draw_bezier(key_frame src_key, key_frame dst_key);
     QPointF cubic_bezier(
-        QPointF point_a,
-        QPointF point_b,
-        float value,
-        float exaggeration = 0.34);
+        QPointF p1, QPointF p2,
+        QPointF p3, QPointF p4,
+        float value);
 
 public:
     curve_view(/* args */);

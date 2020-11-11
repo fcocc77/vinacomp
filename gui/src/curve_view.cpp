@@ -101,7 +101,7 @@ void curve_view::draw_coordinate_numbers()
         horizontal_numbers(separation);
 }
 
-QLineF curve_view::get_handler_points(key_frame key)
+QLineF curve_view::get_handler_points(key_frame key, bool infinite)
 {
     // obtiene los dos puntos del manejador
     float separation = 0.2;
@@ -112,8 +112,17 @@ QLineF curve_view::get_handler_points(key_frame key)
     QPointF point_a = {point_a_x, key.pos.y()};
     QPointF point_b = {point_b_x, key.pos.y()};
 
-    point_a = rotate_point(point_a, key.pos, 180 - key.angle, true);
-    point_b = rotate_point(point_b, key.pos, -key.angle, true);
+    if (infinite)
+    {
+        float tangent = tan(key.angle * M_PI / 180);
+        point_a.setY(point_a.y() + (tangent * separation));
+        point_b.setY(point_b.y() - (tangent * separation));
+    }
+    else
+    {
+        point_a = rotate_point(point_a, key.pos, 180 - key.angle, true);
+        point_b = rotate_point(point_b, key.pos, -key.angle, true);
+    }
 
     return {point_a, point_b};
 }
@@ -134,7 +143,7 @@ void curve_view::draw_curve()
         for (key_frame key : curve)
         {
             if (!is_first)
-                draw_bezier(last_key.pos, key.pos);
+                draw_bezier(last_key, key);
 
             last_key = key;
             is_first = false;
@@ -160,17 +169,16 @@ void curve_view::draw_curve()
     }
 }
 
-QPointF curve_view::cubic_bezier(QPointF point_a, QPointF point_b, float value, float exaggeration)
+QPointF curve_view::cubic_bezier(
+    QPointF p1, QPointF p2,
+    QPointF p3, QPointF p4,
+    float value)
 {
-    float distance = abs(point_b.x() - point_a.x()) * exaggeration;
-
-    QPointF point_a2 = {point_a.x() + distance, point_a.y()};
-    QPointF point_b2 = {point_b.x() - distance, point_b.y()};
 
     // Algoritmo bezier
-    QPointF L1 = ((1 - value) * point_a) + (value * point_a2);
-    QPointF L2 = ((1 - value) * point_a2) + (value * point_b2);
-    QPointF L3 = ((1 - value) * point_b2) + (value * point_b);
+    QPointF L1 = ((1 - value) * p1) + (value * p2);
+    QPointF L2 = ((1 - value) * p2) + (value * p3);
+    QPointF L3 = ((1 - value) * p3) + (value * p4);
 
     QPointF Q1 = ((1 - value) * L1) + (L2 * value);
     QPointF Q2 = ((1 - value) * L2) + (L3 * value);
@@ -179,8 +187,12 @@ QPointF curve_view::cubic_bezier(QPointF point_a, QPointF point_b, float value, 
     //
 }
 
-void curve_view::draw_bezier(QPointF src_key, QPointF dst_key)
+void curve_view::draw_bezier(key_frame src_key, key_frame dst_key)
 {
+    QLineF src_handler = get_handler_points(src_key, true);
+    QLineF dst_handler = get_handler_points(dst_key, true);
+
+    draw_point(dst_handler.p1());
     glBegin(GL_LINE_STRIP);
     glColor3f(1, 1, 0);
 
@@ -190,7 +202,7 @@ void curve_view::draw_bezier(QPointF src_key, QPointF dst_key)
 
     for (int i = 0; i <= segments; i++)
     {
-        QPointF point = cubic_bezier(src_key, dst_key, t);
+        QPointF point = cubic_bezier(src_key.pos, src_handler.p2(), dst_handler.p1(), dst_key.pos, t);
         glVertex2f(point.x(), point.y());
 
         t += segment;
@@ -288,13 +300,12 @@ void curve_view::mouseMoveEvent(QMouseEvent *event)
             if (curves.contains(drag_curve))
             {
                 key_frame &key = curves[drag_curve][drag_index];
-                QLineF handler = get_handler_points(key);
 
                 if (drag_handler == 1)
-                    key.angle = get_angle_two_points(event->pos(), get_position(key.pos)) - 90;
+                    key.angle = 90 - get_angle_two_points(get_coords(event->pos()), key.pos);
 
                 else if (drag_handler == 2)
-                    key.angle = get_angle_two_points(event->pos(), get_position(key.pos)) - 270;
+                    key.angle = 270 - get_angle_two_points(get_coords(event->pos()), key.pos);
                 else
                     key.pos = get_coords(event->pos());
 
