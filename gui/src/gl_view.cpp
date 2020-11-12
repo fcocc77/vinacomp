@@ -34,6 +34,11 @@ QPointF gl_view::get_coords(QPoint mouse_position)
     return {coordinate.x(), coordinate.y() * aspect};
 }
 
+QPointF gl_view::get_coordsf(QPointF mouse_position)
+{
+    return get_coords(mouse_position.toPoint());
+}
+
 QPointF gl_view::get_position(QPointF coordinate)
 {
     // esta funcion es el reverso de 'get_coords'

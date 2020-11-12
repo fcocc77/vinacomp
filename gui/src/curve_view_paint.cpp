@@ -180,6 +180,89 @@ void curve_view::draw_selector()
 
 void curve_view::draw_resize_box()
 {
-    QLineF line = {{0.5, 0.5}, {1, 1}};
-    draw_box(line, {20, 30, 20}, {100, 200, 100});
+    if (!resize_box)
+        return;
+
+    auto selected = get_selected_keys();
+
+    if (selected.count() <= 1)
+        return;
+
+    QColor color = {100, 100, 100};
+
+    key_frame top = selected.first();
+    key_frame bottom = selected.first();
+    key_frame left = selected.first();
+    key_frame right = selected.first();
+
+    for (key_frame key : selected)
+    {
+        if (key.pos.y() > top.pos.y())
+            top = key;
+
+        if (key.pos.y() < bottom.pos.y())
+            bottom = key;
+
+        if (key.pos.x() > right.pos.x())
+            right = key;
+
+        if (key.pos.x() < left.pos.x())
+            left = key;
+    }
+
+    QPointF bottom_left = {left.pos.x(), bottom.pos.y()};
+    QPointF bottom_right = {right.pos.x(), bottom.pos.y()};
+    QPointF top_left = {left.pos.x(), top.pos.y()};
+    QPointF top_right = {right.pos.x(), top.pos.y()};
+
+    draw_box({bottom_left, top_right}, {10, 10, 10}, color);
+    //
+    //
+
+    // Vertices
+    int size = 6;
+    int smooth = false;
+    draw_point(bottom_left, color, size, smooth);
+    draw_point(bottom_right, color, size, smooth);
+    draw_point(top_left, color, size, smooth);
+    draw_point(top_right, color, size, smooth);
+    //
+    //
+
+    // + Central
+    float center_x = (left.pos.x() + right.pos.x()) / 2;
+    float center_y = (bottom.pos.y() + top.pos.y()) / 2;
+
+    QPointF center = {center_x, center_y};
+    center = get_position(center);
+
+    int distance = 30;
+    {
+        // Linea Horizontal
+        QPointF horizontal_p1 = {center.x() - distance, center.y()};
+        QPointF horizontal_p2 = {center.x() + distance, center.y()};
+
+        horizontal_p1 = get_coordsf(horizontal_p1);
+        horizontal_p2 = get_coordsf(horizontal_p2);
+
+        draw_line(horizontal_p1, horizontal_p2, color);
+        //
+    }
+
+    {
+        // Linea Vertical
+        QPointF vertical_p1 = {center.x(), center.y() - distance};
+        QPointF vertical_p2 = {center.x(), center.y() + distance};
+
+        vertical_p1 = get_coordsf(vertical_p1);
+        vertical_p2 = get_coordsf(vertical_p2);
+
+        draw_line(vertical_p1, vertical_p2, color);
+        //
+    }
+
+    draw_point(center);
+
+    //
+    //
 }

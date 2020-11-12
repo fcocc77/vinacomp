@@ -25,14 +25,18 @@ void gl_view::resizeGL(int width, int height)
     glViewport(0, 0, width, height);
 }
 
-void gl_view::draw_point(QPointF coord, QColor color, int size)
+void gl_view::draw_point(QPointF coord, QColor color, int size, bool smooth)
 {
-    glEnable(GL_POINT_SMOOTH);
+    if (smooth)
+        glEnable(GL_POINT_SMOOTH);
     glPointSize(size);
     glBegin(GL_POINTS);
     glColor3f(color.red() / 255.0, color.green() / 255.0, color.blue() / 255.0);
     glVertex2f(coord.x(), coord.y());
     glEnd();
+
+    if (smooth)
+        glDisable(GL_POINT_SMOOTH);
 }
 
 void gl_view::draw_line(QPointF src, QPointF dst, QColor color)

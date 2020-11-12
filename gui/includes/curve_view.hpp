@@ -3,27 +3,26 @@
 
 #include <gl_view.hpp>
 
+struct key_frame
+{
+    QPointF pos;
+    float angle;
+    bool selected;
+    bool init;          // Inicializacion
+    float exaggeration; // 0.0 - 1.0
+    int interpolation;
+    // 0: Linear
+    // 1: Horizontal
+    // 2: Smooth
+    // 3: Break
+    // 4: Custom
+};
+
 class curve_view : public gl_view
 {
 
 private:
-    struct key_frame
-    {
-        QPointF pos;
-        float angle;
-        bool selected;
-        bool init;          // Inicializacion
-        float exaggeration; // 0.0 - 1.0
-        int interpolation;
-        // 0: Linear
-        // 1: Horizontal
-        // 2: Smooth
-        // 3: Break
-        // 4: Custom
-    };
-
     QMap<QString, QList<key_frame>> curves;
-    QList<pair<QString, int>> selected_keys;
 
     // Drag KeyFrame
     QString drag_curve;
@@ -33,12 +32,13 @@ private:
     //
     //
 
+    bool resize_box = false;
     bool selecting = false;
     QLineF selector;
 
     //
+    QList<key_frame> get_selected_keys();
     bool is_point_in_rectangle(QPointF point, QLineF rectangle);
-    void select_key_frame(QString curve, int key_index);
     void selector_move(QPoint cursor_position);
     void create_curve();
     void key_press(QPoint cursor_position);

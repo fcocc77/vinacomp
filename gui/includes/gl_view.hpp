@@ -34,7 +34,7 @@ public:
         QPointF coords,
         QPointF viewer_position = {-1, -1});
 
-    void draw_point(QPointF coords, QColor color = Qt::white, int size = 7);
+    void draw_point(QPointF coords, QColor color = Qt::white, int size = 7, bool smooth = true);
     void draw_box(QLineF diagonal_line, QColor color, QColor border_color);
 
     void draw_line(QPointF src, QPointF dst, QColor color);
@@ -48,6 +48,7 @@ public:
     QPointF get_coordinate(QPoint cursor_position);
     QPointF get_position(QPointF coordinate);
     QPointF get_coords(QPoint mouse_position);
+    QPointF get_coordsf(QPointF mouse_position);
     QPointF get_scale();
     void set_default();
     void set_coord(QPointF coords, QPointF zoom);
