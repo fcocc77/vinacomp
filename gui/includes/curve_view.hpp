@@ -32,7 +32,7 @@ private:
     //
     //
 
-    bool show_selector = false;
+    bool selecting = false;
     QLineF selector;
 
     //

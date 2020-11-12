@@ -171,7 +171,7 @@ void curve_view::draw_curve()
 
 void curve_view::draw_selector()
 {
-    if (!show_selector)
+    if (!selecting)
         return;
 
     QPointF p1 = selector.p1();

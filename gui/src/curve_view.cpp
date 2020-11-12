@@ -231,8 +231,13 @@ void curve_view::mousePressEvent(QMouseEvent *event)
     {
         key_press(event->pos());
 
-        show_selector = true;
-        selector.setP1(get_coords(event->pos()));
+        if (!is_drag)
+        {
+            selecting = true;
+            QPointF coords = get_coords(event->pos());
+            selector.setP1(coords);
+            selector.setP2(coords);
+        }
     }
 
     update();
@@ -242,7 +247,7 @@ void curve_view::mousePressEvent(QMouseEvent *event)
 void curve_view::mouseReleaseEvent(QMouseEvent *event)
 {
     is_drag = false;
-    show_selector = false;
+    selecting = false;
     gl_view::mouseReleaseEvent(event);
 }
 
@@ -251,7 +256,8 @@ void curve_view::mouseMoveEvent(QMouseEvent *event)
     if (!qt::alt())
     {
         key_move(event->pos());
-        selector_move(event->pos());
+        if (selecting)
+            selector_move(event->pos());
     }
 
     update();
