@@ -78,6 +78,49 @@ QPointF gl_view::get_coordinate(QPoint cursor_position)
     return {-x, y};
 }
 
+bool gl_view::is_cursor_above(QPoint cursor_position, QPointF point, QPointF point2)
+{
+    int tolerance = 10;
+
+    point = get_position(point);
+
+    // bounding box
+    int left = point.x() - tolerance;
+    int right = point.x() + tolerance;
+    int bottom = point.y() - tolerance;
+    int top = point.y() + tolerance;
+    //
+    //
+
+    // si es que hay un segundo puntos, puede servir para una linea o un rectangulo
+    if (!point2.isNull())
+    {
+        point2 = get_position(point2);
+
+        if (point2.x() < point.x())
+            left = point2.x() - tolerance;
+
+        if (point2.x() > point.x())
+            right = point2.x() + tolerance;
+
+        if (point2.y() < point.y())
+            bottom = point2.y() - tolerance;
+
+        if (point2.y() > point.y())
+            top = point2.y() + tolerance;
+    }
+    //
+    //
+
+    int x = cursor_position.x();
+    int y = cursor_position.y();
+
+    if (x > left && x < right && y > bottom && y < top)
+        return true;
+
+    return false;
+}
+
 void gl_view::set_zoom_lock(bool enable)
 {
     zoom_lock = enable;

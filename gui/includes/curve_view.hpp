@@ -32,7 +32,9 @@ private:
     //
     //
 
-    bool resize_box = false;
+    bool resizing = false;
+    QLineF resize_box;
+
     bool selecting = false;
     QLineF selector;
 
@@ -43,6 +45,8 @@ private:
     void create_curve();
     void key_press(QPoint cursor_position);
     void key_move(QPoint cursor_position);
+    void resize_box_press();
+    void resize_box_move(QPoint cursor_position);
 
     QLineF get_handler_points(
         key_frame key,
@@ -78,6 +82,9 @@ protected:
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
+    void tabletEvent(QTabletEvent *event);
+    void move_event(QPoint position);
+
 };
 
 #endif // CURVE_VIEW_HPP

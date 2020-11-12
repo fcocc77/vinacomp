@@ -180,13 +180,16 @@ void curve_view::draw_selector()
 
 void curve_view::draw_resize_box()
 {
-    if (!resize_box)
+    if (!resizing)
         return;
 
     auto selected = get_selected_keys();
 
     if (selected.count() <= 1)
+    {
+        resizing = false;
         return;
+    }
 
     QColor color = {100, 100, 100};
 
@@ -215,7 +218,9 @@ void curve_view::draw_resize_box()
     QPointF top_left = {left.pos.x(), top.pos.y()};
     QPointF top_right = {right.pos.x(), top.pos.y()};
 
-    draw_box({bottom_left, top_right}, {10, 10, 10}, color);
+    resize_box = {bottom_left, top_right};
+
+    draw_box({resize_box.p1(), resize_box.p2()}, {10, 10, 10}, color);
     //
     //
 
