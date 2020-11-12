@@ -32,21 +32,11 @@ private:
     //
     //
 
-    bool resizing = false;
-    QLineF resize_box;
-
-    bool selecting = false;
-    QLineF selector;
-
     //
-    QList<key_frame> get_selected_keys();
     bool is_point_in_rectangle(QPointF point, QLineF rectangle);
-    void selector_move(QPoint cursor_position);
     void create_curve();
     void key_press(QPoint cursor_position);
     void key_move(QPoint cursor_position);
-    void resize_box_press();
-    void resize_box_move(QPoint cursor_position);
 
     QLineF get_handler_points(
         key_frame key,
@@ -70,6 +60,25 @@ private:
     void draw_resize_box();
     //
     //
+    //
+
+    // Selector
+    bool resizing = false;
+    QLineF resize_box;
+
+    bool selecting = false;
+    QLineF selector;
+
+    bool transforming = false;
+
+    void selector_move(QPoint cursor_position);
+    QList<key_frame> get_selected_keys();
+    QString get_resize_action(QPoint cursor_position);
+
+    void resize_box_press(QPoint cursor_position);
+    void resize_box_move(QPoint cursor_position);
+    //
+    //
 
 public:
     curve_view(/* args */);
@@ -84,7 +93,6 @@ protected:
     void mouseMoveEvent(QMouseEvent *event);
     void tabletEvent(QTabletEvent *event);
     void move_event(QPoint position);
-
 };
 
 #endif // CURVE_VIEW_HPP
