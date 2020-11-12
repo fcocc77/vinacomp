@@ -76,3 +76,20 @@ void gl_view::draw_text(QString text, QColor color, QPointF coords, QPointF view
     painter.drawText(x - (size_x / 2), y - (size_y / 2), size_x, size_y, Qt::AlignCenter, text);
     painter.end();
 }
+
+void gl_view::draw_box(QLineF diagonal_line, QColor color, QColor border_color)
+{
+    QPointF p1 = diagonal_line.p1();
+    QPointF p2 = {diagonal_line.x1(), diagonal_line.y2()};
+    QPointF p3 = diagonal_line.p2();
+    QPointF p4 = {diagonal_line.x2(), diagonal_line.y1()};
+
+    draw_line(p1, p2, border_color);
+    draw_line(p2, p3, border_color);
+    draw_line(p3, p4, border_color);
+    draw_line(p4, p1, border_color);
+
+    glEnable(GL_BLEND);
+    glColor3f(color.red() / 255.0, color.green() / 255.0, color.blue() / 255.0);
+    glRectf(p1.x(), p1.y(), p3.x(), p3.y());
+}

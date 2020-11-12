@@ -14,6 +14,7 @@ void curve_view::paintGL()
     draw_coordinate_numbers();
     draw_curve();
     draw_selector();
+    draw_resize_box();
 }
 
 void curve_view::draw_circle()
@@ -174,19 +175,11 @@ void curve_view::draw_selector()
     if (!selecting)
         return;
 
-    QPointF p1 = selector.p1();
-    QPointF p2 = {selector.x1(), selector.y2()};
-    QPointF p3 = selector.p2();
-    QPointF p4 = {selector.x2(), selector.y1()};
+    draw_box(selector, {20, 20, 20}, {100, 100, 100});
+}
 
-    QColor border_color = {100, 100, 100};
-
-    draw_line(p1, p2, border_color);
-    draw_line(p2, p3, border_color);
-    draw_line(p3, p4, border_color);
-    draw_line(p4, p1, border_color);
-
-    glEnable(GL_BLEND);
-    glColor3f(0.1, 0.1, 0.1);
-    glRectf(p1.x(), p1.y(), p3.x(), p3.y());
+void curve_view::draw_resize_box()
+{
+    QLineF line = {{0.5, 0.5}, {1, 1}};
+    draw_box(line, {20, 30, 20}, {100, 200, 100});
 }

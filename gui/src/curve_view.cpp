@@ -113,6 +113,11 @@ void curve_view::create_curve()
     update();
 }
 
+void curve_view::select_key_frame(QString curve, int key_index)
+{
+    selected_keys.push_back({curve, key_index});
+}
+
 void curve_view::key_press(QPoint cursor_position)
 {
     // si el click del mouse fue presionado en algun keyframe o en
@@ -163,7 +168,7 @@ void curve_view::key_press(QPoint cursor_position)
                 drag_index = i;
                 drag_curve = curve_name;
                 drag_handler = handler_point;
-                is_drag = true;
+                dragging = true;
             }
         }
     }
@@ -171,7 +176,7 @@ void curve_view::key_press(QPoint cursor_position)
 
 void curve_view::key_move(QPoint cursor_position)
 {
-    if (is_drag)
+    if (dragging)
     {
         if (curves.contains(drag_curve))
         {
@@ -212,13 +217,14 @@ bool curve_view::is_point_in_rectangle(QPointF point, QLineF rectangle)
 void curve_view::selector_move(QPoint cursor_position)
 {
     selector.setP2(get_coords(cursor_position));
-
+    selected_keys.clear();
     for (auto &curve : curves)
     {
         for (key_frame &key : curve)
         {
             if (is_point_in_rectangle(key.pos, selector))
                 key.selected = true;
+
             else
                 key.selected = false;
         }
@@ -231,7 +237,7 @@ void curve_view::mousePressEvent(QMouseEvent *event)
     {
         key_press(event->pos());
 
-        if (!is_drag)
+        if (!dragging)
         {
             selecting = true;
             QPointF coords = get_coords(event->pos());
@@ -246,7 +252,7 @@ void curve_view::mousePressEvent(QMouseEvent *event)
 
 void curve_view::mouseReleaseEvent(QMouseEvent *event)
 {
-    is_drag = false;
+    dragging = false;
     selecting = false;
     gl_view::mouseReleaseEvent(event);
 }

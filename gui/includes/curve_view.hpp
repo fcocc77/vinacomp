@@ -23,12 +23,13 @@ private:
     };
 
     QMap<QString, QList<key_frame>> curves;
+    QList<pair<QString, int>> selected_keys;
 
     // Drag KeyFrame
     QString drag_curve;
     int drag_index;
     int drag_handler;
-    bool is_drag = false;
+    bool dragging = false;
     //
     //
 
@@ -37,6 +38,7 @@ private:
 
     //
     bool is_point_in_rectangle(QPointF point, QLineF rectangle);
+    void select_key_frame(QString curve, int key_index);
     void selector_move(QPoint cursor_position);
     void create_curve();
     void key_press(QPoint cursor_position);
@@ -61,6 +63,7 @@ private:
     void draw_curve();
     void draw_bezier(key_frame src_key, key_frame dst_key);
     void draw_selector();
+    void draw_resize_box();
     //
     //
 
