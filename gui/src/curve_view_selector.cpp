@@ -37,7 +37,44 @@ void curve_view::resize_box_press(QPoint cursor_position)
     QString action = get_resize_action(cursor_position);
 
     if (!action.isEmpty())
+    {
+        resize_current_action = action;
         transforming = true;
+        // key_frame_press = get_selected_keys();
+    }
+}
+
+QLineF curve_view::get_rectangle_of_selected_keyframes()
+{
+    auto selected = get_selected_keys();
+
+    if (selected.count() <= 1)
+        return {};
+
+    key_frame top = selected.first();
+    key_frame bottom = selected.first();
+    key_frame left = selected.first();
+    key_frame right = selected.first();
+
+    for (key_frame key : selected)
+    {
+        if (key.pos.y() > top.pos.y())
+            top = key;
+
+        if (key.pos.y() < bottom.pos.y())
+            bottom = key;
+
+        if (key.pos.x() > right.pos.x())
+            right = key;
+
+        if (key.pos.x() < left.pos.x())
+            left = key;
+    }
+
+    QPointF bottom_left = {left.pos.x(), bottom.pos.y()};
+    QPointF top_right = {right.pos.x(), top.pos.y()};
+
+    return {bottom_left, top_right};
 }
 
 QString curve_view::get_resize_action(QPoint cursor_position)
@@ -120,13 +157,10 @@ QString curve_view::get_resize_action(QPoint cursor_position)
 
 void curve_view::resize_box_move(QPoint cursor_position)
 {
-    this->setCursor(Qt::ArrowCursor);
-
-    if (!resizing)
-    {
-        resize_box = {{0, 0}, {0, 0}};
+    if (!show_resize_box)
         return;
-    }
+
+    this->setCursor(Qt::ArrowCursor);
 
     QString action = get_resize_action(cursor_position);
 
@@ -140,4 +174,42 @@ void curve_view::resize_box_move(QPoint cursor_position)
         this->setCursor(Qt::SizeVerCursor);
     else if (action == "center_translate")
         this->setCursor(Qt::SizeAllCursor);
+
+    if (transforming)
+    {
+        action = resize_current_action;
+        QPointF coords = get_coordsf(cursor_position);
+
+        if (action == "right_scale")
+            resize_box.setP2({coords.x(), resize_box.y2()});
+        else if (action == "left_scale")
+            resize_box.setP1({coords.x(), resize_box.y1()});
+        else if (action == "top_scale")
+            resize_box.setP2({resize_box.x2(), coords.y()});
+        else if (action == "bottom_scale")
+            resize_box.setP1({resize_box.x1(), coords.y()});
+
+        else if (action == "bottom_left_scale")
+        {
+            resize_box.setP1({coords.x(), resize_box.y1()});
+            resize_box.setP1({resize_box.x1(), coords.y()});
+        }
+        else if (action == "top_right_scale")
+        {
+            resize_box.setP2({coords.x(), resize_box.y2()});
+            resize_box.setP2({resize_box.x2(), coords.y()});
+        }
+        else if (action == "bottom_right_scale")
+        {
+            resize_box.setP1({resize_box.x1(), coords.y()});
+            resize_box.setP2({coords.x(), resize_box.y2()});
+        }
+        else if (action == "top_left_scale")
+        {
+            resize_box.setP1({coords.x(), resize_box.y1()});
+            resize_box.setP2({resize_box.x2(), coords.y()});
+        }
+
+        update();
+    }
 }

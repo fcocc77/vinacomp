@@ -223,8 +223,6 @@ void curve_view::mousePressEvent(QMouseEvent *event)
                 selector.setP1(coords);
                 selector.setP2(coords);
             }
-
-            resizing = false;
         }
     }
 
@@ -234,7 +232,12 @@ void curve_view::mousePressEvent(QMouseEvent *event)
 
 void curve_view::mouseReleaseEvent(QMouseEvent *event)
 {
-    resizing = true;
+    if (selecting)
+    {
+        show_resize_box = true;
+        resize_box = get_rectangle_of_selected_keyframes();
+    }
+
     dragging = false;
     selecting = false;
     transforming = false;

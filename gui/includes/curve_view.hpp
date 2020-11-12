@@ -63,17 +63,20 @@ private:
     //
 
     // Selector
-    bool resizing = false;
+    bool show_resize_box = false;
     QLineF resize_box;
 
     bool selecting = false;
     QLineF selector;
 
     bool transforming = false;
+    QString resize_current_action;
+    QList<key_frame> key_frame_press;
 
     void selector_move(QPoint cursor_position);
     QList<key_frame> get_selected_keys();
     QString get_resize_action(QPoint cursor_position);
+    QLineF get_rectangle_of_selected_keyframes();
 
     void resize_box_press(QPoint cursor_position);
     void resize_box_move(QPoint cursor_position);

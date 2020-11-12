@@ -180,47 +180,17 @@ void curve_view::draw_selector()
 
 void curve_view::draw_resize_box()
 {
-    if (!resizing)
+    if (!show_resize_box)
         return;
-
-    auto selected = get_selected_keys();
-
-    if (selected.count() <= 1)
-    {
-        resizing = false;
-        return;
-    }
 
     QColor color = {100, 100, 100};
 
-    key_frame top = selected.first();
-    key_frame bottom = selected.first();
-    key_frame left = selected.first();
-    key_frame right = selected.first();
+    QPointF bottom_left = resize_box.p1();
+    QPointF top_right = resize_box.p2();
+    QPointF bottom_right = {top_right.x(), bottom_left.y()};
+    QPointF top_left = {bottom_left.x(), top_right.y()};
 
-    for (key_frame key : selected)
-    {
-        if (key.pos.y() > top.pos.y())
-            top = key;
-
-        if (key.pos.y() < bottom.pos.y())
-            bottom = key;
-
-        if (key.pos.x() > right.pos.x())
-            right = key;
-
-        if (key.pos.x() < left.pos.x())
-            left = key;
-    }
-
-    QPointF bottom_left = {left.pos.x(), bottom.pos.y()};
-    QPointF bottom_right = {right.pos.x(), bottom.pos.y()};
-    QPointF top_left = {left.pos.x(), top.pos.y()};
-    QPointF top_right = {right.pos.x(), top.pos.y()};
-
-    resize_box = {bottom_left, top_right};
-
-    draw_box({resize_box.p1(), resize_box.p2()}, {10, 10, 10}, color);
+    draw_box({bottom_left, top_right}, {10, 10, 10}, color);
     //
     //
 
@@ -235,8 +205,8 @@ void curve_view::draw_resize_box()
     //
 
     // + Central
-    float center_x = (left.pos.x() + right.pos.x()) / 2;
-    float center_y = (bottom.pos.y() + top.pos.y()) / 2;
+    float center_x = (bottom_left.x() + bottom_right.x()) / 2;
+    float center_y = (bottom_right.y() + top_right.y()) / 2;
 
     QPointF center = {center_x, center_y};
     center = get_position(center);
@@ -265,8 +235,6 @@ void curve_view::draw_resize_box()
         draw_line(vertical_p1, vertical_p2, color);
         //
     }
-
-    draw_point(center);
 
     //
     //
