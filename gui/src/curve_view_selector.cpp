@@ -12,6 +12,27 @@ QList<key_frame> curve_view::get_selected_keys()
     return selected;
 }
 
+bool curve_view::is_point_in_rectangle(QPointF point, QLineF rectangle)
+{
+    // verifica si un punto esta dentro de un rectangulo,
+    // el rectangulo esta representado por una linea en diagonal.
+    float x = point.x();
+    float y = point.y();
+
+    QPointF p1 = rectangle.p1();
+    QPointF p2 = rectangle.p2();
+
+    bool iside_x = false;
+    bool iside_y = false;
+
+    if (x > p1.x() and x < p2.x() || x < p1.x() and x > p2.x())
+        iside_x = true;
+    if (y > p1.y() and y < p2.y() || y < p1.y() and y > p2.y())
+        iside_y = true;
+
+    return (iside_x && iside_y);
+}
+
 void curve_view::selector_move(QPoint cursor_position)
 {
     if (!selecting)
@@ -44,7 +65,7 @@ void curve_view::resize_box_press(QPoint cursor_position)
         resize_current_action = action;
         transforming = true;
         last_resize_box = resize_box;
-        key_frame_press = get_selected_keys();
+        last_selected_key_frames = get_selected_keys();
     }
 }
 
@@ -170,7 +191,7 @@ void curve_view::scale_key_from_point(QPointF point)
     float multiply_x = width / last_width;
     float multiply_y = height / last_height;
 
-    for (key_frame key : key_frame_press)
+    for (key_frame key : last_selected_key_frames)
     {
         float x = ((key.pos.x() - point.x()) * multiply_x) + point.x();
         float y = ((key.pos.y() - point.y()) * multiply_y) + point.y();
@@ -181,7 +202,7 @@ void curve_view::scale_key_from_point(QPointF point)
 
 void curve_view::translate_keys(QPointF add_translate)
 {
-    for (key_frame key : key_frame_press)
+    for (key_frame key : last_selected_key_frames)
         curves[key.curve][key.index].pos = key.pos + add_translate;
 }
 
@@ -189,8 +210,6 @@ void curve_view::resize_box_move(QPoint cursor_position)
 {
     if (!resize_box_visible)
         return;
-
-    this->setCursor(Qt::ArrowCursor);
 
     QString action = get_resize_action(cursor_position);
 

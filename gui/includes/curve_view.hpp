@@ -76,7 +76,7 @@ private:
 
     bool transforming = false;
     QString resize_current_action;
-    QList<key_frame> key_frame_press;
+    QList<key_frame> last_selected_key_frames;
 
     void selector_move(QPoint cursor_position);
     QList<key_frame> get_selected_keys();

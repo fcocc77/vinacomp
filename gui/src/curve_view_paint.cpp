@@ -161,8 +161,8 @@ void curve_view::draw_curve()
                 QLineF handler = get_handler_points(key, previous_key, next_key);
 
                 draw_line(handler.p1(), handler.p2(), Qt::red);
-                draw_point(handler.p1());
-                draw_point(handler.p2());
+                draw_point(handler.p1(), Qt::white, 4);
+                draw_point(handler.p2(), Qt::white, 4);
             }
             //
             //
