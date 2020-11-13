@@ -40,7 +40,8 @@ void curve_view::resize_box_press(QPoint cursor_position)
     {
         resize_current_action = action;
         transforming = true;
-        // key_frame_press = get_selected_keys();
+        last_resize_box = resize_box;
+        key_frame_press = get_selected_keys();
     }
 }
 
@@ -155,6 +156,23 @@ QString curve_view::get_resize_action(QPoint cursor_position)
     return "";
 }
 
+void curve_view::right_scale(QPointF coords)
+{
+    resize_box.setP2({coords.x(), resize_box.y2()});
+
+    float last_width = last_resize_box.x2() - last_resize_box.x1();
+    float width = resize_box.x2() - resize_box.x1();
+
+    float multiply = width / last_width;
+    float x1 = resize_box.x1();
+
+    for (key_frame key : key_frame_press)
+    {
+        float x = ((key.pos.x() - x1) * multiply) + x1;
+        curves[key.curve][key.index].pos.setX(x);
+    }
+}
+
 void curve_view::resize_box_move(QPoint cursor_position)
 {
     if (!show_resize_box)
@@ -181,7 +199,7 @@ void curve_view::resize_box_move(QPoint cursor_position)
         QPointF coords = get_coordsf(cursor_position);
 
         if (action == "right_scale")
-            resize_box.setP2({coords.x(), resize_box.y2()});
+            right_scale(coords);
         else if (action == "left_scale")
             resize_box.setP1({coords.x(), resize_box.y1()});
         else if (action == "top_scale")

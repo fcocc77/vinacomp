@@ -105,12 +105,14 @@ QPointF curve_view::cubic_bezier(
 
 void curve_view::create_curve()
 {
-    key_frame key1 = {{0.1, 0.2}, 10, false, true, 1, 0};
-    key_frame key2 = {{0.5, 1}, 45, false, true, 0.3, 0};
-    key_frame key3 = {{1, 0.3}, 0, false, true, 0.5, 0};
-    key_frame key4 = {{2, 0.3}, 0, false, true, 0.5, 0};
+    QString name = "translate_x";
 
-    curves.insert("translate_x", {key1, key2, key3, key4});
+    key_frame key1 = {{0.1, 0.2}, 10, false, true, 1, 0, name, 0};
+    key_frame key2 = {{0.5, 1}, 45, false, true, 0.3, 0, name, 1};
+    key_frame key3 = {{1, 0.3}, 0, false, true, 0.5, 0, name, 2};
+    key_frame key4 = { {2, 0.3}, 0, false, true, 0.5, 0, name, 3};
+
+    curves.insert(name, {key1, key2, key3, key4});
 
     update();
 }
@@ -214,6 +216,7 @@ void curve_view::mousePressEvent(QMouseEvent *event)
         resize_box_press(event->pos());
         if (!transforming)
         {
+            show_resize_box = false;
             key_press(event->pos());
 
             if (!dragging)
@@ -234,8 +237,8 @@ void curve_view::mouseReleaseEvent(QMouseEvent *event)
 {
     if (selecting)
     {
-        show_resize_box = true;
         resize_box = get_rectangle_of_selected_keyframes();
+        show_resize_box = !resize_box.isNull();
     }
 
     dragging = false;

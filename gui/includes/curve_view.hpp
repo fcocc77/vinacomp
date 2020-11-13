@@ -11,6 +11,8 @@ struct key_frame
     bool init;          // Inicializacion
     float exaggeration; // 0.0 - 1.0
     int interpolation;
+    QString curve;
+    int index;
     // 0: Linear
     // 1: Horizontal
     // 2: Smooth
@@ -65,6 +67,7 @@ private:
     // Selector
     bool show_resize_box = false;
     QLineF resize_box;
+    QLineF last_resize_box;
 
     bool selecting = false;
     QLineF selector;
@@ -77,6 +80,7 @@ private:
     QList<key_frame> get_selected_keys();
     QString get_resize_action(QPoint cursor_position);
     QLineF get_rectangle_of_selected_keyframes();
+    void right_scale(QPointF coords);
 
     void resize_box_press(QPoint cursor_position);
     void resize_box_move(QPoint cursor_position);
