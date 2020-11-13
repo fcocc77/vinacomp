@@ -110,7 +110,7 @@ void curve_view::create_curve()
     key_frame key1 = {{0.1, 0.2}, 10, false, true, 1, 0, name, 0};
     key_frame key2 = {{0.5, 1}, 45, false, true, 0.3, 0, name, 1};
     key_frame key3 = {{1, 0.3}, 0, false, true, 0.5, 0, name, 2};
-    key_frame key4 = { {2, 0.3}, 0, false, true, 0.5, 0, name, 3};
+    key_frame key4 = {{2, 0.3}, 0, false, true, 0.5, 0, name, 3};
 
     curves.insert(name, {key1, key2, key3, key4});
 
@@ -211,7 +211,7 @@ bool curve_view::is_point_in_rectangle(QPointF point, QLineF rectangle)
 
 void curve_view::mousePressEvent(QMouseEvent *event)
 {
-    if (!qt::alt())
+    if (!qt::alt() && event->button() == Qt::LeftButton)
     {
         resize_box_press(event->pos());
         if (!transforming)

@@ -156,20 +156,23 @@ QString curve_view::get_resize_action(QPoint cursor_position)
     return "";
 }
 
-void curve_view::right_scale(QPointF coords)
+void curve_view::scale_key_from_point(QPointF point)
 {
-    resize_box.setP2({coords.x(), resize_box.y2()});
-
     float last_width = last_resize_box.x2() - last_resize_box.x1();
     float width = resize_box.x2() - resize_box.x1();
 
-    float multiply = width / last_width;
-    float x1 = resize_box.x1();
+    float last_height = last_resize_box.y2() - last_resize_box.y1();
+    float height = resize_box.y2() - resize_box.y1();
+
+    float multiply_x = width / last_width;
+    float multiply_y = height / last_height;
 
     for (key_frame key : key_frame_press)
     {
-        float x = ((key.pos.x() - x1) * multiply) + x1;
-        curves[key.curve][key.index].pos.setX(x);
+        float x = ((key.pos.x() - point.x()) * multiply_x) + point.x();
+        float y = ((key.pos.y() - point.y()) * multiply_y) + point.y();
+
+        curves[key.curve][key.index].pos = {x, y};
     }
 }
 
@@ -199,33 +202,49 @@ void curve_view::resize_box_move(QPoint cursor_position)
         QPointF coords = get_coordsf(cursor_position);
 
         if (action == "right_scale")
-            right_scale(coords);
+        {
+            resize_box.setP2({coords.x(), resize_box.y2()});
+            scale_key_from_point({resize_box.x1(), 0});
+        }
         else if (action == "left_scale")
+        {
             resize_box.setP1({coords.x(), resize_box.y1()});
+            scale_key_from_point({resize_box.x2(), 0});
+        }
         else if (action == "top_scale")
+        {
             resize_box.setP2({resize_box.x2(), coords.y()});
+            scale_key_from_point({0, resize_box.y1()});
+        }
         else if (action == "bottom_scale")
+        {
             resize_box.setP1({resize_box.x1(), coords.y()});
+            scale_key_from_point({0, resize_box.y2()});
+        }
 
         else if (action == "bottom_left_scale")
         {
             resize_box.setP1({coords.x(), resize_box.y1()});
             resize_box.setP1({resize_box.x1(), coords.y()});
+            scale_key_from_point({resize_box.x2(), resize_box.y2()});
         }
         else if (action == "top_right_scale")
         {
             resize_box.setP2({coords.x(), resize_box.y2()});
             resize_box.setP2({resize_box.x2(), coords.y()});
+            scale_key_from_point({resize_box.x1(), resize_box.y1()});
         }
         else if (action == "bottom_right_scale")
         {
             resize_box.setP1({resize_box.x1(), coords.y()});
             resize_box.setP2({coords.x(), resize_box.y2()});
+            scale_key_from_point({resize_box.x1(), resize_box.y2()});
         }
         else if (action == "top_left_scale")
         {
             resize_box.setP1({coords.x(), resize_box.y1()});
             resize_box.setP2({resize_box.x2(), coords.y()});
+            scale_key_from_point({resize_box.x2(), resize_box.y1()});
         }
 
         update();
