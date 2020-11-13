@@ -4,10 +4,11 @@
 #include <QObject>
 #include <QPointF>
 
-class key_frame
+class key_frame : public QObject
 {
 private:
     QPointF position;
+    QPointF last_position;
     float angle = 0;
     bool _selected = false;
     float _exaggeration = 0.3; // 0.0 - 1.0
@@ -34,11 +35,12 @@ public:
     void set_angle(float _angle);
     bool selected();
     void select(bool select);
-    bool is_null();
     int get_index();
     QString get_curve();
     float exaggeration();
     void set_exaggeration(float _exaggeration);
+    void stamp_position();
+    QPointF get_last_position();
 };
 
 #endif //CURVE_KEY_FRAME_HPP

@@ -102,10 +102,10 @@ void curve_view::draw_coordinate_numbers()
         horizontal_numbers(separation);
 }
 
-void curve_view::draw_bezier(key_frame src_key, key_frame dst_key)
+void curve_view::draw_bezier(key_frame *src_key, key_frame *dst_key)
 {
-    QLineF src_handler = get_handler_points(src_key, {}, dst_key, true);
-    QLineF dst_handler = get_handler_points(dst_key, src_key, {}, true);
+    QLineF src_handler = get_handler_points(src_key, true);
+    QLineF dst_handler = get_handler_points(dst_key, true);
 
     glBegin(GL_LINE_STRIP);
     glColor3f(1, 1, 0);
@@ -116,7 +116,7 @@ void curve_view::draw_bezier(key_frame src_key, key_frame dst_key)
 
     for (int i = 0; i <= segments; i++)
     {
-        QPointF point = cubic_bezier(src_key.pos(), src_handler.p2(), dst_handler.p1(), dst_key.pos(), t);
+        QPointF point = cubic_bezier(src_key->pos(), src_handler.p2(), dst_handler.p1(), dst_key->pos(), t);
         glVertex2f(point.x(), point.y());
 
         t += segment;
@@ -127,38 +127,36 @@ void curve_view::draw_bezier(key_frame src_key, key_frame dst_key)
 
 void curve_view::draw_curve()
 {
-    for (auto curve : curves)
+    for (auto keys : curves)
     {
         // Infinite Lines
-        draw_line({-1000000, curve.first().y()}, curve.first().pos(), Qt::red);
-        draw_line(curve.last().pos(), {1000000, curve.last().y()}, Qt::red);
+        draw_line({-1000000, keys.first()->y()}, keys.first()->pos(), Qt::red);
+        draw_line(keys.last()->pos(), {1000000, keys.last()->y()}, Qt::red);
         //
         //
 
-        for (int i = 0; i < curve.count(); i++)
+        for (key_frame *key : keys)
         {
-            key_frame key = curve.value(i);
-            key_frame previous_key = curve.value(i - 1);
-            key_frame next_key = curve.value(i + 1);
+            key_frame *previous_key = get_previous_key(key);
 
             // Beziers
-            if (!previous_key.is_null())
+            if (previous_key)
                 draw_bezier(previous_key, key);
             //
             //
 
             // Point
-            if (key.selected())
-                draw_point(key.pos());
+            if (key->selected())
+                draw_point(key->pos());
             else
-                draw_point(key.pos(), Qt::red);
+                draw_point(key->pos(), Qt::red);
             //
             //
 
             // Handler
-            if (key.selected())
+            if (key->selected())
             {
-                QLineF handler = get_handler_points(key, previous_key, next_key);
+                QLineF handler = get_handler_points(key);
 
                 draw_line(handler.p1(), handler.p2(), Qt::red);
                 draw_point(handler.p1(), Qt::white, 4);

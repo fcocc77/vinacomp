@@ -1,12 +1,12 @@
 #include <curve_view.hpp>
 
-QList<key_frame> curve_view::get_selected_keys()
+QList<key_frame *> curve_view::get_selected_keys()
 {
-    QList<key_frame> selected;
+    QList<key_frame *> selected;
 
     for (auto keys : curves)
-        for (key_frame key : keys)
-            if (key.selected())
+        for (key_frame *key : keys)
+            if (key->selected())
                 selected.push_back(key);
 
     return selected;
@@ -39,14 +39,14 @@ void curve_view::selector_move(QPoint cursor_position)
         return;
 
     selector.setP2(get_coords(cursor_position));
-    for (auto &keys : curves)
+    for (auto keys : curves)
     {
-        for (key_frame &key : keys)
+        for (key_frame *key : keys)
         {
-            if (is_point_in_rectangle(key.pos(), selector))
-                key.select(true);
+            if (is_point_in_rectangle(key->pos(), selector))
+                key->select(true);
             else
-                key.select(false);
+                key->select(false);
         }
     }
 
@@ -65,7 +65,10 @@ void curve_view::resize_box_press(QPoint cursor_position)
         resize_current_action = action;
         transforming = true;
         last_resize_box = resize_box;
-        last_selected_key_frames = get_selected_keys();
+
+        selected_key_frames = get_selected_keys();
+        for (key_frame *key : selected_key_frames)
+            key->stamp_position();
     }
 }
 
@@ -76,28 +79,28 @@ QLineF curve_view::get_rectangle_of_selected_keyframes()
     if (selected.count() <= 1)
         return {};
 
-    key_frame top = selected.first();
-    key_frame bottom = selected.first();
-    key_frame left = selected.first();
-    key_frame right = selected.first();
+    key_frame *top = selected.first();
+    key_frame *bottom = selected.first();
+    key_frame *left = selected.first();
+    key_frame *right = selected.first();
 
-    for (key_frame key : selected)
+    for (key_frame *key : selected)
     {
-        if (key.y() > top.y())
+        if (key->y() > top->y())
             top = key;
 
-        if (key.y() < bottom.y())
+        if (key->y() < bottom->y())
             bottom = key;
 
-        if (key.x() > right.x())
+        if (key->x() > right->x())
             right = key;
 
-        if (key.x() < left.x())
+        if (key->x() < left->x())
             left = key;
     }
 
-    QPointF bottom_left = {left.x(), bottom.y()};
-    QPointF top_right = {right.x(), top.y()};
+    QPointF bottom_left = {left->x(), bottom->y()};
+    QPointF top_right = {right->x(), top->y()};
 
     return {bottom_left, top_right};
 }
@@ -191,23 +194,19 @@ void curve_view::scale_key_from_point(QPointF point)
     float multiply_x = width / last_width;
     float multiply_y = height / last_height;
 
-    for (key_frame last_key : last_selected_key_frames)
+    for (key_frame *key : selected_key_frames)
     {
-        float x = ((last_key.x() - point.x()) * multiply_x) + point.x();
-        float y = ((last_key.y() - point.y()) * multiply_y) + point.y();
+        float x = ((key->get_last_position().x() - point.x()) * multiply_x) + point.x();
+        float y = ((key->get_last_position().y() - point.y()) * multiply_y) + point.y();
 
-        key_frame &key = curves[last_key.get_curve()][last_key.get_index()];
-        key.set_pos({x, y});
+        key->set_pos({x, y});
     }
 }
 
 void curve_view::translate_keys(QPointF add_translate)
 {
-    for (key_frame last_key : last_selected_key_frames)
-    {
-        key_frame &key = curves[last_key.get_curve()][last_key.get_index()];
-        key.set_pos(last_key.pos() + add_translate);
-    }
+    for (key_frame *key : selected_key_frames)
+        key->set_pos(key->get_last_position() + add_translate);
 }
 
 void curve_view::resize_box_move(QPoint cursor_position)

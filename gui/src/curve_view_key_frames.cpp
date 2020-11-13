@@ -1,37 +1,43 @@
 #include <curve_view.hpp>
 
 QLineF curve_view::get_handler_points(
-    key_frame key,
-    key_frame previous_key,
-    key_frame next_key,
+    key_frame *key,
     bool infinite)
 {
-    float separation_a = (key.x() - previous_key.x()) * key.exaggeration();
-    float separation_b = (next_key.x() - key.x()) * key.exaggeration();
+
+    key_frame *previous_key = get_previous_key(key);
+    key_frame *next_key = get_next_key(key);
+
+    float separation_a, separation_b;
+
+    if (previous_key)
+        separation_a = (key->x() - previous_key->x()) * key->exaggeration();
+    if (next_key)
+        separation_b = (next_key->x() - key->x()) * key->exaggeration();
 
     // si es el primer o ultimo keyframe, le asigna la separacion del lado contrario
-    if (previous_key.is_null())
+    if (previous_key)
         separation_a = separation_b;
-    if (next_key.is_null())
+    if (next_key)
         separation_b = separation_a;
     //
     //
 
-    float point_a_x = key.x() - separation_a;
-    float point_b_x = key.x() + separation_b;
+    float point_a_x = key->x() - separation_a;
+    float point_b_x = key->x() + separation_b;
 
-    QPointF point_a = {point_a_x, key.y()};
-    QPointF point_b = {point_b_x, key.y()};
+    QPointF point_a = {point_a_x, key->y()};
+    QPointF point_b = {point_b_x, key->y()};
 
     // genera el punto vertical infinito donde apunta el manejador
-    float tangent = tan(key.get_angle() * M_PI / 180);
+    float tangent = tan(key->get_angle() * M_PI / 180);
     QPointF infinite_point_a = {point_a.x(), point_a.y() + (tangent * separation_a)};
     QPointF infinite_point_b = {point_b.x(), point_b.y() - (tangent * separation_b)};
     //
 
     if (!infinite)
     {
-        // antes de rotar el manejador, transforma el punto de key y los
+        // antes de rotar el manejador, transforma el punto de key->y() los
         // 2 puntos del manejador de cordenadas a puntos en la
         // position del visor, con esto logramos que el manejador
         // siempre quede del mismo tamaño.
@@ -39,7 +45,7 @@ QLineF curve_view::get_handler_points(
         QPointF view_point_b = get_position(point_b);
 
         QPointF view_infinite = get_position(infinite_point_a);
-        QPointF view_anchor_point = get_position(key.pos());
+        QPointF view_anchor_point = get_position(key->pos());
 
         float angle = get_angle_two_points(view_infinite, view_anchor_point) - 90;
 
@@ -77,19 +83,46 @@ void curve_view::create_curve()
 {
     QString name = "translate_x";
 
-    key_frame key1(name, 0);
-    key_frame key2(name, 1);
-    key_frame key3(name, 2);
-    key_frame key4(name, 3);
+    // key_frame key1(name, 0);
+    // key_frame key2(name, 1);
+    // key_frame key3(name, 2);
+    // key_frame key4(name, 3);
 
-    key1.set_pos({0.1, 0.2});
-    key2.set_pos({0.5, 1});
-    key3.set_pos({1, 0.3});
-    key4.set_pos({2, 0.4});
+    // curves.insert(name, {&key1, &key2, &key3, &key4});
+
+    key_frame *key1 = new key_frame(name, 0);
+    key_frame *key2 = new key_frame(name, 1);
+    key_frame *key3 = new key_frame(name, 2);
+    key_frame *key4 = new key_frame(name, 3);
+
+    key1->set_pos({0.1, 0.2});
+    key2->set_pos({0.5, 1});
+    key3->set_pos({1, 0.3});
+    key4->set_pos({2, 0.4});
 
     curves.insert(name, {key1, key2, key3, key4});
 
     update();
+}
+
+key_frame *curve_view::get_previous_key(key_frame *key)
+{
+    QString curve_name = key->get_curve();
+    if (!curves.contains(curve_name))
+        return NULL;
+
+    auto keys = curves.value(curve_name);
+    return keys.value(key->get_index() - 1);
+}
+
+key_frame *curve_view::get_next_key(key_frame *key)
+{
+    QString curve_name = key->get_curve();
+    if (!curves.contains(curve_name))
+        return NULL;
+
+    auto keys = curves.value(curve_name);
+    return keys.value(key->get_index() + 1);
 }
 
 void curve_view::key_press(QPoint cursor_position)
@@ -99,35 +132,29 @@ void curve_view::key_press(QPoint cursor_position)
 
     for (auto curve_name : curves.keys())
     {
-        auto &curve = curves[curve_name];
-        for (int i = 0; i < curve.count(); i++)
+        auto keys = curves[curve_name];
+        for (key_frame *key : keys)
         {
-            key_frame previous_key = curve.value(i - 1);
-            key_frame next_key = curve.value(i + 1);
-
-            key_frame &key = curve[i];
-
-            QLineF handler = get_handler_points(key, previous_key, next_key);
+            QLineF handler = get_handler_points(key);
 
             // verifica si el click se hizo en el key point
             // o se hizo en alguno de los 2 puntos manejadores.
             int handler_point = 0;
 
-            if (is_cursor_above(cursor_position, key.pos()))
-                key.select(true);
+            if (is_cursor_above(cursor_position, key->pos()))
+                key->select(true);
             else if (is_cursor_above(cursor_position, handler.p1()))
                 handler_point = 1;
             else if (is_cursor_above(cursor_position, handler.p2()))
                 handler_point = 2;
             else
-                key.select(false);
+                key->select(false);
             //
             //
 
-            if (key.selected())
+            if (key->selected())
             {
-                drag_index = i;
-                drag_curve = curve_name;
+                drag_key_frame = key;
                 drag_handler = handler_point;
                 dragging = true;
             }
@@ -141,47 +168,43 @@ void curve_view::key_move(QPoint cursor_position)
     // cambia el cursor si esta sobre algun key frame
     if (!resize_box_visible)
         for (auto keys : curves)
-            for (key_frame key : keys)
-                if (is_cursor_above(cursor_position, key.pos()))
+            for (key_frame *key : keys)
+                if (is_cursor_above(cursor_position, key->pos()))
                     this->setCursor(Qt::SizeAllCursor);
     //
     //
 
     if (dragging)
     {
-        if (curves.contains(drag_curve))
+        key_frame *key = drag_key_frame;
+
+        if (drag_handler == 1)
+            key->set_angle(90 - get_angle_two_points(get_coords(cursor_position), key->pos()));
+
+        else if (drag_handler == 2)
+            key->set_angle(270 - get_angle_two_points(get_coords(cursor_position), key->pos()));
+        else
         {
-            auto &keys = curves[drag_curve];
-            key_frame &key = keys[drag_index];
+            QPointF coords = get_coords(cursor_position);
 
-            if (drag_handler == 1)
-                key.set_angle(90 - get_angle_two_points(get_coords(cursor_position), key.pos()));
-
-            else if (drag_handler == 2)
-                key.set_angle(270 - get_angle_two_points(get_coords(cursor_position), key.pos()));
-            else
+            // limitar posicion al key_frame anterior y siguiente
+            key_frame *previous_key = get_previous_key(key);
+            if (previous_key)
             {
-                QPointF coords = get_coords(cursor_position);
-
-                // limitar posicion al key_frame anterior y siguiente
-                key_frame previous_key = keys.value(key.get_index() - 1);
-                if (!previous_key.is_null())
-                {
-                    if (coords.x() < previous_key.x())
-                        coords.setX(previous_key.x());
-                }
-
-                key_frame next_key = keys.value(key.get_index() + 1);
-                if (!next_key.is_null())
-                {
-                    if (coords.x() > next_key.x())
-                        coords.setX(next_key.x());
-                }
-                //
-                //
-
-                key.set_pos(coords);
+                if (coords.x() < previous_key->x())
+                    coords.setX(previous_key->x());
             }
+
+            key_frame *next_key = get_next_key(key);
+            if (next_key)
+            {
+                if (coords.x() > next_key->x())
+                    coords.setX(next_key->x());
+            }
+            //
+            //
+
+            key->set_pos(coords);
         }
 
         update();

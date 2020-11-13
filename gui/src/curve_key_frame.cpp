@@ -16,6 +16,18 @@ QPointF key_frame::pos()
     return position;
 }
 
+void key_frame::stamp_position()
+{
+    // guarda una posicion anterior que es
+    // independiente de la posicion actual
+    last_position = position;
+}
+
+QPointF key_frame::get_last_position()
+{
+    return last_position;
+}
+
 float key_frame::x()
 {
     return position.x();
@@ -49,14 +61,6 @@ bool key_frame::selected()
 void key_frame::select(bool select)
 {
     _selected = select;
-}
-
-bool key_frame::is_null()
-{
-    if (index < 0)
-        return true;
-    else
-        return false;
 }
 
 int key_frame::get_index()
