@@ -26,6 +26,8 @@ class curve_view : public gl_view
 private:
     QMap<QString, QList<key_frame>> curves;
 
+    QPoint click_position;
+
     // Drag KeyFrame
     QString drag_curve;
     int drag_index;
@@ -65,7 +67,7 @@ private:
     //
 
     // Selector
-    bool show_resize_box = false;
+    bool resize_box_visible = false;
     QLineF resize_box;
     QLineF last_resize_box;
 
@@ -81,6 +83,8 @@ private:
     QString get_resize_action(QPoint cursor_position);
     QLineF get_rectangle_of_selected_keyframes();
     void scale_key_from_point(QPointF point);
+    void translate_keys(QPointF add_translate);
+
 
     void resize_box_press(QPoint cursor_position);
     void resize_box_move(QPoint cursor_position);

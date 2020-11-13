@@ -211,12 +211,14 @@ bool curve_view::is_point_in_rectangle(QPointF point, QLineF rectangle)
 
 void curve_view::mousePressEvent(QMouseEvent *event)
 {
+    click_position = event->pos();
+
     if (!qt::alt() && event->button() == Qt::LeftButton)
     {
         resize_box_press(event->pos());
         if (!transforming)
         {
-            show_resize_box = false;
+            resize_box_visible = false;
             key_press(event->pos());
 
             if (!dragging)
@@ -238,7 +240,7 @@ void curve_view::mouseReleaseEvent(QMouseEvent *event)
     if (selecting)
     {
         resize_box = get_rectangle_of_selected_keyframes();
-        show_resize_box = !resize_box.isNull();
+        resize_box_visible = !resize_box.isNull();
     }
 
     dragging = false;

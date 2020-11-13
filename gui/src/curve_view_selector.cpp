@@ -34,6 +34,9 @@ void curve_view::selector_move(QPoint cursor_position)
 
 void curve_view::resize_box_press(QPoint cursor_position)
 {
+    if (!resize_box_visible)
+        return;
+
     QString action = get_resize_action(cursor_position);
 
     if (!action.isEmpty())
@@ -176,9 +179,15 @@ void curve_view::scale_key_from_point(QPointF point)
     }
 }
 
+void curve_view::translate_keys(QPointF add_translate)
+{
+    for (key_frame key : key_frame_press)
+        curves[key.curve][key.index].pos = key.pos + add_translate;
+}
+
 void curve_view::resize_box_move(QPoint cursor_position)
 {
-    if (!show_resize_box)
+    if (!resize_box_visible)
         return;
 
     this->setCursor(Qt::ArrowCursor);
@@ -199,7 +208,9 @@ void curve_view::resize_box_move(QPoint cursor_position)
     if (transforming)
     {
         action = resize_current_action;
+        QPointF click_coords = get_coordsf(click_position);
         QPointF coords = get_coordsf(cursor_position);
+        QPointF add_translate = coords - click_coords;
 
         if (action == "right_scale")
         {
@@ -245,6 +256,33 @@ void curve_view::resize_box_move(QPoint cursor_position)
             resize_box.setP1({coords.x(), resize_box.y1()});
             resize_box.setP2({resize_box.x2(), coords.y()});
             scale_key_from_point({resize_box.x2(), resize_box.y1()});
+        }
+
+        else if (action == "center_translate")
+        {
+            resize_box.setP1(last_resize_box.p1() + add_translate);
+            resize_box.setP2(last_resize_box.p2() + add_translate);
+            translate_keys(add_translate);
+        }
+        else if (action == "horizontal_translate")
+        {
+            QPointF p1 = {last_resize_box.x1() + add_translate.x(), last_resize_box.y1()};
+            QPointF p2 = {last_resize_box.x2() + add_translate.x(), last_resize_box.y2()};
+
+            resize_box.setP1(p1);
+            resize_box.setP2(p2);
+
+            translate_keys({add_translate.x(), 0});
+        }
+        else if (action == "vertical_translate")
+        {
+            QPointF p1 = {last_resize_box.x1(), last_resize_box.y1() + add_translate.y()};
+            QPointF p2 = {last_resize_box.x2(), last_resize_box.y2() + add_translate.y()};
+
+            resize_box.setP1(p1);
+            resize_box.setP2(p2);
+
+            translate_keys({0, add_translate.y()});
         }
 
         update();

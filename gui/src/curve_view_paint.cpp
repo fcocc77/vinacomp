@@ -180,7 +180,7 @@ void curve_view::draw_selector()
 
 void curve_view::draw_resize_box()
 {
-    if (!show_resize_box)
+    if (!resize_box_visible)
         return;
 
     QColor color = {100, 100, 100};
