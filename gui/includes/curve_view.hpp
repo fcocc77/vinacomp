@@ -2,23 +2,7 @@
 #define CURVE_VIEW_HPP
 
 #include <gl_view.hpp>
-
-struct key_frame
-{
-    QPointF pos;
-    float angle;
-    bool selected;
-    bool init;          // Inicializacion
-    float exaggeration; // 0.0 - 1.0
-    int interpolation;
-    QString curve;
-    int index;
-    // 0: Linear
-    // 1: Horizontal
-    // 2: Smooth
-    // 3: Break
-    // 4: Custom
-};
+#include <curve_key_frame.hpp>
 
 class curve_view : public gl_view
 {
@@ -42,10 +26,11 @@ private:
     void key_press(QPoint cursor_position);
     void key_move(QPoint cursor_position);
 
+    key_frame empty_key;
     QLineF get_handler_points(
         key_frame key,
-        key_frame previous_key = {},
-        key_frame next_key = {},
+        key_frame previous_key,
+        key_frame next_key,
         bool infinite = false);
     QPointF cubic_bezier(
         QPointF p1, QPointF p2,
@@ -84,7 +69,6 @@ private:
     QLineF get_rectangle_of_selected_keyframes();
     void scale_key_from_point(QPointF point);
     void translate_keys(QPointF add_translate);
-
 
     void resize_box_press(QPoint cursor_position);
     void resize_box_move(QPoint cursor_position);

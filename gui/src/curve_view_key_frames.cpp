@@ -6,25 +6,25 @@ QLineF curve_view::get_handler_points(
     key_frame next_key,
     bool infinite)
 {
-    float separation_a = (key.pos.x() - previous_key.pos.x()) * key.exaggeration;
-    float separation_b = (next_key.pos.x() - key.pos.x()) * key.exaggeration;
+    float separation_a = (key.x() - previous_key.x()) * key.exaggeration();
+    float separation_b = (next_key.x() - key.x()) * key.exaggeration();
 
     // si es el primer o ultimo keyframe, le asigna la separacion del lado contrario
-    if (!previous_key.init)
+    if (previous_key.is_null())
         separation_a = separation_b;
-    if (!next_key.init)
+    if (next_key.is_null())
         separation_b = separation_a;
     //
     //
 
-    float point_a_x = key.pos.x() - separation_a;
-    float point_b_x = key.pos.x() + separation_b;
+    float point_a_x = key.x() - separation_a;
+    float point_b_x = key.x() + separation_b;
 
-    QPointF point_a = {point_a_x, key.pos.y()};
-    QPointF point_b = {point_b_x, key.pos.y()};
+    QPointF point_a = {point_a_x, key.y()};
+    QPointF point_b = {point_b_x, key.y()};
 
     // genera el punto vertical infinito donde apunta el manejador
-    float tangent = tan(key.angle * M_PI / 180);
+    float tangent = tan(key.get_angle() * M_PI / 180);
     QPointF infinite_point_a = {point_a.x(), point_a.y() + (tangent * separation_a)};
     QPointF infinite_point_b = {point_b.x(), point_b.y() - (tangent * separation_b)};
     //
@@ -39,7 +39,7 @@ QLineF curve_view::get_handler_points(
         QPointF view_point_b = get_position(point_b);
 
         QPointF view_infinite = get_position(infinite_point_a);
-        QPointF view_anchor_point = get_position(key.pos);
+        QPointF view_anchor_point = get_position(key.pos());
 
         float angle = get_angle_two_points(view_infinite, view_anchor_point) - 90;
 
@@ -77,10 +77,15 @@ void curve_view::create_curve()
 {
     QString name = "translate_x";
 
-    key_frame key1 = {{0.1, 0.2}, 10, false, true, 1, 0, name, 0};
-    key_frame key2 = {{0.5, 1}, 45, false, true, 0.3, 0, name, 1};
-    key_frame key3 = {{1, 0.3}, 0, false, true, 0.5, 0, name, 2};
-    key_frame key4 = {{2, 0.3}, 0, false, true, 0.5, 0, name, 3};
+    key_frame key1(name, 0);
+    key_frame key2(name, 1);
+    key_frame key3(name, 2);
+    key_frame key4(name, 3);
+
+    key1.set_pos({0.1, 0.2});
+    key2.set_pos({0.5, 1});
+    key3.set_pos({1, 0.3});
+    key4.set_pos({2, 0.4});
 
     curves.insert(name, {key1, key2, key3, key4});
 
@@ -108,18 +113,18 @@ void curve_view::key_press(QPoint cursor_position)
             // o se hizo en alguno de los 2 puntos manejadores.
             int handler_point = 0;
 
-            if (is_cursor_above(cursor_position, key.pos))
-                key.selected = true;
+            if (is_cursor_above(cursor_position, key.pos()))
+                key.select(true);
             else if (is_cursor_above(cursor_position, handler.p1()))
                 handler_point = 1;
             else if (is_cursor_above(cursor_position, handler.p2()))
                 handler_point = 2;
             else
-                key.selected = false;
+                key.select(false);
             //
             //
 
-            if (key.selected)
+            if (key.selected())
             {
                 drag_index = i;
                 drag_curve = curve_name;
@@ -137,7 +142,7 @@ void curve_view::key_move(QPoint cursor_position)
     if (!resize_box_visible)
         for (auto keys : curves)
             for (key_frame key : keys)
-                if (is_cursor_above(cursor_position, key.pos))
+                if (is_cursor_above(cursor_position, key.pos()))
                     this->setCursor(Qt::SizeAllCursor);
     //
     //
@@ -150,32 +155,32 @@ void curve_view::key_move(QPoint cursor_position)
             key_frame &key = keys[drag_index];
 
             if (drag_handler == 1)
-                key.angle = 90 - get_angle_two_points(get_coords(cursor_position), key.pos);
+                key.set_angle(90 - get_angle_two_points(get_coords(cursor_position), key.pos()));
 
             else if (drag_handler == 2)
-                key.angle = 270 - get_angle_two_points(get_coords(cursor_position), key.pos);
+                key.set_angle(270 - get_angle_two_points(get_coords(cursor_position), key.pos()));
             else
             {
                 QPointF coords = get_coords(cursor_position);
 
                 // limitar posicion al key_frame anterior y siguiente
-                key_frame previous_key = keys.value(key.index - 1);
-                if (previous_key.init)
+                key_frame previous_key = keys.value(key.get_index() - 1);
+                if (!previous_key.is_null())
                 {
-                    if (coords.x() < previous_key.pos.x())
-                        coords.setX(previous_key.pos.x());
+                    if (coords.x() < previous_key.x())
+                        coords.setX(previous_key.x());
                 }
 
-                key_frame next_key = keys.value(key.index + 1);
-                if (next_key.init)
+                key_frame next_key = keys.value(key.get_index() + 1);
+                if (!next_key.is_null())
                 {
-                    if (coords.x() > next_key.pos.x())
-                        coords.setX(next_key.pos.x());
+                    if (coords.x() > next_key.x())
+                        coords.setX(next_key.x());
                 }
                 //
                 //
 
-                key.pos = coords;
+                key.set_pos(coords);
             }
         }
 

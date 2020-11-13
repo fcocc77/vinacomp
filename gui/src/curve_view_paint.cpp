@@ -116,7 +116,7 @@ void curve_view::draw_bezier(key_frame src_key, key_frame dst_key)
 
     for (int i = 0; i <= segments; i++)
     {
-        QPointF point = cubic_bezier(src_key.pos, src_handler.p2(), dst_handler.p1(), dst_key.pos, t);
+        QPointF point = cubic_bezier(src_key.pos(), src_handler.p2(), dst_handler.p1(), dst_key.pos(), t);
         glVertex2f(point.x(), point.y());
 
         t += segment;
@@ -130,8 +130,8 @@ void curve_view::draw_curve()
     for (auto curve : curves)
     {
         // Infinite Lines
-        draw_line({-1000000, curve.first().pos.y()}, curve.first().pos, Qt::red);
-        draw_line(curve.last().pos, {1000000, curve.last().pos.y()}, Qt::red);
+        draw_line({-1000000, curve.first().y()}, curve.first().pos(), Qt::red);
+        draw_line(curve.last().pos(), {1000000, curve.last().y()}, Qt::red);
         //
         //
 
@@ -142,21 +142,21 @@ void curve_view::draw_curve()
             key_frame next_key = curve.value(i + 1);
 
             // Beziers
-            if (previous_key.init)
+            if (!previous_key.is_null())
                 draw_bezier(previous_key, key);
             //
             //
 
             // Point
-            if (key.selected)
-                draw_point(key.pos);
+            if (key.selected())
+                draw_point(key.pos());
             else
-                draw_point(key.pos, Qt::red);
+                draw_point(key.pos(), Qt::red);
             //
             //
 
             // Handler
-            if (key.selected)
+            if (key.selected())
             {
                 QLineF handler = get_handler_points(key, previous_key, next_key);
 

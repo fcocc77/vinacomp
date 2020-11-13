@@ -8,15 +8,20 @@ curve_view::curve_view(/* args */)
     create_curve();
 
     qt::shortcut("+", this, [this]() {
-        for (key_frame key : get_selected_keys())
-            curves[key.curve][key.index].exaggeration += 0.2;
-
+        for (key_frame selected_key : get_selected_keys())
+        {
+            key_frame &key = curves[selected_key.get_curve()][selected_key.get_index()];
+            key.set_exaggeration(key.exaggeration() + 0.2);
+        }
         update();
     });
 
     qt::shortcut("-", this, [this]() {
-        for (key_frame key : get_selected_keys())
-            curves[key.curve][key.index].exaggeration -= 0.2;
+        for (key_frame selected_key : get_selected_keys())
+        {
+            key_frame &key = curves[selected_key.get_curve()][selected_key.get_index()];
+            key.set_exaggeration(key.exaggeration() - 0.2);
+        }
 
         update();
     });
