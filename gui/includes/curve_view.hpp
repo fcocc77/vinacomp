@@ -22,6 +22,7 @@ private:
 
     bool is_point_in_rectangle(QPointF point, QLineF rectangle);
     void fit_viewport_to_keyframes();
+    void select_all_key_frames();
     void create_curve();
     void key_press(QPoint cursor_position);
     void key_move(QPoint cursor_position);
@@ -70,6 +71,7 @@ private:
     void to_transform_box(QPoint cursor_position);
     void transform_box_press(QPoint cursor_position);
     void transform_box_move(QPoint cursor_position);
+    void show_transform_box();
     //
     //
 

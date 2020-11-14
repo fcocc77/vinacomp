@@ -349,6 +349,14 @@ void curve_view::to_transform_box(QPoint cursor_position)
     update();
 }
 
+void curve_view::show_transform_box()
+{
+    transform_box = get_rectangle_of_keyframes(get_selected_keys());
+    transform_box_visible = !transform_box.isNull();
+
+    update();
+}
+
 void curve_view::transform_box_move(QPoint cursor_position)
 {
     if (!transform_box_visible)

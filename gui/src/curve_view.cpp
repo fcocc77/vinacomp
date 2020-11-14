@@ -24,10 +24,23 @@ curve_view::curve_view(/* args */)
     qt::shortcut("F", this, [this]() {
         fit_viewport_to_keyframes();
     });
+
+    qt::shortcut("Ctrl+A", this, [this]() {
+        select_all_key_frames();
+    });
 }
 
 curve_view::~curve_view()
 {
+}
+
+void curve_view::select_all_key_frames()
+{
+    for (auto keys : curves)
+        for (key_frame *key : keys)
+            key->select(true);
+
+    show_transform_box();
 }
 
 void curve_view::fit_viewport_to_keyframes()
@@ -95,10 +108,7 @@ void curve_view::mousePressEvent(QMouseEvent *event)
 void curve_view::mouseReleaseEvent(QMouseEvent *event)
 {
     if (selecting)
-    {
-        transform_box = get_rectangle_of_keyframes(get_selected_keys());
-        transform_box_visible = !transform_box.isNull();
-    }
+        show_transform_box();
 
     dragging = false;
     selecting = false;
