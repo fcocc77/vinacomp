@@ -8,14 +8,15 @@ node::node(QGraphicsScene *_scene,
            QColor _color,
            trim_panel *_panel,
            properties *__properties)
-{
-    panel = _panel;
-    _properties = __properties;
-    color = _color;
-    scene = _scene;
-    current_z_value = _current_z_value;
-    selected_nodes = _selected_nodes;
 
+    : panel(_panel),
+      _properties(__properties),
+      color(_color),
+      scene(_scene),
+      current_z_value(_current_z_value),
+      selected_nodes(_selected_nodes)
+
+{
     center_position = new QPointF;
     nodes_connected_to_the_output = new QMap<QString, node *>;
     nodes_connected_to_the_inputs = new QMap<QString, node *>;
