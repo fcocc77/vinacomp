@@ -66,7 +66,7 @@ private:
     QLineF get_rectangle_of_selected_keyframes();
     void scale_key_from_point(QPointF point);
     void translate_keys(QPointF add_translate);
-
+    void transforming_box(QPoint cursor_position);
     void resize_box_press(QPoint cursor_position);
     void resize_box_move(QPoint cursor_position);
     //

@@ -209,6 +209,142 @@ void curve_view::translate_keys(QPointF add_translate)
         key->set_pos(key->get_last_position() + add_translate);
 }
 
+void curve_view::transforming_box(QPoint cursor_position)
+{
+    QString action = resize_current_action;
+
+    QPointF click_coords = get_coordsf(click_position);
+    QPointF coords = get_coordsf(cursor_position);
+    QPointF add_translate = coords - click_coords;
+
+    // Limitacion en x hasta el key frame anterior y siguiente de la seleccion de keyframes.
+    key_frame *previous_key = get_previous_key(selected_key_frames.first());
+    key_frame *next_key = get_next_key(selected_key_frames.last());
+
+    if (previous_key)
+    {
+        // Limitacion para 'scale'
+        if (coords.x() < previous_key->x())
+            coords.setX(previous_key->x());
+
+        // Limitacion para 'translate'
+        float left_border = last_resize_box.x1() + add_translate.x();
+        if (left_border < previous_key->x())
+            add_translate.setX(previous_key->x() - last_resize_box.x1());
+    }
+
+    if (next_key)
+    {
+        // Limitacion para 'scale'
+        if (coords.x() > next_key->x())
+            coords.setX(next_key->x());
+
+        // Limitacion para 'translate'
+        float right_border = last_resize_box.x2() + add_translate.x();
+        if (right_border > next_key->x())
+            add_translate.setX(next_key->x() - last_resize_box.x2());
+    }
+    //
+    //
+
+    // Limitacion para que no traspase el borde izquierdo
+    if (action == "right_scale" || action == "top_right_scale" || action == "bottom_right_scale")
+        if (coords.x() < resize_box.x1())
+            coords.setX(resize_box.x1());
+
+    // Limitacion para que no traspase el borde derecho
+    if (action == "left_scale" || action == "top_left_scale" || action == "bottom_left_scale")
+        if (coords.x() > resize_box.x2())
+            coords.setX(resize_box.x2());
+
+    // Limitacion para que no traspase el borde superior
+    if (action == "bottom_scale" || action == "bottom_left_scale" || action == "bottom_right_scale")
+        if (coords.y() > resize_box.y2())
+            coords.setY(resize_box.y2());
+
+    // Limitacion para que no traspase el borde inferior
+    if (action == "top_scale" || action == "top_right_scale" || action == "top_left_scale")
+        if (coords.y() < resize_box.y1())
+            coords.setY(resize_box.y1());
+    //
+    //
+
+    if (action == "right_scale")
+    {
+        resize_box.setP2({coords.x(), resize_box.y2()});
+        scale_key_from_point({resize_box.x1(), 0});
+    }
+    else if (action == "left_scale")
+    {
+        resize_box.setP1({coords.x(), resize_box.y1()});
+        scale_key_from_point({resize_box.x2(), 0});
+    }
+    else if (action == "top_scale")
+    {
+        resize_box.setP2({resize_box.x2(), coords.y()});
+        scale_key_from_point({0, resize_box.y1()});
+    }
+    else if (action == "bottom_scale")
+    {
+        resize_box.setP1({resize_box.x1(), coords.y()});
+        scale_key_from_point({0, resize_box.y2()});
+    }
+
+    else if (action == "bottom_left_scale")
+    {
+        resize_box.setP1({coords.x(), resize_box.y1()});
+        resize_box.setP1({resize_box.x1(), coords.y()});
+        scale_key_from_point({resize_box.x2(), resize_box.y2()});
+    }
+    else if (action == "top_right_scale")
+    {
+        resize_box.setP2({coords.x(), resize_box.y2()});
+        resize_box.setP2({resize_box.x2(), coords.y()});
+        scale_key_from_point({resize_box.x1(), resize_box.y1()});
+    }
+    else if (action == "bottom_right_scale")
+    {
+        resize_box.setP1({resize_box.x1(), coords.y()});
+        resize_box.setP2({coords.x(), resize_box.y2()});
+        scale_key_from_point({resize_box.x1(), resize_box.y2()});
+    }
+    else if (action == "top_left_scale")
+    {
+        resize_box.setP1({coords.x(), resize_box.y1()});
+        resize_box.setP2({resize_box.x2(), coords.y()});
+        scale_key_from_point({resize_box.x2(), resize_box.y1()});
+    }
+
+    else if (action == "center_translate")
+    {
+        resize_box.setP1(last_resize_box.p1() + add_translate);
+        resize_box.setP2(last_resize_box.p2() + add_translate);
+        translate_keys(add_translate);
+    }
+    else if (action == "horizontal_translate")
+    {
+        QPointF p1 = {last_resize_box.x1() + add_translate.x(), last_resize_box.y1()};
+        QPointF p2 = {last_resize_box.x2() + add_translate.x(), last_resize_box.y2()};
+
+        resize_box.setP1(p1);
+        resize_box.setP2(p2);
+
+        translate_keys({add_translate.x(), 0});
+    }
+    else if (action == "vertical_translate")
+    {
+        QPointF p1 = {last_resize_box.x1(), last_resize_box.y1() + add_translate.y()};
+        QPointF p2 = {last_resize_box.x2(), last_resize_box.y2() + add_translate.y()};
+
+        resize_box.setP1(p1);
+        resize_box.setP2(p2);
+
+        translate_keys({0, add_translate.y()});
+    }
+
+    update();
+}
+
 void curve_view::resize_box_move(QPoint cursor_position)
 {
     if (!resize_box_visible)
@@ -228,137 +364,5 @@ void curve_view::resize_box_move(QPoint cursor_position)
         this->setCursor(Qt::SizeAllCursor);
 
     if (transforming)
-    {
-        action = resize_current_action;
-        QPointF click_coords = get_coordsf(click_position);
-        QPointF coords = get_coordsf(cursor_position);
-        QPointF add_translate = coords - click_coords;
-
-        // Limitacion en x hasta el key frame anterior y siguiente de la seleccion de keyframes.
-        key_frame *previous_key = get_previous_key(selected_key_frames.first());
-        key_frame *next_key = get_next_key(selected_key_frames.last());
-
-        if (previous_key)
-        {
-            // Limitacion para 'scale'
-            if (coords.x() < previous_key->x())
-                coords.setX(previous_key->x());
-
-            // Limitacion para 'translate'
-            float left_border = last_resize_box.x1() + add_translate.x();
-            if (left_border < previous_key->x())
-                add_translate.setX(previous_key->x() - last_resize_box.x1());
-        }
-
-        if (next_key)
-        {
-            // Limitacion para 'scale'
-            if (coords.x() > next_key->x())
-                coords.setX(next_key->x());
-
-            // Limitacion para 'translate'
-            float right_border = last_resize_box.x2() + add_translate.x();
-            if (right_border > next_key->x())
-                add_translate.setX(next_key->x() - last_resize_box.x2());
-        }
-        //
-        //
-
-        // Limitacion para que no traspase el borde izquierdo
-        if (action == "right_scale" || action == "top_right_scale" || action == "bottom_right_scale")
-            if (coords.x() < resize_box.x1())
-                coords.setX(resize_box.x1());
-
-        // Limitacion para que no traspase el borde derecho
-        if (action == "left_scale" || action == "top_left_scale" || action == "bottom_left_scale")
-            if (coords.x() > resize_box.x2())
-                coords.setX(resize_box.x2());
-
-        // Limitacion para que no traspase el borde superior
-        if (action == "bottom_scale" || action == "bottom_left_scale" || action == "bottom_right_scale")
-            if (coords.y() > resize_box.y2())
-                coords.setY(resize_box.y2());
-
-        // Limitacion para que no traspase el borde inferior
-        if (action == "top_scale" || action == "top_right_scale" || action == "top_left_scale")
-            if (coords.y() < resize_box.y1())
-                coords.setY(resize_box.y1());
-        //
-        //
-
-        if (action == "right_scale")
-        {
-            resize_box.setP2({coords.x(), resize_box.y2()});
-            scale_key_from_point({resize_box.x1(), 0});
-        }
-        else if (action == "left_scale")
-        {
-            resize_box.setP1({coords.x(), resize_box.y1()});
-            scale_key_from_point({resize_box.x2(), 0});
-        }
-        else if (action == "top_scale")
-        {
-            resize_box.setP2({resize_box.x2(), coords.y()});
-            scale_key_from_point({0, resize_box.y1()});
-        }
-        else if (action == "bottom_scale")
-        {
-            resize_box.setP1({resize_box.x1(), coords.y()});
-            scale_key_from_point({0, resize_box.y2()});
-        }
-
-        else if (action == "bottom_left_scale")
-        {
-            resize_box.setP1({coords.x(), resize_box.y1()});
-            resize_box.setP1({resize_box.x1(), coords.y()});
-            scale_key_from_point({resize_box.x2(), resize_box.y2()});
-        }
-        else if (action == "top_right_scale")
-        {
-            resize_box.setP2({coords.x(), resize_box.y2()});
-            resize_box.setP2({resize_box.x2(), coords.y()});
-            scale_key_from_point({resize_box.x1(), resize_box.y1()});
-        }
-        else if (action == "bottom_right_scale")
-        {
-            resize_box.setP1({resize_box.x1(), coords.y()});
-            resize_box.setP2({coords.x(), resize_box.y2()});
-            scale_key_from_point({resize_box.x1(), resize_box.y2()});
-        }
-        else if (action == "top_left_scale")
-        {
-            resize_box.setP1({coords.x(), resize_box.y1()});
-            resize_box.setP2({resize_box.x2(), coords.y()});
-            scale_key_from_point({resize_box.x2(), resize_box.y1()});
-        }
-
-        else if (action == "center_translate")
-        {
-            resize_box.setP1(last_resize_box.p1() + add_translate);
-            resize_box.setP2(last_resize_box.p2() + add_translate);
-            translate_keys(add_translate);
-        }
-        else if (action == "horizontal_translate")
-        {
-            QPointF p1 = {last_resize_box.x1() + add_translate.x(), last_resize_box.y1()};
-            QPointF p2 = {last_resize_box.x2() + add_translate.x(), last_resize_box.y2()};
-
-            resize_box.setP1(p1);
-            resize_box.setP2(p2);
-
-            translate_keys({add_translate.x(), 0});
-        }
-        else if (action == "vertical_translate")
-        {
-            QPointF p1 = {last_resize_box.x1(), last_resize_box.y1() + add_translate.y()};
-            QPointF p2 = {last_resize_box.x2(), last_resize_box.y2() + add_translate.y()};
-
-            resize_box.setP1(p1);
-            resize_box.setP2(p2);
-
-            translate_keys({0, add_translate.y()});
-        }
-
-        update();
-    }
+        transforming_box(cursor_position);
 }
