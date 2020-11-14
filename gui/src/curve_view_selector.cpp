@@ -234,6 +234,58 @@ void curve_view::resize_box_move(QPoint cursor_position)
         QPointF coords = get_coordsf(cursor_position);
         QPointF add_translate = coords - click_coords;
 
+        // Limitacion en x hasta el key frame anterior y siguiente de la seleccion de keyframes.
+        key_frame *previous_key = get_previous_key(selected_key_frames.first());
+        key_frame *next_key = get_next_key(selected_key_frames.last());
+
+        if (previous_key)
+        {
+            // Limitacion para 'scale'
+            if (coords.x() < previous_key->x())
+                coords.setX(previous_key->x());
+
+            // Limitacion para 'translate'
+            float left_border = last_resize_box.x1() + add_translate.x();
+            if (left_border < previous_key->x())
+                add_translate.setX(previous_key->x() - last_resize_box.x1());
+        }
+
+        if (next_key)
+        {
+            // Limitacion para 'scale'
+            if (coords.x() > next_key->x())
+                coords.setX(next_key->x());
+
+            // Limitacion para 'translate'
+            float right_border = last_resize_box.x2() + add_translate.x();
+            if (right_border > next_key->x())
+                add_translate.setX(next_key->x() - last_resize_box.x2());
+        }
+        //
+        //
+
+        // Limitacion para que no traspase el borde izquierdo
+        if (action == "right_scale" || action == "top_right_scale" || action == "bottom_right_scale")
+            if (coords.x() < resize_box.x1())
+                coords.setX(resize_box.x1());
+
+        // Limitacion para que no traspase el borde derecho
+        if (action == "left_scale" || action == "top_left_scale" || action == "bottom_left_scale")
+            if (coords.x() > resize_box.x2())
+                coords.setX(resize_box.x2());
+
+        // Limitacion para que no traspase el borde superior
+        if (action == "bottom_scale" || action == "bottom_left_scale" || action == "bottom_right_scale")
+            if (coords.y() > resize_box.y2())
+                coords.setY(resize_box.y2());
+
+        // Limitacion para que no traspase el borde inferior
+        if (action == "top_scale" || action == "top_right_scale" || action == "top_left_scale")
+            if (coords.y() < resize_box.y1())
+                coords.setY(resize_box.y1());
+        //
+        //
+
         if (action == "right_scale")
         {
             resize_box.setP2({coords.x(), resize_box.y2()});
