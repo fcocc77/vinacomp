@@ -53,9 +53,9 @@ void curve_view::selector_move(QPoint cursor_position)
     update();
 }
 
-void curve_view::resize_box_press(QPoint cursor_position)
+void curve_view::transform_box_press(QPoint cursor_position)
 {
-    if (!resize_box_visible)
+    if (!transform_box_visible)
         return;
 
     QString action = get_resize_action(cursor_position);
@@ -64,7 +64,7 @@ void curve_view::resize_box_press(QPoint cursor_position)
     {
         resize_current_action = action;
         transforming = true;
-        last_resize_box = resize_box;
+        last_transform_box = transform_box;
 
         selected_key_frames = get_selected_keys();
         for (key_frame *key : selected_key_frames)
@@ -107,7 +107,7 @@ QLineF curve_view::get_rectangle_of_selected_keyframes()
 
 QString curve_view::get_resize_action(QPoint cursor_position)
 {
-    // Obtiene la accion del 'resize_box' a partir del cursor del mouse
+    // Obtiene la accion del 'transform_box' a partir del cursor del mouse
     bool is_above = false;
     auto above = [&](QPointF point, Qt::CursorShape cursor, QPointF point2 = {}) {
         if (is_cursor_above(cursor_position, point, point2))
@@ -120,8 +120,8 @@ QString curve_view::get_resize_action(QPoint cursor_position)
         return false;
     };
 
-    QPointF bottom_left = resize_box.p1();
-    QPointF top_right = resize_box.p2();
+    QPointF bottom_left = transform_box.p1();
+    QPointF top_right = transform_box.p2();
     QPointF bottom_right = {top_right.x(), bottom_left.y()};
     QPointF top_left = {bottom_left.x(), top_right.y()};
 
@@ -185,11 +185,11 @@ QString curve_view::get_resize_action(QPoint cursor_position)
 
 void curve_view::scale_key_from_point(QPointF point)
 {
-    float last_width = last_resize_box.x2() - last_resize_box.x1();
-    float width = resize_box.x2() - resize_box.x1();
+    float last_width = last_transform_box.x2() - last_transform_box.x1();
+    float width = transform_box.x2() - transform_box.x1();
 
-    float last_height = last_resize_box.y2() - last_resize_box.y1();
-    float height = resize_box.y2() - resize_box.y1();
+    float last_height = last_transform_box.y2() - last_transform_box.y1();
+    float height = transform_box.y2() - transform_box.y1();
 
     float multiply_x = width / last_width;
     float multiply_y = height / last_height;
@@ -209,7 +209,7 @@ void curve_view::translate_keys(QPointF add_translate)
         key->set_pos(key->get_last_position() + add_translate);
 }
 
-void curve_view::transforming_box(QPoint cursor_position)
+void curve_view::to_transform_box(QPoint cursor_position)
 {
     QString action = resize_current_action;
 
@@ -228,9 +228,9 @@ void curve_view::transforming_box(QPoint cursor_position)
             coords.setX(previous_key->x());
 
         // Limitacion para 'translate'
-        float left_border = last_resize_box.x1() + add_translate.x();
+        float left_border = last_transform_box.x1() + add_translate.x();
         if (left_border < previous_key->x())
-            add_translate.setX(previous_key->x() - last_resize_box.x1());
+            add_translate.setX(previous_key->x() - last_transform_box.x1());
     }
 
     if (next_key)
@@ -240,104 +240,104 @@ void curve_view::transforming_box(QPoint cursor_position)
             coords.setX(next_key->x());
 
         // Limitacion para 'translate'
-        float right_border = last_resize_box.x2() + add_translate.x();
+        float right_border = last_transform_box.x2() + add_translate.x();
         if (right_border > next_key->x())
-            add_translate.setX(next_key->x() - last_resize_box.x2());
+            add_translate.setX(next_key->x() - last_transform_box.x2());
     }
     //
     //
 
     // Limitacion para que no traspase el borde izquierdo
     if (action == "right_scale" || action == "top_right_scale" || action == "bottom_right_scale")
-        if (coords.x() < resize_box.x1())
-            coords.setX(resize_box.x1());
+        if (coords.x() < transform_box.x1())
+            coords.setX(transform_box.x1());
 
     // Limitacion para que no traspase el borde derecho
     if (action == "left_scale" || action == "top_left_scale" || action == "bottom_left_scale")
-        if (coords.x() > resize_box.x2())
-            coords.setX(resize_box.x2());
+        if (coords.x() > transform_box.x2())
+            coords.setX(transform_box.x2());
 
     // Limitacion para que no traspase el borde superior
     if (action == "bottom_scale" || action == "bottom_left_scale" || action == "bottom_right_scale")
-        if (coords.y() > resize_box.y2())
-            coords.setY(resize_box.y2());
+        if (coords.y() > transform_box.y2())
+            coords.setY(transform_box.y2());
 
     // Limitacion para que no traspase el borde inferior
     if (action == "top_scale" || action == "top_right_scale" || action == "top_left_scale")
-        if (coords.y() < resize_box.y1())
-            coords.setY(resize_box.y1());
+        if (coords.y() < transform_box.y1())
+            coords.setY(transform_box.y1());
     //
     //
 
     if (action == "right_scale")
     {
-        resize_box.setP2({coords.x(), resize_box.y2()});
-        scale_key_from_point({resize_box.x1(), 0});
+        transform_box.setP2({coords.x(), transform_box.y2()});
+        scale_key_from_point({transform_box.x1(), 0});
     }
     else if (action == "left_scale")
     {
-        resize_box.setP1({coords.x(), resize_box.y1()});
-        scale_key_from_point({resize_box.x2(), 0});
+        transform_box.setP1({coords.x(), transform_box.y1()});
+        scale_key_from_point({transform_box.x2(), 0});
     }
     else if (action == "top_scale")
     {
-        resize_box.setP2({resize_box.x2(), coords.y()});
-        scale_key_from_point({0, resize_box.y1()});
+        transform_box.setP2({transform_box.x2(), coords.y()});
+        scale_key_from_point({0, transform_box.y1()});
     }
     else if (action == "bottom_scale")
     {
-        resize_box.setP1({resize_box.x1(), coords.y()});
-        scale_key_from_point({0, resize_box.y2()});
+        transform_box.setP1({transform_box.x1(), coords.y()});
+        scale_key_from_point({0, transform_box.y2()});
     }
 
     else if (action == "bottom_left_scale")
     {
-        resize_box.setP1({coords.x(), resize_box.y1()});
-        resize_box.setP1({resize_box.x1(), coords.y()});
-        scale_key_from_point({resize_box.x2(), resize_box.y2()});
+        transform_box.setP1({coords.x(), transform_box.y1()});
+        transform_box.setP1({transform_box.x1(), coords.y()});
+        scale_key_from_point({transform_box.x2(), transform_box.y2()});
     }
     else if (action == "top_right_scale")
     {
-        resize_box.setP2({coords.x(), resize_box.y2()});
-        resize_box.setP2({resize_box.x2(), coords.y()});
-        scale_key_from_point({resize_box.x1(), resize_box.y1()});
+        transform_box.setP2({coords.x(), transform_box.y2()});
+        transform_box.setP2({transform_box.x2(), coords.y()});
+        scale_key_from_point({transform_box.x1(), transform_box.y1()});
     }
     else if (action == "bottom_right_scale")
     {
-        resize_box.setP1({resize_box.x1(), coords.y()});
-        resize_box.setP2({coords.x(), resize_box.y2()});
-        scale_key_from_point({resize_box.x1(), resize_box.y2()});
+        transform_box.setP1({transform_box.x1(), coords.y()});
+        transform_box.setP2({coords.x(), transform_box.y2()});
+        scale_key_from_point({transform_box.x1(), transform_box.y2()});
     }
     else if (action == "top_left_scale")
     {
-        resize_box.setP1({coords.x(), resize_box.y1()});
-        resize_box.setP2({resize_box.x2(), coords.y()});
-        scale_key_from_point({resize_box.x2(), resize_box.y1()});
+        transform_box.setP1({coords.x(), transform_box.y1()});
+        transform_box.setP2({transform_box.x2(), coords.y()});
+        scale_key_from_point({transform_box.x2(), transform_box.y1()});
     }
 
     else if (action == "center_translate")
     {
-        resize_box.setP1(last_resize_box.p1() + add_translate);
-        resize_box.setP2(last_resize_box.p2() + add_translate);
+        transform_box.setP1(last_transform_box.p1() + add_translate);
+        transform_box.setP2(last_transform_box.p2() + add_translate);
         translate_keys(add_translate);
     }
     else if (action == "horizontal_translate")
     {
-        QPointF p1 = {last_resize_box.x1() + add_translate.x(), last_resize_box.y1()};
-        QPointF p2 = {last_resize_box.x2() + add_translate.x(), last_resize_box.y2()};
+        QPointF p1 = {last_transform_box.x1() + add_translate.x(), last_transform_box.y1()};
+        QPointF p2 = {last_transform_box.x2() + add_translate.x(), last_transform_box.y2()};
 
-        resize_box.setP1(p1);
-        resize_box.setP2(p2);
+        transform_box.setP1(p1);
+        transform_box.setP2(p2);
 
         translate_keys({add_translate.x(), 0});
     }
     else if (action == "vertical_translate")
     {
-        QPointF p1 = {last_resize_box.x1(), last_resize_box.y1() + add_translate.y()};
-        QPointF p2 = {last_resize_box.x2(), last_resize_box.y2() + add_translate.y()};
+        QPointF p1 = {last_transform_box.x1(), last_transform_box.y1() + add_translate.y()};
+        QPointF p2 = {last_transform_box.x2(), last_transform_box.y2() + add_translate.y()};
 
-        resize_box.setP1(p1);
-        resize_box.setP2(p2);
+        transform_box.setP1(p1);
+        transform_box.setP2(p2);
 
         translate_keys({0, add_translate.y()});
     }
@@ -345,9 +345,9 @@ void curve_view::transforming_box(QPoint cursor_position)
     update();
 }
 
-void curve_view::resize_box_move(QPoint cursor_position)
+void curve_view::transform_box_move(QPoint cursor_position)
 {
-    if (!resize_box_visible)
+    if (!transform_box_visible)
         return;
 
     QString action = get_resize_action(cursor_position);
@@ -364,5 +364,5 @@ void curve_view::resize_box_move(QPoint cursor_position)
         this->setCursor(Qt::SizeAllCursor);
 
     if (transforming)
-        transforming_box(cursor_position);
+        to_transform_box(cursor_position);
 }

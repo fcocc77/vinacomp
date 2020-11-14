@@ -14,7 +14,7 @@ void curve_view::paintGL()
     draw_coordinate_numbers();
     draw_curve();
     draw_selector();
-    draw_resize_box();
+    draw_transform_box();
 }
 
 void curve_view::draw_circle()
@@ -176,15 +176,15 @@ void curve_view::draw_selector()
     draw_box(selector, {20, 20, 20}, {100, 100, 100});
 }
 
-void curve_view::draw_resize_box()
+void curve_view::draw_transform_box()
 {
-    if (!resize_box_visible)
+    if (!transform_box_visible)
         return;
 
     QColor color = {100, 100, 100};
 
-    QPointF bottom_left = resize_box.p1();
-    QPointF top_right = resize_box.p2();
+    QPointF bottom_left = transform_box.p1();
+    QPointF top_right = transform_box.p2();
     QPointF bottom_right = {top_right.x(), bottom_left.y()};
     QPointF top_left = {bottom_left.x(), top_right.y()};
 

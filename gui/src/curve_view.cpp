@@ -32,10 +32,10 @@ void curve_view::mousePressEvent(QMouseEvent *event)
 
     if (!qt::alt() && event->button() == Qt::LeftButton)
     {
-        resize_box_press(event->pos());
+        transform_box_press(event->pos());
         if (!transforming)
         {
-            resize_box_visible = false;
+            transform_box_visible = false;
             key_press(event->pos());
 
             if (!dragging)
@@ -56,8 +56,8 @@ void curve_view::mouseReleaseEvent(QMouseEvent *event)
 {
     if (selecting)
     {
-        resize_box = get_rectangle_of_selected_keyframes();
-        resize_box_visible = !resize_box.isNull();
+        transform_box = get_rectangle_of_selected_keyframes();
+        transform_box_visible = !transform_box.isNull();
     }
 
     dragging = false;
@@ -75,7 +75,7 @@ void curve_view::move_event(QPoint position)
 
     if (!qt::alt())
     {
-        resize_box_move(position);
+        transform_box_move(position);
         if (!transforming)
         {
             key_move(position);

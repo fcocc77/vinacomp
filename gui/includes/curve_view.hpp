@@ -43,15 +43,15 @@ private:
     void draw_curve();
     void draw_bezier(key_frame *src_key, key_frame *dst_key);
     void draw_selector();
-    void draw_resize_box();
+    void draw_transform_box();
     //
     //
     //
 
     // Selector
-    bool resize_box_visible = false;
-    QLineF resize_box;
-    QLineF last_resize_box;
+    bool transform_box_visible = false;
+    QLineF transform_box;
+    QLineF last_transform_box;
 
     bool selecting = false;
     QLineF selector;
@@ -66,9 +66,9 @@ private:
     QLineF get_rectangle_of_selected_keyframes();
     void scale_key_from_point(QPointF point);
     void translate_keys(QPointF add_translate);
-    void transforming_box(QPoint cursor_position);
-    void resize_box_press(QPoint cursor_position);
-    void resize_box_move(QPoint cursor_position);
+    void to_transform_box(QPoint cursor_position);
+    void transform_box_press(QPoint cursor_position);
+    void transform_box_move(QPoint cursor_position);
     //
     //
 

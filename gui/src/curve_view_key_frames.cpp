@@ -159,7 +159,7 @@ void curve_view::key_move(QPoint cursor_position)
 {
 
     // cambia el cursor si esta sobre algun key frame
-    if (!resize_box_visible)
+    if (!transform_box_visible)
         for (auto keys : curves)
             for (key_frame *key : keys)
                 if (is_cursor_above(cursor_position, key->pos()))
