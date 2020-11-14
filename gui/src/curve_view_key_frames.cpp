@@ -83,13 +83,6 @@ void curve_view::create_curve()
 {
     QString name = "translate_x";
 
-    // key_frame key1(name, 0);
-    // key_frame key2(name, 1);
-    // key_frame key3(name, 2);
-    // key_frame key4(name, 3);
-
-    // curves.insert(name, {&key1, &key2, &key3, &key4});
-
     key_frame *key1 = new key_frame(name, 0);
     key_frame *key2 = new key_frame(name, 1);
     key_frame *key3 = new key_frame(name, 2);
@@ -170,7 +163,7 @@ void curve_view::key_move(QPoint cursor_position)
         for (auto keys : curves)
             for (key_frame *key : keys)
                 if (is_cursor_above(cursor_position, key->pos()))
-                    this->setCursor(Qt::SizeAllCursor);
+                    this->setCursor(Qt::CrossCursor);
     //
     //
 
