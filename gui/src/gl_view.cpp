@@ -26,12 +26,28 @@ void gl_view::set_coord(QPointF _coord, QPointF zoom)
     update();
 }
 
+void gl_view::set_ortho(float left, float right, float bottom, float top)
+{
+    float aspect = get_aspect();
+
+    float coord_x = (right + left) / 2;
+    float coord_y = ((top + bottom) / aspect) / 2;
+
+    float zoom_x = (right - left) / 4;
+    float zoom_y = ((top - bottom) / aspect) / 4;
+
+    set_coord({coord_x, coord_y}, {zoom_x, zoom_y});
+}
+
+float gl_view::get_aspect()
+{
+    return float(height()) / width();
+}
+
 QPointF gl_view::get_coords(QPoint mouse_position)
 {
-    float aspect = float(height()) / width();
-
     QPointF coordinate = -get_coordinate(mouse_position) + coord;
-    return {coordinate.x(), coordinate.y() * aspect};
+    return {coordinate.x(), coordinate.y() * get_aspect()};
 }
 
 QPointF gl_view::get_coordsf(QPointF mouse_position)
@@ -43,10 +59,8 @@ QPointF gl_view::get_position(QPointF coordinate)
 {
     // esta funcion es el reverso de 'get_coords'
     // obtiene la posicion en el visor, a partir de la cordenada de la escena.
-    float aspect = float(height()) / width();
-
     float x = coordinate.x();
-    float y = coordinate.y() / aspect;
+    float y = coordinate.y() / get_aspect();
 
     x += -coord.x();
     y += -coord.y();

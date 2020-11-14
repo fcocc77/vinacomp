@@ -6,7 +6,7 @@ void gl_view::paintGL()
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
-    float aspect = float(height()) / width();
+    float aspect = get_aspect();
 
     float left = coord.x() - zoom_scale.x() * 2;
     float right = coord.x() + zoom_scale.x() * 2;

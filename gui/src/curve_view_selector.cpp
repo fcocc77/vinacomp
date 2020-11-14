@@ -72,19 +72,17 @@ void curve_view::transform_box_press(QPoint cursor_position)
     }
 }
 
-QLineF curve_view::get_rectangle_of_selected_keyframes()
+QLineF curve_view::get_rectangle_of_keyframes(QList<key_frame *> keys)
 {
-    auto selected = get_selected_keys();
-
-    if (selected.count() <= 1)
+    if (keys.count() <= 1)
         return {};
 
-    key_frame *top = selected.first();
-    key_frame *bottom = selected.first();
-    key_frame *left = selected.first();
-    key_frame *right = selected.first();
+    key_frame *top = keys.first();
+    key_frame *bottom = keys.first();
+    key_frame *left = keys.first();
+    key_frame *right = keys.first();
 
-    for (key_frame *key : selected)
+    for (key_frame *key : keys)
     {
         if (key->y() > top->y())
             top = key;

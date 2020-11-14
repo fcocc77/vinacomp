@@ -52,8 +52,10 @@ public:
     QPointF get_coords(QPoint mouse_position);
     QPointF get_coordsf(QPointF mouse_position);
     QPointF get_scale();
+    float get_aspect();
     void set_default();
     void set_coord(QPointF coords, QPointF zoom);
+    void set_ortho(float left, float right, float bottom, float top);
 
     QPointF rotate_point(QPointF point, QPointF anchor_point, float angle, bool keep_aspect = false);
     float get_angle_two_points(QPointF a, QPointF b);

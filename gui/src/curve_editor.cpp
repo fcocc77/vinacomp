@@ -5,9 +5,6 @@ curve_editor ::curve_editor()
     this->setObjectName("curve_editor");
     setup_ui();
 
-    qt::shortcut("F", this, [this]() {
-        view->set_default();
-    });
 }
 
 curve_editor ::~curve_editor()

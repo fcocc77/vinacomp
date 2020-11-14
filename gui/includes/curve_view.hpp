@@ -21,6 +21,7 @@ private:
     QMap<QString, QList<key_frame *>> curves;
 
     bool is_point_in_rectangle(QPointF point, QLineF rectangle);
+    void fit_viewport_to_keyframes();
     void create_curve();
     void key_press(QPoint cursor_position);
     void key_move(QPoint cursor_position);
@@ -63,7 +64,7 @@ private:
     void selector_move(QPoint cursor_position);
     QList<key_frame *> get_selected_keys();
     QString get_transform_action(QPoint cursor_position);
-    QLineF get_rectangle_of_selected_keyframes();
+    QLineF get_rectangle_of_keyframes(QList<key_frame *> keys);
     void scale_key_from_point(QPointF point);
     void translate_keys(QPointF add_translate);
     void to_transform_box(QPoint cursor_position);

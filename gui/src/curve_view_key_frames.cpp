@@ -52,8 +52,8 @@ QLineF curve_view::get_handler_points(
         viwport_left_point = rotate_point(viwport_left_point, view_anchor_point, angle - 180);
         viwport_right_point = rotate_point(viwport_right_point, view_anchor_point, angle);
 
-        left_point = get_coords({viwport_left_point.x(), viwport_left_point.y()});
-        right_point = get_coords({viwport_right_point.x(), viwport_right_point.y()});
+        left_point = get_coordsf(viwport_left_point);
+        right_point = get_coordsf(viwport_right_point);
     }
 
     if (infinite)
@@ -88,9 +88,9 @@ void curve_view::create_curve()
     key_frame *key3 = new key_frame(name, 2);
     key_frame *key4 = new key_frame(name, 3);
 
-    key1->set_pos({0.1, 0.2});
+    key1->set_pos({0, 2});
     key2->set_pos({0.5, 1});
-    key3->set_pos({1, 0.3});
+    key3->set_pos({1, 0});
     key4->set_pos({2, 0.4});
 
     curves.insert(name, {key1, key2, key3, key4});

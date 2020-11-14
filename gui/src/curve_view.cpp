@@ -20,10 +20,50 @@ curve_view::curve_view(/* args */)
 
         update();
     });
+
+    qt::shortcut("F", this, [this]() {
+        fit_viewport_to_keyframes();
+    });
 }
 
 curve_view::~curve_view()
 {
+}
+
+void curve_view::fit_viewport_to_keyframes()
+{
+    int padding_percent = 20; // porcentaje
+
+    QList<key_frame *> all_key_frames;
+    for (auto keys : curves)
+        for (key_frame *key : keys)
+            all_key_frames.push_back(key);
+
+    auto selected = get_selected_keys();
+
+    QLineF rect;
+
+    if (selected.count() > 1)
+        rect = get_rectangle_of_keyframes(selected);
+    else if (!all_key_frames.empty())
+        rect = get_rectangle_of_keyframes(all_key_frames);
+    else
+    {
+        set_default();
+        return;
+    }
+
+    float x_distance = (rect.x2() - rect.x1()) * get_aspect();
+    float y_distance = rect.y2() - rect.y1();
+
+    float padding_x = (padding_percent * x_distance) / 100.0;
+    float padding_y = (padding_percent * y_distance) / 100.0;
+
+    set_ortho(
+        rect.x1() - padding_x,
+        rect.x2() + padding_x,
+        rect.y1() - padding_y,
+        rect.y2() + padding_y);
 }
 
 void curve_view::mousePressEvent(QMouseEvent *event)
@@ -56,7 +96,7 @@ void curve_view::mouseReleaseEvent(QMouseEvent *event)
 {
     if (selecting)
     {
-        transform_box = get_rectangle_of_selected_keyframes();
+        transform_box = get_rectangle_of_keyframes(get_selected_keys());
         transform_box_visible = !transform_box.isNull();
     }
 
