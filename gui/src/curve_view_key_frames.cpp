@@ -8,31 +8,31 @@ QLineF curve_view::get_handler_points(
     key_frame *previous_key = get_previous_key(key);
     key_frame *next_key = get_next_key(key);
 
-    float separation_a, separation_b;
+    float left_separation, right_separation;
 
     if (previous_key)
-        separation_a = (key->x() - previous_key->x()) * key->exaggeration();
+        left_separation = (key->x() - previous_key->x()) * key->exaggeration();
     if (next_key)
-        separation_b = (next_key->x() - key->x()) * key->exaggeration();
+        right_separation = (next_key->x() - key->x()) * key->exaggeration();
 
     // si es el primer o ultimo keyframe, le asigna la separacion del lado contrario
     if (!previous_key)
-        separation_a = separation_b;
+        left_separation = right_separation;
     if (!next_key)
-        separation_b = separation_a;
+        right_separation = left_separation;
     //
     //
 
-    float point_a_x = key->x() - separation_a;
-    float point_b_x = key->x() + separation_b;
+    float left_point_x = key->x() - left_separation;
+    float right_point_x = key->x() + right_separation;
 
-    QPointF point_a = {point_a_x, key->y()};
-    QPointF point_b = {point_b_x, key->y()};
+    QPointF left_point = {left_point_x, key->y()};
+    QPointF right_point = {right_point_x, key->y()};
 
     // genera el punto vertical infinito donde apunta el manejador
     float tangent = tan(key->get_angle() * M_PI / 180);
-    QPointF infinite_point_a = {point_a.x(), point_a.y() + (tangent * separation_a)};
-    QPointF infinite_point_b = {point_b.x(), point_b.y() - (tangent * separation_b)};
+    QPointF infinite_left_point = {left_point.x(), left_point.y() + (tangent * left_separation)};
+    QPointF infinite_right_point = {right_point.x(), right_point.y() - (tangent * right_separation)};
     //
 
     if (!infinite)
@@ -41,25 +41,25 @@ QLineF curve_view::get_handler_points(
         // 2 puntos del manejador de cordenadas a puntos en la
         // position del visor, con esto logramos que el manejador
         // siempre quede del mismo tamaño.
-        QPointF view_point_a = get_position(point_a);
-        QPointF view_point_b = get_position(point_b);
+        QPointF viwport_left_point = get_position(left_point);
+        QPointF viwport_right_point = get_position(right_point);
 
-        QPointF view_infinite = get_position(infinite_point_a);
+        QPointF view_infinite = get_position(infinite_left_point);
         QPointF view_anchor_point = get_position(key->pos());
 
         float angle = get_angle_two_points(view_infinite, view_anchor_point) - 90;
 
-        view_point_a = rotate_point(view_point_a, view_anchor_point, angle - 180);
-        view_point_b = rotate_point(view_point_b, view_anchor_point, angle);
+        viwport_left_point = rotate_point(viwport_left_point, view_anchor_point, angle - 180);
+        viwport_right_point = rotate_point(viwport_right_point, view_anchor_point, angle);
 
-        point_a = get_coords({view_point_a.x(), view_point_a.y()});
-        point_b = get_coords({view_point_b.x(), view_point_b.y()});
+        left_point = get_coords({viwport_left_point.x(), viwport_left_point.y()});
+        right_point = get_coords({viwport_right_point.x(), viwport_right_point.y()});
     }
 
     if (infinite)
-        return {infinite_point_a, infinite_point_b};
+        return {infinite_left_point, infinite_right_point};
     else
-        return {point_a, point_b};
+        return {left_point, right_point};
 }
 
 QPointF curve_view::cubic_bezier(
