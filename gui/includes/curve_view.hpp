@@ -62,7 +62,7 @@ private:
 
     void selector_move(QPoint cursor_position);
     QList<key_frame *> get_selected_keys();
-    QString get_resize_action(QPoint cursor_position);
+    QString get_transform_action(QPoint cursor_position);
     QLineF get_rectangle_of_selected_keyframes();
     void scale_key_from_point(QPointF point);
     void translate_keys(QPointF add_translate);

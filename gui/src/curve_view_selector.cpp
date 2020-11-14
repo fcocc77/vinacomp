@@ -58,7 +58,7 @@ void curve_view::transform_box_press(QPoint cursor_position)
     if (!transform_box_visible)
         return;
 
-    QString action = get_resize_action(cursor_position);
+    QString action = get_transform_action(cursor_position);
 
     if (!action.isEmpty())
     {
@@ -105,7 +105,7 @@ QLineF curve_view::get_rectangle_of_selected_keyframes()
     return {bottom_left, top_right};
 }
 
-QString curve_view::get_resize_action(QPoint cursor_position)
+QString curve_view::get_transform_action(QPoint cursor_position)
 {
     // Obtiene la accion del 'transform_box' a partir del cursor del mouse
     bool is_above = false;
@@ -124,6 +124,12 @@ QString curve_view::get_resize_action(QPoint cursor_position)
     QPointF top_right = transform_box.p2();
     QPointF bottom_right = {top_right.x(), bottom_left.y()};
     QPointF top_left = {bottom_left.x(), top_right.y()};
+
+    // si las posiciones x o y de la caja de tranformacion son iguales, entoces solo se puede mover
+    if (transform_box.x1() == transform_box.x2() || transform_box.y1() == transform_box.y2())
+        if (is_cursor_above(cursor_position, transform_box.p1(), transform_box.p2()))
+            return "center_translate";
+    //
 
     // vertices
     if (is_cursor_above(cursor_position, bottom_left))
@@ -350,7 +356,7 @@ void curve_view::transform_box_move(QPoint cursor_position)
     if (!transform_box_visible)
         return;
 
-    QString action = get_resize_action(cursor_position);
+    QString action = get_transform_action(cursor_position);
 
     if (action == "bottom_left_scale" || action == "top_right_scale")
         this->setCursor(Qt::SizeBDiagCursor);
