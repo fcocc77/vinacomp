@@ -16,9 +16,9 @@ QLineF curve_view::get_handler_points(
         separation_b = (next_key->x() - key->x()) * key->exaggeration();
 
     // si es el primer o ultimo keyframe, le asigna la separacion del lado contrario
-    if (previous_key)
+    if (!previous_key)
         separation_a = separation_b;
-    if (next_key)
+    if (!next_key)
         separation_b = separation_a;
     //
     //
@@ -37,7 +37,7 @@ QLineF curve_view::get_handler_points(
 
     if (!infinite)
     {
-        // antes de rotar el manejador, transforma el punto de key->y() los
+        // antes de rotar el manejador, transforma el punto de key y los
         // 2 puntos del manejador de cordenadas a puntos en la
         // position del visor, con esto logramos que el manejador
         // siempre quede del mismo tamaño.
