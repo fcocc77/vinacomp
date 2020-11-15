@@ -221,11 +221,13 @@ void curve_view::to_transform_box(QPoint cursor_position)
     QPointF coords = get_coordsf(cursor_position);
     QPointF add_translate = coords - click_coords;
 
-    key_frame *previous_key = get_previous_key(selected_key_frames.first());
-    key_frame *next_key = get_next_key(selected_key_frames.last());
+    key_frame *first_key = selected_key_frames.first();
+    key_frame *last_key = selected_key_frames.last();
 
-    key_frame *previous_last_key = get_previous_key(selected_key_frames.last());
-    key_frame *next_first_key = get_next_key(selected_key_frames.first());
+    key_frame *previous_key = get_previous_key(first_key);
+    key_frame *next_key = get_next_key(last_key);
+
+    key_frame *previous_last_key = get_previous_key(last_key);
 
     // Limitacion en x hasta el key frame anterior y siguiente de la seleccion de keyframes.
     if (previous_key)
@@ -254,15 +256,81 @@ void curve_view::to_transform_box(QPoint cursor_position)
     //
     //
 
+    // encuentra el siguiente keyframe, que esta en el rango de los seleccionados
+    // pero no esta seleccionado y esta por atras del ultimo keyframe
+    key_frame *next_unselect_key = nullptr;
+    for (key_frame *selected_key : selected_key_frames)
+    {
+        key_frame *next_selected_key = get_next_key(selected_key);
+        if (next_selected_key)
+            if (next_selected_key->get_index() < last_key->get_index())
+                if (!next_selected_key->selected())
+                    next_unselect_key = next_selected_key;
+    }
+    //
+    //
+
+    // encuentra el keyframe previo, que esta en el rango de los seleccionados
+    // pero no esta seleccionado y esta por delante del primer keyframe
+    key_frame *previous_unselect_key = nullptr;
+    for (key_frame *selected_key : selected_key_frames)
+    {
+        key_frame *previous_selected_key = get_previous_key(selected_key);
+        if (previous_selected_key)
+            if (previous_selected_key->get_index() > first_key->get_index())
+                if (!previous_selected_key->selected())
+                    previous_unselect_key = previous_selected_key;
+    }
+    //
+    //
+
     // Limitacion para que no traspase el antepenultimo key frame seleccionado
     if (action == "right_scale" || action == "top_right_scale" || action == "bottom_right_scale")
-        if (coords.x() < previous_last_key->x())
-            coords.setX(previous_last_key->x());
+    {
+        if (previous_unselect_key)
+        {
+            key_frame *next = get_next_key(previous_unselect_key);
+
+            float next_x = next->get_last_position().x();
+            float last_key_x = last_key->get_last_position().x();
+            float unselect_x = previous_unselect_key->x();
+
+            float last_distance = next_x - unselect_x;
+            float distance = (coords.x() - (last_key_x - next_x)) - unselect_x;
+
+            if (distance <= 0)
+                coords.setX(last_key_x - last_distance);
+        }
+        else
+        {
+            if (coords.x() < first_key->x())
+                coords.setX(first_key->x());
+        }
+    }
 
     // Limitacion para que no traspase el segundo key frame seleccionado
     if (action == "left_scale" || action == "top_left_scale" || action == "bottom_left_scale")
-        if (coords.x() > next_first_key->x())
-            coords.setX(next_first_key->x());
+    {
+        if (next_unselect_key)
+        {
+            key_frame *previous = get_previous_key(next_unselect_key);
+
+            float previous_x = previous->get_last_position().x();
+            float first_key_x = first_key->get_last_position().x();
+            float unselect_x = next_unselect_key->x();
+
+            float last_distance = unselect_x - previous_x;
+            float distance = next_unselect_key->x() - (coords.x() + (previous_x - first_key_x));
+
+            if (distance <= 0)
+                coords.setX(first_key_x + last_distance);
+        }
+        else
+        {
+            if (coords.x() > last_key->x())
+                coords.setX(last_key->x());
+        }
+    }
 
     // Limitacion para que no traspase el borde superior
     if (action == "bottom_scale" || action == "bottom_left_scale" || action == "bottom_right_scale")
