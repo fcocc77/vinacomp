@@ -27,6 +27,8 @@ void gl_view::resizeGL(int width, int height)
 
 void gl_view::aa_enable(bool enable)
 {
+    int gl_version = *glGetString(GL_VERSION);
+
     // habilita o desabilita el Antialiasing, si esta habilitado
     // usa la mescla en alpha y si no, usa una mescla
     // dejando los pixel mas claros visibles.
@@ -40,7 +42,11 @@ void gl_view::aa_enable(bool enable)
 
         glBlendEquation(GL_FUNC_ADD);
 
-        glLineWidth(1.5);
+        // mantiene un diferente tamaño de borde si es una tarjeta Nvidia o una intel
+        if (gl_version == 52)
+            glLineWidth(1.5); // Nvidia
+        else
+            glLineWidth(2); // Intel
     }
     else
     {
