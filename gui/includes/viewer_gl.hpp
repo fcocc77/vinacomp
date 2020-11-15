@@ -9,7 +9,7 @@ private:
     void draw_frame(int width, int height, QColor color);
 
 public:
-    viewer_gl(/* args */);
+    viewer_gl();
     ~viewer_gl();
 
 protected:

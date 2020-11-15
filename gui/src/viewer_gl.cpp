@@ -1,6 +1,6 @@
 #include <viewer_gl.hpp>
 
-viewer_gl::viewer_gl(/* args */)
+viewer_gl::viewer_gl() : gl_view(true)
 {
     this->setMouseTracking(true);
     set_transform({1000, 1000}, {1000, 1000});
