@@ -1,9 +1,9 @@
 #include <node_graph.hpp>
 
 node_graph::node_graph(QJsonObject *_project, properties *__properties)
+    : project(_project),
+      _properties(__properties)
 {
-    project = _project;
-    _properties = __properties;
     scene = new QGraphicsScene();
 
     // cuadro de cambio de nombre de nodo

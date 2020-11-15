@@ -1,8 +1,8 @@
 #include <vinacomp.hpp>
 
 vinacomp::vinacomp(QApplication *_app)
+    : app(_app)
 {
-    app = _app;
     project = new QJsonObject();
     setup_ui();
 }

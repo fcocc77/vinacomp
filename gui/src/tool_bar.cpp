@@ -1,9 +1,9 @@
 #include <tool_bar.hpp>
 
 tool_bar::tool_bar(maker *__maker)
+    : _maker(__maker)
 {
 
-    _maker = __maker;
     this->setObjectName("tool_bar");
     this->setMaximumWidth(40);
 

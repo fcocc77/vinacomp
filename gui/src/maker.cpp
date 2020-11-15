@@ -1,9 +1,9 @@
 #include <maker.hpp>
 
 maker::maker(node_graph *__node_graph, properties *__properties)
+    : _node_graph(__node_graph),
+      _properties(__properties)
 {
-    _node_graph = __node_graph;
-    _properties = __properties;
 
     QString json_nodes_path = "engine/nodes/json";
 

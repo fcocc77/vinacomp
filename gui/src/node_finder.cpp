@@ -1,9 +1,10 @@
 #include <node_finder.hpp>
 
 node_finder::node_finder(node_graph *__node_graph, QJsonObject *_effects)
+    : _node_graph(__node_graph),
+      effects(_effects)
 {
-    _node_graph = __node_graph;
-    effects = _effects;
+
     this->setParent(_node_graph);
     search_field = new QLineEdit(this);
     connect(search_field, &QLineEdit::textChanged, this, &node_finder::update_tree);

@@ -1,18 +1,18 @@
 #include <node_link.hpp>
 #include <node.hpp>
 
-node_link::node_link(
-    int _index,
-    QGraphicsScene *_scene,
-    QGraphicsItem *__node,
-    QJsonObject *_link_connecting)
-{
+node_link::node_link(int _index,
+                     QGraphicsScene *_scene,
+                     QGraphicsItem *__node,
+                     QJsonObject *_link_connecting)
 
-    scene = _scene;
-    this_node = __node;
-    link_connecting = _link_connecting;
+    : index(_index),
+      scene(_scene),
+      this_node(__node),
+      link_connecting(_link_connecting)
+
+{
     connected_node = NULL;
-    index = _index;
 
     // Link
     link_size = 70;

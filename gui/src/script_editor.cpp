@@ -1,9 +1,9 @@
 #include <script_editor.hpp>
 
 script_editor::script_editor(QJsonObject *_project)
+    : project(_project)
 {
 
-    project = _project;
     this->setObjectName("script_editor");
     setup_ui();
 }

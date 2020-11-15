@@ -3,7 +3,6 @@
 key_frame::key_frame(QString _curve_name, int _index)
     : curve_name(_curve_name),
       index(_index)
-
 {
 }
 

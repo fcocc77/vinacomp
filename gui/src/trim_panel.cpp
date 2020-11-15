@@ -1,14 +1,14 @@
 #include <trim_panel.hpp>
 
-trim_panel::trim_panel(
-    properties *__properties,
-    QString _name,
-    QString _icon_name,
-    QJsonArray *_knobs)
+trim_panel::trim_panel(properties *__properties,
+                       QString _name,
+                       QString _icon_name,
+                       QJsonArray *_knobs)
+
+    : _properties(__properties),
+      name(_name),
+      icon_name(_icon_name)
 {
-    _properties = __properties;
-    name = _name;
-    icon_name = _icon_name;
 
     this->setObjectName("trim_panel");
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -97,7 +97,6 @@ void trim_panel::setup_knobs(QJsonArray *knobs)
         {
             QJsonArray items = knob_object.value("items").toArray();
             widget = new knob_choice(qt::array_to_list(items));
-            
         }
 
         else if (type == "text")

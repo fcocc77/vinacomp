@@ -7,18 +7,16 @@ panel::panel(QWidget *_panels_layout,
              viewer *__viewer,
              script_editor *__script_editor,
              properties *__properties,
-             curve_editor *__curve_editor
+             curve_editor *__curve_editor)
 
-)
+    : panels_layout(_panels_layout),
+      _node_graph(__node_graph),
+      _viewer(__viewer),
+      _script_editor(__script_editor),
+      _properties(__properties),
+      _curve_editor(__curve_editor)
+
 {
-
-    panels_layout = _panels_layout;
-    _node_graph = __node_graph;
-    _viewer = __viewer;
-    _script_editor = __script_editor;
-    _properties = __properties;
-    _curve_editor = __curve_editor;
-
     this->setObjectName("panel");
 
     splitters = _splitters;
