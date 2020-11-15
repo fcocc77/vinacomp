@@ -221,10 +221,13 @@ void curve_view::to_transform_box(QPoint cursor_position)
     QPointF coords = get_coordsf(cursor_position);
     QPointF add_translate = coords - click_coords;
 
-    // Limitacion en x hasta el key frame anterior y siguiente de la seleccion de keyframes.
     key_frame *previous_key = get_previous_key(selected_key_frames.first());
     key_frame *next_key = get_next_key(selected_key_frames.last());
 
+    key_frame *previous_last_key = get_previous_key(selected_key_frames.last());
+    key_frame *next_first_key = get_next_key(selected_key_frames.first());
+
+    // Limitacion en x hasta el key frame anterior y siguiente de la seleccion de keyframes.
     if (previous_key)
     {
         // Limitacion para 'scale'
@@ -251,15 +254,15 @@ void curve_view::to_transform_box(QPoint cursor_position)
     //
     //
 
-    // Limitacion para que no traspase el borde izquierdo
+    // Limitacion para que no traspase el antepenultimo key frame seleccionado
     if (action == "right_scale" || action == "top_right_scale" || action == "bottom_right_scale")
-        if (coords.x() < transform_box.x1())
-            coords.setX(transform_box.x1());
+        if (coords.x() < previous_last_key->x())
+            coords.setX(previous_last_key->x());
 
-    // Limitacion para que no traspase el borde derecho
+    // Limitacion para que no traspase el segundo key frame seleccionado
     if (action == "left_scale" || action == "top_left_scale" || action == "bottom_left_scale")
-        if (coords.x() > transform_box.x2())
-            coords.setX(transform_box.x2());
+        if (coords.x() > next_first_key->x())
+            coords.setX(next_first_key->x());
 
     // Limitacion para que no traspase el borde superior
     if (action == "bottom_scale" || action == "bottom_left_scale" || action == "bottom_right_scale")
