@@ -1,8 +1,8 @@
 #include <gl_view.hpp>
 
-gl_view::gl_view()
+gl_view::gl_view(bool _lock_scale)
+    : lock_scale(_lock_scale)
 {
-    zoom_lock = false;
     set_default();
 }
 
@@ -12,16 +12,16 @@ gl_view::~gl_view()
 
 void gl_view::set_default()
 {
-    coord = {1.7, 1.7};
-    zoom_scale = {1.0, 1.0};
+    translate = {1.7, 1.7};
+    scale = {1.0, 1.0};
 
     update();
 }
 
-void gl_view::set_coord(QPointF _coord, QPointF zoom)
+void gl_view::set_transform(QPointF _translate, QPointF _scale)
 {
-    coord = _coord;
-    zoom_scale = zoom;
+    translate = _translate;
+    scale = _scale;
 
     update();
 }
@@ -30,13 +30,13 @@ void gl_view::set_ortho(float left, float right, float bottom, float top)
 {
     float aspect = get_aspect();
 
-    float coord_x = (right + left) / 2;
-    float coord_y = ((top + bottom) / aspect) / 2;
+    float translate_x = (right + left) / 2;
+    float translate_y = ((top + bottom) / aspect) / 2;
 
-    float zoom_x = (right - left) / 4;
-    float zoom_y = ((top - bottom) / aspect) / 4;
+    float scale_x = (right - left) / 4;
+    float scale_y = ((top - bottom) / aspect) / 4;
 
-    set_coord({coord_x, coord_y}, {zoom_x, zoom_y});
+    set_transform({translate_x, translate_y}, {scale_x, scale_y});
 }
 
 float gl_view::get_aspect()
@@ -46,7 +46,7 @@ float gl_view::get_aspect()
 
 QPointF gl_view::get_coords(QPoint mouse_position)
 {
-    QPointF coordinate = -get_coordinate(mouse_position) + coord;
+    QPointF coordinate = -get_coordinate(mouse_position) + translate;
     return {coordinate.x(), coordinate.y() * get_aspect()};
 }
 
@@ -62,14 +62,14 @@ QPointF gl_view::get_position(QPointF coordinate)
     float x = coordinate.x();
     float y = coordinate.y() / get_aspect();
 
-    x += -coord.x();
-    y += -coord.y();
+    x += -translate.x();
+    y += -translate.y();
 
-    float zoom_value_x = zoom_scale.x() * 2;
-    float zoom_value_y = -zoom_scale.y() * 2;
+    float scale_value_x = scale.x() * 2;
+    float scale_value_y = -scale.y() * 2;
 
-    x /= zoom_value_x;
-    y /= zoom_value_y;
+    x /= scale_value_x;
+    y /= scale_value_y;
 
     x = (x + 1.0) * this->width() / 2.0 - 0.5;
     y = (y + 1.0) * this->height() / 2.0 - 0.5;
@@ -83,11 +83,11 @@ QPointF gl_view::get_coordinate(QPoint cursor_position)
     float x = 2.0f * (cursor_position.x() + 0.5) / this->width() - 1.0;
     float y = 2.0f * (cursor_position.y() + 0.5) / this->height() - 1.0;
 
-    float zoom_value_x = zoom_scale.x() * 2;
-    float zoom_value_y = zoom_scale.y() * 2;
+    float scale_value_x = scale.x() * 2;
+    float scale_value_y = scale.y() * 2;
 
-    x *= zoom_value_x;
-    y *= zoom_value_y;
+    x *= scale_value_x;
+    y *= scale_value_y;
 
     return {-x, y};
 }
@@ -135,14 +135,9 @@ bool gl_view::is_cursor_above(QPoint cursor_position, QPointF point, QPointF poi
     return false;
 }
 
-void gl_view::set_zoom_lock(bool enable)
-{
-    zoom_lock = enable;
-}
-
 QPointF gl_view::get_scale()
 {
-    return zoom_scale;
+    return scale;
 }
 
 QPointF gl_view::rotate_point(QPointF point, QPointF anchor_point, float angle, bool keep_aspect)
@@ -164,24 +159,6 @@ QPointF gl_view::rotate_point(QPointF point, QPointF anchor_point, float angle, 
     return {x, y};
 }
 
-float gl_view::get_angle_orientation(float angle)
-{
-    // calcula si un angulo es vertical u horizontal, tomando
-    // como horizontal el 0 - 180 y vertical 90 - 270
-    // retornando una gradiente entre 0 - 1, ej:
-    // con retornos: 45 = 0.5,  90 = 1.0, 135 = 0.5
-    angle = abs(angle);
-
-    if (angle <= 90)
-        return angle / 90;
-    else if (angle <= 180)
-        return 1.0 - ((angle - 90) / 90);
-    else if (angle <= 270)
-        return (angle - 180) / 90;
-    else
-        return 1.0 - ((angle - 270) / 90);
-}
-
 float gl_view::get_angle_two_points(QPointF point_a, QPointF point_b)
 {
     // calcular la rotacion a partir de 2 puntos
@@ -200,24 +177,24 @@ QList<float> gl_view::generate_coord_range(
 {
     // retorna un vacio si es que la separacion de 2 cordenadas no esta dentro del rango de vida,
 
-    float zoom_x = get_scale().x();
-    float zoom_y = get_scale().y();
+    float scale_x = get_scale().x();
+    float scale_y = get_scale().y();
 
     float life;
     if (orientation == Qt::Vertical)
     {
         if (separation_by_coord)
-            life = zoom_y;
+            life = scale_y;
         else
             // calcula la vida en relacion a la separacion en el visor, tomando como promedio 1000px
-            life = zoom_y * 1000 / height();
+            life = scale_y * 1000 / height();
     }
     else
     {
         if (separation_by_coord)
-            life = zoom_x;
+            life = scale_x;
         else
-            life = zoom_x * 1000 / width();
+            life = scale_x * 1000 / width();
     }
 
     life /= separation;
@@ -272,9 +249,9 @@ QList<float> gl_view::generate_coord_range(
 void gl_view::wheelEvent(QWheelEvent *event)
 {
     if (event->angleDelta().y() > 0)
-        zoom_scale = zoom_scale / 1.1;
+        scale = scale / 1.1;
     else
-        zoom_scale = zoom_scale * 1.1;
+        scale = scale * 1.1;
 
     update();
 }
@@ -288,17 +265,17 @@ void gl_view::mousePressEvent(QMouseEvent *event)
         if (qt::alt())
         {
             zooming = true;
-            click_zoom_scale = zoom_scale;
+            click_scale = scale;
 
             // se resta la posicion del click, a la cordenada,
             // y despues se suma en el 'mouseMoveEvent', y asi se logra el pundo de
             // anclaje donde esta el cursor.
-            click_coord = coord - get_coordinate(click_position);
+            click_translate = translate - get_coordinate(click_position);
             //
         }
         else
         {
-            click_coord = coord;
+            click_translate = translate;
             panning = true;
         }
     }
@@ -306,7 +283,7 @@ void gl_view::mousePressEvent(QMouseEvent *event)
     {
         if (qt::alt())
         {
-            click_coord = coord;
+            click_translate = translate;
             panning = true;
         }
     }
@@ -327,46 +304,46 @@ void gl_view::mouseMoveEvent(QMouseEvent *event)
         // le resta la cordenada del click para que el paneo comience en 0
         QPointF coord_to_add = get_coordinate(event->pos()) - get_coordinate(click_position);
         //
-        coord = click_coord + coord_to_add;
+        translate = click_translate + coord_to_add;
         update();
     }
     if (zooming)
     {
-        float zoom_speed = 1.007;
+        float scale_speed = 1.007;
 
-        float zoom_x_to_add = click_position.x() - event->pos().x();
-        float zoom_y_to_add = event->pos().y() - click_position.y();
+        float scale_x_to_add = click_position.x() - event->pos().x();
+        float scale_y_to_add = event->pos().y() - click_position.y();
 
-        double scale_factor_x = pow(zoom_speed, zoom_x_to_add);
-        double scale_factor_y = pow(zoom_speed, zoom_y_to_add);
+        double scale_factor_x = pow(scale_speed, scale_x_to_add);
+        double scale_factor_y = pow(scale_speed, scale_y_to_add);
 
-        float zoom_scale_x = click_zoom_scale.x() * scale_factor_x;
-        float zoom_scale_y = click_zoom_scale.y() * scale_factor_y;
+        float scale_x = click_scale.x() * scale_factor_x;
+        float scale_y = click_scale.y() * scale_factor_y;
 
-        if (zoom_lock)
-            zoom_scale_y = zoom_scale_x;
+        if (lock_scale)
+            scale_y = scale_x;
 
         float min = 0.02;
         float max = 100000;
 
         // limitar zoom Horizontal
-        if (zoom_scale_x < min)
-            zoom_scale_x = min;
-        else if (zoom_scale_x > max)
-            zoom_scale_x = max;
+        if (scale_x < min)
+            scale_x = min;
+        else if (scale_x > max)
+            scale_x = max;
         //
 
         // limitar zoom Vertical
-        if (zoom_scale_y < min)
-            zoom_scale_y = min;
-        else if (zoom_scale_y > max)
-            zoom_scale_y = max;
+        if (scale_y < min)
+            scale_y = min;
+        else if (scale_y > max)
+            scale_y = max;
         //
 
-        zoom_scale = {zoom_scale_x, zoom_scale_y};
+        scale = {scale_x, scale_y};
 
         // punto de anclaje
-        coord = click_coord + get_coordinate(click_position);
+        translate = click_translate + get_coordinate(click_position);
         //
 
         update();

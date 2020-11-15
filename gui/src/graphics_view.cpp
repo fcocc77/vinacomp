@@ -82,15 +82,15 @@ void graphics_view::mouseMoveEvent(QMouseEvent *event)
 void graphics_view::zoom(int delta, QPoint position)
 {
     QPointF old_pos = mapToScene(position);
-    float zoom_speed = 1.002;
+    float scale_speed = 1.002;
 
-    double scale_factor = pow(zoom_speed, delta);
+    double scale_factor = pow(scale_speed, delta);
     QTransform _transform = transform();
-    double current_zoom_factor = _transform.mapRect(QRectF(0, 0, 1, 1)).width();
-    double new_zoom_factor = current_zoom_factor * scale_factor;
+    double current_scale_factor = _transform.mapRect(QRectF(0, 0, 1, 1)).width();
+    double new_scale_factor = current_scale_factor * scale_factor;
 
     // limita el zoom in y out
-    if (((new_zoom_factor < 0.1) && (scale_factor < 1.)) || ((new_zoom_factor > 10) && (scale_factor > 1.)))
+    if (((new_scale_factor < 0.1) && (scale_factor < 1.)) || ((new_scale_factor > 10) && (scale_factor > 1.)))
         return;
     //
     //

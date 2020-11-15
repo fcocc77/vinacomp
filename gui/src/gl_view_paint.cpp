@@ -8,10 +8,10 @@ void gl_view::paintGL()
 
     float aspect = get_aspect();
 
-    float left = coord.x() - zoom_scale.x() * 2;
-    float right = coord.x() + zoom_scale.x() * 2;
-    float top = (coord.y() * aspect) + (zoom_scale.y() * 2) * aspect;
-    float bottom = (coord.y() * aspect) - (zoom_scale.y() * 2) * aspect;
+    float left = translate.x() - scale.x() * 2;
+    float right = translate.x() + scale.x() * 2;
+    float top = (translate.y() * aspect) + (scale.y() * 2) * aspect;
+    float bottom = (translate.y() * aspect) - (scale.y() * 2) * aspect;
 
     glOrtho(left, right, bottom, top, -1.f, 1.f);
 

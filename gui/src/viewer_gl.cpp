@@ -3,7 +3,7 @@
 viewer_gl::viewer_gl(/* args */)
 {
     this->setMouseTracking(true);
-    set_coord({1000, 1000}, {1000, 1000});
+    set_transform({1000, 1000}, {1000, 1000});
 }
 
 viewer_gl::~viewer_gl()
