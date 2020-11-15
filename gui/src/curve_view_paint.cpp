@@ -59,15 +59,11 @@ void curve_view::draw_grid()
             draw_line({value, down_limit}, {value, up_limit}, color);
     };
 
+    aa_enable(false);
+
     // Eje X e Y
     draw_line({left_limit, 0.0}, {right_limit, 0.0}, QColor(120, 30, 30));
     draw_line({0.0, down_limit}, {0.0, up_limit}, QColor(20, 120, 20));
-    //
-    //
-
-    // Activa la la mezcla en openGL, para que siempre se vea la linea mas luminosa 'GL_MAX'.
-    glEnable(GL_BLEND);
-    glBlendEquation(GL_MAX);
     //
     //
 
@@ -127,6 +123,8 @@ void curve_view::draw_bezier(key_frame *src_key, key_frame *dst_key)
 
 void curve_view::draw_curve()
 {
+    aa_enable(true);
+
     for (auto keys : curves)
     {
         // Infinite Lines

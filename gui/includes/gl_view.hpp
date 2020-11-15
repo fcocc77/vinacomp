@@ -45,6 +45,8 @@ public:
         QPointF life_range = {0.5, 70},
         bool separation_by_coord = false);
 
+    void aa_enable(bool enable);
+
     bool is_cursor_above(QPoint cursor, QPointF point, QPointF point2 = {});
 
     QPointF get_coordinate(QPoint cursor_position);

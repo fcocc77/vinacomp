@@ -25,6 +25,39 @@ void gl_view::resizeGL(int width, int height)
     glViewport(0, 0, width, height);
 }
 
+void gl_view::aa_enable(bool enable)
+{
+    // habilita o desabilita el Antialiasing, si esta habilitado
+    // usa la mescla en alpha y si no, usa una mescla
+    // dejando los pixel mas claros visibles.
+    if (enable)
+    {
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        glEnable(GL_LINE_SMOOTH);
+        glHint(GL_LINE_SMOOTH_HINT, GL_DONT_CARE);
+
+        glBlendEquation(GL_FUNC_ADD);
+
+        glLineWidth(1.5);
+    }
+    else
+    {
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ZERO);
+
+        // Siempre deja la luz mas clara
+        glBlendEquation(GL_MAX);
+        //
+
+        glDisable(GL_LINE_SMOOTH);
+        glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+
+        glLineWidth(1);
+    }
+}
+
 void gl_view::draw_point(QPointF coord, QColor color, int size, bool smooth)
 {
     if (smooth)
@@ -83,6 +116,8 @@ void gl_view::draw_text(QString text, QColor color, QPointF coords, QPointF view
 
 void gl_view::draw_box(QLineF diagonal_line, QColor color, QColor border_color)
 {
+    aa_enable(false);
+
     QPointF p1 = diagonal_line.p1();
     QPointF p2 = {diagonal_line.x1(), diagonal_line.y2()};
     QPointF p3 = diagonal_line.p2();
