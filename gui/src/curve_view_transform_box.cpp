@@ -259,7 +259,7 @@ void curve_view::to_transform_box(QPoint cursor_position)
     // encuentra el siguiente keyframe, que esta en el rango de los seleccionados
     // pero no esta seleccionado y esta por atras del ultimo keyframe
     key_frame *next_unselect_key = nullptr;
-    for (key_frame *selected_key : selected_key_frames)
+    for (key_frame *selected_key : qt::reverse(selected_key_frames))
     {
         key_frame *next_selected_key = get_next_key(selected_key);
         if (next_selected_key)
@@ -284,7 +284,7 @@ void curve_view::to_transform_box(QPoint cursor_position)
     //
     //
 
-    // Limitacion para que no traspase el antepenultimo key frame seleccionado
+    // Limitacion para que la escala desde la derecha, no traspase algun keyframe no seleccionado
     if (action == "right_scale" || action == "top_right_scale" || action == "bottom_right_scale")
     {
         if (previous_unselect_key)
@@ -308,7 +308,7 @@ void curve_view::to_transform_box(QPoint cursor_position)
         }
     }
 
-    // Limitacion para que no traspase el segundo key frame seleccionado
+    // Limitacion para que la escala desde la izquierda, no traspase algun keyframe no seleccionado
     if (action == "left_scale" || action == "top_left_scale" || action == "bottom_left_scale")
     {
         if (next_unselect_key)
@@ -341,6 +341,27 @@ void curve_view::to_transform_box(QPoint cursor_position)
     if (action == "top_scale" || action == "top_right_scale" || action == "top_left_scale")
         if (coords.y() < transform_box.y1())
             coords.setY(transform_box.y1());
+    //
+    //
+
+    // Limitacion para 'translate' de key frames interiores no seleccionados
+    if (next_unselect_key)
+    {
+        key_frame *previous = get_previous_key(next_unselect_key);
+        float distance = next_unselect_key->x() - previous->get_last_position().x();
+
+        if ((distance - add_translate.x()) < 0)
+            add_translate.setX(distance);
+    }
+
+    if (previous_unselect_key)
+    {
+        key_frame *next = get_next_key(previous_unselect_key);
+        float distance = next->get_last_position().x() - previous_unselect_key->x();
+
+        if ((distance + add_translate.x()) < 0)
+            add_translate.setX(-distance);
+    }
     //
     //
 

@@ -87,13 +87,17 @@ void curve_view::create_curve()
     key_frame *key2 = new key_frame(name, 1);
     key_frame *key3 = new key_frame(name, 2);
     key_frame *key4 = new key_frame(name, 3);
+    key_frame *key5 = new key_frame(name, 4);
+    key_frame *key6 = new key_frame(name, 5);
 
     key1->set_pos({0, 2});
     key2->set_pos({0.5, 1});
     key3->set_pos({1, 0});
     key4->set_pos({2, 0.4});
+    key5->set_pos({2.5, 1});
+    key6->set_pos({3, 0.2});
 
-    curves.insert(name, {key1, key2, key3, key4});
+    curves.insert(name, {key1, key2, key3, key4, key5, key6});
 
     update();
 }
