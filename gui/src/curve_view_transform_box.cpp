@@ -214,7 +214,7 @@ bool curve_view::key_overlap(key_frame *key)
     return false;
 }
 
-QLineF curve_view::get_max_translate(QPoint cursor_position, QString orientation)
+QLineF curve_view::get_max_translate_in_scale(QPoint cursor_position, QString orientation)
 {
     // Respaldar posiciones
     for (key_frame *key : selected_key_frames)
@@ -299,6 +299,34 @@ QLineF curve_view::get_max_translate(QPoint cursor_position, QString orientation
     return {{left_translate, 0}, {right_translate, 0}};
 }
 
+QLineF curve_view::get_max_translate(QPoint cursor_position)
+{
+    float left_distance = 10000000;
+    float right_distance = 10000000;
+    for (key_frame *key : selected_key_frames)
+    {
+        key_frame *next_key = get_next_key(key);
+        if (next_key)
+            if (!next_key->selected())
+            {
+                float distance = next_key->x() - key->x();
+                if (distance < right_distance)
+                    right_distance = distance;
+            }
+
+        key_frame *previous_key = get_previous_key(key);
+        if (previous_key)
+            if (!previous_key->selected())
+            {
+                float distance = key->x() - previous_key->x();
+                if (distance < left_distance)
+                    left_distance = distance;
+            }
+    }
+
+    return {{left_distance, 0}, {right_distance, 0}};
+}
+
 void curve_view::to_transform_box(QPoint cursor_position)
 {
     QString action = resize_current_action;
@@ -336,6 +364,18 @@ void curve_view::to_transform_box(QPoint cursor_position)
     if (action == "top_scale" || action == "top_right_scale" || action == "top_left_scale")
         if (coords.y() < transform_box.y1())
             coords.setY(transform_box.y1());
+    //
+    //
+
+    // limita a la translacion para que no se superponga ningun keyframes
+    if (action == "horizontal_translate" || action == "center_translate")
+    {
+        if (add_translate.x() < -max_translate.x1())
+            add_translate.setX(-max_translate.x1());
+
+        if (add_translate.x() > max_translate.x2())
+            add_translate.setX(max_translate.x2());
+    }
     //
     //
 
@@ -437,8 +477,10 @@ void curve_view::transform_box_press(QPoint cursor_position)
         last_transform_box = transform_box;
 
         selected_key_frames = get_selected_keys();
-        max_translate_right = get_max_translate(cursor_position, "right");
-        max_translate_left = get_max_translate(cursor_position, "left");
+        max_translate_right = get_max_translate_in_scale(cursor_position, "right");
+        max_translate_left = get_max_translate_in_scale(cursor_position, "left");
+
+        max_translate = get_max_translate(cursor_position);
     }
 }
 
