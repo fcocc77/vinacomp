@@ -5,3 +5,6 @@ gui:
         ✔ al mover un nodo y esta presionado el escape, el link no se mueve con el nodo @done (10/30/2020, 11:15:48 AM)
     settings_projects:
         ☐ el proxy va a remplazar el rscale de videovina
+
+nodes:
+    ☐ crear nodo de speed, para que cambie todas las velocidades como 'videovina' y asi no lo tenemos que hacer en videovina

@@ -53,24 +53,6 @@ void curve_view::selector_move(QPoint cursor_position)
     update();
 }
 
-void curve_view::transform_box_press(QPoint cursor_position)
-{
-    if (!transform_box_visible)
-        return;
-
-    QString action = get_transform_action(cursor_position);
-
-    if (!action.isEmpty())
-    {
-        resize_current_action = action;
-        transforming = true;
-        last_transform_box = transform_box;
-
-        selected_key_frames = get_selected_keys();
-        max_translate_x = get_max_translate(cursor_position);
-    }
-}
-
 QLineF curve_view::get_rectangle_of_keyframes(QList<key_frame *> keys)
 {
     if (keys.count() <= 1)
@@ -232,7 +214,7 @@ bool curve_view::key_overlap(key_frame *key)
     return false;
 }
 
-float curve_view::get_max_translate(QPoint cursor_position)
+QLineF curve_view::get_max_translate(QPoint cursor_position)
 {
     float point_x = transform_box.x1();
 
@@ -243,44 +225,67 @@ float curve_view::get_max_translate(QPoint cursor_position)
     //
 
     int samples = 1000;
-    bool overlap = false;
 
-    float multiply = 1;
-    float subtract = 1.0 / samples;
-    for (int i = 0; i < samples; i++)
-    {
+    auto last_key_position = [=](float multiply_section) {
+        bool overlap = false;
+        float multiply = 1;
 
-        for (key_frame *key : selected_key_frames)
+        // encuentra la ultima posicion de cada key frames antes
+        // que un key frames seleccionado se sobreponga
+        // a otro, y retorna la posicion del ultimo key frame.
+        for (int i = 0; i < samples; i++)
         {
-            float x = ((key->get_last_position().x() - point_x) * multiply) + point_x;
-            key->set_pos({x, key->y()});
-
-            if (key_overlap(key))
+            for (key_frame *key : selected_key_frames)
             {
-                overlap = true;
-                multiply += subtract;
-                float last_x = ((key->get_last_position().x() - point_x) * multiply) + point_x;
+                float x = ((key->get_last_position().x() - point_x) * multiply) + point_x;
+                key->set_pos({x, key->y()});
 
-                key->set_pos({last_x, key->y()});
-                break;
+                if (key_overlap(key))
+                {
+                    overlap = true;
+                    multiply += multiply_section;
+                    float last_x = ((key->get_last_position().x() - point_x) * multiply) + point_x;
+
+                    key->set_pos({last_x, key->y()});
+                    break;
+                }
             }
+
+            if (overlap)
+                break;
+
+            multiply -= multiply_section;
         }
 
-        if (overlap)
-            break;
+        key_frame *last_key = selected_key_frames.last();
+        return last_key->x();
+    };
 
-        multiply -= subtract;
-    }
-
-    key_frame *last_key = selected_key_frames.last();
-    float max_translate = get_coords(cursor_position).x() - last_key->x();
+    // Movimiento hacia la izquierda
+    float subtract = 1.0 / samples;
+    float max_translate_left = get_coords(cursor_position).x() - last_key_position(subtract);
+    //
+    //
 
     // Restauracion de posiciones
     for (key_frame *key : selected_key_frames)
         key->restore_position();
-
     //
-    return max_translate;
+    //
+
+    // Movimiento hacia la derecha
+    float added = 10.0 / samples;
+    float max_translate_right = last_key_position(-added) - get_coords(cursor_position).x();
+    //
+    //
+
+    // Restauracion de posiciones
+    for (key_frame *key : selected_key_frames)
+        key->restore_position();
+    //
+    //
+
+    return {{max_translate_left, 0}, {max_translate_right, 0}};
 }
 
 void curve_view::to_transform_box(QPoint cursor_position)
@@ -294,12 +299,11 @@ void curve_view::to_transform_box(QPoint cursor_position)
     // Limitacion para que la escala desde la derecha, no traspase algun keyframe no seleccionado
     if (action == "right_scale" || action == "top_right_scale" || action == "bottom_right_scale")
     {
-        float translate = -add_translate.x();
-        if (translate > max_translate_x)
-        {
-            float new_pos = click_coords.x() - max_translate_x;
-            coords.setX(new_pos);
-        }
+        if (add_translate.x() < -max_translate.x1())
+            coords.setX(click_coords.x() - max_translate.x1());
+
+        if (add_translate.x() > max_translate.x2())
+            coords.setX(click_coords.x() + max_translate.x2());
     }
 
     // Limitacion para que la escala desde la izquierda, no traspase algun keyframe no seleccionado
@@ -401,6 +405,24 @@ void curve_view::show_transform_box()
     transform_box_visible = !transform_box.isNull();
 
     update();
+}
+
+void curve_view::transform_box_press(QPoint cursor_position)
+{
+    if (!transform_box_visible)
+        return;
+
+    QString action = get_transform_action(cursor_position);
+
+    if (!action.isEmpty())
+    {
+        resize_current_action = action;
+        transforming = true;
+        last_transform_box = transform_box;
+
+        selected_key_frames = get_selected_keys();
+        max_translate = get_max_translate(cursor_position);
+    }
 }
 
 void curve_view::transform_box_move(QPoint cursor_position)
