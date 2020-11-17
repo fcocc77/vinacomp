@@ -58,6 +58,8 @@ private:
     bool selecting = false;
     QLineF selector;
 
+    float max_translate_x;
+
     bool transforming = false;
     QString resize_current_action;
     QList<key_frame *> selected_key_frames;
@@ -72,6 +74,9 @@ private:
     void transform_box_press(QPoint cursor_position);
     void transform_box_move(QPoint cursor_position);
     void show_transform_box();
+    float get_max_translate(QPoint cursor_position);
+    bool key_overlap(key_frame *key);
+
     //
     //
 

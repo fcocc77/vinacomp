@@ -45,7 +45,7 @@ void curve_view::select_all_key_frames()
 
 void curve_view::fit_viewport_to_keyframes()
 {
-    int padding_percent = 20; // porcentaje
+    int padding_percent = 20;
 
     QList<key_frame *> all_key_frames;
     for (auto keys : curves)

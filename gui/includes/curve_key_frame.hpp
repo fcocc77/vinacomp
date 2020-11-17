@@ -40,6 +40,7 @@ public:
     float exaggeration();
     void set_exaggeration(float _exaggeration);
     void stamp_position();
+    void restore_position();
     QPointF get_last_position();
 };
 

@@ -22,6 +22,12 @@ void key_frame::stamp_position()
     last_position = position;
 }
 
+void key_frame::restore_position()
+{
+    // restaura la posicion guardada en 'last_position'
+    position = last_position;
+}
+
 QPointF key_frame::get_last_position()
 {
     return last_position;

@@ -67,8 +67,7 @@ void curve_view::transform_box_press(QPoint cursor_position)
         last_transform_box = transform_box;
 
         selected_key_frames = get_selected_keys();
-        for (key_frame *key : selected_key_frames)
-            key->stamp_position();
+        max_translate_x = get_max_translate(cursor_position);
     }
 }
 
@@ -213,6 +212,77 @@ void curve_view::translate_keys(QPointF add_translate)
         key->set_pos(key->get_last_position() + add_translate);
 }
 
+bool curve_view::key_overlap(key_frame *key)
+{
+    // verifica si un key frame seleccionado esta
+    // sobre otro key frame no seleccionado en posicion 'x'
+    key_frame *previous_key = get_previous_key(key);
+    key_frame *next_key = get_next_key(key);
+
+    if (next_key)
+        if (key->x() >= next_key->x())
+            if (!next_key->selected())
+                return true;
+
+    if (previous_key)
+        if (key->x() <= previous_key->x())
+            if (!previous_key->selected())
+                return true;
+
+    return false;
+}
+
+float curve_view::get_max_translate(QPoint cursor_position)
+{
+    float point_x = transform_box.x1();
+
+    // Respaldar posiciones
+    for (key_frame *key : selected_key_frames)
+        key->stamp_position();
+    //
+    //
+
+    int samples = 1000;
+    bool overlap = false;
+
+    float multiply = 1;
+    float subtract = 1.0 / samples;
+    for (int i = 0; i < samples; i++)
+    {
+
+        for (key_frame *key : selected_key_frames)
+        {
+            float x = ((key->get_last_position().x() - point_x) * multiply) + point_x;
+            key->set_pos({x, key->y()});
+
+            if (key_overlap(key))
+            {
+                overlap = true;
+                multiply += subtract;
+                float last_x = ((key->get_last_position().x() - point_x) * multiply) + point_x;
+
+                key->set_pos({last_x, key->y()});
+                break;
+            }
+        }
+
+        if (overlap)
+            break;
+
+        multiply -= subtract;
+    }
+
+    key_frame *last_key = selected_key_frames.last();
+    float max_translate = get_coords(cursor_position).x() - last_key->x();
+
+    // Restauracion de posiciones
+    for (key_frame *key : selected_key_frames)
+        key->restore_position();
+
+    //
+    return max_translate;
+}
+
 void curve_view::to_transform_box(QPoint cursor_position)
 {
     QString action = resize_current_action;
@@ -221,115 +291,20 @@ void curve_view::to_transform_box(QPoint cursor_position)
     QPointF coords = get_coordsf(cursor_position);
     QPointF add_translate = coords - click_coords;
 
-    key_frame *first_key = selected_key_frames.first();
-    key_frame *last_key = selected_key_frames.last();
-
-    key_frame *previous_key = get_previous_key(first_key);
-    key_frame *next_key = get_next_key(last_key);
-
-    key_frame *previous_last_key = get_previous_key(last_key);
-
-    // Limitacion en x hasta el key frame anterior y siguiente de la seleccion de keyframes.
-    if (previous_key)
-    {
-        // Limitacion para 'scale'
-        if (coords.x() < previous_key->x())
-            coords.setX(previous_key->x());
-
-        // Limitacion para 'translate'
-        float left_border = last_transform_box.x1() + add_translate.x();
-        if (left_border < previous_key->x())
-            add_translate.setX(previous_key->x() - last_transform_box.x1());
-    }
-
-    if (next_key)
-    {
-        // Limitacion para 'scale'
-        if (coords.x() > next_key->x())
-            coords.setX(next_key->x());
-
-        // Limitacion para 'translate'
-        float right_border = last_transform_box.x2() + add_translate.x();
-        if (right_border > next_key->x())
-            add_translate.setX(next_key->x() - last_transform_box.x2());
-    }
-    //
-    //
-
-    // encuentra el siguiente keyframe, que esta en el rango de los seleccionados
-    // pero no esta seleccionado y esta por atras del ultimo keyframe
-    key_frame *next_unselect_key = nullptr;
-    for (key_frame *selected_key : qt::reverse(selected_key_frames))
-    {
-        key_frame *next_selected_key = get_next_key(selected_key);
-        if (next_selected_key)
-            if (next_selected_key->get_index() < last_key->get_index())
-                if (!next_selected_key->selected())
-                    next_unselect_key = next_selected_key;
-    }
-    //
-    //
-
-    // encuentra el keyframe previo, que esta en el rango de los seleccionados
-    // pero no esta seleccionado y esta por delante del primer keyframe
-    key_frame *previous_unselect_key = nullptr;
-    for (key_frame *selected_key : selected_key_frames)
-    {
-        key_frame *previous_selected_key = get_previous_key(selected_key);
-        if (previous_selected_key)
-            if (previous_selected_key->get_index() > first_key->get_index())
-                if (!previous_selected_key->selected())
-                    previous_unselect_key = previous_selected_key;
-    }
-    //
-    //
-
     // Limitacion para que la escala desde la derecha, no traspase algun keyframe no seleccionado
     if (action == "right_scale" || action == "top_right_scale" || action == "bottom_right_scale")
     {
-        if (previous_unselect_key)
+        float translate = -add_translate.x();
+        if (translate > max_translate_x)
         {
-            key_frame *next = get_next_key(previous_unselect_key);
-
-            float next_x = next->get_last_position().x();
-            float last_key_x = last_key->get_last_position().x();
-            float unselect_x = previous_unselect_key->x();
-
-            float last_distance = next_x - unselect_x;
-            float distance = (coords.x() - (last_key_x - next_x)) - unselect_x;
-
-            if (distance <= 0)
-                coords.setX(last_key_x - last_distance);
-        }
-        else
-        {
-            if (coords.x() < first_key->x())
-                coords.setX(first_key->x());
+            float new_pos = click_coords.x() - max_translate_x;
+            coords.setX(new_pos);
         }
     }
 
     // Limitacion para que la escala desde la izquierda, no traspase algun keyframe no seleccionado
     if (action == "left_scale" || action == "top_left_scale" || action == "bottom_left_scale")
     {
-        if (next_unselect_key)
-        {
-            key_frame *previous = get_previous_key(next_unselect_key);
-
-            float previous_x = previous->get_last_position().x();
-            float first_key_x = first_key->get_last_position().x();
-            float unselect_x = next_unselect_key->x();
-
-            float last_distance = unselect_x - previous_x;
-            float distance = next_unselect_key->x() - (coords.x() + (previous_x - first_key_x));
-
-            if (distance <= 0)
-                coords.setX(first_key_x + last_distance);
-        }
-        else
-        {
-            if (coords.x() > last_key->x())
-                coords.setX(last_key->x());
-        }
     }
 
     // Limitacion para que no traspase el borde superior
@@ -341,27 +316,6 @@ void curve_view::to_transform_box(QPoint cursor_position)
     if (action == "top_scale" || action == "top_right_scale" || action == "top_left_scale")
         if (coords.y() < transform_box.y1())
             coords.setY(transform_box.y1());
-    //
-    //
-
-    // Limitacion para 'translate' de key frames interiores no seleccionados
-    if (next_unselect_key)
-    {
-        key_frame *previous = get_previous_key(next_unselect_key);
-        float distance = next_unselect_key->x() - previous->get_last_position().x();
-
-        if ((distance - add_translate.x()) < 0)
-            add_translate.setX(distance);
-    }
-
-    if (previous_unselect_key)
-    {
-        key_frame *next = get_next_key(previous_unselect_key);
-        float distance = next->get_last_position().x() - previous_unselect_key->x();
-
-        if ((distance + add_translate.x()) < 0)
-            add_translate.setX(-distance);
-    }
     //
     //
 
