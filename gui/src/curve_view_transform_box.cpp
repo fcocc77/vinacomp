@@ -214,13 +214,22 @@ bool curve_view::key_overlap(key_frame *key)
     return false;
 }
 
-QLineF curve_view::get_max_translate(QPoint cursor_position)
+QLineF curve_view::get_max_translate(QPoint cursor_position, QString orientation)
 {
-    float point_x = transform_box.x1();
-
     // Respaldar posiciones
     for (key_frame *key : selected_key_frames)
         key->stamp_position();
+    //
+    //
+
+    // determina de que punto se esta escalando los key frames, derecha o izquierda.
+    float scale_point_x;
+    if (orientation == "left")
+        scale_point_x = transform_box.x2();
+    else if (orientation == "right")
+        scale_point_x = transform_box.x1();
+    else
+        return {};
     //
     //
 
@@ -237,14 +246,14 @@ QLineF curve_view::get_max_translate(QPoint cursor_position)
         {
             for (key_frame *key : selected_key_frames)
             {
-                float x = ((key->get_last_position().x() - point_x) * multiply) + point_x;
+                float x = ((key->get_last_position().x() - scale_point_x) * multiply) + scale_point_x;
                 key->set_pos({x, key->y()});
 
                 if (key_overlap(key))
                 {
                     overlap = true;
                     multiply += multiply_section;
-                    float last_x = ((key->get_last_position().x() - point_x) * multiply) + point_x;
+                    float last_x = ((key->get_last_position().x() - scale_point_x) * multiply) + scale_point_x;
 
                     key->set_pos({last_x, key->y()});
                     break;
@@ -257,13 +266,15 @@ QLineF curve_view::get_max_translate(QPoint cursor_position)
             multiply -= multiply_section;
         }
 
-        key_frame *last_key = selected_key_frames.last();
-        return last_key->x();
+        if (orientation == "left")
+            return selected_key_frames.first()->x();
+        else if (orientation == "right")
+            return selected_key_frames.last()->x();
     };
 
     // Movimiento hacia la izquierda
     float subtract = 1.0 / samples;
-    float max_translate_left = get_coords(cursor_position).x() - last_key_position(subtract);
+    float left_translate = get_coords(cursor_position).x() - last_key_position(subtract);
     //
     //
 
@@ -275,7 +286,7 @@ QLineF curve_view::get_max_translate(QPoint cursor_position)
 
     // Movimiento hacia la derecha
     float added = 10.0 / samples;
-    float max_translate_right = last_key_position(-added) - get_coords(cursor_position).x();
+    float right_translate = last_key_position(-added) - get_coords(cursor_position).x();
     //
     //
 
@@ -285,7 +296,7 @@ QLineF curve_view::get_max_translate(QPoint cursor_position)
     //
     //
 
-    return {{max_translate_left, 0}, {max_translate_right, 0}};
+    return {{left_translate, 0}, {right_translate, 0}};
 }
 
 void curve_view::to_transform_box(QPoint cursor_position)
@@ -296,19 +307,24 @@ void curve_view::to_transform_box(QPoint cursor_position)
     QPointF coords = get_coordsf(cursor_position);
     QPointF add_translate = coords - click_coords;
 
-    // Limitacion para que la escala desde la derecha, no traspase algun keyframe no seleccionado
+    // Limitacion para que la escala desde la derecha, no traspase ningun keyframe no seleccionado
     if (action == "right_scale" || action == "top_right_scale" || action == "bottom_right_scale")
     {
-        if (add_translate.x() < -max_translate.x1())
-            coords.setX(click_coords.x() - max_translate.x1());
+        if (add_translate.x() < -max_translate_right.x1())
+            coords.setX(click_coords.x() - max_translate_right.x1());
 
-        if (add_translate.x() > max_translate.x2())
-            coords.setX(click_coords.x() + max_translate.x2());
+        if (add_translate.x() > max_translate_right.x2())
+            coords.setX(click_coords.x() + max_translate_right.x2());
     }
 
-    // Limitacion para que la escala desde la izquierda, no traspase algun keyframe no seleccionado
+    // Limitacion para que la escala desde la izquierda, no traspase ningun keyframe no seleccionado
     if (action == "left_scale" || action == "top_left_scale" || action == "bottom_left_scale")
     {
+        if (add_translate.x() > -max_translate_left.x1())
+            coords.setX(click_coords.x() - max_translate_left.x1());
+
+        if (add_translate.x() < max_translate_left.x2())
+            coords.setX(click_coords.x() + max_translate_left.x2());
     }
 
     // Limitacion para que no traspase el borde superior
@@ -421,7 +437,8 @@ void curve_view::transform_box_press(QPoint cursor_position)
         last_transform_box = transform_box;
 
         selected_key_frames = get_selected_keys();
-        max_translate = get_max_translate(cursor_position);
+        max_translate_right = get_max_translate(cursor_position, "right");
+        max_translate_left = get_max_translate(cursor_position, "left");
     }
 }
 
