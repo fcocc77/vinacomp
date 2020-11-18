@@ -55,6 +55,7 @@ private:
     QLineF transform_box;
     QLineF last_transform_box;
 
+    bool unselected_keys;
     bool selecting = false;
     QLineF selector;
 

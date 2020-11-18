@@ -338,9 +338,19 @@ void curve_view::to_transform_box(QPoint cursor_position)
     // Limitacion para que la escala desde la derecha, no traspase ningun keyframe no seleccionado
     if (action == "right_scale" || action == "top_right_scale" || action == "bottom_right_scale")
     {
-        if (add_translate.x() < -max_translate_right.x1())
-            coords.setX(click_coords.x() - max_translate_right.x1());
+        // Hacia la izquierda <---
+        if (unselected_keys)
+        {
+            if (add_translate.x() < -max_translate_right.x1())
+                coords.setX(click_coords.x() - max_translate_right.x1());
+        }
+        else
+        {
+            if (coords.x() <= transform_box.x1())
+                coords.setX(transform_box.x1());
+        }
 
+        // Hacia la derecha --->
         if (add_translate.x() > max_translate_right.x2())
             coords.setX(click_coords.x() + max_translate_right.x2());
     }
@@ -348,11 +358,21 @@ void curve_view::to_transform_box(QPoint cursor_position)
     // Limitacion para que la escala desde la izquierda, no traspase ningun keyframe no seleccionado
     if (action == "left_scale" || action == "top_left_scale" || action == "bottom_left_scale")
     {
-        if (add_translate.x() > -max_translate_left.x1())
-            coords.setX(click_coords.x() - max_translate_left.x1());
-
+        // Hacia la izquierda <---
         if (add_translate.x() < max_translate_left.x2())
             coords.setX(click_coords.x() + max_translate_left.x2());
+
+        // Hacia la derecha --->
+        if (unselected_keys)
+        {
+            if (add_translate.x() > -max_translate_left.x1())
+                coords.setX(click_coords.x() - max_translate_left.x1());
+        }
+        else
+        {
+            if (coords.x() >= transform_box.x2())
+                coords.setX(transform_box.x2());
+        }
     }
 
     // Limitacion para que no traspase el borde superior
@@ -481,6 +501,14 @@ void curve_view::transform_box_press(QPoint cursor_position)
         max_translate_left = get_max_translate_in_scale(cursor_position, "left");
 
         max_translate = get_max_translate(cursor_position);
+
+        // verifica si en el rango de la seleccion, existe un keyframe deseleccionado
+        int start = selected_key_frames.first()->get_index();
+        int end = selected_key_frames.last()->get_index();
+        int selected_range = end - start + 1;
+        unselected_keys = selected_key_frames.count() != selected_range;
+        //
+        //
     }
 }
 
