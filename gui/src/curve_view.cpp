@@ -6,6 +6,7 @@ curve_view::curve_view(/* args */)
     this->setTabletTracking(true);
 
     create_curve();
+    popup_setup_ui();
 
     qt::shortcut("+", this, [this]() {
         for (key_frame *key : get_selected_keys())
@@ -100,6 +101,8 @@ void curve_view::mousePressEvent(QMouseEvent *event)
             }
         }
     }
+
+    popup_press(event);
 
     update();
     gl_view::mousePressEvent(event);

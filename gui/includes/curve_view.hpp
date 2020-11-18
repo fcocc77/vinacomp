@@ -1,6 +1,8 @@
 #ifndef CURVE_VIEW_HPP
 #define CURVE_VIEW_HPP
 
+#include <QMenu>
+
 #include <gl_view.hpp>
 #include <curve_key_frame.hpp>
 
@@ -35,6 +37,13 @@ private:
         QPointF p1, QPointF p2,
         QPointF p3, QPointF p4,
         float value);
+    //
+    //
+
+    // Popup
+    QMenu *popup;
+    void popup_setup_ui();
+    void popup_press(QMouseEvent *event);
     //
     //
 

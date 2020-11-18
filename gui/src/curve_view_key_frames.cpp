@@ -151,6 +151,7 @@ void curve_view::key_press(QPoint cursor_position)
 
             if (key->selected())
             {
+                key->stamp_position();
                 drag_key_frame = key;
                 drag_handler = handler_point;
                 dragging = true;
@@ -182,7 +183,7 @@ void curve_view::key_move(QPoint cursor_position)
             key->set_angle(270 - get_angle_two_points(get_coords(cursor_position), key->pos()));
         else
         {
-            QPointF coords = get_coords(cursor_position);
+            QPointF coords = get_coords(cursor_position) - (get_coords(click_position) - key->get_last_position());
 
             // limitar posicion al key_frame anterior y siguiente
             key_frame *previous_key = get_previous_key(key);
