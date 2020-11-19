@@ -4,6 +4,7 @@
 #include <QMenu>
 
 #include <gl_view.hpp>
+#include <action.hpp>
 #include <curve_key_frame.hpp>
 
 class curve_view : public gl_view

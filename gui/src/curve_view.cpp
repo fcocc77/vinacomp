@@ -21,14 +21,6 @@ curve_view::curve_view(/* args */)
 
         update();
     });
-
-    qt::shortcut("F", this, [this]() {
-        fit_viewport_to_keyframes();
-    });
-
-    qt::shortcut("Ctrl+A", this, [this]() {
-        select_all_key_frames();
-    });
 }
 
 curve_view::~curve_view()
