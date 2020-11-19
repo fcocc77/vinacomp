@@ -35,7 +35,7 @@ void curve_view::popup_setup_ui()
 
     // Interpolation_menu : Horizontal
     QAction *horizontal_action = new QAction("Horizontal Interpolation");
-    horizontal_action->setIcon(QIcon("resources/images/properties_a.png"));
+    horizontal_action->setIcon(QIcon("resources/images/curve_horizontal_a.png"));
     horizontal_action->setShortcut(QString("H"));
     connect(horizontal_action, &QAction::triggered, this, [this]() {
     });
@@ -45,7 +45,7 @@ void curve_view::popup_setup_ui()
 
     // Interpolation_menu : Smooth
     QAction *smooth_action = new QAction("Smooth Interpolation");
-    smooth_action->setIcon(QIcon("resources/images/properties_a.png"));
+    smooth_action->setIcon(QIcon("resources/images/curve_smooth_a.png"));
     smooth_action->setShortcut(QString("Z"));
     connect(smooth_action, &QAction::triggered, this, [this]() {
     });
@@ -55,7 +55,7 @@ void curve_view::popup_setup_ui()
 
     // Interpolation_menu : Break
     QAction *break_action = new QAction("Break");
-    break_action->setIcon(QIcon("resources/images/properties_a.png"));
+    break_action->setIcon(QIcon("resources/images/curve_break_a.png"));
     break_action->setShortcut(QString("X"));
     connect(break_action, &QAction::triggered, this, [this]() {
     });
