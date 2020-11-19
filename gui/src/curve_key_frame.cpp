@@ -48,14 +48,24 @@ void key_frame::set_pos(QPointF _position)
     position = _position;
 }
 
-float key_frame::get_angle()
+float key_frame::get_left_angle()
 {
-    return angle;
+    return left_angle;
 }
 
-void key_frame::set_angle(float _angle)
+float key_frame::get_right_angle()
 {
-    angle = _angle;
+    return right_angle;
+}
+
+void key_frame::set_left_angle(float _angle)
+{
+    left_angle = _angle;
+}
+
+void key_frame::set_right_angle(float _angle)
+{
+    right_angle = _angle;
 }
 
 bool key_frame::selected()

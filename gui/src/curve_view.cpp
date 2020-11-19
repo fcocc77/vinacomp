@@ -9,6 +9,9 @@ curve_view::curve_view(/* args */)
     popup_setup_ui();
 
     qt::shortcut("+", this, [this]() {
+        if (!underMouse())
+            return;
+
         for (key_frame *key : get_selected_keys())
             key->set_exaggeration(key->exaggeration() + 0.2);
 
@@ -16,6 +19,9 @@ curve_view::curve_view(/* args */)
     });
 
     qt::shortcut("-", this, [this]() {
+        if (!underMouse())
+            return;
+
         for (key_frame *key : get_selected_keys())
             key->set_exaggeration(key->exaggeration() - 0.2);
 

@@ -9,7 +9,8 @@ class key_frame : public QObject
 private:
     QPointF position;
     QPointF last_position;
-    float angle = 0;
+    float left_angle = 0;
+    float right_angle = 0;
     bool _selected = false;
     float _exaggeration = 0.3; // 0.0 - 1.0
     QString curve_name;
@@ -31,8 +32,13 @@ public:
     float x();
     float y();
     void set_pos(QPointF _position);
-    float get_angle();
-    void set_angle(float _angle);
+
+    float get_left_angle();
+    float get_right_angle();
+
+    void set_left_angle(float _angle);
+    void set_right_angle(float _angle);
+
     bool selected();
     void select(bool select);
     int get_index();

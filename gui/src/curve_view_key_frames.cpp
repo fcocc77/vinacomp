@@ -30,9 +30,10 @@ QLineF curve_view::get_handler_points(
     QPointF right_point = {right_point_x, key->y()};
 
     // genera el punto vertical infinito donde apunta el manejador
-    float tangent = tan(key->get_angle() * M_PI / 180);
-    QPointF infinite_left_point = {left_point.x(), left_point.y() + (tangent * left_separation)};
-    QPointF infinite_right_point = {right_point.x(), right_point.y() - (tangent * right_separation)};
+    float left_tangent = tan(key->get_left_angle() * M_PI / 180);
+    float right_tangent = tan(key->get_right_angle() * M_PI / 180);
+    QPointF infinite_left_point = {left_point.x(), left_point.y() + (left_tangent * left_separation)};
+    QPointF infinite_right_point = {right_point.x(), right_point.y() - (right_tangent * right_separation)};
     //
 
     if (!infinite)
@@ -44,13 +45,16 @@ QLineF curve_view::get_handler_points(
         QPointF viwport_left_point = get_position(left_point);
         QPointF viwport_right_point = get_position(right_point);
 
-        QPointF view_infinite = get_position(infinite_left_point);
+        QPointF view_infinite_left = get_position(infinite_left_point);
+        QPointF view_infinite_right = get_position(infinite_right_point);
+
         QPointF view_anchor_point = get_position(key->pos());
 
-        float angle = get_angle_two_points(view_infinite, view_anchor_point) - 90;
+        float left_angle = get_angle_two_points(view_infinite_left, view_anchor_point) - 90;
+        float right_angle = get_angle_two_points(view_infinite_right, view_anchor_point) + 90;
 
-        viwport_left_point = rotate_point(viwport_left_point, view_anchor_point, angle - 180);
-        viwport_right_point = rotate_point(viwport_right_point, view_anchor_point, angle);
+        viwport_left_point = rotate_point(viwport_left_point, view_anchor_point, left_angle - 180);
+        viwport_right_point = rotate_point(viwport_right_point, view_anchor_point, right_angle);
 
         left_point = get_coordsf(viwport_left_point);
         right_point = get_coordsf(viwport_right_point);
@@ -177,10 +181,33 @@ void curve_view::key_move(QPoint cursor_position)
         key_frame *key = drag_key_frame;
 
         if (drag_handler == 1)
-            key->set_angle(90 - get_angle_two_points(get_coords(cursor_position), key->pos()));
+        {
+            float angle = 90 - get_angle_two_points(get_coords(cursor_position), key->pos());
 
+            // Limitacion de handler 1 a 90 grados
+            if (angle >= 90 and angle < 180)
+                angle = 89.9;
+            else if (angle > 180)
+                angle = -89.9;
+            //
+            //
+
+            key->set_left_angle(angle);
+        }
         else if (drag_handler == 2)
-            key->set_angle(270 - get_angle_two_points(get_coords(cursor_position), key->pos()));
+        {
+            float angle = 270 - get_angle_two_points(get_coords(cursor_position), key->pos());
+
+            // Limitacion de handler 2 a 90 grados
+            if (angle <= 270 and angle > 180)
+                angle = 271;
+            else if (angle < 180)
+                angle = 449;
+            //
+            //
+
+            key->set_right_angle(angle);
+        }
         else
         {
             QPointF coords = get_coords(cursor_position) - (get_coords(click_position) - key->get_last_position());
