@@ -15,14 +15,7 @@ private:
     float _exaggeration = 0.3; // 0.0 - 1.0
     QString curve_name;
     int index = -1;
-
-    // interpolacion
-    int interpolation = 0;
-    // 0: Linear
-    // 1: Horizontal
-    // 2: Smooth
-    // 3: Break
-    // 4: Custom
+    bool break_handler = false;
 
 public:
     key_frame(QString curve_name = "", int index = -1);
@@ -40,6 +33,9 @@ public:
     void set_right_angle(float _angle);
 
     bool selected();
+    bool is_break();
+    bool set_break(bool _break);
+
     void select(bool select);
     int get_index();
     QString get_curve();

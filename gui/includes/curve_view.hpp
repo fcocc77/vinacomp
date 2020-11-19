@@ -27,6 +27,7 @@ private:
     void fit_viewport_to_keyframes();
     void select_all_key_frames();
     void create_curve();
+    void set_interpolation_to_selected(int number);
     void key_press(QPoint cursor_position);
     void key_move(QPoint cursor_position);
     key_frame *get_previous_key(key_frame *key);

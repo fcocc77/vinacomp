@@ -23,24 +23,36 @@ void curve_view::popup_setup_ui()
 
     // Interpolation_menu : Linear
     action *linear_action = new action("Linear Interpolation", "L", "linear_a");
+    linear_action->connect_to(this, [this]() {
+        set_interpolation_to_selected(0);
+    });
     popup->addAction(linear_action);
     //
     //
 
     // Interpolation_menu : Horizontal
     action *horizontal_action = new action("Horizontal Interpolation", "H", "curve_horizontal_a");
+    horizontal_action->connect_to(this, [this]() {
+        set_interpolation_to_selected(1);
+    });
     popup->addAction(horizontal_action);
     //
     //
 
     // Interpolation_menu : Smooth
     action *smooth_action = new action("Smooth Interpolation", "Z", "curve_smooth_a");
+    smooth_action->connect_to(this, [this]() {
+        set_interpolation_to_selected(2);
+    });
     popup->addAction(smooth_action);
     //
     //
 
     // Interpolation_menu : Break
     action *break_action = new action("Break", "X", "curve_break_a");
+    break_action->connect_to(this, [this]() {
+        set_interpolation_to_selected(3);
+    });
     popup->addAction(break_action);
     //
     //

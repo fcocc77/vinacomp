@@ -97,3 +97,13 @@ void key_frame::set_exaggeration(float __exaggeration)
 {
     _exaggeration = __exaggeration;
 }
+
+bool key_frame::is_break()
+{
+    return break_handler;
+}
+
+bool key_frame::set_break(bool _break)
+{
+    break_handler = _break;
+}
