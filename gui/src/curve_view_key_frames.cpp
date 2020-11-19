@@ -128,30 +128,46 @@ key_frame *curve_view::get_next_key(key_frame *key)
 
 void curve_view::set_interpolation_to_selected(int number)
 {
-    // 0: Linear
-    // 1: Horizontal
-    // 2: Smooth
-    // 3: Break
-    // 4: Custom
-
     for (key_frame *key : get_selected_keys())
     {
-        if (number == 1)
-        {
-            key->set_left_angle(0);
-            key->set_right_angle(0);
-
-            key->set_break(false);
-        }
-        else if (number == 3)
-        {
-            key->set_break(true);
-        }
-
-        // key->set_interpolation(number);
+        key->set_interpolation(number, number);
+        if (number == 0)
+            orient_linear_handler(key);
     }
 
     update();
+}
+
+void curve_view::orient_linear_handler(key_frame *key)
+{
+    // si el handler es lineal, orienta el 'handler' a la direccion
+    // del 'handler' del siguiente y anterior keyframe.
+
+    if (key->left_interpolation() == 0)
+    {
+        key_frame *previous_key = get_previous_key(key);
+
+        if (previous_key)
+        {
+            QLineF previous_handler = get_handler_points(previous_key);
+
+            float angle = 90 - get_angle_two_points(key->pos(), previous_handler.p2());
+            key->set_left_angle(angle);
+        }
+    }
+
+    if (key->right_interpolation() == 0)
+    {
+        key_frame *next_key = get_next_key(key);
+
+        if (next_key)
+        {
+            QLineF next_handler = get_handler_points(next_key);
+
+            float angle = 270 - get_angle_two_points(key->pos(), next_handler.p1());
+            key->set_right_angle(-angle);
+        }
+    }
 }
 
 void curve_view::key_press(QPoint cursor_position)
@@ -173,9 +189,15 @@ void curve_view::key_press(QPoint cursor_position)
             if (is_cursor_above(cursor_position, key->pos()))
                 key->select(true);
             else if (is_cursor_above(cursor_position, handler.p1()))
+            {
                 handler_point = 1;
+                key->set_interpolation(4, -1);
+            }
             else if (is_cursor_above(cursor_position, handler.p2()))
+            {
                 handler_point = 2;
+                key->set_interpolation(-1, 4);
+            }
             else
                 key->select(false);
             //
@@ -263,6 +285,7 @@ void curve_view::key_move(QPoint cursor_position)
             //
 
             key->set_pos(coords);
+            orient_linear_handler(key);
         }
 
         update();

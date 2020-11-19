@@ -107,3 +107,55 @@ bool key_frame::set_break(bool _break)
 {
     break_handler = _break;
 }
+
+void key_frame::set_interpolation(int left_number, int right_number)
+{
+    // 0: Linear
+    // 1: Horizontal
+    // 2: Smooth
+    // 3: Break
+    // 4: Custom
+
+    auto set = [=](int number, int handler) {
+        if (handler == 0)
+            _left_interpolation = number;
+        if (handler == 1)
+            _right_interpolation = number;
+
+        if (number == 0)
+            this->set_break(true);
+
+        else if (number == 1)
+        {
+            if (handler == 0)
+                this->set_left_angle(0);
+
+            if (handler == 1)
+                this->set_right_angle(0);
+
+            this->set_break(false);
+        }
+        else if (number == 2)
+            this->set_break(false);
+
+        else if (number == 3)
+            this->set_break(true);
+
+    };
+
+    if (left_number > -1)
+        set(left_number, 0);
+
+    if (right_number > -1)
+        set(right_number, 1);
+}
+
+int key_frame::right_interpolation()
+{
+    return _right_interpolation;
+}
+
+int key_frame::left_interpolation()
+{
+    return _left_interpolation;
+}

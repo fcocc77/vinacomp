@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QPointF>
 
+#include <util.hpp>
+
 class key_frame : public QObject
 {
 private:
@@ -16,6 +18,9 @@ private:
     QString curve_name;
     int index = -1;
     bool break_handler = false;
+
+    int _left_interpolation = 2;
+    int _right_interpolation = 2;
 
 public:
     key_frame(QString curve_name = "", int index = -1);
@@ -35,6 +40,9 @@ public:
     bool selected();
     bool is_break();
     bool set_break(bool _break);
+    void set_interpolation(int left_number, int right_number);
+    int right_interpolation();
+    int left_interpolation();
 
     void select(bool select);
     int get_index();

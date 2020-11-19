@@ -37,6 +37,7 @@ public:
     void draw_point(QPointF coords, QColor color = Qt::white, int size = 7, bool smooth = true);
     void draw_box(QLineF diagonal_line, QColor color, QColor border_color);
     void draw_line(QPointF src, QPointF dst, QColor color);
+    void draw_dashed_line(QLineF line, int stipple);
     //
     //
 

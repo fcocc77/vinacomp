@@ -100,8 +100,14 @@ void curve_view::draw_coordinate_numbers()
 
 void curve_view::draw_bezier(key_frame *src_key, key_frame *dst_key)
 {
-    QLineF src_handler = get_handler_points(src_key, true);
-    QLineF dst_handler = get_handler_points(dst_key, true);
+    QPointF src_handler = get_handler_points(src_key, true).p2();
+    QPointF dst_handler = get_handler_points(dst_key, true).p1();
+
+    if (src_key->right_interpolation() == 0)
+        src_handler = src_key->pos();
+
+    if (dst_key->left_interpolation() == 0)
+        dst_handler = dst_key->pos();
 
     glBegin(GL_LINE_STRIP);
     glColor3f(1, 1, 0);
@@ -112,7 +118,7 @@ void curve_view::draw_bezier(key_frame *src_key, key_frame *dst_key)
 
     for (int i = 0; i <= segments; i++)
     {
-        QPointF point = cubic_bezier(src_key->pos(), src_handler.p2(), dst_handler.p1(), dst_key->pos(), t);
+        QPointF point = cubic_bezier(src_key->pos(), src_handler, dst_handler, dst_key->pos(), t);
         glVertex2f(point.x(), point.y());
 
         t += segment;
@@ -139,7 +145,13 @@ void curve_view::draw_curve()
 
             // Beziers
             if (previous_key)
-                draw_bezier(previous_key, key);
+            {
+                // si los 2 keyframes estan en 'linear', crea una linea recta, asi ahorramos recursos
+                if (key->left_interpolation() == 0 and previous_key->right_interpolation() == 0)
+                    draw_line(previous_key->pos(), key->pos(), Qt::yellow);
+                else
+                    draw_bezier(previous_key, key);
+            }
             //
             //
 
@@ -157,10 +169,18 @@ void curve_view::draw_curve()
                 QLineF handler = get_handler_points(key);
 
                 draw_point(handler.p1(), Qt::white, 5);
-                draw_line(handler.p1(), key->pos(), Qt::red);
-
                 draw_point(handler.p2(), Qt::white, 5);
-                draw_line(handler.p2(), key->pos(), Qt::red);
+
+                // si el keyframe es 'linear', le una linea puenteada al handler
+                if (key->left_interpolation() == 0)
+                    draw_dashed_line({handler.p1(), key->pos()}, 3);
+                else
+                    draw_line(handler.p1(), key->pos(), Qt::red);
+
+                if (key->right_interpolation() == 0)
+                    draw_dashed_line({handler.p2(), key->pos()}, 3);
+                else
+                    draw_line(handler.p2(), key->pos(), Qt::red);
             }
             //
             //

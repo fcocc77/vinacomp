@@ -32,6 +32,7 @@ private:
     void key_move(QPoint cursor_position);
     key_frame *get_previous_key(key_frame *key);
     key_frame *get_next_key(key_frame *key);
+    void orient_linear_handler(key_frame *key);
 
     key_frame empty_key;
     QLineF get_handler_points(key_frame *key, bool infinite = false);

@@ -87,6 +87,23 @@ void gl_view::draw_line(QPointF src, QPointF dst, QColor color)
     glEnd();
 }
 
+void gl_view::draw_dashed_line(QLineF line, int stipple)
+{
+    glPushAttrib(GL_ENABLE_BIT);
+
+    glLineStipple(stipple, 0xAAAA);
+    glEnable(GL_LINE_STIPPLE);
+    glBegin(GL_LINES);
+    glColor3f(0, 0, 1);
+
+    glVertex2f(line.x1(), line.y1());
+    glVertex2f(line.x2(), line.y2());
+
+    glEnd();
+
+    glPopAttrib();
+}
+
 void gl_view::draw_text(QString text, QColor color, QPointF coords, QPointF viewer_position)
 {
     int font_size = 10;
