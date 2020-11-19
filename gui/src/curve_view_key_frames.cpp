@@ -31,7 +31,7 @@ QLineF curve_view::get_handler_points(
 
     // genera el punto vertical infinito donde apunta el manejador
     float left_tangent = tan(key->get_left_angle() * M_PI / 180);
-    float right_tangent = tan(key->get_right_angle() * M_PI / 180);
+    float right_tangent = tan(-key->get_right_angle() * M_PI / 180);
     QPointF infinite_left_point = {left_point.x(), left_point.y() + (left_tangent * left_separation)};
     QPointF infinite_right_point = {right_point.x(), right_point.y() - (right_tangent * right_separation)};
     //
@@ -206,7 +206,7 @@ void curve_view::key_move(QPoint cursor_position)
             //
             //
 
-            key->set_right_angle(angle);
+            key->set_right_angle(-angle);
         }
         else
         {
