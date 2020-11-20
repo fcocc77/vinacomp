@@ -1,11 +1,12 @@
 #include <curve_view.hpp>
 
-curve_view::curve_view(/* args */)
+curve_view::curve_view()
 {
     this->setMouseTracking(true);
     this->setTabletTracking(true);
 
-    create_curve();
+    create_curve("Translate", Qt::cyan, 0);
+    create_curve("Scale", Qt::green, 1);
     popup_setup_ui();
 
     qt::shortcut("+", this, [this]() {

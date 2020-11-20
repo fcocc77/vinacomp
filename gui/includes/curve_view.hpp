@@ -26,7 +26,7 @@ private:
     bool is_point_in_rectangle(QPointF point, QLineF rectangle);
     void fit_viewport_to_keyframes();
     void select_all_key_frames();
-    void create_curve();
+    void create_curve(QString name, QColor color, int _pos_y);
     void set_interpolation_to_selected(int number);
     void key_press(QPoint cursor_position);
     void key_move(QPoint cursor_position);
@@ -34,7 +34,6 @@ private:
     key_frame *get_next_key(key_frame *key);
     void orient_linear_handler(key_frame *key);
 
-    key_frame empty_key;
     QLineF get_handler_points(key_frame *key, bool infinite = false);
     QPointF cubic_bezier(
         QPointF p1, QPointF p2,

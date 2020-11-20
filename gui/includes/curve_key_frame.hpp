@@ -18,12 +18,18 @@ private:
     QString curve_name;
     int index = -1;
     bool break_handler = false;
+    QColor color;
 
     int _left_interpolation = 2;
     int _right_interpolation = 2;
 
 public:
-    key_frame(QString curve_name = "", int index = -1);
+    key_frame(
+        QString _curve_name,
+        int _index,
+        QPointF _position,
+        QColor _color
+    );
     ~key_frame();
 
     QPointF pos();
@@ -43,6 +49,8 @@ public:
     void set_interpolation(int left_number, int right_number);
     int right_interpolation();
     int left_interpolation();
+
+    QColor get_color();
 
     void select(bool select);
     int get_index();

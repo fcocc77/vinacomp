@@ -110,7 +110,8 @@ void curve_view::draw_bezier(key_frame *src_key, key_frame *dst_key)
         dst_handler = dst_key->pos();
 
     glBegin(GL_LINE_STRIP);
-    glColor3f(1, 1, 0);
+    QColor c = src_key->get_color();
+    glColor3f(c.red() / 255, c.green() / 255, c.blue() / 255);
 
     int segments = 100;
     float segment = 1.0 / segments;
@@ -134,8 +135,8 @@ void curve_view::draw_curve()
     for (auto keys : curves)
     {
         // Infinite Lines
-        draw_line({-1000000, keys.first()->y()}, keys.first()->pos(), Qt::red);
-        draw_line(keys.last()->pos(), {1000000, keys.last()->y()}, Qt::red);
+        draw_line({-1000000, keys.first()->y()}, keys.first()->pos(), keys.first()->get_color());
+        draw_line(keys.last()->pos(), {1000000, keys.last()->y()}, keys.last()->get_color());
         //
         //
 
@@ -148,7 +149,7 @@ void curve_view::draw_curve()
             {
                 // si los 2 keyframes estan en 'linear', crea una linea recta, asi ahorramos recursos
                 if (key->left_interpolation() == 0 and previous_key->right_interpolation() == 0)
-                    draw_line(previous_key->pos(), key->pos(), Qt::yellow);
+                    draw_line(previous_key->pos(), key->pos(), key->get_color());
                 else
                     draw_bezier(previous_key, key);
             }

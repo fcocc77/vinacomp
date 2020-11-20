@@ -1,8 +1,15 @@
 #include <curve_key_frame.hpp>
 
-key_frame::key_frame(QString _curve_name, int _index)
+key_frame::key_frame(QString _curve_name,
+                     int _index,
+                     QPointF _position,
+                     QColor _color)
+
     : curve_name(_curve_name),
-      index(_index)
+      index(_index),
+      position(_position),
+      last_position(_position),
+      color(_color)
 {
 }
 
@@ -140,7 +147,6 @@ void key_frame::set_interpolation(int left_number, int right_number)
 
         else if (number == 3)
             this->set_break(true);
-
     };
 
     if (left_number > -1)
@@ -158,4 +164,9 @@ int key_frame::right_interpolation()
 int key_frame::left_interpolation()
 {
     return _left_interpolation;
+}
+
+QColor key_frame::get_color()
+{
+    return color;
 }

@@ -83,25 +83,27 @@ QPointF curve_view::cubic_bezier(
     //
 }
 
-void curve_view::create_curve()
+void curve_view::create_curve(QString name, QColor color, int _pos_y)
 {
-    QString name = "translate_x";
+    QList<key_frame *> keys;
+    int pos_y = _pos_y;
+    for (int i = 0; i < 5; i++)
+    {
+        int pos_x = i * 10;
 
-    key_frame *key1 = new key_frame(name, 0);
-    key_frame *key2 = new key_frame(name, 1);
-    key_frame *key3 = new key_frame(name, 2);
-    key_frame *key4 = new key_frame(name, 3);
-    key_frame *key5 = new key_frame(name, 4);
-    key_frame *key6 = new key_frame(name, 5);
+        key_frame *key = new key_frame(
+            name, i,
+            {pos_x, pos_y},
+            color);
 
-    key1->set_pos({0, 2});
-    key2->set_pos({0.5, 1});
-    key3->set_pos({1, 0});
-    key4->set_pos({2, 0.4});
-    key5->set_pos({2.5, 1});
-    key6->set_pos({3, 0.2});
+        keys.push_back(key);
 
-    curves.insert(name, {key1, key2, key3, key4, key5, key6});
+        key->set_interpolation(0, 0);
+
+        pos_y = !pos_y;
+    }
+
+    curves.insert(name, keys);
 
     update();
 }
