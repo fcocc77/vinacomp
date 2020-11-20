@@ -11,17 +11,17 @@ class key_frame : public QObject
 private:
     QPointF position;
     QPointF last_position;
-    float left_angle = 0;
-    float right_angle = 0;
-    bool _selected = false;
-    float _exaggeration = 0.3; // 0.0 - 1.0
+    float left_angle;
+    float right_angle;
+    bool _selected;
+    float _exaggeration;
     QString curve_name;
-    int index = -1;
-    bool broken = false;
+    int index;
+    bool broken;
     QColor color;
 
-    int _left_interpolation = 2;
-    int _right_interpolation = 2;
+    int _left_interpolation;
+    int _right_interpolation;
 
 public:
     key_frame(

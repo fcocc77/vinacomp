@@ -9,7 +9,15 @@ key_frame::key_frame(QString _curve_name,
       index(_index),
       position(_position),
       last_position(_position),
-      color(_color)
+      color(_color),
+
+      left_angle(0),
+      right_angle(0),
+      _selected(false),
+      _exaggeration(0.3),
+      broken(false),
+      _left_interpolation(2),
+      _right_interpolation(2)
 {
 }
 

@@ -1,6 +1,12 @@
 #include <curve_view.hpp>
 
 curve_view::curve_view()
+    : dragging(false),
+      text_visible(false),
+      transform_box_visible(false),
+      unselected_keys(false),
+      selecting(false),
+      transforming(false)
 {
     this->setMouseTracking(true);
     this->setTabletTracking(true);
