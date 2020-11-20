@@ -87,14 +87,14 @@ void gl_view::draw_line(QPointF src, QPointF dst, QColor color)
     glEnd();
 }
 
-void gl_view::draw_dashed_line(QLineF line, int stipple)
+void gl_view::draw_dashed_line(QLineF line, QColor color, int stipple)
 {
     glPushAttrib(GL_ENABLE_BIT);
 
     glLineStipple(stipple, 0xAAAA);
     glEnable(GL_LINE_STIPPLE);
     glBegin(GL_LINES);
-    glColor3f(0, 0, 1);
+    glColor3f(color.red() / 255.0, color.green() / 255.0, color.blue() / 255.0);
 
     glVertex2f(line.x1(), line.y1());
     glVertex2f(line.x2(), line.y2());

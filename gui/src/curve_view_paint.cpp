@@ -155,34 +155,38 @@ void curve_view::draw_curve()
             }
             //
             //
+        }
 
-            // Point
-            if (key->selected())
-                draw_point(key->pos());
-            else
-                draw_point(key->pos(), Qt::red);
-            //
-            //
-
+        for (key_frame *key : keys)
+        {
             // Handler
             if (key->selected())
             {
                 QLineF handler = get_handler_points(key);
 
-                draw_point(handler.p1(), Qt::white, 5);
-                draw_point(handler.p2(), Qt::white, 5);
-
                 // si el keyframe es 'linear', le una linea puenteada al handler
                 if (key->left_interpolation() == 0)
-                    draw_dashed_line({handler.p1(), key->pos()}, 3);
+                    draw_dashed_line({handler.p1(), key->pos()}, Qt::red, 3);
                 else
                     draw_line(handler.p1(), key->pos(), Qt::red);
 
                 if (key->right_interpolation() == 0)
-                    draw_dashed_line({handler.p2(), key->pos()}, 3);
+                    draw_dashed_line({handler.p2(), key->pos()}, Qt::red, 3);
                 else
                     draw_line(handler.p2(), key->pos(), Qt::red);
+                //
+
+                draw_point(handler.p1(), Qt::white);
+                draw_point(handler.p2(), Qt::white);
             }
+            //
+            //
+
+            // Point
+            if (key->selected())
+                draw_point(key->pos());
+            else
+                draw_point(key->pos(), key->get_color());
             //
             //
         }
