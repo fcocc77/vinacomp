@@ -98,7 +98,7 @@ void curve_view::create_curve(QString name, QColor color, int _pos_y)
 
         keys.push_back(key);
 
-        key->set_interpolation(0, 0);
+        key->set_interpolation(vina::linear, vina::linear);
 
         pos_y = !pos_y;
     }
@@ -193,12 +193,12 @@ void curve_view::key_press(QPoint cursor_position)
             else if (is_cursor_above(cursor_position, handler.p1()))
             {
                 handler_point = 1;
-                key->set_interpolation(4, -1);
+                key->set_interpolation(vina::custom, vina::none);
             }
             else if (is_cursor_above(cursor_position, handler.p2()))
             {
                 handler_point = 2;
-                key->set_interpolation(-1, 4);
+                key->set_interpolation(vina::none, vina::custom);
             }
             else
                 key->select(false);
@@ -246,7 +246,7 @@ void curve_view::key_move(QPoint cursor_position)
 
             key->set_left_angle(angle);
 
-            if (!key->is_break())
+            if (!key->is_broken())
                 key->set_right_angle(-angle);
         }
         else if (drag_handler == 2)
@@ -262,7 +262,7 @@ void curve_view::key_move(QPoint cursor_position)
             //
 
             key->set_right_angle(-angle);
-            if (!key->is_break())
+            if (!key->is_broken())
                 key->set_left_angle(angle);
         }
         else

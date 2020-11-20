@@ -24,7 +24,7 @@ void curve_view::popup_setup_ui()
     // Interpolation_menu : Linear
     action *linear_action = new action("Linear Interpolation", "L", "linear_a");
     linear_action->connect_to(this, [this]() {
-        set_interpolation_to_selected(0);
+        set_interpolation_to_selected(vina::linear);
     });
     popup->addAction(linear_action);
     //
@@ -33,7 +33,7 @@ void curve_view::popup_setup_ui()
     // Interpolation_menu : Horizontal
     action *horizontal_action = new action("Horizontal Interpolation", "H", "curve_horizontal_a");
     horizontal_action->connect_to(this, [this]() {
-        set_interpolation_to_selected(1);
+        set_interpolation_to_selected(vina::horizontal);
     });
     popup->addAction(horizontal_action);
     //
@@ -42,7 +42,7 @@ void curve_view::popup_setup_ui()
     // Interpolation_menu : Smooth
     action *smooth_action = new action("Smooth Interpolation", "Z", "curve_smooth_a");
     smooth_action->connect_to(this, [this]() {
-        set_interpolation_to_selected(2);
+        set_interpolation_to_selected(vina::smooth);
     });
     popup->addAction(smooth_action);
     //
@@ -51,7 +51,7 @@ void curve_view::popup_setup_ui()
     // Interpolation_menu : Break
     action *break_action = new action("Break", "X", "curve_break_a");
     break_action->connect_to(this, [this]() {
-        set_interpolation_to_selected(3);
+        set_interpolation_to_selected(vina::broken);
     });
     popup->addAction(break_action);
     //

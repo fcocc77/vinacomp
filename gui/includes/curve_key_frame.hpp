@@ -17,7 +17,7 @@ private:
     float _exaggeration = 0.3; // 0.0 - 1.0
     QString curve_name;
     int index = -1;
-    bool break_handler = false;
+    bool broken = false;
     QColor color;
 
     int _left_interpolation = 2;
@@ -28,8 +28,7 @@ public:
         QString _curve_name,
         int _index,
         QPointF _position,
-        QColor _color
-    );
+        QColor _color);
     ~key_frame();
 
     QPointF pos();
@@ -44,8 +43,8 @@ public:
     void set_right_angle(float _angle);
 
     bool selected();
-    bool is_break();
-    bool set_break(bool _break);
+    bool is_broken();
+    bool set_broken(bool _broken);
     void set_interpolation(int left_number, int right_number);
     int right_interpolation();
     int left_interpolation();

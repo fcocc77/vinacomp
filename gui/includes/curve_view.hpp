@@ -6,6 +6,7 @@
 #include <gl_view.hpp>
 #include <action.hpp>
 #include <curve_key_frame.hpp>
+#include <vinacomp_namespace.hpp>
 
 class curve_view : public gl_view
 {

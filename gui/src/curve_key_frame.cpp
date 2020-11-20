@@ -105,14 +105,14 @@ void key_frame::set_exaggeration(float __exaggeration)
     _exaggeration = __exaggeration;
 }
 
-bool key_frame::is_break()
+bool key_frame::is_broken()
 {
-    return break_handler;
+    return broken;
 }
 
-bool key_frame::set_break(bool _break)
+bool key_frame::set_broken(bool _broken)
 {
-    break_handler = _break;
+    broken = _broken;
 }
 
 void key_frame::set_interpolation(int left_number, int right_number)
@@ -120,7 +120,7 @@ void key_frame::set_interpolation(int left_number, int right_number)
     // 0: Linear
     // 1: Horizontal
     // 2: Smooth
-    // 3: Break
+    // 3: Broken
     // 4: Custom
 
     auto set = [=](int number, int handler) {
@@ -130,7 +130,7 @@ void key_frame::set_interpolation(int left_number, int right_number)
             _right_interpolation = number;
 
         if (number == 0)
-            this->set_break(true);
+            this->set_broken(true);
 
         else if (number == 1)
         {
@@ -140,13 +140,13 @@ void key_frame::set_interpolation(int left_number, int right_number)
             if (handler == 1)
                 this->set_right_angle(0);
 
-            this->set_break(false);
+            this->set_broken(false);
         }
         else if (number == 2)
-            this->set_break(false);
+            this->set_broken(false);
 
         else if (number == 3)
-            this->set_break(true);
+            this->set_broken(true);
     };
 
     if (left_number > -1)
