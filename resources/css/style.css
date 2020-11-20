@@ -215,3 +215,10 @@ QScrollBar {
       #trim_panel #controls #knob_color QPushButton {
         background: #464b53; }
 
+#tools {
+  background: #2a2d32; }
+  #tools #separator {
+    margin-left: 10px;
+    background: none;
+    border-left: 1px solid #3a3f45; }
+

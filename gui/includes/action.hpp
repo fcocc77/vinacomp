@@ -11,20 +11,13 @@ class action : public QAction
 private:
     QString key;
     QShortcut *_shortcut;
+    QString icon_name;
 
 public:
-    action(QString label, QString shortcut_key, QString icon_name)
-        : key(shortcut_key)
-    {
-        this->setText(label);
+    action(QString label, QString shortcut_key, QString icon_name);
+    ~action();
 
-        this->setIcon(QIcon("resources/images/" + icon_name + ".png"));
-        this->setShortcut(QString(key));
-    }
-    ~action()
-    {
-        delete _shortcut;
-    }
+    QString get_icon_name();
 
     template <class T, typename Func>
     void connect_to(T *obj, Func func)

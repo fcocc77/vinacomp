@@ -102,6 +102,17 @@ public:
     curve_view(/* args */);
     ~curve_view();
 
+    // Acciones
+    action *select_all_action;
+    action *delete_keyframes_action;
+    action *linear_action;
+    action *horizontal_action;
+    action *smooth_action;
+    action *break_action;
+    action *center_action;
+    //
+    //
+
 protected:
     void initializeGL() override;
     void paintGL() override;

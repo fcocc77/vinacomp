@@ -6,8 +6,10 @@
 #include <QHBoxLayout>
 #include <QTreeWidget>
 #include <QGraphicsScene>
+#include <QLabel>
 
 #include <curve_view.hpp>
+#include <tools.hpp>
 
 class curve_editor : public QWidget
 {
