@@ -12,12 +12,17 @@ private:
     QString key;
     QShortcut *_shortcut;
     QString icon_name;
+    QString tool_tip;
+    QString label;
 
 public:
     action(QString label, QString shortcut_key, QString icon_name);
     ~action();
 
     QString get_icon_name();
+    void set_tool_tip(QString tip);
+    QString get_tool_tip();
+    QString get_label();
 
     template <class T, typename Func>
     void connect_to(T *obj, Func func)

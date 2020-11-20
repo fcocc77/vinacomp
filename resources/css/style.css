@@ -6,6 +6,12 @@
   font-size: 11px;
   color: #acb1b9; }
 
+QToolTip {
+  background: #17191c;
+  padding: 3px;
+  border: 1px solid #ff5e00;
+  border-radius: 2px; }
+
 QLabel {
   background: transparent; }
 

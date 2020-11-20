@@ -18,6 +18,7 @@ void tools::add_action(action *_action)
 {
     QPushButton *button = new QPushButton();
 
+    button->setToolTip(_action->get_label());
     qt::set_icon(button, _action->get_icon_name(), 22);
 
     connect(button, &QPushButton::clicked, this, [=]() {
