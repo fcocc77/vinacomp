@@ -5,6 +5,13 @@ gui:
         ✔ al mover un nodo y esta presionado el escape, el link no se mueve con el nodo @done (10/30/2020, 11:15:48 AM)
     settings_projects:
         ☐ el proxy va a remplazar el rscale de videovina
+    curve_view:
+        ☐ limitar el tamaño del 'handler'
+        ☐ crear toolbar
+        ☐ que funcione el delete key
+        ☐ con el control-alt poder insertar keyframes
+        ☐ con el control poder agrandar el handler
+        ☐ poner nombre de curva al inicio de la curva
 
 nodes:
     ☐ crear nodo de speed, para que cambie todas las velocidades como 'videovina' y asi no lo tenemos que hacer en videovina

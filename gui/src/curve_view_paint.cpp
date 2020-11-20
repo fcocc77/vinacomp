@@ -135,11 +135,16 @@ void curve_view::draw_curve()
         aa_enable(true);
 
         // Infinite Lines
-        draw_line({-1000000, keys.first()->y()}, keys.first()->pos(), keys.first()->get_color());
-        draw_line(keys.last()->pos(), {1000000, keys.last()->y()}, keys.last()->get_color());
+        float infinite_x = 100000000;
+        float infinite_first_y = tan(keys.first()->get_left_angle() * M_PI / 180) * infinite_x;
+        float infinite_last_y = tan(keys.last()->get_right_angle() * M_PI / 180) * infinite_x;
+
+        draw_line({-infinite_x, infinite_first_y}, keys.first()->pos(), keys.first()->get_color());
+        draw_line(keys.last()->pos(), {infinite_x, infinite_last_y}, keys.last()->get_color());
         //
         //
 
+        // crear bezier o linea
         for (key_frame *key : keys)
         {
             key_frame *previous_key = get_previous_key(key);
@@ -156,7 +161,10 @@ void curve_view::draw_curve()
             //
             //
         }
+        //
+        //
 
+        // crear handlers
         for (key_frame *key : keys)
         {
             // Handler
