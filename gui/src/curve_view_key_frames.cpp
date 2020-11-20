@@ -245,25 +245,22 @@ void curve_view::key_move(QPoint cursor_position)
             //
 
             key->set_left_angle(angle);
-
             if (!key->is_broken())
                 key->set_right_angle(-angle);
         }
         else if (drag_handler == 2)
         {
-            float angle = 270 - get_angle_two_points(get_coords(cursor_position), key->pos());
+            float angle = 90 + get_angle_two_points(get_coords(cursor_position), key->pos());
 
             // Limitacion de handler 2 a 90 grados
-            if (angle <= 270 and angle > 180)
-                angle = 271;
-            else if (angle < 180)
-                angle = 449;
-            //
-            //
+            if (angle >= 90 and angle < 180)
+                angle = 89.9;
+            else if (angle > 180)
+                angle = -89.9;
 
-            key->set_right_angle(-angle);
+            key->set_right_angle(angle);
             if (!key->is_broken())
-                key->set_left_angle(angle);
+                key->set_left_angle(-angle);
         }
         else
         {
