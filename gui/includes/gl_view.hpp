@@ -33,7 +33,10 @@ public:
         QString text,
         QColor color,
         QPointF coords,
-        QPointF viewer_position = {-1, -1});
+        QPointF viewer_position,
+        int font_size = 10,
+        Qt::Alignment align = Qt::AlignCenter,
+        QPointF offset = {0, 0});
     void draw_point(QPointF coords, QColor color = Qt::white, int size = 7, bool smooth = true);
     void draw_box(QLineF diagonal_line, QColor color, QColor border_color);
     void draw_line(QPointF src, QPointF dst, QColor color);

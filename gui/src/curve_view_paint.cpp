@@ -176,8 +176,16 @@ void curve_view::draw_curve()
                     draw_line(handler.p2(), key->pos(), Qt::red);
                 //
 
-                draw_point(handler.p1(), Qt::white);
-                draw_point(handler.p2(), Qt::white);
+                draw_point(handler.p1(), Qt::red);
+                draw_point(handler.p2(), Qt::red);
+
+                draw_text(qt::float_to_string(key->get_left_angle(), 1) + "°",
+                          Qt::white, handler.p1(),
+                          {-1, -1}, 9, Qt::AlignRight, {5, -10});
+
+                draw_text(qt::float_to_string(key->get_right_angle(), 1) + "°",
+                          Qt::white, handler.p2(),
+                          {-1, -1}, 9, Qt::AlignRight, {5, -10});
             }
             //
             //
@@ -189,6 +197,14 @@ void curve_view::draw_curve()
                 draw_point(key->pos(), key->get_color());
             //
             //
+
+            // Text
+            if (key->selected())
+            {
+                draw_text("x:" + qt::float_to_string(key->x(), 2) + "  y:" + qt::float_to_string(key->y(), 2),
+                          Qt::white, key->pos(),
+                          {-1, -1}, 9, Qt::AlignRight, {5, 10});
+            }
         }
     }
 }

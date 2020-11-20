@@ -27,8 +27,6 @@ void gl_view::resizeGL(int width, int height)
 
 void gl_view::aa_enable(bool enable)
 {
-    int gl_version = *glGetString(GL_VERSION);
-
     // habilita o desabilita el Antialiasing, si esta habilitado
     // usa la mescla en alpha y si no, usa una mescla
     // dejando los pixel mas claros visibles.
@@ -42,11 +40,7 @@ void gl_view::aa_enable(bool enable)
 
         glBlendEquation(GL_FUNC_ADD);
 
-        // mantiene un diferente tamaño de borde si es una tarjeta Nvidia o una intel
-        if (gl_version == 52)
-            glLineWidth(1.5); // Nvidia
-        else
-            glLineWidth(2); // Intel
+        glLineWidth(1.5);
     }
     else
     {
@@ -104,13 +98,15 @@ void gl_view::draw_dashed_line(QLineF line, QColor color, int stipple)
     glPopAttrib();
 }
 
-void gl_view::draw_text(QString text, QColor color, QPointF coords, QPointF viewer_position)
+void gl_view::draw_text(
+    QString text,
+    QColor color,
+    QPointF coords,
+    QPointF viewer_position,
+    int font_size,
+    Qt::Alignment align,
+    QPointF offset)
 {
-    int font_size = 10;
-
-    int size_x = 50;
-    int size_y = 10;
-
     QPainter painter(this);
     painter.setPen(color);
     painter.setFont(QFont("Arial", font_size));
@@ -133,7 +129,20 @@ void gl_view::draw_text(QString text, QColor color, QPointF coords, QPointF view
     //
     //
 
-    painter.drawText(x - (size_x / 2), y - (size_y / 2), size_x, size_y, Qt::AlignCenter, text);
+    QSize size = QFontMetrics(painter.font()).size(Qt::TextSingleLine, text);
+
+    if (align == Qt::AlignLeft)
+        x -= size.width();
+    else if (align == Qt::AlignCenter)
+        x -= size.width() / 2;
+
+    y -= size.height() / 2;
+
+    x += offset.x();
+    y -= offset.y();
+
+    painter.drawText(x, y, size.width(), size.height(), Qt::AlignCenter, text);
+
     painter.end();
 }
 
