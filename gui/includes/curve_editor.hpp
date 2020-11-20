@@ -7,6 +7,7 @@
 #include <QTreeWidget>
 #include <QGraphicsScene>
 #include <QLabel>
+#include <QLineEdit>
 
 #include <curve_view.hpp>
 #include <tools.hpp>

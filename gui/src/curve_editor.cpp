@@ -22,11 +22,19 @@ void curve_editor::setup_ui()
     view = new curve_view();
     view->setObjectName("graphics_view");
 
+    QLineEdit *expression_curve = new QLineEdit();
+    QLabel *expression_result = new QLabel(" = 20");
+    QLabel *expression_name = new QLabel("Transform.translate.x");
+
     tools *toolbar = new tools();
     toolbar->add_action(view->select_all_action);
     toolbar->add_action(view->delete_keyframes_action);
     toolbar->add_separator();
     toolbar->add_action(view->center_action);
+    toolbar->add_stretch();
+    toolbar->add_widget(expression_name);
+    toolbar->add_widget(expression_curve);
+    toolbar->add_widget(expression_result);
     toolbar->add_stretch();
     toolbar->add_action(view->linear_action);
     toolbar->add_action(view->horizontal_action);

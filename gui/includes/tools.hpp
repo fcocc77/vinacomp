@@ -21,6 +21,7 @@ public:
     void add_action(action *_action);
     void add_separator();
     void add_stretch();
+    void add_widget(QWidget *widget);
 };
 
 #endif // TOOLS_HPP

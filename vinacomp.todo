@@ -7,11 +7,16 @@ gui:
         ☐ el proxy va a remplazar el rscale de videovina
     curve_view:
         ☐ limitar el tamaño del 'handler'
-        ☐ crear toolbar
+        ✔ crear toolbar @done (11/20/2020, 3:33:12 PM)
         ☐ que funcione el delete key
         ☐ con el control-alt poder insertar keyframes
         ☐ con el control poder agrandar el handler
         ☐ poner nombre de curva al inicio de la curva
+        ☐ cuando hay keyframes de dos curvas seleccionadas, no funciona la escala
+        ☐ crear lineas verticales de entrada y salida
+        ☐ crear cursor de linea de tiempo
+        ☐ que funcione el snap en horizontal por frame
+        ☐ que el keyframe solo se pueda mover en una direccion a la vez, y con el control presionado poder mover omnidireccional
 
 nodes:
     ☐ crear nodo de speed, para que cambie todas las velocidades como 'videovina' y asi no lo tenemos que hacer en videovina

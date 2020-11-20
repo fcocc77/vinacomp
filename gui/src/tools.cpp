@@ -41,3 +41,8 @@ void tools::add_stretch()
 {
     layout->addStretch();
 }
+
+void tools::add_widget(QWidget *widget)
+{
+    layout->addWidget(widget);
+}
