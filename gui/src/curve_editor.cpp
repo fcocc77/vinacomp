@@ -4,6 +4,8 @@ curve_editor ::curve_editor()
 {
     this->setObjectName("curve_editor");
     setup_ui();
+
+    add_curve();
 }
 
 curve_editor ::~curve_editor()
@@ -56,7 +58,7 @@ void curve_editor::setup_ui()
 
 QTreeWidget *curve_editor::knobs_tree_setup_ui()
 {
-    QTreeWidget *tree = new QTreeWidget();
+    tree = new QTreeWidget();
     tree->setObjectName("knobs_tree");
     tree->setMaximumWidth(300);
     tree->setMinimumWidth(300);
@@ -65,4 +67,37 @@ QTreeWidget *curve_editor::knobs_tree_setup_ui()
     //
 
     return tree;
+}
+
+void curve_editor::add_item(QString node, QString param, QString dimension)
+{
+    QTreeWidgetItem *node_item = new QTreeWidgetItem();
+    node_item->setText(0, "Transform");
+
+    QTreeWidgetItem *param_item = new QTreeWidgetItem();
+    param_item->setText(0, "translate");
+
+    QTreeWidgetItem *dimension_item = new QTreeWidgetItem();
+    dimension_item->setText(0, "x");
+
+    node_item->addChild(param_item);
+    param_item->addChild(dimension_item);
+
+    tree->addTopLevelItem(node_item);
+}
+
+void curve_editor::add_curve()
+{
+    QString name = "Grade";
+    QString param = "white";
+    QString dimension = "r";
+
+    QJsonArray keys;
+    keys.insert(0, {{0.0, 1.0, 0, 0, false}});
+    keys.insert(1, {{1.0, 0.5, 0, 0, false}});
+    keys.insert(2, {{3.0, 1.5, 0, 0, false}});
+    keys.insert(3, {{4.0, 0.1, 0, 0, false}});
+
+    this->add_item(name, param, dimension);
+    view->create_curve(name, Qt::cyan, keys);
 }

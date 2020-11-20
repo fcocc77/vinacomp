@@ -83,27 +83,33 @@ QPointF curve_view::cubic_bezier(
     //
 }
 
-void curve_view::create_curve(QString name, QColor color, int _pos_y)
+void curve_view::create_curve(QString name, QColor color, QJsonArray keys)
 {
-    QList<key_frame *> keys;
-    int pos_y = _pos_y;
-    for (int i = 0; i < 5; i++)
+    QList<key_frame *> _keys;
+
+    for (int i = 0; i < keys.count(); i++)
     {
-        int pos_x = i * 10;
+        // convierte los valores de key frame de json para poder usarlos
+        QJsonArray key = keys[i].toArray();
 
-        key_frame *key = new key_frame(
-            name, i,
-            {pos_x, pos_y},
-            color);
+        QPointF position = {key[0].toDouble(), key[1].toDouble()};
+        float left_angle = key[2].toDouble();
+        float right_angle = key[3].toDouble();
+        bool broken = key[4].toBool();
+        //
+        //
 
-        keys.push_back(key);
+        key_frame *_key = new key_frame(name, i, position, color);
 
-        key->set_interpolation(vina::linear, vina::linear);
+        _key->set_left_angle(left_angle);
+        _key->set_left_angle(right_angle);
+        _key->set_interpolation(vina::custom, vina::custom);
 
-        pos_y = !pos_y;
+        _keys.push_back(_key);
     }
 
-    curves.insert(name, keys);
+    if (!_keys.empty())
+        curves.insert(name, _keys);
 
     update();
 }
