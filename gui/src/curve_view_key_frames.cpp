@@ -211,6 +211,7 @@ void curve_view::key_press(QPoint cursor_position)
                 drag_key_frame = key;
                 drag_handler = handler_point;
                 dragging = true;
+                text_visible = true;
             }
         }
     }

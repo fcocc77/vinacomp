@@ -130,10 +130,10 @@ void curve_view::draw_bezier(key_frame *src_key, key_frame *dst_key)
 
 void curve_view::draw_curve()
 {
-    aa_enable(true);
-
     for (auto keys : curves)
     {
+        aa_enable(true);
+
         // Infinite Lines
         draw_line({-1000000, keys.first()->y()}, keys.first()->pos(), keys.first()->get_color());
         draw_line(keys.last()->pos(), {1000000, keys.last()->y()}, keys.last()->get_color());
@@ -164,13 +164,13 @@ void curve_view::draw_curve()
             {
                 QLineF handler = get_handler_points(key);
 
-                // si el keyframe es 'linear', le una linea puenteada al handler
-                if (key->left_interpolation() == 0)
+                // si el keyframe es 'broken', le una linea puenteada al handler
+                if (key->is_broken())
                     draw_dashed_line({handler.p1(), key->pos()}, Qt::red, 3);
                 else
                     draw_line(handler.p1(), key->pos(), Qt::red);
 
-                if (key->right_interpolation() == 0)
+                if (key->is_broken())
                     draw_dashed_line({handler.p2(), key->pos()}, Qt::red, 3);
                 else
                     draw_line(handler.p2(), key->pos(), Qt::red);
@@ -179,13 +179,16 @@ void curve_view::draw_curve()
                 draw_point(handler.p1(), Qt::red);
                 draw_point(handler.p2(), Qt::red);
 
-                draw_text(qt::float_to_string(key->get_left_angle(), 1) + "°",
-                          Qt::white, handler.p1(),
-                          {-1, -1}, 9, Qt::AlignRight, {5, -10});
+                if (text_visible)
+                {
+                    draw_text(qt::float_to_string(key->get_left_angle(), 1) + "°",
+                              Qt::white, handler.p1(),
+                              {-1, -1}, 9, Qt::AlignRight, {5, -10});
 
-                draw_text(qt::float_to_string(key->get_right_angle(), 1) + "°",
-                          Qt::white, handler.p2(),
-                          {-1, -1}, 9, Qt::AlignRight, {5, -10});
+                    draw_text(qt::float_to_string(key->get_right_angle(), 1) + "°",
+                              Qt::white, handler.p2(),
+                              {-1, -1}, 9, Qt::AlignRight, {5, -10});
+                }
             }
             //
             //
@@ -201,9 +204,10 @@ void curve_view::draw_curve()
             // Text
             if (key->selected())
             {
-                draw_text("x:" + qt::float_to_string(key->x(), 2) + "  y:" + qt::float_to_string(key->y(), 2),
-                          Qt::white, key->pos(),
-                          {-1, -1}, 9, Qt::AlignRight, {5, 10});
+                if (text_visible)
+                    draw_text("x:" + qt::float_to_string(key->x(), 2) + "  y:" + qt::float_to_string(key->y(), 2),
+                              Qt::white, key->pos(),
+                              {-1, -1}, 9, Qt::AlignRight, {5, 10});
             }
         }
     }

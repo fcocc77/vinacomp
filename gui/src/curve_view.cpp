@@ -41,6 +41,7 @@ void curve_view::select_all_key_frames()
             key->select(true);
 
     show_transform_box();
+    text_visible = false;
 }
 
 void curve_view::fit_viewport_to_keyframes()
@@ -85,6 +86,7 @@ void curve_view::mousePressEvent(QMouseEvent *event)
 
     if (!qt::alt() && event->button() == Qt::LeftButton)
     {
+        text_visible = false;
         transform_box_press(event->pos());
         if (!transforming)
         {
@@ -111,6 +113,8 @@ void curve_view::mouseReleaseEvent(QMouseEvent *event)
 {
     if (selecting)
         show_transform_box();
+
+    text_visible = get_selected_keys().count() <= 1;
 
     dragging = false;
     selecting = false;
