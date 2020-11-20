@@ -17,13 +17,13 @@ private:
     // Drag KeyFrame
     int drag_handler;
     key_frame *drag_key_frame;
-    bool dragging;
+    bool dragging = false;
     //
     //
 
     // Key Frames
     QMap<QString, QList<key_frame *>> curves;
-    bool text_visible;
+    bool text_visible = false;
 
     bool is_point_in_rectangle(QPointF point, QLineF rectangle);
     void fit_viewport_to_keyframes();
@@ -63,19 +63,19 @@ private:
     //
 
     // Selector
-    bool transform_box_visible;
+    bool transform_box_visible = false;
     QLineF transform_box;
     QLineF last_transform_box;
 
-    bool unselected_keys;
-    bool selecting;
+    bool unselected_keys = false;
+    bool selecting = false;
     QLineF selector;
 
     QLineF limit_coord_left;
     QLineF limit_coord_right;
     QLineF max_translate;
 
-    bool transforming;
+    bool transforming = false;
     QString resize_current_action;
     QList<key_frame *> selected_key_frames;
 
