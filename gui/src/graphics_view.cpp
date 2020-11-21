@@ -1,10 +1,9 @@
 #include <graphics_view.hpp>
 
-graphics_view::graphics_view(/* args */)
+graphics_view::graphics_view()
+    : panning(false),
+      zooming(false)
 {
-    panning = false;
-    zooming = false;
-
     this->setTransformationAnchor(QGraphicsView::NoAnchor);
 }
 

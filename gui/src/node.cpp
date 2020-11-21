@@ -14,19 +14,19 @@ node::node(QGraphicsScene *_scene,
       color(_color),
       scene(_scene),
       current_z_value(_current_z_value),
-      selected_nodes(_selected_nodes)
+      selected_nodes(_selected_nodes),
+
+      minimum_width(150),
+      minimum_height(50),
+      icon_area_width(45)
 
 {
     center_position = new QPointF;
     nodes_connected_to_the_output = new QMap<QString, node *>;
     nodes_connected_to_the_inputs = new QMap<QString, node *>;
 
-    minimum_width = 150;
-    minimum_height = 50;
     current_width = minimum_width;
     current_height = minimum_height;
-
-    icon_area_width = 45;
 
     this->setFlags(QGraphicsItem::ItemIsMovable);
     //

@@ -14,7 +14,6 @@ trim_panel::trim_panel(properties *__properties,
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
     setup_ui();
-
     setup_knobs(_knobs);
 }
 

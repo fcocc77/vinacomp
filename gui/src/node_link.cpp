@@ -9,10 +9,11 @@ node_link::node_link(int _index,
     : index(_index),
       scene(_scene),
       this_node(__node),
-      link_connecting(_link_connecting)
+      link_connecting(_link_connecting),
+
+      connected_node(NULL)
 
 {
-    connected_node = NULL;
 
     // Link
     link_size = 70;

@@ -7,9 +7,10 @@ panels_layout::panels_layout(
     script_editor *_script_editor,
     properties *_properties,
     curve_editor *_curve_editor)
-{
 
-    app = _app;
+    : app(_app),
+      isolate(false)
+{
 
     this->setObjectName("panels_layout");
 
@@ -28,7 +29,6 @@ panels_layout::panels_layout(
 
     load_layout();
 
-    isolate = false;
     qt::shortcut("Space", this, [this]() {
         isolate_panel();
     });
