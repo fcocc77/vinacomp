@@ -41,14 +41,14 @@ private:
     QPointF start_position;
     QPointF click_position;
 
-    int minimum_width;
-    int minimum_height;
+    const int minimum_width;
+    const int minimum_height;
     int current_width;
     int current_height;
 
     int *current_z_value;
 
-    int icon_area_width;
+    const int icon_area_width;
     QGraphicsTextItem *name;
     QGraphicsTextItem *tips;
 

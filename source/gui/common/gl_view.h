@@ -52,28 +52,28 @@ public:
         bool separation_by_coord = false);
 
     void aa_enable(bool enable);
-    bool is_cursor_above(QPoint cursor, QPointF point, QPointF point2 = {});
-    QPointF get_coordinate(QPoint cursor_position);
-    QPointF get_position(QPointF coordinate);
-    QPointF get_coords(QPoint mouse_position);
-    QPointF get_coordsf(QPointF mouse_position);
-    QPointF get_scale();
-    float get_aspect();
+    bool is_cursor_above(QPoint cursor, QPointF point, QPointF point2 = {}) const;
+    QPointF get_coordinate(QPoint cursor_position) const;
+    QPointF get_position(QPointF coordinate) const;
+    QPointF get_coords(QPoint mouse_position) const;
+    QPointF get_coordsf(QPointF mouse_position) const;
+    QPointF get_scale() const;
+    float get_aspect() const;
     void set_default();
     void set_transform(QPointF _translate, QPointF _scale);
     void set_ortho(float left, float right, float bottom, float top);
-    QPointF rotate_point(QPointF point, QPointF anchor_point, float angle, bool keep_aspect = false);
-    float get_angle_two_points(QPointF a, QPointF b);
+    QPointF rotate_point(QPointF point, QPointF anchor_point, float angle, bool keep_aspect = false) const;
+    float get_angle_two_points(QPointF a, QPointF b) const;
 
 protected:
     void paintGL() override;
     void resizeGL(int w, int h) override;
 
     // Eventos
-    void wheelEvent(QWheelEvent *event);
-    void mousePressEvent(QMouseEvent *event);
-    void mouseReleaseEvent(QMouseEvent *event);
-    void mouseMoveEvent(QMouseEvent *event);
+    void wheelEvent(QWheelEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
 };
 
 #endif //GL_VIEW_HPP

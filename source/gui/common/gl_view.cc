@@ -39,23 +39,23 @@ void gl_view::set_ortho(float left, float right, float bottom, float top)
     set_transform({translate_x, translate_y}, {scale_x, scale_y});
 }
 
-float gl_view::get_aspect()
+float gl_view::get_aspect() const
 {
     return float(height()) / width();
 }
 
-QPointF gl_view::get_coords(QPoint mouse_position)
+QPointF gl_view::get_coords(QPoint mouse_position) const
 {
     QPointF coordinate = -get_coordinate(mouse_position) + translate;
     return {coordinate.x(), coordinate.y() * get_aspect()};
 }
 
-QPointF gl_view::get_coordsf(QPointF mouse_position)
+QPointF gl_view::get_coordsf(QPointF mouse_position) const
 {
     return get_coords(mouse_position.toPoint());
 }
 
-QPointF gl_view::get_position(QPointF coordinate)
+QPointF gl_view::get_position(QPointF coordinate) const
 {
     // esta funcion es el reverso de 'get_coords'
     // obtiene la posicion en el visor, a partir de la cordenada de la escena.
@@ -77,7 +77,7 @@ QPointF gl_view::get_position(QPointF coordinate)
     return {x, y};
 }
 
-QPointF gl_view::get_coordinate(QPoint cursor_position)
+QPointF gl_view::get_coordinate(QPoint cursor_position) const
 {
     // obtiene las cordenadas x, y del viewer del openGL, a partir de la posicion del cursor.
     float x = 2.0f * (cursor_position.x() + 0.5) / this->width() - 1.0;
@@ -92,7 +92,7 @@ QPointF gl_view::get_coordinate(QPoint cursor_position)
     return {-x, y};
 }
 
-bool gl_view::is_cursor_above(QPoint cursor_position, QPointF point, QPointF point2)
+bool gl_view::is_cursor_above(QPoint cursor_position, QPointF point, QPointF point2) const
 {
     int tolerance = 10;
 
@@ -135,12 +135,12 @@ bool gl_view::is_cursor_above(QPoint cursor_position, QPointF point, QPointF poi
     return false;
 }
 
-QPointF gl_view::get_scale()
+QPointF gl_view::get_scale() const
 {
     return scale;
 }
 
-QPointF gl_view::rotate_point(QPointF point, QPointF anchor_point, float angle, bool keep_aspect)
+QPointF gl_view::rotate_point(QPointF point, QPointF anchor_point, float angle, bool keep_aspect) const
 {
     // rota un punto alrededor de otro punto (punto de anclaje).
     float distance = qt::distance_points(point, anchor_point);
@@ -159,7 +159,7 @@ QPointF gl_view::rotate_point(QPointF point, QPointF anchor_point, float angle, 
     return {x, y};
 }
 
-float gl_view::get_angle_two_points(QPointF point_a, QPointF point_b)
+float gl_view::get_angle_two_points(QPointF point_a, QPointF point_b) const
 {
     // calcular la rotacion a partir de 2 puntos
     float delta_y = (point_a.y() - point_b.y());
