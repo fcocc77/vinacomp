@@ -14,12 +14,11 @@ panel::panel(QWidget *_panels_layout,
       _viewer(__viewer),
       _script_editor(__script_editor),
       _properties(__properties),
-      _curve_editor(__curve_editor)
+      _curve_editor(__curve_editor),
+      splitters(_splitters)
 
 {
     this->setObjectName("panel");
-
-    splitters = _splitters;
 
     QPushButton *cornel_button = setup_cornel_buttons();
 
@@ -33,8 +32,6 @@ panel::panel(QWidget *_panels_layout,
     layout->addWidget(tab_section);
 
     this->setLayout(layout);
-
-    // qt::add_widget(this, tab_section);
 }
 
 panel::~panel()
@@ -193,6 +190,11 @@ QString panel::get_tab_label(QString name)
 
     else
         return "";
+}
+
+void panel::set_index(int index)
+{
+    tab_section->setCurrentIndex(index);
 }
 
 void panel::add_tab(QString name)

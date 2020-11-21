@@ -57,6 +57,7 @@ public:
     void remove_tab(QString name);
     void close_panel();
     void remove_all_tab();
+    void set_index(int index);
 };
 
 #endif // PANEL_HPP

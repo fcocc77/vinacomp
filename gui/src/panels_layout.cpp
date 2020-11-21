@@ -32,10 +32,35 @@ panels_layout::panels_layout(
     qt::shortcut("Space", this, [this]() {
         isolate_panel();
     });
+
+    for (int i = 0; i < 9; i++)
+    {
+        qt::shortcut("Alt+" + QString::number(i + 1), this, [=]() {
+            panel *_panel = get_panel_from_cursor();
+            if (_panel)
+                _panel->set_index(i);
+        });
+    }
 }
 
 panels_layout::~panels_layout()
 {
+}
+
+panel *panels_layout::get_panel_from_cursor()
+{
+    // Encuentra el panel a partir del cursor
+    QWidget *_panel = app->widgetAt(QCursor::pos());
+    while (_panel)
+    {
+        QString name = _panel->objectName();
+        if (name == "panel")
+            break;
+
+        _panel = _panel->parentWidget();
+    }
+
+    return dynamic_cast<panel *>(_panel);
 }
 
 panel *panels_layout::get_child_panel(QSplitter *splitter, QString _letter)
@@ -74,7 +99,7 @@ void panels_layout::isolate_panel()
     {
         set_visible_panels(false);
         QWidget *parent = container;
-        while (parent != NULL)
+        while (parent)
         {
             parent->setVisible(true);
             parent = parent->parentWidget();

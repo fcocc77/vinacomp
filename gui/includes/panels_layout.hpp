@@ -21,6 +21,7 @@ private:
     void set_visible_panels(bool visible);
 
     panel *get_child_panel(QSplitter *__splitter, QString _letter);
+    panel *get_panel_from_cursor();
 
     void save_json_layout(QSplitter *splitter, int deep = 0, QString letter = "", QStringList parents = {});
     void load_splitter(QJsonObject splitter_obj, panel *panel_a);
