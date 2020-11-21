@@ -20,10 +20,19 @@
 class viewer : public QWidget
 {
 private:
+    QVBoxLayout *layout;
+
+    viewer_gl *_viewer_gl;
+    time_line *_time_line;
+
+    //
+    void setup_ui();
     QWidget *player_setup_ui();
     QWidget *info_setup_ui();
     QWidget *control_setup_ui();
     QWidget *image_correction_setup_ui();
+    //
+    //
 
 public:
     viewer(/* args */);
