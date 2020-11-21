@@ -6,6 +6,7 @@ curve_editor ::curve_editor()
     setup_ui();
 
     add_curve();
+    add_curve();
 }
 
 curve_editor ::~curve_editor()
@@ -16,6 +17,7 @@ void curve_editor::setup_ui()
 {
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->setMargin(0);
+    layout->setSpacing(0);
 
     QTreeWidget *knobs_tree = knobs_tree_setup_ui();
 
@@ -63,8 +65,10 @@ QTreeWidget *curve_editor::knobs_tree_setup_ui()
     tree->setMaximumWidth(300);
     tree->setMinimumWidth(300);
 
-    //
-    //
+    tree->setHeaderHidden(true);
+
+    tree->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    tree->setAlternatingRowColors(true);
 
     return tree;
 }
@@ -84,6 +88,9 @@ void curve_editor::add_item(QString node, QString param, QString dimension)
     param_item->addChild(dimension_item);
 
     tree->addTopLevelItem(node_item);
+
+    node_item->setExpanded(true);
+    param_item->setExpanded(true);
 }
 
 void curve_editor::add_curve()

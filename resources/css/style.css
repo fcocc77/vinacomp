@@ -19,7 +19,7 @@ QPushButton {
   background: transparent; }
 
 QMainWindow {
-  qproperty-windowIcon: url("/home/pancho/Documents/develop/vinacomp/resources/images/vinacomp.png"); }
+  qproperty-windowIcon: url("{{path}}/resources/images/vinacomp.png"); }
 
 QLineEdit {
   color: #acb1b9;
@@ -49,6 +49,21 @@ QComboBox {
       background-color: #2e3238;
       color: #ff5e00;
       padding-left: 0px; }
+
+QTreeWidget {
+  alternate-background-color: #2a2d32;
+  background-color: #23262a;
+  border: 1px solid #2a2d32; }
+  QTreeWidget * {
+    background: none; }
+  QTreeWidget::item {
+    border-bottom: 1px solid #2e3238;
+    border-top: 1px solid transparent;
+    height: 25px; }
+    QTreeWidget::item:first {
+      padding-left: 15px; }
+    QTreeWidget::item QLabel {
+      padding: 5px; }
 
 QMenu {
   background-color: #272b2f;
@@ -132,13 +147,13 @@ QScrollBar {
   QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left-arrow:horizontal, QScrollBar::right-arrow:horizontal {
     background: transparent; }
   QScrollBar::up-arrow:vertical {
-    image: url("/home/pancho/Documents/develop/vinacomp/resources/images/up_arrow.png"); }
+    image: url("{{path}}/resources/images/up_arrow.png"); }
   QScrollBar::down-arrow:vertical {
-    image: url("/home/pancho/Documents/develop/vinacomp/resources/images/down_arrow.png"); }
+    image: url("{{path}}/resources/images/down_arrow.png"); }
   QScrollBar::left-arrow:horizontal {
-    image: url("/home/pancho/Documents/develop/vinacomp/resources/images/right_arrow.png"); }
+    image: url("{{path}}/resources/images/right_arrow.png"); }
   QScrollBar::right-arrow:horizontal {
-    image: url("/home/pancho/Documents/develop/vinacomp/resources/images/left_arrow.png"); }
+    image: url("{{path}}/resources/images/left_arrow.png"); }
 
 #node_graph {
   background: #2e3238; }
@@ -146,7 +161,8 @@ QScrollBar {
 #curve_editor {
   background: #2e3238; }
   #curve_editor #knobs_tree {
-    background: #2e3238; }
+    background: #2e3238;
+    border-right: 1px solid #23262a; }
   #curve_editor #graphics_view {
     background: #101213; }
 
