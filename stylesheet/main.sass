@@ -31,6 +31,7 @@ QLineEdit
 
     &:focus
         border-color: mix($base, $b12, 50)
+
 QComboBox
     margin-right: 10px
     background-color: $b15
@@ -54,6 +55,56 @@ QComboBox
             background-color: $b20
             color: $base
             padding-left: 0px
+
+@mixin treecolor
+    &:selected
+        background-color: rgba($base,.1)
+        border-color: rgba($base,.5)
+        color: $b80
+    &:hover
+        background-color: rgba($base,.02)
+        border-color: rgba($base,.5)
+
+QTreeWidget
+    alternate-background-color: $b18
+    background-color: $b15
+    border: 1px solid $b18
+
+    *
+        background: none
+    &::item 
+        border-bottom: 1px solid $b20
+        border-top: 1px solid transparent
+        height: 25px
+        &:first
+            padding-left: 15px
+
+        // @include treecolor
+
+        QLabel
+            padding: 5px
+        // &:has-children
+        //     min-height: 200px
+        //     background: $b14
+        //     @include treecolor
+    // &::branch 
+    //     background: transparent
+    //     border-top: 1px solid transparent
+    //     border-bottom: 1px solid $b20
+    //     @include treecolor
+    //     &:selected
+    //         background: mix($base,$b15,10)
+    //     &:hover
+    //         background: mix($base,$b15,2)
+    //     &:has-children
+    //         background: $b14
+    //         &:selected
+    //             background: mix($base,$b14,11)
+    //         &:hover
+    //             background: mix($base,$b14,3)
+
+
+
 
 QMenu 
     background-color: $b17
