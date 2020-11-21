@@ -1,7 +1,7 @@
 // QCodeEditor
-#include <QLineNumberArea.hpp>
-#include <QSyntaxStyle.hpp>
-#include <QCodeEditor.hpp>
+#include <QLineNumberArea.h>
+#include <QSyntaxStyle.h>
+#include <QCodeEditor.h>
 
 // Qt
 #include <QTextEdit>

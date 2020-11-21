@@ -1,6 +1,6 @@
 // QCodeEditor
-#include <QGLSLCompleter.hpp>
-#include <QLanguage.hpp>
+#include <QGLSLCompleter.h>
+#include <QLanguage.h>
 
 // Qt
 #include <QStringListModel>

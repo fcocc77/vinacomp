@@ -1,6 +1,6 @@
 // QCodeEditor
-#include <QFramedTextAttribute.hpp>
-#include <QSyntaxStyle.hpp>
+#include <QFramedTextAttribute.h>
+#include <QSyntaxStyle.h>
 
 // Qt
 #include <QFontMetrics>

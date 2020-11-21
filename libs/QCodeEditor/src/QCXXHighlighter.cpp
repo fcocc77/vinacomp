@@ -1,7 +1,7 @@
 // QCodeEditor
-#include <QCXXHighlighter.hpp>
-#include <QSyntaxStyle.hpp>
-#include <QLanguage.hpp>
+#include <QCXXHighlighter.h>
+#include <QSyntaxStyle.h>
+#include <QLanguage.h>
 
 // Qt
 #include <QFile>

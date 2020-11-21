@@ -1,5 +1,5 @@
 // QCodeEditor
-#include <QSyntaxStyle.hpp>
+#include <QSyntaxStyle.h>
 
 // Qt
 #include <QDebug>

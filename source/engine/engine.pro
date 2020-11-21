@@ -4,4 +4,4 @@ TARGET = "cuda_test"
 
 
 
-SOURCES +=  ./cuda/cuda_test.cpp
+SOURCES +=  ./cuda/cuda_test.cc

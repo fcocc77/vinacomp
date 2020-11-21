@@ -1,10 +1,10 @@
 // QCodeEditor
-#include <QLineNumberArea.hpp>
-#include <QSyntaxStyle.hpp>
-#include <QCodeEditor.hpp>
-#include <QStyleSyntaxHighlighter.hpp>
-#include <QFramedTextAttribute.hpp>
-#include <QCXXHighlighter.hpp>
+#include <QLineNumberArea.h>
+#include <QSyntaxStyle.h>
+#include <QCodeEditor.h>
+#include <QStyleSyntaxHighlighter.h>
+#include <QFramedTextAttribute.h>
+#include <QCXXHighlighter.h>
 
 
 // Qt
