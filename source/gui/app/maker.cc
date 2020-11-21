@@ -5,7 +5,7 @@ maker::maker(node_graph *__node_graph, properties *__properties)
       _properties(__properties)
 {
 
-    QString json_nodes_path = "engine/nodes/json";
+    QString json_nodes_path = "source/engine/nodes/json";
 
     // Carga todos los efectos del directorio
     for (QString effect_path : os::listdir(json_nodes_path))
