@@ -5,6 +5,7 @@ node_modules
 *.o
 temp/*
 
+*/*/release/*
 */release/*
 bin/*
 *.old
