@@ -33,8 +33,6 @@ private:
     settings *_settings;
     maker *_maker;
 
-    QApplication *app;
-
     panels_layout *_panels_layout;
     bool fullscreen = false;
 
@@ -62,7 +60,7 @@ private:
     void save_project(QString project_path);
 
 public:
-    vinacomp(QApplication *_app);
+    vinacomp();
     ~vinacomp();
 };
 

@@ -29,11 +29,9 @@ private:
 
     bool isolate;
     panel *first_panel;
-    QApplication *app;
 
 public:
     panels_layout(
-        QApplication *_app,
         node_graph *_node_graph,
         viewer *_viewer,
         script_editor *_script_editor,

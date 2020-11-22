@@ -1,15 +1,13 @@
 #include <panels_layout.h>
 
 panels_layout::panels_layout(
-    QApplication *_app,
     node_graph *_node_graph,
     viewer *_viewer,
     script_editor *_script_editor,
     properties *_properties,
     curve_editor *_curve_editor)
 
-    : app(_app),
-      isolate(false)
+    : isolate(false)
 {
 
     this->setObjectName("panels_layout");
@@ -50,7 +48,7 @@ panels_layout::~panels_layout()
 panel *panels_layout::get_panel_from_cursor()
 {
     // Encuentra el panel a partir del cursor
-    QWidget *_panel = app->widgetAt(QCursor::pos());
+    QWidget *_panel = qApp->widgetAt(QCursor::pos());
     while (_panel)
     {
         QString name = _panel->objectName();
@@ -80,7 +78,7 @@ void panels_layout::isolate_panel()
     set_visible_panels(true);
 
     // encuentra el container del panel
-    QWidget *container = app->widgetAt(QCursor::pos());
+    QWidget *container = qApp->widgetAt(QCursor::pos());
     while (container != NULL)
     {
         QString name = container->objectName();

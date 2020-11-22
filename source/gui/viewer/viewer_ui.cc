@@ -35,11 +35,11 @@ QWidget *viewer::control_setup_ui()
     layout->addWidget(layers);
 
     combo_box *display_channel = new combo_box();
-    display_channel->addItem("RGB");
-    display_channel->addItem("Red");
-    display_channel->addItem("Green");
-    display_channel->addItem("Blue");
-    display_channel->addItem("Alpha");
+    display_channel->add_item("RGB");
+    display_channel->add_item("Red");
+    display_channel->add_item("Green");
+    display_channel->add_item("Blue");
+    display_channel->add_item("Alpha");
     layout->addWidget(display_channel);
 
     layout->addStretch();

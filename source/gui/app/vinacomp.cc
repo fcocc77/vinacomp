@@ -1,8 +1,8 @@
 #include <vinacomp.h>
 
-vinacomp::vinacomp(QApplication *_app)
-    : app(_app)
+vinacomp::vinacomp()
 {
+    this->setObjectName("vinacomp");
     project = new QJsonObject();
     setup_ui();
 }
@@ -23,7 +23,7 @@ void vinacomp::setup_ui()
     _curve_editor = new curve_editor();
     _settings = new settings();
 
-    _panels_layout = new panels_layout(app, _node_graph, _viewer, _script_editor, _properties, _curve_editor);
+    _panels_layout = new panels_layout(_node_graph, _viewer, _script_editor, _properties, _curve_editor);
 
     QWidget *central_widget = new QWidget();
     QHBoxLayout *layout = new QHBoxLayout();
