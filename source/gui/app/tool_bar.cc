@@ -1,8 +1,7 @@
 #include <tool_bar.h>
 
 tool_bar::tool_bar(maker *__maker)
-    : _maker(__maker),
-      open_menus(false)
+    : _maker(__maker)
 {
     this->setMouseTracking(true);
     this->setTabletTracking(true);
@@ -51,19 +50,11 @@ void tool_bar::add_menu(QString group, QString icon_group)
     int icon_size = 25;
 
     QPushButton *popup_button = new QPushButton(this);
-    popup_button->setMouseTracking(true);
-    popup_button->setTabletTracking(true);
 
-    popup_button->setObjectName(icon_group);
-
-    menu *_menu = new menu(popup_button);
-    menus.insert(icon_group, _menu);
+    menu *_menu = new menu(this);
 
     connect(popup_button, &QPushButton::clicked, this, [=] {
-        open_menus = true;
-
         _menu->exec(popup_button->mapToGlobal({this->width(), 0}));
-        this->setFocus();
     });
 
     for (QJsonValue value : _maker->get_effects(group))
@@ -79,8 +70,6 @@ void tool_bar::add_menu(QString group, QString icon_group)
 
         connect(effect_action, &QAction::triggered, this, [=]() {
             _maker->create_fx(id);
-            open_menus = false;
-            this->setFocusPolicy(Qt::NoFocus);
         });
     }
 
@@ -89,35 +78,17 @@ void tool_bar::add_menu(QString group, QString icon_group)
     layout->addWidget(popup_button);
 }
 
-void tool_bar::focusOutEvent(QFocusEvent *event)
+void menu::mousePressEvent(QMouseEvent *event)
 {
-    open_menus = false;
-}
+    QMenu::mousePressEvent(event);
 
-void tool_bar::mouseMoveEvent(QMouseEvent *event)
-{
-    if (open_menus)
-    {
-        QWidget *widget = qApp->widgetAt(QCursor::pos());
-        QPushButton *button = dynamic_cast<QPushButton *>(widget);
-        if (button)
-        {
-            menu *_menu = menus.value(button->objectName());
-            if (_menu)
-            {
-                _menu->exec(button->mapToGlobal({this->width(), 0}));
-                this->setFocus();
-                open_menus = true;
-            }
-        }
-    }
-}
+    // ya que el QMenu no permite clickear otro widget cuando esta abierto,
+    // por eso buscamos la posicion del click global para encuentra el widget en esa posicion
+    // y si existe un boton le da click.
+    QPoint global_position = this->mapToGlobal(event->pos());
 
-void menu::mouseMoveEvent(QMouseEvent *e)
-{
-    if (e->pos().x() < 0)
-        if (e->pos().y() < 0 || e->pos().y() > button->height())
-            this->hide();
-
-    QMenu::mouseMoveEvent(e);
+    QWidget *widget = qApp->widgetAt(global_position);
+    QPushButton *button = dynamic_cast<QPushButton *>(widget);
+    if (button)
+        button->click();
 }
