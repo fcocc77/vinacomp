@@ -19,10 +19,10 @@ public:
     action(QString label, QString shortcut_key, QString icon_name);
     ~action();
 
-    QString get_icon_name();
+    QString get_icon_name() const;
     void set_tool_tip(QString tip);
-    QString get_tool_tip();
-    QString get_label();
+    QString get_tool_tip() const;
+    QString get_label() const;
 
     template <class T, typename Func>
     void connect_to(T *obj, Func func)

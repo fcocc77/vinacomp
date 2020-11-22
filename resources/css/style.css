@@ -244,3 +244,8 @@ QScrollBar {
     background: none;
     border-left: 1px solid #3a3f45; }
 
+#combo_box {
+  background: #23262a;
+  border-radius: 2px;
+  border: 1px solid #202327; }
+

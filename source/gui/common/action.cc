@@ -3,7 +3,9 @@
 action::action(QString _label, QString shortcut_key, QString _icon_name)
     : key(shortcut_key),
       icon_name(_icon_name),
-      label(_label)
+      label(_label),
+
+      _shortcut(nullptr)
 {
     this->setText(label);
 
@@ -12,10 +14,11 @@ action::action(QString _label, QString shortcut_key, QString _icon_name)
 }
 action::~action()
 {
-    delete _shortcut;
+    if (_shortcut)
+        delete _shortcut;
 }
 
-QString action::get_icon_name()
+QString action::get_icon_name() const
 {
     return icon_name;
 }
@@ -25,12 +28,12 @@ void action::set_tool_tip(QString tip)
     tool_tip = tip;
 }
 
-QString action::get_tool_tip()
+QString action::get_tool_tip() const
 {
     return tool_tip;
 }
 
-QString action::get_label()
+QString action::get_label() const
 {
     return label;
 }

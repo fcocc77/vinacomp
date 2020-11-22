@@ -4,17 +4,23 @@
 #include <QLabel>
 #include <QWidget>
 #include <QHBoxLayout>
-#include <QVBoxLayout>
-#include <QApplication>
+#include <QMenu>
+#include <QAction>
 
 #include <util.h>
+#include <action.h>
 
 class combo_box : public QWidget
 {
 private:
     QLabel *label;
-    QWidget *menu;
-    QVBoxLayout *menu_layout;
+    QMenu *menu;
+    QHBoxLayout *layout;
+    QLabel *arrow;
+
+    QList<action *> actions;
+
+    int current_index;
 
 public:
     combo_box(/* args */);
@@ -22,10 +28,11 @@ public:
 
     void add_item(QString name);
     void add_items(QStringList list);
+    void set_index(int _index);
+    void set_value(QString name);
 
 protected:
-    void mousePressEvent(QMouseEvent *event);
-    void leaveEvent(QEvent *event);
+    void mousePressEvent(QMouseEvent *event) override;
 };
 
 #endif // COMBO_BOX_HPP
