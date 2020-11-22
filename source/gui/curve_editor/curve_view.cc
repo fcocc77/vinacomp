@@ -86,7 +86,6 @@ void curve_view::fit_viewport_to_keyframes()
 
 void curve_view::mousePressEvent(QMouseEvent *event)
 {
-    this->setFocus();
     click_position = event->pos();
 
     if (!qt::alt() && event->button() == Qt::LeftButton)

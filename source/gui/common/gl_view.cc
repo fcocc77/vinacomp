@@ -259,6 +259,7 @@ void gl_view::wheelEvent(QWheelEvent *event)
 void gl_view::mousePressEvent(QMouseEvent *event)
 {
     click_position = event->pos();
+    this->setFocus();
 
     if (event->button() == Qt::MidButton)
     {
