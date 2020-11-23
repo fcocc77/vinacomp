@@ -18,7 +18,7 @@ nodes_bar::~nodes_bar()
 
 void nodes_bar::setup_ui()
 {
-    int icon_size = 25;
+    int icon_size = 20;
 
     add_menu("image", "image_a");
     add_menu("draw", "brush_a");
@@ -40,6 +40,14 @@ void nodes_bar::setup_ui()
     layout->addWidget(find_node);
 
     layout->addStretch();
+
+    QPushButton *show_exp_link = new QPushButton();
+    qt::set_icon(show_exp_link, "link_off_a", icon_size);
+    layout->addWidget(show_exp_link);
+
+    QPushButton *show_grid = new QPushButton();
+    qt::set_icon(show_grid, "grid_a", icon_size);
+    layout->addWidget(show_grid);
 }
 
 void nodes_bar::add_menu(QString group, QString icon_group)
