@@ -5,6 +5,7 @@ node_graph::node_graph(
     properties *_properties)
 {
 
+    this->setObjectName("node_graph");
     layout = new QVBoxLayout(this);
     layout->setMargin(0);
     layout->setSpacing(0);

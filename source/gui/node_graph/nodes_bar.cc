@@ -5,6 +5,7 @@ nodes_bar::nodes_bar(maker *__maker, nodes_load *_nodes)
       nodes(_nodes)
 
 {
+    this->setObjectName("nodes_bar");
     layout = new QHBoxLayout(this);
     layout->setMargin(4);
 
@@ -32,13 +33,13 @@ void nodes_bar::setup_ui()
 
     layout->addStretch();
 
-    QPushButton *script_layout = new QPushButton();
-    qt::set_icon(script_layout, "view_compact_a", icon_size);
-    layout->addWidget(script_layout);
+    QLineEdit *find_node = new QLineEdit();
+    QLabel *find_node_label = new QLabel("Search Node");
 
-    QPushButton *comp_layout = new QPushButton();
-    qt::set_icon(comp_layout, "vertical_split_a", icon_size);
-    layout->addWidget(comp_layout);
+    layout->addWidget(find_node_label);
+    layout->addWidget(find_node);
+
+    layout->addStretch();
 }
 
 void nodes_bar::add_menu(QString group, QString icon_group)
@@ -49,8 +50,8 @@ void nodes_bar::add_menu(QString group, QString icon_group)
 
     menu *_menu = new menu(this);
 
-    connect(popup_button, &QPushButton::clicked, this, [=] {
-        _menu->exec(popup_button->mapToGlobal({this->width(), 0}));
+    connect(popup_button, &QPushButton::pressed, this, [=] {
+        _menu->exec(popup_button->mapToGlobal({0, this->height() - 4}));
     });
 
     for (QJsonValue value : nodes->get_effects(group))

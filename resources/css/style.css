@@ -19,7 +19,7 @@ QPushButton {
   background: transparent; }
 
 QMainWindow {
-  qproperty-windowIcon: url("/home/pancho/Documents/develop/vinacomp/resources/images/vinacomp.png"); }
+  qproperty-windowIcon: url("{{path}}/resources/images/vinacomp.png"); }
 
 QLineEdit {
   color: #acb1b9;
@@ -147,15 +147,19 @@ QScrollBar {
   QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left-arrow:horizontal, QScrollBar::right-arrow:horizontal {
     background: transparent; }
   QScrollBar::up-arrow:vertical {
-    image: url("/home/pancho/Documents/develop/vinacomp/resources/images/up_arrow.png"); }
+    image: url("{{path}}/resources/images/up_arrow.png"); }
   QScrollBar::down-arrow:vertical {
-    image: url("/home/pancho/Documents/develop/vinacomp/resources/images/down_arrow.png"); }
+    image: url("{{path}}/resources/images/down_arrow.png"); }
   QScrollBar::left-arrow:horizontal {
-    image: url("/home/pancho/Documents/develop/vinacomp/resources/images/right_arrow.png"); }
+    image: url("{{path}}/resources/images/right_arrow.png"); }
   QScrollBar::right-arrow:horizontal {
-    image: url("/home/pancho/Documents/develop/vinacomp/resources/images/left_arrow.png"); }
+    image: url("{{path}}/resources/images/left_arrow.png"); }
 
-#node_view {
+#node_graph #nodes_bar {
+  background: #2a2d32;
+  border-bottom: 1px solid #23262a; }
+
+#node_graph #node_view {
   background: #2e3238; }
 
 #curve_editor {
@@ -214,7 +218,7 @@ QScrollBar {
       border-top-left-radius: 3px;
       border-top-right-radius: 3px;
       background: #23262a;
-      padding: 3px 13px 3px 13px;
+      padding: 1px 13px 1px 13px;
       margin-right: 5px;
       color: #c7cbd1; }
       #panels_layout QTabBar::tab:hover {
