@@ -10,7 +10,6 @@ class action : public QAction
 {
 private:
     QString key;
-    QShortcut *_shortcut;
     QString icon_name;
     QString tool_tip;
     QString label;
@@ -32,12 +31,7 @@ public:
             func();
         });
 
-        // ShortCut, y solo funciona si el puntero esta sobre el widget
-        _shortcut = new QShortcut(QKeySequence(key), obj);
-        QObject::connect(_shortcut, &QShortcut::activated, obj, [=]() {
-            if (obj->underMouse())
-                func();
-        });
+        obj->addAction(this);
     }
 };
 

@@ -120,10 +120,10 @@ protected:
     void initializeGL() override;
     void paintGL() override;
 
-    void mousePressEvent(QMouseEvent *event);
-    void mouseReleaseEvent(QMouseEvent *event);
-    void mouseMoveEvent(QMouseEvent *event);
-    void tabletEvent(QTabletEvent *event);
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void tabletEvent(QTabletEvent *event) override;
     void move_event(QPoint position);
 };
 

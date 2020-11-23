@@ -132,6 +132,7 @@ void curve_view::mouseReleaseEvent(QMouseEvent *event)
 void curve_view::move_event(QPoint position)
 {
     this->setCursor(Qt::ArrowCursor);
+    qt::focus_under_mouse(this);
 
     if (!qt::alt())
     {

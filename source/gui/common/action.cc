@@ -3,19 +3,17 @@
 action::action(QString _label, QString shortcut_key, QString _icon_name)
     : key(shortcut_key),
       icon_name(_icon_name),
-      label(_label),
+      label(_label)
 
-      _shortcut(nullptr)
 {
     this->setText(label);
-
     this->setIcon(QIcon("resources/images/" + icon_name + ".png"));
+
+    this->setShortcutContext(Qt::WidgetWithChildrenShortcut);
     this->setShortcut(QString(key));
 }
 action::~action()
 {
-    if (_shortcut)
-        delete _shortcut;
 }
 
 QString action::get_icon_name() const
