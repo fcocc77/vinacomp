@@ -8,9 +8,6 @@ curve_view::curve_view()
       selecting(false),
       transforming(false)
 {
-    this->setMouseTracking(true);
-    this->setTabletTracking(true);
-
     popup_setup_ui();
 
     qt::shortcut("+", this, [this]() {
@@ -132,7 +129,6 @@ void curve_view::mouseReleaseEvent(QMouseEvent *event)
 void curve_view::move_event(QPoint position)
 {
     this->setCursor(Qt::ArrowCursor);
-    qt::focus_under_mouse(this);
 
     if (!qt::alt())
     {

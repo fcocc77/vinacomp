@@ -3,6 +3,8 @@
 gl_view::gl_view(bool _lock_scale)
     : lock_scale(_lock_scale)
 {
+    this->setMouseTracking(true);
+    this->setTabletTracking(true);
     set_default();
 }
 
@@ -300,6 +302,8 @@ void gl_view::mouseReleaseEvent(QMouseEvent *event)
 
 void gl_view::mouseMoveEvent(QMouseEvent *event)
 {
+    qt::focus_under_mouse(this);
+
     if (panning)
     {
         // le resta la cordenada del click para que el paneo comience en 0
@@ -349,4 +353,10 @@ void gl_view::mouseMoveEvent(QMouseEvent *event)
 
         update();
     }
+}
+
+void gl_view::tabletEvent(QTabletEvent *event)
+{
+    qt::focus_under_mouse(this);
+    QOpenGLWidget::tabletEvent(event);
 }
