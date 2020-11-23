@@ -55,8 +55,9 @@ void nodes_bar::add_menu(QString group, QString icon_group)
     int icon_size = 20;
 
     QPushButton *popup_button = new QPushButton(this);
+    popup_button->setObjectName("nodes_bar_button");
 
-    menu *_menu = new menu(this);
+    menu *_menu = new menu(popup_button);
 
     connect(popup_button, &QPushButton::pressed, this, [=] {
         _menu->exec(popup_button->mapToGlobal({0, this->height() - 4}));
@@ -83,17 +84,21 @@ void nodes_bar::add_menu(QString group, QString icon_group)
     layout->addWidget(popup_button);
 }
 
-void menu::mousePressEvent(QMouseEvent *event)
+void menu::mouseMoveEvent(QMouseEvent *event)
 {
-    QMenu::mousePressEvent(event);
-
-    // ya que el QMenu no permite clickear otro widget cuando esta abierto,
-    // por eso buscamos la posicion del click global para encuentra el widget en esa posicion
-    // y si existe un boton le da click.
+    // si el boton de este menu no es igual al que esta bajo el cursor,
+    // cierra este menu y abre el que corresponde.
     QPoint global_position = this->mapToGlobal(event->pos());
 
     QWidget *widget = qApp->widgetAt(global_position);
     QPushButton *button = dynamic_cast<QPushButton *>(widget);
     if (button)
-        button->click();
+        if (button->objectName() == "nodes_bar_button")
+            if (button != popup_button)
+            {
+                this->hide();
+                button->click();
+            }
+
+    QMenu::mouseMoveEvent(event);
 }

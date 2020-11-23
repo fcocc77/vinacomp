@@ -14,11 +14,14 @@
 
 class menu : public QMenu
 {
+private:
+    QPushButton *popup_button;
+
 public:
-    menu(QWidget *parent) : QMenu(parent){};
+    menu(QPushButton *parent) : QMenu(parent), popup_button(parent){};
 
 protected:
-    void mousePressEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
 };
 
 class nodes_bar : public QWidget
