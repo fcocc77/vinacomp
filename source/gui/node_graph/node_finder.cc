@@ -1,8 +1,8 @@
 #include <node_finder.h>
 
-node_finder::node_finder(node_graph *__node_graph, QJsonObject *_effects)
+node_finder::node_finder(QWidget *__node_graph, nodes_load *_nodes)
     : _node_graph(__node_graph),
-      effects(_effects)
+      nodes(_nodes)
 {
 
     this->setParent(_node_graph);
@@ -17,7 +17,7 @@ node_finder::node_finder(node_graph *__node_graph, QJsonObject *_effects)
     layout->addWidget(search_field);
     layout->addWidget(tree);
 
-    for (QJsonValue value : *effects)
+    for (QJsonValue value : nodes->get_effects())
     {
         QString node_name = value.toObject()["label"].toString();
         QString node_id = value.toObject()["id"].toString();

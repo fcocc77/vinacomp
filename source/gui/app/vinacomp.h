@@ -18,7 +18,6 @@
 #include <panels_layout.h>
 #include <tool_bar.h>
 #include <settings.h>
-#include <maker.h>
 
 class vinacomp : public QMainWindow
 {
@@ -31,7 +30,6 @@ private:
     curve_editor *_curve_editor;
     tool_bar *_tool_bar;
     settings *_settings;
-    maker *_maker;
 
     panels_layout *_panels_layout;
     bool fullscreen = false;

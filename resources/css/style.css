@@ -155,7 +155,7 @@ QScrollBar {
   QScrollBar::right-arrow:horizontal {
     image: url("/home/pancho/Documents/develop/vinacomp/resources/images/left_arrow.png"); }
 
-#node_graph {
+#node_view {
   background: #2e3238; }
 
 #curve_editor {
@@ -183,7 +183,8 @@ QScrollBar {
     background: #23262a; }
 
 #tool_bar {
-  background: #23262a; }
+  background: #23262a;
+  border-left: 1px solid #17191c; }
 
 #viewer #viewer_graphics {
   background: black; }

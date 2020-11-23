@@ -1,6 +1,6 @@
-#include <node_graph.h>
+#include <node_view.h>
 
-void node_graph::mousePressEvent(QMouseEvent *event)
+void node_view::mousePressEvent(QMouseEvent *event)
 {
     click_position = event->pos();
 
@@ -38,7 +38,7 @@ void node_graph::mousePressEvent(QMouseEvent *event)
     graphics_view::mousePressEvent(event);
 }
 
-void node_graph::mouseReleaseEvent(QMouseEvent *event)
+void node_view::mouseReleaseEvent(QMouseEvent *event)
 {
     selecting = false;
 
@@ -47,7 +47,7 @@ void node_graph::mouseReleaseEvent(QMouseEvent *event)
     graphics_view::mouseReleaseEvent(event);
 }
 
-void node_graph::mouseMoveEvent(QMouseEvent *event)
+void node_view::mouseMoveEvent(QMouseEvent *event)
 {
     if (selecting)
         if (!qt::alt())

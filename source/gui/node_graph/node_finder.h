@@ -6,23 +6,23 @@
 #include <QVBoxLayout>
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
-#include <node_graph.h>
 #include <QJsonObject>
 
 #include <util.h>
 #include <qt.h>
+#include <nodes_load.h>
 
 class node_finder : public QWidget
 {
 private:
     QLineEdit *search_field;
-    QJsonObject *effects;
-    node_graph *_node_graph;
+    nodes_load *nodes;
+    QWidget *_node_graph;
 
     void update_tree();
 
 public:
-    node_finder(node_graph *_node_graph, QJsonObject *_effects);
+    node_finder(QWidget *_node_graph, nodes_load *_nodes);
     ~node_finder();
 
     QTreeWidget *tree;

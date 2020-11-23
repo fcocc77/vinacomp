@@ -1,24 +1,17 @@
 #include <maker.h>
 
-maker::maker(node_graph *__node_graph, properties *__properties)
-    : _node_graph(__node_graph),
-      _properties(__properties)
+maker::maker(
+
+    properties *__properties,
+    nodes_load *_nodes_loaded,
+    node_view *__node_view)
+
+    : _properties(__properties),
+      nodes_loaded(_nodes_loaded),
+      _node_view(__node_view)
 {
 
-    QString json_nodes_path = "source/engine/nodes/json";
-
-    // Carga todos los efectos del directorio
-    for (QString effect_path : os::listdir(json_nodes_path))
-    {
-        QJsonObject effect = jread(effect_path);
-        QString effect_id = effect.value("id").toString();
-
-        effects.insert(effect_id, effect);
-    }
-    //
-    //
-
-    finder = new node_finder(_node_graph, &effects);
+    finder = new node_finder(_node_view, nodes_loaded);
     connect(finder->tree, &QTreeWidget::itemPressed, this, [this](QTreeWidgetItem *item) {
         QString node_id = item->text(1);
         create_fx(node_id);
@@ -34,46 +27,47 @@ maker::~maker()
 
 void maker::setup_shortcut()
 {
-    qt::shortcut("Tab", _node_graph, [this]() {
+    qt::shortcut("Tab", _node_view, [this]() {
         finder->show_finder();
     });
 
-    qt::shortcut("Escape", _node_graph, [this]() {
+    qt::shortcut("Escape", _node_view, [this]() {
         finder->hide();
     });
 
-    qt::shortcut("G", _node_graph, [this]() {
+    qt::shortcut("G", _node_view, [this]() {
         create_fx("grade");
     });
 
-    qt::shortcut("T", _node_graph, [this]() {
+    qt::shortcut("T", _node_view, [this]() {
         create_fx("transform");
     });
 
-    qt::shortcut("B", _node_graph, [this]() {
+    qt::shortcut("B", _node_view, [this]() {
         create_fx("blur");
     });
 
-    qt::shortcut("M", _node_graph, [this]() {
+    qt::shortcut("M", _node_view, [this]() {
         create_fx("merge");
     });
 
-    qt::shortcut("R", _node_graph, [this]() {
+    qt::shortcut("R", _node_view, [this]() {
         create_fx("read");
     });
 
-    qt::shortcut("W", _node_graph, [this]() {
+    qt::shortcut("W", _node_view, [this]() {
         create_fx("write");
     });
 
-    qt::shortcut("K", _node_graph, [this]() {
+    qt::shortcut("K", _node_view, [this]() {
         create_fx("copy");
     });
 }
 
 void maker::create_fx(QString id)
 {
-    QJsonObject effect = this->get_effect(id);
+
+    QJsonObject effect = nodes_loaded->get_effect(id);
     if (effect.empty())
         return;
 
@@ -89,7 +83,7 @@ void maker::create_fx(QString id)
     while (true)
     {
         name = label + QString::number(node_number);
-        if (!_node_graph->get_node(name))
+        if (!_node_view->get_node(name))
             break;
         node_number++;
     }
@@ -107,30 +101,9 @@ void maker::create_fx(QString id)
     //
 
     // Creación del nodo, con un número que no se ha utilizado.
-    _node_graph->create_node(name, panel, icon_name, color);
+    _node_view->create_node(name, panel, icon_name, color);
     //
     //
-}
-
-QJsonObject maker::get_effect(QString id)
-{
-    return effects.value(id).toObject();
-}
-
-QJsonObject maker::get_effects(QString group)
-{
-    if (group.isEmpty())
-        return effects;
-
-    QJsonObject group_effects;
-    for (QJsonValue value : effects)
-    {
-        QJsonObject effect = value.toObject();
-        if (effect["group"].toString() == group)
-            group_effects.insert(effect["id"].toString(), effect);
-    }
-
-    return group_effects;
 }
 
 QColor maker::default_color(QString effect_group)

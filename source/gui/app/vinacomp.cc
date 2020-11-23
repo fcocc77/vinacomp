@@ -13,11 +13,9 @@ vinacomp::~vinacomp()
 
 void vinacomp::setup_ui()
 {
-
     _properties = new properties();
     _node_graph = new node_graph(project, _properties);
-    _maker = new maker(_node_graph, _properties);
-    _tool_bar = new tool_bar(_maker);
+    _tool_bar = new tool_bar();
     _viewer = new viewer();
     _script_editor = new script_editor(project);
     _curve_editor = new curve_editor();
@@ -26,12 +24,12 @@ void vinacomp::setup_ui()
     _panels_layout = new panels_layout(_node_graph, _viewer, _script_editor, _properties, _curve_editor);
 
     QWidget *central_widget = new QWidget();
-    QHBoxLayout *layout = new QHBoxLayout();
-    layout->setContentsMargins(0, 0, 0, 0);
-    central_widget->setLayout(layout);
+    QHBoxLayout *layout = new QHBoxLayout(central_widget);
+    layout->setMargin(0);
+    layout->setSpacing(0);
 
-    layout->addWidget(_tool_bar);
     layout->addWidget(_panels_layout);
+    layout->addWidget(_tool_bar);
 
     this->setCentralWidget(central_widget);
 
@@ -235,8 +233,8 @@ void vinacomp::open_project(QString project_path)
     (*project) = jread(project_path);
 
     // actualiza componentes con el proyecto cargado
-    _node_graph->restore_tree(project->value("nodes").toObject());
-    _node_graph->restore_scene_data(project->value("scene").toObject());
+    // _node_graph->restore_tree(project->value("nodes").toObject());
+    // _node_graph->restore_scene_data(project->value("scene").toObject());
     _script_editor->open_script_from_project();
 
     this->setWindowTitle(os::basename(project_path) + " - VinaComp");
@@ -271,8 +269,8 @@ void vinacomp::save_as()
 
 void vinacomp::save_project(QString project_path)
 {
-    project->insert("nodes", _node_graph->get_tree());
-    project->insert("scene", _node_graph->get_scene_data());
+    // project->insert("nodes", _node_graph->get_tree());
+    // project->insert("scene", _node_graph->get_scene_data());
 
     recorder_recent_projects(project_path);
     jwrite(project_path, *project);
