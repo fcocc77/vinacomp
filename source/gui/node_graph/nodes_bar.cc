@@ -20,16 +20,16 @@ void nodes_bar::setup_ui()
 {
     int icon_size = 20;
 
-    add_menu("image", "image_a");
-    add_menu("draw", "brush_a");
-    add_menu("time", "time_a");
-    add_menu("channel", "channel_a");
-    add_menu("color", "color_a");
-    add_menu("filter", "filter_a");
-    add_menu("keyer", "keyer_a");
-    add_menu("merge", "merge_a");
-    add_menu("transform", "transform_a");
-    add_menu("other", "other_a");
+    add_menu("image", "image");
+    add_menu("draw", "brush");
+    add_menu("time", "time");
+    add_menu("channel", "channel");
+    add_menu("color", "color");
+    add_menu("filter", "filter");
+    add_menu("keyer", "keyer");
+    add_menu("merge", "merge");
+    add_menu("transform", "transform");
+    add_menu("other", "other");
 
     layout->addStretch();
 
@@ -52,14 +52,14 @@ void nodes_bar::setup_ui()
 
 void nodes_bar::add_menu(QString group, QString icon_group)
 {
-    int icon_size = 20;
-
-    QPushButton *popup_button = new QPushButton(this);
+    button *popup_button = new button(this);
+    popup_button->set_icon(icon_group);
     popup_button->setObjectName("nodes_bar_button");
 
     menu *_menu = new menu(popup_button);
 
     connect(popup_button, &QPushButton::pressed, this, [=] {
+        popup_button->set_hover_icon();
         _menu->exec(popup_button->mapToGlobal({0, this->height() - 4}));
     });
 
@@ -76,12 +76,17 @@ void nodes_bar::add_menu(QString group, QString icon_group)
 
         connect(effect_action, &QAction::triggered, this, [=]() {
             _maker->create_fx(id);
+            popup_button->set_normal_icon();
         });
     }
 
-    qt::set_icon(popup_button, icon_group, icon_size);
-
     layout->addWidget(popup_button);
+}
+
+void menu::mousePressEvent(QMouseEvent *event)
+{
+    popup_button->set_normal_icon();
+    QMenu::mousePressEvent(event);
 }
 
 void menu::mouseMoveEvent(QMouseEvent *event)
@@ -91,13 +96,16 @@ void menu::mouseMoveEvent(QMouseEvent *event)
     QPoint global_position = this->mapToGlobal(event->pos());
 
     QWidget *widget = qApp->widgetAt(global_position);
-    QPushButton *button = dynamic_cast<QPushButton *>(widget);
-    if (button)
-        if (button->objectName() == "nodes_bar_button")
-            if (button != popup_button)
+    button *_button = dynamic_cast<button *>(widget);
+    if (_button)
+        if (_button->objectName() == "nodes_bar_button")
+            if (_button != popup_button)
             {
                 this->hide();
-                button->click();
+                popup_button->set_normal_icon();
+
+                _button->set_hover_icon();
+                _button->click();
             }
 
     QMenu::mouseMoveEvent(event);

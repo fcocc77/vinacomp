@@ -11,16 +11,18 @@
 #include <maker.h>
 #include <util.h>
 #include <nodes_load.h>
+#include <button.h>
 
 class menu : public QMenu
 {
 private:
-    QPushButton *popup_button;
+    button *popup_button;
 
 public:
-    menu(QPushButton *parent) : QMenu(parent), popup_button(parent){};
+    menu(button *parent) : QMenu(parent), popup_button(parent){};
 
 protected:
+    void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
 };
 
