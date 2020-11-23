@@ -76,17 +76,16 @@ void nodes_bar::add_menu(QString group, QString icon_group)
 
         connect(effect_action, &QAction::triggered, this, [=]() {
             _maker->create_fx(id);
-            popup_button->set_normal_icon();
         });
     }
 
     layout->addWidget(popup_button);
 }
 
-void menu::mousePressEvent(QMouseEvent *event)
+void menu::hideEvent(QHideEvent *event)
 {
     popup_button->set_normal_icon();
-    QMenu::mousePressEvent(event);
+    QMenu::hideEvent(event);
 }
 
 void menu::mouseMoveEvent(QMouseEvent *event)
@@ -102,7 +101,6 @@ void menu::mouseMoveEvent(QMouseEvent *event)
             if (_button != popup_button)
             {
                 this->hide();
-                popup_button->set_normal_icon();
 
                 _button->set_hover_icon();
                 _button->click();

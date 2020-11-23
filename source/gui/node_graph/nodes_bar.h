@@ -22,8 +22,8 @@ public:
     menu(button *parent) : QMenu(parent), popup_button(parent){};
 
 protected:
-    void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
+    void hideEvent(QHideEvent *event) override;
 };
 
 class nodes_bar : public QWidget
