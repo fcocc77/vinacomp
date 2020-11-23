@@ -23,6 +23,11 @@ public:
     node_graph(QJsonObject *_project,
                properties *_properties);
     ~node_graph();
+
+    QJsonObject get_tree();
+    void restore_tree(QJsonObject nodes);
+    QJsonObject get_scene_data();
+    void restore_scene_data(QJsonObject scene_data);
 };
 
 #endif // #ifndef NODE_GRAPH_H

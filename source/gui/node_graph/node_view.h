@@ -73,11 +73,8 @@ public:
     void change_node_name();
     void select_node(QString name, bool select);
     node *get_node(QString name);
+    QMap<QString, node *> *get_nodes();
     node_link *get_node_link(node *_node, int link_index);
-    QJsonObject get_tree();
-    void restore_tree(QJsonObject nodes);
-    QJsonObject get_scene_data();
-    void restore_scene_data(QJsonObject scene_data);
 };
 
 #endif // NODE_GRAPH_VIEW_H

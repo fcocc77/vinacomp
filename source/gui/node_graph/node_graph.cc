@@ -22,3 +22,119 @@ node_graph::node_graph(
 node_graph::~node_graph()
 {
 }
+
+QJsonObject node_graph::get_tree()
+{
+    // genera un arbol con todos los nodos con su informacion,
+    // para guardarla en el proyecto.
+    QJsonObject tree = {};
+
+    for (node *_node : *_node_view->get_nodes())
+    {
+        QJsonArray inputs = {};
+
+        for (node_link *link : *_node->get_links())
+        {
+            node *connected_node = dynamic_cast<node *>(link->get_connected_node());
+            QString _connected_node = "NULL";
+            if (connected_node)
+                _connected_node = connected_node->get_name();
+
+            QJsonObject link_data = {
+                {"connected_node", _connected_node}};
+
+            inputs.push_back(link_data);
+        }
+        QColor color = _node->get_color();
+        QJsonObject data = {
+            {"position", QJsonArray{_node->x(), _node->y()}},
+            {"color", QJsonArray{color.red(), color.green(), color.blue()}},
+            {"inputs", inputs}};
+
+        tree[_node->get_name()] = data;
+    }
+
+    return tree;
+}
+
+void node_graph::restore_tree(QJsonObject _nodes)
+{
+
+    for (QString name : _nodes.keys())
+    {
+        QJsonObject data = _nodes.value(name).toObject();
+
+        QJsonArray color = data["color"].toArray();
+        int red = color[0].toInt();
+        int green = color[1].toInt();
+        int blue = color[2].toInt();
+        QPointF position = {data["position"].toArray()[0].toDouble(),
+                            data["position"].toArray()[1].toDouble()};
+        _node_view->create_node(
+            name,
+            NULL,
+            "grade_a",
+            QColor(red, green, blue),
+            position);
+    }
+
+    // conecta todos los nodos
+    for (QString name : _nodes.keys())
+    {
+        QJsonObject data = _nodes.value(name).toObject();
+        node *_node = _node_view->get_nodes()->value(name);
+
+        QJsonArray inputs = data["inputs"].toArray();
+
+        for (int i = 0; i < inputs.count(); i++)
+        {
+            QJsonObject link_data = inputs[i].toObject();
+            QString connected_node = link_data["connected_node"].toString();
+            node *node_to_connect = _node_view->get_node(connected_node);
+
+            node_link *link = _node_view->get_node_link(_node, i);
+            if (link)
+                link->connect_node(node_to_connect);
+        }
+    }
+
+    //
+}
+
+QJsonObject node_graph::get_scene_data()
+{
+    QJsonObject matrix = {
+        {"m11", _node_view->transform().m11()},
+        {"m12", _node_view->transform().m12()},
+        {"m13", _node_view->transform().m13()},
+        {"m21", _node_view->transform().m21()},
+        {"m22", _node_view->transform().m22()},
+        {"m23", _node_view->transform().m23()},
+        {"m31", _node_view->transform().m31()},
+        {"m32", _node_view->transform().m32()},
+        {"m33", _node_view->transform().m33()}};
+
+    QJsonObject scene_data = {};
+
+    scene_data["matrix"] = matrix;
+
+    return scene_data;
+}
+
+void node_graph::restore_scene_data(QJsonObject scene_data)
+{
+    QJsonObject matrix = scene_data["matrix"].toObject();
+
+    QTransform _transform(
+        matrix["m11"].toDouble(),
+        matrix["m12"].toDouble(),
+        matrix["m13"].toDouble(),
+        matrix["m21"].toDouble(),
+        matrix["m22"].toDouble(),
+        matrix["m23"].toDouble(),
+        matrix["m31"].toDouble(),
+        matrix["m32"].toDouble(),
+        matrix["m33"].toDouble());
+
+    _node_view->setTransform(_transform);
+}
