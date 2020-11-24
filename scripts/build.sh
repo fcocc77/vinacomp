@@ -1,8 +1,10 @@
 pkill -9 vinacomp
 
+vinacomp='source/gui/release/vinacomp'
+
 npm run d
 rm source/gui/Makefile
-rm source/gui/release/vinacomp
+rm $vinacomp
 
 # cambia 'path' del proyecto para el archivo 'style.css'
 css='resources/css/style.css'
@@ -19,4 +21,6 @@ sh scripts/svg_converter.sh
 qmake-qt5
 make -j 4
 
-source/gui/release/vinacomp
+if [ -f $vinacomp ]; then
+    gdb -ex run $vinacomp
+fi

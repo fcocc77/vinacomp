@@ -2,12 +2,13 @@
 
 void script_editor::setup_ui()
 {
-    QVBoxLayout *layout = new QVBoxLayout();
-    this->setLayout(layout);
+    QVBoxLayout *layout = new QVBoxLayout(this);
+    layout->setMargin(0);
 
     QWidget *tools = tools_setup_ui();
 
-    QPlainTextEdit *output = new QPlainTextEdit();
+    output = new QTextEdit();
+    output->setReadOnly(true);
     output->setObjectName("output");
     QCodeEditor *input = code_editor();
 
@@ -19,7 +20,7 @@ void script_editor::setup_ui()
     splitter->addWidget(output);
     splitter->addWidget(input);
 
-    splitter->setSizes({100, 300});
+    splitter->setSizes({100, 100});
 
     layout->addWidget(splitter);
 }
@@ -40,6 +41,7 @@ QWidget *script_editor::tools_setup_ui()
     QPushButton *run = new QPushButton();
     qt::set_icon(run, "run_script_a", icon_size);
     connect(run, &QPushButton::clicked, this, [this]() {
+        run_script();
     });
     layout->addWidget(run);
 

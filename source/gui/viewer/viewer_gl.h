@@ -2,6 +2,8 @@
 #define VIEWER_GL_HPP
 
 #include <gl_view.h>
+#include <action.h>
+#include <util.h>
 
 class viewer_gl : public gl_view
 {
@@ -11,6 +13,10 @@ private:
 public:
     viewer_gl();
     ~viewer_gl();
+
+    // Acciones
+    action *center_viewer;
+    //
 
 protected:
     void initializeGL() override;

@@ -2,8 +2,12 @@
 
 viewer_gl::viewer_gl() : gl_view(true)
 {
-    this->setMouseTracking(true);
-    set_transform({1000, 1000}, {1000, 1000});
+    center_viewer = new action("Center Image", "F", "center_a");
+    center_viewer->connect_to(this, [=]() {
+        int margin = 100;
+        int width = 1920.0 / ((1920.0 / 1080.0) + get_aspect()) / 2;
+        set_ortho(-margin, width + margin, -margin, 1080 + margin);
+    });
 }
 
 viewer_gl::~viewer_gl()
