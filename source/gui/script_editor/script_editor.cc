@@ -1,7 +1,8 @@
 #include <script_editor.h>
 
-script_editor::script_editor(QJsonObject *_project)
-    : project(_project)
+script_editor::script_editor(QJsonObject *_project, QWidget *_node_graph)
+    : project(_project),
+      node_graph(_node_graph)
 {
 
     this->setObjectName("script_editor");
@@ -17,6 +18,7 @@ script_editor::script_editor(QJsonObject *_project)
 
 script_editor::~script_editor()
 {
+    Py_Finalize();
 }
 
 void script_editor::open_script_from_project()
@@ -42,7 +44,7 @@ void script_editor::run_script()
 
     append_output(editor->toPlainText(), {100, 100, 100});
 
-    if (out.contains("SyntaxError") || out.contains("NameError"))
+    if (out.contains("SyntaxError") || out.contains("NameError") || out.contains("TypeError"))
         append_output(out, {200, 0, 0});
     else
     {

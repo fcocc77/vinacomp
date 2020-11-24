@@ -30,6 +30,8 @@
 #include <util.h>
 #include <action.h>
 
+#include <py_nodes.h>
+
 class script_editor : public QWidget
 {
 private:
@@ -40,6 +42,7 @@ private:
     QCodeEditor *editor;
     QJsonObject *project;
     QTextEdit *output;
+    QWidget *node_graph;
 
     void run_script();
     void append_output(QString text, QColor color = Qt::white);
@@ -52,7 +55,7 @@ private:
     //
 
 public:
-    script_editor(QJsonObject *_project);
+    script_editor(QJsonObject *_project, QWidget *_node_graph);
     ~script_editor();
 
     void open_script_from_project();

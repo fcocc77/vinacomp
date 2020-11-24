@@ -2,6 +2,8 @@
 
 void script_editor::python_initialize()
 {
+    py_nodes::init_module(node_graph);
+
     Py_Initialize();
     python_module = PyImport_AddModule("__main__");
 
@@ -16,6 +18,8 @@ catchOutErr = CatchOutErr()\n\
 sys.stdout = catchOutErr\n\
 sys.stderr = catchOutErr\n\
 ";
+
+    PyRun_SimpleString("import nodes");
 
     PyRun_SimpleString("import sys");
     PyRun_SimpleString("sys.path.insert(1, './modules')");

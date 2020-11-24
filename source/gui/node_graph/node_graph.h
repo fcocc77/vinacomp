@@ -18,6 +18,7 @@ private:
     node_view *_node_view;
     nodes_bar *_nodes_bar;
     nodes_load *nodes_loaded;
+    maker *_maker;
 
 public:
     node_graph(QJsonObject *_project,
@@ -28,6 +29,8 @@ public:
     void restore_tree(QJsonObject nodes);
     QJsonObject get_scene_data();
     void restore_scene_data(QJsonObject scene_data);
+    node_view *get_node_view() const;
+    maker *get_maker() const;
 };
 
 #endif // #ifndef NODE_GRAPH_H

@@ -13,7 +13,7 @@ node_graph::node_graph(
     nodes_loaded = new nodes_load();
 
     _node_view = new node_view(_project, _properties);
-    maker *_maker = new maker(_properties, nodes_loaded, _node_view);
+    _maker = new maker(_properties, nodes_loaded, _node_view);
     _nodes_bar = new nodes_bar(_maker, nodes_loaded);
 
     layout->addWidget(_nodes_bar);
@@ -22,6 +22,16 @@ node_graph::node_graph(
 
 node_graph::~node_graph()
 {
+}
+
+node_view *node_graph::get_node_view() const
+{
+    return _node_view;
+}
+
+maker *node_graph::get_maker() const
+{
+    return _maker;
 }
 
 QJsonObject node_graph::get_tree()
