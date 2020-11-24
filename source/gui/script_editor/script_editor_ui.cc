@@ -35,6 +35,9 @@ QWidget *script_editor::tools_setup_ui()
     int icon_size = 20;
 
     QPushButton *clear = new QPushButton();
+    connect(clear, &QPushButton::clicked, this, [this]() {
+        output->clear();
+    });
     qt::set_icon(clear, "clear_script_a", icon_size);
     layout->addWidget(clear);
 

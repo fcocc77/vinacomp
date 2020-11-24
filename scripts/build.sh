@@ -1,4 +1,5 @@
 pkill -9 vinacomp
+pkill -9 gdb
 
 vinacomp='source/gui/release/vinacomp'
 

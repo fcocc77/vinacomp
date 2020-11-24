@@ -7,8 +7,7 @@ void script_editor::python_initialize()
 
     // este es el código de Python para redirigir stdouts / stderr
     std_out_err =
-        "import sys\n\
-class CatchOutErr:\n\
+        "class CatchOutErr:\n\
     def __init__(self):\n\
         self.value = ''\n\
     def write(self, txt):\n\
@@ -17,6 +16,10 @@ catchOutErr = CatchOutErr()\n\
 sys.stdout = catchOutErr\n\
 sys.stderr = catchOutErr\n\
 ";
+
+    PyRun_SimpleString("import sys");
+    PyRun_SimpleString("sys.path.insert(1, './modules')");
+    PyRun_SimpleString("from init import *");
 }
 
 QString script_editor::python_run(QString command)
