@@ -44,7 +44,7 @@ void script_editor::run_script()
 
     append_output(editor->toPlainText(), {100, 100, 100});
 
-    if (out.contains("SyntaxError") || out.contains("NameError") || out.contains("TypeError"))
+    if (out.contains("Error:"))
         append_output(out, {200, 0, 0});
     else
     {
