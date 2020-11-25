@@ -1,2 +1,2 @@
-def nine():
-    return 9
+
+import nodes

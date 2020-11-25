@@ -19,8 +19,6 @@ sys.stdout = catchOutErr\n\
 sys.stderr = catchOutErr\n\
 ";
 
-    PyRun_SimpleString("import nodes");
-
     PyRun_SimpleString("import sys");
     PyRun_SimpleString("sys.path.insert(1, './modules')");
     PyRun_SimpleString("from init import *");

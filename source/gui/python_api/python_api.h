@@ -40,4 +40,24 @@ static void init_py_module(
     PyImport_AppendInittab(module_name.c_str(), _module);
 }
 
+static PyObject *py_bool(bool _bool)
+{
+    return PyBool_FromLong(_bool);
+}
+
+static PyObject *py_int(int _int)
+{
+    return PyLong_FromLong(_int);
+}
+
+static PyObject *py_float(double _double)
+{
+    return PyFloat_FromDouble(_double);
+}
+
+static PyObject *py_string(QString _string)
+{
+    return PyUnicode_FromString(_string.toStdString().c_str());
+}
+
 #endif // PYTHON_API_H
