@@ -9,7 +9,7 @@ INCLUDEPATH += ../../utils/c++
 
 # Python 3
 INCLUDEPATH += /usr/include/python3.6m
-LIBS += -lpthread -ldl -lutil -lpython3.6m
+LIBS += -lpython3.6m
 #
 
 QT += core gui widgets multimedia
