@@ -10,8 +10,10 @@
 
 struct py_nodes
 {
-    static PyObject *create_node(PyObject *self, PyObject *args);
     static void init_module(QWidget *__node_graph);
+
+    static PyObject *create_node(PyObject *self, PyObject *args);
+    static PyObject *delete_node(PyObject *self, PyObject *args);
 };
 
 #endif // PY_NODES_H

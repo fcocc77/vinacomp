@@ -1,26 +1,20 @@
 #include <py_nodes.h>
 #include <node_graph.h>
+#include <python_api.h>
 
 static node_graph *_node_graph;
 
 void py_nodes::init_module(QWidget *__node_graph)
 {
     _node_graph = dynamic_cast<node_graph *>(__node_graph);
-    static string module_name = "nodes";
 
-    static struct PyMethodDef methods[] = {
-        {"create_node", py_nodes::create_node, METH_VARARGS, "Show a number"},
-        {NULL, NULL, 0, NULL}};
+    // el tamaño de la lista de metodos tiene que ser 1 mayor
+    // a los metodos que existen
+    static struct PyMethodDef methods[3];
 
-    static struct PyModuleDef modDef = {
-        PyModuleDef_HEAD_INIT, module_name.c_str(), NULL, -1, methods,
-        NULL, NULL, NULL, NULL};
-
-    auto _module = []() {
-        return PyModule_Create(&modDef);
-    };
-
-    PyImport_AppendInittab(module_name.c_str(), _module);
+    init_py_module("nodes", methods,
+                   {{"create_node", py_nodes::create_node},
+                    {"delete_node", py_nodes::delete_node}});
 }
 
 PyObject *py_nodes::create_node(PyObject *self, PyObject *args)
@@ -34,6 +28,16 @@ PyObject *py_nodes::create_node(PyObject *self, PyObject *args)
         return 0;
 
     _node_graph->get_maker()->create_fx(node_id);
+
+    return PyLong_FromLong(20);
+}
+
+PyObject *py_nodes::delete_node(PyObject *self, PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
+    print("delete");
 
     return PyLong_FromLong(20);
 }
