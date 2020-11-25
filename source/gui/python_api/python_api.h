@@ -24,8 +24,7 @@ static void init_py_module(
 
     // define los modulos con los metodos definido arriba
     static struct PyModuleDef modDef = {
-        PyModuleDef_HEAD_INIT, module_name.c_str(), NULL, -1, methods,
-        NULL, NULL, NULL, NULL};
+        PyModuleDef_HEAD_INIT, module_name.c_str(), NULL, -1, methods, NULL, NULL, NULL, NULL};
     //
     //
 
