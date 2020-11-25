@@ -25,11 +25,15 @@ void py_nodes::init_module(QWidget *__node_graph)
 
 PyObject *py_nodes::create_node(PyObject *self, PyObject *args)
 {
-    PyObject *a;
-    if (PyArg_UnpackTuple(args, "", 1, 1, &a))
-    {
-        _node_graph->get_maker()->create_fx("grade");
-    }
+    const char *node_id;
+
+    // 1 string : s
+    // 2 enteros y 1 string: lls
+
+    if (!PyArg_ParseTuple(args, "s", &node_id))
+        return 0;
+
+    _node_graph->get_maker()->create_fx(node_id);
 
     return PyLong_FromLong(20);
 }
