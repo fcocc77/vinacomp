@@ -32,7 +32,7 @@ public:
         node_view *_node_view);
     ~maker();
 
-    void create_fx(QString id);
+    QString create_fx(QString id);
 };
 
 #endif //MAKER_HPP

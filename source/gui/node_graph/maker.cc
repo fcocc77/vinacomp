@@ -64,12 +64,12 @@ void maker::setup_shortcut()
     });
 }
 
-void maker::create_fx(QString id)
+QString maker::create_fx(QString id)
 {
 
     QJsonObject effect = nodes_loaded->get_effect(id);
     if (effect.empty())
-        return;
+        return 0;
 
     QString group = effect["group"].toString();
     QString label = effect["label"].toString();
@@ -104,6 +104,8 @@ void maker::create_fx(QString id)
     _node_view->create_node(name, panel, icon_name, color);
     //
     //
+
+    return name;
 }
 
 QColor maker::default_color(QString effect_group)
