@@ -9,16 +9,15 @@ class node:
     def delete(self):
         return v_nodes.delete_node()
 
-    def get_param(param_name):
+    def get_param(self, param_name):
         return ""
 
 
 def create_node(node_name):
-    return v_nodes.create_node(node_name)
+    v_nodes.create_node(node_name)
+
+    return get_node(node_name)
 
 
 def get_node(node_name):
-
-    _node = node(node_name)
-
-    return _node
+    return node(node_name)
