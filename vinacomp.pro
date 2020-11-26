@@ -1,5 +1,5 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
-    #engine \
+    source/engine \
     source/gui \

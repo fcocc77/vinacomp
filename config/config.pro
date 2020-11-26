@@ -15,3 +15,8 @@ OBJECTS_DIR = release/.obj
 MOC_DIR = release/.moc
 RCC_DIR = release/.rcc
 UI_DIR = release/.ui
+
+# Python 3
+INCLUDEPATH += /usr/include/python3.6m
+LIBS += -lpython3.6m
+#

@@ -1,7 +1,17 @@
+include(../../config/config.pro)
 
 TEMPLATE = app
-TARGET = "cuda_test"
+TARGET = "vinaengine"
+
+CONFIG += console
+QT += core widgets multimedia
 
 
+INCLUDEPATH += $$files(*)
+INCLUDEPATH += ../../utils/c++
 
-SOURCES +=  ./cuda/cuda_test.cc
+HEADERS +=  $$system(ls */*.h) \
+            ../../utils/c++/*.h \
+
+SOURCES += 	 $$system(ls */*.cc) \
+            ../../utils/c++/*.cc \

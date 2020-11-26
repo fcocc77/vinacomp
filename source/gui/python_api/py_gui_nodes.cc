@@ -1,6 +1,7 @@
-#include <py_nodes.h>
+#include "../engine/python_api/python_api.h"
+
+#include <py_gui_nodes.h>
 #include <node_graph.h>
-#include <python_api.h>
 #include <node.h>
 
 static node_graph *_node_graph;

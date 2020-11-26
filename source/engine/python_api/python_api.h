@@ -3,6 +3,7 @@
 
 #include <Python.h>
 #include <QList>
+#include <util.h>
 
 static void init_py_module(
     string _module_name,

@@ -7,16 +7,13 @@ INCLUDEPATH += $$files(*)
 INCLUDEPATH += ../../libs/QCodeEditor/includes
 INCLUDEPATH += ../../utils/c++
 
-# Python 3
-INCLUDEPATH += /usr/include/python3.6m
-LIBS += -lpython3.6m
-#
-
 QT += core gui widgets multimedia
 
 HEADERS +=  $$system(ls */*.h) \
             ../../utils/c++/*.h \
-            ../../libs/QCodeEditor/includes/* 
+            ../../libs/QCodeEditor/includes/* \ 
+            ../engine/python_api/python_api.h \
+            ../engine/python_api/python.h \
 
 SOURCES += 	 $$system(ls */*.cc) \
             ../../utils/c++/*.cc \

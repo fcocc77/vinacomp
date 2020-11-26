@@ -30,7 +30,7 @@
 #include <util.h>
 #include <action.h>
 
-#include <py_nodes.h>
+#include <py_gui_nodes.h>
 
 class script_editor : public QWidget
 {
