@@ -81,7 +81,7 @@ void graphics_view::mouseMoveEvent(QMouseEvent *event)
 void graphics_view::zoom(int delta, QPoint position)
 {
     QPointF old_pos = mapToScene(position);
-    float scale_speed = 1.002;
+    float scale_speed = 1.004;
 
     double scale_factor = pow(scale_speed, delta);
     QTransform _transform = transform();

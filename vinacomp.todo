@@ -18,5 +18,7 @@ gui:
         ☐ que funcione el snap en horizontal por frame
         ☐ que el keyframe solo se pueda mover en una direccion a la vez, y con el control presionado poder mover omnidireccional
         ☐ los botones de curvas del toolbar deben ser checkeables segun la actual interpolacion del keyframe seleccionado
+    script_editor:
+        ☐ boton de arrastre para poder arrastrar el script como acceso directo a una barra de herramienta en la parte inferior del node graph
 nodes:
     ☐ crear nodo de speed, para que cambie todas las velocidades como 'videovina' y asi no lo tenemos que hacer en videovina

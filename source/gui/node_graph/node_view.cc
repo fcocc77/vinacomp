@@ -83,6 +83,19 @@ void node_view::align_selected_nodes()
     }
 }
 
+void node_view::rename_node(node *_node, QString name, QString new_name)
+{
+    _node->set_name(new_name);
+
+    nodes->remove(name);
+    nodes->insert(new_name, _node);
+
+    selected_nodes->remove(name);
+    selected_nodes->insert(new_name, _node);
+
+    _node->refresh();
+}
+
 void node_view::change_node_name_dialog()
 {
     if (selected_nodes->empty())
@@ -110,15 +123,7 @@ void node_view::change_node_name()
     QString old_name = selected_node->get_name();
     QString new_name = node_rename_edit->text();
 
-    selected_node->set_name(new_name);
-
-    nodes->remove(old_name);
-    nodes->insert(new_name, selected_node);
-
-    selected_nodes->remove(old_name);
-    selected_nodes->insert(new_name, selected_node);
-
-    selected_node->refresh();
+    rename_node(selected_node, old_name, new_name);
 
     node_rename_edit->hide();
 }
