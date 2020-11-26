@@ -10,7 +10,7 @@ private:
     QJsonObject *project;
 
 public:
-    engine();
+    engine(QString input_py);
     ~engine();
 };
 

@@ -1,6 +1,7 @@
 #include <engine.h>
+#include <python_api.h>
 
-engine::engine()
+engine::engine(QString input_py)
 {
     project = new QJsonObject();
 
@@ -8,9 +9,22 @@ engine::engine()
 
     Py_Initialize();
 
-    PyRun_SimpleString("import sys");
-    PyRun_SimpleString("sys.path.insert(1, './modules')");
+    PyObject *sys_path = PySys_GetObject("path");
+
+    // importacion de modulos de vinacomp
+    PyList_Append(sys_path, py_string("./modules"));
     PyRun_SimpleString("from init import *");
+    //
+    //
+
+    // importacion de archivo python del parametro entrante
+    QString input_py_dir = os::dirname(input_py);
+    string input_py_name = os::basename(input_py).split(".")[0].toStdString();
+    string input_py_module = "from " + input_py_name + " import *";
+    PyList_Append(sys_path, py_string(input_py_dir));
+    PyRun_SimpleString(input_py_module.c_str());
+    //
+    //
 
     Py_Finalize();
 }
