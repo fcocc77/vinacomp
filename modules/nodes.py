@@ -26,4 +26,8 @@ def create_node(node_name):
 
 
 def get_node(node_name):
-    return node(node_name)
+    if __py_nodes__.node_exists(node_name):
+        return node(node_name)
+    else:
+        print('Error: The \'' + node_name + '\' node does not exist.')
+        return None

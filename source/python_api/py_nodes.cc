@@ -26,13 +26,14 @@ void py_nodes::init_methods()
 {
     // el tamaño de la lista de metodos tiene que ser 1 mayor
     // a los metodos que existen
-    static struct PyMethodDef methods[5];
+    static struct PyMethodDef methods[6];
 
     init_py_module("__py_nodes__", methods,
                    {{"create_node", py_nodes::create_node},
                     {"delete_node", py_nodes::delete_node},
                     {"set_position", py_nodes::set_position},
-                    {"rename", py_nodes::rename}});
+                    {"rename", py_nodes::rename},
+                    {"node_exists", py_nodes::node_exists}});
 }
 
 PyObject *py_nodes::create_node(PyObject *self, PyObject *args)
@@ -100,4 +101,20 @@ PyObject *py_nodes::rename(PyObject *self, PyObject *args)
     #endif
 
     return py_bool(false);
+}
+
+PyObject *py_nodes::node_exists(PyObject *self, PyObject *args)
+{
+    const char *name;
+    if (!PyArg_ParseTuple(args, "s", &name))
+        return 0;
+
+    bool exist = false;
+    #ifdef GUI
+        node *_node = _node_graph->get_node_view()->get_node(name);
+        if (_node)
+            exist = true;
+    #endif
+
+    return py_bool(exist);
 }
