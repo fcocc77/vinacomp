@@ -1,10 +1,21 @@
 #include <engine.h>
 #include <python_api.h>
 
-engine::engine(QString input_py)
+engine::engine(QString _input_py)
+    : input_py(_input_py)
 {
+    _app = new app();
     project = new QJsonObject();
+    python_initialize();
+}
 
+engine::~engine()
+{
+}
+
+void engine::python_initialize()
+{
+    py_app::init_module(project, _app);
     py_nodes::init_module(project);
 
     Py_Initialize();
@@ -27,8 +38,4 @@ engine::engine(QString input_py)
     //
 
     Py_Finalize();
-}
-
-engine::~engine()
-{
 }

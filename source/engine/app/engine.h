@@ -3,14 +3,20 @@
 
 #include <util.h>
 #include <py_nodes.h>
+#include <py_app.h>
+#include <app.h>
 
 class engine
 {
 private:
+    app *_app;
     QJsonObject *project;
+    QString input_py;
+
+    void python_initialize();
 
 public:
-    engine(QString input_py);
+    engine(QString _input_py);
     ~engine();
 };
 

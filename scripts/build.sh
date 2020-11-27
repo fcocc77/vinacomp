@@ -1,8 +1,8 @@
 pkill -9 gdb
 
-npm run d
-
 function run_gui() {
+
+    npm run d
 
     # cambia 'path' del proyecto para el archivo 'style.css'
     css='resources/css/style.css'
@@ -41,7 +41,7 @@ function run_engine() {
     make -j 4
 
     if [ -f $vinaengine ]; then
-        $vinaengine
+        $vinaengine modules/engine_test.py
     fi
 }
 

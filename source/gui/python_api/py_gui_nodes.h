@@ -1,5 +1,5 @@
-#ifndef PY_NODES_H
-#define PY_NODES_H
+#ifndef PY_GUI_NODES_H
+#define PY_GUI_NODES_H
 
 #include <Python.h>
 
@@ -18,4 +18,4 @@ struct py_nodes
     static PyObject *rename(PyObject *self, PyObject *args);
 };
 
-#endif // PY_NODES_H
+#endif // PY_GUI_NODES_H
