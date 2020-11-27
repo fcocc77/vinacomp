@@ -1,7 +1,7 @@
 #ifndef PYTHON_API_H
 #define PYTHON_API_H
 
-#include <Python.h>
+#include <python.h>
 #include <QList>
 #include <util.h>
 
