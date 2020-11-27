@@ -122,9 +122,7 @@ protected:
 
     void mousePressEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
-    void mouseMoveEvent(QMouseEvent *event) override;
-    void tabletEvent(QTabletEvent *event) override;
-    void move_event(QPoint position);
+    void cursor_move_event(QPoint position) override;
 };
 
 #endif // CURVE_VIEW_HPP

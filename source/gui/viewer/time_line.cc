@@ -1,7 +1,9 @@
 #include <time_line.h>
 
 time_line::time_line()
-    : frame(10)
+    : frame(10),
+      ghost_frame(10),
+      dragging(false)
 {
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     this->setMinimumHeight(50);
@@ -11,13 +13,39 @@ time_line::~time_line()
 {
 }
 
-void time_line::mouseMoveEvent(QMouseEvent *event)
+void time_line::mousePressEvent(QMouseEvent *event)
+{
+    dragging = true;
+
+    frame = round(get_coords(event->pos()).x());
+    update();
+
+    gl_view::mousePressEvent(event);
+}
+
+void time_line::mouseReleaseEvent(QMouseEvent *event)
+{
+
+    dragging = false;
+
+    gl_view::mouseReleaseEvent(event);
+}
+
+void time_line::cursor_move_event(QPoint position)
 {
     if (!qt::alt())
     {
-        frame = round(get_coords(event->pos()).x());
-        update();
+        int x_pos = round(get_coords(position).x());
+        // actualiza solo si es que el frame cambio
+        if (x_pos != ghost_frame)
+        {
+            ghost_frame = x_pos;
+            if (dragging)
+                frame = x_pos;
+
+            update();
+        }
     }
 
-    gl_view::mouseMoveEvent(event);
+    gl_view::cursor_move_event(position);
 }

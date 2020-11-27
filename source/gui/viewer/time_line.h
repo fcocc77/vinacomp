@@ -8,6 +8,8 @@ class time_line : public gl_view
 {
 private:
     int frame;
+    int ghost_frame;
+    bool dragging;
 
     // Paint
     void draw_coordinate_numbers();
@@ -23,7 +25,9 @@ protected:
     void initializeGL() override;
     void paintGL() override;
 
-    void mouseMoveEvent(QMouseEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
+    void cursor_move_event(QPoint position) override;
 };
 
 #endif // TIME_LINE_HPP

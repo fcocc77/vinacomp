@@ -13,16 +13,10 @@ class gl_view : public QOpenGLWidget,
 {
 private:
     QPoint click_position;
-    bool panning = false;
-    bool zooming = false;
+    bool panning, zooming, pressed, lock_scale;
 
-    bool lock_scale;
-
-    QPointF scale;
-    QPointF click_scale;
-
-    QPointF translate;
-    QPointF click_translate;
+    QPointF scale, click_scale;
+    QPointF translate, click_translate;
 
 public:
     gl_view(bool _lock_scale = false);
@@ -75,6 +69,8 @@ protected:
     void mouseReleaseEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
     void tabletEvent(QTabletEvent *event) override;
+
+    virtual void cursor_move_event(QPoint position);
 };
 
 #endif //GL_VIEW_HPP

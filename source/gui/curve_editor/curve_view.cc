@@ -126,7 +126,7 @@ void curve_view::mouseReleaseEvent(QMouseEvent *event)
     gl_view::mouseReleaseEvent(event);
 }
 
-void curve_view::move_event(QPoint position)
+void curve_view::cursor_move_event(QPoint position)
 {
     this->setCursor(Qt::ArrowCursor);
 
@@ -139,16 +139,6 @@ void curve_view::move_event(QPoint position)
             selector_move(position);
         }
     }
-}
 
-void curve_view::mouseMoveEvent(QMouseEvent *event)
-{
-    move_event(event->pos());
-    gl_view::mouseMoveEvent(event);
-}
-
-void curve_view::tabletEvent(QTabletEvent *event)
-{
-    move_event(event->pos());
-    gl_view::tabletEvent(event);
+    gl_view::cursor_move_event(position);
 }
