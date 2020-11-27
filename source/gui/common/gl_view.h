@@ -35,6 +35,7 @@ public:
     void draw_box(QLineF diagonal_line, QColor color, QColor border_color);
     void draw_line(QPointF src, QPointF dst, QColor color);
     void draw_dashed_line(QLineF line, QColor color, int stipple);
+    void draw_triangle(QPointF position, float size, QColor color);
     //
     //
 

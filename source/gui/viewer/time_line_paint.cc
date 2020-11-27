@@ -22,15 +22,7 @@ void time_line::draw_cursor()
     draw_line({ghost_frame, y1}, {ghost_frame, y2}, QColor{150, 0, 0});
     draw_line({frame, y1}, {frame, y2}, Qt::red);
 
-    glBegin(GL_TRIANGLES);
-    glColor3f(0, 1, 0);
-
-    glVertex2f(ghost_frame - 2, y1);
-    glVertex2f(ghost_frame + 2, y1);
-    glVertex2f(ghost_frame, y2);
-    glVertex2f(ghost_frame - 2, y1);
-    
-    glEnd();
+    draw_triangle({ghost_frame, y1}, 0.2, Qt::red);
 }
 
 void time_line::draw_coordinate_numbers()
