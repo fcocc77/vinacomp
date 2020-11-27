@@ -2,6 +2,7 @@
 
 void script_editor::python_initialize()
 {
+    py_app::init_module();
     py_nodes::init_module(node_graph);
 
     Py_Initialize();

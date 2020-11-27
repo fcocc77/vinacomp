@@ -31,6 +31,7 @@
 #include <action.h>
 
 #include <py_gui_nodes.h>
+#include <py_gui_app.h>
 
 class script_editor : public QWidget
 {
