@@ -111,9 +111,7 @@ PyObject *py_nodes::node_exists(PyObject *self, PyObject *args)
 
     bool exist = false;
     #ifdef GUI
-        node *_node = _node_graph->get_node_view()->get_node(name);
-        if (_node)
-            exist = true;
+        exist = _node_graph->get_node_view()->get_nodes()->contains(name);
     #endif
 
     return py_bool(exist);

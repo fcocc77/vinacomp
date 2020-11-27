@@ -20,5 +20,16 @@ gui:
         ☐ los botones de curvas del toolbar deben ser checkeables segun la actual interpolacion del keyframe seleccionado
     script_editor:
         ☐ boton de arrastre para poder arrastrar el script como acceso directo a una barra de herramienta en la parte inferior del node graph
+
+    time_line:
+        ☐ con el shortcut 'F' ajustar el rango de frames @today 
+        ☐ que el area dentro del rango quede de color gris y fuera negro @today 
+        ☐ crear input y output
+        ☐ terminar triangulo @today 
+        ☐ que el cursor fantasma desaparesca cuando se esta escalando el viewer
+        ☐ seleccionar una area con el click derecho, y ajustar el viewer al area seleccionada
+        ☐ con el click derecho switch entre el area seleccionada y el ajuste completo
+        ☐ no tiene que cambiar el frame cuando presionamos el alt con el boton central
+
 nodes:
     ☐ crear nodo de speed, para que cambie todas las velocidades como 'videovina' y asi no lo tenemos que hacer en videovina
