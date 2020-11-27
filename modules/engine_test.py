@@ -1,6 +1,8 @@
 import vina
 
 
-vina.get_node('grade').delete()
+vina.create_node("test")
+vina.create_node("hola")
 
-vina.open_project("my projecto")
+
+vina.save_project("/home/pancho/Desktop/prueva.vi")

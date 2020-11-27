@@ -5,11 +5,13 @@
 #include <py_nodes.h>
 #include <py_app.h>
 #include <app.h>
+#include <nodes.h>
 
 class engine
 {
 private:
     app *_app;
+    nodes *_nodes;
     QJsonObject *project;
     QString input_py;
 

@@ -6,11 +6,14 @@
 class app
 {
 private:
+    QJsonObject *project;
+
 public:
-    app();
+    app(QJsonObject *_project);
     ~app();
 
     void open_project(QString project_path);
+    void save_project(QString project_path);
 };
 
 #endif // APP_H

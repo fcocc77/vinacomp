@@ -1,8 +1,12 @@
 #include <python_api.h>
 #include <py_nodes.h>
 
-void py_nodes::init_module(QJsonObject *project)
+nodes *_nodes;
+
+void py_nodes::init_module(QJsonObject *project, nodes *__nodes)
 {
+    _nodes = __nodes;
+
     // el tamaño de la lista de metodos tiene que ser 1 mayor
     // a los metodos que existen
     static struct PyMethodDef methods[5];
@@ -21,9 +25,9 @@ PyObject *py_nodes::create_node(PyObject *self, PyObject *args)
     if (!PyArg_ParseTuple(args, "s", &node_id))
         return 0;
 
-    QString name = "node_name";
+    _nodes->create_node(node_id);
 
-    return py_string(name);
+    return py_string(node_id);
 }
 
 PyObject *py_nodes::delete_node(PyObject *self, PyObject *args)

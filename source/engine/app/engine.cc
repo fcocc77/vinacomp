@@ -4,8 +4,11 @@
 engine::engine(QString _input_py)
     : input_py(_input_py)
 {
-    _app = new app();
     project = new QJsonObject();
+    project->insert("nodes", {});
+
+    _app = new app(project);
+    _nodes = new nodes(project);
     python_initialize();
 }
 
@@ -16,7 +19,7 @@ engine::~engine()
 void engine::python_initialize()
 {
     py_app::init_module(project, _app);
-    py_nodes::init_module(project);
+    py_nodes::init_module(project, _nodes);
 
     Py_Initialize();
 
