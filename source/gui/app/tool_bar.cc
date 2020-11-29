@@ -8,6 +8,7 @@ tool_bar::tool_bar()
 
     this->setObjectName("tool_bar");
     this->setMaximumWidth(40);
+    this->setMinimumWidth(40);
 
     layout = new QVBoxLayout(this);
     layout->setContentsMargins(2, 10, 2, 10);

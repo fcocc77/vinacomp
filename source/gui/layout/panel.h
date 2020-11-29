@@ -55,7 +55,6 @@ public:
     panel *split(Qt::Orientation orientation);
     QSplitter *get_splitter();
     void add_tabs(QStringList tabs_list);
-    void remove_tab(QString name);
     void close_panel();
     void remove_all_tab();
     void set_index(int index);

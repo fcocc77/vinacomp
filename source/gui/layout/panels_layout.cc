@@ -172,7 +172,7 @@ void panels_layout::save_json_layout(QSplitter *splitter, int deep, QString lett
         {
             QJsonObject panel_a_data;
             panel_a_data["tabs"] = qt::list_to_array(child_panel_a->tabs_list);
-            panel_a_data["current_index"] = child_panel_a->tab_section->currentIndex();
+            panel_a_data["current_index"] = child_panel_a->tab_section->get_current_index();
             value["panel_a"] = panel_a_data;
         }
         else
@@ -182,7 +182,7 @@ void panels_layout::save_json_layout(QSplitter *splitter, int deep, QString lett
         {
             QJsonObject panel_b_data;
             panel_b_data["tabs"] = qt::list_to_array(child_panel_b->tabs_list);
-            panel_b_data["current_index"] = child_panel_b->tab_section->currentIndex();
+            panel_b_data["current_index"] = child_panel_b->tab_section->get_current_index();
             value["panel_b"] = panel_b_data;
         }
         else
@@ -234,12 +234,12 @@ void panels_layout::load_splitter(QJsonObject splitter_obj, panel *panel_a)
     if (!panel_a_obj.isEmpty())
     {
         panel_a->add_tabs(qt::array_to_list(panel_a_obj["tabs"].toArray()));
-        panel_a->tab_section->setCurrentIndex(panel_a_obj["current_index"].toInt());
+        panel_a->tab_section->set_index(panel_a_obj["current_index"].toInt());
     }
     if (!panel_b_obj.isEmpty())
     {
         panel_b->add_tabs(qt::array_to_list(panel_b_obj["tabs"].toArray()));
-        panel_b->tab_section->setCurrentIndex(panel_b_obj["current_index"].toInt());
+        panel_b->tab_section->set_index(panel_b_obj["current_index"].toInt());
     }
 }
 

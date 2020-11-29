@@ -23,10 +23,6 @@ panel::panel(QWidget *_panels_layout,
     tab_section = new tab_widget();
     QPushButton *cornel_button = setup_cornel_buttons();
 
-    // tab_section->setMovable(true);
-    // tab_section->setCornerWidget(cornel_button, Qt::TopLeftCorner);
-    // tab_section->setObjectName("tab_section");
-
     QVBoxLayout *layout = new QVBoxLayout();
     layout->setContentsMargins(0, 4, 0, 0);
     layout->addWidget(tab_section);
@@ -128,42 +124,13 @@ QPushButton *panel::setup_cornel_buttons()
 void panel::add_tabs(QStringList tabs_list)
 {
     for (QString tab_name : tabs_list)
-    {
         add_tab(tab_name);
-    }
 }
 
 void panel::remove_all_tab()
 {
-    // QList<QWidget *> widgets;
-    // for (int i = 0; i < tab_section->count(); i++)
-    //     widgets.push_back(tab_section->widget(i));
-
-    // for (QWidget *widget : widgets)
-    //     widget->setParent(0);
-
-    // tab_section->clear();
-    // tabs_list.clear();
-}
-
-void panel::remove_tab(QString name)
-{
-
-    // int index = 0;
-    // for (int i = 0; i < tab_section->count(); i++)
-    // {
-    //     if (tab_section->tabText(i) == get_tab_label(name))
-    //     {
-    //         index = i;
-    //         break;
-    //     }
-    // }
-
-    // QWidget *widget = tab_section->widget(index);
-    // tab_section->removeTab(index);
-    // tabs_list.removeOne(name);
-
-    // widget->setParent(0);
+    tab_section->clear();
+    tabs_list.clear();
 }
 
 QString panel::get_tab_label(QString name)
@@ -215,30 +182,17 @@ void panel::add_tab(QString name)
 
     tab_section->add_tab(tab, get_tab_label(name));
 
-    // int index = tab_section->addTab(tab, get_tab_label(name));
+    // el tab que se va a agregar en este panel se borra en
+    // todos los paneles, si es que esta en alguno.
+    QList<panel *> panels = panels_layout->findChildren<panel *>("panel");
 
-    // tab_section->setCurrentIndex(index);
+    for (panel *_panel : panels)
+        _panel->tabs_list.removeOne(name);
 
-    // QPushButton *close_tab = new QPushButton();
-    // qt::set_icon(close_tab, "close_a", 10);
+    //
+    //
 
-    // connect(close_tab, &QPushButton::clicked, this, [=]() {
-    //     remove_tab(name);
-    // });
-
-    // tab_section->tabBar()->setTabButton(index, QTabBar::RightSide, close_tab);
-
-    // // el tab que se va a agregar en este panel se borra en
-    // // todos los paneles, si es que esta en alguno.
-    // QList<panel *> panels = panels_layout->findChildren<panel *>("panel");
-
-    // for (panel *_panel : panels)
-    //     _panel->tabs_list.removeOne(name);
-
-    // //
-    // //
-
-    // tabs_list.push_back(name);
+    tabs_list.push_back(name);
 }
 
 QSplitter *panel::get_splitter()
@@ -346,6 +300,8 @@ void panel::close_panel()
     splitters->removeAt(i);
     //
     //
+
+    delete tab_section;
 
     parent->layout()->removeWidget(qsplitter);
     qsplitter->setParent(0);

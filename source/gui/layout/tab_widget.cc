@@ -33,6 +33,11 @@ tab_widget::tab_widget()
 
 tab_widget::~tab_widget()
 {
+    delete cornel_button;
+    delete tab_bar_layout;
+    delete layout;
+    delete tab_bar;
+    delete widget_section;
 }
 
 QPushButton *tab_widget::add_cornel_button(QString icon)
@@ -52,14 +57,25 @@ void tab_widget::set_index(int index)
         set_tab(tab->get_name());
 }
 
+int tab_widget::get_index_by_name(QString name) const
+{
+    for (int i = 0; i < tabs.count(); i++)
+        if (tabs[i]->get_name() == name)
+            return i;
+
+    return -1;
+}
+
 void tab_widget::set_tab(QString name)
 {
-    for (tab *_tab : tabs)
+    for (int i = 0; i < tabs.count(); i++)
     {
+        tab *_tab = tabs[i];
         if (_tab->get_name() == name)
         {
             _tab->setProperty("_checked", true);
             _tab->set_checked(true);
+            current_index = i;
         }
         else
         {
@@ -69,9 +85,59 @@ void tab_widget::set_tab(QString name)
     }
 }
 
+void tab_widget::delete_tab(tab *_tab)
+{
+    QWidget *widget = _tab->get_content_widget();
+    widget->hide();
+    widget->setParent(0);
+    _tab->setParent(0);
+    delete _tab;
+}
+
+void tab_widget::close_tab(QString name)
+{
+    int index = get_index_by_name(name);
+    if (index == -1)
+        return;
+
+    tab *_tab = tabs[index];
+    delete_tab(_tab);
+
+    tabs.removeAt(index);
+
+    set_index(0);
+}
+
+void tab_widget::clear()
+{
+    for (tab *_tab : tabs)
+        delete_tab(_tab);
+
+    tabs.clear();
+}
+
 void tab_widget::add_tab(QWidget *widget, QString name)
 {
-    // añade el widget a la seccion de widgets
+    // si no es -1 el tab ya existe
+    int index = get_index_by_name(name);
+    if (index != -1)
+    {
+        set_index(index);
+        return;
+    }
+    //
+    //
+
+    // añade el widget a la seccion de widgets, pero si el widget, ya esta
+    // dentro de otro 'tab_widget', busca el otro 'tab_widget' y cierra el tab antes de
+    // añadirlo a este.
+    auto *parent = widget->parent();
+    if (parent)
+    {
+        tab_widget *old_tab_widget = dynamic_cast<tab_widget *>(parent->parent());
+        if (old_tab_widget)
+            old_tab_widget->close_tab(name);
+    }
     widget_section_layout->addWidget(widget);
     //
     //
@@ -82,4 +148,9 @@ void tab_widget::add_tab(QWidget *widget, QString name)
     tab_bar_layout->insertWidget(tabs.count(), _tab);
 
     set_index(current_index);
+}
+
+int tab_widget::get_current_index() const
+{
+    return current_index;
 }

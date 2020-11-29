@@ -6,6 +6,7 @@ tab::tab(QWidget *__tab_widget, QString _name, QWidget *_content)
       _tab_widget(__tab_widget),
       content(_content),
       name(_name),
+
       _checked(false)
 {
     content->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -16,6 +17,9 @@ tab::tab(QWidget *__tab_widget, QString _name, QWidget *_content)
     layout = new QHBoxLayout(this);
     label = new QLabel(name);
     close_button = new QPushButton(this);
+    connect(close_button, &QPushButton::clicked, this, [this] {
+        dynamic_cast<tab_widget *>(_tab_widget)->close_tab(name);
+    });
 
     qt::set_icon(close_button, "close_a", 10);
 
@@ -51,7 +55,10 @@ void tab::set_checked(bool __checked)
 
     this->style()->unpolish(this);
     this->style()->polish(this);
+    label->style()->unpolish(this);
+    label->style()->polish(this);
 
+    this->update();
     content->setVisible(_checked);
 }
 
