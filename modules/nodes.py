@@ -7,7 +7,7 @@ class node:
         self.name = node_name
 
     def delete(self):
-        return __py_nodes__.delete_node()
+        return __py_nodes__.delete_node(self.name)
 
     def set_position(self, x, y):
         return __py_nodes__.set_position(self.name, x, y)

@@ -56,10 +56,12 @@ PyObject *py_nodes::create_node(PyObject *self, PyObject *args)
 
 PyObject *py_nodes::delete_node(PyObject *self, PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    char *name;
+
+    if (!PyArg_ParseTuple(args, "s", &name))
         return 0;
 
-    print("delete");
+    print("delete: " + QString(name));
 
     // return py_bool(true);
     return py_string("string");

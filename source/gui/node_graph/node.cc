@@ -39,6 +39,7 @@ node::node(QGraphicsScene *_scene,
         font.setPointSize(15);
         name->setFont(font);
         name->setParentItem(this);
+        name->setDefaultTextColor(Qt::black);
 
         tips = new QGraphicsTextItem;
         QFont font_tips;

@@ -1,19 +1,14 @@
 
-@mixin tabbar()
-    background: none
-    &::tab
-        border-top-left-radius: 3px
+#tab_widget
+    #tab
         border-top-right-radius: 3px
+        border-top-left-radius: 3px
+        padding: 3px 15px 3px 15px
         background: $b15
-        padding: 1px 13px 1px 13px
-        margin-right: 5px
-        color: $c1
-        &:hover
-            color: $base
-        &:selected
+        &[ _checked = 'true' ]
             background: $b20
             color: $base
-    &::close-button
+
 
 #panels_layout
     background: $b10
@@ -22,5 +17,4 @@
     #tab_section
         // background: blue
 
-    QTabBar
-        @include tabbar
+

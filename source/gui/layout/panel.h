@@ -18,6 +18,7 @@
 #include <script_editor.h>
 #include <properties.h>
 #include <curve_editor.h>
+#include <tab_widget.h>
 
 class panel : public QWidget
 {
@@ -49,7 +50,7 @@ public:
     ~panel();
 
     QStringList tabs_list;
-    QTabWidget *tab_section;
+    tab_widget *tab_section;
 
     panel *split(Qt::Orientation orientation);
     QSplitter *get_splitter();

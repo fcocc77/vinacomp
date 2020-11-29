@@ -18,6 +18,8 @@ gui:
         ☐ que funcione el snap en horizontal por frame
         ☐ que el keyframe solo se pueda mover en una direccion a la vez, y con el control presionado poder mover omnidireccional
         ☐ los botones de curvas del toolbar deben ser checkeables segun la actual interpolacion del keyframe seleccionado
+        ☐ opcion para bloquear o desbloquear el tamaño del manejador
+        ☐ opcion de simetria para que los 2 puntos del manejador se escalen igual
     script_editor:
         ☐ boton de arrastre para poder arrastrar el script como acceso directo a una barra de herramienta en la parte inferior del node graph
 
@@ -27,9 +29,11 @@ gui:
         ☐ crear input y output
         ☐ terminar triangulo @today 
         ☐ que el cursor fantasma desaparesca cuando se esta escalando el viewer
-        ☐ seleccionar una area con el click derecho, y ajustar el viewer al area seleccionada
+        ☐ seleccionar una area con el click derecho y el central, y ajustar el viewer al area seleccionada
         ☐ con el click derecho switch entre el area seleccionada y el ajuste completo
         ☐ no tiene que cambiar el frame cuando presionamos el alt con el boton central
+        ☐ con el control click cambiar la entrada y la salida
+        ☐ poder arrastrar el input y la salida, y con el control presionado arrastrar los 2
 
 nodes:
     ☐ crear nodo de speed, para que cambie todas las velocidades como 'videovina' y asi no lo tenemos que hacer en videovina
