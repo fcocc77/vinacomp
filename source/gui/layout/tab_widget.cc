@@ -1,7 +1,8 @@
 #include <tab_widget.h>
 
-tab_widget::tab_widget()
-    : current_index(0)
+tab_widget::tab_widget(bool _has_close_button)
+    : current_index(0),
+      has_close_button(_has_close_button)
 {
     this->setObjectName("tab_widget");
     layout = new QVBoxLayout(this);
@@ -142,7 +143,7 @@ void tab_widget::add_tab(QWidget *widget, QString name)
     //
     //
 
-    tab *_tab = new tab(this, name, widget);
+    tab *_tab = new tab(this, name, widget, has_close_button);
     tabs.push_back(_tab);
 
     tab_bar_layout->insertWidget(tabs.count(), _tab);

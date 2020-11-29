@@ -70,6 +70,7 @@ protected:
     void mouseReleaseEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
     void tabletEvent(QTabletEvent *event) override;
+    void showEvent(QShowEvent *event) override;
 
     virtual void cursor_move_event(QPoint position);
 };

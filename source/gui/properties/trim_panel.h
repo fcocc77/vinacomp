@@ -13,6 +13,7 @@
 #include <trim_panel.h>
 #include <properties.h>
 #include <qt.h>
+#include <tab_widget.h>
 
 #include <knob.h>
 #include <knob_color.h>
@@ -31,7 +32,7 @@
 class trim_panel : public QWidget
 {
 private:
-    QTabWidget *tabs;
+    tab_widget *tabs;
     bool is_maximize = true;
     properties *_properties;
 
@@ -43,7 +44,7 @@ private:
 
     void setup_ui();
     QWidget *top_buttons_setup_ui();
-    QTabWidget *tabs_ui();
+    tab_widget *tabs_ui();
 
 public:
     trim_panel(

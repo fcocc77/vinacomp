@@ -18,6 +18,7 @@
 #include <panels_layout.h>
 #include <tool_bar.h>
 #include <settings.h>
+#include <action.h>
 
 class vinacomp : public QMainWindow
 {

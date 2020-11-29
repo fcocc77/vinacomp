@@ -20,7 +20,7 @@ panel::panel(QWidget *_panels_layout,
 {
     this->setObjectName("panel");
 
-    tab_section = new tab_widget();
+    tab_section = new tab_widget(true);
     QPushButton *cornel_button = setup_cornel_buttons();
 
     QVBoxLayout *layout = new QVBoxLayout();

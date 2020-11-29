@@ -31,7 +31,6 @@ void trim_panel::setup_ui()
     layout->addWidget(butttons);
 
     tabs = tabs_ui();
-    tabs->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     layout->addWidget(tabs);
 }
 
@@ -234,18 +233,21 @@ QWidget *trim_panel::top_buttons_setup_ui()
     return widget;
 }
 
-QTabWidget *trim_panel::tabs_ui()
+tab_widget *trim_panel::tabs_ui()
 {
-    QTabWidget *tabs = new QTabWidget();
+    tab_widget *tabs = new tab_widget();
 
-    QWidget *controls_tab = new QWidget();
+    QWidget *controls_tab = new QWidget(this);
     controls_layout = new QVBoxLayout(controls_tab);
+    controls_layout->setSpacing(0);
     controls_tab->setObjectName("controls");
 
-    QWidget *node = new QWidget();
+    QWidget *node = new QWidget(this);
 
-    tabs->addTab(controls_tab, "Controls");
-    tabs->addTab(node, "Node");
+    tabs->add_tab(controls_tab, "Controls");
+    tabs->add_tab(node, "Node");
+
+    tabs->set_index(0);
 
     return tabs;
 }

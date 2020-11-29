@@ -23,7 +23,7 @@ void vinacomp::setup_ui()
 
     _panels_layout = new panels_layout(_node_graph, _viewer, _script_editor, _properties, _curve_editor);
 
-    QWidget *central_widget = new QWidget();
+    QWidget *central_widget = new QWidget(this);
     QHBoxLayout *layout = new QHBoxLayout(central_widget);
     layout->setMargin(0);
     layout->setSpacing(0);
@@ -58,15 +58,11 @@ void vinacomp::main_menu()
     QMenu *file_menu = new QMenu("File", menu_bar);
     menu_bar->addMenu(file_menu);
 
-    QAction *new_project = new QAction("New Project");
-    new_project->setShortcut(QString("Ctrl+N"));
-    new_project->setIcon(QIcon("resources/images/add_a.png"));
+    action *new_project = new action("New Project", "Ctrl+N", "add_a");
     file_menu->addAction(new_project);
 
-    QAction *open_project_action = new QAction("Open Project");
-    open_project_action->setIcon(QIcon("resources/images/folder_a.png"));
-    open_project_action->setShortcut(QString("Ctrl+O"));
-    connect(open_project_action, &QAction::triggered, this, &vinacomp::open_project_dialog);
+    action *open_project_action = new action("Open Project", "Ctrl+O", "folder_a");
+    open_project_action->connect_to(this, [this]() { open_project_dialog(); });
 
     file_menu->addAction(open_project_action);
 
@@ -76,25 +72,18 @@ void vinacomp::main_menu()
 
     file_menu->addSeparator();
 
-    QAction *save_project_action = new QAction("Save Project");
-    save_project_action->setIcon(QIcon("resources/images/save_a.png"));
-    save_project_action->setShortcut(QString("Ctrl+S"));
-    connect(save_project_action, &QAction::triggered, this, &vinacomp::to_save_project);
+    action *save_project_action = new action("Save Project", "Ctrl+S", "save_a");
+    save_project_action->connect_to(this, [this]() { to_save_project(); });
     file_menu->addAction(save_project_action);
 
-    QAction *save_project_as = new QAction("Save Project As...");
-    save_project_as->setShortcut(QString("Ctrl+Shift+S"));
-    connect(save_project_as, &QAction::triggered, this, &vinacomp::save_as);
+    action *save_project_as = new action("Save Project As...", "Ctrl+Shift+S");
+    save_project_as->connect_to(this, [this]() { save_as(); });
     file_menu->addAction(save_project_as);
 
     file_menu->addSeparator();
 
-    QAction *quit = new QAction("Quit");
-    quit->setIcon(QIcon("resources/images/quit_a.png"));
-    quit->setShortcut(QString("Ctrl+Q"));
-    connect(quit, &QAction::triggered, this, [this]() {
-        this->close();
-    });
+    action *quit = new action("Quit", "Ctrl+Q", "quit_a");
+    quit->connect_to(this, [this]() { this->close(); });
     file_menu->addAction(quit);
     //
     //
@@ -103,16 +92,12 @@ void vinacomp::main_menu()
     QMenu *edit_menu = new QMenu("Edit", menu_bar);
     menu_bar->addMenu(edit_menu);
 
-    QAction *settings_action = new QAction("Settings...");
-    connect(settings_action, &QAction::triggered, this, [this]() {
+    action *settings_action = new action("Settings...", "Shift+S", "settings_a");
+    settings_action->connect_to(this, [this]() {
         _settings->show();
     });
 
-    settings_action->setShortcut(QString("Shift+S"));
-    settings_action->setIcon(QIcon("resources/images/settings_a.png"));
-
     edit_menu->addAction(settings_action);
-
     edit_menu->addAction(update_sylesheet_action);
     //
     //
@@ -132,17 +117,14 @@ void vinacomp::main_menu()
     QMenu *display = new QMenu("Display", menu_bar);
     menu_bar->addMenu(display);
 
-    QAction *full_screen = new QAction("Full Screen");
-    connect(full_screen, &QAction::triggered, this, [this]() {
+    action *full_screen = new action("Full Screen", "Alt+S", "fullscreen_a");
+    full_screen->connect_to(this, [this]() {
         if (!fullscreen)
             this->setWindowState(Qt::WindowFullScreen);
         else
             this->setWindowState(Qt::WindowMaximized);
         fullscreen = !fullscreen;
     });
-
-    full_screen->setShortcut(QString("Alt+S"));
-    full_screen->setIcon(QIcon("resources/images/fullscreen_a.png"));
 
     display->addAction(full_screen);
 

@@ -23,13 +23,14 @@ private:
 
     int current_index;
     QPushButton *cornel_button;
+    const bool has_close_button;
 
     QList<tab *> tabs;
 
     void delete_tab(tab *_tab);
 
 public:
-    tab_widget();
+    tab_widget(bool _has_close_button = false);
     ~tab_widget();
 
     void add_tab(QWidget *tab, QString label);

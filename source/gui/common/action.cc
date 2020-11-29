@@ -7,7 +7,8 @@ action::action(QString _label, QString shortcut_key, QString _icon_name)
 
 {
     this->setText(label);
-    this->setIcon(QIcon("resources/images/" + icon_name + ".png"));
+    if (!icon_name.isEmpty())
+        this->setIcon(QIcon("resources/images/" + icon_name + ".png"));
 
     this->setShortcutContext(Qt::WidgetWithChildrenShortcut);
     this->setShortcut(QKeySequence(key));

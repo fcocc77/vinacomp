@@ -123,3 +123,8 @@ void gl_view::tabletEvent(QTabletEvent *event)
 
     QOpenGLWidget::tabletEvent(event);
 }
+
+void gl_view::showEvent(QShowEvent *event)
+{
+    update();
+}

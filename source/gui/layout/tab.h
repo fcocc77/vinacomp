@@ -15,6 +15,7 @@ class tab : public QWidget
 private:
     bool _checked;
     QWidget *_tab_widget;
+    const bool has_close_button;
 
     QString name;
     QWidget *content;
@@ -23,7 +24,10 @@ private:
     QHBoxLayout *layout;
 
 public:
-    tab(QWidget *_tab_widget, QString name, QWidget *_content);
+    tab(QWidget *_tab_widget,
+        QString name,
+        QWidget *_content,
+        bool _has_close_button = false);
     ~tab();
 
     QWidget *get_content_widget() const;
