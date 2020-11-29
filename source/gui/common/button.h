@@ -12,10 +12,12 @@ private:
     int size_icon;
     QString normal_icon;
     QString hover_icon;
+    bool hover;
+
     void change_icon(QString name);
 
 public:
-    button(QWidget *parent = 0);
+    button(QWidget *parent = 0, bool _hover = false);
     ~button();
 
     void set_icon(QString name, int size = 20);

@@ -8,6 +8,7 @@
 #include <QStyle>
 
 #include <qt.h>
+#include <button.h>
 
 class tab : public QWidget
 {
@@ -18,7 +19,7 @@ private:
     QString name;
     QWidget *content;
     QLabel *label;
-    QPushButton *close_button;
+    button *close_button;
     QHBoxLayout *layout;
 
 public:

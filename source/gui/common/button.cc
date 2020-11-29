@@ -1,8 +1,14 @@
 #include <button.h>
 
-button::button(QWidget *parent)
-    : QPushButton(parent)
+button::button(QWidget *parent, bool _hover)
+    : QPushButton(parent),
+      hover(_hover)
 {
+    if (hover)
+    {
+        this->setMouseTracking(true);
+        this->setTabletTracking(true);
+    }
 }
 
 button::~button()

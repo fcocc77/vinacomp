@@ -17,12 +17,12 @@ tab::tab(QWidget *__tab_widget, QString _name, QWidget *_content)
     layout = new QHBoxLayout(this);
     layout->setContentsMargins(10, 0, 5, 0);
     label = new QLabel(name);
-    close_button = new QPushButton(this);
+    close_button = new button(this, true);
+    close_button->set_icon("close", 15);
+
     connect(close_button, &QPushButton::clicked, this, [this] {
         dynamic_cast<tab_widget *>(_tab_widget)->close_tab(name);
     });
-
-    qt::set_icon(close_button, "close_a", 15);
 
     layout->addWidget(label);
     layout->addWidget(close_button);
@@ -56,8 +56,8 @@ void tab::set_checked(bool __checked)
 
     this->style()->unpolish(this);
     this->style()->polish(this);
-    label->style()->unpolish(this);
-    label->style()->polish(this);
+    label->style()->unpolish(label);
+    label->style()->polish(label);
 
     this->update();
     content->setVisible(_checked);
