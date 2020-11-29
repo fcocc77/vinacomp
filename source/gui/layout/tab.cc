@@ -15,13 +15,14 @@ tab::tab(QWidget *__tab_widget, QString _name, QWidget *_content)
     this->setObjectName("tab");
 
     layout = new QHBoxLayout(this);
+    layout->setContentsMargins(10, 0, 5, 0);
     label = new QLabel(name);
     close_button = new QPushButton(this);
     connect(close_button, &QPushButton::clicked, this, [this] {
         dynamic_cast<tab_widget *>(_tab_widget)->close_tab(name);
     });
 
-    qt::set_icon(close_button, "close_a", 10);
+    qt::set_icon(close_button, "close_a", 15);
 
     layout->addWidget(label);
     layout->addWidget(close_button);

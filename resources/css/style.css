@@ -4,7 +4,8 @@
   selection-background-color: #583b2c;
   border: none;
   font-size: 11px;
-  color: #acb1b9; }
+  color: #acb1b9;
+  outline: none; }
 
 QToolTip {
   background: #17191c;
@@ -210,22 +211,17 @@ QScrollBar {
 #viewer #image_correction {
   background: #23262a; }
 
+#tab_widget #tab {
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
+  background: #23262a; }
+  #tab_widget #tab[_checked='true'] {
+    background: #2e3238; }
+    #tab_widget #tab[_checked='true'] > QLabel {
+      color: #ff5e00; }
+
 #panels_layout {
   background: #17191c; }
-  #panels_layout QTabBar {
-    background: none; }
-    #panels_layout QTabBar::tab {
-      border-top-left-radius: 3px;
-      border-top-right-radius: 3px;
-      background: #23262a;
-      padding: 1px 13px 1px 13px;
-      margin-right: 5px;
-      color: #c7cbd1; }
-      #panels_layout QTabBar::tab:hover {
-        color: #ff5e00; }
-      #panels_layout QTabBar::tab:selected {
-        background: #2e3238;
-        color: #ff5e00; }
 
 #trim_panel {
   background: #2a2d32; }

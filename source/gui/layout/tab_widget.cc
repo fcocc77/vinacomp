@@ -9,8 +9,8 @@ tab_widget::tab_widget()
     layout->setSpacing(0);
 
     tab_bar = new QWidget(this);
+    tab_bar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     tab_bar_layout = new QHBoxLayout(tab_bar);
-    tab_bar_layout->setAlignment(Qt::AlignRight | Qt::AlignBottom);
     tab_bar_layout->setMargin(0);
     tab_bar_layout->setSpacing(5);
 
@@ -147,7 +147,7 @@ void tab_widget::add_tab(QWidget *widget, QString name)
 
     tab_bar_layout->insertWidget(tabs.count(), _tab);
 
-    set_index(current_index);
+    set_index(tabs.count() - 1);
 }
 
 int tab_widget::get_current_index() const
