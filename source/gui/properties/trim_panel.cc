@@ -236,6 +236,7 @@ QWidget *trim_panel::top_buttons_setup_ui()
 tab_widget *trim_panel::tabs_ui()
 {
     tab_widget *tabs = new tab_widget();
+    tabs->setParent(this);
 
     QWidget *controls_tab = new QWidget(this);
     controls_layout = new QVBoxLayout(controls_tab);
