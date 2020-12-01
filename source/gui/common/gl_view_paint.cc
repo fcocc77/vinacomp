@@ -72,13 +72,15 @@ void gl_view::draw_point(QPointF coord, QColor color, int size, bool smooth)
         glDisable(GL_POINT_SMOOTH);
 }
 
-void gl_view::draw_line(QPointF src, QPointF dst, QColor color)
+void gl_view::draw_line(QPointF src, QPointF dst, QColor color, float width)
 {
+    glLineWidth(width);
     glBegin(GL_LINES);
     glColor4f(color.red() / 255.0, color.green() / 255.0, color.blue() / 255.0, 1);
     glVertex2f(src.x(), src.y());
     glVertex2f(dst.x(), dst.y());
     glEnd();
+    glLineWidth(1);
 }
 
 void gl_view::draw_dashed_line(QLineF line, QColor color, int stipple)

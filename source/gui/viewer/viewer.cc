@@ -6,7 +6,8 @@ viewer::viewer()
     _viewer_gl->setObjectName("viewer_graphics");
 
     layout = new QVBoxLayout(this);
-    layout->setContentsMargins(0, 0, 0, 0);
+    layout->setMargin(0);
+    layout->setSpacing(1);
     this->setObjectName("viewer");
 
     _time_line = new time_line();

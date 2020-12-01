@@ -10,13 +10,22 @@ class time_line : public gl_view
 private:
     int frame;
     int ghost_frame;
-    bool dragging;
+    bool dragging, ghost_frame_visible;
 
     int first_frame, last_frame;
+    int input, output;
+
+    bool right_button, middle_button;
+
+    bool dragging_input, dragging_output;
+
+    void drag_in_out(int _frame);
+    void change_frame(int _frame);
 
     // Paint
     void draw_coordinate_numbers();
     void draw_cursor();
+    void draw_in_out();
     //
     //
 
