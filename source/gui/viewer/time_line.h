@@ -12,6 +12,8 @@ private:
     int ghost_frame;
     bool dragging, ghost_frame_visible;
 
+    int click_x_coords;
+
     int first_frame, last_frame;
     int input, output;
 
@@ -23,6 +25,7 @@ private:
     void change_frame(int _frame);
     pair<bool, bool> over_in_out(int x) const;
     void fit_to_range();
+    void change_in_out_with_control();
 
     // Paint
     void draw_coordinate_numbers();
