@@ -66,9 +66,6 @@ pair<bool, bool> time_line::over_in_out(int x) const
 
 void time_line::drag_in_out(int _frame)
 {
-    if (_frame < first_frame || _frame > last_frame)
-        return;
-
     auto _over_in_out = over_in_out(_frame);
     if (_over_in_out.first || _over_in_out.second)
     {
@@ -82,15 +79,9 @@ void time_line::drag_in_out(int _frame)
     }
 
     if (dragging_input)
-    {
-        if ((output - _frame) > 0)
-            input = _frame;
-    }
+        set_in_out(_frame, output);
     else if (dragging_output)
-    {
-        if ((_frame - input) > 0)
-            output = _frame;
-    }
+        set_in_out(input, _frame);
 
     if (dragging_input || dragging_output)
         update();
@@ -104,6 +95,14 @@ void time_line::set_in_out(int _input, int _output)
 
     if (_output <= input)
         _output = input + 1;
+    //
+    //
+
+    // si el frame esta fuera del rango, lo actualiza y retorna
+    if (_input < first_frame)
+        _input = first_frame;
+    else if (_output > last_frame)
+        _output = last_frame;
     //
     //
 
@@ -204,7 +203,6 @@ void time_line::mouseReleaseEvent(QMouseEvent *event)
 
 void time_line::cursor_move_event(QPoint position)
 {
-
     if (!qt::alt())
     {
         int x_pos = round(get_coords(position).x());
