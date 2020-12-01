@@ -32,7 +32,7 @@ public:
         Qt::Alignment align = Qt::AlignCenter,
         QPointF offset = {0, 0});
     void draw_point(QPointF coords, QColor color = Qt::white, int size = 7, bool smooth = true);
-    void draw_box(QLineF diagonal_line, QColor color, QColor border_color);
+    void draw_box(QLineF diagonal_line, QColor color, QColor border_color = {0, 0, 0});
     void draw_line(QPointF src, QPointF dst, QColor color, float width = 1);
     void draw_dashed_line(QLineF line, QColor color, int stipple);
     void draw_triangle(QPointF position, float size, QColor color);

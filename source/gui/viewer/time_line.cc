@@ -18,15 +18,20 @@ time_line::time_line()
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     this->setMinimumHeight(50);
 
-    action *fit_to_range = new action("Fit to Range", "F");
-    fit_to_range->connect_to(this, [this]() {
-        int padding = 5;
-        set_ortho(first_frame - padding, last_frame + padding, 0, 1);
+    action *fit_to_range_action = new action("Fit to Range", "F");
+    fit_to_range_action->connect_to(this, [this]() {
+        fit_to_range();
     });
 }
 
 time_line::~time_line()
 {
+}
+
+void time_line::fit_to_range()
+{
+    int padding = 5;
+    set_ortho(first_frame - padding, last_frame + padding, 0, 1);
 }
 
 pair<bool, bool> time_line::over_in_out(int x) const
@@ -47,8 +52,10 @@ pair<bool, bool> time_line::over_in_out(int x) const
 
 void time_line::drag_in_out(int _frame)
 {
-    auto _over_in_out = over_in_out(_frame);
+    if (_frame < first_frame || _frame > last_frame)
+        return;
 
+    auto _over_in_out = over_in_out(_frame);
     if (_over_in_out.first || _over_in_out.second)
     {
         this->setCursor(Qt::SizeHorCursor);
@@ -92,13 +99,19 @@ void time_line::mousePressEvent(QMouseEvent *event)
     right_button = event->button() == Qt::RightButton;
     middle_button = event->button() == Qt::MiddleButton;
 
+    if (right_button)
+        fit_to_range();
+
     int x_pos = round(get_coords(event->pos()).x());
 
     auto _over_in_out = over_in_out(x_pos);
     dragging_input = _over_in_out.first;
     dragging_output = _over_in_out.second;
 
-    change_frame(x_pos);
+    if (qt::alt())
+        ghost_frame_visible = false;
+    else
+        change_frame(x_pos);
 
     update();
 
@@ -113,6 +126,7 @@ void time_line::mouseReleaseEvent(QMouseEvent *event)
     dragging_output = false;
     right_button = false;
     middle_button = false;
+    ghost_frame_visible = true;
 
     gl_view::mouseReleaseEvent(event);
 }

@@ -25,10 +25,10 @@ gui:
 
     time_line:
         ✔ con el shortcut 'F' ajustar el rango de frames @today @done (11/30/2020, 9:53:29 PM)
-        ☐ que el area dentro del rango quede de color gris y fuera negro @today 
-        ☐ crear input y output
+        ✔ que el area dentro del rango quede de color gris y fuera negro @today @done (12/1/2020, 3:23:04 PM)
+        ✔ crear input y output @done (12/1/2020, 3:23:06 PM)
         ✔ terminar triangulo @today @done (11/30/2020, 2:20:18 PM)
-        ☐ que el cursor fantasma desaparesca cuando se esta escalando el viewer
+        ✔ que el cursor fantasma desaparesca cuando se esta escalando el viewer @done (12/1/2020, 3:26:37 PM)
         ☐ seleccionar una area con el click derecho y el central, y ajustar el viewer al area seleccionada
         ☐ con el click derecho switch entre el area seleccionada y el ajuste completo
         ☐ no tiene que cambiar el frame cuando presionamos el alt con el boton central

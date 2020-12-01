@@ -21,6 +21,9 @@ void time_line::draw_in_out()
     draw_line({input, 1000000}, {input, -1000000}, red, 2);
     draw_line({output, 1000000}, {output, -1000000}, red, 2);
 
+    draw_box({{first_frame, -100000}, {last_frame, 100000}}, QColor({25, 25, 25}));
+    draw_box({{input, -100000}, {output, 100000}}, QColor({50, 50, 50}));
+
     float input_x = get_position({input, 0}).x();
     float output_x = get_position({output, 0}).x();
 
