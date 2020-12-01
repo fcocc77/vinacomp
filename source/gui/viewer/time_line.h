@@ -21,6 +21,7 @@ private:
 
     void drag_in_out(int _frame);
     void change_frame(int _frame);
+    pair<bool, bool> over_in_out(int x) const;
 
     // Paint
     void draw_coordinate_numbers();

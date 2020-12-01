@@ -29,9 +29,27 @@ time_line::~time_line()
 {
 }
 
+pair<bool, bool> time_line::over_in_out(int x) const
+{
+    int viewport_x = get_position({x, 0}).x();
+
+    // verifica si el cursor del mouse esta sobre el input o el output
+    QPointF viewport_input = get_position({input, 0});
+    float input_distance = qt::distance_points({viewport_input.x(), 0}, {viewport_x, 0});
+
+    QPointF viewport_output = get_position({output, 0});
+    float output_distance = qt::distance_points({viewport_output.x(), 0}, {viewport_x, 0});
+
+    int tolerance = 10;
+
+    return {input_distance < tolerance, output_distance < tolerance};
+}
+
 void time_line::drag_in_out(int _frame)
 {
-    if (_frame == input || _frame == output)
+    auto _over_in_out = over_in_out(_frame);
+
+    if (_over_in_out.first || _over_in_out.second)
     {
         this->setCursor(Qt::SizeHorCursor);
         ghost_frame_visible = false;
@@ -76,8 +94,9 @@ void time_line::mousePressEvent(QMouseEvent *event)
 
     int x_pos = round(get_coords(event->pos()).x());
 
-    dragging_input = x_pos == input;
-    dragging_output = x_pos == output;
+    auto _over_in_out = over_in_out(x_pos);
+    dragging_input = _over_in_out.first;
+    dragging_output = _over_in_out.second;
 
     change_frame(x_pos);
 
