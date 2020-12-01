@@ -20,9 +20,10 @@ void time_line::draw_cursor()
     float y2 = get_coords({0, height()}).y();
 
     draw_line({ghost_frame, y1}, {ghost_frame, y2}, QColor{150, 0, 0});
-    draw_line({frame, y1}, {frame, y2}, Qt::red);
+    draw_triangle({ghost_frame, y1}, 7, QColor{150, 0, 0});
 
-    // draw_triangle({ghost_frame, y1}, 0.2, Qt::red);
+    draw_line({frame, y1}, {frame, y2}, Qt::red);
+    draw_triangle({frame, y1}, 7, Qt::red);
 }
 
 void time_line::draw_coordinate_numbers()

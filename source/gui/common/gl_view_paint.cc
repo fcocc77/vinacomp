@@ -168,14 +168,20 @@ void gl_view::draw_box(QLineF diagonal_line, QColor color, QColor border_color)
 void gl_view::draw_triangle(QPointF position, float size, QColor color)
 {
     glBegin(GL_TRIANGLES);
-
     glColor3f(color.red() / 255.0, color.green() / 255.0, color.blue() / 255.0);
 
-    glVertex2f(position.x() - 2, position.y());
-    glVertex2f(position.x() + 2, position.y());
+    QPointF _position = get_position(position);
+    QPointF point_1 = {_position.x() - size, _position.y()};
+    QPointF point_2 = {_position.x() + size, _position.y()};
+    QPointF point_3 = {_position.x(), _position.y() + size};
 
-    glVertex2f(position.x(), position.y() - size);
-    glVertex2f(position.x(), position.y() - size);
+    point_1 = get_coordsf(point_1);
+    point_2 = get_coordsf(point_2);
+    point_3 = get_coordsf(point_3);
+
+    glVertex2f(point_1.x(), point_1.y());
+    glVertex2f(point_2.x(), point_2.y());
+    glVertex2f(point_3.x(), point_3.y());
 
     glEnd();
 }

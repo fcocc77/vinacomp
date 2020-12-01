@@ -3,6 +3,7 @@
 
 #include <gl_view.h>
 #include <qt.h>
+#include <action.h>
 
 class time_line : public gl_view
 {
@@ -10,6 +11,8 @@ private:
     int frame;
     int ghost_frame;
     bool dragging;
+
+    int first_frame, last_frame;
 
     // Paint
     void draw_coordinate_numbers();

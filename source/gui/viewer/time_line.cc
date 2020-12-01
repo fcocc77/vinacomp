@@ -3,10 +3,18 @@
 time_line::time_line()
     : frame(10),
       ghost_frame(10),
-      dragging(false)
+      dragging(false),
+      first_frame(1),
+      last_frame(100)
 {
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     this->setMinimumHeight(50);
+
+    action *fit_to_range = new action("Fit to Range", "F");
+    fit_to_range->connect_to(this, [this]() {
+        int padding = 5;
+        set_ortho(first_frame - padding, last_frame + padding, 0, 1);
+    });
 }
 
 time_line::~time_line()
