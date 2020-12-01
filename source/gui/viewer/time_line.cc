@@ -24,6 +24,18 @@ time_line::time_line()
     fit_to_range_action->connect_to(this, [this]() {
         fit_to_range();
     });
+
+    action *input_action = new action("Input", "I");
+    input_action->connect_to(this, [this]() {
+        set_in_out(frame, output);
+        update();
+    });
+
+    action *ouput_action = new action("Input", "O");
+    ouput_action->connect_to(this, [this]() {
+        set_in_out(input, frame);
+        update();
+    });
 }
 
 time_line::~time_line()
@@ -84,6 +96,21 @@ void time_line::drag_in_out(int _frame)
         update();
 }
 
+void time_line::set_in_out(int _input, int _output)
+{
+    // si el input o output sobrepasa al otro, los limita con 1 frame menos
+    if (_input >= output)
+        _input = output - 1;
+
+    if (_output <= input)
+        _output = input + 1;
+    //
+    //
+
+    output = _output;
+    input = _input;
+}
+
 void time_line::change_in_out_with_control()
 {
     if (!qt::control())
@@ -114,39 +141,31 @@ void time_line::change_in_out_with_control()
     //
     //
 
-    // si el input o output sobrepasa al otro, los limita con 1 frame menos
-    if (aux_input >= output)
-        aux_input = output - 1;
-
-    if (aux_output <= input)
-        aux_output = input + 1;
-    //
-    //
-
-    output = aux_output;
-    input = aux_input;
+    set_in_out(aux_input, aux_output);
 }
 
-void time_line::change_frame(int _frame)
+void time_line::set_frame(int _frame)
 {
     if (middle_button || right_button)
         return;
 
-    // actualiza solo si es que el frame cambio
+    // solo actualiza cuando cambia el frame y asi ahorramos recursos
     if (_frame != ghost_frame)
     {
         ghost_frame = _frame;
-        if (dragging && (!dragging_input && !dragging_output))
-            frame = _frame;
-
         update();
     }
+    if (_frame != frame)
+        if (dragging && (!dragging_input && !dragging_output))
+        {
+            frame = _frame;
+            update();
+        }
 }
 
 void time_line::mousePressEvent(QMouseEvent *event)
 {
     click_x_coords = round(get_coords(event->pos()).x());
-
     dragging = true;
 
     right_button = event->button() == Qt::RightButton;
@@ -164,7 +183,7 @@ void time_line::mousePressEvent(QMouseEvent *event)
     if (qt::alt())
         ghost_frame_visible = false;
     else
-        change_frame(click_x_coords);
+        set_frame(click_x_coords);
 
     update();
 
@@ -173,7 +192,6 @@ void time_line::mousePressEvent(QMouseEvent *event)
 
 void time_line::mouseReleaseEvent(QMouseEvent *event)
 {
-
     dragging = false;
     dragging_input = false;
     dragging_output = false;
@@ -191,7 +209,7 @@ void time_line::cursor_move_event(QPoint position)
     {
         int x_pos = round(get_coords(position).x());
         drag_in_out(x_pos);
-        change_frame(x_pos);
+        set_frame(x_pos);
     }
 
     gl_view::cursor_move_event(position);

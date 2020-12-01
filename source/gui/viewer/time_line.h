@@ -18,14 +18,14 @@ private:
     int input, output;
 
     bool right_button, middle_button;
-
     bool dragging_input, dragging_output;
 
     void drag_in_out(int _frame);
-    void change_frame(int _frame);
+    void set_frame(int _frame);
     pair<bool, bool> over_in_out(int x) const;
     void fit_to_range();
     void change_in_out_with_control();
+    void set_in_out(int _input, int _output);
 
     // Paint
     void draw_coordinate_numbers();
