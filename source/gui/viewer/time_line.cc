@@ -8,6 +8,8 @@ time_line::time_line()
       last_frame(100),
       input(3),
       output(40),
+      click_input(0),
+      click_output(0),
       dragging_input(false),
       dragging_output(false),
       ghost_frame_visible(true),
@@ -79,9 +81,17 @@ void time_line::drag_in_out(int _frame)
     }
 
     if (dragging_input)
-        set_in_out(_frame, output);
+    {
+        if (qt::control() && click_over_in_out.first)
+            set_in_out(_frame, (click_output + _frame - click_x_coords));
+        else
+            set_in_out(_frame, output);
+    }
     else if (dragging_output)
-        set_in_out(input, _frame);
+        if (qt::control() && click_over_in_out.second)
+            set_in_out((click_input + _frame - click_x_coords), _frame);
+        else
+            set_in_out(input, _frame);
 
     if (dragging_input || dragging_output)
         update();
@@ -122,20 +132,33 @@ void time_line::change_in_out_with_control()
         aux_output = output;
 
     // si el click sobrepasa el frame hacia a izquierda, actua sobre el 'input',
-    // si sobrepasa hacia la derecha actua sobre el 'output'
+    // si sobrepasa hacia la derecha actua sobre el 'output', y con otras condicionales
+    // para definir cuando se arrastraran input y output a la vez
     if (click_x_coords > frame)
     {
-        if (output_distance > 0)
+        if (input < frame || dragging_output)
+        {
             aux_output = click_x_coords;
+            dragging_output = true;
+        }
         else
+        {
             aux_input = click_x_coords;
+            dragging_input = true;
+        }
     }
     else
     {
-        if (input_distance > 0)
+        if (output > frame || dragging_input)
+        {
             aux_input = click_x_coords;
+            dragging_input = true;
+        }
         else
+        {
             aux_output = click_x_coords;
+            dragging_output = true;
+        }
     }
     //
     //
@@ -145,7 +168,7 @@ void time_line::change_in_out_with_control()
 
 void time_line::set_frame(int _frame)
 {
-    if (middle_button || right_button)
+    if (middle_button || right_button || qt::control())
         return;
 
     // solo actualiza cuando cambia el frame y asi ahorramos recursos
@@ -167,21 +190,22 @@ void time_line::mousePressEvent(QMouseEvent *event)
     click_x_coords = round(get_coords(event->pos()).x());
     dragging = true;
 
+    click_input = input;
+    click_output = output;
+    click_over_in_out = over_in_out(click_x_coords);
+
     right_button = event->button() == Qt::RightButton;
     middle_button = event->button() == Qt::MiddleButton;
 
     if (right_button)
         fit_to_range();
 
+    dragging_input = click_over_in_out.first;
+    dragging_output = click_over_in_out.second;
+
     change_in_out_with_control();
 
-    auto _over_in_out = over_in_out(click_x_coords);
-    dragging_input = _over_in_out.first;
-    dragging_output = _over_in_out.second;
-
-    if (qt::alt())
-        ghost_frame_visible = false;
-    else
+    if (!qt::alt() && !qt::control)
         set_frame(click_x_coords);
 
     update();

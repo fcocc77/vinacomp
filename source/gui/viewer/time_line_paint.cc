@@ -21,8 +21,9 @@ void time_line::draw_in_out()
     draw_line({input, 1000000}, {input, -1000000}, red, 2);
     draw_line({output, 1000000}, {output, -1000000}, red, 2);
 
-    draw_box({{first_frame, -100000}, {last_frame, 100000}}, QColor({25, 25, 25}));
-    draw_box({{input, -100000}, {output, 100000}}, QColor({50, 50, 50}));
+    draw_box({{first_frame, -100000}, {input, 100000}}, QColor({70, 0, 0}));
+    draw_box({{output, -100000}, {last_frame, 100000}}, QColor({70, 0, 0}));
+    draw_box({{input, -100000}, {output, 100000}}, QColor({30, 30, 30}));
 
     float input_x = get_position({input, 0}).x();
     float output_x = get_position({output, 0}).x();
@@ -37,12 +38,15 @@ void time_line::draw_cursor()
     float y2 = get_coords({0, height()}).y();
     float text_y = get_coords({0, 10}).y();
 
-    if (ghost_frame_visible)
+    if (!qt::control() && !qt::alt())
     {
-        QColor ghost_frame_color = QColor{150, 100, 0};
-        draw_line({ghost_frame, y1}, {ghost_frame, y2}, ghost_frame_color);
-        draw_triangle({ghost_frame, y1}, 7, ghost_frame_color);
-        draw_text(QString::number(ghost_frame), ghost_frame_color, {ghost_frame, text_y});
+        if (ghost_frame_visible)
+        {
+            QColor ghost_frame_color = QColor{150, 100, 0};
+            draw_line({ghost_frame, y1}, {ghost_frame, y2}, ghost_frame_color);
+            draw_triangle({ghost_frame, y1}, 7, ghost_frame_color);
+            draw_text(QString::number(ghost_frame), ghost_frame_color, {ghost_frame, text_y});
+        }
     }
 
     QColor frame_color = {255, 170, 0};

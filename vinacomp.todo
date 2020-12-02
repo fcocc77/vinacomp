@@ -31,9 +31,9 @@ gui:
         ✔ que el cursor fantasma desaparesca cuando se esta escalando el viewer @done (12/1/2020, 3:26:37 PM)
         ☐ seleccionar una area con el click derecho y el central, y ajustar el viewer al area seleccionada
         ☐ con el click derecho switch entre el area seleccionada y el ajuste completo
-        ☐ no tiene que cambiar el frame cuando presionamos el alt con el boton central
-        ☐ con el control click cambiar la entrada y la salida
-        ☐ poder arrastrar el input y la salida, y con el control presionado arrastrar los 2
+        ✔ no tiene que cambiar el frame cuando presionamos el alt con el boton central @done (12/1/2020, 6:01:16 PM)
+        ✔ con el control click cambiar la entrada y la salida @done (12/1/2020, 10:29:08 PM)
+        ✔ poder arrastrar el input y la salida, y con el control presionado arrastrar los 2 @done (12/1/2020, 10:29:21 PM)
 
 nodes:
     ☐ crear nodo de speed, para que cambie todas las velocidades como 'videovina' y asi no lo tenemos que hacer en videovina

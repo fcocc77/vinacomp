@@ -15,7 +15,8 @@ private:
     int click_x_coords;
 
     int first_frame, last_frame;
-    int input, output;
+    int input, output, click_input, click_output;
+    pair<bool, bool> click_over_in_out;
 
     bool right_button, middle_button;
     bool dragging_input, dragging_output;
