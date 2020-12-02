@@ -36,7 +36,7 @@ private:
     //
 
 public:
-    time_line(/* args */);
+    time_line();
     ~time_line();
 
 protected:
@@ -46,6 +46,7 @@ protected:
     void mousePressEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
     void cursor_move_event(QPoint position) override;
+	void focusOutEvent(QFocusEvent *event) override;
 };
 
 #endif // TIME_LINE_HPP

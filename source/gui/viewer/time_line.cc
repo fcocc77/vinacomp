@@ -236,3 +236,9 @@ void time_line::cursor_move_event(QPoint position)
 
     gl_view::cursor_move_event(position);
 }
+
+void time_line::focusOutEvent(QFocusEvent *event)
+{
+	ghost_frame_visible = false;
+	update();
+}
