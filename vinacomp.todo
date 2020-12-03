@@ -1,39 +1,37 @@
-gui:
-    node: 
-        ✔ que el nodo tenga un tamaño minimo, y si el texto es mas grande que el tamaño minimo, que el nodo se agrande, asi siempre el texto quedara dentro del nodo. @done (10/30/2020, 10:58:14 AM)
-    node_graph:
-        ✔ al mover un nodo y esta presionado el escape, el link no se mueve con el nodo @done (10/30/2020, 11:15:48 AM)
-    settings_projects:
-        ☐ el proxy va a remplazar el rscale de videovina
-    curve_view:
-        ☐ limitar el tamaño del 'handler'
-        ✔ crear toolbar @done (11/20/2020, 3:33:12 PM)
-        ☐ que funcione el delete key
-        ☐ con el control-alt poder insertar keyframes
-        ☐ con el control poder agrandar el handler
-        ☐ poner nombre de curva al inicio de la curva
-        ☐ cuando hay keyframes de dos curvas seleccionadas, no funciona la escala
-        ☐ crear lineas verticales de entrada y salida
-        ☐ crear cursor de linea de tiempo
-        ☐ que funcione el snap en horizontal por frame
-        ☐ que el keyframe solo se pueda mover en una direccion a la vez, y con el control presionado poder mover omnidireccional
-        ☐ los botones de curvas del toolbar deben ser checkeables segun la actual interpolacion del keyframe seleccionado
-        ☐ opcion para bloquear o desbloquear el tamaño del manejador
-        ☐ opcion de simetria para que los 2 puntos del manejador se escalen igual
-    script_editor:
-        ☐ boton de arrastre para poder arrastrar el script como acceso directo a una barra de herramienta en la parte inferior del node graph
-
-    time_line:
-        ✔ con el shortcut 'F' ajustar el rango de frames @today @done (11/30/2020, 9:53:29 PM)
-        ✔ que el area dentro del rango quede de color gris y fuera negro @today @done (12/1/2020, 3:23:04 PM)
-        ✔ crear input y output @done (12/1/2020, 3:23:06 PM)
-        ✔ terminar triangulo @today @done (11/30/2020, 2:20:18 PM)
-        ✔ que el cursor fantasma desaparesca cuando se esta escalando el viewer @done (12/1/2020, 3:26:37 PM)
-        ✔ seleccionar una area con el click derecho y el central, y ajustar el viewer al area seleccionada @done (12/3/2020, 12:15:55 PM)
-        ✔ con el click derecho switch entre el area seleccionada y el ajuste completo @done (12/3/2020, 2:54:33 PM)
-        ✔ no tiene que cambiar el frame cuando presionamos el alt con el boton central @done (12/1/2020, 6:01:16 PM)
-        ✔ con el control click cambiar la entrada y la salida @done (12/1/2020, 10:29:08 PM)
-        ✔ poder arrastrar el input y la salida, y con el control presionado arrastrar los 2 @done (12/1/2020, 10:29:21 PM)
+gui__node_graph:
+	✔ al mover un nodo y esta presionado el escape, el link no se mueve con el nodo  @done(2020-12-03 19:35) @project(gui__node_graph)
+gui__node:
+	✔ que el nodo tenga un tamaño minimo, y si el texto es mas grande que el tamaño minimo, que el nodo se agrande, asi siempre el texto quedara dentro del nodo.  @done(2020-12-03 19:33) @project
+gui__settings_projects:
+	☐ el proxy va a remplazar el rscale de videovina
+gui__curve_view:
+	☐ limitar el tamaño del 'handler'
+	✔ crear toolbar  @done(2020-12-03 19:35) @project(gui__curve_view)
+	☐ que funcione el delete key
+	☐ con el control-alt poder insertar keyframes
+	☐ con el control poder agrandar el handler
+	☐ poner nombre de curva al inicio de la curva
+	☐ cuando hay keyframes de dos curvas seleccionadas, no funciona la escala
+	☐ crear lineas verticales de entrada y salida
+	☐ crear cursor de linea de tiempo
+	☐ que funcione el snap en horizontal por frame
+	☐ que el keyframe solo se pueda mover en una direccion a la vez, y con el control presionado poder mover omnidireccional
+	☐ los botones de curvas del toolbar deben ser checkeables segun la actual interpolacion del keyframe seleccionado
+	☐ opcion para bloquear o desbloquear el tamaño del manejador
+	☐ opcion de simetria para que los 2 puntos del manejador se escalen igual
+gui__script_editor:
+	☐ boton de arrastre para poder arrastrar el script como acceso directo a una barra de herramienta en la parte inferior del node graph
+gui__time_line:
+	✔ con el shortcut 'F' ajustar el rango de frames @today  @done(2020-12-03 19:37) @project(gui__time_line)
+	✔ que el area dentro del rango quede de color gris y fuera negro @today  @done(2020-12-03 19:37) @project(gui__time_line)
+	✔ crear input y output  @done(2020-12-03 19:37) @project(gui__time_line)
+	✔ terminar triangulo @today  @done(2020-12-03 19:37) @project(gui__time_line)
+	✔ que el cursor fantasma desaparesca cuando se esta escalando el viewer  @done(2020-12-03 19:37) @project(gui__time_line)
+	✔ seleccionar una area con el click derecho y el central, y ajustar el viewer al area seleccionada  @done(2020-12-03 19:37) @project(gui__time_line)
+	✔ con el click derecho switch entre el area seleccionada y el ajuste completo  @done(2020-12-03 19:37) @project(gui__time_line)
+	✔ no tiene que cambiar el frame cuando presionamos el alt con el boton central  @done(2020-12-03 19:37) @project(gui__time_line)
+	✔ con el control click cambiar la entrada y la salida  @done(2020-12-03 19:37) @project(gui__time_line)
+	✔ poder arrastrar el input y la salida, y con el control presionado arrastrar los 2  @done(2020-12-03 19:37) @project(gui__time_line)
 
 nodes:
     ☐ crear nodo de speed, para que cambie todas las velocidades como 'videovina' y asi no lo tenemos que hacer en videovina
