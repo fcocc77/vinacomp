@@ -107,6 +107,7 @@ void time_line::change_in_out_with_control()
         else
         {
             aux_output = click_x_coords;
+            dragging_output = true;
         }
     }
     //

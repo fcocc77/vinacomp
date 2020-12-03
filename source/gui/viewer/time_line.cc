@@ -163,7 +163,7 @@ void time_line::cursor_move_event(QPoint position)
 	//
 	//
 
-    if (!qt::alt())
+    if (!qt::alt() && !middle_button)
     {
         drag_in_out(move_x_coords);
         set_frame(move_x_coords);
