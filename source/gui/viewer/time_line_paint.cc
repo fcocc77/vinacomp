@@ -13,6 +13,15 @@ void time_line::paintGL()
     draw_coordinate_numbers();
     draw_in_out();
     draw_cursor();
+	draw_selector();
+}
+
+void time_line::draw_selector()
+{
+	if (!selector_visible)
+		return;
+
+    draw_box({{selector.first, -100000}, {selector.second, 100000}}, {50, 50, 50}, {100, 100, 100});
 }
 
 void time_line::draw_in_out()
@@ -40,7 +49,7 @@ void time_line::draw_cursor()
 
     if (!qt::control() && !qt::alt())
     {
-        if (ghost_frame_visible)
+        if (ghost_frame_visible && !right_button)
         {
             QColor ghost_frame_color = QColor{150, 100, 0};
             draw_line({ghost_frame, y1}, {ghost_frame, y2}, ghost_frame_color);

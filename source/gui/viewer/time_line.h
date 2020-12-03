@@ -10,9 +10,11 @@ class time_line : public gl_view
 private:
     int frame;
     int ghost_frame;
-    bool dragging, ghost_frame_visible;
+    bool dragging, ghost_frame_visible, selector_visible;
 
     int click_x_coords;
+	bool is_fit_to_selector;
+	pair<int, int> selector;
 
     int first_frame, last_frame;
     int input, output, click_input, click_output;
@@ -21,14 +23,20 @@ private:
     bool right_button, middle_button;
     bool dragging_input, dragging_output;
 
+    void fit_to_range();
+	void fit_switch();
+	void fit_to_selector();
+    void set_in_out(int _input, int _output);
+
+	// Input Output
     void drag_in_out(int _frame);
     void set_frame(int _frame);
     pair<bool, bool> over_in_out(int x) const;
-    void fit_to_range();
     void change_in_out_with_control();
-    void set_in_out(int _input, int _output);
-
-    // Paint
+	//
+    
+	// Paint
+	void draw_selector();
     void draw_coordinate_numbers();
     void draw_cursor();
     void draw_in_out();

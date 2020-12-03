@@ -29,8 +29,8 @@ gui:
         ✔ crear input y output @done (12/1/2020, 3:23:06 PM)
         ✔ terminar triangulo @today @done (11/30/2020, 2:20:18 PM)
         ✔ que el cursor fantasma desaparesca cuando se esta escalando el viewer @done (12/1/2020, 3:26:37 PM)
-        ☐ seleccionar una area con el click derecho y el central, y ajustar el viewer al area seleccionada
-        ☐ con el click derecho switch entre el area seleccionada y el ajuste completo
+        ✔ seleccionar una area con el click derecho y el central, y ajustar el viewer al area seleccionada @done (12/3/2020, 12:15:55 PM)
+        ✔ con el click derecho switch entre el area seleccionada y el ajuste completo @done (12/3/2020, 2:54:33 PM)
         ✔ no tiene que cambiar el frame cuando presionamos el alt con el boton central @done (12/1/2020, 6:01:16 PM)
         ✔ con el control click cambiar la entrada y la salida @done (12/1/2020, 10:29:08 PM)
         ✔ poder arrastrar el input y la salida, y con el control presionado arrastrar los 2 @done (12/1/2020, 10:29:21 PM)
