@@ -40,6 +40,18 @@ time_line::time_line()
         set_in_out(input, frame);
         update();
     });
+
+    action *next_frame_action = new action("Input", "right");
+    next_frame_action->connect_to(this, [this]()
+	{
+        go_to_frame(frame + 1);
+    });
+
+    action *previous_frame_action = new action("Input", "left");
+    previous_frame_action->connect_to(this, [this]()
+	{
+        go_to_frame(frame - 1);
+    });
 }
 
 time_line::~time_line()
@@ -70,6 +82,14 @@ void time_line::fit_to_selector()
 
 	is_fit_to_selector = true; 
     set_ortho(selector.first, selector.second, 0, 1);
+}
+
+void time_line::go_to_frame(int _frame)
+{
+	frame = _frame;
+	ghost_frame = _frame;
+
+	update();
 }
 
 void time_line::set_frame(int _frame)

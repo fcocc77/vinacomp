@@ -24,7 +24,9 @@ private:
     bool dragging_input, dragging_output;
 
 	float top_y, mid_y1, mid_y2, number_y; 
+
     void fit_to_range();
+	void go_to_frame(int _frame);
 	void fit_switch();
 	void fit_to_selector();
     void set_in_out(int _input, int _output);

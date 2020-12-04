@@ -19,8 +19,9 @@ gui__curve_view:
 gui__script_editor:
 	☐ boton de arrastre para poder arrastrar el script como acceso directo a una barra de herramienta en la parte inferior del node graph
 gui__time_line:
-	☐ usar flechas derecha e izquierda para mover el cursor @today
-
+	☐ shortcut control-flecha saltar cada 10 frame, o el numero que este puesto en el player control @today
+	☐ shortcut alt-flecha mover al inicio o al final del rango @today
+	✔ usar flechas derecha e izquierda para mover el cursor @today @done(2020-12-04 17:56) @project(gui__time_line)
 nodes:
 	☐ crear nodo de speed, para que cambie todas las velocidades como 'videovina' y asi no lo tenemos que hacer en videovina
 
