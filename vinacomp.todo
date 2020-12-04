@@ -1,12 +1,9 @@
 gui__node_graph:
-	✔ al mover un nodo y esta presionado el escape, el link no se mueve con el nodo  @done(2020-12-03 19:35) @project(gui__node_graph)
 gui__node:
-	✔ que el nodo tenga un tamaño minimo, y si el texto es mas grande que el tamaño minimo, que el nodo se agrande, asi siempre el texto quedara dentro del nodo.  @done(2020-12-03 19:33) @project
 gui__settings_projects:
 	☐ el proxy va a remplazar el rscale de videovina
 gui__curve_view:
 	☐ limitar el tamaño del 'handler'
-	✔ crear toolbar  @done(2020-12-03 19:35) @project(gui__curve_view)
 	☐ que funcione el delete key
 	☐ con el control-alt poder insertar keyframes
 	☐ con el control poder agrandar el handler
@@ -22,6 +19,16 @@ gui__curve_view:
 gui__script_editor:
 	☐ boton de arrastre para poder arrastrar el script como acceso directo a una barra de herramienta en la parte inferior del node graph
 gui__time_line:
+	☐ usar flechas derecha e izquierda para mover el cursor @today
+
+nodes:
+	☐ crear nodo de speed, para que cambie todas las velocidades como 'videovina' y asi no lo tenemos que hacer en videovina
+
+＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
+Archive:
+	✔ al mover un nodo y esta presionado el escape, el link no se mueve con el nodo  @done(2020-12-03 19:35) @project(gui__node_graph)
+	✔ que el nodo tenga un tamaño minimo, y si el texto es mas grande que el tamaño minimo, que el nodo se agrande, asi siempre el texto quedara dentro del nodo.  @done(2020-12-03 19:33) @project
+	✔ crear toolbar  @done(2020-12-03 19:35) @project(gui__curve_view)
 	✔ con el shortcut 'F' ajustar el rango de frames @today  @done(2020-12-03 19:37) @project(gui__time_line)
 	✔ que el area dentro del rango quede de color gris y fuera negro @today  @done(2020-12-03 19:37) @project(gui__time_line)
 	✔ crear input y output  @done(2020-12-03 19:37) @project(gui__time_line)
@@ -32,6 +39,3 @@ gui__time_line:
 	✔ no tiene que cambiar el frame cuando presionamos el alt con el boton central  @done(2020-12-03 19:37) @project(gui__time_line)
 	✔ con el control click cambiar la entrada y la salida  @done(2020-12-03 19:37) @project(gui__time_line)
 	✔ poder arrastrar el input y la salida, y con el control presionado arrastrar los 2  @done(2020-12-03 19:37) @project(gui__time_line)
-
-nodes:
-    ☐ crear nodo de speed, para que cambie todas las velocidades como 'videovina' y asi no lo tenemos que hacer en videovina

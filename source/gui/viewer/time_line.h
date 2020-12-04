@@ -23,6 +23,7 @@ private:
     bool right_button, middle_button;
     bool dragging_input, dragging_output;
 
+	float top_y, mid_y1, mid_y2, number_y; 
     void fit_to_range();
 	void fit_switch();
 	void fit_to_selector();
@@ -40,6 +41,7 @@ private:
     void draw_coordinate_numbers();
     void draw_cursor();
     void draw_in_out();
+	void draw_guide_frames();
     //
     //
 

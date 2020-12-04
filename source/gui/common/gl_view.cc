@@ -180,7 +180,8 @@ QList<float> gl_view::generate_coord_range(
     Qt::Orientation orientation,
     QColor &color,
     QPointF life_range,
-    bool separation_by_coord)
+    bool separation_by_coord,
+	int _life)
 {
     // retorna un vacio si es que la separacion de 2 cordenadas no esta dentro del rango de vida,
 
@@ -193,15 +194,14 @@ QList<float> gl_view::generate_coord_range(
         if (separation_by_coord)
             life = scale_y;
         else
-            // calcula la vida en relacion a la separacion en el visor, tomando como promedio 1000px
-            life = scale_y * 1000 / height();
+            life = scale_y * _life / height();
     }
     else
     {
         if (separation_by_coord)
             life = scale_x;
         else
-            life = scale_x * 1000 / width();
+            life = scale_x * _life / width();
     }
 
     life /= separation;
@@ -225,7 +225,7 @@ QList<float> gl_view::generate_coord_range(
     // genera un rango de cordenadas, pero estos valores son los que se ven dentro de cuadro,
     // los valores que esta fuera de cuadro no los muestra, esto sirve para que
     // las iteraciones no sean tan largas ya que no renderiza las que estan fuera de cuadro.
-    int out_frame = 50;
+    int out_frame = 10;
     QPointF top_left_point = get_coords({-out_frame, -out_frame});
     QPointF down_right_point = get_coords({width() + out_frame, height() + out_frame});
 

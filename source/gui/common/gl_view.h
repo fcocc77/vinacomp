@@ -44,7 +44,8 @@ public:
         Qt::Orientation orientation,
         QColor &color,
         QPointF life_range = {0.5, 70},
-        bool separation_by_coord = false);
+        bool separation_by_coord = false,
+		int _life = 1000);
 
     void aa_enable(bool enable);
     bool is_cursor_above(QPoint cursor, QPointF point, QPointF point2 = {}) const;
