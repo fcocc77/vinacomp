@@ -19,6 +19,8 @@ gui__curve_view:
 gui__script_editor:
 	☐ boton de arrastre para poder arrastrar el script como acceso directo a una barra de herramienta en la parte inferior del node graph
 gui__time_line:
+	✔ el cursor fantasma le falta la linea inferior @today @done(2020-12-05 10:32)) @project(gui__time_line))
+	✔ al dar 1 solo click, no cambia el frame, solo funciona cuando lo arrastramos @today @done(2020-12-05 11:55)) @project(gui__time_line))
 	☐ shortcut control-flecha saltar cada 10 frame, o el numero que este puesto en el player control @today
 	☐ shortcut alt-flecha mover al inicio o al final del rango @today
 	✔ usar flechas derecha e izquierda para mover el cursor @today @done(2020-12-04 17:56) @project(gui__time_line)

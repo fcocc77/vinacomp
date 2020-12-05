@@ -122,6 +122,7 @@ void time_line::mousePressEvent(QMouseEvent *event)
 
     right_button = event->button() == Qt::RightButton;
     middle_button = event->button() == Qt::MiddleButton;
+    left_button = event->button() == Qt::LeftButton;
 
 	if (!right_button)
 	{
@@ -131,8 +132,9 @@ void time_line::mousePressEvent(QMouseEvent *event)
     	change_in_out_with_control();
 	}
 
-    if (!qt::alt() && !qt::control)
-        set_frame(click_x_coords);
+    if (!qt::alt() && !qt::control())
+		if (left_button) 
+			go_to_frame(click_x_coords);
 
     update();
 

@@ -20,7 +20,7 @@ private:
     int input, output, click_input, click_output;
     pair<bool, bool> click_over_in_out;
 
-    bool right_button, middle_button;
+    bool right_button, middle_button, left_button;
     bool dragging_input, dragging_output;
 
 	float top_y, mid_y1, mid_y2, number_y; 

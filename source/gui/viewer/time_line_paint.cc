@@ -73,6 +73,7 @@ void time_line::draw_cursor()
         {
             QColor ghost_frame_color = QColor{150, 100, 0};
             draw_line({ghost_frame, top_y}, {ghost_frame, y2}, ghost_frame_color);
+			draw_line({ghost_frame, -100000}, {ghost_frame, mid_y2}, ghost_frame_color);
             draw_triangle({ghost_frame, top_y}, 7, ghost_frame_color);
             draw_text(QString::number(ghost_frame), ghost_frame_color, {ghost_frame, number_y});
         }
