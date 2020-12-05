@@ -130,84 +130,75 @@ QWidget *viewer::info_setup_ui()
 
 QWidget *viewer::player_setup_ui()
 {
-    QWidget *widget = new QWidget();
-    widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    widget->setObjectName("player");
-    QHBoxLayout *layout = new QHBoxLayout();
-    layout->setSpacing(2);
-    layout->setMargin(5);
-    widget->setLayout(layout);
-    //
+	tools *player_tools = new tools();
 
-    int icon_size = 25;
+	// Play
+	action *play_forward_action = new action("Play Forward", "L", "play_arrow_a");
+    play_forward_action->connect_to(this, [this]() { play_forward(); });
+    
+	action *play_backward_action = new action("Play Backward", "L", "play_back_a");
+    play_backward_action->connect_to(this, [this]() { play_backward(); });
+	//
 
-    QPushButton *play_forward = new QPushButton();
-    QPushButton *play_backward = new QPushButton();
-    qt::set_icon(play_forward, "play_arrow_a", icon_size);
-    qt::set_icon(play_backward, "play_back_a", icon_size);
+	action *first_frame = new action("Go to first frame", "L", "skip_previous_a");
+    first_frame->connect_to(this, [this]() { go_to_first_frame(); });
+	action *last_frame = new action("Go to last frame", "L", "skip_next_a");
+    last_frame->connect_to(this, [this]() { go_to_last_frame(); });
 
-    QPushButton *first_frame = new QPushButton();
-    QPushButton *last_frame = new QPushButton();
-    qt::set_icon(first_frame, "skip_previous_a", icon_size);
-    qt::set_icon(last_frame, "skip_next_a", icon_size);
+	action *next_frame_action = new action("Next Frame", "L", "next_frame_a");
+    next_frame_action->connect_to(this, [this]() { next_frame(); });
+	action *previous_frame_action = new action("Previous Frame", "L", "previous_frame_a");
+    previous_frame_action->connect_to(this, [this]() { previous_frame(); });
 
-    QPushButton *next_frame = new QPushButton();
-    QPushButton *previous_frame = new QPushButton();
-    qt::set_icon(next_frame, "next_frame_a", icon_size);
-    qt::set_icon(previous_frame, "previous_frame_a", icon_size);
+	action *next_key_frame_action = new action("Next key frame", "L", "next_key_frame_a");
+    next_key_frame_action->connect_to(this, [this]() { next_key_frame(); });
+	action *previous_key_frame_action = new action("Previous key frame", "L", "previous_key_frame_a");
+    previous_key_frame_action->connect_to(this, [this]() { previous_key_frame(); });
 
-    QPushButton *next_key_frame = new QPushButton();
-    QPushButton *previous_key_frame = new QPushButton();
-    qt::set_icon(next_key_frame, "next_key_frame_a", icon_size);
-    qt::set_icon(previous_key_frame, "previous_key_frame_a", icon_size);
+	action *skip_forward_action = new action("Skip Forward", "L", "skip_forward_a");
+    skip_forward_action->connect_to(this, [this]() { skip_forward(); });
+	action *skip_backward_action = new action("Skip Backward", "L", "skip_backward_a");
+    skip_backward_action->connect_to(this, [this]() { skip_backward(); });
 
-    QPushButton *skip_forward = new QPushButton();
-    QPushButton *skip_backward = new QPushButton();
-    qt::set_icon(skip_forward, "skip_forward_a", icon_size);
-    qt::set_icon(skip_backward, "skip_backward_a", icon_size);
+	action *in_action = new action("Input", "L", "");
+	action *out_action = new action("Output", "L", "");
 
-    QPushButton *in = new QPushButton("I");
-    QPushButton *out = new QPushButton("O");
-
-    QLineEdit *frame_edit = new QLineEdit();
+    QLineEdit *frame_edit = new QLineEdit(player_tools);
     frame_edit->setMaximumWidth(40);
 
-    QLineEdit *skip_frame_edit = new QLineEdit();
+    QLineEdit *skip_frame_edit = new QLineEdit(player_tools);
     skip_frame_edit->setText("10");
     skip_frame_edit->setMaximumWidth(30);
 
-    QLineEdit *input_frame_edit = new QLineEdit();
+    QLineEdit *input_frame_edit = new QLineEdit(player_tools);
     input_frame_edit->setMaximumWidth(30);
 
-    QLineEdit *output_frame_edit = new QLineEdit();
+    QLineEdit *output_frame_edit = new QLineEdit(player_tools);
     output_frame_edit->setMaximumWidth(30);
 
-    layout->addWidget(input_frame_edit);
-    layout->addStretch();
+    player_tools->add_widget(input_frame_edit);
+    player_tools->add_stretch();
 
-    layout->addWidget(in);
-    layout->addWidget(first_frame);
-    layout->addWidget(previous_key_frame);
-    layout->addWidget(previous_frame);
-    layout->addWidget(play_backward);
+    player_tools->add_action(in_action);
+    player_tools->add_action(first_frame);
+    player_tools->add_action(previous_key_frame_action);
+    player_tools->add_action(previous_frame_action);
+    player_tools->add_action(play_backward_action);
 
-    layout->addWidget(frame_edit);
+    player_tools->add_widget(frame_edit);
 
-    layout->addWidget(play_forward);
-    layout->addWidget(next_frame);
-    layout->addWidget(next_key_frame);
-    layout->addWidget(last_frame);
-    layout->addWidget(out);
+    player_tools->add_action(play_forward_action);
+    player_tools->add_action(next_frame_action);
+    player_tools->add_action(next_key_frame_action);
+    player_tools->add_action(last_frame);
+    player_tools->add_action(out_action);
 
-    QSpacerItem *spacer = new QSpacerItem(40, 20);
-    layout->addItem(spacer);
+    player_tools->add_action(skip_backward_action);
+    player_tools->add_widget(skip_frame_edit);
+    player_tools->add_action(skip_forward_action);
 
-    layout->addWidget(skip_backward);
-    layout->addWidget(skip_frame_edit);
-    layout->addWidget(skip_forward);
+    player_tools->add_stretch();
+    player_tools->add_widget(output_frame_edit);
 
-    layout->addStretch();
-    layout->addWidget(output_frame_edit);
-
-    return widget;
+    return player_tools;
 }

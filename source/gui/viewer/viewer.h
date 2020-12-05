@@ -16,6 +16,8 @@
 #include <slider.h>
 #include <viewer_gl.h>
 #include <time_line.h>
+#include <tools.h>
+#include <action.h>
 
 class viewer : public QWidget
 {
@@ -34,6 +36,18 @@ private:
     //
     //
 
+	// Player
+	void play_forward();
+	void play_backward();
+	void go_to_first_frame();
+	void go_to_last_frame();
+	void next_frame();
+	void previous_frame();
+	void next_key_frame();
+	void previous_key_frame();
+	void skip_forward();
+	void skip_backward();
+	//
 public:
     viewer(/* args */);
     ~viewer();

@@ -26,7 +26,6 @@ private:
 	float top_y, mid_y1, mid_y2, number_y; 
 
     void fit_to_range();
-	void go_to_frame(int _frame);
 	void fit_switch();
 	void fit_to_selector();
     void set_in_out(int _input, int _output);
@@ -50,6 +49,12 @@ private:
 public:
     time_line();
     ~time_line();
+
+	void go_to_frame(int _frame);
+	void next_frame();
+	void previous_frame();
+	void next_frame_each(int frames);
+	void previous_frame_each(int frames);
 
 protected:
     void initializeGL() override;

@@ -44,18 +44,38 @@ time_line::time_line()
     action *next_frame_action = new action("Input", "right");
     next_frame_action->connect_to(this, [this]()
 	{
-        go_to_frame(frame + 1);
+		next_frame();
     });
 
     action *previous_frame_action = new action("Input", "left");
     previous_frame_action->connect_to(this, [this]()
 	{
-        go_to_frame(frame - 1);
+		previous_frame();
     });
 }
 
 time_line::~time_line()
 {
+}
+
+void time_line::next_frame()
+{
+	go_to_frame(frame + 1);
+}
+
+void time_line::previous_frame()
+{
+	go_to_frame(frame - 1);
+}
+
+void time_line::next_frame_each(int frames)
+{
+	go_to_frame(frame + frames);
+}
+
+void time_line::previous_frame_each(int frames)
+{
+	go_to_frame(frame - frames);
 }
 
 void time_line::fit_switch()
@@ -132,7 +152,7 @@ void time_line::mousePressEvent(QMouseEvent *event)
     	change_in_out_with_control();
 	}
 
-    if (!qt::alt() && !qt::control())
+    if (!qt::alt() && !qt::control() && !dragging_input && !dragging_output)
 		if (left_button) 
 			go_to_frame(click_x_coords);
 
