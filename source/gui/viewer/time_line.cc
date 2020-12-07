@@ -1,22 +1,33 @@
 #include <time_line.h>
 
-time_line::time_line()
-    : frame(10),
-      ghost_frame(10),
-      dragging(false),
-      first_frame(1),
-      last_frame(100),
-      input(3),
-      output(40),
-      click_input(0),
-      click_output(0),
-      dragging_input(false),
-      dragging_output(false),
-      ghost_frame_visible(true),
-      right_button(false),
-      middle_button(false),
-	  selector_visible(false),
-	  is_fit_to_selector(true)
+time_line::time_line(
+			QWidget *parent,
+			QLineEdit *_frame_edit,
+			QLineEdit *_input_frame_edit,
+			QLineEdit *_output_frame_edit
+		)
+
+
+		:frame_edit(_frame_edit),
+		input_frame_edit(_input_frame_edit),
+		output_frame_edit(_output_frame_edit),
+
+		frame(10),
+		ghost_frame(10),
+		dragging(false),
+		first_frame(1),
+		last_frame(100),
+		input(3),
+		output(40),
+		click_input(0),
+		click_output(0),
+		dragging_input(false),
+		dragging_output(false),
+		ghost_frame_visible(true),
+		right_button(false),
+		middle_button(false),
+		selector_visible(false),
+		is_fit_to_selector(true)
 
 {
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -109,6 +120,7 @@ void time_line::go_to_frame(int _frame)
 	frame = _frame;
 	ghost_frame = _frame;
 
+	frame_edit->setText(QString::number(frame));
 	update();
 }
 
@@ -127,6 +139,7 @@ void time_line::set_frame(int _frame)
         if (dragging && (!dragging_input && !dragging_output))
         {
             frame = _frame;
+			frame_edit->setText(QString::number(frame));
             update();
         }
 }

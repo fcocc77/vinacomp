@@ -38,7 +38,8 @@ void viewer::previous_key_frame()
 
 void viewer::skip_forward()
 {
-	_time_line->next_frame_each(10);
+	int skip_frames = skip_frame_edit->text().toInt();
+	_time_line->next_frame_each(skip_frames);
 }
 
 void viewer::skip_backward()

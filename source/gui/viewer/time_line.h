@@ -1,6 +1,9 @@
 #ifndef TIME_LINE_HPP
 #define TIME_LINE_HPP
 
+#include <QLineEdit>
+
+
 #include <gl_view.h>
 #include <qt.h>
 #include <action.h>
@@ -45,9 +48,21 @@ private:
 	void draw_guide_frames();
     //
     //
+	
+	// From viewer
+	QLineEdit *frame_edit;
+	QLineEdit *input_frame_edit;
+	QLineEdit *output_frame_edit;
+	//
+	//
 
 public:
-    time_line();
+    time_line(
+		QWidget *parent,
+		QLineEdit *frame_edit,
+		QLineEdit *input_frame_edit,
+		QLineEdit *output_frame_edit
+	);
     ~time_line();
 
 	void go_to_frame(int _frame);

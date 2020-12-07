@@ -68,6 +68,10 @@ void time_line::set_in_out(int _input, int _output)
 
     output = _output;
     input = _input;
+
+	// Actualiza los edits del panel de 'players'
+	input_frame_edit->setText(QString::number(input));
+	output_frame_edit->setText(QString::number(output));
 }
 
 void time_line::change_in_out_with_control()

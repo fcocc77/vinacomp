@@ -10,9 +10,8 @@ viewer::viewer()
     layout->setSpacing(1);
     this->setObjectName("viewer");
 
-    _time_line = new time_line();
-
     setup_ui();
+    
 }
 
 viewer::~viewer()

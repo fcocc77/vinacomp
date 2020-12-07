@@ -7,6 +7,8 @@ void viewer::setup_ui()
     QWidget *controls = control_setup_ui();
     QWidget *image_correction = image_correction_setup_ui();
 
+	_time_line = new time_line(this, frame_edit, input_frame_edit, output_frame_edit);
+
     layout->addWidget(controls);
     layout->addWidget(image_correction);
     layout->addWidget(_viewer_gl);
@@ -163,17 +165,21 @@ QWidget *viewer::player_setup_ui()
 	action *in_action = new action("Input", "L", "");
 	action *out_action = new action("Output", "L", "");
 
-    QLineEdit *frame_edit = new QLineEdit(player_tools);
+    frame_edit = new QLineEdit(player_tools);
+	frame_edit->setValidator( new QIntValidator(-100000, 100000, this) );  // Solo numeros
     frame_edit->setMaximumWidth(40);
 
-    QLineEdit *skip_frame_edit = new QLineEdit(player_tools);
+    skip_frame_edit = new QLineEdit(player_tools);
+	skip_frame_edit->setValidator( new QIntValidator(1, 100, this) ); // Solo numeros del 1 al 100
     skip_frame_edit->setText("10");
     skip_frame_edit->setMaximumWidth(30);
 
-    QLineEdit *input_frame_edit = new QLineEdit(player_tools);
+    input_frame_edit = new QLineEdit(player_tools);
+	input_frame_edit->setValidator( new QIntValidator(-100000, 100000, this) );  // Solo numeros
     input_frame_edit->setMaximumWidth(30);
 
-    QLineEdit *output_frame_edit = new QLineEdit(player_tools);
+    output_frame_edit = new QLineEdit(player_tools);
+	output_frame_edit->setValidator( new QIntValidator(-100000, 100000, this) );  // Solo numeros
     output_frame_edit->setMaximumWidth(30);
 
     player_tools->add_widget(input_frame_edit);

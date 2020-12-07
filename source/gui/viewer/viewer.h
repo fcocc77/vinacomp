@@ -37,6 +37,10 @@ private:
     //
 
 	// Player
+	QLineEdit *frame_edit;
+	QLineEdit *skip_frame_edit;
+	QLineEdit *input_frame_edit;
+	QLineEdit *output_frame_edit;
 	void play_forward();
 	void play_backward();
 	void go_to_first_frame();
