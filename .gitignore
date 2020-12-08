@@ -4,6 +4,7 @@ package-lock.json
 node_modules
 *.o
 temp/*
+.undodir
 
 */*/release/*
 */release/*
@@ -11,3 +12,5 @@ bin/*
 *.old
 *.rpm
 *.pyc
+*.swp
+session.vim
