@@ -147,6 +147,16 @@ QPointF gl_view::get_scale() const
     return scale;
 }
 
+QPointF gl_view::get_translate() const
+{
+	return translate;
+}
+
+void gl_view::set_scale(QPointF _scale)
+{
+	scale = _scale;
+}
+
 QPointF gl_view::rotate_point(QPointF point, QPointF anchor_point, float angle, bool keep_aspect) const
 {
     // rota un punto alrededor de otro punto (punto de anclaje).

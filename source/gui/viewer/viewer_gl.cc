@@ -5,8 +5,14 @@ viewer_gl::viewer_gl() : gl_view(true)
     center_viewer = new action("Center Image", "F", "center_a");
     center_viewer->connect_to(this, [=]() {
         int margin = 100;
-        int width = 1920.0 / ((1920.0 / 1080.0) + get_aspect()) / 2;
-        set_ortho(-margin, width + margin, -margin, 1080 + margin);
+
+		// primero ajusta el ortho en el alto, luego al obtener la escala
+		// y la translacion en y se puede ajustar en ancho, esto se hace para
+		// mantener el aspecto correcto.
+        set_ortho(0, 0, -margin, 1080 + margin);
+		float scale_y = get_scale().y();
+		float translate_y = get_translate().y();
+		set_transform({1920 / 2, translate_y}, {scale_y, scale_y});
     });
 }
 

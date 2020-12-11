@@ -22,7 +22,6 @@ protected:
     void initializeGL() override;
     void paintGL() override;
 
-    // void wheelEvent(QWheelEvent *event);
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);

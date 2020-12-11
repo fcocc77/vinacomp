@@ -54,6 +54,8 @@ public:
     QPointF get_coords(QPoint mouse_position) const;
     QPointF get_coordsf(QPointF mouse_position) const;
     QPointF get_scale() const;
+	QPointF get_translate() const;
+    void set_scale(QPointF _scale);
     float get_aspect() const;
     void set_default();
     void set_transform(QPointF _translate, QPointF _scale);
