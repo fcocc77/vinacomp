@@ -26,7 +26,7 @@ gui__viewer_image_correcction:
 	☐ que los slide modifiquen el qlineedit
 	☐ que los botones permuten entre la gamma y la exposicion habilitada y desabilitada
 gui__viewer_gl:
-	☐ que el ajuste funcione, con la tecla f que se ajuste a la resolucion actual. @today
+	✔ que el ajuste funcione, con la tecla f que se ajuste a la resolucion actual. @today @done(2020-12-12 12:59) @project(gui__viewer_gl)
 	☐ poner un texto de la resolucion en la parte inferior izquierda del cuadro
 	☐ opcion de 'overlay' con la letra 'q' que funcione como palanca y deje visible y ocultar las lineas del cuadro de resolucion.
 gui__time_line:

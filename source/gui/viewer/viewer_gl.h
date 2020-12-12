@@ -18,9 +18,12 @@ public:
     action *center_viewer;
     //
 
+	bool fitted;
+	void fit_to_viewport();
 protected:
     void initializeGL() override;
     void paintGL() override;
+    void resizeGL(int w, int h) override;
 
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);

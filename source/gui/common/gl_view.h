@@ -56,6 +56,7 @@ public:
     QPointF get_scale() const;
 	QPointF get_translate() const;
     void set_scale(QPointF _scale);
+    void set_translate(QPointF _translate);
     float get_aspect() const;
     void set_default();
     void set_transform(QPointF _translate, QPointF _scale);

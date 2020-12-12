@@ -1,19 +1,11 @@
 #include <viewer_gl.h>
 
-viewer_gl::viewer_gl() : gl_view(true)
+viewer_gl::viewer_gl()
+	: gl_view(true),
+	fitted(true)
 {
     center_viewer = new action("Center Image", "F", "center_a");
-    center_viewer->connect_to(this, [=]() {
-        int margin = 100;
-
-		// primero ajusta el ortho en el alto, luego al obtener la escala
-		// y la translacion en y se puede ajustar en ancho, esto se hace para
-		// mantener el aspecto correcto.
-        set_ortho(0, 0, -margin, 1080 + margin);
-		float scale_y = get_scale().y();
-		float translate_y = get_translate().y();
-		set_transform({1920 / 2, translate_y}, {scale_y, scale_y});
-    });
+	center_viewer->connect_to(this, [=]() { fit_to_viewport(); });
 }
 
 viewer_gl::~viewer_gl()
@@ -24,6 +16,39 @@ void viewer_gl::initializeGL()
 {
     initializeOpenGLFunctions();
     glClearColor(0, 0, 0, 1);
+}
+
+void viewer_gl::resizeGL(int w, int h)
+{
+	if (fitted)
+		fit_to_viewport();
+}
+
+void viewer_gl::fit_to_viewport()
+{
+	fitted = true;
+	int margin = 30;
+	int _width = 1920;
+	int _height = 1080;
+
+	float viewport_aspect = get_aspect();
+	float resolution_aspect = float(_height) / _width;
+
+	// primero lo ajusta a los bordes con ortho, y luego deja la escala simetrica
+	// dejando la 2 escalas iguales x, y dependiendo si es ancho o alto
+	set_ortho(-margin, _width + margin, -margin, _height + margin);
+
+	if (viewport_aspect > resolution_aspect)
+	{
+		float scale_x = get_scale().x();
+		set_scale({scale_x, scale_x});
+	}
+	else
+	{
+		float scale_y = get_scale().y();
+		set_scale({scale_y, scale_y});
+	}
+
 }
 
 void viewer_gl::draw_frame(int width, int height, QColor color)
@@ -44,6 +69,9 @@ void viewer_gl::paintGL()
 
 void viewer_gl::mousePressEvent(QMouseEvent *event)
 {
+	// si es zoom desabilita el ajuste para el cuadro de resolucion
+    if (qt::alt() && event->button() == Qt::MidButton)
+		fitted = false;
 
     gl_view::mousePressEvent(event);
 }
