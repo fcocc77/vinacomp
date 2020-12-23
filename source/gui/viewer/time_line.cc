@@ -47,36 +47,48 @@ time_line::time_line(
         update();
     });
 
-    action *ouput_action = new action("Input", "O");
+    action *ouput_action = new action("Output", "O");
     ouput_action->connect_to(this, [this]() {
         set_in_out(input, frame);
         update();
     });
 
-    action *next_frame_action = new action("Input", "right");
+    action *next_frame_action = new action("Next Frame", "right");
     next_frame_action->connect_to(this, [this]()
 	{
 		next_frame();
     });
 
-    action *previous_frame_action = new action("Input", "left");
+    action *previous_frame_action = new action("Previous Frame", "left");
     previous_frame_action->connect_to(this, [this]()
 	{
 		previous_frame();
     });
 
-    action *next_frame_each_action = new action("Input", "Ctrl+right");
+    action *next_frame_each_action = new action("Skip Next Frames", "Ctrl+right");
     next_frame_each_action->connect_to(this, [this]()
 	{
 		int skip_frames = skip_frame_edit->text().toInt();
 		next_frame_each(skip_frames);
     });
 
-    action *previous_frame_each_action = new action("Input", "Ctrl+left");
+    action *previous_frame_each_action = new action("Skip Previous Frames", "Ctrl+left");
     previous_frame_each_action->connect_to(this, [this]()
 	{
 		int skip_frames = skip_frame_edit->text().toInt();
 		previous_frame_each(skip_frames);
+    });
+
+    action *go_to_last_frame_action = new action("Go to Last Frame", "Alt+right");
+    go_to_last_frame_action->connect_to(this, [this]()
+	{
+		go_to_frame(last_frame);
+    });
+
+    action *go_to_first_frame_action = new action("Go to First Frame", "Alt+left");
+    go_to_first_frame_action->connect_to(this, [this]()
+	{
+		go_to_frame(first_frame);
     });
 }
 
@@ -116,7 +128,7 @@ void time_line::fit_switch()
 
 void time_line::fit_to_range()
 {
-	is_fit_to_selector = false; 
+	is_fit_to_selector = false;
     int padding = 5;
     set_ortho(first_frame - padding, last_frame + padding, 0, 1);
 }
@@ -126,7 +138,7 @@ void time_line::fit_to_selector()
 	if (!selector.first && !selector.second)
 		return;
 
-	is_fit_to_selector = true; 
+	is_fit_to_selector = true;
     set_ortho(selector.first, selector.second, 0, 1);
 }
 
@@ -181,7 +193,7 @@ void time_line::mousePressEvent(QMouseEvent *event)
 	}
 
     if (!qt::alt() && !qt::control() && !dragging_input && !dragging_output)
-		if (left_button) 
+		if (left_button)
 			go_to_frame(click_x_coords);
 
     update();
@@ -192,7 +204,7 @@ void time_line::mousePressEvent(QMouseEvent *event)
 void time_line::mouseReleaseEvent(QMouseEvent *event)
 {
     if (right_button)
-	{	
+	{
 		if (selector_visible)
 			fit_to_selector();
 		else
@@ -212,9 +224,9 @@ void time_line::mouseReleaseEvent(QMouseEvent *event)
 }
 
 void time_line::cursor_move_event(QPoint position)
-{		
+{
 	int move_x_coords = round(get_coords(position).x());
-	
+
 	// Actualiza cuanto esta presionado el boton derecho, significa
 	// que esta seleccionando.
 	if (right_button)

@@ -31,7 +31,7 @@ gui__viewer_gl:
 	☐ opcion de 'overlay' con la letra 'q' que funcione como palanca y deje visible y ocultar las lineas del cuadro de resolucion.
 gui__time_line:
 	✔ shortcut control-flecha saltar cada 10 frame, o el numero que este puesto en el player control @today @done(2020-12-23 13:47) @project(gui__time_line)
-	☐ shortcut alt-flecha mover al inicio o al final del rango @today
+	✔ shortcut alt-flecha mover al inicio o al final del rango @today @done(2020-12-23 16:34) @project(gui__time_line)
 	☐ cambiar el color del fondo al color de la interface @today
 gui__viewer_players:
 	☐ crear botones de entrada y salida, al inicio y al final.
