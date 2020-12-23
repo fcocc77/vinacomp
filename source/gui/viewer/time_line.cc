@@ -4,13 +4,14 @@ time_line::time_line(
 			QWidget *parent,
 			QLineEdit *_frame_edit,
 			QLineEdit *_input_frame_edit,
-			QLineEdit *_output_frame_edit
+			QLineEdit *_output_frame_edit,
+			QLineEdit *_skip_frame_edit
 		)
-
 
 		:frame_edit(_frame_edit),
 		input_frame_edit(_input_frame_edit),
 		output_frame_edit(_output_frame_edit),
+		skip_frame_edit(_skip_frame_edit),
 
 		frame(10),
 		ghost_frame(10),
@@ -62,6 +63,20 @@ time_line::time_line(
     previous_frame_action->connect_to(this, [this]()
 	{
 		previous_frame();
+    });
+
+    action *next_frame_each_action = new action("Input", "Ctrl+right");
+    next_frame_each_action->connect_to(this, [this]()
+	{
+		int skip_frames = skip_frame_edit->text().toInt();
+		next_frame_each(skip_frames);
+    });
+
+    action *previous_frame_each_action = new action("Input", "Ctrl+left");
+    previous_frame_each_action->connect_to(this, [this]()
+	{
+		int skip_frames = skip_frame_edit->text().toInt();
+		previous_frame_each(skip_frames);
     });
 }
 

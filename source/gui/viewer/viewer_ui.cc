@@ -7,7 +7,7 @@ void viewer::setup_ui()
     QWidget *controls = control_setup_ui();
     QWidget *image_correction = image_correction_setup_ui();
 
-	_time_line = new time_line(this, frame_edit, input_frame_edit, output_frame_edit);
+	_time_line = new time_line(this, frame_edit, input_frame_edit, output_frame_edit, skip_frame_edit);
 
     layout->addWidget(controls);
     layout->addWidget(image_correction);

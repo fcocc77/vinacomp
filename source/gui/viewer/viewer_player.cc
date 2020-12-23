@@ -44,5 +44,6 @@ void viewer::skip_forward()
 
 void viewer::skip_backward()
 {
-	_time_line->previous_frame_each(10);
+	int skip_frames = skip_frame_edit->text().toInt();
+	_time_line->previous_frame_each(skip_frames);
 }

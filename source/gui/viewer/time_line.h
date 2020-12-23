@@ -26,7 +26,7 @@ private:
     bool right_button, middle_button, left_button;
     bool dragging_input, dragging_output;
 
-	float top_y, mid_y1, mid_y2, number_y; 
+	float top_y, mid_y1, mid_y2, number_y;
 
     void fit_to_range();
 	void fit_switch();
@@ -39,7 +39,7 @@ private:
     pair<bool, bool> over_in_out(int x) const;
     void change_in_out_with_control();
 	//
-    
+
 	// Paint
 	void draw_selector();
     void draw_coordinate_numbers();
@@ -53,6 +53,7 @@ private:
 	QLineEdit *frame_edit;
 	QLineEdit *input_frame_edit;
 	QLineEdit *output_frame_edit;
+	QLineEdit *skip_frame_edit;
 	//
 	//
 
@@ -61,7 +62,8 @@ public:
 		QWidget *parent,
 		QLineEdit *frame_edit,
 		QLineEdit *input_frame_edit,
-		QLineEdit *output_frame_edit
+		QLineEdit *output_frame_edit,
+		QLineEdit *skip_frame_edit
 	);
     ~time_line();
 
