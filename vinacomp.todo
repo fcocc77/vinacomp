@@ -32,7 +32,7 @@ gui__viewer_gl:
 gui__time_line:
 	✔ shortcut control-flecha saltar cada 10 frame, o el numero que este puesto en el player control @today @done(2020-12-23 13:47) @project(gui__time_line)
 	✔ shortcut alt-flecha mover al inicio o al final del rango @today @done(2020-12-23 16:34) @project(gui__time_line)
-	☐ cambiar el color del fondo al color de la interface @today
+	✔ cambiar el color del fondo al color de la interface @today @done(2020-12-24 12:45) @project(gui__time_line)
 gui__viewer_players:
 	☐ crear botones de entrada y salida, al inicio y al final.
 	☐ que los botones tengan una forma cuadrada @today

@@ -34,6 +34,8 @@ time_line::time_line(
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     this->setMinimumHeight(50);
 
+	palette = jread("stylesheet/palette.json");
+
     fit_to_range();
 
     action *fit_to_range_action = new action("Fit to Range", "F");

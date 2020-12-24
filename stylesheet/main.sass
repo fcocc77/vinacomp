@@ -1,4 +1,8 @@
-@import variables
+@import palette
+
+// variables globales
+$path: "{{path}}"
+$images: "#{$path}/resources/images"
 
 *
     background: $b10
@@ -7,7 +11,7 @@
     font-size: 11px
     color: $b70
     outline: none
-    
+
 QToolTip
     background: $b10
     padding: 3px
@@ -16,7 +20,7 @@ QToolTip
 
 QLabel
     background: transparent
-    
+
 QPushButton
     background: transparent
 
@@ -42,17 +46,17 @@ QComboBox
 
     &::down-arrow
         // image: url(#{$images}/down_arrow.png)
-    &:focus 
+    &:focus
         border-color: mix($base, $b12, 50)
-    &::drop-down 
+    &::drop-down
         width: 20px
         background-color: $b25
 
-    QAbstractItemView 
+    QAbstractItemView
         background-color: $b13
     &:item
         font-size: 13px
-        &:selected 
+        &:selected
             background-color: $b20
             color: $base
             padding-left: 0px
@@ -73,7 +77,7 @@ QTreeWidget
 
     *
         background: none
-    &::item 
+    &::item
         border-bottom: 1px solid $b20
         border-top: 1px solid transparent
         height: 25px
@@ -88,7 +92,7 @@ QTreeWidget
         //     min-height: 200px
         //     background: $b14
         //     @include treecolor
-    // &::branch 
+    // &::branch
     //     background: transparent
     //     border-top: 1px solid transparent
     //     border-bottom: 1px solid $b20
@@ -107,7 +111,7 @@ QTreeWidget
 
 
 
-QMenu 
+QMenu
     background-color: $b17
     color: $c1
     border: 1px solid mix($base, $b15, 20%)

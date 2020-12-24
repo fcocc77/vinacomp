@@ -2,6 +2,8 @@ pkill -9 gdb
 
 function run_gui() {
 
+	# crea la paleta de colores y genera el css a partir del sass
+	python3 'scripts/make_palette.py'
     npm run d
 
     # cambia 'path' del proyecto para el archivo 'style.css'

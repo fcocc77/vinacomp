@@ -6,6 +6,7 @@
 
 #include <gl_view.h>
 #include <qt.h>
+#include <util.h>
 #include <action.h>
 
 class time_line : public gl_view
@@ -28,6 +29,8 @@ private:
 
 	float top_y, mid_y1, mid_y2, number_y;
 
+	QJsonObject palette;
+
     void fit_to_range();
 	void fit_switch();
 	void fit_to_selector();
@@ -48,7 +51,7 @@ private:
 	void draw_guide_frames();
     //
     //
-	
+
 	// From viewer
 	QLineEdit *frame_edit;
 	QLineEdit *input_frame_edit;

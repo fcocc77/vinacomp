@@ -12,6 +12,7 @@
 #include <QLineEdit>
 
 #include <qt.h>
+#include <util.h>
 #include <combo_box.h>
 #include <slider.h>
 #include <viewer_gl.h>

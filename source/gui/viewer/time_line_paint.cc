@@ -3,7 +3,8 @@
 void time_line::initializeGL()
 {
     initializeOpenGLFunctions();
-    glClearColor(0, 0, 0, 1);
+	QColor color = palette["b5"].toString();
+    glClearColor(color.red() / 255.0, color.green() / 255.0, color.blue() / 255.0, 1);
 }
 
 void time_line::paintGL()
@@ -52,9 +53,11 @@ void time_line::draw_in_out()
     draw_line({input, 1000000}, {input, -1000000}, red, 2);
     draw_line({output, 1000000}, {output, -1000000}, red, 2);
 
-    draw_box({{first_frame, -100000}, {input, 100000}}, QColor({20, 20, 20}));
-    draw_box({{output, -100000}, {last_frame, 100000}}, QColor({20, 20, 20}));
-    draw_box({{input, -100000}, {output, 100000}}, QColor({30, 30, 30}));
+	QColor outside_color = palette["b9"].toString();
+	QColor range_color = palette["b12"].toString();
+    draw_box({{first_frame, -100000}, {input, 100000}}, outside_color);
+    draw_box({{output, -100000}, {last_frame, 100000}}, outside_color);
+    draw_box({{input, -100000}, {output, 100000}}, range_color);
 
     float input_x = get_position({input, 0}).x();
     float output_x = get_position({output, 0}).x();
@@ -71,7 +74,7 @@ void time_line::draw_cursor()
     {
         if (ghost_frame_visible && !right_button)
         {
-            QColor ghost_frame_color = QColor{150, 100, 0};
+            QColor ghost_frame_color = palette["ghost_base"].toString();
             draw_line({ghost_frame, top_y}, {ghost_frame, y2}, ghost_frame_color);
 			draw_line({ghost_frame, -100000}, {ghost_frame, mid_y2}, ghost_frame_color);
             draw_triangle({ghost_frame, top_y}, 7, ghost_frame_color);
@@ -79,7 +82,7 @@ void time_line::draw_cursor()
         }
     }
 
-    QColor frame_color = {255, 170, 0};
+    QColor frame_color = palette["base"].toString();
     draw_line({frame, top_y}, {frame, y2}, frame_color);
     draw_line({frame, -100000}, {frame, mid_y2}, frame_color);
     draw_triangle({frame, top_y}, 7, frame_color);
