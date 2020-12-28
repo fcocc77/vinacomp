@@ -15,8 +15,8 @@ for i in range(100):
     luminance = (i + 1) / 100
     palette['b' + str(i)] = Color(hue=hue, saturation=saturation, luminance=luminance).hex
 
-palette['base'] = '#ff5e00'
-palette['ghost_base'] = '#802f00'
+palette['base'] = '#ffcc00'
+palette['ghost_base'] = '#917400'
 
 #  colores para los textos
 palette['c0'] = palette['b60']

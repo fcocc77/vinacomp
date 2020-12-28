@@ -32,7 +32,7 @@ void tools::add_separator()
 {
     QWidget *vertical_separator = new QWidget();
     vertical_separator->setMinimumWidth(20);
-    vertical_separator->setObjectName("separator");
+    vertical_separator->setObjectName("tools_separator");
 
     layout->addWidget(vertical_separator);
 }
@@ -45,4 +45,9 @@ void tools::add_stretch()
 void tools::add_widget(QWidget *widget)
 {
     layout->addWidget(widget);
+}
+
+QHBoxLayout *tools::get_layout() const
+{
+	return layout;
 }

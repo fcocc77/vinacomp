@@ -133,11 +133,13 @@ QWidget *viewer::info_setup_ui()
 QWidget *viewer::player_setup_ui()
 {
 	tools *player_tools = new tools();
+	player_tools->get_layout()->setSpacing(7);
+	player_tools->setObjectName("player");
 
 	// Play
 	action *play_forward_action = new action("Play Forward", "L", "play_arrow_a");
     play_forward_action->connect_to(this, [this]() { play_forward(); });
-    
+
 	action *play_backward_action = new action("Play Backward", "L", "play_back_a");
     play_backward_action->connect_to(this, [this]() { play_backward(); });
 	//
@@ -162,8 +164,8 @@ QWidget *viewer::player_setup_ui()
 	action *skip_backward_action = new action("Skip Backward", "L", "skip_backward_a");
     skip_backward_action->connect_to(this, [this]() { skip_backward(); });
 
-	action *in_action = new action("Input", "L", "");
-	action *out_action = new action("Output", "L", "");
+	action *in_action = new action("Input", "L", "input_a");
+	action *out_action = new action("Output", "L", "output_a");
 
     frame_edit = new QLineEdit(player_tools);
 	frame_edit->setValidator( new QIntValidator(-100000, 100000, this) );  // Solo numeros
@@ -183,9 +185,9 @@ QWidget *viewer::player_setup_ui()
     output_frame_edit->setMaximumWidth(30);
 
     player_tools->add_widget(input_frame_edit);
+    player_tools->add_action(in_action);
     player_tools->add_stretch();
 
-    player_tools->add_action(in_action);
     player_tools->add_action(first_frame);
     player_tools->add_action(previous_key_frame_action);
     player_tools->add_action(previous_frame_action);
@@ -197,13 +199,15 @@ QWidget *viewer::player_setup_ui()
     player_tools->add_action(next_frame_action);
     player_tools->add_action(next_key_frame_action);
     player_tools->add_action(last_frame);
-    player_tools->add_action(out_action);
+
+	player_tools->add_separator();
 
     player_tools->add_action(skip_backward_action);
     player_tools->add_widget(skip_frame_edit);
     player_tools->add_action(skip_forward_action);
 
     player_tools->add_stretch();
+    player_tools->add_action(out_action);
     player_tools->add_widget(output_frame_edit);
 
     return player_tools;

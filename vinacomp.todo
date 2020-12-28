@@ -34,11 +34,11 @@ gui__time_line:
 	✔ shortcut alt-flecha mover al inicio o al final del rango @today @done(2020-12-23 16:34) @project(gui__time_line)
 	✔ cambiar el color del fondo al color de la interface @today @done(2020-12-24 12:45) @project(gui__time_line)
 gui__viewer_players:
-	☐ crear botones de entrada y salida, al inicio y al final.
-	☐ que los botones tengan una forma cuadrada @today
+	✔ crear botones de entrada y salida, al inicio y al final. @done(2020-12-28 16:23) @project(gui__viewer_players)
+	✔ que los botones tengan una forma cuadrada @today @done(2020-12-28 16:23) @project(gui__viewer_players)
 	☐ que los qlineedit de entrada y salida, modifiquen la entrada de la linea de tiempo con el 'Enter'
 	☐ que el qlineedit del frame modifiquen el frame de la linea de tiempo
-	☐ mejorar el disenio de lo qlineedit y botones @today
+	✔ mejorar el disenio de lo qlineedit y botones @today @done(2020-12-28 16:24) @project(gui__viewer_players)
 	☐ crear combobox con 3 opciones: repeat, bounce y stop
 gui__node_graph:
 	☐ que el buscador funcione

@@ -22,6 +22,8 @@ public:
     void add_separator();
     void add_stretch();
     void add_widget(QWidget *widget);
+
+	QHBoxLayout *get_layout() const;
 };
 
 #endif // TOOLS_HPP
