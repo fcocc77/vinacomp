@@ -1,14 +1,17 @@
 # icono svg bajados en:
 # https://material.io/resources/icons/?style=baseline
+source utils/shell/util.sh
 
 svgs='resources/svg'
 images='resources/images'
 
-color_a="rgb(150,150,150)"
-color_b="rgb(190,190,190)"
-color_c="#ff5e00"
+color_a="$(jread stylesheet/palette.json 'b60')"
+color_b="$(jread stylesheet/palette.json 'b80')"
+color_c="$(jread stylesheet/palette.json 'base')"
 
 size=128
+
+mkdir $images
 
 function export_png() {
     svg=$1
@@ -29,7 +32,6 @@ function export_png() {
         sed -i "s|fill=\"none\"|fill=\"$color\"|g" $svg_temp
         sed -i "s|fill:none|fill:$color|g" $svg_temp
         sed -i "s|stroke:none|stroke:$color|g" $svg_temp
-
         #
 
         # cambia tamaño
