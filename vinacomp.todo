@@ -26,19 +26,12 @@ gui__viewer_image_correcction:
 	☐ que los slide modifiquen el qlineedit
 	☐ que los botones permuten entre la gamma y la exposicion habilitada y desabilitada
 gui__viewer_gl:
-	✔ que el ajuste funcione, con la tecla f que se ajuste a la resolucion actual. @today @done(2020-12-12 12:59) @project(gui__viewer_gl)
 	☐ poner un texto de la resolucion en la parte inferior izquierda del cuadro
 	☐ opcion de 'overlay' con la letra 'q' que funcione como palanca y deje visible y ocultar las lineas del cuadro de resolucion.
 gui__time_line:
-	✔ shortcut control-flecha saltar cada 10 frame, o el numero que este puesto en el player control @today @done(2020-12-23 13:47) @project(gui__time_line)
-	✔ shortcut alt-flecha mover al inicio o al final del rango @today @done(2020-12-23 16:34) @project(gui__time_line)
-	✔ cambiar el color del fondo al color de la interface @today @done(2020-12-24 12:45) @project(gui__time_line)
 gui__viewer_players:
-	✔ crear botones de entrada y salida, al inicio y al final. @done(2020-12-28 16:23) @project(gui__viewer_players)
-	✔ que los botones tengan una forma cuadrada @today @done(2020-12-28 16:23) @project(gui__viewer_players)
 	☐ que los qlineedit de entrada y salida, modifiquen la entrada de la linea de tiempo con el 'Enter'
 	☐ que el qlineedit del frame modifiquen el frame de la linea de tiempo
-	✔ mejorar el disenio de lo qlineedit y botones @today @done(2020-12-28 16:24) @project(gui__viewer_players)
 	☐ crear combobox con 3 opciones: repeat, bounce y stop
 gui__node_graph:
 	☐ que el buscador funcione
@@ -50,14 +43,14 @@ gui__node:
 	☐ crear dot y que se pueda insertar presionado control
 gui__knobs:
 	☐ modificar 'slider.cc' @today
-	☐ terminar color knob'
+	☐ terminar color knob' @today
 	☐ terminar button knob'
 	☐ terminar checkbox knob'
 	☐ terminar choice knob'
 	☐ terminar file knob'
-	☐ terminar floating knob'
+	☐ terminar floating knob' @today
 	☐ terminar group knob'
-	☐ terminar integer knob'
+	☐ terminar integer knob' @today
 	☐ terminar label knob'
 	☐ terminar position knob'
 	☐ terminar separator knob'
@@ -67,6 +60,13 @@ nodes:
 
 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
 Archive:
+	✔ que el ajuste funcione, con la tecla f que se ajuste a la resolucion actual. @today @done(2020-12-12 12:59) @project(gui__viewer_gl)
+	✔ shortcut control-flecha saltar cada 10 frame, o el numero que este puesto en el player control @today @done(2020-12-23 13:47) @project(gui__time_line)
+	✔ shortcut alt-flecha mover al inicio o al final del rango @today @done(2020-12-23 16:34) @project(gui__time_line)
+	✔ cambiar el color del fondo al color de la interface @today @done(2020-12-24 12:45) @project(gui__time_line)
+	✔ crear botones de entrada y salida, al inicio y al final. @done(2020-12-28 16:23) @project(gui__viewer_players)
+	✔ que los botones tengan una forma cuadrada @today @done(2020-12-28 16:23) @project(gui__viewer_players)
+	✔ mejorar el disenio de lo qlineedit y botones @today @done(2020-12-28 16:24) @project(gui__viewer_players)
 	✔ el cursor fantasma le falta la linea inferior @today @done(2020-12-05 10:32)) @project(gui__time_line))
 	✔ al dar 1 solo click, no cambia el frame, solo funciona cuando lo arrastramos @today @done(2020-12-05 11:55)) @project(gui__time_line))
 	✔ usar flechas derecha e izquierda para mover el cursor @today @done(2020-12-04 17:56) @project(gui__time_line)
