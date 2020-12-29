@@ -99,21 +99,66 @@ QWidget *knob_color::separate_colors_box()
 
 QWidget *knob_color::separate_colors_slider()
 {
-    QWidget *widget = new QWidget();
+    QWidget *widget = new QWidget(this);
     QVBoxLayout *layout = new QVBoxLayout(widget);
     layout->setMargin(0);
 
-    slider *red = new slider();
-    layout->addWidget(red);
+	// Red
+	QWidget *red_widget = new QWidget(this);
+    QHBoxLayout *red_layout = new QHBoxLayout(red_widget);
+	red_layout->setMargin(0);
 
-    slider *green = new slider();
-    layout->addWidget(green);
+    QLineEdit *red_edit = new QLineEdit(this);
+    red_edit->setMaximumWidth(50);
+    slider *red_slider = new slider();
 
-    slider *blue = new slider();
-    layout->addWidget(blue);
+	red_layout->addWidget(red_edit);
+	red_layout->addWidget(red_slider);
+    layout->addWidget(red_widget);
+	//
 
-    slider *alpha = new slider();
-    layout->addWidget(alpha);
+	// Green
+	QWidget *green_widget = new QWidget(this);
+    QHBoxLayout *green_layout = new QHBoxLayout(green_widget);
+	green_layout->setMargin(0);
+
+    QLineEdit *green_edit = new QLineEdit(this);
+    green_edit->setMaximumWidth(50);
+    slider *green_slider = new slider();
+
+	green_layout->addWidget(green_edit);
+	green_layout->addWidget(green_slider);
+    layout->addWidget(green_widget);
+	//
+
+	// Blue
+	QWidget *blue_widget = new QWidget(this);
+	QHBoxLayout *blue_layout = new QHBoxLayout(blue_widget);
+	blue_layout->setMargin(0);
+
+	QLineEdit *blue_edit = new QLineEdit(this);
+	blue_edit->setMaximumWidth(50);
+	slider *blue_slider = new slider();
+
+	blue_layout->addWidget(blue_edit);
+	blue_layout->addWidget(blue_slider);
+	layout->addWidget(blue_widget);
+	//
+
+	// Alpha
+	QWidget *alpha_widget = new QWidget(this);
+    QHBoxLayout *alpha_layout = new QHBoxLayout(alpha_widget);
+	alpha_layout->setMargin(0);
+
+    QLineEdit *alpha_edit = new QLineEdit(this);
+    alpha_edit->setMaximumWidth(50);
+    slider *alpha_slider = new slider();
+
+	alpha_layout->addWidget(alpha_edit);
+	alpha_layout->addWidget(alpha_slider);
+    layout->addWidget(alpha_widget);
+	//
+
 
     return widget;
 }
