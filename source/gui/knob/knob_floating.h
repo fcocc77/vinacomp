@@ -16,11 +16,14 @@ class knob_floating : public knob
 private:
     QString label;
     float default_value;
-
+	slider *_slider;
+	QLineEdit *value_edit;
 public:
     knob_floating(
         float _default_value);
     ~knob_floating();
+
+	void set_value(float value);
 };
 
 #endif //KNOB_FLOATING_HPP
