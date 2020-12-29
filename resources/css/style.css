@@ -155,6 +155,23 @@ QScrollBar {
   QScrollBar::right-arrow:horizontal {
     image: url("/home/pancho/Documents/develop/vinacomp/resources/images/left_arrow.png"); }
 
+QSlider {
+  height: 15px;
+  background: none; }
+  QSlider::groove {
+    background-color: #1e2024;
+    height: 5px;
+    border-radius: 2px; }
+  QSlider::handle {
+    background-color: #5e6673;
+    width: 13px;
+    height: 13px;
+    margin-top: -4px;
+    margin-bottom: -4px;
+    border-radius: 6px; }
+    QSlider::handle::hover {
+      background: #ffcc00; }
+
 #node_graph #nodes_bar {
   background: #2c2f35;
   border-bottom: 1px solid #25282d; }

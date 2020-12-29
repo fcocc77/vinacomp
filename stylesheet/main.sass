@@ -210,6 +210,25 @@ QScrollBar
     &::right-arrow:horizontal
         image : url('#{$images}/left_arrow.png')
 
+QSlider
+    // todos los valores tienen que sumar el total del alto,
+    // margen, radio, etc para que funcione
+    $handle_size: 13px
+    height: $handle_size + 2
+    background: none
+    &::groove
+        background-color: $b12
+        height: 5px
+        border-radius: 2px
+    &::handle
+        background-color: $b40
+        width: $handle_size
+        height: $handle_size
+        margin-top: -4px
+        margin-bottom: -4px
+        border-radius: 6px
+        &::hover
+            background: $base
 @import components/node_graph
 @import components/curve_editor
 @import components/properties

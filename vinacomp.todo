@@ -43,7 +43,7 @@ gui__node:
 	☐ crear entrada de 'mask'
 	☐ crear dot y que se pueda insertar presionado control
 gui__knobs:
-	☐ modificar 'slider.cc' @today
+	✔ modificar 'slider.cc' @today @done(2020-12-29 15:50) @project(gui__knobs)
 	☐ terminar color knob' @today
 	☐ terminar button knob'
 	☐ terminar checkbox knob'

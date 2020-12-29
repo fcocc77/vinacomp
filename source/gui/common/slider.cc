@@ -19,7 +19,7 @@ slider::slider(float _min, float _max, bool _floating)
 		this->setMaximum(max);
 	}
 
-	connect(this, &QSlider::sliderMoved, this, [=](int value){
+	connect(this, &QSlider::valueChanged, this, [=](int value){
 		if(floating)
 			moved(float( value ) / float_interval);
 		else
