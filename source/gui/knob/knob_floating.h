@@ -14,6 +14,8 @@
 class knob_floating : public knob
 {
 private:
+	float min;
+	float max;
     QHBoxLayout *layout;
     QString label;
     float default_value;

@@ -2,7 +2,9 @@
 
 knob_floating::knob_floating(
     float _default_value)
-	: default_value(_default_value)
+	: default_value(_default_value),
+	min(0),
+	max(5)
 {
 	layout = new QHBoxLayout(this);
     layout->addWidget(init_space);
@@ -15,7 +17,7 @@ knob_floating::knob_floating(
     value_edit->setMaximumWidth(50);
     layout->addWidget(value_edit);
 
-	_slider = new slider(-5, 5);
+	_slider = new slider(min, max);
 	connect(_slider, &slider::moved, this, [=](float value){
 		value_edit->setText(QString::number(value));
 	});
