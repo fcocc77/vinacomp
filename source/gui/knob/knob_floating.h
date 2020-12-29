@@ -14,16 +14,19 @@
 class knob_floating : public knob
 {
 private:
+    QHBoxLayout *layout;
     QString label;
     float default_value;
 	slider *_slider;
 	QLineEdit *value_edit;
+	QPushButton *animation_button;
 public:
     knob_floating(
         float _default_value);
     ~knob_floating();
 
 	void set_value(float value);
+	float get_value() const;
 };
 
 #endif //KNOB_FLOATING_HPP
