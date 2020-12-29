@@ -53,8 +53,8 @@ gui__knobs:
 	☐ terminar group knob'
 	☐ terminar integer knob' @today
 	☐ terminar label knob'
-	☐ terminar position knob'
-	☐ terminar separator knob'
+	☐ terminar position knob' @today
+	☐ terminar separator knob' @today
 	☐ terminar text knob'
 nodes:
 	☐ crear nodo de speed, para que cambie todas las velocidades como 'videovina' y asi no lo tenemos que hacer en videovina
