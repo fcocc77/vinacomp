@@ -9,15 +9,16 @@ void knob_color::setup_ui()
     // init_space *label_widget = new init_space(init_space_width, label);
     layout->addWidget(init_space);
 
-    value_edit = new QLineEdit(QString::number(red));
-    value_edit->setMaximumWidth(50);
-    layout->addWidget(value_edit);
+    mono_edit = new QLineEdit(QString::number(red));
+    mono_edit->setMaximumWidth(50);
+    layout->addWidget(mono_edit);
 
-    _slider = new slider();
-	connect(_slider, &slider::moved, this, [=](float value){
-		value_edit->setText(QString::number(value));
+    mono_slider = new slider(-1, 1);
+	connect(mono_slider, &slider::moved, this, [=](float value){
+		set_color(value, value, value);
+		mono_edit->setText(QString::number(value));
 	});
-    layout->addWidget(_slider);
+    layout->addWidget(mono_slider);
 
     _separate_colors_slider = separate_colors_slider();
     _separate_colors_slider->hide();
@@ -34,33 +35,21 @@ void knob_color::setup_ui()
 	picker_button->setAutoFillBackground(true);
     layout->addWidget(picker_button);
 
-    QPushButton *picker = new QPushButton();
+    picker = new QPushButton();
     connect(picker, &QPushButton::clicked, this, [this]() {
-        is_separate_colors_slider = !is_separate_colors_slider;
-
-        _slider->setVisible(!is_separate_colors_slider);
-        value_edit->setVisible(!is_separate_colors_slider);
-        _separate_colors_slider->setVisible(is_separate_colors_slider);
-
-		update();
+		toggle_sliders_colors();
     });
 
     qt::set_icon(picker, "color_a", icon_size);
     layout->addWidget(picker);
 
-    QPushButton *switch_color = new QPushButton("4");
-    connect(switch_color, &QPushButton::clicked, this, [this]() {
-        is_separate_colors_box = !is_separate_colors_box;
-
-        _slider->setVisible(!is_separate_colors_box);
-        value_edit->setVisible(!is_separate_colors_box);
-        _separate_colors_box->setVisible(is_separate_colors_box);
-
-		update();
+    mono_color_button = new QPushButton("4");
+    connect(mono_color_button, &QPushButton::clicked, this, [this]() {
+		toggle_mono_color();
     });
-    layout->addWidget(switch_color);
+    layout->addWidget(mono_color_button);
 
-    QPushButton *animation = new QPushButton();
+    animation = new QPushButton();
     qt::set_icon(animation, "key_a", icon_size);
     layout->addWidget(animation);
 }
@@ -103,7 +92,7 @@ QWidget *knob_color::separate_colors_slider()
 
 	red_vedit = new QLineEdit(this);
     red_vedit->setMaximumWidth(50);
-    red_slider = new slider(-4, 4);
+    red_slider = new slider(-1, 1);
 	connect(red_slider, &slider::moved, this, [=](float value){
 		set_color(value, green, blue, alpha);
 	});
@@ -120,7 +109,7 @@ QWidget *knob_color::separate_colors_slider()
 
     green_vedit = new QLineEdit(this);
     green_vedit->setMaximumWidth(50);
-    green_slider = new slider(-4, 4);
+    green_slider = new slider(-1, 1);
 	connect(green_slider, &slider::moved, this, [=](float value){
 		set_color(red, value, blue, alpha);
 	});
@@ -137,7 +126,7 @@ QWidget *knob_color::separate_colors_slider()
 
 	blue_vedit = new QLineEdit(this);
 	blue_vedit->setMaximumWidth(50);
-	blue_slider = new slider(-4, 4);
+	blue_slider = new slider(-1, 1);
 	connect(blue_slider, &slider::moved, this, [=](float value){
 		set_color(red, green, value, alpha);
 	});
@@ -154,7 +143,7 @@ QWidget *knob_color::separate_colors_slider()
 
     alpha_vedit = new QLineEdit(this);
     alpha_vedit->setMaximumWidth(50);
-    alpha_slider = new slider(-4, 4);
+    alpha_slider = new slider(-1, 1);
 	connect(alpha_slider, &slider::moved, this, [=](float value){
 		set_color(red, green, blue, value);
 	});

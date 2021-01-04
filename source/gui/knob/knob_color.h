@@ -18,11 +18,13 @@ class knob_color : public knob
 private:
     QWidget *_separate_colors_box;
     QWidget *_separate_colors_slider;
-    QLineEdit *value_edit;
-    slider *_slider;
+    QLineEdit *mono_edit;
+    slider *mono_slider;
 
 	QPushButton *picker_button;
-	float red, green, blue, alpha;
+	QPushButton *picker;
+	QPushButton *mono_color_button;
+	QPushButton *animation;
 
 	QLineEdit *red_vedit;
 	QLineEdit *green_vedit;
@@ -39,14 +41,19 @@ private:
 	slider *blue_slider;
 	slider *alpha_slider;
 
-    bool is_separate_colors_box = false;
-    bool is_separate_colors_slider = false;
+	float red, green, blue, alpha;
+	bool mono_color;
+    bool sliders_colors;
 
     void setup_ui();
     QWidget *separate_colors_box();
     QWidget *separate_colors_slider();
 
 	void update();
+	void toggle_mono_color();
+	void toggle_sliders_colors();
+	void set_visible_mono_color(bool visible);
+	void set_visible_sliders_colors(bool visible);
 
 public:
     knob_color(
