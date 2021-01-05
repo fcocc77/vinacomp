@@ -178,14 +178,14 @@ void knob_color::set_color(float _red, float _green, float _blue, float _alpha)
 	alpha_hedit->setText(QString::number(alpha));
 	alpha_slider->set_value(alpha);
 
-	if (red < 0) _red = 0;
-	if (red > 1) _red = 1;
+	if (_red < 0) _red = 0;
+	if (_red > 1) _red = 1;
 
-	if (green < 0) _green = 0;
-	if (green > 1) _green = 1;
+	if (_green < 0) _green = 0;
+	if (_green > 1) _green = 1;
 
-	if (blue < 0) _blue = 0;
-	if (blue > 1) _blue = 1;
+	if (_blue < 0) _blue = 0;
+	if (_blue > 1) _blue = 1;
 
 	// Cambia el color del boton de picker
 	QColor color = {_red * 255, _green * 255, _blue * 255};

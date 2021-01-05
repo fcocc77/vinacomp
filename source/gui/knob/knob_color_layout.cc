@@ -88,26 +88,75 @@ void knob_color::setup_ui()
 
 void knob_color::connections()
 {
+	// Mono Color
 	connect(mono_slider, &slider::moved, this, [=](float value){
 		set_color(value, value, value);
 		mono_edit->setText(QString::number(value));
 	});
+	connect(mono_edit, &QLineEdit::editingFinished, this, [=](){
+		float value = mono_edit->text().toDouble();
+		set_color(value, value, value);
+		
+	});
+	//
+	//
 
+	// Sliders
 	connect(red_slider, &slider::moved, this, [=](float value){
 		set_color(value, green, blue, alpha);
 	});
-
 	connect(green_slider, &slider::moved, this, [=](float value){
 		set_color(red, value, blue, alpha);
 	});
-
 	connect(blue_slider, &slider::moved, this, [=](float value){
 		set_color(red, green, value, alpha);
 	});
-
 	connect(alpha_slider, &slider::moved, this, [=](float value){
 		set_color(red, green, blue, value);
 	});
+	//
+	//
+
+	// Edits Verticales
+	connect(red_vedit, &QLineEdit::editingFinished, this, [=](){
+		float value = red_vedit->text().toDouble();
+		set_color(value, green, blue, alpha);
+	});
+	connect(green_vedit, &QLineEdit::editingFinished, this, [=](){
+		float value = green_vedit->text().toDouble();
+		set_color(red, value, blue, alpha);
+	});
+	connect(blue_vedit, &QLineEdit::editingFinished, this, [=](){
+		float value = blue_vedit->text().toDouble();
+		set_color(red, green, value, alpha);
+	});
+	connect(alpha_vedit, &QLineEdit::editingFinished, this, [=](){
+		float value = alpha_vedit->text().toDouble();
+		set_color(red, green, blue, value);
+	});
+	//
+	//
+	
+	// Edits Horizontales
+	connect(red_hedit, &QLineEdit::editingFinished, this, [=](){
+		float value = red_hedit->text().toDouble();
+		set_color(value, green, blue, alpha);
+	});
+	connect(green_hedit, &QLineEdit::editingFinished, this, [=](){
+		float value = green_hedit->text().toDouble();
+		set_color(red, value, blue, alpha);
+	});
+	connect(blue_hedit, &QLineEdit::editingFinished, this, [=](){
+		float value = blue_hedit->text().toDouble();
+		set_color(red, green, value, alpha);
+	});
+	connect(alpha_hedit, &QLineEdit::editingFinished, this, [=](){
+		float value = alpha_hedit->text().toDouble();
+		set_color(red, green, blue, value);
+	});
+	//
+	//
+
 
     connect(picker, &QPushButton::clicked, this, [this]() {
 		toggle_sliders_colors();
