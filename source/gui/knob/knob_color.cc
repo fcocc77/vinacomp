@@ -10,18 +10,71 @@ knob_color::knob_color(QColor color)
 {
     this->setObjectName("knob_color");
 
+    layout = new QHBoxLayout(this);
+
+	separate_colors_box = new QWidget(this);
+	separate_colors_slider = new QWidget(this);
+	separate_colors_box_layout = new QHBoxLayout(separate_colors_box);
+	separate_colors_slider_layout = new QVBoxLayout(separate_colors_slider);
+
+    mono_edit = new QLineEdit(this);
+    mono_slider = new slider(-1, 1);
+
+	red_widget = new QWidget(this);
+	green_widget = new QWidget(this);
+	blue_widget = new QWidget(this);
+	alpha_widget = new QWidget(this);
+	red_layout = new QHBoxLayout(red_widget);
+	green_layout = new QHBoxLayout(green_widget);
+	blue_layout = new QHBoxLayout(blue_widget);
+	alpha_layout = new QHBoxLayout(alpha_widget);
+
+	red_hedit = new QLineEdit(this);
+	green_hedit = new QLineEdit(this);
+	blue_hedit = new QLineEdit(this);
+	alpha_hedit = new QLineEdit(this);
+
+	red_vedit = new QLineEdit(this);
+	green_vedit = new QLineEdit(this);
+	blue_vedit = new QLineEdit(this);
+	alpha_vedit = new QLineEdit(this);
+
+	red_slider = new slider(-1, 1);
+	green_slider = new slider(-1, 1);
+	blue_slider = new slider(-1, 1);
+	alpha_slider = new slider(-1, 1);
+
+	picker_button = new QPushButton(this);
+    picker = new QPushButton(this);
+    mono_color_button = new QPushButton(this);
+    animation_button = new QPushButton(this);
+
+	connections();
     setup_ui();
+
 	set_color(1, 0.2, 0.6);
 }
 
 knob_color::~knob_color()
 {
-	// falta borrar algunos widgets !
-	delete _separate_colors_box;
-	delete _separate_colors_slider;
+	delete layout;
+
+	delete separate_colors_box;
+	delete separate_colors_slider;
+	delete separate_colors_box_layout;
+	delete separate_colors_slider_layout;
 
 	delete mono_edit;
 	delete mono_slider;
+
+	delete red_widget;
+	delete green_widget;
+	delete blue_widget;
+	delete alpha_widget;
+	delete red_layout;
+	delete green_layout;
+	delete blue_layout;
+	delete alpha_layout;
 
 	delete red_vedit;
 	delete green_vedit;
@@ -37,6 +90,11 @@ knob_color::~knob_color()
 	delete green_slider;
 	delete blue_slider;
 	delete alpha_slider;
+
+	delete picker_button;
+	delete picker;
+	delete mono_color_button;
+	delete animation_button;
 }
 
 void knob_color::update()
@@ -49,11 +107,11 @@ void knob_color::set_visible_mono_color(bool visible)
 	if (sliders_colors)
 	{
 		visible = false;
-		_separate_colors_box->setVisible(false);
+		separate_colors_box->setVisible(false);
 	}
 	else
    	{
-		_separate_colors_box->setVisible(!visible);
+		separate_colors_box->setVisible(!visible);
 	}
 
 	mono_slider->setVisible(visible);
@@ -81,7 +139,7 @@ void knob_color::toggle_mono_color()
 
 void knob_color::set_visible_sliders_colors(bool visible)
 {
-	_separate_colors_slider->setVisible(visible);
+	separate_colors_slider->setVisible(visible);
 
 	// al activar el cuadro se colors sliders se desabilita el mono color
 	mono_color = !visible;

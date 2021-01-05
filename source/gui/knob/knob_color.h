@@ -16,15 +16,29 @@
 class knob_color : public knob
 {
 private:
-    QWidget *_separate_colors_box;
-    QWidget *_separate_colors_slider;
+	QHBoxLayout *layout;
+
+    QWidget *separate_colors_box;
+    QWidget *separate_colors_slider;
+    QHBoxLayout *separate_colors_box_layout;
+    QVBoxLayout *separate_colors_slider_layout;
+
     QLineEdit *mono_edit;
     slider *mono_slider;
 
 	QPushButton *picker_button;
 	QPushButton *picker;
 	QPushButton *mono_color_button;
-	QPushButton *animation;
+	QPushButton *animation_button;
+
+	QWidget *red_widget;
+	QWidget *green_widget;
+	QWidget *blue_widget;
+	QWidget *alpha_widget;
+	QHBoxLayout *red_layout;
+	QHBoxLayout *green_layout;
+	QHBoxLayout *blue_layout;
+	QHBoxLayout *alpha_layout;
 
 	QLineEdit *red_vedit;
 	QLineEdit *green_vedit;
@@ -46,8 +60,7 @@ private:
     bool sliders_colors;
 
     void setup_ui();
-    QWidget *separate_colors_box();
-    QWidget *separate_colors_slider();
+	void connections();
 
 	void update();
 	void toggle_mono_color();
