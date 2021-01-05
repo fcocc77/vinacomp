@@ -43,13 +43,16 @@ gui__node:
 	☐ crear entrada de 'mask'
 	☐ crear dot y que se pueda insertar presionado control
 gui__knobs:
-	✔ modificar 'slider.cc' @today @done(2020-12-29 15:50) @project(gui__knobs)
-	☐ terminar color knob' @today
+	☐ que los botones tengan hover
+	☐ que los qlineedit con boton derecho despliegue el menu de animacion
+	☐ terminar button knob'
+	☐ que el boton de keyframe despliegue un menu con las opciones de animacion
+	☐ knob_color: que el icono de paleta cuando este activado tenga otro color
+	☐ knob_color: que el boton de '4' con color de actvado y desabilitado cuando la paleta este activa
 	☐ terminar button knob'
 	☐ terminar checkbox knob'
 	☐ terminar choice knob'
 	☐ terminar file knob'
-	✔ terminar floating knob' @today @done(2020-12-29 16:27)
 	☐ terminar group knob'
 	☐ terminar integer knob' @today
 	☐ terminar label knob'
@@ -61,6 +64,9 @@ nodes:
 
 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
 Archive:
+	✔ modificar 'slider.cc' @today @done(2020-12-29 15:50) @project(gui__knobs)
+	✔ terminar color knob' @today @done(2021-01-05 17:42) @project(gui__knobs)
+	✔ terminar floating knob' @today @done(2020-12-29 16:27)
 	✔ que el ajuste funcione, con la tecla f que se ajuste a la resolucion actual. @today @done(2020-12-12 12:59) @project(gui__viewer_gl)
 	✔ shortcut control-flecha saltar cada 10 frame, o el numero que este puesto en el player control @today @done(2020-12-23 13:47) @project(gui__time_line)
 	✔ shortcut alt-flecha mover al inicio o al final del rango @today @done(2020-12-23 16:34) @project(gui__time_line)
