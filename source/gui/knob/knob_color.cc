@@ -52,7 +52,25 @@ knob_color::knob_color(QColor color)
 	connections();
     setup_ui();
 
-	set_color(1, 0.2, 0.6);
+	red = 0.5;
+	green = 0.5;
+	blue = 0.5;
+	alpha = 0.5;
+
+	// si los colores son todos iguale activa el 'knob' mono cromatico
+	if (red == green && red == blue && red == alpha)
+	{
+		mono_color = false;
+		set_visible_mono_color(true);
+	}
+	else
+	{
+		mono_color = true;
+		set_visible_mono_color(false);
+	}
+	//
+	//
+	set_color(red, green, blue, alpha);
 }
 
 knob_color::~knob_color()
@@ -161,6 +179,12 @@ void knob_color::set_color(float _red, float _green, float _blue, float _alpha)
 	green = _green;
 	blue = _blue;
 	alpha = _alpha;
+
+	if (red == green && red == blue && red == alpha)
+	{
+		mono_edit->setText(QString::number(red));
+		mono_slider->set_value(red);
+	}
 
 	red_vedit->setText(QString::number(red));
 	red_hedit->setText(QString::number(red));

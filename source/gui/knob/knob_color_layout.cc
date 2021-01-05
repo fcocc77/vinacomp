@@ -90,13 +90,11 @@ void knob_color::connections()
 {
 	// Mono Color
 	connect(mono_slider, &slider::moved, this, [=](float value){
-		set_color(value, value, value);
-		mono_edit->setText(QString::number(value));
+		set_color(value, value, value, value);
 	});
 	connect(mono_edit, &QLineEdit::editingFinished, this, [=](){
 		float value = mono_edit->text().toDouble();
-		set_color(value, value, value);
-		
+		set_color(value, value, value, value);
 	});
 	//
 	//
