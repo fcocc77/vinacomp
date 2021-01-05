@@ -250,10 +250,39 @@ QSlider {
       background: #30343b; }
     #trim_panel #controls #init_space {
       background: transparent; }
-    #trim_panel #controls #knob_color {
-      background: #2c2f35; }
-      #trim_panel #controls #knob_color QPushButton {
-        background: #474d57; }
+    #trim_panel #controls #knob_color QWidget {
+      background: transparent; }
+    #trim_panel #controls #knob_color QLineEdit {
+      background: #202327; }
+    #trim_panel #controls #knob_color #red_edit {
+      border-bottom-color: red; }
+    #trim_panel #controls #knob_color #green_edit {
+      border-bottom-color: green; }
+    #trim_panel #controls #knob_color #blue_edit {
+      border-bottom-color: blue; }
+    #trim_panel #controls #knob_color #alpha_edit {
+      border-bottom-color: white; }
+    #trim_panel #controls #knob_color #red_slider::groove {
+      border-bottom: 1px solid #8f1012; }
+    #trim_panel #controls #knob_color #red_slider::handle {
+      background: red; }
+    #trim_panel #controls #knob_color #green_slider::groove {
+      border-bottom: 1px solid #0f5012; }
+    #trim_panel #controls #knob_color #green_slider::handle {
+      background: green; }
+    #trim_panel #controls #knob_color #blue_slider::groove {
+      border-bottom: 1px solid #090abd; }
+    #trim_panel #controls #knob_color #blue_slider::handle {
+      background: blue; }
+    #trim_panel #controls #knob_color #alpha_slider::groove {
+      border-bottom: 1px solid #8f9092; }
+    #trim_panel #controls #knob_color #alpha_slider::handle {
+      background: white; }
+    #trim_panel #controls #knob_color QPushButton {
+      width: 30px;
+      height: 20px;
+      border-radius: 2px;
+      background: #3c4149; }
 
 #tools {
   background: #2c2f35; }

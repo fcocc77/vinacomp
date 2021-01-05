@@ -1,9 +1,7 @@
 #trim_panel
-
     background: $b18
     #butttons
         background: $b15
-
     #controls
         background: $b20
         > QWidget
@@ -11,7 +9,41 @@
         #init_space
             background: transparent    
         #knob_color
-            background: $b18
+            QWidget
+                background: transparent
+            QLineEdit
+                background: $b13
+            #red_edit
+                border-bottom-color: red
+            #green_edit
+                border-bottom-color: green
+            #blue_edit
+                border-bottom-color: blue
+            #alpha_edit
+                border-bottom-color: white
+            #red_slider
+                &::groove
+                    border-bottom: 1px solid mix(red, $b12, 50%)
+                &::handle
+                    background: red
+            #green_slider
+                &::groove
+                    border-bottom: 1px solid mix(green, $b12, 50%)
+                &::handle
+                    background: green
+            #blue_slider
+                &::groove
+                    border-bottom: 1px solid mix(blue, $b12, 70%)
+                &::handle
+                    background: blue
+            #alpha_slider
+                &::groove
+                    border-bottom: 1px solid mix(white, $b12, 50%)
+                &::handle
+                    background: white
             QPushButton
-                background: $b30
-                
+                width: 30px
+                height: 20px
+                border-radius: 2px
+                background: $b25
+

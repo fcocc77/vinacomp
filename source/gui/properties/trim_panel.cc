@@ -240,7 +240,7 @@ tab_widget *trim_panel::tabs_ui()
 
     QWidget *controls_tab = new QWidget(this);
     controls_layout = new QVBoxLayout(controls_tab);
-    controls_layout->setSpacing(0);
+    controls_layout->setSpacing(5);
     controls_tab->setObjectName("controls");
 
     QWidget *node = new QWidget(this);

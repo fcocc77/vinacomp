@@ -4,6 +4,7 @@ void knob_color::setup_ui()
 {
     int icon_size = 20;
 
+	layout->setMargin(0);
     layout->addWidget(init_space);
 
     mono_edit->setMaximumWidth(50);
@@ -15,16 +16,16 @@ void knob_color::setup_ui()
 	{
 		separate_colors_box_layout->setMargin(0);
 
-		red_hedit->setText("1");
+		red_hedit->setObjectName("red_edit");
 		separate_colors_box_layout->addWidget(red_hedit);
 
-		green_hedit->setText("0.5");
+		green_hedit->setObjectName("green_edit");
 		separate_colors_box_layout->addWidget(green_hedit);
 
-		blue_hedit->setText("1");
+		blue_hedit->setObjectName("blue_edit");
 		separate_colors_box_layout->addWidget(blue_hedit);
 
-		alpha_hedit->setText("0");
+		alpha_hedit->setObjectName("alpha_edit");
 		separate_colors_box_layout->addWidget(alpha_hedit);
 
 		separate_colors_box->hide();
@@ -34,19 +35,24 @@ void knob_color::setup_ui()
 	// Caja de sliders de rgb
 	{
 		separate_colors_slider_layout->setMargin(0);
+		separate_colors_slider_layout->setSpacing(5);
 
 		// Red
 		red_layout->setMargin(0);
 		red_vedit->setMaximumWidth(50);
+		red_vedit->setObjectName("red_edit");
 		red_layout->addWidget(red_vedit);
 		red_layout->addWidget(red_slider);
+		red_slider->setObjectName("red_slider");
 		separate_colors_slider_layout->addWidget(red_widget);
 		//
 
 		// Green
 		green_layout->setMargin(0);
 		green_vedit->setMaximumWidth(50);
+		green_vedit->setObjectName("green_edit");
 		green_layout->addWidget(green_vedit);
+		green_slider->setObjectName("green_slider");
 		green_layout->addWidget(green_slider);
 		separate_colors_slider_layout->addWidget(green_widget);
 		//
@@ -54,7 +60,9 @@ void knob_color::setup_ui()
 		// Blue
 		blue_layout->setMargin(0);
 		blue_vedit->setMaximumWidth(50);
+		blue_vedit->setObjectName("blue_edit");
 		blue_layout->addWidget(blue_vedit);
+		blue_slider->setObjectName("blue_slider");
 		blue_layout->addWidget(blue_slider);
 		separate_colors_slider_layout->addWidget(blue_widget);
 		//
@@ -62,7 +70,9 @@ void knob_color::setup_ui()
 		// Alpha
 		alpha_layout->setMargin(0);
 		alpha_vedit->setMaximumWidth(50);
+		alpha_vedit->setObjectName("alpha_edit");
 		alpha_layout->addWidget(alpha_vedit);
+		alpha_slider->setObjectName("alpha_slider");
 		alpha_layout->addWidget(alpha_slider);
 		separate_colors_slider_layout->addWidget(alpha_widget);
 		//

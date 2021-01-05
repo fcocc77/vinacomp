@@ -212,10 +212,10 @@ void knob_color::set_color(float _red, float _green, float _blue, float _alpha)
 	if (_blue > 1) _blue = 1;
 
 	// Cambia el color del boton de picker
-	QColor color = {_red * 255, _green * 255, _blue * 255};
-	QPalette palette = picker_button->palette();
-	palette.setColor(QPalette::Button, color);
-	picker_button->setAutoFillBackground(true);
-	picker_button->setPalette(palette);
+	QString __red = QString::number(_red * 255);
+	QString __green = QString::number(_green * 255);
+	QString __blue = QString::number(_blue * 255);
+
+	picker_button->setStyleSheet("background: rgb(" + __red + "," + __green + "," + __blue + ");");
 	picker_button->update();
 }
