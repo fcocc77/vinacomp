@@ -75,6 +75,11 @@
             ]
         },
         {
+            "name": "separator1",
+            "type": "separator",
+            "visible": true
+        },
+        {
             "name": "offset",
             "type": "color",
             "label": "Offset",

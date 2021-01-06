@@ -2,8 +2,11 @@
 #define KNOB_SEPARATOR_HPP
 
 #include <QWidget>
+#include <QHBoxLayout>
 
-class knob_separator : public QWidget
+#include <knob.h>
+
+class knob_separator : public knob
 {
 private:
     /* data */

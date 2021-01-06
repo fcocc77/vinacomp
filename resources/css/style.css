@@ -246,8 +246,6 @@ QSlider {
     background: #25282d; }
   #trim_panel #controls {
     background: #30343b; }
-    #trim_panel #controls #tab_widget {
-      background: red; }
     #trim_panel #controls QLineEdit {
       padding: 0px;
       padding-left: 4px;
@@ -273,6 +271,8 @@ QSlider {
             background: #caced3; }
     #trim_panel #controls #knob_choice {
       background: transparent; }
+    #trim_panel #controls #knob_separator QWidget {
+      border-bottom: 1px solid #25282d; }
     #trim_panel #controls #knob_color QWidget {
       background: transparent; }
     #trim_panel #controls #knob_color QLineEdit {
