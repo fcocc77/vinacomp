@@ -7,12 +7,30 @@
         > QWidget
             background: $b20
         #init_space
-            background: transparent    
+            background: transparent
+        #knob_floating
+        #knob_check_box
+            background: transparent
+            QCheckBox
+                spacing: 0px
+                background: $b12
+                border-radius: 2px
+                border: 1px solid $b12
+                &:checked
+                    border-color: $b50
+                &::indicator
+                    border-radius: 2px
+                    &:checked
+                        border: 8px solid transparent
+                        border-radius: 7px
+                        background: $b80
         #knob_color
             QWidget
                 background: transparent
             QLineEdit
                 background: $b13
+            QPushButton
+                background: $b25
             #red_edit
                 border-bottom-color: red
                 &::focus
@@ -49,9 +67,8 @@
                     border-bottom: 1px solid mix(white, $b12, 50%)
                 &::handle
                     background: white
-            QPushButton
-                width: 30px
-                height: 20px
-                border-radius: 2px
-                background: $b25
-
+        QPushButton
+            width: 30px
+            height: 20px
+            border-radius: 2px
+            background: $b25

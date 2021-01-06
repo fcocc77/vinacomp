@@ -3,19 +3,26 @@
 knob_check_box::knob_check_box(
     QString _label,
     bool _default_value)
+
+	: label(_label),
+	checked(_default_value)
 {
-    label = _label;
-    default_value = _default_value;
+    this->setObjectName("knob_check_box");
 
     QHBoxLayout *layout = new QHBoxLayout(this);
+	layout->setMargin(0);
 
     layout->addWidget(init_space);
 
-    checkbox = new QCheckBox();
-    set_check(default_value);
+    checkbox = new QCheckBox(this);
+	connect(checkbox, &QCheckBox::stateChanged, this, [=](int state){
+		checked = state != 0;
+	});
+    set_check(checked);
     layout->addWidget(checkbox);
 
-    label_widget = new QLabel(label);
+    label_widget = new QLabel(this);
+	label_widget->setText(label);
     layout->addWidget(label_widget);
 
     layout->addStretch();
@@ -31,4 +38,14 @@ void knob_check_box::set_check(bool value)
         checkbox->setCheckState(Qt::CheckState(0));
     else
         checkbox->setCheckState(Qt::CheckState(2));
+}
+
+bool knob_check_box::is_checked() const
+{
+	return checked;
+}
+
+void knob_check_box::mousePressEvent(QMouseEvent *event)
+{
+	set_check(!checked);
 }

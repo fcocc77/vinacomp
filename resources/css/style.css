@@ -1,259 +1,29 @@
-* {
-  background: #191b1f;
-  selection-background-color: #59522f;
-  border: none;
-  font-size: 11px;
-  color: #aeb4bc;
-  outline: none; }
-
-QToolTip {
-  background: #191b1f;
-  padding: 3px;
-  border: 1px solid #ffcc00;
-  border-radius: 2px; }
-
-QLabel {
-  background: transparent; }
-
-QPushButton {
-  background: transparent; }
-
-QMainWindow {
-  qproperty-windowIcon: url("/home/pancho/Documents/develop/vinacomp/resources/images/vinacomp.png"); }
-
-QLineEdit {
-  color: #aeb4bc;
-  padding: 3px;
-  border-radius: 2px;
-  background: #1e2024;
-  border: 1px solid #1e2024; }
-  QLineEdit:focus {
-    border-color: #8f7612; }
-
-QComboBox {
-  margin-right: 10px;
-  background-color: #25282d;
-  border: 1px solid transparent;
-  padding: 3px;
-  border-radius: 2px; }
-  QComboBox:focus {
-    border-color: #8f7612; }
-  QComboBox::drop-down {
-    width: 20px;
-    background-color: #3c4149; }
-  QComboBox QAbstractItemView {
-    background-color: #202327; }
-  QComboBox:item {
-    font-size: 13px; }
-    QComboBox:item:selected {
-      background-color: #30343b;
-      color: #ffcc00;
-      padding-left: 0px; }
-
-QTreeWidget {
-  alternate-background-color: #2c2f35;
-  background-color: #25282d;
-  border: 1px solid #2c2f35; }
-  QTreeWidget * {
-    background: none; }
-  QTreeWidget::item {
-    border-bottom: 1px solid #30343b;
-    border-top: 1px solid transparent;
-    height: 25px; }
-    QTreeWidget::item:first {
-      padding-left: 15px; }
-    QTreeWidget::item QLabel {
-      padding: 5px; }
-
-QMenu {
-  background-color: #292d32;
-  color: #caced3;
-  border: 1px solid #514924;
-  border-radius: 2px; }
-  QMenu::item {
-    padding: 4px 15px 4px 22px; }
-    QMenu::item:selected {
-      background-color: #927a17;
-      color: #f4f5f6; }
-    QMenu::item:disabled {
-      color: #7a7e83; }
-  QMenu::separator {
-    background-color: #30343b;
-    margin: 5px;
-    height: 1px; }
-
-QMenuBar {
-  background-color: #25282d;
-  border-bottom: 1px solid #191b1f;
-  padding: 2px;
-  color: #caced3; }
-  QMenuBar::item {
-    background-color: transparent; }
-    QMenuBar::item:selected {
-      color: #ffcc00; }
-    QMenuBar::item::pressed {
-      background-color: #353941; }
-
-QSplitter::handle::horizontal, QSplitter::handle::vertical {
-  background: #191b1f; }
-  QSplitter::handle::horizontal:hover, QSplitter::handle::vertical:hover {
-    background: #d1a906; }
-
-QSplitter::handle::horizontal {
-  width: 1px; }
-
-QSplitter::handle::vertical {
-  height: 1px; }
-
-QScrollBar {
-  padding: 3px; }
-  QScrollBar:vertical, QScrollBar:horizontal {
-    background: #22252a; }
-  QScrollBar:vertical {
-    width: 15px;
-    margin: 23px 0px 23px 0px; }
-  QScrollBar:horizontal {
-    height: 15px;
-    margin: 0px 23px 0px 23px; }
-  QScrollBar::handle:vertical, QScrollBar::handle:horizontal {
-    background: #30343b;
-    border-radius: 4px; }
-    QScrollBar::handle:vertical:hover, QScrollBar::handle:horizontal:hover {
-      background: #98801e; }
-  QScrollBar::handle:vertical {
-    min-height: 20px; }
-  QScrollBar::handle:horizontal {
-    min-width: 20px; }
-  QScrollBar::add-page:vertical, QScrollBar::add-page:horizontal, QScrollBar::sub-page:vertical, QScrollBar::sub-page:horizontal {
-    background: transparent; }
-  QScrollBar::add-line:vertical, QScrollBar::add-line:horizontal {
-    background: #2c2f35;
-    subcontrol-origin: margin; }
-  QScrollBar::add-line:vertical {
-    height: 20px;
-    subcontrol-position: bottom; }
-  QScrollBar::add-line:horizontal {
-    width: 20px;
-    subcontrol-position: left; }
-  QScrollBar::sub-line:vertical, QScrollBar::sub-line:horizontal {
-    background: #2c2f35;
-    subcontrol-origin: margin; }
-  QScrollBar::sub-line:vertical {
-    height: 20px;
-    subcontrol-position: top; }
-  QScrollBar::sub-line:horizontal {
-    width: 20px;
-    subcontrol-position: right; }
-  QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left-arrow:horizontal, QScrollBar::right-arrow:horizontal {
-    background: transparent; }
-  QScrollBar::up-arrow:vertical {
-    image: url("/home/pancho/Documents/develop/vinacomp/resources/images/up_arrow.png"); }
-  QScrollBar::down-arrow:vertical {
-    image: url("/home/pancho/Documents/develop/vinacomp/resources/images/down_arrow.png"); }
-  QScrollBar::left-arrow:horizontal {
-    image: url("/home/pancho/Documents/develop/vinacomp/resources/images/right_arrow.png"); }
-  QScrollBar::right-arrow:horizontal {
-    image: url("/home/pancho/Documents/develop/vinacomp/resources/images/left_arrow.png"); }
-
-QSlider {
-  height: 15px;
-  background: none; }
-  QSlider::groove {
-    background-color: #1e2024;
-    height: 5px;
-    border-radius: 2px; }
-  QSlider::handle {
-    background-color: #5e6673;
-    width: 13px;
-    height: 13px;
-    margin-top: -4px;
-    margin-bottom: -4px;
-    border-radius: 6px; }
-    QSlider::handle::hover {
-      background: #ffcc00; }
-
-#node_graph #nodes_bar {
-  background: #2c2f35;
-  border-bottom: 1px solid #25282d; }
-
-#node_graph #node_view {
-  background: #30343b; }
-
-#curve_editor {
-  background: #30343b; }
-  #curve_editor #knobs_tree {
-    background: #30343b;
-    border-right: 1px solid #25282d; }
-  #curve_editor #graphics_view {
-    background: #121416; }
-
-#properties {
-  background: #30343b; }
-  #properties #butttons {
-    background: #30343b; }
-  #properties #trim_panels {
-    background: #30343b; }
-
-#script_editor {
-  background: #30343b; }
-  #script_editor * {
-    font-size: 15px; }
-  #script_editor #tools {
-    background: #30343b; }
-  #script_editor #output {
-    background: #25282d; }
-
-#tool_bar {
-  background: #25282d;
-  border-left: 1px solid #191b1f; }
-
-#viewer #viewer_graphics {
-  background: black; }
-
-#viewer #player {
-  background: #2c2f35; }
-  #viewer #player QPushButton {
-    background: #3c4149;
-    border-radius: 2px; }
-
-#viewer #timeline {
-  background: #1e2024; }
-
-#viewer #info {
-  background: black; }
-
-#viewer #controls {
-  background: #30343b; }
-
-#viewer #image_correction {
-  background: #25282d; }
-
-#tab_widget #tab {
-  border-top-right-radius: 3px;
-  border-top-left-radius: 3px;
-  background: #25282d; }
-  #tab_widget #tab[_checked='true'] {
-    background: #30343b; }
-    #tab_widget #tab[_checked='true'] > QLabel {
-      color: #ffcc00; }
-
-#panels_layout {
-  background: #191b1f; }
-
-#trim_panel {
-  background: #2c2f35; }
-  #trim_panel #butttons {
-    background: #25282d; }
-  #trim_panel #controls {
     background: #30343b; }
     #trim_panel #controls > QWidget {
       background: #30343b; }
     #trim_panel #controls #init_space {
       background: transparent; }
+    #trim_panel #controls #knob_check_box {
+      background: transparent; }
+      #trim_panel #controls #knob_check_box QCheckBox {
+        spacing: 0px;
+        background: #1e2024;
+        border-radius: 2px;
+        border: 1px solid #1e2024; }
+        #trim_panel #controls #knob_check_box QCheckBox:checked {
+          border-color: #76808f; }
+        #trim_panel #controls #knob_check_box QCheckBox::indicator {
+          border-radius: 2px; }
+          #trim_panel #controls #knob_check_box QCheckBox::indicator:checked {
+            border: 8px solid transparent;
+            border-radius: 7px;
+            background: #caced3; }
     #trim_panel #controls #knob_color QWidget {
       background: transparent; }
     #trim_panel #controls #knob_color QLineEdit {
       background: #202327; }
+    #trim_panel #controls #knob_color QPushButton {
+      background: #3c4149; }
     #trim_panel #controls #knob_color #red_edit {
       border-bottom-color: red; }
       #trim_panel #controls #knob_color #red_edit::focus {
@@ -286,7 +56,7 @@ QSlider {
       border-bottom: 1px solid #8f9092; }
     #trim_panel #controls #knob_color #alpha_slider::handle {
       background: white; }
-    #trim_panel #controls #knob_color QPushButton {
+    #trim_panel #controls QPushButton {
       width: 30px;
       height: 20px;
       border-radius: 2px;

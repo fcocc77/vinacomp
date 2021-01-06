@@ -6,7 +6,9 @@ knob_floating::knob_floating(
 	min(0),
 	max(5)
 {
+    this->setObjectName("knob_floating");
 	layout = new QHBoxLayout(this);
+	layout->setMargin(0);
     layout->addWidget(init_space);
 
     value_edit = new QLineEdit();

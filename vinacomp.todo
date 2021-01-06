@@ -50,7 +50,7 @@ gui__knobs:
 	☐ knob_color: que el icono de paleta cuando este activado tenga otro color
 	☐ knob_color: que el boton de '4' con color de actvado y desabilitado cuando la paleta este activa
 	☐ terminar button knob'
-	☐ terminar checkbox knob'
+	✔ terminar checkbox knob' @done(2021-01-06 17:26) @project(gui__knobs)
 	☐ terminar choice knob'
 	☐ terminar file knob'
 	☐ terminar group knob'
