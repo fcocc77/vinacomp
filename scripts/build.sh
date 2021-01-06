@@ -30,15 +30,13 @@ function run_gui() {
     if [ -f $vinacomp ]; then
 		log_file='/tmp/vinacomp.log'
 
-		gdb -ex "set logging file $log_file" \
-			-ex "set logging redirect on" \
-		   	-ex "set confirm off" \
+		gdb -ex "set confirm off" \
 			-ex "set pagination off" \
-		   	-ex r \
 			-ex "set logging on" \
+	 		-ex r \
 			-ex bt \
 			-ex q \
-			"$vinacomp" &> /dev/null &
+			"$vinacomp"
     fi
 }
 

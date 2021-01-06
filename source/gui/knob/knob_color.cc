@@ -75,24 +75,8 @@ knob_color::knob_color(QColor color)
 
 knob_color::~knob_color()
 {
-	delete layout;
-
-	delete separate_colors_box;
-	delete separate_colors_slider;
-	delete separate_colors_box_layout;
-	delete separate_colors_slider_layout;
-
 	delete mono_edit;
 	delete mono_slider;
-
-	delete red_widget;
-	delete green_widget;
-	delete blue_widget;
-	delete alpha_widget;
-	delete red_layout;
-	delete green_layout;
-	delete blue_layout;
-	delete alpha_layout;
 
 	delete red_vedit;
 	delete green_vedit;
@@ -109,10 +93,26 @@ knob_color::~knob_color()
 	delete blue_slider;
 	delete alpha_slider;
 
+	delete red_layout;
+	delete green_layout;
+	delete blue_layout;
+	delete alpha_layout;
+	delete red_widget;
+	delete green_widget;
+	delete blue_widget;
+	delete alpha_widget;
+
 	delete picker_button;
 	delete picker;
 	delete mono_color_button;
 	delete animation_button;
+
+	delete separate_colors_box_layout;
+	delete separate_colors_slider_layout;
+	delete separate_colors_box;
+	delete separate_colors_slider;
+
+	delete layout;
 }
 
 void knob_color::update()

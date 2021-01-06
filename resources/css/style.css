@@ -256,12 +256,20 @@ QSlider {
       background: #202327; }
     #trim_panel #controls #knob_color #red_edit {
       border-bottom-color: red; }
+      #trim_panel #controls #knob_color #red_edit::focus {
+        border-color: red; }
     #trim_panel #controls #knob_color #green_edit {
       border-bottom-color: green; }
+      #trim_panel #controls #knob_color #green_edit::focus {
+        border-color: green; }
     #trim_panel #controls #knob_color #blue_edit {
       border-bottom-color: blue; }
+      #trim_panel #controls #knob_color #blue_edit::focus {
+        border-color: blue; }
     #trim_panel #controls #knob_color #alpha_edit {
       border-bottom-color: white; }
+      #trim_panel #controls #knob_color #alpha_edit::focus {
+        border-color: white; }
     #trim_panel #controls #knob_color #red_slider::groove {
       border-bottom: 1px solid #8f1012; }
     #trim_panel #controls #knob_color #red_slider::handle {
