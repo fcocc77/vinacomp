@@ -28,7 +28,17 @@ function run_gui() {
     make -j 4
 
     if [ -f $vinacomp ]; then
-        gdb -ex run $vinacomp
+		log_file='/tmp/vinacomp.log'
+
+		gdb -ex "set logging file $log_file" \
+			-ex "set logging redirect on" \
+		   	-ex "set confirm off" \
+			-ex "set pagination off" \
+		   	-ex r \
+			-ex "set logging on" \
+			-ex bt \
+			-ex q \
+			"$vinacomp" &> /dev/null &
     fi
 }
 
