@@ -12,7 +12,8 @@ tab_widget::tab_widget(bool _has_close_button)
     tab_bar = new QWidget(this);
     tab_bar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     tab_bar_layout = new QHBoxLayout(tab_bar);
-    tab_bar_layout->setMargin(0);
+	// margen a la izquierda y arriba
+	tab_bar_layout->setContentsMargins(7, 5, 0, 0);
     tab_bar_layout->setSpacing(5);
 
     layout->addWidget(tab_bar);
@@ -46,6 +47,8 @@ QPushButton *tab_widget::add_cornel_button(QString icon)
     qt::set_icon(cornel_button, icon, 25);
     cornel_button->show();
 
+	// se quita el margen de la izquierda ya que el icono tiene el margen
+	tab_bar_layout->setContentsMargins(0, 5, 0, 0);
     return cornel_button;
 }
 

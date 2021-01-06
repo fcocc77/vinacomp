@@ -2,7 +2,9 @@
 
 knob_file::knob_file(/* args */)
 {
+	this->setObjectName("knob_file");
     QHBoxLayout *layout = new QHBoxLayout(this);
+	layout->setMargin(0);
 
     layout->addWidget(init_space);
 

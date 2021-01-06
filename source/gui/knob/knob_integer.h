@@ -14,7 +14,7 @@
 class knob_integer : public knob
 {
 private:
-    /* data */
+	QLineEdit *value_edit;
 public:
     knob_integer(/* args */);
     ~knob_integer();

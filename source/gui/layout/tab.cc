@@ -21,7 +21,7 @@ tab::tab(
     this->setObjectName("tab");
 
     layout = new QHBoxLayout(this);
-    layout->setContentsMargins(10, 3, 10, 3);
+    layout->setContentsMargins(10, 2, 10, 2);
     label = new QLabel(name);
     layout->addWidget(label);
 

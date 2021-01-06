@@ -2,7 +2,9 @@
 
 knob_choice::knob_choice(QStringList _list)
 {
+	this->setObjectName("knob_choice");
     QHBoxLayout *layout = new QHBoxLayout(this);
+	layout->setMargin(0);
 
     layout->addWidget(init_space);
 

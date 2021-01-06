@@ -2,8 +2,9 @@
 
 knob_position::knob_position(/* args */)
 {
-
+	this->setObjectName("knob_position");
     QHBoxLayout *layout = new QHBoxLayout(this);
+	layout->setMargin(0);
 
     layout->addWidget(init_space);
 

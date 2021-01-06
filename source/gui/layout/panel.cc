@@ -24,7 +24,7 @@ panel::panel(QWidget *_panels_layout,
     QPushButton *cornel_button = setup_cornel_buttons();
 
     QVBoxLayout *layout = new QVBoxLayout();
-    layout->setContentsMargins(0, 4, 0, 0);
+	layout->setMargin(0);
     layout->addWidget(tab_section);
 
     this->setLayout(layout);

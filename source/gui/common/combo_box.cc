@@ -4,6 +4,7 @@ combo_box::combo_box()
     : current_index(0)
 {
     this->setObjectName("combo_box");
+	this->setMinimumHeight(20);
     this->setMinimumWidth(70);
     this->setMaximumWidth(100);
     layout = new QHBoxLayout(this);

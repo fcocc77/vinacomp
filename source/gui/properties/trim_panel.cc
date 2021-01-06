@@ -24,6 +24,7 @@ trim_panel::~trim_panel()
 void trim_panel::setup_ui()
 {
     QVBoxLayout *layout = new QVBoxLayout(this);
+	layout->setSpacing(0);
     layout->setMargin(0);
 
     QWidget *butttons = top_buttons_setup_ui();
