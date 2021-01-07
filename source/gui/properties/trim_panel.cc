@@ -115,7 +115,9 @@ void trim_panel::setup_knobs(QJsonArray *knobs)
 
         else if (type == "group")
         {
-            widget = new knob_group();
+            int knobs_included = knob_object.value("knobs").toInt();
+            widget = new knob_group(label, knobs_included);
+            label = "";
         }
 
         else if (type == "integer")

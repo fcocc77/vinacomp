@@ -2,14 +2,30 @@
 #define KNOB_GROUP_HPP
 
 #include <QWidget>
+#include <QStyle>
+#include <QPushButton>
 
-class knob_group : public QWidget
+#include <knob.h>
+#include <util.h>
+#include <qt.h>
+
+class knob_group : public knob
 {
 private:
-    /* data */
+	QLabel *label_widget;
+	int knobs_included;
+	bool visible_knobs;
+	QPushButton *arrow_button;
+
+	void toggle_open();
+	QList <QWidget *> get_knobs_included();
 public:
-    knob_group(/* args */);
+    knob_group(QString label, int knobs_included);
     ~knob_group();
+
+protected:
+    void mousePressEvent(QMouseEvent *event) override;
+
 };
 
 #endif //KNOB_GROUP_HPP

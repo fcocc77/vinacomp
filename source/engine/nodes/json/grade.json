@@ -5,6 +5,12 @@
     "icon": "grade_a",
     "knobs": [
         {
+            "name": "label1",
+            "type": "label",
+            "label": "Color",
+            "tooltip": ""
+        },
+        {
             "name": "blackpoint",
             "type": "color",
             "label": "Black Point",
@@ -33,24 +39,11 @@
             ]
         },
         {
-            "name": "label1",
-            "type": "label",
-            "label": "Color",
+            "name": "group1",
+            "type": "group",
+            "label": "GRUPO A",
+			"knobs": 2,
             "tooltip": ""
-        },
-        {
-            "name": "lift",
-            "type": "color",
-            "label": "Lift",
-            "tooltip": "",
-            "minimum": 0,
-            "maximum": 255,
-            "visible": true,
-            "default": [
-                20,
-                255,
-                255
-            ]
         },
         {
             "name": "gain",
