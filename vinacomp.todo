@@ -55,7 +55,7 @@ gui__knobs:
 	☐ terminar file knob'
 	☐ terminar group knob'
 	☐ terminar integer knob' @today
-	☐ terminar label knob'
+	✔ terminar label knob' @done(2021-01-07 09:04) @project(gui__knobs)
 	☐ terminar position knob' @today
 	✔ terminar separator knob' @today @done(2021-01-06 20:11) @project(gui__knobs)
 	☐ terminar text knob'

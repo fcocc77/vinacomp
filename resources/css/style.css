@@ -273,6 +273,13 @@ QSlider {
       background: transparent; }
     #trim_panel #controls #knob_separator QWidget {
       border-bottom: 1px solid #25282d; }
+    #trim_panel #controls #knob_label QWidget {
+      background: transparent;
+      border-bottom: 1px solid #3c4149; }
+    #trim_panel #controls #knob_label QLabel {
+      font-weight: bold;
+      color: #76808f;
+      border: none; }
     #trim_panel #controls #knob_color QWidget {
       background: transparent; }
     #trim_panel #controls #knob_color QLineEdit {

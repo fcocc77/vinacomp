@@ -33,6 +33,12 @@
             ]
         },
         {
+            "name": "label1",
+            "type": "label",
+            "label": "Color",
+            "tooltip": ""
+        },
+        {
             "name": "lift",
             "type": "color",
             "label": "Lift",

@@ -105,7 +105,7 @@ void trim_panel::setup_knobs(QJsonArray *knobs)
 
         else if (type == "label")
         {
-            widget = new knob_label();
+            widget = new knob_label(label);
         }
 
         else if (type == "button")

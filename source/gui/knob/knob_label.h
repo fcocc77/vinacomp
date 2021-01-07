@@ -5,12 +5,14 @@
 #include <QHBoxLayout>
 #include <QLabel>
 
-class knob_label : public QWidget
+#include <knob.h>
+
+class knob_label : public knob
 {
 private:
     /* data */
 public:
-    knob_label(/* args */);
+    knob_label(QString label);
     ~knob_label();
 };
 

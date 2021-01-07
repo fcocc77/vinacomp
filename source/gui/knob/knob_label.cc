@@ -1,14 +1,26 @@
 #include <knob_label.h>
 
-knob_label::knob_label(/* args */)
+knob_label::knob_label(QString label)
 {
+	this->setObjectName("knob_label");
 
+	int margin = 5;
     QHBoxLayout *layout = new QHBoxLayout(this);
+	layout->setContentsMargins(0, margin, 0, margin);
 
-    QLabel *label = new QLabel("LABEL:");
-    layout->addWidget(label);
+    QLabel *label_widget = new QLabel(this);
+    label_widget->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+	label_widget->setText(label);
 
-    layout->addStretch();
+	QWidget *start_line = new QWidget(this);
+	QWidget *end_line = new QWidget(this);
+	start_line->setMaximumHeight(1);
+	end_line->setMaximumHeight(1);
+
+	layout->addWidget(start_line);
+    layout->addWidget(label_widget);
+	layout->addWidget(end_line);
+
 }
 
 knob_label::~knob_label()
