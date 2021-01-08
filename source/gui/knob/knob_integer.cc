@@ -19,7 +19,7 @@ knob_integer::knob_integer(/* args */)
     layout->addWidget(_slider);
 
     QPushButton *animation = new QPushButton();
-    qt::set_icon(animation, "key_a", 20);
+    qt::set_icon(animation, "key_a", icon_size);
     layout->addWidget(animation);
 }
 

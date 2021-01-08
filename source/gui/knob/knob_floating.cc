@@ -27,7 +27,7 @@ knob_floating::knob_floating(
     layout->addWidget(_slider);
 
     animation_button = new QPushButton(this);
-    qt::set_icon(animation_button, "key_a", 20);
+    qt::set_icon(animation_button, "key_a", icon_size);
     layout->addWidget(animation_button);
 
 	set_value(default_value);

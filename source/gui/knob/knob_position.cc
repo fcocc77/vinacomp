@@ -19,7 +19,7 @@ knob_position::knob_position(/* args */)
     layout->addStretch();
 
     QPushButton *animation = new QPushButton();
-    qt::set_icon(animation, "key_a", 20);
+    qt::set_icon(animation, "key_a", icon_size);
     layout->addWidget(animation);
 }
 

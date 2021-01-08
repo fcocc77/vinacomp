@@ -64,6 +64,14 @@
                 background: $b13
             QPushButton
                 background: $b25
+                &:hover
+                    background: $b28
+                &[ active = true ]
+                    background: $b15
+                    &:hover
+                        background: $b12
+                &[ disable = true ]
+                    color: $b30
             #red_edit
                 border-bottom-color: red
                 &::focus
@@ -101,7 +109,7 @@
                 &::handle
                     background: white
         QPushButton
-            width: 30px
-            height: 20px
+            width: 25px
+            height: 22px
             border-radius: 2px
             background: $b25

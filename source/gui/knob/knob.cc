@@ -14,6 +14,8 @@ knob::knob(/* args */)
     layout->setMargin(0);
     //
     //
+	
+	icon_size = 15;
 }
 
 knob::~knob()

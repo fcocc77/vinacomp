@@ -45,7 +45,7 @@ knob_color::knob_color(QColor color)
 	alpha_slider = new slider(-1, 1);
 
 	picker_button = new QPushButton(this);
-    picker = new QPushButton(this);
+    palette_button = new QPushButton(this);
     mono_color_button = new QPushButton(this);
     animation_button = new QPushButton(this);
 
@@ -103,7 +103,7 @@ knob_color::~knob_color()
 	delete alpha_widget;
 
 	delete picker_button;
-	delete picker;
+	delete palette_button;
 	delete mono_color_button;
 	delete animation_button;
 
@@ -146,6 +146,7 @@ void knob_color::set_visible_mono_color(bool visible)
 		set_color(color, color, color, color);
 	}
 
+	qt::set_property(mono_color_button, "active", !visible);
 	update();
 }
 
@@ -164,6 +165,8 @@ void knob_color::set_visible_sliders_colors(bool visible)
 	set_visible_mono_color(false);
 	//
 
+	qt::set_property(palette_button, "active", visible);
+	qt::set_property(mono_color_button, "disable", visible);
 	update();
 }
 

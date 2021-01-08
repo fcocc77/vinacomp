@@ -19,7 +19,7 @@ QPushButton {
   background: transparent; }
 
 QMainWindow {
-  qproperty-windowIcon: url("/home/pancho/Documents/develop/vinacomp/resources/images/vinacomp.png"); }
+  qproperty-windowIcon: url("{{path}}/resources/images/vinacomp.png"); }
 
 QLineEdit {
   color: #aeb4bc;
@@ -147,13 +147,13 @@ QScrollBar {
   QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left-arrow:horizontal, QScrollBar::right-arrow:horizontal {
     background: transparent; }
   QScrollBar::up-arrow:vertical {
-    image: url("/home/pancho/Documents/develop/vinacomp/resources/images/up_arrow.png"); }
+    image: url("{{path}}/resources/images/up_arrow.png"); }
   QScrollBar::down-arrow:vertical {
-    image: url("/home/pancho/Documents/develop/vinacomp/resources/images/down_arrow.png"); }
+    image: url("{{path}}/resources/images/down_arrow.png"); }
   QScrollBar::left-arrow:horizontal {
-    image: url("/home/pancho/Documents/develop/vinacomp/resources/images/right_arrow.png"); }
+    image: url("{{path}}/resources/images/right_arrow.png"); }
   QScrollBar::right-arrow:horizontal {
-    image: url("/home/pancho/Documents/develop/vinacomp/resources/images/left_arrow.png"); }
+    image: url("{{path}}/resources/images/left_arrow.png"); }
 
 QSlider {
   height: 15px;
@@ -300,6 +300,14 @@ QSlider {
       background: #202327; }
     #trim_panel #controls #knob_color QPushButton {
       background: #3c4149; }
+      #trim_panel #controls #knob_color QPushButton:hover {
+        background: #434851; }
+      #trim_panel #controls #knob_color QPushButton[active=true] {
+        background: #25282d; }
+        #trim_panel #controls #knob_color QPushButton[active=true]:hover {
+          background: #1e2024; }
+      #trim_panel #controls #knob_color QPushButton[disable=true] {
+        color: #474d57; }
     #trim_panel #controls #knob_color #red_edit {
       border-bottom-color: red; }
       #trim_panel #controls #knob_color #red_edit::focus {
@@ -333,8 +341,8 @@ QSlider {
     #trim_panel #controls #knob_color #alpha_slider::handle {
       background: white; }
     #trim_panel #controls QPushButton {
-      width: 30px;
-      height: 20px;
+      width: 25px;
+      height: 22px;
       border-radius: 2px;
       background: #3c4149; }
 

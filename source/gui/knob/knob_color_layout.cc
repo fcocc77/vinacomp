@@ -2,8 +2,6 @@
 
 void knob_color::setup_ui()
 {
-    int icon_size = 20;
-
 	layout->setMargin(0);
     layout->addWidget(init_space);
 
@@ -84,10 +82,11 @@ void knob_color::setup_ui()
     //
 
 	picker_button->setAutoFillBackground(true);
+	picker_button->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
     layout->addWidget(picker_button);
 
-    qt::set_icon(picker, "color_a", icon_size);
-    layout->addWidget(picker);
+    qt::set_icon(palette_button, "color_a", icon_size);
+    layout->addWidget(palette_button);
 
 	mono_color_button->setText("4");
     layout->addWidget(mono_color_button);
@@ -166,7 +165,7 @@ void knob_color::connections()
 	//
 
 
-    connect(picker, &QPushButton::clicked, this, [this]() {
+    connect(palette_button, &QPushButton::clicked, this, [this]() {
 		toggle_sliders_colors();
     });
 

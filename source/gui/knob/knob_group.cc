@@ -40,13 +40,8 @@ void knob_group::set_open(bool _open)
 	for (QWidget *knob : get_knobs_included())
 		knob->setVisible(open);
 
-	label_widget->setProperty("open", open);
-	label_widget->style()->unpolish(label_widget);
-   	label_widget->style()->polish(label_widget);
-
-	init_space->setProperty("open", open);
-	init_space->style()->unpolish(init_space);
-   	init_space->style()->polish(init_space);
+	qt::set_property(label_widget, "open", open);
+	qt::set_property(init_space, "open", open);
 
 	// cambio de icono de flecha
 	if (open)

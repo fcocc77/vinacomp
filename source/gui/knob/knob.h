@@ -17,6 +17,8 @@ public:
 
     QLabel *label_widget;
     QWidget *init_space;
+
+	int icon_size;
 };
 
 #endif //KNOB_HPP

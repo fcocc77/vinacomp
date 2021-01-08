@@ -27,7 +27,7 @@ private:
     slider *mono_slider;
 
 	QPushButton *picker_button;
-	QPushButton *picker;
+	QPushButton *palette_button;
 	QPushButton *mono_color_button;
 	QPushButton *animation_button;
 
