@@ -14,14 +14,16 @@ class knob_group : public knob
 private:
 	QLabel *label_widget;
 	int knobs_included;
-	bool visible_knobs;
+	bool open;
 	QPushButton *arrow_button;
 
-	void toggle_open();
+	void set_open(bool _open);
 	QList <QWidget *> get_knobs_included();
 public:
-    knob_group(QString label, int knobs_included);
+    knob_group(QString label, int knobs_included, bool open_group);
     ~knob_group();
+
+	void update();
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;

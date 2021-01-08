@@ -41,6 +41,7 @@
         {
             "name": "group1",
             "type": "group",
+			"open": false,
             "label": "GRUPO A",
 			"knobs": 2,
             "tooltip": ""

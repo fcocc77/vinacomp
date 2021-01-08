@@ -1,8 +1,8 @@
 #include <knob_group.h>
 
-knob_group::knob_group(QString label, int _knobs_included)
+knob_group::knob_group(QString label, int _knobs_included, bool open_group)
 	: knobs_included(_knobs_included),
-	visible_knobs(true)
+	open(open_group)
 {
 	this->setObjectName("knob_group");
 	QHBoxLayout *layout = new QHBoxLayout(this);
@@ -17,7 +17,7 @@ knob_group::knob_group(QString label, int _knobs_included)
 
 	arrow_button = new QPushButton(this);
 	connect(arrow_button, &QPushButton::clicked, this, [=](){
-		toggle_open();
+		set_open(!open);
 	});
     arrow_button->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 	qt::set_icon(arrow_button, "arrow_down_a", 18);
@@ -28,22 +28,28 @@ knob_group::~knob_group()
 {
 }
 
-void knob_group::toggle_open()
+void knob_group::update()
 {
-	visible_knobs = !visible_knobs;
-	for (QWidget *knob : get_knobs_included())
-		knob->setVisible(visible_knobs);
+	set_open(open);
+}
 
-	label_widget->setProperty("open", visible_knobs);
+void knob_group::set_open(bool _open)
+{
+	open = _open;
+
+	for (QWidget *knob : get_knobs_included())
+		knob->setVisible(open);
+
+	label_widget->setProperty("open", open);
 	label_widget->style()->unpolish(label_widget);
    	label_widget->style()->polish(label_widget);
 
-	init_space->setProperty("open", visible_knobs);
+	init_space->setProperty("open", open);
 	init_space->style()->unpolish(init_space);
    	init_space->style()->polish(init_space);
 
 	// cambio de icono de flecha
-	if (visible_knobs)
+	if (open)
 		qt::set_icon(arrow_button, "arrow_down_a", 18);
 	else
 		qt::set_icon(arrow_button, "arrow_right_a", 18);
@@ -81,5 +87,5 @@ QList <QWidget *> knob_group::get_knobs_included()
 
 void knob_group::mousePressEvent(QMouseEvent *event)
 {
-	toggle_open();
+	set_open(!open);
 }

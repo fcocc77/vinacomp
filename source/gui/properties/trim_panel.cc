@@ -59,6 +59,7 @@ void trim_panel::setup_knobs(QJsonArray *knobs)
     //
 
     QList<knob *> knob_list;
+    QList<knob *> over_line_knobs;
     for (int i = 0; i < knobs->count(); i++)
     {
         QJsonObject knob_object = knobs->at(i).toObject();
@@ -116,7 +117,8 @@ void trim_panel::setup_knobs(QJsonArray *knobs)
         else if (type == "group")
         {
             int knobs_included = knob_object.value("knobs").toInt();
-            widget = new knob_group(label, knobs_included);
+            bool open_group = knob_object.value("open").toBool();
+            widget = new knob_group(label, knobs_included, open_group);
             label = "";
         }
 
@@ -148,12 +150,12 @@ void trim_panel::setup_knobs(QJsonArray *knobs)
             {
                 // si el parametro tiene 'over_line', crea un widget de linea
                 // e inserta todos los knob anteriores que tengan 'over_line'
-                QWidget *line_widget = new QWidget();
+                QWidget *line_widget = new QWidget(controls_tab);
                 QHBoxLayout *line_layout = new QHBoxLayout(line_widget);
 
                 line_layout->setMargin(0);
 
-                for (knob *last_knob : knob_list)
+                for (knob *last_knob : over_line_knobs)
                 {
                     line_layout->addWidget(last_knob);
 					last_knob->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -167,7 +169,7 @@ void trim_panel::setup_knobs(QJsonArray *knobs)
             }
             else
             {
-                knob_list.clear();
+                over_line_knobs.clear();
                 _knob->set_init_space(init_space_width, label);
 
                 controls_layout->addWidget(_knob);
@@ -175,7 +177,19 @@ void trim_panel::setup_knobs(QJsonArray *knobs)
 			_knob->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
         }
         knob_list.push_back(_knob);
+        over_line_knobs.push_back(_knob);
     }
+
+	// itera todos lo 'knobs' y si el 'knob' es un grupo lo actualiza, para que oculte o muestre
+	// los knob incluidos, si el grupo esta abierto o cerrado, no se puede hacer antes ya
+	// que tienen que estar todos los 'knobs' creados.
+	for (knob *_knob : knob_list)
+	{
+		knob_group *group = dynamic_cast<knob_group *>(_knob);
+		if (group)
+			group->update();
+	}
+	//
 }
 
 QWidget *trim_panel::top_buttons_setup_ui()
@@ -240,7 +254,7 @@ tab_widget *trim_panel::tabs_ui()
     tab_widget *tabs = new tab_widget();
     tabs->setParent(this);
 
-    QWidget *controls_tab = new QWidget(this);
+    controls_tab = new QWidget(this);
     controls_layout = new QVBoxLayout(controls_tab);
     controls_layout->setSpacing(5);
     controls_tab->setObjectName("controls");

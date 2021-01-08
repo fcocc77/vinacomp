@@ -36,6 +36,7 @@ private:
     bool is_maximize = true;
     properties *_properties;
 
+	QWidget *controls_tab;
     QVBoxLayout *controls_layout;
     QLineEdit *name_edit;
 
