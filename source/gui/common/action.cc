@@ -11,7 +11,8 @@ action::action(QString _label, QString shortcut_key, QString _icon_name)
         this->setIcon(QIcon("resources/images/" + icon_name + ".png"));
 
     this->setShortcutContext(Qt::WidgetWithChildrenShortcut);
-    this->setShortcut(QKeySequence(key));
+	if (!key.isEmpty())
+		this->setShortcut(QKeySequence(key));
 }
 action::~action()
 {

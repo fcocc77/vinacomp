@@ -38,6 +38,7 @@ private:
 	knob_editor *_knob_editor;
 	QWidget *knob_editor_container;
 	bool knob_editor_visible;
+	QPushButton *knob_editor_button;
 
     tab_widget *tabs;
     bool is_maximize = true;

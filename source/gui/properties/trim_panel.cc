@@ -17,6 +17,7 @@ trim_panel::trim_panel(properties *__properties,
 
     setup_ui();
     setup_knobs(_knobs);
+	knob_editor_toggle();
 }
 
 trim_panel::~trim_panel()
@@ -210,16 +211,16 @@ QWidget *trim_panel::top_buttons_setup_ui()
 
     int icon_size = 20;
 
-    QPushButton *knob_editor_button = new QPushButton(widget);
-    connect(knob_editor_button, &QPushButton::clicked, this, [=]() {
-		knob_editor_toggle();
-    });
-    qt::set_icon(knob_editor_button, "settings_a", icon_size);
-    layout->addWidget(knob_editor_button);
-
     QPushButton *center_node = new QPushButton(widget);
     qt::set_icon(center_node, "center_a", icon_size);
     layout->addWidget(center_node);
+
+    knob_editor_button = new QPushButton(widget);
+    connect(knob_editor_button, &QPushButton::clicked, this, [=]() {
+		knob_editor_toggle();
+    });
+    qt::set_icon(knob_editor_button, "edit_a", icon_size);
+    layout->addWidget(knob_editor_button);
 
     layout->addStretch();
 
@@ -292,6 +293,11 @@ void trim_panel::knob_editor_toggle()
 
 	knob_editor_visible = !knob_editor_visible;
 	_knob_editor->setVisible(knob_editor_visible);
+
+	if (knob_editor_visible)
+		qt::set_icon(knob_editor_button, "edit_c", 20);
+	else
+		qt::set_icon(knob_editor_button, "edit_a", 20);
 }
 
 QString trim_panel::get_name()

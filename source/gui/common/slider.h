@@ -22,6 +22,9 @@ public:
 
 	void set_value(float value);
 
+protected:
+	void mousePressEvent(QMouseEvent *event) override;
+
 signals:
 	void moved(float value);
 };

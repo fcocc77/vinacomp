@@ -37,4 +37,8 @@ void slider::set_value(float value)
 	this->setValue(_value);
 }
 
-
+void slider::mousePressEvent(QMouseEvent *event)
+{
+	// print("mover slider handler");
+	QSlider::mousePressEvent(event);
+}

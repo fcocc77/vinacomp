@@ -43,6 +43,7 @@ gui__node:
 	☐ crear entrada de 'mask'
 	☐ crear dot y que se pueda insertar presionado control
 gui__knobs:
+	☐ slider: mover el manejador en la posicion del click
 	✔ que los botones tengan hover @done(2021-01-08 15:18) @project(gui__knobs)
 	☐ que los qlineedit con boton derecho despliegue el menu de animacion
 	☐ terminar button knob'

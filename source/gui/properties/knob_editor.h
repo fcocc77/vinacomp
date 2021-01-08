@@ -5,6 +5,9 @@
 #include <QTreeWidget>
 #include <QVBoxLayout>
 
+#include <tools.h>
+#include <action.h>
+
 class knob_editor : public QWidget
 {
 private:
