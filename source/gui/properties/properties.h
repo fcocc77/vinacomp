@@ -45,10 +45,11 @@ public:
 template <class T>
 void properties::add_trim_panel(T *_trim_panel)
 {
-    limit_panels(max_panels - 1);
+	limit_panels(max_panels - 1);
 
-    _trim_panel->maximize(true);
     trim_panels_layout->addWidget(_trim_panel);
+    _trim_panel->maximize(true);
+	_trim_panel->show();
 }
 
 #endif // PROPERTIES_HPP
