@@ -6,8 +6,10 @@ trim_panel::trim_panel(properties *__properties,
                        QJsonArray *_knobs)
 
     : _properties(__properties),
-      name(_name),
-      icon_name(_icon_name)
+	name(_name),
+	icon_name(_icon_name),
+	knob_editor_visible(false),
+	_knob_editor(nullptr)
 {
 
     this->setObjectName("trim_panel");
@@ -23,13 +25,16 @@ trim_panel::~trim_panel()
 
 void trim_panel::setup_ui()
 {
-    QVBoxLayout *layout = new QVBoxLayout(this);
+    layout = new QVBoxLayout(this);
 	layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
 	layout->setSpacing(0);
     layout->setMargin(0);
 
     QWidget *butttons = top_buttons_setup_ui();
     layout->addWidget(butttons);
+
+	knob_editor_container = new QWidget(this);
+	layout->addWidget(knob_editor_container);
 
     tabs = tabs_ui();
     layout->addWidget(tabs);
@@ -205,9 +210,12 @@ QWidget *trim_panel::top_buttons_setup_ui()
 
     int icon_size = 20;
 
-    QPushButton *settings = new QPushButton(widget);
-    qt::set_icon(settings, "settings_a", icon_size);
-    layout->addWidget(settings);
+    QPushButton *knob_editor_button = new QPushButton(widget);
+    connect(knob_editor_button, &QPushButton::clicked, this, [=]() {
+		knob_editor_toggle();
+    });
+    qt::set_icon(knob_editor_button, "settings_a", icon_size);
+    layout->addWidget(knob_editor_button);
 
     QPushButton *center_node = new QPushButton(widget);
     qt::set_icon(center_node, "center_a", icon_size);
@@ -267,6 +275,23 @@ tab_widget *trim_panel::tabs_ui()
     tabs->set_index(0);
 
     return tabs;
+}
+
+void trim_panel::knob_editor_toggle()
+{
+	if (!_knob_editor)
+	{
+		// el 'knob_editor' solo se crea cuando se presiona el boton se 'edit', ya que
+		// solo se usa para editar los knobs, y solo se crea si no esta creado antes
+		QHBoxLayout *knob_editor_layout = new QHBoxLayout(knob_editor_container);
+		knob_editor_layout->setMargin(0);
+		_knob_editor = new knob_editor();
+		_knob_editor->hide();
+		knob_editor_layout->addWidget(_knob_editor);
+	}
+
+	knob_editor_visible = !knob_editor_visible;
+	_knob_editor->setVisible(knob_editor_visible);
 }
 
 QString trim_panel::get_name()

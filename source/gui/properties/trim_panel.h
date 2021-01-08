@@ -14,6 +14,7 @@
 #include <properties.h>
 #include <qt.h>
 #include <tab_widget.h>
+#include <knob_editor.h>
 
 #include <knob.h>
 #include <knob_color.h>
@@ -32,6 +33,12 @@
 class trim_panel : public QWidget
 {
 private:
+	QVBoxLayout *layout;
+
+	knob_editor *_knob_editor;
+	QWidget *knob_editor_container;
+	bool knob_editor_visible;
+
     tab_widget *tabs;
     bool is_maximize = true;
     properties *_properties;
@@ -43,6 +50,7 @@ private:
     QString name;
     QString icon_name;
 
+	void knob_editor_toggle();
     void setup_ui();
     QWidget *top_buttons_setup_ui();
     tab_widget *tabs_ui();
