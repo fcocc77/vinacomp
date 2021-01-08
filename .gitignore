@@ -16,3 +16,4 @@ bin/*
 *.swo
 session.vim
 resources/images/
+gdb.txt
