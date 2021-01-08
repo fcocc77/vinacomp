@@ -11,7 +11,7 @@ trim_panel::trim_panel(properties *__properties,
 {
 
     this->setObjectName("trim_panel");
-    this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+	this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
     setup_ui();
     setup_knobs(_knobs);
@@ -24,11 +24,11 @@ trim_panel::~trim_panel()
 void trim_panel::setup_ui()
 {
     QVBoxLayout *layout = new QVBoxLayout(this);
+	layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
 	layout->setSpacing(0);
     layout->setMargin(0);
 
     QWidget *butttons = top_buttons_setup_ui();
-
     layout->addWidget(butttons);
 
     tabs = tabs_ui();
@@ -156,10 +156,8 @@ void trim_panel::setup_knobs(QJsonArray *knobs)
                 for (knob *last_knob : knob_list)
                 {
                     line_layout->addWidget(last_knob);
-                    last_knob->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+					last_knob->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
                 }
-
-                _knob->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 
                 line_layout->addWidget(_knob);
                 line_layout->addStretch();
@@ -174,6 +172,7 @@ void trim_panel::setup_knobs(QJsonArray *knobs)
 
                 controls_layout->addWidget(_knob);
             }
+			_knob->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
         }
         knob_list.push_back(_knob);
     }
@@ -248,8 +247,8 @@ tab_widget *trim_panel::tabs_ui()
 
     QWidget *node = new QWidget(this);
 
-    tabs->add_tab(controls_tab, "Controls");
-    tabs->add_tab(node, "Node");
+	tabs->add_tab(controls_tab, "Controls");
+	tabs->add_tab(node, "Node");
 
     tabs->set_index(0);
 
@@ -269,9 +268,6 @@ void trim_panel::set_name(QString _name)
 
 void trim_panel::maximize(bool _maximize)
 {
-    _properties->hide();
     tabs->setVisible(_maximize);
-    _properties->show();
-
     is_maximize = _maximize;
 }

@@ -48,11 +48,7 @@ void properties::add_trim_panel(T *_trim_panel)
     limit_panels(max_panels - 1);
 
     _trim_panel->maximize(true);
-
-    this->hide();
-    _trim_panel->show();
     trim_panels_layout->addWidget(_trim_panel);
-    this->show();
 }
 
 #endif // PROPERTIES_HPP

@@ -23,14 +23,14 @@ void properties::setup_ui()
     trim_panels = new QWidget(this);
     trim_panels->setObjectName("trim_panels");
     trim_panels_layout = new QVBoxLayout(trim_panels);
+	trim_panels_layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
     trim_panels_layout->setContentsMargins(0, 0, 0, 0);
-    trim_panels_layout->setDirection(QBoxLayout::BottomToTop);
-    trim_panels_layout->addStretch();
+	trim_panels_layout->setDirection(QBoxLayout::BottomToTop);
 
-    QScrollArea *scrollArea = new QScrollArea(this);
-    scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-    scrollArea->setWidgetResizable(true);
-    scrollArea->setWidget(trim_panels);
+	QScrollArea *scrollArea = new QScrollArea(this);
+	scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+	scrollArea->setWidgetResizable(true);
+	scrollArea->setWidget(trim_panels);
 
     layout->addWidget(scrollArea);
 }
