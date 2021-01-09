@@ -2,6 +2,7 @@
 #define ACTION_HPP
 
 #include <QAction>
+#include <QPushButton>
 
 #include <util.h>
 #include <qt.h>
@@ -16,6 +17,9 @@ private:
 	bool checkable;
 	bool checked;
 
+	QPushButton *button;
+	int icon_size;
+
 public:
     action(QString label, QString shortcut_key, QString icon_name = "");
     ~action();
@@ -26,6 +30,8 @@ public:
     QString get_label() const;
 	void set_checkable(bool checkable);
 	bool is_checked() const;
+	void set_checked(bool _checked);
+	QPushButton *make_button(QWidget *_tools, int _icon_size, bool uncheck_all);
 
     template <class T, typename Func>
     void connect_to(T *obj, Func func)
@@ -33,8 +39,6 @@ public:
         // conecta la funcion a la accion
         connect(this, &QAction::triggered, obj, [=]() {
             func();
-			if (checkable)
-				checked = !checked;
         });
 
         obj->addAction(this);

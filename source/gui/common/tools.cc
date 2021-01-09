@@ -13,28 +13,25 @@ tools::tools(int _icon_size)
 
 tools::~tools()
 {
-	for (QPushButton *button : buttons)
-		delete button;
+	for (action *_action : actions)
+		delete _action;
 }
 
 void tools::add_action(action *_action)
 {
-    QPushButton *button = new QPushButton();
-	buttons.push_back(button);
+	actions.push_back(_action);
 
-    button->setToolTip(_action->get_label());
-	qt::set_icon(button, _action->get_icon_name() + "_a", icon_size);
-
-    connect(button, &QPushButton::clicked, this, [=]() {
-        _action->trigger();
-		if (_action->is_checked())
-			qt::set_icon(button, _action->get_icon_name() + "_c", icon_size);
-		else
-			qt::set_icon(button, _action->get_icon_name() + "_a", icon_size);
-
-    });
-
+	// permite que solo se pueda hacer 1 solo 'check' a la vez
+	bool uncheck_all = true;
+	//
+	QPushButton *button = _action->make_button(this, icon_size, uncheck_all);
     layout->addWidget(button);
+}
+
+void tools::set_checked_all(bool checked)
+{
+	for (action *_action : actions)
+		_action->set_checked(checked);
 }
 
 void tools::add_separator()

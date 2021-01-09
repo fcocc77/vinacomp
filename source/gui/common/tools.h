@@ -14,7 +14,7 @@ class tools : public QWidget
 private:
     QHBoxLayout *layout;
 	int icon_size;
-	QList< QPushButton * > buttons;
+	QList< action * > actions;
 
 public:
     tools(int icon_size = 22);
@@ -24,6 +24,7 @@ public:
     void add_separator();
     void add_stretch();
     void add_widget(QWidget *widget);
+	void set_checked_all(bool checked);
 
 	QHBoxLayout *get_layout() const;
 };
