@@ -3,61 +3,143 @@
 knob_editor::knob_editor()
 {
 	layout = new QVBoxLayout(this);
-
-	// knobs_list = new QTreeWidget(this);
-	// layout->addWidget(knobs_list);
+	layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
+	layout->setMargin(0);
 
 	tools *tools_bar = new tools(20);
 	layout->addWidget(tools_bar);
-	layout->setMargin(0);
 
+	// Floating
 	action *float_knob_action = new action("Floating Knob", "", "float");
 	float_knob_action->set_checkable(true);
-	float_knob_action->connect_to(this, [=](){ });
+	float_knob_action->connect_to(this, [=](){
+		minimum_edit->show();
+		maximum_edit->show();
+		edit_box->setVisible(float_knob_action->is_checked());
+	});
+	//
+	//
 
+	// Integer
 	action *int_knob_action = new action("Integer Knob", "", "int");
 	int_knob_action->set_checkable(true);
-	int_knob_action->connect_to(this, [](){ });
+	int_knob_action->connect_to(this, [=](){
+		minimum_edit->show();
+		maximum_edit->show();
+		edit_box->setVisible(int_knob_action->is_checked());
+	});
+	//
+	//
 
+	// Color
 	action *color_knob_action = new action("Color Knob", "", "color");
 	color_knob_action->set_checkable(true);
-	color_knob_action->connect_to(this, [](){ });
+	color_knob_action->connect_to(this, [=](){
+		minimum_edit->show();
+		maximum_edit->show();
+		edit_box->setVisible(color_knob_action->is_checked());
+	});
+	//
+	//
 
+	// Button
 	action *button_knob_action = new action("Button Knob", "", "button");
 	button_knob_action->set_checkable(true);
-	button_knob_action->connect_to(this, [](){ });
+	button_knob_action->connect_to(this, [=](){
+		minimum_edit->hide();
+		maximum_edit->hide();
+		edit_box->setVisible(button_knob_action->is_checked());
+	});
+	//
+	//
 
+	// Combo Box
 	action *combo_box_knob_action = new action("Choice Knob", "", "combo_box");
 	combo_box_knob_action->set_checkable(true);
-	combo_box_knob_action->connect_to(this, [](){ });
+	combo_box_knob_action->connect_to(this, [=](){
+		minimum_edit->hide();
+		maximum_edit->hide();
+		edit_box->setVisible(combo_box_knob_action->is_checked());
+	});
+	//
+	//
 
+	// CheckBox
 	action *check_box_knob_action = new action("CheckBox Knob", "", "check_box");
 	check_box_knob_action->set_checkable(true);
-	check_box_knob_action->connect_to(this, [](){ });
+	check_box_knob_action->connect_to(this, [=](){
+		minimum_edit->hide();
+		maximum_edit->hide();
+		edit_box->setVisible(check_box_knob_action->is_checked());
+	});
+	//
+	//
 
+	// Text
 	action *text_knob_action = new action("Text Knob", "", "text");
 	text_knob_action->set_checkable(true);
-	text_knob_action->connect_to(this, [](){ });
+	text_knob_action->connect_to(this, [=](){
+		minimum_edit->hide();
+		maximum_edit->hide();
+		edit_box->setVisible(text_knob_action->is_checked());
+	});
+	//
+	//
 
+	// File
 	action *file_knob_action = new action("File Knob", "", "create_new_folder");
 	file_knob_action->set_checkable(true);
-	file_knob_action->connect_to(this, [](){ });
+	file_knob_action->connect_to(this, [=](){
+		minimum_edit->hide();
+		maximum_edit->hide();
+		edit_box->setVisible(file_knob_action->is_checked());
+	});
+	//
+	//
 
+	// Position
 	action *position_knob_action = new action("Position Knob", "", "position");
 	position_knob_action->set_checkable(true);
-	position_knob_action->connect_to(this, [](){ });
+	position_knob_action->connect_to(this, [=](){
+		minimum_edit->hide();
+		maximum_edit->hide();
+		edit_box->setVisible(position_knob_action->is_checked());
+	});
+	//
+	//
 
+	// Label
 	action *label_knob_action = new action("Label Knob", "", "label");
 	label_knob_action->set_checkable(true);
-	label_knob_action->connect_to(this, [](){ });
+	label_knob_action->connect_to(this, [=](){
+		minimum_edit->hide();
+		maximum_edit->hide();
+		edit_box->setVisible(label_knob_action->is_checked());
+	});
+	//
+	//
 
+	// Group
 	action *group_knob_action = new action("Group Knob", "", "group");
 	group_knob_action->set_checkable(true);
-	group_knob_action->connect_to(this, [](){ });
+	group_knob_action->connect_to(this, [=](){
+		minimum_edit->hide();
+		maximum_edit->hide();
+		edit_box->setVisible(group_knob_action->is_checked());
+	});
+	//
+	//
 
+	// Separator
 	action *separator_knob_action = new action("Separator Knob", "", "separator");
 	separator_knob_action->set_checkable(true);
-	separator_knob_action->connect_to(this, [](){ });
+	separator_knob_action->connect_to(this, [=](){
+		minimum_edit->hide();
+		maximum_edit->hide();
+		edit_box->setVisible(separator_knob_action->is_checked());
+	});
+	//
+	//
 
 	tools_bar->add_action(float_knob_action);
 	tools_bar->add_action(int_knob_action);
@@ -75,17 +157,18 @@ knob_editor::knob_editor()
 	tools_bar->add_stretch();
 
 	// Caja de edicion
-	QWidget *edit_box = new QWidget(this);
+	edit_box = new QWidget(this);
+	edit_box->hide();
 	QHBoxLayout *edit_box_layout = new QHBoxLayout(edit_box);
 	layout->addWidget(edit_box);
 
 
-	QLineEdit *knob_name = new QLineEdit(this);
-	QLineEdit *knob_label = new QLineEdit(this);
-	QLineEdit *minimum_edit = new QLineEdit(this);
-	QLineEdit *maximum_edit = new QLineEdit(this);
-	QLabel *new_line_label = new QLabel("New Line");
-	QCheckBox *new_line_check = new QCheckBox(this);
+	knob_name = new QLineEdit(this);
+	knob_label = new QLineEdit(this);
+	minimum_edit = new QLineEdit(this);
+	maximum_edit = new QLineEdit(this);
+	new_line_label = new QLabel("New Line");
+	new_line_check = new QCheckBox(this);
 
 	minimum_edit->setMaximumWidth(70);
 	maximum_edit->setMaximumWidth(70);

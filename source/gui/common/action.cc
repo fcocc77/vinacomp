@@ -36,7 +36,6 @@ QPushButton *action::make_button(QWidget *_tools, int _icon_size, bool uncheck_a
 		qt::set_icon(button, icon_name + "_a", icon_size);
 
 		connect(button, &QPushButton::clicked, this, [=]() {
-			this->trigger();
 			if (checkable)
 			{
 				bool _checked = checked;
@@ -44,6 +43,7 @@ QPushButton *action::make_button(QWidget *_tools, int _icon_size, bool uncheck_a
 					dynamic_cast< tools * >(_tools)->set_checked_all(false);
 				set_checked(!_checked);
 			}
+			this->trigger();
 		});
 	}
 

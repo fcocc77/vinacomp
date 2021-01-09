@@ -5,19 +5,18 @@ trim_panel::trim_panel(properties *__properties,
                        QString _icon_name,
                        QJsonArray *_knobs)
 
-    : _properties(__properties),
-	name(_name),
-	icon_name(_icon_name),
-	knob_editor_visible(false),
-	_knob_editor(nullptr)
+    : _properties(__properties)
+	, name(_name)
+	, icon_name(_icon_name)
+	, knob_editor_visible(false)
+	, _knob_editor(nullptr)
 {
 
-    this->setObjectName("trim_panel");
+	this->setObjectName("trim_panel");
 	this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-    setup_ui();
-    setup_knobs(_knobs);
-	knob_editor_toggle();
+	setup_ui();
+	setup_knobs(_knobs);
 }
 
 trim_panel::~trim_panel()
