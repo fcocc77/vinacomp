@@ -13,6 +13,8 @@ private:
     QString icon_name;
     QString tool_tip;
     QString label;
+	bool checkable;
+	bool checked;
 
 public:
     action(QString label, QString shortcut_key, QString icon_name = "");
@@ -22,6 +24,8 @@ public:
     void set_tool_tip(QString tip);
     QString get_tool_tip() const;
     QString get_label() const;
+	void set_checkable(bool checkable);
+	bool is_checked() const;
 
     template <class T, typename Func>
     void connect_to(T *obj, Func func)
@@ -29,6 +33,8 @@ public:
         // conecta la funcion a la accion
         connect(this, &QAction::triggered, obj, [=]() {
             func();
+			if (checkable)
+				checked = !checked;
         });
 
         obj->addAction(this);

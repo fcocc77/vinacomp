@@ -4,7 +4,7 @@ viewer_gl::viewer_gl()
 	: gl_view(true),
 	fitted(true)
 {
-    center_viewer = new action("Center Image", "F", "center_a");
+    center_viewer = new action("Center Image", "F", "center");
 	center_viewer->connect_to(this, [=]() { fit_to_viewport(); });
 }
 

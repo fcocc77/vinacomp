@@ -4,6 +4,9 @@
 #include <QWidget>
 #include <QTreeWidget>
 #include <QVBoxLayout>
+#include <QLineEdit>
+#include <QLabel>
+#include <QCheckBox>
 
 #include <tools.h>
 #include <action.h>

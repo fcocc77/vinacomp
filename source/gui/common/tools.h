@@ -13,9 +13,11 @@ class tools : public QWidget
 {
 private:
     QHBoxLayout *layout;
+	int icon_size;
+	QList< QPushButton * > buttons;
 
 public:
-    tools(/* args */);
+    tools(int icon_size = 22);
     ~tools();
 
     void add_action(action *_action);

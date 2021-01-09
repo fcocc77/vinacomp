@@ -1,6 +1,7 @@
 #include <tools.h>
 
-tools::tools()
+tools::tools(int _icon_size)
+	: icon_size(_icon_size)
 {
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     this->setObjectName("tools");
@@ -12,17 +13,25 @@ tools::tools()
 
 tools::~tools()
 {
+	for (QPushButton *button : buttons)
+		delete button;
 }
 
 void tools::add_action(action *_action)
 {
     QPushButton *button = new QPushButton();
+	buttons.push_back(button);
 
     button->setToolTip(_action->get_label());
-    qt::set_icon(button, _action->get_icon_name(), 22);
+	qt::set_icon(button, _action->get_icon_name() + "_a", icon_size);
 
     connect(button, &QPushButton::clicked, this, [=]() {
         _action->trigger();
+		if (_action->is_checked())
+			qt::set_icon(button, _action->get_icon_name() + "_c", icon_size);
+		else
+			qt::set_icon(button, _action->get_icon_name() + "_a", icon_size);
+
     });
 
     layout->addWidget(button);
@@ -51,3 +60,4 @@ QHBoxLayout *tools::get_layout() const
 {
 	return layout;
 }
+

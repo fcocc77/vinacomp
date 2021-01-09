@@ -137,35 +137,35 @@ QWidget *viewer::player_setup_ui()
 	player_tools->setObjectName("player");
 
 	// Play
-	action *play_forward_action = new action("Play Forward", "L", "play_arrow_a");
+	action *play_forward_action = new action("Play Forward", "L", "play_arrow");
     play_forward_action->connect_to(this, [this]() { play_forward(); });
 
-	action *play_backward_action = new action("Play Backward", "L", "play_back_a");
+	action *play_backward_action = new action("Play Backward", "L", "play_back");
     play_backward_action->connect_to(this, [this]() { play_backward(); });
 	//
 
-	action *first_frame = new action("Go to first frame", "L", "skip_previous_a");
+	action *first_frame = new action("Go to first frame", "L", "skip_previous");
     first_frame->connect_to(this, [this]() { go_to_first_frame(); });
-	action *last_frame = new action("Go to last frame", "L", "skip_next_a");
+	action *last_frame = new action("Go to last frame", "L", "skip_next");
     last_frame->connect_to(this, [this]() { go_to_last_frame(); });
 
-	action *next_frame_action = new action("Next Frame", "L", "next_frame_a");
+	action *next_frame_action = new action("Next Frame", "L", "next_frame");
     next_frame_action->connect_to(this, [this]() { next_frame(); });
-	action *previous_frame_action = new action("Previous Frame", "L", "previous_frame_a");
+	action *previous_frame_action = new action("Previous Frame", "L", "previous_frame");
     previous_frame_action->connect_to(this, [this]() { previous_frame(); });
 
-	action *next_key_frame_action = new action("Next key frame", "L", "next_key_frame_a");
+	action *next_key_frame_action = new action("Next key frame", "L", "next_key_frame");
     next_key_frame_action->connect_to(this, [this]() { next_key_frame(); });
-	action *previous_key_frame_action = new action("Previous key frame", "L", "previous_key_frame_a");
+	action *previous_key_frame_action = new action("Previous key frame", "L", "previous_key_frame");
     previous_key_frame_action->connect_to(this, [this]() { previous_key_frame(); });
 
-	action *skip_forward_action = new action("Skip Forward", "L", "skip_forward_a");
+	action *skip_forward_action = new action("Skip Forward", "L", "skip_forward");
     skip_forward_action->connect_to(this, [this]() { skip_forward(); });
-	action *skip_backward_action = new action("Skip Backward", "L", "skip_backward_a");
+	action *skip_backward_action = new action("Skip Backward", "L", "skip_backward");
     skip_backward_action->connect_to(this, [this]() { skip_backward(); });
 
-	action *in_action = new action("Input", "L", "input_a");
-	action *out_action = new action("Output", "L", "output_a");
+	action *in_action = new action("Input", "L", "input");
+	action *out_action = new action("Output", "L", "output");
 
     frame_edit = new QLineEdit(player_tools);
 	frame_edit->setValidator( new QIntValidator(-100000, 100000, this) );  // Solo numeros
