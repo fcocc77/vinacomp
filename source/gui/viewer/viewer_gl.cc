@@ -64,7 +64,30 @@ void viewer_gl::paintGL()
 {
     gl_view::paintGL();
 
-    draw_frame(1920, 1080, Qt::darkGray);
+	QImage image("/home/pancho/Desktop/coffe.jpg");
+	// image = image.convertToFormat(QImage::Format_RGB32);
+
+	const uchar *data = image.constBits();
+	int width = image.width();
+	int height = image.height();
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_BGRA, GL_UNSIGNED_BYTE, data);
+	glGenerateMipmap(GL_TEXTURE_2D);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	// genera un rectangulo con las cordenadas de la textura
+	glEnable(GL_TEXTURE_2D);
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0f, 0.0f); glVertex2f(0, 0); // Inferior Izquierda
+    glTexCoord2f(1.0f, 0.0f); glVertex2f(width, 0); // Inferior Derecha
+    glTexCoord2f(1.0f, 1.0f); glVertex2f(width, height); // Superior Derecha
+    glTexCoord2f(0.0f, 1.0f); glVertex2f(0, height); // Superior Izquierda
+	glEnd();
+	glDisable(GL_TEXTURE_2D);
+	//
+
+	draw_frame(1920, 1080, Qt::darkGray);
 }
 
 void viewer_gl::mousePressEvent(QMouseEvent *event)

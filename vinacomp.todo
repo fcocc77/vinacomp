@@ -25,6 +25,8 @@ gui__viewer_controls:
 gui__viewer_image_correcction:
 	☐ que los slide modifiquen el qlineedit
 	☐ que los botones permuten entre la gamma y la exposicion habilitada y desabilitada
+gui__viewer_info:
+	☐ ubicar el viewer info a la derecha del viewer gl
 gui__viewer_gl:
 	☐ poner un texto de la resolucion en la parte inferior izquierda del cuadro
 	☐ opcion de 'overlay' con la letra 'q' que funcione como palanca y deje visible y ocultar las lineas del cuadro de resolucion.
