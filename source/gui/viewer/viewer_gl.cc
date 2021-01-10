@@ -6,6 +6,9 @@ viewer_gl::viewer_gl()
 {
     center_viewer = new action("Center Image", "F", "center");
 	center_viewer->connect_to(this, [=]() { fit_to_viewport(); });
+
+    fit_100_percent = new action("Fit 100%", "Ctrl+1", "fit_100");
+	fit_100_percent->connect_to(this, [=]() { fit_to_percent(100); });
 }
 
 viewer_gl::~viewer_gl()
@@ -51,12 +54,23 @@ void viewer_gl::fit_to_viewport()
 		float scale_y = get_scale().y();
 		set_scale({scale_y, scale_y});
 	}
+}
 
+void viewer_gl::fit_to_percent(int percent)
+{
+	fitted = false;
+
+	// al dividir el ancho del viewport por 4, obtenemos la escala del 100% de la imagen
+	int scale_100 = this->width() / 4;
+	int scale = scale_100 * 100 / percent;
+	set_scale({scale, scale});
+	//
+
+	update();
 }
 
 void viewer_gl::draw_frame(int width, int height, QColor color)
 {
-
     draw_line({0, 0}, {0, height}, color);
     draw_line({0, height}, {width, height}, color);
     draw_line({width, height}, {width, 0}, color);

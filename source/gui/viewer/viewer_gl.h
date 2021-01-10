@@ -18,10 +18,12 @@ public:
 
     // Acciones
     action *center_viewer;
+    action *fit_100_percent;
     //
 
 	bool fitted;
 	void fit_to_viewport();
+	void fit_to_percent(int percent);
 protected:
     void initializeGL() override;
     void paintGL() override;
