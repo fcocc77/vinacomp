@@ -16,6 +16,9 @@ void viewer_gl::initializeGL()
 {
     initializeOpenGLFunctions();
     glClearColor(0, 0, 0, 1);
+
+	image = QImage("/home/pancho/Desktop/coffe.jpg");
+	image = image.mirrored();
 }
 
 void viewer_gl::resizeGL(int w, int h)
@@ -60,33 +63,46 @@ void viewer_gl::draw_frame(int width, int height, QColor color)
     draw_line({width, 0}, {0, 0}, color);
 }
 
-void viewer_gl::paintGL()
+void viewer_gl::draw_image()
 {
-    gl_view::paintGL();
-
-	QImage image("/home/pancho/Desktop/coffe.jpg");
-	// image = image.convertToFormat(QImage::Format_RGB32);
-
-	const uchar *data = image.constBits();
 	int width = image.width();
 	int height = image.height();
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_BGRA, GL_UNSIGNED_BYTE, data);
+	// genera la textura 2d a partir de los bits de la imagen
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_BGRA, GL_UNSIGNED_BYTE, image.constBits());
 	glGenerateMipmap(GL_TEXTURE_2D);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	//
+
+	// si el zoom es menor a 100, muestra los pixels en la imagen
+	if (get_scale().x() < 100)
+	{
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	}
+	else
+	{
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	}
+	//
 
 	// genera un rectangulo con las cordenadas de la textura
 	glEnable(GL_TEXTURE_2D);
 	glBegin(GL_QUADS);
+	glColor3f(1, 1, 1);
 	glTexCoord2f(0.0f, 0.0f); glVertex2f(0, 0); // Inferior Izquierda
-    glTexCoord2f(1.0f, 0.0f); glVertex2f(width, 0); // Inferior Derecha
-    glTexCoord2f(1.0f, 1.0f); glVertex2f(width, height); // Superior Derecha
-    glTexCoord2f(0.0f, 1.0f); glVertex2f(0, height); // Superior Izquierda
+	glTexCoord2f(1.0f, 0.0f); glVertex2f(width, 0); // Inferior Derecha
+	glTexCoord2f(1.0f, 1.0f); glVertex2f(width, height); // Superior Derecha
+	glTexCoord2f(0.0f, 1.0f); glVertex2f(0, height); // Superior Izquierda
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
 	//
+}
 
+void viewer_gl::paintGL()
+{
+    gl_view::paintGL();
+	draw_image();
 	draw_frame(1920, 1080, Qt::darkGray);
 }
 
