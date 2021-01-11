@@ -2,6 +2,7 @@
 
 viewer::viewer()
 	: current_frame(0)
+	, frame_rate(24)
 {
     _viewer_gl = new viewer_gl();
     _viewer_gl->setObjectName("viewer_graphics");

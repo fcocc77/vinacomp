@@ -137,14 +137,18 @@ QWidget *viewer::player_setup_ui()
 	player_tools->setObjectName("player");
 
 	play_forward_action = new action("Play Forward", "", "play_arrow");
-    play_forward_action->connect_to(this, [this]() { play_forward(); });
+    play_forward_action->connect_to(this, [this]() { play(QTimeLine::Forward); });
 
 	stop_forward_action = new action("Stop", "", "stop");
     stop_forward_action->connect_to(this, [this]() { stop(); });
 	stop_forward_action->set_visible(false);
 
-	action *play_backward_action = new action("Play Backward", "", "play_back");
-    play_backward_action->connect_to(this, [this]() { play_backward(); });
+	play_backward_action = new action("Play Backward", "", "play_back");
+    play_backward_action->connect_to(this, [this]() { play(QTimeLine::Backward); });
+
+	stop_backward_action = new action("Stop", "", "stop");
+    stop_backward_action->connect_to(this, [this]() { stop(); });
+	stop_backward_action->set_visible(false);
 
 	action *first_frame = new action("Go to first frame", "", "skip_previous");
     first_frame->connect_to(this, [this]() { go_to_first_frame(); });
@@ -193,6 +197,7 @@ QWidget *viewer::player_setup_ui()
     player_tools->add_action(first_frame);
     player_tools->add_action(previous_key_frame_action);
     player_tools->add_action(previous_frame_action);
+    player_tools->add_action(stop_backward_action);
     player_tools->add_action(play_backward_action);
 
     player_tools->add_widget(frame_edit);

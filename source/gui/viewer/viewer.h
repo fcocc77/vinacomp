@@ -30,6 +30,7 @@ private:
     time_line *_time_line;
 
 	int current_frame;
+	int frame_rate;
     //
     void setup_ui();
     QWidget *player_setup_ui();
@@ -42,6 +43,8 @@ private:
 	// Acciones
 	action *play_forward_action;
 	action *stop_forward_action;
+	action *play_backward_action;
+	action *stop_backward_action;
 	//
 
 	// Player
@@ -52,9 +55,8 @@ private:
 	QTimeLine *qtime_line;
 	void player_init();
 	void set_frame(int frame);
-	void play_forward();
+	void play(QTimeLine::Direction direction);
 	void stop();
-	void play_backward();
 	void go_to_first_frame();
 	void go_to_last_frame();
 	void next_frame();

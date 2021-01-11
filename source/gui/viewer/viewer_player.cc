@@ -29,52 +29,77 @@ void viewer::set_frame(int frame)
 	// ...
 }
 
-void viewer::play_forward()
+void viewer::play(QTimeLine::Direction direction)
 {
-	int first_frame = current_frame;
-	int last_frame = 100;
-	int total_frames = last_frame - first_frame + 1;
-	int frame_rate = 24;
+	stop();
+
+	int end_frame, total_frames;
+	int start_frame = current_frame;
+
+	if (direction == QTimeLine::Forward)
+	{
+		end_frame = 100;
+		total_frames = end_frame - start_frame + 1;
+		qtime_line->setFrameRange(start_frame, end_frame);
+
+		play_forward_action->set_visible(false);
+		stop_forward_action->set_visible(true);
+	}
+	else
+	{
+		end_frame = 1;
+		total_frames = start_frame - end_frame + 1;
+		qtime_line->setFrameRange(end_frame, start_frame);
+
+		play_backward_action->set_visible(false);
+		stop_backward_action->set_visible(true);
+	}
+
 	int duration_ms = (total_frames * 1000) / frame_rate;
 
-	qtime_line->setFrameRange(first_frame, last_frame);
 	qtime_line->setDuration(duration_ms);
+	qtime_line->setDirection(direction);
 
-	play_forward_action->set_visible(false);
-	stop_forward_action->set_visible(true);
 	qtime_line->start();
-}
-
-void viewer::play_backward()
-{
 }
 
 void viewer::stop()
 {
 	play_forward_action->set_visible(true);
+	play_backward_action->set_visible(true);
 	stop_forward_action->set_visible(false);
+	stop_backward_action->set_visible(false);
 	qtime_line->stop();
 }
 
 void viewer::go_to_first_frame()
 {
+	bool playing = qtime_line->state();
+	stop();
+
 	set_frame(1);
 	_time_line->go_to_frame(1);
+
+	if (playing)
+		play(qtime_line->direction());
 }
 
 void viewer::go_to_last_frame()
 {
+	stop();
 	set_frame(100);
 	_time_line->go_to_frame(100);
 }
 
 void viewer::next_frame()
 {
+	stop();
 	_time_line->next_frame();
 }
 
 void viewer::previous_frame()
 {
+	stop();
 	_time_line->previous_frame();
 }
 
@@ -88,12 +113,14 @@ void viewer::previous_key_frame()
 
 void viewer::skip_forward()
 {
+	stop();
 	int skip_frames = skip_frame_edit->text().toInt();
 	_time_line->next_frame_each(skip_frames);
 }
 
 void viewer::skip_backward()
 {
+	stop();
 	int skip_frames = skip_frame_edit->text().toInt();
 	_time_line->previous_frame_each(skip_frames);
 }
