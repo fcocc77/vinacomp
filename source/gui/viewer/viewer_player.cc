@@ -19,6 +19,8 @@ void viewer::player_init()
 	connect(_time_line, &time_line::frame_changed, this, [=](int frame){
 		set_frame(frame);
 	});
+
+	set_frame_rate(frame_rate);
 }
 
 void viewer::set_frame(int frame)
@@ -27,6 +29,11 @@ void viewer::set_frame(int frame)
 	_time_line->go_to_frame(frame);
 	// aqui se pone toda la actualizacion de la imagen del frame
 	// ...
+}
+void viewer::set_frame_rate(float rate)
+{
+	frame_rate = rate;
+	frame_rate_edit->setText(QString::number(frame_rate));
 }
 
 void viewer::play(QTimeLine::Direction direction)

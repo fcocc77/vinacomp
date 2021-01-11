@@ -49,28 +49,29 @@ gui__node:
 	☐ crear dot y que se pueda insertar presionado control
 gui__knobs:
 	☐ slider: mover el manejador en la posicion del click
-	✔ que los botones tengan hover @done(2021-01-08 15:18) @project(gui__knobs)
+	☐ slider: cuando el valor sea mayor o menor al limite, cambiar la forma del manejador a una flecha
 	☐ que los qlineedit con boton derecho despliegue el menu de animacion
 	☐ terminar button knob'
 	☐ que el boton de keyframe despliegue un menu con las opciones de animacion
-	✔ knob_color: que el icono de paleta cuando este activado tenga otro color @done(2021-01-08 15:03) @project(gui__knobs)
-	✔ knob_color: que el boton de '4' con color de actvado y desabilitado cuando la paleta este activa @done(2021-01-08 15:03) @project(gui__knobs)
-	✔ knob_color: que el boton de color se agrande cuando la paleta este activa @done(2021-01-08 15:17) @project(gui__knobs)
 	☐ terminar button knob'
-	✔ terminar checkbox knob' @done(2021-01-06 17:26) @project(gui__knobs)
 	☐ terminar choice knob'
 	☐ terminar file knob'
-	✔ terminar group knob' @done(2021-01-07 15:38) @project(gui__knobs)
 	☐ terminar integer knob' @today
-	✔ terminar label knob' @done(2021-01-07 09:04) @project(gui__knobs)
 	☐ terminar position knob' @today
-	✔ terminar separator knob' @today @done(2021-01-06 20:11) @project(gui__knobs)
 	☐ terminar text knob'
 nodes:
 	☐ crear nodo de speed, para que cambie todas las velocidades como 'videovina' y asi no lo tenemos que hacer en videovina
 
 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
 Archive:
+	✔ que los botones tengan hover @done(2021-01-08 15:18) @project(gui__knobs)
+	✔ knob_color: que el icono de paleta cuando este activado tenga otro color @done(2021-01-08 15:03) @project(gui__knobs)
+	✔ knob_color: que el boton de '4' con color de actvado y desabilitado cuando la paleta este activa @done(2021-01-08 15:03) @project(gui__knobs)
+	✔ knob_color: que el boton de color se agrande cuando la paleta este activa @done(2021-01-08 15:17) @project(gui__knobs)
+	✔ terminar checkbox knob' @done(2021-01-06 17:26) @project(gui__knobs)
+	✔ terminar group knob' @done(2021-01-07 15:38) @project(gui__knobs)
+	✔ terminar label knob' @done(2021-01-07 09:04) @project(gui__knobs)
+	✔ terminar separator knob' @today @done(2021-01-06 20:11) @project(gui__knobs)
 	✔ modificar 'slider.cc' @today @done(2020-12-29 15:50) @project(gui__knobs)
 	✔ terminar color knob' @today @done(2021-01-05 17:42) @project(gui__knobs)
 	✔ terminar floating knob' @today @done(2020-12-29 16:27)

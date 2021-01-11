@@ -63,7 +63,7 @@ void combo_box::set_value(QString name)
 
 void combo_box::add_item(QString name)
 {
-    action *_action = new action(name, "K", "close_a");
+    action *_action = new action(name, "", "close_a");
     _action->connect_to(this, [=]() {
         set_value(name);
     });

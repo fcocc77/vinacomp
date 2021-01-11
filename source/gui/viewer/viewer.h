@@ -30,7 +30,7 @@ private:
     time_line *_time_line;
 
 	int current_frame;
-	int frame_rate;
+	float frame_rate;
     //
     void setup_ui();
     QWidget *player_setup_ui();
@@ -39,7 +39,7 @@ private:
     QWidget *image_correction_setup_ui();
     //
     //
-	
+
 	// Acciones
 	action *play_forward_action;
 	action *stop_forward_action;
@@ -52,9 +52,12 @@ private:
 	QLineEdit *skip_frame_edit;
 	QLineEdit *input_frame_edit;
 	QLineEdit *output_frame_edit;
+	QLineEdit *frame_rate_edit;
+	combo_box *frame_rate_menu;
 	QTimeLine *qtime_line;
 	void player_init();
 	void set_frame(int frame);
+	void set_frame_rate(float rate);
 	void play(QTimeLine::Direction direction);
 	void stop();
 	void go_to_first_frame();

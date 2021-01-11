@@ -190,10 +190,34 @@ QWidget *viewer::player_setup_ui()
 	output_frame_edit->setValidator( new QIntValidator(-100000, 100000, this) );  // Solo numeros
     output_frame_edit->setMaximumWidth(30);
 
+	frame_rate_edit = new QLineEdit(player_tools);
+	frame_rate_edit->setMaximumWidth(40);
+	frame_rate_edit->setObjectName("frame_rate_edit");
+	connect(frame_rate_edit, &QLineEdit::editingFinished, this, [=](){
+		set_frame_rate(frame_rate_edit->text().toInt());
+	});
+
+	frame_rate_menu = new combo_box();
+	frame_rate_menu->add_item("12");
+	frame_rate_menu->add_item("24");
+	frame_rate_menu->add_item("30");
+	frame_rate_menu->add_item("48");
+	frame_rate_menu->add_item("50");
+	frame_rate_menu->add_item("60");
+
+	combo_box *play_back_options = new combo_box();
+	play_back_options->add_item("Repeat");
+	play_back_options->add_item("Bounce");
+	play_back_options->add_item("Stop");
+	play_back_options->add_item("Continue");
+
     player_tools->add_widget(input_frame_edit);
     player_tools->add_action(in_action);
+    player_tools->add_widget(frame_rate_edit);
+    player_tools->add_widget(frame_rate_menu);
     player_tools->add_stretch();
 
+    player_tools->add_widget(play_back_options);
     player_tools->add_action(first_frame);
     player_tools->add_action(previous_key_frame_action);
     player_tools->add_action(previous_frame_action);
