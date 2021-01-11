@@ -11,6 +11,7 @@
 
 class time_line : public gl_view
 {
+	Q_OBJECT
 private:
     int frame;
     int ghost_frame;
@@ -84,6 +85,9 @@ protected:
     void mouseReleaseEvent(QMouseEvent *event) override;
     void cursor_move_event(QPoint position) override;
 	void focusOutEvent(QFocusEvent *event) override;
+signals:
+	void frame_changed(int frame);
+
 };
 
 #endif // TIME_LINE_HPP

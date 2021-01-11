@@ -1,6 +1,7 @@
 #include <viewer.h>
 
 viewer::viewer()
+	: current_frame(0)
 {
     _viewer_gl = new viewer_gl();
     _viewer_gl->setObjectName("viewer_graphics");
@@ -11,7 +12,7 @@ viewer::viewer()
     this->setObjectName("viewer");
 
     setup_ui();
-    
+	player_init();
 }
 
 viewer::~viewer()

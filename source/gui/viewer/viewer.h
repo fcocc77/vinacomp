@@ -10,6 +10,7 @@
 #include <QComboBox>
 #include <QPushButton>
 #include <QLineEdit>
+#include <QTimeLine>
 
 #include <qt.h>
 #include <util.h>
@@ -28,6 +29,7 @@ private:
     viewer_gl *_viewer_gl;
     time_line *_time_line;
 
+	int current_frame;
     //
     void setup_ui();
     QWidget *player_setup_ui();
@@ -36,13 +38,22 @@ private:
     QWidget *image_correction_setup_ui();
     //
     //
+	
+	// Acciones
+	action *play_forward_action;
+	action *stop_forward_action;
+	//
 
 	// Player
 	QLineEdit *frame_edit;
 	QLineEdit *skip_frame_edit;
 	QLineEdit *input_frame_edit;
 	QLineEdit *output_frame_edit;
+	QTimeLine *qtime_line;
+	void player_init();
+	void set_frame(int frame);
 	void play_forward();
+	void stop();
 	void play_backward();
 	void go_to_first_frame();
 	void go_to_last_frame();

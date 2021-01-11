@@ -16,6 +16,7 @@ private:
     QString label;
 	bool checkable;
 	bool checked;
+	bool visible;
 
 	QPushButton *button;
 	int icon_size;
@@ -32,6 +33,8 @@ public:
 	bool is_checked() const;
 	void set_checked(bool _checked);
 	QPushButton *make_button(QWidget *_tools, int _icon_size, bool uncheck_all);
+	void update();
+	void set_visible(bool _visible);
 
     template <class T, typename Func>
     void connect_to(T *obj, Func func)

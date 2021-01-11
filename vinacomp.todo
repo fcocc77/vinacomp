@@ -1,5 +1,7 @@
 gui__settings_projects:
 	☐ el proxy va a remplazar el rscale de videovina
+gui__gl_view:
+	☐ que el zoom con el scroll del mouse apunte donde esta el cursor y no en el centro como esta ahora
 gui__curve_view:
 	☐ limitar el tamaño del 'handler'
 	☐ que funcione el delete key

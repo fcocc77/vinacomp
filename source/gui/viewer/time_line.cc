@@ -85,12 +85,14 @@ time_line::time_line(
     go_to_last_frame_action->connect_to(this, [this]()
 	{
 		go_to_frame(last_frame);
+		frame_changed(last_frame); // Slot
     });
 
     action *go_to_first_frame_action = new action("Go to First Frame", "Alt+left");
     go_to_first_frame_action->connect_to(this, [this]()
 	{
 		go_to_frame(first_frame);
+		frame_changed(first_frame); // Slot
     });
 }
 
@@ -100,22 +102,30 @@ time_line::~time_line()
 
 void time_line::next_frame()
 {
-	go_to_frame(frame + 1);
+	int new_frame = frame + 1;
+	go_to_frame(new_frame);
+	frame_changed(new_frame); // Slot
 }
 
 void time_line::previous_frame()
 {
-	go_to_frame(frame - 1);
+	int new_frame = frame - 1;
+	go_to_frame(new_frame);
+	frame_changed(new_frame); // Slot
 }
 
 void time_line::next_frame_each(int frames)
 {
-	go_to_frame(frame + frames);
+	int new_frame = frame + frames;
+	go_to_frame(new_frame);
+	frame_changed(new_frame); // Slot
 }
 
 void time_line::previous_frame_each(int frames)
 {
-	go_to_frame(frame - frames);
+	int new_frame = frame - frames;
+	go_to_frame(new_frame);
+	frame_changed(new_frame); // Slot
 }
 
 void time_line::fit_switch()
@@ -166,11 +176,10 @@ void time_line::set_frame(int _frame)
     }
     if (_frame != frame)
         if (dragging && (!dragging_input && !dragging_output))
-        {
-            frame = _frame;
-			frame_edit->setText(QString::number(frame));
-            update();
-        }
+		{
+			go_to_frame(_frame);
+			frame_changed(_frame); // Slot
+		}
 }
 
 void time_line::mousePressEvent(QMouseEvent *event)
@@ -195,8 +204,13 @@ void time_line::mousePressEvent(QMouseEvent *event)
 	}
 
     if (!qt::alt() && !qt::control() && !dragging_input && !dragging_output)
+	{
 		if (left_button)
+		{
 			go_to_frame(click_x_coords);
+			frame_changed(click_x_coords); // Slot
+		}
+	}
 
     update();
 

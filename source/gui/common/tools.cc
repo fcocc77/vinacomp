@@ -26,6 +26,7 @@ void tools::add_action(action *_action)
 	//
 	QPushButton *button = _action->make_button(this, icon_size, uncheck_all);
     layout->addWidget(button);
+	_action->update();
 }
 
 void tools::set_checked_all(bool checked)

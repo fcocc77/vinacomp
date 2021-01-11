@@ -136,36 +136,38 @@ QWidget *viewer::player_setup_ui()
 	player_tools->get_layout()->setSpacing(7);
 	player_tools->setObjectName("player");
 
-	// Play
-	action *play_forward_action = new action("Play Forward", "L", "play_arrow");
+	play_forward_action = new action("Play Forward", "", "play_arrow");
     play_forward_action->connect_to(this, [this]() { play_forward(); });
 
-	action *play_backward_action = new action("Play Backward", "L", "play_back");
-    play_backward_action->connect_to(this, [this]() { play_backward(); });
-	//
+	stop_forward_action = new action("Stop", "", "stop");
+    stop_forward_action->connect_to(this, [this]() { stop(); });
+	stop_forward_action->set_visible(false);
 
-	action *first_frame = new action("Go to first frame", "L", "skip_previous");
+	action *play_backward_action = new action("Play Backward", "", "play_back");
+    play_backward_action->connect_to(this, [this]() { play_backward(); });
+
+	action *first_frame = new action("Go to first frame", "", "skip_previous");
     first_frame->connect_to(this, [this]() { go_to_first_frame(); });
-	action *last_frame = new action("Go to last frame", "L", "skip_next");
+	action *last_frame = new action("Go to last frame", "", "skip_next");
     last_frame->connect_to(this, [this]() { go_to_last_frame(); });
 
-	action *next_frame_action = new action("Next Frame", "L", "next_frame");
+	action *next_frame_action = new action("Next Frame", "", "next_frame");
     next_frame_action->connect_to(this, [this]() { next_frame(); });
-	action *previous_frame_action = new action("Previous Frame", "L", "previous_frame");
+	action *previous_frame_action = new action("Previous Frame", "", "previous_frame");
     previous_frame_action->connect_to(this, [this]() { previous_frame(); });
 
-	action *next_key_frame_action = new action("Next key frame", "L", "next_key_frame");
+	action *next_key_frame_action = new action("Next key frame", "", "next_key_frame");
     next_key_frame_action->connect_to(this, [this]() { next_key_frame(); });
-	action *previous_key_frame_action = new action("Previous key frame", "L", "previous_key_frame");
+	action *previous_key_frame_action = new action("Previous key frame", "", "previous_key_frame");
     previous_key_frame_action->connect_to(this, [this]() { previous_key_frame(); });
 
-	action *skip_forward_action = new action("Skip Forward", "L", "skip_forward");
+	action *skip_forward_action = new action("Skip Forward", "", "skip_forward");
     skip_forward_action->connect_to(this, [this]() { skip_forward(); });
-	action *skip_backward_action = new action("Skip Backward", "L", "skip_backward");
+	action *skip_backward_action = new action("Skip Backward", "", "skip_backward");
     skip_backward_action->connect_to(this, [this]() { skip_backward(); });
 
-	action *in_action = new action("Input", "L", "input");
-	action *out_action = new action("Output", "L", "output");
+	action *in_action = new action("Input", "", "input");
+	action *out_action = new action("Output", "", "output");
 
     frame_edit = new QLineEdit(player_tools);
 	frame_edit->setValidator( new QIntValidator(-100000, 100000, this) );  // Solo numeros
@@ -196,6 +198,7 @@ QWidget *viewer::player_setup_ui()
     player_tools->add_widget(frame_edit);
 
     player_tools->add_action(play_forward_action);
+    player_tools->add_action(stop_forward_action);
     player_tools->add_action(next_frame_action);
     player_tools->add_action(next_key_frame_action);
     player_tools->add_action(last_frame);

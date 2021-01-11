@@ -8,6 +8,7 @@ action::action(QString _label, QString shortcut_key, QString _icon_name)
 	, checkable(false)
 	, checked(false)
 	, button(nullptr)
+	, visible(true)
 
 {
     this->setText(label);
@@ -23,6 +24,19 @@ action::~action()
 {
 	if (button)
 		delete button;
+}
+
+void action::set_visible(bool _visible)
+{
+	visible = _visible;
+	if (button)
+		button->setVisible(visible);
+}
+
+void action::update()
+{
+	// actualiza la actual visibilidad
+	set_visible(visible);
 }
 
 QPushButton *action::make_button(QWidget *_tools, int _icon_size, bool uncheck_all)
