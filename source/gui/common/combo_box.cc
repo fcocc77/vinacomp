@@ -3,7 +3,7 @@
 combo_box::combo_box()
     : current_index(0)
 {
-    this->setObjectName("combo_box");
+	this->setObjectName("combo_box");
 	this->setMinimumHeight(20);
     this->setMinimumWidth(70);
     this->setMaximumWidth(100);
@@ -45,7 +45,10 @@ void combo_box::set_index(int _index)
     current_index = _index;
 
     action *_action = actions.value(_index);
-    label->setText(_action->get_label());
+	_action->set_icon("radio_button_checked_b");
+	QString name = _action->get_label();
+	changed(name, current_index); // Signal
+    label->setText(name);
 }
 
 void combo_box::set_value(QString name)
@@ -53,17 +56,17 @@ void combo_box::set_value(QString name)
     for (int i = 0; i < actions.count(); i++)
     {
         action *_action = actions[i];
+		_action->set_icon("radio_button_unchecked_a");
+
         if (_action->get_label() == name)
-        {
             set_index(i);
-            return;
-        }
     }
 }
 
 void combo_box::add_item(QString name)
 {
-    action *_action = new action(name, "", "close_a");
+    action *_action = new action(name, "");
+	_action->set_icon("radio_button_unchecked_a");
     _action->connect_to(this, [=]() {
         set_value(name);
     });

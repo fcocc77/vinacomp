@@ -7,7 +7,6 @@
 #include <QHBoxLayout>
 #include <QGraphicsPixmapItem>
 #include <QString>
-#include <QComboBox>
 #include <QPushButton>
 #include <QLineEdit>
 #include <QTimeLine>

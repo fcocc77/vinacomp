@@ -35,6 +35,7 @@ public:
 	QPushButton *make_button(QWidget *_tools, int _icon_size, bool uncheck_all);
 	void update();
 	void set_visible(bool _visible);
+	void set_icon(QString icon_name);
 
     template <class T, typename Func>
     void connect_to(T *obj, Func func)

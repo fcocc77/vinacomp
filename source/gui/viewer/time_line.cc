@@ -85,14 +85,14 @@ time_line::time_line(
     go_to_last_frame_action->connect_to(this, [this]()
 	{
 		go_to_frame(last_frame);
-		frame_changed(last_frame); // Slot
+		frame_changed(last_frame); // Signal
     });
 
     action *go_to_first_frame_action = new action("Go to First Frame", "Alt+left");
     go_to_first_frame_action->connect_to(this, [this]()
 	{
 		go_to_frame(first_frame);
-		frame_changed(first_frame); // Slot
+		frame_changed(first_frame); // Signal
     });
 }
 
@@ -104,28 +104,28 @@ void time_line::next_frame()
 {
 	int new_frame = frame + 1;
 	go_to_frame(new_frame);
-	frame_changed(new_frame); // Slot
+	frame_changed(new_frame); // Signal
 }
 
 void time_line::previous_frame()
 {
 	int new_frame = frame - 1;
 	go_to_frame(new_frame);
-	frame_changed(new_frame); // Slot
+	frame_changed(new_frame); // Signal
 }
 
 void time_line::next_frame_each(int frames)
 {
 	int new_frame = frame + frames;
 	go_to_frame(new_frame);
-	frame_changed(new_frame); // Slot
+	frame_changed(new_frame); // Signal
 }
 
 void time_line::previous_frame_each(int frames)
 {
 	int new_frame = frame - frames;
 	go_to_frame(new_frame);
-	frame_changed(new_frame); // Slot
+	frame_changed(new_frame); // Signal
 }
 
 void time_line::fit_switch()
@@ -178,7 +178,7 @@ void time_line::set_frame(int _frame)
         if (dragging && (!dragging_input && !dragging_output))
 		{
 			go_to_frame(_frame);
-			frame_changed(_frame); // Slot
+			frame_changed(_frame); // Signal
 		}
 }
 
@@ -208,7 +208,7 @@ void time_line::mousePressEvent(QMouseEvent *event)
 		if (left_button)
 		{
 			go_to_frame(click_x_coords);
-			frame_changed(click_x_coords); // Slot
+			frame_changed(click_x_coords); // Signal
 		}
 	}
 

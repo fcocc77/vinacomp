@@ -28,9 +28,6 @@ QWidget *viewer::control_setup_ui()
     widget->setLayout(layout);
     //
 
-    // QComboBox *channels = new QComboBox();
-    // layout->addWidget(channels);
-
     int icon_size = 25;
 
     combo_box *layers = new combo_box();
@@ -206,6 +203,9 @@ QWidget *viewer::player_setup_ui()
 	frame_rate_menu->add_item("60");
 
 	combo_box *play_back_options = new combo_box();
+	connect(play_back_options, &combo_box::changed, this, [](QString name, int index){
+		print(name);
+	});
 	play_back_options->add_item("Repeat");
 	play_back_options->add_item("Bounce");
 	play_back_options->add_item("Stop");
