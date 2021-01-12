@@ -9,6 +9,7 @@ action::action(QString _label, QString shortcut_key, QString _icon_name)
 	, checked(false)
 	, button(nullptr)
 	, visible(true)
+	, _tools(nullptr)
 
 {
     this->setText(label);
@@ -39,8 +40,10 @@ void action::update()
 	set_visible(visible);
 }
 
-QPushButton *action::make_button(QWidget *_tools, int _icon_size, bool uncheck_all)
+QPushButton *action::make_button(QWidget *__tools, int _icon_size, bool __one_check_at_time)
 {
+	_tools = __tools;
+	_one_check_at_time = __one_check_at_time;
 	icon_size = _icon_size;
 
 	if (!button)
@@ -50,13 +53,6 @@ QPushButton *action::make_button(QWidget *_tools, int _icon_size, bool uncheck_a
 		qt::set_icon(button, icon_name + "_a", icon_size);
 
 		connect(button, &QPushButton::clicked, this, [=]() {
-			if (checkable)
-			{
-				bool _checked = checked;
-				if (uncheck_all)
-					dynamic_cast< tools * >(_tools)->set_checked_all(false);
-				set_checked(!_checked);
-			}
 			this->trigger();
 		});
 	}
@@ -64,8 +60,19 @@ QPushButton *action::make_button(QWidget *_tools, int _icon_size, bool uncheck_a
 	return button;
 }
 
+void action::uncheck_all()
+{
+	if (_tools)
+		if (_one_check_at_time)
+			dynamic_cast< tools * >(_tools)->set_checked_all(false);
+
+}
+
 void action::set_checked(bool _checked)
 {
+	if (!checkable)
+		return;
+
 	checked = _checked;
 
 	if (checked)

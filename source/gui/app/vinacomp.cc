@@ -1,6 +1,10 @@
 #include <vinacomp.h>
 
 vinacomp::vinacomp()
+	: fullscreen(false)
+	, project_settings_visible(false)
+	, project_opened(false)
+	, current_project("")
 {
     this->setObjectName("vinacomp");
     project = new QJsonObject();
@@ -15,13 +19,14 @@ void vinacomp::setup_ui()
 {
     _properties = new properties();
     _node_graph = new node_graph(project, _properties);
-    _tool_bar = new tool_bar();
     _viewer = new viewer();
     _script_editor = new script_editor(project, _node_graph);
     _curve_editor = new curve_editor();
     _settings = new settings();
+	_project_settings = new project_settings();
 
     _panels_layout = new panels_layout(_node_graph, _viewer, _script_editor, _properties, _curve_editor);
+    _tool_bar = new tools(25, true);
 
     QWidget *central_widget = new QWidget(this);
     QHBoxLayout *layout = new QHBoxLayout(central_widget);
@@ -29,6 +34,7 @@ void vinacomp::setup_ui()
     layout->setSpacing(0);
 
     layout->addWidget(_panels_layout);
+    layout->addWidget(_project_settings);
     layout->addWidget(_tool_bar);
 
     this->setCentralWidget(central_widget);
@@ -39,6 +45,7 @@ void vinacomp::setup_ui()
     setup_style();
 
     main_menu();
+	tool_bar();
 }
 
 void vinacomp::setup_style()
@@ -58,10 +65,10 @@ void vinacomp::main_menu()
     QMenu *file_menu = new QMenu("File", menu_bar);
     menu_bar->addMenu(file_menu);
 
-    action *new_project = new action("New Project", "Ctrl+N", "add_a");
-    file_menu->addAction(new_project);
+    new_project_action = new action("New Project", "Ctrl+N", "add");
+    file_menu->addAction(new_project_action);
 
-    action *open_project_action = new action("Open Project", "Ctrl+O", "folder_a");
+    open_project_action = new action("Open Project", "Ctrl+O", "folder");
     open_project_action->connect_to(this, [this]() { open_project_dialog(); });
 
     file_menu->addAction(open_project_action);
@@ -72,7 +79,7 @@ void vinacomp::main_menu()
 
     file_menu->addSeparator();
 
-    action *save_project_action = new action("Save Project", "Ctrl+S", "save_a");
+    action *save_project_action = new action("Save Project", "Ctrl+S", "save");
     save_project_action->connect_to(this, [this]() { to_save_project(); });
     file_menu->addAction(save_project_action);
 
@@ -82,7 +89,7 @@ void vinacomp::main_menu()
 
     file_menu->addSeparator();
 
-    action *quit = new action("Quit", "Ctrl+Q", "quit_a");
+    action *quit = new action("Quit", "Ctrl+Q", "quit");
     quit->connect_to(this, [this]() { this->close(); });
     file_menu->addAction(quit);
     //
@@ -92,12 +99,20 @@ void vinacomp::main_menu()
     QMenu *edit_menu = new QMenu("Edit", menu_bar);
     menu_bar->addMenu(edit_menu);
 
-    action *settings_action = new action("Settings...", "Shift+S", "settings_a");
+    settings_action = new action("Settings...", "Shift+S", "settings");
     settings_action->connect_to(this, [this]() {
         _settings->show();
     });
 
+    project_settings_action = new action("Project Settings", "S", "project_settings");
+	project_settings_action->set_checkable(true);
+    project_settings_action->connect_to(this, [this]() {
+		project_settings_visible = !project_settings_visible; // Toggle
+        _project_settings->setVisible(project_settings_visible);
+    });
+
     edit_menu->addAction(settings_action);
+    edit_menu->addAction(project_settings_action);
     edit_menu->addAction(update_sylesheet_action);
     //
     //
@@ -105,6 +120,15 @@ void vinacomp::main_menu()
     //
     QMenu *layout_menu = new QMenu("Layout", menu_bar);
     menu_bar->addMenu(layout_menu);
+
+	script_layout_action = new action("Script Layout", "", "view_compact");
+	layout_menu->addAction(script_layout_action);
+
+	comp_layout_action = new action("Comp Layout", "", "vertical_split");
+	layout_menu->addAction(comp_layout_action);
+
+	layout_menu->addSeparator();
+
     layout_menu->addAction(_panels_layout->restore_default_action);
     _panels_layout->restore_default_action->setIcon(QIcon("resources/images/layout_a.png"));
 
@@ -117,7 +141,7 @@ void vinacomp::main_menu()
     QMenu *display = new QMenu("Display", menu_bar);
     menu_bar->addMenu(display);
 
-    action *full_screen = new action("Full Screen", "Alt+S", "fullscreen_a");
+    action *full_screen = new action("Full Screen", "Alt+S", "fullscreen");
     full_screen->connect_to(this, [this]() {
         if (!fullscreen)
             this->setWindowState(Qt::WindowFullScreen);
@@ -131,6 +155,24 @@ void vinacomp::main_menu()
     //
 
     this->setMenuBar(menu_bar);
+}
+void vinacomp::tool_bar()
+{
+	_tool_bar->setObjectName("tool_bar");
+
+	_tool_bar->add_action(open_project_action);
+	_tool_bar->add_action(new_project_action);
+
+	_tool_bar->add_separator();
+
+	_tool_bar->add_action(settings_action);
+	_tool_bar->add_action(project_settings_action);
+
+	_tool_bar->add_stretch();
+
+	_tool_bar->add_action(script_layout_action);
+	_tool_bar->add_action(comp_layout_action);
+
 }
 
 QJsonArray vinacomp::get_recent_projects()

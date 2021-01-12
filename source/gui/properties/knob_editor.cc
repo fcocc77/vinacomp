@@ -7,6 +7,7 @@ knob_editor::knob_editor()
 	layout->setMargin(0);
 
 	tools *tools_bar = new tools(20);
+	tools_bar->allow_one_check_at_time();
 	layout->addWidget(tools_bar);
 
 	// Floating

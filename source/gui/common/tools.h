@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <QPushButton>
-#include <QHBoxLayout>
+#include <QBoxLayout>
 
 #include <action.h>
 #include <util.h>
@@ -12,12 +12,15 @@
 class tools : public QWidget
 {
 private:
-    QHBoxLayout *layout;
+    QBoxLayout *layout;
 	int icon_size;
 	QList< action * > actions;
+	bool vertical;
+	bool uncheck_all;
+	bool one_check_at_time;
 
 public:
-    tools(int icon_size = 22);
+    tools(int icon_size = 22, bool _vertical = false);
     ~tools();
 
     void add_action(action *_action);
@@ -25,8 +28,9 @@ public:
     void add_stretch();
     void add_widget(QWidget *widget);
 	void set_checked_all(bool checked);
+	void allow_one_check_at_time();
 
-	QHBoxLayout *get_layout() const;
+	QBoxLayout *get_layout() const;
 };
 
 #endif // TOOLS_HPP

@@ -189,7 +189,6 @@ QWidget *viewer::player_setup_ui()
 
 	frame_rate_menu = new combo_box();
 	connect(frame_rate_menu, &combo_box::changed, this, [=](QString name){
-			print(name);
 		set_frame_rate(name.toInt());
 	});
 	frame_rate_menu->add_item("12");

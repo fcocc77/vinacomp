@@ -351,10 +351,15 @@ QSlider {
 #tools {
   background: #2c2f35; }
 
-#tools_separator {
+#tools_vertical_separator {
   margin-left: 10px;
   background: none;
   border-left: 1px solid #3c4149; }
+
+#tools_horizontal_separator {
+  margin-top: 10px;
+  background: none;
+  border-top: 1px solid #3c4149; }
 
 #combo_box {
   background: #25282d;

@@ -17,9 +17,13 @@ private:
 	bool checkable;
 	bool checked;
 	bool visible;
+	bool _one_check_at_time;
+	QWidget *_tools;
 
 	QPushButton *button;
 	int icon_size;
+
+	void uncheck_all();
 
 public:
     action(QString label, QString shortcut_key, QString icon_name = "");
@@ -32,7 +36,7 @@ public:
 	void set_checkable(bool checkable);
 	bool is_checked() const;
 	void set_checked(bool _checked);
-	QPushButton *make_button(QWidget *_tools, int _icon_size, bool uncheck_all);
+	QPushButton *make_button(QWidget *_tools, int _icon_size, bool _one_check_at_time);
 	void update();
 	void set_visible(bool _visible);
 	void set_icon(QString icon_name);
@@ -42,6 +46,10 @@ public:
     {
         // conecta la funcion a la accion
         connect(this, &QAction::triggered, obj, [=]() {
+			bool _checked = checked; // Guardar estado antes de 'uncheck_all'
+			uncheck_all();
+			set_checked(!_checked);
+
             func();
         });
 
