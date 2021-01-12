@@ -36,6 +36,7 @@ private:
     panels_layout *_panels_layout;
     bool fullscreen;
 	bool project_settings_visible;
+	bool settings_visible;
 
 	// Acciones
     QAction *update_sylesheet_action;

@@ -3,11 +3,13 @@
 
 // QT5
 #include <QWidget>
+#include <QVBoxLayout>
+#include <QTreeWidget>
 
 class settings : public QWidget
 {
 private:
-    /* data */
+	QVBoxLayout *layout;
 public:
     settings(/* args */);
     ~settings();

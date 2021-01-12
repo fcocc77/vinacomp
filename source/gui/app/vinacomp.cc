@@ -3,6 +3,7 @@
 vinacomp::vinacomp()
 	: fullscreen(false)
 	, project_settings_visible(false)
+	, settings_visible(false)
 	, project_opened(false)
 	, current_project("")
 {
@@ -28,13 +29,23 @@ void vinacomp::setup_ui()
     _panels_layout = new panels_layout(_node_graph, _viewer, _script_editor, _properties, _curve_editor);
     _tool_bar = new tools(25, true);
 
+	// settings panel
+	QWidget *settings_panel = new QWidget();
+	settings_panel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+	QVBoxLayout *settings_panel_layout = new QVBoxLayout(settings_panel);
+	settings_panel_layout->setMargin(0);
+	settings_panel_layout->setSpacing(0);
+	settings_panel_layout->addWidget(_settings);
+	settings_panel_layout->addWidget(_project_settings);
+	//
+
     QWidget *central_widget = new QWidget(this);
     QHBoxLayout *layout = new QHBoxLayout(central_widget);
     layout->setMargin(0);
     layout->setSpacing(0);
 
     layout->addWidget(_panels_layout);
-    layout->addWidget(_project_settings);
+    layout->addWidget(settings_panel);
     layout->addWidget(_tool_bar);
 
     this->setCentralWidget(central_widget);
@@ -100,8 +111,10 @@ void vinacomp::main_menu()
     menu_bar->addMenu(edit_menu);
 
     settings_action = new action("Settings...", "Shift+S", "settings");
+	settings_action->set_checkable(true);
     settings_action->connect_to(this, [this]() {
-        _settings->show();
+		settings_visible = !settings_visible; // Toggle
+        _settings->setVisible(settings_visible);
     });
 
     project_settings_action = new action("Project Settings", "S", "project_settings");

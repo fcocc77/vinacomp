@@ -24,7 +24,7 @@ private:
 	QPushButton *animation_button;
 public:
     knob_floating(
-        float _default_value);
+        float _default_value = 1);
     ~knob_floating();
 
 	void set_value(float value);
