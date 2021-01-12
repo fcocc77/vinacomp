@@ -70,11 +70,13 @@ QMenu {
   color: #caced3;
   border: 1px solid #514924;
   border-radius: 2px; }
+  QMenu::icon {
+    padding-left: 15px; }
   QMenu::item {
-    padding: 4px 15px 4px 22px; }
+    padding: 4px 15px 4px 30px; }
     QMenu::item:selected {
-      background-color: #927a17;
-      color: #f4f5f6; }
+      background: #353941;
+      color: #ffcc00; }
     QMenu::item:disabled {
       color: #7a7e83; }
   QMenu::separator {

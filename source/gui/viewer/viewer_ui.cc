@@ -187,14 +187,11 @@ QWidget *viewer::player_setup_ui()
 	output_frame_edit->setValidator( new QIntValidator(-100000, 100000, this) );  // Solo numeros
     output_frame_edit->setMaximumWidth(30);
 
-	frame_rate_edit = new QLineEdit(player_tools);
-	frame_rate_edit->setMaximumWidth(40);
-	frame_rate_edit->setObjectName("frame_rate_edit");
-	connect(frame_rate_edit, &QLineEdit::editingFinished, this, [=](){
-		set_frame_rate(frame_rate_edit->text().toInt());
-	});
-
 	frame_rate_menu = new combo_box();
+	connect(frame_rate_menu, &combo_box::changed, this, [=](QString name){
+			print(name);
+		set_frame_rate(name.toInt());
+	});
 	frame_rate_menu->add_item("12");
 	frame_rate_menu->add_item("24");
 	frame_rate_menu->add_item("30");
@@ -202,18 +199,16 @@ QWidget *viewer::player_setup_ui()
 	frame_rate_menu->add_item("50");
 	frame_rate_menu->add_item("60");
 
-	combo_box *play_back_options = new combo_box();
-	connect(play_back_options, &combo_box::changed, this, [](QString name, int index){
-		print(name);
+	play_back_options = new combo_box();
+	connect(play_back_options, &combo_box::changed, this, [=](QString name){
+		set_playing_option(name);
 	});
 	play_back_options->add_item("Repeat");
 	play_back_options->add_item("Bounce");
 	play_back_options->add_item("Stop");
-	play_back_options->add_item("Continue");
 
     player_tools->add_widget(input_frame_edit);
     player_tools->add_action(in_action);
-    player_tools->add_widget(frame_rate_edit);
     player_tools->add_widget(frame_rate_menu);
     player_tools->add_stretch();
 

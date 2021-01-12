@@ -27,7 +27,9 @@ private:
 
     viewer_gl *_viewer_gl;
     time_line *_time_line;
+	QString playing_option;
 
+	int first_frame, last_frame;
 	int current_frame;
 	float frame_rate;
     //
@@ -51,13 +53,15 @@ private:
 	QLineEdit *skip_frame_edit;
 	QLineEdit *input_frame_edit;
 	QLineEdit *output_frame_edit;
-	QLineEdit *frame_rate_edit;
 	combo_box *frame_rate_menu;
+	combo_box *play_back_options;
 	QTimeLine *qtime_line;
 	void player_init();
 	void set_frame(int frame);
 	void set_frame_rate(float rate);
 	void play(QTimeLine::Direction direction);
+	void play_finished();
+	void set_playing_option(QString option);
 	void stop();
 	void go_to_first_frame();
 	void go_to_last_frame();

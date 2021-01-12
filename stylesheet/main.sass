@@ -116,11 +116,13 @@ QMenu
     color: $c1
     border: 1px solid mix($base, $b15, 20%)
     border-radius: 2px
+    &::icon
+        padding-left: 15px
     &::item
-        padding: 4px 15px 4px 22px
+        padding: 4px 15px 4px 30px
         &:selected
-            background-color: mix($base, $b15, 50%)
-            color: $c3
+            background: $b22
+            color: $base
         &:disabled
             color: mix($c1, $b17, 50%)
     &::separator

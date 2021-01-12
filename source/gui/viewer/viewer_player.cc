@@ -13,14 +13,15 @@ void viewer::player_init()
 	});
 
 	connect(qtime_line, &QTimeLine::finished, this, [=](){
-		stop();
+		play_finished();
 	});
 
 	connect(_time_line, &time_line::frame_changed, this, [=](int frame){
 		set_frame(frame);
 	});
 
-	set_frame_rate(frame_rate);
+	frame_rate_menu->set_value(QString::number(frame_rate));
+	play_back_options->set_value("Repeat");
 }
 
 void viewer::set_frame(int frame)
@@ -33,7 +34,37 @@ void viewer::set_frame(int frame)
 void viewer::set_frame_rate(float rate)
 {
 	frame_rate = rate;
-	frame_rate_edit->setText(QString::number(frame_rate));
+}
+
+void viewer::set_playing_option(QString option)
+{
+	playing_option = option;
+}
+
+void viewer::play_finished()
+{
+	if (playing_option == "Bounce")
+	{
+		if (qtime_line->direction() == QTimeLine::Forward)
+			play(QTimeLine::Backward);
+		else
+			play(QTimeLine::Forward);
+	}
+	else if (playing_option == "Repeat")
+	{
+		if (qtime_line->direction() == QTimeLine::Forward)
+		{
+			current_frame = first_frame;
+			play(QTimeLine::Forward);
+		}
+		else
+		{
+			current_frame = last_frame;
+			play(QTimeLine::Backward);
+		}
+	}
+	else
+		stop();
 }
 
 void viewer::play(QTimeLine::Direction direction)
@@ -45,7 +76,7 @@ void viewer::play(QTimeLine::Direction direction)
 
 	if (direction == QTimeLine::Forward)
 	{
-		end_frame = 100;
+		end_frame = last_frame;
 		total_frames = end_frame - start_frame + 1;
 		qtime_line->setFrameRange(start_frame, end_frame);
 
@@ -54,7 +85,7 @@ void viewer::play(QTimeLine::Direction direction)
 	}
 	else
 	{
-		end_frame = 1;
+		end_frame = first_frame;
 		total_frames = start_frame - end_frame + 1;
 		qtime_line->setFrameRange(end_frame, start_frame);
 
@@ -84,8 +115,8 @@ void viewer::go_to_first_frame()
 	bool playing = qtime_line->state();
 	stop();
 
-	set_frame(1);
-	_time_line->go_to_frame(1);
+	set_frame(first_frame);
+	_time_line->go_to_frame(first_frame);
 
 	if (playing)
 		play(qtime_line->direction());
@@ -94,8 +125,8 @@ void viewer::go_to_first_frame()
 void viewer::go_to_last_frame()
 {
 	stop();
-	set_frame(100);
-	_time_line->go_to_frame(100);
+	set_frame(last_frame);
+	_time_line->go_to_frame(last_frame);
 }
 
 void viewer::next_frame()

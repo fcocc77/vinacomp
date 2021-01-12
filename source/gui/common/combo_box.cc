@@ -58,8 +58,8 @@ void combo_box::set_value(QString name)
         action *_action = actions[i];
 		_action->set_icon("radio_button_unchecked_a");
 
-        if (_action->get_label() == name)
-            set_index(i);
+		if (_action->get_label() == name)
+			set_index(i);
     }
 }
 
@@ -71,10 +71,17 @@ void combo_box::add_item(QString name)
         set_value(name);
     });
 
+	// si es la primera action creada la deja por defecto 'checked', se usa aqui
+	// y no con 'set_index' para que no afecte a la señal 'changed'
+	if (actions.empty())
+	{
+		label->setText(_action->get_label());
+		_action->set_icon("radio_button_checked_b");
+	}
+	//
+
     actions.push_back(_action);
     menu->addAction(_action);
-
-    set_index(current_index);
 }
 
 void combo_box::add_items(QStringList list)
