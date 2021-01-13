@@ -49,6 +49,8 @@ QPushButton *action::make_button(QWidget *__tools, int _icon_size, bool __one_ch
 	if (!button)
 	{
 		button = new QPushButton();
+		if (!object_name.isEmpty())
+			button->setObjectName(object_name);
 		button->setToolTip(label);
 		qt::set_icon(button, icon_name + "_a", icon_size);
 
@@ -58,6 +60,11 @@ QPushButton *action::make_button(QWidget *__tools, int _icon_size, bool __one_ch
 	}
 
 	return button;
+}
+
+void action::set_object_name(QString name)
+{
+	object_name = name;
 }
 
 void action::uncheck_all()

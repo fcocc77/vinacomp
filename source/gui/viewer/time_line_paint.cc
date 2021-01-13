@@ -50,20 +50,37 @@ void time_line::draw_selector()
 void time_line::draw_in_out()
 {
     QColor red = {200, 0, 0};
-    draw_line({input, 1000000}, {input, -1000000}, red, 2);
-    draw_line({output, 1000000}, {output, -1000000}, red, 2);
-
-	QColor outside_color = palette["b9"].toString();
 	QColor range_color = palette["b12"].toString();
-    draw_box({{first_frame, -100000}, {input, 100000}}, outside_color);
-    draw_box({{output, -100000}, {last_frame, 100000}}, outside_color);
-    draw_box({{input, -100000}, {output, 100000}}, range_color);
+	QColor white = palette["b50"].toString();
 
-    float input_x = get_position({input, 0}).x();
-    float output_x = get_position({output, 0}).x();
+	// linea del primer y ultimo frame
+	draw_line({first_frame, 1000000}, {first_frame, -1000000}, white, 1);
+	draw_line({last_frame, 1000000}, {last_frame, -1000000}, white, 1);
+	//
 
-    draw_text(QString::number(input), red, {0, 0}, {input_x - 3, 7}, 10, Qt::AlignLeft);
-    draw_text(QString::number(output), red, {0, 0}, {output_x + 5, 7}, 10, Qt::AlignRight);
+	if (in_out_visible)
+	{
+		QColor outside_color = palette["b9"].toString();
+
+		// Manejadores entrada y salida
+		draw_line({input, 1000000}, {input, -1000000}, red, 2);
+		draw_line({output, 1000000}, {output, -1000000}, red, 2);
+
+		// Background del Rango
+		draw_box({{first_frame, -100000}, {input, 100000}}, outside_color);
+		draw_box({{output, -100000}, {last_frame, 100000}}, outside_color);
+		draw_box({{input, -100000}, {output, 100000}}, range_color);
+
+		// Texto del 'frame' de la entrada y salida
+		float input_x = get_position({input, 0}).x();
+		float output_x = get_position({output, 0}).x();
+		draw_text(QString::number(input), red, {0, 0}, {input_x - 3, 7}, 10, Qt::AlignLeft);
+		draw_text(QString::number(output), red, {0, 0}, {output_x + 5, 7}, 10, Qt::AlignRight);
+	}
+	else
+	{
+		draw_box({{first_frame, -100000}, {last_frame, 100000}}, range_color);
+	}
 }
 
 void time_line::draw_cursor()

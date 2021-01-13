@@ -19,6 +19,7 @@ private:
 	bool visible;
 	bool _one_check_at_time;
 	QWidget *_tools;
+	QString object_name;
 
 	QPushButton *button;
 	int icon_size;
@@ -33,10 +34,11 @@ public:
     void set_tool_tip(QString tip);
     QString get_tool_tip() const;
     QString get_label() const;
-	void set_checkable(bool checkable);
+	void set_checkable(bool checkable = true);
 	bool is_checked() const;
 	void set_checked(bool _checked);
 	QPushButton *make_button(QWidget *_tools, int _icon_size, bool _one_check_at_time);
+	void set_object_name(QString name);
 	void update();
 	void set_visible(bool _visible);
 	void set_icon(QString icon_name);

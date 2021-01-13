@@ -27,6 +27,7 @@ private:
 
     bool right_button, middle_button, left_button;
     bool dragging_input, dragging_output;
+	bool in_out_visible;
 
 	float top_y, mid_y1, mid_y2, number_y;
 
@@ -77,6 +78,8 @@ public:
 	void next_frame_each(int frames);
 	void previous_frame_each(int frames);
 	void set_frame_range(int _first_frame, int _last_frame);
+    void update_in_out(int _input, int _output);
+	void set_in_out_visible(bool visible);
 
 protected:
     void initializeGL() override;
@@ -86,9 +89,10 @@ protected:
     void mouseReleaseEvent(QMouseEvent *event) override;
     void cursor_move_event(QPoint position) override;
 	void focusOutEvent(QFocusEvent *event) override;
+
 signals:
 	void frame_changed(int frame);
-
+	void in_out_changed(int input, int output);
 };
 
 #endif // TIME_LINE_HPP

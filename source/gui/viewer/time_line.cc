@@ -28,7 +28,8 @@ time_line::time_line(
 		right_button(false),
 		middle_button(false),
 		selector_visible(false),
-		is_fit_to_selector(true)
+		is_fit_to_selector(true),
+		in_out_visible(false)
 
 {
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -41,18 +42,6 @@ time_line::time_line(
     action *fit_to_range_action = new action("Fit to Range", "F");
     fit_to_range_action->connect_to(this, [this]() {
         fit_to_range();
-    });
-
-    action *input_action = new action("Input", "I");
-    input_action->connect_to(this, [this]() {
-        set_in_out(frame, output);
-        update();
-    });
-
-    action *ouput_action = new action("Output", "O");
-    ouput_action->connect_to(this, [this]() {
-        set_in_out(input, frame);
-        update();
     });
 
     action *next_frame_action = new action("Next Frame", "right");
@@ -189,6 +178,12 @@ void time_line::set_frame(int _frame)
 		}
 }
 
+void time_line::set_in_out_visible(bool visible)
+{
+	in_out_visible = visible;
+	update();
+}
+
 void time_line::mousePressEvent(QMouseEvent *event)
 {
     click_x_coords = round(get_coords(event->pos()).x());
@@ -202,7 +197,7 @@ void time_line::mousePressEvent(QMouseEvent *event)
     middle_button = event->button() == Qt::MiddleButton;
     left_button = event->button() == Qt::LeftButton;
 
-	if (!right_button)
+	if (!right_button && in_out_visible)
 	{
 		dragging_input = click_over_in_out.first;
     	dragging_output = click_over_in_out.second;
@@ -270,8 +265,8 @@ void time_line::cursor_move_event(QPoint position)
 
     if (!qt::alt() && !middle_button)
     {
-        drag_in_out(move_x_coords);
-        set_frame(move_x_coords);
+		drag_in_out(move_x_coords);
+		set_frame(move_x_coords);
     }
 
     gl_view::cursor_move_event(position);

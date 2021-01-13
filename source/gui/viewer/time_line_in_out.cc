@@ -18,6 +18,12 @@ pair<bool, bool> time_line::over_in_out(int x) const
 
 void time_line::drag_in_out(int _frame)
 {
+	if (!in_out_visible)
+	{
+		ghost_frame_visible = true;
+		return;
+	}
+
     auto _over_in_out = over_in_out(_frame);
     if (_over_in_out.first || _over_in_out.second)
     {
@@ -72,6 +78,13 @@ void time_line::set_in_out(int _input, int _output)
 	// Actualiza los edits del panel de 'players'
 	input_frame_edit->setText(QString::number(input));
 	output_frame_edit->setText(QString::number(output));
+
+	// Signal
+	in_out_changed(input, output);
+}
+
+void time_line::update_in_out(int _input, int _output)
+{
 }
 
 void time_line::change_in_out_with_control()

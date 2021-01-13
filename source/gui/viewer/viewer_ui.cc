@@ -167,8 +167,22 @@ QWidget *viewer::player_setup_ui()
 	action *skip_backward_action = new action("Skip Backward", "", "skip_backward");
     skip_backward_action->connect_to(this, [this]() { skip_backward(); });
 
-	action *in_action = new action("Input", "", "input");
-	action *out_action = new action("Output", "", "output");
+	action *in_action = new action("Input", "I", "input");
+	in_action->connect_to(this, [this]() {
+		set_in_out(current_frame, output);
+	});
+	action *out_action = new action("Output", "O", "output");
+	out_action->connect_to(this, [this]() {
+		set_in_out(input, current_frame);
+	});
+	action *visibility_in_out = new action("Visibility Input and Output", "", "in_out");
+	visibility_in_out->connect_to(this, [=](){
+		enable_in_out(!in_out);
+	});
+	in_action->set_object_name("input");
+	out_action->set_object_name("output");
+	visibility_in_out->set_object_name("in_out");
+	visibility_in_out->set_checkable(true);
 
     frame_edit = new QLineEdit(player_tools);
 	frame_edit->setValidator( new QIntValidator(-100000, 100000, this) );  // Solo numeros
@@ -206,9 +220,16 @@ QWidget *viewer::player_setup_ui()
 	play_back_options->add_item("Bounce");
 	play_back_options->add_item("Stop");
 
+	visible_range = new combo_box();
+	visible_range->add_item("Global");
+	visible_range->add_item("Input");
+	visible_range->add_item("In/Out");
+	visible_range->add_item("Visible");
+
     player_tools->add_widget(input_frame_edit);
     player_tools->add_action(in_action);
     player_tools->add_widget(frame_rate_menu);
+    player_tools->add_widget(visible_range);
     player_tools->add_stretch();
 
     player_tools->add_widget(play_back_options);
@@ -233,6 +254,7 @@ QWidget *viewer::player_setup_ui()
     player_tools->add_action(skip_forward_action);
 
     player_tools->add_stretch();
+    player_tools->add_action(visibility_in_out);
     player_tools->add_action(out_action);
     player_tools->add_widget(output_frame_edit);
 

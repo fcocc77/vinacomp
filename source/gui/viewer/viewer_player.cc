@@ -24,26 +24,6 @@ void viewer::player_init()
 	play_back_options->set_value("Repeat");
 }
 
-void viewer::set_frame(int frame)
-{
-	current_frame = frame;
-	_time_line->go_to_frame(frame);
-	// aqui se pone toda la actualizacion de la imagen del frame
-	// ...
-}
-
-void viewer::set_frame_range(int _first_frame, int _last_frame)
-{
-	first_frame = _first_frame;
-	last_frame = _last_frame;
-	_time_line->set_frame_range(_first_frame, _last_frame);
-}
-
-void viewer::set_frame_rate(float rate)
-{
-	frame_rate = rate;
-}
-
 void viewer::set_playing_option(QString option)
 {
 	playing_option = option;

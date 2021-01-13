@@ -30,8 +30,11 @@ private:
 	QString playing_option;
 
 	int first_frame, last_frame;
+	int input, output;
 	int current_frame;
 	float frame_rate;
+	bool in_out;
+
     //
     void setup_ui();
     QWidget *player_setup_ui();
@@ -48,6 +51,12 @@ private:
 	action *stop_backward_action;
 	//
 
+	// General
+	void set_frame(int frame);
+	void set_frame_rate(float rate);
+	void enable_in_out(bool enable); void set_in_out(int input, int output);
+	//
+
 	// Player
 	QLineEdit *frame_edit;
 	QLineEdit *skip_frame_edit;
@@ -55,10 +64,9 @@ private:
 	QLineEdit *output_frame_edit;
 	combo_box *frame_rate_menu;
 	combo_box *play_back_options;
+	combo_box *visible_range;
 	QTimeLine *qtime_line;
 	void player_init();
-	void set_frame(int frame);
-	void set_frame_rate(float rate);
 	void play(QTimeLine::Direction direction);
 	void play_finished();
 	void set_playing_option(QString option);

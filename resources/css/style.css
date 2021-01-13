@@ -217,6 +217,8 @@ QSlider {
   #viewer #player QPushButton {
     background: #3c4149;
     border-radius: 2px; }
+  #viewer #player #in_out, #viewer #player #input, #viewer #player #output {
+    background: none; }
 
 #viewer #timeline {
   background: #1e2024; }
