@@ -1,7 +1,7 @@
 #include <knob_floating.h>
 
 knob_floating::knob_floating(
-    float _default_value)
+		float _default_value)
 	: default_value(_default_value),
 	min(0),
 	max(5)
@@ -10,6 +10,7 @@ knob_floating::knob_floating(
 	layout = new QHBoxLayout(this);
 	layout->setMargin(0);
     layout->addWidget(init_space);
+	this->set_knob_layout(layout);
 
     value_edit = new QLineEdit();
 	connect(value_edit, &QLineEdit::returnPressed, this, [=](){
@@ -26,10 +27,6 @@ knob_floating::knob_floating(
 
     layout->addWidget(_slider);
 
-    animation_button = new QPushButton(this);
-    qt::set_icon(animation_button, "key_a", icon_size);
-    layout->addWidget(animation_button);
-
 	set_value(default_value);
 }
 
@@ -37,7 +34,6 @@ knob_floating::~knob_floating()
 {
 	delete value_edit;
 	delete _slider;
-	delete animation_button;
 	delete layout;
 }
 

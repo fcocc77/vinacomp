@@ -21,7 +21,6 @@ private:
     float default_value;
 	slider *_slider;
 	QLineEdit *value_edit;
-	QPushButton *animation_button;
 public:
     knob_floating(
         float _default_value = 1);

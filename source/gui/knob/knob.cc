@@ -1,8 +1,9 @@
 #include <knob.h>
 
 knob::knob(/* args */)
+	: animation_button(nullptr)
+	, knob_layout(nullptr)
 {
-
     // Espacio inicial
     init_space = new QWidget();
     init_space->setObjectName("init_space");
@@ -20,6 +21,7 @@ knob::knob(/* args */)
 
 knob::~knob()
 {
+	delete animation_button;
 }
 
 void knob::set_init_space(int space, QString label)
@@ -32,4 +34,21 @@ void knob::set_init_space(int space, QString label)
         init_space->setMinimumWidth(space);
         label_widget->setText(label);
     }
+}
+
+void knob::set_knob_layout(QHBoxLayout *layout)
+{
+	// es el layout del hijo que heredo esta clase, para poder agregarle 
+	// el boton de animacion final.
+	knob_layout = layout;
+}
+
+void knob::set_animatable(bool _animatable)
+{
+	if (animation_button || !knob_layout)
+		return;
+
+	animation_button = new QPushButton();
+	qt::set_icon(animation_button, "key_a", icon_size);
+	knob_layout->addWidget(animation_button);
 }

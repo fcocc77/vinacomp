@@ -5,6 +5,7 @@ knob_dimensions::knob_dimensions(int _dimensions, QList <float> default_values)
 {
 	this->setObjectName("knob_dimensions");
     QHBoxLayout *layout = new QHBoxLayout(this);
+	this->set_knob_layout(layout);
 	layout->setMargin(0);
 
     layout->addWidget(init_space);
@@ -28,18 +29,12 @@ knob_dimensions::knob_dimensions(int _dimensions, QList <float> default_values)
 	}
 
     layout->addStretch();
-
-    animation = new QPushButton();
-    qt::set_icon(animation, "key_a", icon_size);
-    layout->addWidget(animation);
 }
 
 knob_dimensions::~knob_dimensions()
 {
 	for (QLineEdit *edit : dimensions_edits)
 		delete edit;
-
-	delete animation;
 }
 
 float knob_dimensions::get_value(int dimension) const

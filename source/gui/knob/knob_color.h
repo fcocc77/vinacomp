@@ -29,7 +29,6 @@ private:
 	QPushButton *picker_button;
 	QPushButton *palette_button;
 	QPushButton *mono_color_button;
-	QPushButton *animation_button;
 
 	QWidget *red_widget;
 	QWidget *green_widget;

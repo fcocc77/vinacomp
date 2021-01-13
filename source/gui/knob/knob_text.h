@@ -6,7 +6,9 @@
 #include <QHBoxLayout>
 #include <QLabel>
 
-class knob_text : public QWidget
+#include <knob.h>
+
+class knob_text : public knob
 {
 private:
     /* data */

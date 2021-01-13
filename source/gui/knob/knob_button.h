@@ -5,7 +5,9 @@
 #include <QPushButton>
 #include <QHBoxLayout>
 
-class knob_button : public QWidget
+#include <knob.h>
+
+class knob_button : public knob
 {
 private:
     /* data */

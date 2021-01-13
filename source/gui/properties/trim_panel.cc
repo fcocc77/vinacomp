@@ -72,11 +72,11 @@ void trim_panel::setup_knobs(QJsonArray *knobs)
         QString label = knob_object.value("label").toString();
         bool over_line = knob_object.value("over_line").toBool();
 
-        QWidget *widget;
+        knob *_knob;
         if (type == "color")
         {
             QJsonArray _default = knob_object.value("default").toArray();
-            widget = new knob_color(
+            _knob = new knob_color(
                 QColor(
                     _default.at(0).toInt(),
                     _default.at(1).toInt(),
@@ -86,7 +86,7 @@ void trim_panel::setup_knobs(QJsonArray *knobs)
         else if (type == "check_box")
         {
             bool _default = knob_object.value("default").toBool();
-            widget = new knob_check_box(
+            _knob = new knob_check_box(
                 label,
                 _default);
 
@@ -95,62 +95,63 @@ void trim_panel::setup_knobs(QJsonArray *knobs)
 
         else if (type == "file")
         {
-            widget = new knob_file();
+            _knob = new knob_file();
         }
 
         else if (type == "choice")
         {
             QJsonArray items = knob_object.value("items").toArray();
-            widget = new knob_choice(qt::array_to_list(items));
+            _knob = new knob_choice(qt::array_to_list(items));
         }
 
         else if (type == "text")
         {
-            widget = new knob_text();
+            _knob = new knob_text();
         }
 
         else if (type == "label")
         {
-            widget = new knob_label(label);
+            _knob = new knob_label(label);
         }
 
         else if (type == "button")
         {
-            widget = new knob_button();
+            _knob = new knob_button();
         }
 
         else if (type == "group")
         {
             int knobs_included = knob_object.value("knobs").toInt();
             bool open_group = knob_object.value("open").toBool();
-            widget = new knob_group(label, knobs_included, open_group);
+            _knob = new knob_group(label, knobs_included, open_group);
             label = "";
         }
 
         else if (type == "integer")
         {
-            widget = new knob_integer();
+            _knob = new knob_integer();
         }
 
         else if (type == "floating")
         {
             float _default = knob_object.value("default").toDouble();
-            widget = new knob_floating(_default);
+            _knob = new knob_floating(_default);
         }
 
         else if (type == "separator")
         {
-            widget = new knob_separator();
+            _knob = new knob_separator();
         }
 
         else if (type == "position")
         {
-            widget = new knob_dimensions();
+            _knob = new knob_dimensions();
         }
 
-        knob *_knob = dynamic_cast<knob *>(widget);
         if (_knob)
         {
+			_knob->set_animatable();
+
             if (over_line)
             {
                 // si el parametro tiene 'over_line', crea un widget de linea

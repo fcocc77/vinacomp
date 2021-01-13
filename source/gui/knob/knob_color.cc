@@ -11,6 +11,7 @@ knob_color::knob_color(QColor color)
     this->setObjectName("knob_color");
 
     layout = new QHBoxLayout(this);
+	this->set_knob_layout(layout);
 
 	separate_colors_box = new QWidget(this);
 	separate_colors_slider = new QWidget(this);
@@ -47,7 +48,6 @@ knob_color::knob_color(QColor color)
 	picker_button = new QPushButton(this);
     palette_button = new QPushButton(this);
     mono_color_button = new QPushButton(this);
-    animation_button = new QPushButton(this);
 
 	connections();
     setup_ui();
@@ -105,7 +105,6 @@ knob_color::~knob_color()
 	delete picker_button;
 	delete palette_button;
 	delete mono_color_button;
-	delete animation_button;
 
 	delete separate_colors_box_layout;
 	delete separate_colors_slider_layout;

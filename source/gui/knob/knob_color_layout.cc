@@ -90,9 +90,6 @@ void knob_color::setup_ui()
 
 	mono_color_button->setText("4");
     layout->addWidget(mono_color_button);
-
-    qt::set_icon(animation_button, "key_a", icon_size);
-    layout->addWidget(animation_button);
 }
 
 void knob_color::connections()

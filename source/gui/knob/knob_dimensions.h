@@ -17,7 +17,6 @@ class knob_dimensions : public knob
 private:
 	int dimensions;
 	QList < QLineEdit * > dimensions_edits;
-	QPushButton *animation;
 
 public:
     knob_dimensions(int _dimensions = 2, QList <float> default_values = {0, 1});
