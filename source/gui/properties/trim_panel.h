@@ -28,7 +28,7 @@
 #include <knob_integer.h>
 #include <knob_floating.h>
 #include <knob_separator.h>
-#include <knob_position.h>
+#include <knob_dimensions.h>
 
 class trim_panel : public QWidget
 {

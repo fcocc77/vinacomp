@@ -100,6 +100,13 @@ time_line::~time_line()
 {
 }
 
+void time_line::set_frame_range(int _first_frame, int _last_frame)
+{
+	first_frame = _first_frame;
+	last_frame = _last_frame;
+	update();
+}
+
 void time_line::next_frame()
 {
 	int new_frame = frame + 1;

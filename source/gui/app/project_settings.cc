@@ -1,14 +1,17 @@
 #include <project_settings.h>
 
-
-project_settings::project_settings()
-	: first_frame(0)
+project_settings::project_settings(
+		viewer *__viewer
+	)
+	: _viewer(__viewer)
+	, first_frame(0)
 	, last_frame(100)
 	, proxy_scale(1)
 {
 	this->hide();
 	this->setMinimumWidth(500);
 	this->setMaximumWidth(500);
+	this->setObjectName("project_settings");
 
 	layout = new QVBoxLayout(this);
 	layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
@@ -16,7 +19,10 @@ project_settings::project_settings()
 	int init_space = 140;
 
 	// Frame Range
-	knob_position *frame_range_knob = new knob_position();
+	knob_dimensions *frame_range_knob = new knob_dimensions(2, {1, 100});
+	connect(frame_range_knob, &knob_dimensions::changed, this, [=](float _first_frame, float _last_frame){
+		_viewer->set_frame_range(_first_frame, _last_frame);
+	});
 	frame_range_knob->set_init_space(init_space, "Frame Range");
 	//
 	//

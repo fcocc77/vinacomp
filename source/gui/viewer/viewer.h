@@ -75,6 +75,8 @@ private:
 public:
     viewer(/* args */);
     ~viewer();
+
+	void set_frame_range(int _first_frame, int _last_frame);
 };
 
 #endif // VIEWER_H

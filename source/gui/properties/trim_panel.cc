@@ -145,7 +145,7 @@ void trim_panel::setup_knobs(QJsonArray *knobs)
 
         else if (type == "position")
         {
-            widget = new knob_position();
+            widget = new knob_dimensions();
         }
 
         knob *_knob = dynamic_cast<knob *>(widget);

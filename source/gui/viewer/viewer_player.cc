@@ -31,6 +31,14 @@ void viewer::set_frame(int frame)
 	// aqui se pone toda la actualizacion de la imagen del frame
 	// ...
 }
+
+void viewer::set_frame_range(int _first_frame, int _last_frame)
+{
+	first_frame = _first_frame;
+	last_frame = _last_frame;
+	_time_line->set_frame_range(_first_frame, _last_frame);
+}
+
 void viewer::set_frame_rate(float rate)
 {
 	frame_rate = rate;

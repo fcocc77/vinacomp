@@ -76,6 +76,7 @@ public:
 	void previous_frame();
 	void next_frame_each(int frames);
 	void previous_frame_each(int frames);
+	void set_frame_range(int _first_frame, int _last_frame);
 
 protected:
     void initializeGL() override;

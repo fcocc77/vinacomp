@@ -24,7 +24,7 @@ void vinacomp::setup_ui()
     _script_editor = new script_editor(project, _node_graph);
     _curve_editor = new curve_editor();
     _settings = new settings();
-	_project_settings = new project_settings();
+	_project_settings = new project_settings(_viewer);
 
     _panels_layout = new panels_layout(_node_graph, _viewer, _script_editor, _properties, _curve_editor);
     _tool_bar = new tools(25, true);
