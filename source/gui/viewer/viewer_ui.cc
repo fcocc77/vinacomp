@@ -167,22 +167,26 @@ QWidget *viewer::player_setup_ui()
 	action *skip_backward_action = new action("Skip Backward", "", "skip_backward");
     skip_backward_action->connect_to(this, [this]() { skip_backward(); });
 
-	action *in_action = new action("Input", "I", "input");
-	in_action->connect_to(this, [this]() {
+	input_action = new action("Input", "I", "input");
+	input_action->set_object_name("input");
+	input_action->set_checkable();
+	input_action->connect_to(this, [this]() {
 		set_in_out(current_frame, output);
 	});
-	action *out_action = new action("Output", "O", "output");
-	out_action->connect_to(this, [this]() {
+
+	output_action = new action("Output", "O", "output");
+	output_action->set_object_name("output");
+	output_action->set_checkable();
+	output_action->connect_to(this, [this]() {
 		set_in_out(input, current_frame);
 	});
-	action *visibility_in_out = new action("Visibility Input and Output", "", "in_out");
-	visibility_in_out->connect_to(this, [=](){
+
+	visibility_in_out_action = new action("Visibility Input and Output", "", "in_out");
+	visibility_in_out_action->connect_to(this, [=](){
 		enable_in_out(!in_out);
 	});
-	in_action->set_object_name("input");
-	out_action->set_object_name("output");
-	visibility_in_out->set_object_name("in_out");
-	visibility_in_out->set_checkable(true);
+	visibility_in_out_action->set_object_name("in_out");
+	visibility_in_out_action->set_checkable(true);
 
     frame_edit = new QLineEdit(player_tools);
 	frame_edit->setValidator( new QIntValidator(-100000, 100000, this) );  // Solo numeros
@@ -226,8 +230,9 @@ QWidget *viewer::player_setup_ui()
 	visible_range->add_item("In/Out");
 	visible_range->add_item("Visible");
 
+    player_tools->add_action(input_action);
     player_tools->add_widget(input_frame_edit);
-    player_tools->add_action(in_action);
+	player_tools->add_separator();
     player_tools->add_widget(frame_rate_menu);
     player_tools->add_widget(visible_range);
     player_tools->add_stretch();
@@ -254,9 +259,10 @@ QWidget *viewer::player_setup_ui()
     player_tools->add_action(skip_forward_action);
 
     player_tools->add_stretch();
-    player_tools->add_action(visibility_in_out);
-    player_tools->add_action(out_action);
+    player_tools->add_action(visibility_in_out_action);
+	player_tools->add_separator();
     player_tools->add_widget(output_frame_edit);
+    player_tools->add_action(output_action);
 
     return player_tools;
 }

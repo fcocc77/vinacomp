@@ -19,6 +19,22 @@ viewer::viewer()
 
     setup_ui();
 	player_init();
+
+	connect(qtime_line, &QTimeLine::frameChanged, this, [=](int frame){
+		set_frame(frame);
+	});
+
+	connect(qtime_line, &QTimeLine::finished, this, [=](){
+		play_finished();
+	});
+
+	connect(_time_line, &time_line::frame_changed, this, [=](int frame){
+		set_frame(frame);
+	});
+
+	connect(_time_line, &time_line::in_out_changed, this, [=](int _input, int _output){
+		set_in_out(_input, _output);
+	});
 }
 
 viewer::~viewer()
@@ -48,6 +64,9 @@ void viewer::set_frame_rate(float rate)
 void viewer::enable_in_out(bool enable)
 {
 	in_out = enable;
+	visibility_in_out_action->set_checked(enable);
+	input_action->set_checked(enable);
+	output_action->set_checked(enable);
 	_time_line->set_in_out_visible(enable);
 }
 

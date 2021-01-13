@@ -8,18 +8,6 @@ void viewer::player_init()
 	qtime_line->setUpdateInterval(interval);
 	qtime_line->setEasingCurve(QEasingCurve::Linear);
 
-	connect(qtime_line, &QTimeLine::frameChanged, this, [=](int frame){
-		set_frame(frame);
-	});
-
-	connect(qtime_line, &QTimeLine::finished, this, [=](){
-		play_finished();
-	});
-
-	connect(_time_line, &time_line::frame_changed, this, [=](int frame){
-		set_frame(frame);
-	});
-
 	frame_rate_menu->set_value(QString::number(frame_rate));
 	play_back_options->set_value("Repeat");
 }
@@ -42,12 +30,12 @@ void viewer::play_finished()
 	{
 		if (qtime_line->direction() == QTimeLine::Forward)
 		{
-			current_frame = first_frame;
+			current_frame = get_current_range().first;
 			play(QTimeLine::Forward);
 		}
 		else
 		{
-			current_frame = last_frame;
+			current_frame = get_current_range().second;
 			play(QTimeLine::Backward);
 		}
 	}
@@ -62,24 +50,25 @@ void viewer::play(QTimeLine::Direction direction)
 	int end_frame, total_frames;
 	int start_frame = current_frame;
 
+	auto frame_range = get_current_range();
+
 	if (direction == QTimeLine::Forward)
 	{
-		end_frame = last_frame;
+		end_frame = frame_range.second;
 		total_frames = end_frame - start_frame + 1;
 		qtime_line->setFrameRange(start_frame, end_frame);
-
-		play_forward_action->set_visible(false);
-		stop_forward_action->set_visible(true);
 	}
 	else
 	{
-		end_frame = first_frame;
+		end_frame = frame_range.first;
 		total_frames = start_frame - end_frame + 1;
 		qtime_line->setFrameRange(end_frame, start_frame);
-
-		play_backward_action->set_visible(false);
-		stop_backward_action->set_visible(true);
 	}
+
+	play_forward_action->set_visible(false);
+	stop_forward_action->set_visible(true);
+	play_backward_action->set_visible(false);
+	stop_backward_action->set_visible(true);
 
 	int duration_ms = (total_frames * 1000) / frame_rate;
 
@@ -98,13 +87,25 @@ void viewer::stop()
 	qtime_line->stop();
 }
 
+pair<int, int> viewer::get_current_range() const
+{
+	// obtiene el rango actual, ya que puede ser con el input y output activado
+	// o puese ser el rango general o el de entrada.
+
+	if (in_out)
+		return {input, output};
+	else
+		return {first_frame, last_frame};
+}
+
 void viewer::go_to_first_frame()
 {
 	bool playing = qtime_line->state();
 	stop();
 
-	set_frame(first_frame);
-	_time_line->go_to_frame(first_frame);
+	int start_frame = get_current_range().first;
+	set_frame(start_frame);
+	_time_line->go_to_frame(start_frame);
 
 	if (playing)
 		play(qtime_line->direction());
@@ -113,8 +114,9 @@ void viewer::go_to_first_frame()
 void viewer::go_to_last_frame()
 {
 	stop();
-	set_frame(last_frame);
-	_time_line->go_to_frame(last_frame);
+	int end_frame = get_current_range().second;
+	set_frame(end_frame);
+	_time_line->go_to_frame(end_frame);
 }
 
 void viewer::next_frame()

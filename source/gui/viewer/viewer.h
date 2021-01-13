@@ -49,12 +49,16 @@ private:
 	action *stop_forward_action;
 	action *play_backward_action;
 	action *stop_backward_action;
+	action *visibility_in_out_action;
+	action *input_action;
+	action *output_action;
 	//
 
 	// General
 	void set_frame(int frame);
 	void set_frame_rate(float rate);
-	void enable_in_out(bool enable); void set_in_out(int input, int output);
+	void enable_in_out(bool enable); 
+	void set_in_out(int input, int output);
 	//
 
 	// Player
@@ -79,6 +83,7 @@ private:
 	void previous_key_frame();
 	void skip_forward();
 	void skip_backward();
+	pair<int, int> get_current_range() const;
 	//
 public:
     viewer(/* args */);

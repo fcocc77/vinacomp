@@ -38,7 +38,7 @@ gui__time_line:
 gui__viewer_players:
 	☐ que los qlineedit de entrada y salida, modifiquen la entrada de la linea de tiempo con el 'Enter'
 	☐ que el qlineedit del frame modifiquen el frame de la linea de tiempo
-	☐ crear combobox con 3 opciones: repeat, bounce y stop
+	✔ crear combobox con 3 opciones: repeat, bounce y stop @done(2021-01-13 20:56) @project(gui__viewer_players)
 gui__node_graph:
 	☐ que el buscador funcione
 	☐ crear grilla que switchee con el boton de 'grid'

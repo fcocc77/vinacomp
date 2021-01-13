@@ -1,14 +1,15 @@
 #include <time_line.h>
 
 time_line::time_line(
-			QWidget *parent,
+			QWidget *_parent,
 			QLineEdit *_frame_edit,
 			QLineEdit *_input_frame_edit,
 			QLineEdit *_output_frame_edit,
 			QLineEdit *_skip_frame_edit
 		)
 
-		:frame_edit(_frame_edit),
+		: parent(_parent),
+		frame_edit(_frame_edit),
 		input_frame_edit(_input_frame_edit),
 		output_frame_edit(_output_frame_edit),
 		skip_frame_edit(_skip_frame_edit),
@@ -45,43 +46,55 @@ time_line::time_line(
     });
 
     action *next_frame_action = new action("Next Frame", "right");
-    next_frame_action->connect_to(this, [this]()
+    next_frame_action->connect_to(parent, [this]()
 	{
 		next_frame();
     });
 
     action *previous_frame_action = new action("Previous Frame", "left");
-    previous_frame_action->connect_to(this, [this]()
+    previous_frame_action->connect_to(parent, [this]()
 	{
 		previous_frame();
     });
 
     action *next_frame_each_action = new action("Skip Next Frames", "Ctrl+right");
-    next_frame_each_action->connect_to(this, [this]()
+    next_frame_each_action->connect_to(parent, [this]()
 	{
 		int skip_frames = skip_frame_edit->text().toInt();
 		next_frame_each(skip_frames);
     });
 
     action *previous_frame_each_action = new action("Skip Previous Frames", "Ctrl+left");
-    previous_frame_each_action->connect_to(this, [this]()
+    previous_frame_each_action->connect_to(parent, [this]()
 	{
 		int skip_frames = skip_frame_edit->text().toInt();
 		previous_frame_each(skip_frames);
     });
 
     action *go_to_last_frame_action = new action("Go to Last Frame", "Alt+right");
-    go_to_last_frame_action->connect_to(this, [this]()
+    go_to_last_frame_action->connect_to(parent, [this]()
 	{
-		go_to_frame(last_frame);
-		frame_changed(last_frame); // Signal
+		int _last_frame;
+		if (in_out_visible)
+			_last_frame = output;
+		else
+			_last_frame = last_frame;
+
+		go_to_frame(_last_frame);
+		frame_changed(_last_frame); // Signal
     });
 
     action *go_to_first_frame_action = new action("Go to First Frame", "Alt+left");
-    go_to_first_frame_action->connect_to(this, [this]()
+    go_to_first_frame_action->connect_to(parent, [this]()
 	{
-		go_to_frame(first_frame);
-		frame_changed(first_frame); // Signal
+		int _first_frame;
+		if (in_out_visible)
+			_first_frame = input;
+		else
+			_first_frame = first_frame;
+
+		go_to_frame(_first_frame);
+		frame_changed(_first_frame); // Signal
     });
 }
 

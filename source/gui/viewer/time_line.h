@@ -32,11 +32,12 @@ private:
 	float top_y, mid_y1, mid_y2, number_y;
 
 	QJsonObject palette;
+	QWidget *parent;
 
     void fit_to_range();
 	void fit_switch();
 	void fit_to_selector();
-    void set_in_out(int _input, int _output);
+    void set_in_out(int _input, int _output, bool emit_signal = true);
 
 	// Input Output
     void drag_in_out(int _frame);
@@ -64,7 +65,7 @@ private:
 
 public:
     time_line(
-		QWidget *parent,
+		QWidget *_parent,
 		QLineEdit *frame_edit,
 		QLineEdit *input_frame_edit,
 		QLineEdit *output_frame_edit,

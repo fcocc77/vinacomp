@@ -53,7 +53,7 @@ void time_line::drag_in_out(int _frame)
         update();
 }
 
-void time_line::set_in_out(int _input, int _output)
+void time_line::set_in_out(int _input, int _output, bool emit_signal)
 {
     // si el input o output sobrepasa al otro, los limita con 1 frame menos
     if (_input >= output)
@@ -80,11 +80,15 @@ void time_line::set_in_out(int _input, int _output)
 	output_frame_edit->setText(QString::number(output));
 
 	// Signal
-	in_out_changed(input, output);
+	if (emit_signal)
+		in_out_changed(input, output);
 }
 
 void time_line::update_in_out(int _input, int _output)
 {
+	// es igual al 'set_in_out' pero sin emitir señal ya que se puede
+	// producir un bucle infinito.
+	set_in_out(_input, _output, false);
 }
 
 void time_line::change_in_out_with_control()
