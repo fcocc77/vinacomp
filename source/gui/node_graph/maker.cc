@@ -117,7 +117,8 @@ QString maker::create_fx(QString id)
 		_viewer = new viewer();
 		panels_layout *_panels_layout = dynamic_cast<vinacomp *>(_vinacomp)->get_panels_layout();
 		panel *viewer_panel = _panels_layout->get_viewer_panel();
-		viewer_panel->add_viewer(_viewer, name);
+		if (viewer_panel)
+			viewer_panel->add_viewer(_viewer, name);
 	}
 	//
 

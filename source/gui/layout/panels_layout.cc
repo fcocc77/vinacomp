@@ -83,7 +83,7 @@ panel *panels_layout::get_viewer_panel() const
 	// Encuentra el panel donde se ubican todos los viewer
 	for (panel *_panel : get_all_panels())
 		for (QString tab_name : _panel->get_tabs_list())
-			if (tab_name.contains("viewer"))
+			if (tab_name.toLower().contains("viewer"))
 				return _panel;
 
 	return nullptr;

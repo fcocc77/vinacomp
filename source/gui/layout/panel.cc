@@ -204,6 +204,7 @@ void panel::add_tab(QWidget *widget, QString name)
 void panel::add_viewer(viewer *_viewer, QString name)
 {
 	_tab_widget->remove_tab("Viewer");
+	tabs_list.removeOne("viewer");
 	add_tab(_viewer, name);
 }
 
