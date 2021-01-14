@@ -57,7 +57,7 @@ private:
 	// General
 	void set_frame(int frame);
 	void set_frame_rate(float rate);
-	void enable_in_out(bool enable); 
+	void enable_in_out(bool enable);
 	void set_in_out(int input, int output);
 	//
 

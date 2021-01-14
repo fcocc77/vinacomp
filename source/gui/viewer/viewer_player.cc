@@ -47,10 +47,15 @@ void viewer::play(QTimeLine::Direction direction)
 {
 	stop();
 
-	int end_frame, total_frames;
-	int start_frame = current_frame;
-
+	int end_frame, total_frames, start_frame;
 	auto frame_range = get_current_range();
+
+	// si el cursor esta fuera del rango, inicia con el primer cuadro del rango actual
+	if (current_frame > frame_range.second || current_frame < frame_range.first)
+		start_frame = frame_range.first;
+	else
+		start_frame = current_frame;
+	//
 
 	if (direction == QTimeLine::Forward)
 	{
