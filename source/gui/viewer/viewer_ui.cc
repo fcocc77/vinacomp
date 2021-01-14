@@ -133,78 +133,149 @@ QWidget *viewer::player_setup_ui()
 	player_tools->get_layout()->setSpacing(7);
 	player_tools->setObjectName("player");
 
+	//
+	//
 	play_forward_action = new action("Play Forward", "", "play_arrow");
     play_forward_action->connect_to(this, [this]() { play(QTimeLine::Forward); });
+	//
+	//
 
+	//
+	//
 	stop_forward_action = new action("Stop", "", "stop");
     stop_forward_action->connect_to(this, [this]() { stop(); });
 	stop_forward_action->set_visible(false);
+	//
+	//
 
+	//
+	//
 	play_backward_action = new action("Play Backward", "", "play_back");
     play_backward_action->connect_to(this, [this]() { play(QTimeLine::Backward); });
+	//
+	//
 
+	//
+	//
 	stop_backward_action = new action("Stop", "", "stop");
     stop_backward_action->connect_to(this, [this]() { stop(); });
 	stop_backward_action->set_visible(false);
+	//
+	//
 
+	//
+	//
 	action *first_frame = new action("Go to first frame", "", "skip_previous");
     first_frame->connect_to(this, [this]() { go_to_first_frame(); });
 	action *last_frame = new action("Go to last frame", "", "skip_next");
     last_frame->connect_to(this, [this]() { go_to_last_frame(); });
+	//
+	//
 
+	//
+	//
 	action *next_frame_action = new action("Next Frame", "", "next_frame");
     next_frame_action->connect_to(this, [this]() { next_frame(); });
 	action *previous_frame_action = new action("Previous Frame", "", "previous_frame");
     previous_frame_action->connect_to(this, [this]() { previous_frame(); });
+	//
+	//
 
+	//
+	//
 	action *next_key_frame_action = new action("Next key frame", "", "next_key_frame");
     next_key_frame_action->connect_to(this, [this]() { next_key_frame(); });
 	action *previous_key_frame_action = new action("Previous key frame", "", "previous_key_frame");
     previous_key_frame_action->connect_to(this, [this]() { previous_key_frame(); });
+	//
+	//
 
+	//
+	//
 	action *skip_forward_action = new action("Skip Forward", "", "skip_forward");
     skip_forward_action->connect_to(this, [this]() { skip_forward(); });
 	action *skip_backward_action = new action("Skip Backward", "", "skip_backward");
     skip_backward_action->connect_to(this, [this]() { skip_backward(); });
+	//
+	//
 
+	//
+	//
 	input_action = new action("Input", "I", "input");
 	input_action->set_object_name("input");
 	input_action->set_checkable();
 	input_action->connect_to(this, [this]() {
 		set_in_out(current_frame, output);
 	});
+	//
+	//
 
+	//
+	//
 	output_action = new action("Output", "O", "output");
 	output_action->set_object_name("output");
 	output_action->set_checkable();
 	output_action->connect_to(this, [this]() {
 		set_in_out(input, current_frame);
 	});
+	//
+	//
 
+	//
+	//
 	visibility_in_out_action = new action("Visibility Input and Output", "", "in_out");
 	visibility_in_out_action->connect_to(this, [=](){
 		enable_in_out(!in_out);
 	});
 	visibility_in_out_action->set_object_name("in_out");
 	visibility_in_out_action->set_checkable(true);
+	//
+	//
 
+	//
+	//
     frame_edit = new QLineEdit(player_tools);
+	connect(frame_edit, &QLineEdit::editingFinished, this, [=](){
+		set_frame(frame_edit->text().toInt());
+	});
 	frame_edit->setValidator( new QIntValidator(-100000, 100000, this) );  // Solo numeros
     frame_edit->setMaximumWidth(40);
+	//
+	//
 
+	//
+	//
     skip_frame_edit = new QLineEdit(player_tools);
 	skip_frame_edit->setValidator( new QIntValidator(1, 100, this) ); // Solo numeros del 1 al 100
     skip_frame_edit->setText("10");
     skip_frame_edit->setMaximumWidth(30);
+	//
+	//
 
+	//
+	//
     input_frame_edit = new QLineEdit(player_tools);
+	connect(input_frame_edit, &QLineEdit::editingFinished, this, [=](){
+		set_in_out(input_frame_edit->text().toInt(), output);
+	});
 	input_frame_edit->setValidator( new QIntValidator(-100000, 100000, this) );  // Solo numeros
     input_frame_edit->setMaximumWidth(30);
+	//
+	//
 
+	//
+	//
     output_frame_edit = new QLineEdit(player_tools);
+	connect(output_frame_edit, &QLineEdit::editingFinished, this, [=](){
+		set_in_out(input, output_frame_edit->text().toInt());
+	});
 	output_frame_edit->setValidator( new QIntValidator(-100000, 100000, this) );  // Solo numeros
     output_frame_edit->setMaximumWidth(30);
+	//
+	//
 
+	//
+	//
 	frame_rate_menu = new combo_box();
 	connect(frame_rate_menu, &combo_box::changed, this, [=](QString name){
 		set_frame_rate(name.toInt());
@@ -215,7 +286,11 @@ QWidget *viewer::player_setup_ui()
 	frame_rate_menu->add_item("48");
 	frame_rate_menu->add_item("50");
 	frame_rate_menu->add_item("60");
+	//
+	//
 
+	//
+	// Play Back Option
 	play_back_options = new combo_box();
 	connect(play_back_options, &combo_box::changed, this, [=](QString name){
 		set_playing_option(name);
@@ -223,12 +298,18 @@ QWidget *viewer::player_setup_ui()
 	play_back_options->add_item("Repeat");
 	play_back_options->add_item("Bounce");
 	play_back_options->add_item("Stop");
+	//
+	//
 
+	//
+	//
 	visible_range = new combo_box();
 	visible_range->add_item("Global");
 	visible_range->add_item("Input");
 	visible_range->add_item("In/Out");
 	visible_range->add_item("Visible");
+	//
+	//
 
     player_tools->add_action(input_action);
     player_tools->add_widget(input_frame_edit);
