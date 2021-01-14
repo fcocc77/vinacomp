@@ -19,6 +19,7 @@
 #include <time_line.h>
 #include <tools.h>
 #include <action.h>
+#include <knob_floating.h>
 
 class viewer : public QWidget
 {

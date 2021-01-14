@@ -231,6 +231,8 @@ QSlider {
 
 #viewer #image_correction {
   background: #25282d; }
+  #viewer #image_correction #knob_floating {
+    background: none; }
 
 #tab_widget #tab {
   border-top-right-radius: 3px;

@@ -5,6 +5,7 @@ knob_label::knob_label(QString label)
 	this->setObjectName("knob_label");
 
     QHBoxLayout *layout = new QHBoxLayout(this);
+	layout->addWidget(init_space);
 	int margin = 5;
 	layout->setContentsMargins(0, margin, 0, margin);
 

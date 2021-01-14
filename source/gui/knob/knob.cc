@@ -6,6 +6,8 @@ knob::knob(/* args */)
 {
     // Espacio inicial
     init_space = new QWidget();
+	init_space->hide();
+	init_space->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     init_space->setObjectName("init_space");
 
     QHBoxLayout *layout = new QHBoxLayout(init_space);
@@ -27,13 +29,12 @@ knob::~knob()
 void knob::set_init_space(int space, QString label)
 {
     if (space == 0)
-        init_space->hide();
-    else
-    {
-        init_space->setMaximumWidth(space);
-        init_space->setMinimumWidth(space);
-        label_widget->setText(label);
-    }
+		return;
+
+	init_space->show();
+	init_space->setMaximumWidth(space);
+	init_space->setMinimumWidth(space);
+	label_widget->setText(label);
 }
 
 void knob::set_knob_layout(QHBoxLayout *layout)

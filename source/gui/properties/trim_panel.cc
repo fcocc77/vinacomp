@@ -176,7 +176,10 @@ void trim_panel::setup_knobs(QJsonArray *knobs)
             else
             {
                 over_line_knobs.clear();
-                _knob->set_init_space(init_space_width, label);
+				if (type == "label" || type == "separator")
+					_knob->set_init_space(0);
+				else
+					_knob->set_init_space(init_space_width, label);
 
                 controls_layout->addWidget(_knob);
             }

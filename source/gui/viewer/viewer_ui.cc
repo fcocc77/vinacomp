@@ -76,42 +76,29 @@ QWidget *viewer::control_setup_ui()
 
 QWidget *viewer::image_correction_setup_ui()
 {
-    QWidget *widget = new QWidget();
-    widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    widget->setObjectName("image_correction");
-    QHBoxLayout *layout = new QHBoxLayout();
-    layout->setSpacing(2);
-    layout->setMargin(5);
-    widget->setLayout(layout);
-    //
+	tools *bar = new tools();
+	bar->setObjectName("image_correction");
 
-    int icon_size = 25;
+	action *gain_action = new action("Gain", "", "gain");
+	gain_action->set_checkable();
+	gain_action->connect_to(this, [](){
+	});
 
-    QPushButton *gain = new QPushButton();
-    qt::set_icon(gain, "gain_a", icon_size);
-    layout->addWidget(gain);
+	knob_floating *gain_knob = new knob_floating();
 
-    QLineEdit *gain_edit = new QLineEdit();
-    gain_edit->setMaximumWidth(50);
-    layout->addWidget(gain_edit);
+	action *gamma_action = new action("Gamma", "", "gamma");
+	gamma_action->set_checkable();
+	gamma_action->connect_to(this, [](){
+	});
 
-    slider *gain_slider = new slider();
-    layout->addWidget(gain_slider);
+	knob_floating *gamma_knob = new knob_floating();
 
-    QPushButton *gamma = new QPushButton();
-    qt::set_icon(gamma, "gamma_a", icon_size);
-    layout->addWidget(gamma);
+	bar->add_action(gain_action);
+	bar->add_widget(gain_knob);
+	bar->add_action(gamma_action);
+	bar->add_widget(gamma_knob);
 
-    QLineEdit *gamma_edit = new QLineEdit();
-    gamma_edit->setMaximumWidth(50);
-    layout->addWidget(gamma_edit);
-
-    slider *gamma_slider = new slider();
-    layout->addWidget(gamma_slider);
-
-    layout->addStretch();
-
-    return widget;
+	return bar;
 }
 
 QWidget *viewer::info_setup_ui()
