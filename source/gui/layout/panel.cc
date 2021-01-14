@@ -1,17 +1,16 @@
 #include <panel.h>
-#include <QToolButton>
 
 panel::panel(QWidget *_panels_layout,
              QList<QSplitter *> *_splitters,
              node_graph *__node_graph,
-             viewer *__viewer,
+             QLabel *_empty_viewer,
              script_editor *__script_editor,
              properties *__properties,
              curve_editor *__curve_editor)
 
     : panels_layout(_panels_layout),
       _node_graph(__node_graph),
-      _viewer(__viewer),
+      empty_viewer(_empty_viewer),
       _script_editor(__script_editor),
       _properties(__properties),
       _curve_editor(__curve_editor),
@@ -20,14 +19,12 @@ panel::panel(QWidget *_panels_layout,
 {
     this->setObjectName("panel");
 
-    tab_section = new tab_widget(true);
+    _tab_widget = new tab_widget(true);
     QPushButton *cornel_button = setup_cornel_buttons();
 
-    QVBoxLayout *layout = new QVBoxLayout();
+    QVBoxLayout *layout = new QVBoxLayout(this);
 	layout->setMargin(0);
-    layout->addWidget(tab_section);
-
-    this->setLayout(layout);
+    layout->addWidget(_tab_widget);
 }
 
 panel::~panel()
@@ -36,7 +33,7 @@ panel::~panel()
 
 QPushButton *panel::setup_cornel_buttons()
 {
-    QPushButton *menu_button = tab_section->add_cornel_button("layout_a");
+    QPushButton *menu_button = _tab_widget->add_cornel_button("layout_a");
 
     // Menu
     QAction *split_vertical = new QAction("Vertical Split");
@@ -62,7 +59,7 @@ QPushButton *panel::setup_cornel_buttons()
     // Add NodeGraph
     QAction *add_node_graph_action = new QAction("Node Graph");
     connect(add_node_graph_action, &QAction::triggered, this, [this]() {
-        add_tab("node_graph");
+        add_fixed_panel("node_graph");
     });
     add_node_graph_action->setIcon(QIcon("resources/images/node_graph_a.png"));
     //
@@ -70,7 +67,7 @@ QPushButton *panel::setup_cornel_buttons()
     // Add Viewer
     QAction *add_viewer_action = new QAction("Viewer");
     connect(add_viewer_action, &QAction::triggered, this, [this]() {
-        add_tab("viewer");
+        add_fixed_panel("viewer");
     });
     add_viewer_action->setIcon(QIcon("resources/images/viewer_a.png"));
     //
@@ -78,7 +75,7 @@ QPushButton *panel::setup_cornel_buttons()
     // Add Script Editor
     QAction *add_script_editor_action = new QAction("Script Editor");
     connect(add_script_editor_action, &QAction::triggered, this, [this]() {
-        add_tab("script_editor");
+        add_fixed_panel("script_editor");
     });
     add_script_editor_action->setIcon(QIcon("resources/images/script_editor_a.png"));
     //
@@ -86,7 +83,7 @@ QPushButton *panel::setup_cornel_buttons()
     // Add Curve Editor
     QAction *add_curve_editor_action = new QAction("Curve Editor");
     connect(add_curve_editor_action, &QAction::triggered, this, [this]() {
-        add_tab("curve_editor");
+        add_fixed_panel("curve_editor");
     });
     add_curve_editor_action->setIcon(QIcon("resources/images/curve_editor_a.png"));
     //
@@ -94,7 +91,7 @@ QPushButton *panel::setup_cornel_buttons()
     // Add Properties
     QAction *add_properties_action = new QAction("Properties");
     connect(add_properties_action, &QAction::triggered, this, [this]() {
-        add_tab("properties");
+        add_fixed_panel("properties");
     });
     add_properties_action->setIcon(QIcon("resources/images/properties_a.png"));
     //
@@ -124,12 +121,12 @@ QPushButton *panel::setup_cornel_buttons()
 void panel::add_tabs(QStringList tabs_list)
 {
     for (QString tab_name : tabs_list)
-        add_tab(tab_name);
+        add_fixed_panel(tab_name);
 }
 
 void panel::remove_all_tab()
 {
-    tab_section->clear();
+    _tab_widget->clear();
     tabs_list.clear();
 }
 
@@ -156,17 +153,18 @@ QString panel::get_tab_label(QString name)
 
 void panel::set_index(int index)
 {
-    tab_section->set_index(index);
+    _tab_widget->set_index(index);
 }
 
-void panel::add_tab(QString name)
+void panel::add_fixed_panel(QString name)
 {
+	// añade un tab de algun panel fijo
     QWidget *tab;
     if (name == "node_graph")
         tab = _node_graph;
 
     else if (name == "viewer")
-        tab = _viewer;
+        tab = empty_viewer;
 
     else if (name == "curve_editor")
         tab = _curve_editor;
@@ -180,7 +178,16 @@ void panel::add_tab(QString name)
     else
         return;
 
-    tab_section->add_tab(tab, get_tab_label(name));
+	add_tab(tab, name);
+}
+
+void panel::add_tab(QWidget *widget, QString name)
+{
+	QString label = get_tab_label(name);
+	if (label.isEmpty())
+		label = name;
+
+    _tab_widget->add_tab(widget, label);
 
     // el tab que se va a agregar en este panel se borra en
     // todos los paneles, si es que esta en alguno.
@@ -188,14 +195,19 @@ void panel::add_tab(QString name)
 
     for (panel *_panel : panels)
         _panel->tabs_list.removeOne(name);
-
     //
     //
 
     tabs_list.push_back(name);
 }
 
-QSplitter *panel::get_splitter()
+void panel::add_viewer(viewer *_viewer, QString name)
+{
+	_tab_widget->remove_tab("Viewer");
+	add_tab(_viewer, name);
+}
+
+QSplitter *panel::get_splitter() const
 {
     QWidget *container = this->parentWidget();
     QWidget *qsplitter = container->parentWidget();
@@ -211,6 +223,16 @@ QSplitter *panel::get_splitter()
     }
 
     return splitter;
+}
+
+QStringList panel::get_tabs_list() const
+{
+	return tabs_list;
+}
+
+tab_widget *panel::get_tab_widget() const
+{
+	return _tab_widget;
 }
 
 panel *panel::split(Qt::Orientation orientation)
@@ -230,7 +252,7 @@ panel *panel::split(Qt::Orientation orientation)
 
     qsplitter->setOrientation(orientation);
 
-    panel *new_panel = new panel(panels_layout, splitters, _node_graph, _viewer, _script_editor, _properties, _curve_editor);
+    panel *new_panel = new panel(panels_layout, splitters, _node_graph, empty_viewer, _script_editor, _properties, _curve_editor);
 
     QWidget *container_a = new QWidget();
     QWidget *container_b = new QWidget();
@@ -301,7 +323,7 @@ void panel::close_panel()
     //
     //
 
-    delete tab_section;
+    delete _tab_widget;
 
     parent->layout()->removeWidget(qsplitter);
     qsplitter->setParent(0);

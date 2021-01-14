@@ -234,6 +234,11 @@ QSlider {
   #viewer #image_correction #knob_floating {
     background: none; }
 
+#empty_viewer {
+  background: #30343b;
+  color: #929aa5;
+  font-size: 25px; }
+
 #tab_widget #tab {
   border-top-right-radius: 3px;
   border-top-left-radius: 3px;

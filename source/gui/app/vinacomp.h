@@ -9,7 +9,6 @@
 #include <QFileDialog>
 
 // VINA COMP
-#include <viewer.h>
 #include <node_graph.h>
 #include <script_editor.h>
 #include <properties.h>
@@ -25,7 +24,6 @@ class vinacomp : public QMainWindow
     Q_OBJECT
 private:
     node_graph *_node_graph;
-    viewer *_viewer;
     script_editor *_script_editor;
     properties *_properties;
     curve_editor *_curve_editor;
@@ -73,6 +71,8 @@ private:
 public:
     vinacomp();
     ~vinacomp();
+
+	panels_layout *get_panels_layout() const;
 };
 
 #endif // VINACOMP_H

@@ -18,15 +18,20 @@ vinacomp::~vinacomp()
 
 void vinacomp::setup_ui()
 {
+	// Viewer Vacio
+	QLabel *empty_viewer = new QLabel("( Viewer1 )");
+	empty_viewer->setAlignment(Qt::AlignCenter);
+	empty_viewer->setObjectName("empty_viewer");
+	//
+
     _properties = new properties();
-    _node_graph = new node_graph(project, _properties);
-    _viewer = new viewer();
+    _node_graph = new node_graph(this, project, _properties);
     _script_editor = new script_editor(project, _node_graph);
     _curve_editor = new curve_editor();
     _settings = new settings();
-	_project_settings = new project_settings(_viewer);
+	// _project_settings = new project_settings(_viewer);
 
-    _panels_layout = new panels_layout(_node_graph, _viewer, _script_editor, _properties, _curve_editor);
+    _panels_layout = new panels_layout(_node_graph, empty_viewer, _script_editor, _properties, _curve_editor);
     _tool_bar = new tools(25, true);
 
 	// settings panel
@@ -36,7 +41,7 @@ void vinacomp::setup_ui()
 	settings_panel_layout->setMargin(0);
 	settings_panel_layout->setSpacing(0);
 	settings_panel_layout->addWidget(_settings);
-	settings_panel_layout->addWidget(_project_settings);
+	// settings_panel_layout->addWidget(_project_settings);
 	//
 
     QWidget *central_widget = new QWidget(this);
@@ -57,6 +62,11 @@ void vinacomp::setup_ui()
 
     main_menu();
 	tool_bar();
+}
+
+panels_layout *vinacomp::get_panels_layout() const
+{
+	return _panels_layout;
 }
 
 void vinacomp::setup_style()

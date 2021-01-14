@@ -122,7 +122,7 @@ void tab_widget::clear()
 
 void tab_widget::add_tab(QWidget *widget, QString name)
 {
-    // si no es -1 el tab ya existe
+    // si no es -1 el tab ya existe y lo deja visible
     int index = get_index_by_name(name);
     if (index != -1)
     {
@@ -152,6 +152,11 @@ void tab_widget::add_tab(QWidget *widget, QString name)
     tab_bar_layout->insertWidget(tabs.count(), _tab);
 
     set_index(tabs.count() - 1);
+}
+
+void tab_widget::remove_tab(QString name)
+{
+	close_tab(name);
 }
 
 int tab_widget::get_current_index() const

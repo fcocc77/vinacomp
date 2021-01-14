@@ -20,8 +20,9 @@ private:
     void isolate_panel();
     void set_visible_panels(bool visible);
 
-    panel *get_child_panel(QSplitter *__splitter, QString _letter);
-    panel *get_panel_from_cursor();
+    panel *get_child_panel(QSplitter *__splitter, QString _letter) const;
+    panel *get_panel_from_cursor() const;
+	QList <panel *> get_all_panels() const;
 
     void save_json_layout(QSplitter *splitter, int deep = 0, QString letter = "", QStringList parents = {});
     void load_splitter(QJsonObject splitter_obj, panel *panel_a);
@@ -33,7 +34,7 @@ private:
 public:
     panels_layout(
         node_graph *_node_graph,
-        viewer *_viewer,
+        QLabel *empty_viewer,
         script_editor *_script_editor,
         properties *_properties,
         curve_editor *_curve_editor);
@@ -43,6 +44,8 @@ public:
 
     QAction *restore_default_action;
     QAction *save_current_action;
+
+	panel *get_viewer_panel() const;
 };
 
 #endif // PANELS_LAYOUT_HPP

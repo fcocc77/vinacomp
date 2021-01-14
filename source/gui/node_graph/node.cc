@@ -1,4 +1,6 @@
 #include <node.h>
+#include <vinacomp.h>
+#include <panels_layout.h>
 
 node::node(QGraphicsScene *_scene,
            int *_current_z_value,
@@ -6,19 +8,23 @@ node::node(QGraphicsScene *_scene,
            QMap<QString, node *> *_selected_nodes,
            int inputs,
            QColor _color,
-           trim_panel *_panel,
-           properties *__properties)
+           trim_panel *__trim_panel,
+		   viewer *__viewer,
+           properties *__properties,
+		   QWidget *__vinacomp)
 
-    : panel(_panel),
-      _properties(__properties),
-      color(_color),
-      scene(_scene),
-      current_z_value(_current_z_value),
-      selected_nodes(_selected_nodes),
+    : _trim_panel(__trim_panel)
+	, _viewer(__viewer)
+	, _properties(__properties)
+	, _vinacomp(__vinacomp)
+	, color(_color)
+	, scene(_scene)
+	, current_z_value(_current_z_value)
+	, selected_nodes(_selected_nodes)
 
-      minimum_width(150),
-      minimum_height(50),
-      icon_area_width(45)
+	, minimum_width(150)
+	, minimum_height(50)
+	, icon_area_width(45)
 
 {
     center_position = new QPointF;
@@ -184,7 +190,8 @@ void node::set_name(QString _name)
 
     change_size_rectangle(new_width, current_height);
 
-    panel->set_name(_name);
+	if (_trim_panel)
+		_trim_panel->set_name(_name);
 }
 
 QString node::get_name()
@@ -246,7 +253,15 @@ QList<node_link *> *node::get_links()
 
 void node::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
-    _properties->add_trim_panel(panel);
+	if (_trim_panel)
+		_properties->add_trim_panel(_trim_panel);
+
+	if (_viewer)
+	{
+		panels_layout *_panels_layout = dynamic_cast<vinacomp*>(_vinacomp)->get_panels_layout();
+		auto viewer_panel = _panels_layout->get_viewer_panel();
+		viewer_panel->add_viewer(_viewer, this->get_name());
+	}
 }
 
 void node::mousePressEvent(QGraphicsSceneMouseEvent *event)

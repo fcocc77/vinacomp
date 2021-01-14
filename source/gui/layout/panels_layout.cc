@@ -2,7 +2,7 @@
 
 panels_layout::panels_layout(
     node_graph *_node_graph,
-    viewer *_viewer,
+    QLabel *empty_viewer,
     script_editor *_script_editor,
     properties *_properties,
     curve_editor *_curve_editor)
@@ -14,7 +14,7 @@ panels_layout::panels_layout(
 
     splitters = new QList<QSplitter *>;
 
-    first_panel = new panel(this, splitters, _node_graph, _viewer, _script_editor, _properties, _curve_editor);
+    first_panel = new panel(this, splitters, _node_graph, empty_viewer, _script_editor, _properties, _curve_editor);
 
     QWidget *central_widget = new QWidget();
     qt::add_widget(this, first_panel);
@@ -45,7 +45,7 @@ panels_layout::~panels_layout()
 {
 }
 
-panel *panels_layout::get_panel_from_cursor()
+panel *panels_layout::get_panel_from_cursor() const
 {
     // Encuentra el panel a partir del cursor
     QWidget *_panel = qApp->widgetAt(QCursor::pos());
@@ -61,7 +61,7 @@ panel *panels_layout::get_panel_from_cursor()
     return dynamic_cast<panel *>(_panel);
 }
 
-panel *panels_layout::get_child_panel(QSplitter *splitter, QString _letter)
+panel *panels_layout::get_child_panel(QSplitter *splitter, QString _letter) const
 {
     // Obtiene el widget hijo del splitter 'a' o 'b'
     QWidget *container;
@@ -71,6 +71,22 @@ panel *panels_layout::get_child_panel(QSplitter *splitter, QString _letter)
         container = splitter->widget(1);
 
     return container->findChild<panel *>();
+}
+
+QList <panel *> panels_layout::get_all_panels() const
+{
+    return this->findChildren<panel *>("panel");
+}
+
+panel *panels_layout::get_viewer_panel() const
+{
+	// Encuentra el panel donde se ubican todos los viewer
+	for (panel *_panel : get_all_panels())
+		for (QString tab_name : _panel->get_tabs_list())
+			if (tab_name.contains("viewer"))
+				return _panel;
+
+	return nullptr;
 }
 
 void panels_layout::isolate_panel()
@@ -171,8 +187,8 @@ void panels_layout::save_json_layout(QSplitter *splitter, int deep, QString lett
         if (child_panel_a->objectName() == "panel")
         {
             QJsonObject panel_a_data;
-            panel_a_data["tabs"] = qt::list_to_array(child_panel_a->tabs_list);
-            panel_a_data["current_index"] = child_panel_a->tab_section->get_current_index();
+            panel_a_data["tabs"] = qt::list_to_array(child_panel_a->get_tabs_list());
+            panel_a_data["current_index"] = child_panel_a->get_tab_widget()->get_current_index();
             value["panel_a"] = panel_a_data;
         }
         else
@@ -181,8 +197,8 @@ void panels_layout::save_json_layout(QSplitter *splitter, int deep, QString lett
         if (child_panel_b->objectName() == "panel")
         {
             QJsonObject panel_b_data;
-            panel_b_data["tabs"] = qt::list_to_array(child_panel_b->tabs_list);
-            panel_b_data["current_index"] = child_panel_b->tab_section->get_current_index();
+            panel_b_data["tabs"] = qt::list_to_array(child_panel_b->get_tabs_list());
+            panel_b_data["current_index"] = child_panel_b->get_tab_widget()->get_current_index();
             value["panel_b"] = panel_b_data;
         }
         else
@@ -234,12 +250,12 @@ void panels_layout::load_splitter(QJsonObject splitter_obj, panel *panel_a)
     if (!panel_a_obj.isEmpty())
     {
         panel_a->add_tabs(qt::array_to_list(panel_a_obj["tabs"].toArray()));
-        panel_a->tab_section->set_index(panel_a_obj["current_index"].toInt());
+        panel_a->get_tab_widget()->set_index(panel_a_obj["current_index"].toInt());
     }
     if (!panel_b_obj.isEmpty())
     {
         panel_b->add_tabs(qt::array_to_list(panel_b_obj["tabs"].toArray()));
-        panel_b->tab_section->set_index(panel_b_obj["current_index"].toInt());
+        panel_b->get_tab_widget()->set_index(panel_b_obj["current_index"].toInt());
     }
 }
 
@@ -253,8 +269,7 @@ void panels_layout::load_layout()
 
 void panels_layout::restore_default()
 {
-    QList<panel *> panels = this->findChildren<panel *>("panel");
-    for (panel *_panel : panels)
+    for (panel *_panel : get_all_panels())
     {
         _panel->remove_all_tab();
         _panel->close_panel();

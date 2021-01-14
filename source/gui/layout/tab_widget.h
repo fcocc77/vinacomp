@@ -34,6 +34,7 @@ public:
     ~tab_widget();
 
     void add_tab(QWidget *tab, QString label);
+	void remove_tab(QString name);
     int get_index_by_name(QString name) const;
     void set_tab(QString name);
     void set_index(int index);

@@ -1,14 +1,18 @@
 #include <maker.h>
+#include <vinacomp.h>
+#include <panels_layout.h>
+#include <panel.h>
 
 maker::maker(
-
+	QWidget *__vinacomp,
     properties *__properties,
     nodes_load *_nodes_loaded,
     node_view *__node_view)
 
-    : _properties(__properties),
-      nodes_loaded(_nodes_loaded),
-      _node_view(__node_view)
+    : _vinacomp(__vinacomp)
+	, _properties(__properties)
+    , nodes_loaded(_nodes_loaded)
+    , _node_view(__node_view)
 {
 
     finder = new node_finder(_node_view, nodes_loaded);
@@ -90,18 +94,35 @@ QString maker::create_fx(QString id)
     //
     //
 
-    // Crear Knob
-    trim_panel *panel = new trim_panel(
-        _properties,
-        name,
-        icon_name,
-        &knobs);
-    _properties->add_trim_panel(panel);
+    // Crear panel de 'knobs'
+	QStringList nodes_without_panel = {"viewer", "dot", "backdrop"};
+
+	trim_panel *_trim_panel = nullptr;
+	if (!nodes_without_panel.contains(id))
+	{
+		_trim_panel = new trim_panel(
+			_properties,
+			name,
+			icon_name,
+			&knobs);
+		_properties->add_trim_panel(_trim_panel);
+	}
     //
     //
 
+	// Viewer
+	viewer *_viewer = nullptr;
+	if (id == "viewer")
+	{
+		_viewer = new viewer();
+		panels_layout *_panels_layout = dynamic_cast<vinacomp *>(_vinacomp)->get_panels_layout();
+		panel *viewer_panel = _panels_layout->get_viewer_panel();
+		viewer_panel->add_viewer(_viewer, name);
+	}
+	//
+
     // Creación del nodo, con un número que no se ha utilizado.
-    _node_view->create_node(name, panel, icon_name, color);
+    _node_view->create_node(name, _trim_panel, _viewer, icon_name, color);
     //
     //
 

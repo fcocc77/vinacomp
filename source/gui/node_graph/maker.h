@@ -13,6 +13,7 @@
 #include <trim_panel.h>
 #include <nodes_load.h>
 #include <node_view.h>
+#include <viewer.h>
 
 class maker : public QWidget
 {
@@ -21,12 +22,14 @@ private:
     node_finder *finder;
     properties *_properties;
     nodes_load *nodes_loaded;
+	QWidget *_vinacomp;
 
     void setup_shortcut();
     QColor default_color(QString effect_group);
 
 public:
     maker(
+		QWidget *_vinacomp,
         properties *_properties,
         nodes_load *_nodes_loaded,
         node_view *_node_view);

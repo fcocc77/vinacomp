@@ -18,12 +18,15 @@
 #include <properties.h>
 #include <trim_panel.h>
 #include <node_link.h>
+#include <viewer.h>
 
 class node : public QGraphicsPathItem
 {
 private:
-    trim_panel *panel;
+	QWidget *_vinacomp;
+    trim_panel *_trim_panel;
     properties *_properties;
+	viewer *_viewer;
 
     QGraphicsScene *scene;
     QMap<QString, node *> *nodes_connected_to_the_inputs;
@@ -66,8 +69,10 @@ public:
          QMap<QString, node *> *_selected_nodes,
          int inputs,
          QColor color,
-         trim_panel *_panel,
-         properties *_properties);
+         trim_panel *_trim_panel,
+		 viewer *_viewer,
+         properties *_properties,
+		 QWidget *_vinacomp);
     ~node();
 
     void set_name(QString name);

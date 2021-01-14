@@ -26,7 +26,7 @@ gui__viewer_controls:
 	☐ agregar separadores entre botones
 	☐ agregar combobox con los distintos porcentajes de zoom
 gui__viewer_image_correcction:
-	☐ que los slide modifiquen el qlineedit
+	✔ que los slide modifiquen el qlineedit @done(2021-01-14 18:01) @project(gui__viewer_image_correcction)
 	☐ que los botones permuten entre la gamma y la exposicion habilitada y desabilitada
 gui__viewer_info:
 	☐ ubicar el viewer info a la derecha del viewer gl

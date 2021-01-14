@@ -21,8 +21,10 @@ private:
     maker *_maker;
 
 public:
-    node_graph(QJsonObject *_project,
-               properties *_properties);
+    node_graph(
+		QWidget *_vinacomp,
+		QJsonObject *_project,
+		properties *_properties);
     ~node_graph();
 
     QJsonObject get_tree();
