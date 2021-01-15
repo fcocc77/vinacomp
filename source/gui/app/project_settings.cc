@@ -1,9 +1,10 @@
 #include <project_settings.h>
+#include <vinacomp.h>
 
 project_settings::project_settings(
-		viewer *__viewer
+		QWidget *__vinacomp
 	)
-	: _viewer(__viewer)
+	: _vinacomp(__vinacomp)
 	, first_frame(0)
 	, last_frame(100)
 	, proxy_scale(1)
@@ -21,7 +22,9 @@ project_settings::project_settings(
 	// Frame Range
 	knob_dimensions *frame_range_knob = new knob_dimensions(2, {1, 100});
 	connect(frame_range_knob, &knob_dimensions::changed, this, [=](float _first_frame, float _last_frame){
-		_viewer->set_frame_range(_first_frame, _last_frame);
+		auto *viewers = dynamic_cast<vinacomp *>(_vinacomp)->get_viewers();
+		for ( viewer *_viewer : *viewers )
+			_viewer->set_frame_range(_first_frame, _last_frame);
 	});
 	frame_range_knob->set_init_space(init_space, "Frame Range");
 	//

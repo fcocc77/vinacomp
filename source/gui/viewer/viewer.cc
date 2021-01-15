@@ -1,7 +1,8 @@
 #include <viewer.h>
 
-viewer::viewer()
-	: current_frame(0)
+viewer::viewer(QString _name)
+	: name(_name)
+	, current_frame(0)
 	, frame_rate(24)
 	, first_frame(1)
 	, last_frame(100)
@@ -39,6 +40,11 @@ viewer::viewer()
 
 viewer::~viewer()
 {
+}
+
+QString viewer::get_name() const
+{
+	return name;
 }
 
 void viewer::set_frame(int frame)

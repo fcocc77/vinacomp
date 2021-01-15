@@ -31,23 +31,28 @@ private:
     script_editor *_script_editor;
     properties *_properties;
     curve_editor *_curve_editor;
+	QWidget *_vinacomp;
 
-    QWidget *panels_layout;
+    QWidget *_panels_layout;
     QStringList tabs_list;
     tab_widget *_tab_widget;
+
+	QMenu *viewers_menu;
 
     QPushButton *setup_cornel_buttons();
     QString get_tab_label(QString name);
     void add_fixed_panel(QString name);
+	void update_viewers_menu();
 
 public:
     panel(QWidget *_panels_layout,
-          QList<QSplitter *> *_splitters,
-          node_graph *_node_graph,
-          QLabel *_empty_viewer,
-          script_editor *_script_editor,
-          properties *_properties,
-          curve_editor *_curve_editor);
+		QWidget *_vinacomp,
+		QList<QSplitter *> *_splitters,
+		node_graph *_node_graph,
+		QLabel *_empty_viewer,
+		script_editor *_script_editor,
+		properties *_properties,
+		curve_editor *_curve_editor);
     ~panel();
 
     panel *split(Qt::Orientation orientation);

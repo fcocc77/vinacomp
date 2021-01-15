@@ -1,20 +1,25 @@
 #include <panel.h>
+#include <vinacomp.h>
+#include <panels_layout.h>
 
-panel::panel(QWidget *_panels_layout,
-             QList<QSplitter *> *_splitters,
-             node_graph *__node_graph,
-             QLabel *_empty_viewer,
-             script_editor *__script_editor,
-             properties *__properties,
-             curve_editor *__curve_editor)
+panel::panel(
+		QWidget *__panels_layout,
+		QWidget *__vinacomp,
+		QList<QSplitter *> *_splitters,
+		node_graph *__node_graph,
+		QLabel *_empty_viewer,
+		script_editor *__script_editor,
+		properties *__properties,
+		curve_editor *__curve_editor)
 
-    : panels_layout(_panels_layout),
-      _node_graph(__node_graph),
-      empty_viewer(_empty_viewer),
-      _script_editor(__script_editor),
-      _properties(__properties),
-      _curve_editor(__curve_editor),
-      splitters(_splitters)
+    : _panels_layout(__panels_layout)
+	, _vinacomp(__vinacomp)
+	, _node_graph(__node_graph)
+	, empty_viewer(_empty_viewer)
+	, _script_editor(__script_editor)
+	, _properties(__properties)
+	, _curve_editor(__curve_editor)
+	, splitters(_splitters)
 
 {
     this->setObjectName("panel");
@@ -64,14 +69,6 @@ QPushButton *panel::setup_cornel_buttons()
     add_node_graph_action->setIcon(QIcon("resources/images/node_graph_a.png"));
     //
 
-    // Add Viewer
-    QAction *add_viewer_action = new QAction("Viewer");
-    connect(add_viewer_action, &QAction::triggered, this, [this]() {
-        add_fixed_panel("viewer");
-    });
-    add_viewer_action->setIcon(QIcon("resources/images/viewer_a.png"));
-    //
-
     // Add Script Editor
     QAction *add_script_editor_action = new QAction("Script Editor");
     connect(add_script_editor_action, &QAction::triggered, this, [this]() {
@@ -96,16 +93,39 @@ QPushButton *panel::setup_cornel_buttons()
     add_properties_action->setIcon(QIcon("resources/images/properties_a.png"));
     //
 
+    // Add Viewer
+    QAction *add_viewer_action = new QAction("Viewer");
+    connect(add_viewer_action, &QAction::triggered, this, [this]() {
+        add_fixed_panel("viewer");
+    });
+    add_viewer_action->setIcon(QIcon("resources/images/viewer_a.png"));
+    //
+
+    // New Viewer
+    QAction *new_viewer_action = new QAction("New Viewer");
+    connect(new_viewer_action, &QAction::triggered, this, [this]() {
+    });
+    new_viewer_action->setIcon(QIcon("resources/images/viewer_a.png"));
+    //
+
+	// Viewers Menu
+	viewers_menu = new QMenu("Viewers", this);
+	update_viewers_menu();
+	//
+
     QMenu *menu = new QMenu(this);
 
     menu->addAction(split_vertical);
     menu->addAction(split_horizontal);
     menu->addSeparator();
-    menu->addAction(add_viewer_action);
     menu->addAction(add_node_graph_action);
     menu->addAction(add_curve_editor_action);
     menu->addAction(add_script_editor_action);
     menu->addAction(add_properties_action);
+    menu->addSeparator();
+    menu->addAction(add_viewer_action);
+    menu->addAction(new_viewer_action);
+	menu->addMenu(viewers_menu);
     menu->addSeparator();
     menu->addAction(close_panel_action);
     //
@@ -191,7 +211,7 @@ void panel::add_tab(QWidget *widget, QString name)
 
     // el tab que se va a agregar en este panel se borra en
     // todos los paneles, si es que esta en alguno.
-    QList<panel *> panels = panels_layout->findChildren<panel *>("panel");
+	auto panels = dynamic_cast<panels_layout*>(_panels_layout)->get_all_panels();
 
     for (panel *_panel : panels)
         _panel->tabs_list.removeOne(name);
@@ -206,6 +226,28 @@ void panel::add_viewer(viewer *_viewer, QString name)
 	_tab_widget->remove_tab("Viewer");
 	tabs_list.removeOne("viewer");
 	add_tab(_viewer, name);
+
+	// actualiza el munu de visores de todos los paneles
+	auto panels = dynamic_cast<panels_layout*>(_panels_layout)->get_all_panels();
+    for (panel *_panel : panels)
+		_panel->update_viewers_menu();
+	//
+}
+
+void panel::update_viewers_menu()
+{
+	viewers_menu->clear();
+	auto *viewers = dynamic_cast<vinacomp *>(_vinacomp)->get_viewers();
+	for (viewer *_viewer : *viewers)
+	{
+		QString name = _viewer->get_name();
+		QAction *viewer_action = new QAction(name);
+		connect(viewer_action, &QAction::triggered, this, [=]() {
+			add_viewer(_viewer, name);
+		});
+		viewer_action->setIcon(QIcon("resources/images/viewer_a.png"));
+		viewers_menu->addAction(viewer_action);
+	}
 }
 
 QSplitter *panel::get_splitter() const
@@ -253,7 +295,7 @@ panel *panel::split(Qt::Orientation orientation)
 
     qsplitter->setOrientation(orientation);
 
-    panel *new_panel = new panel(panels_layout, splitters, _node_graph, empty_viewer, _script_editor, _properties, _curve_editor);
+    panel *new_panel = new panel(_panels_layout, _vinacomp, splitters, _node_graph, empty_viewer, _script_editor, _properties, _curve_editor);
 
     QWidget *container_a = new QWidget();
     QWidget *container_b = new QWidget();

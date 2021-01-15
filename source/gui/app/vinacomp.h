@@ -18,6 +18,7 @@
 #include <settings.h>
 #include <action.h>
 #include <project_settings.h>
+#include <viewer.h>
 
 class vinacomp : public QMainWindow
 {
@@ -30,6 +31,7 @@ private:
     tools *_tool_bar;
     settings *_settings;
 	project_settings *_project_settings;
+	QList <viewer*> *viewers;
 
     panels_layout *_panels_layout;
     bool fullscreen;
@@ -73,6 +75,7 @@ public:
     ~vinacomp();
 
 	panels_layout *get_panels_layout() const;
+	QList <viewer*> *get_viewers() const;
 };
 
 #endif // VINACOMP_H

@@ -29,6 +29,7 @@ private:
     viewer_gl *_viewer_gl;
     time_line *_time_line;
 	QString playing_option;
+	QString name;
 
 	int first_frame, last_frame;
 	int input, output;
@@ -87,10 +88,11 @@ private:
 	pair<int, int> get_current_range() const;
 	//
 public:
-    viewer(/* args */);
+	viewer(QString _name);
     ~viewer();
 
 	void set_frame_range(int _first_frame, int _last_frame);
+	QString get_name() const;
 };
 
 #endif // VIEWER_H

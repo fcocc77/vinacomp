@@ -1,6 +1,7 @@
 #include <panels_layout.h>
 
 panels_layout::panels_layout(
+	QWidget *_viancomp,
     node_graph *_node_graph,
     QLabel *empty_viewer,
     script_editor *_script_editor,
@@ -14,7 +15,7 @@ panels_layout::panels_layout(
 
     splitters = new QList<QSplitter *>;
 
-    first_panel = new panel(this, splitters, _node_graph, empty_viewer, _script_editor, _properties, _curve_editor);
+    first_panel = new panel(this, _viancomp, splitters, _node_graph, empty_viewer, _script_editor, _properties, _curve_editor);
 
     QWidget *central_widget = new QWidget();
     qt::add_widget(this, first_panel);
