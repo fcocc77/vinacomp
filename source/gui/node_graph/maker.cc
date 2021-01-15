@@ -1,7 +1,6 @@
 #include <maker.h>
 #include <vinacomp.h>
 #include <panels_layout.h>
-#include <panel.h>
 
 maker::maker(
 	QWidget *__vinacomp,
@@ -117,10 +116,7 @@ QString maker::create_fx(QString id)
 	{
 		_viewer = new viewer(name);
 		__vinacomp->get_viewers()->push_back(_viewer);
-
-		panel *viewer_panel = __vinacomp->get_panels_layout()->get_viewer_panel();
-		if (viewer_panel)
-			viewer_panel->add_viewer(_viewer, name);
+		__vinacomp->get_panels_layout()->add_viewer(_viewer);
 	}
 	//
 

@@ -25,11 +25,15 @@ panel::panel(
     this->setObjectName("panel");
 
     _tab_widget = new tab_widget(true);
+	connect(_tab_widget, &tab_widget::closed_tab, this,[=](QString tab_name){
+        tabs_list.removeOne(tab_name);
+	});
     QPushButton *cornel_button = setup_cornel_buttons();
 
     QVBoxLayout *layout = new QVBoxLayout(this);
 	layout->setMargin(0);
     layout->addWidget(_tab_widget);
+
 }
 
 panel::~panel()
@@ -96,7 +100,12 @@ QPushButton *panel::setup_cornel_buttons()
     // Add Viewer
     QAction *add_viewer_action = new QAction("Viewer");
     connect(add_viewer_action, &QAction::triggered, this, [this]() {
-        add_fixed_panel("viewer");
+		// si no existe ningun viewer creado, abre el 'empty_viewer'
+		auto *viewers = get_viewers();
+		if (viewers->empty())
+			add_fixed_panel("viewer");
+		else
+			add_viewer(viewers->value(0));
     });
     add_viewer_action->setIcon(QIcon("resources/images/viewer_a.png"));
     //
@@ -214,18 +223,18 @@ void panel::add_tab(QWidget *widget, QString name)
 	auto panels = dynamic_cast<panels_layout*>(_panels_layout)->get_all_panels();
 
     for (panel *_panel : panels)
-        _panel->tabs_list.removeOne(name);
+        _panel->tabs_list.removeOne(label);
     //
     //
 
-    tabs_list.push_back(name);
+    tabs_list.push_back(label);
 }
 
-void panel::add_viewer(viewer *_viewer, QString name)
+void panel::add_viewer(viewer *_viewer)
 {
 	_tab_widget->remove_tab("Viewer");
 	tabs_list.removeOne("viewer");
-	add_tab(_viewer, name);
+	add_tab(_viewer, _viewer->get_name());
 
 	// actualiza el munu de visores de todos los paneles
 	auto panels = dynamic_cast<panels_layout*>(_panels_layout)->get_all_panels();
@@ -237,17 +246,20 @@ void panel::add_viewer(viewer *_viewer, QString name)
 void panel::update_viewers_menu()
 {
 	viewers_menu->clear();
-	auto *viewers = dynamic_cast<vinacomp *>(_vinacomp)->get_viewers();
-	for (viewer *_viewer : *viewers)
+	for (viewer *_viewer : *get_viewers())
 	{
-		QString name = _viewer->get_name();
-		QAction *viewer_action = new QAction(name);
+		QAction *viewer_action = new QAction(_viewer->get_name());
 		connect(viewer_action, &QAction::triggered, this, [=]() {
-			add_viewer(_viewer, name);
+			add_viewer(_viewer);
 		});
 		viewer_action->setIcon(QIcon("resources/images/viewer_a.png"));
 		viewers_menu->addAction(viewer_action);
 	}
+}
+
+QList <viewer*> *panel::get_viewers() const
+{
+	return dynamic_cast<vinacomp *>(_vinacomp)->get_viewers();
 }
 
 QSplitter *panel::get_splitter() const

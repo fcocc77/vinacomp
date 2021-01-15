@@ -259,9 +259,7 @@ void node::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 	if (_viewer)
 	{
 		panels_layout *_panels_layout = dynamic_cast<vinacomp*>(_vinacomp)->get_panels_layout();
-		auto viewer_panel = _panels_layout->get_viewer_panel();
-		if (viewer_panel)
-			viewer_panel->add_viewer(_viewer, this->get_name());
+		_panels_layout->add_viewer(_viewer);
 	}
 }
 

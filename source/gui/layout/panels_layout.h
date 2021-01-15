@@ -29,6 +29,7 @@ private:
 
     bool isolate;
     panel *first_panel;
+	QWidget *_vinacomp;
 
 public:
     panels_layout(
@@ -46,7 +47,9 @@ public:
     QAction *save_current_action;
 
 	panel *get_viewer_panel() const;
+	panel *get_some_empty_panel() const;
 	QList <panel *> get_all_panels() const;
+	void *add_viewer(viewer *_viewer);
 };
 
 #endif // PANELS_LAYOUT_HPP

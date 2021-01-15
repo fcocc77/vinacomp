@@ -1,21 +1,23 @@
 #include <panels_layout.h>
+#include <vinacomp.h>
 
 panels_layout::panels_layout(
-	QWidget *_viancomp,
+	QWidget *__vinacomp,
     node_graph *_node_graph,
     QLabel *empty_viewer,
     script_editor *_script_editor,
     properties *_properties,
     curve_editor *_curve_editor)
 
-    : isolate(false)
+    : _vinacomp(__vinacomp)
+	, isolate(false)
 {
 
     this->setObjectName("panels_layout");
 
     splitters = new QList<QSplitter *>;
 
-    first_panel = new panel(this, _viancomp, splitters, _node_graph, empty_viewer, _script_editor, _properties, _curve_editor);
+    first_panel = new panel(this, _vinacomp, splitters, _node_graph, empty_viewer, _script_editor, _properties, _curve_editor);
 
     QWidget *central_widget = new QWidget();
     qt::add_widget(this, first_panel);
@@ -88,6 +90,28 @@ panel *panels_layout::get_viewer_panel() const
 				return _panel;
 
 	return nullptr;
+}
+
+void *panels_layout::add_viewer(viewer *_viewer)
+{
+
+	panel *empty_panel = get_some_empty_panel();
+	panel *viewer_panel = get_viewer_panel();
+
+	// panel a insertar el nuevo 'viewer'
+	// primero busca donde hay algun panel con algun 'viewer' si no, busca un panel vacio
+	if (viewer_panel)
+		viewer_panel->add_viewer(_viewer);
+	else if (empty_panel)
+		empty_panel->add_viewer(_viewer);
+}
+
+panel *panels_layout::get_some_empty_panel() const
+{
+	// obtiene el primer panel vacio que encuentra
+	for (panel *_panel :get_all_panels())
+		if (_panel->get_tabs_list().empty())
+			return _panel;
 }
 
 void panels_layout::isolate_panel()

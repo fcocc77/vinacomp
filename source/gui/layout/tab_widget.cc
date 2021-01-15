@@ -108,8 +108,9 @@ void tab_widget::close_tab(QString name)
     delete_tab(_tab);
 
     tabs.removeAt(index);
-
     set_index(0);
+
+	closed_tab(name); // Signal
 }
 
 void tab_widget::clear()

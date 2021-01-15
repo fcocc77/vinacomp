@@ -43,6 +43,7 @@ private:
     QString get_tab_label(QString name);
     void add_fixed_panel(QString name);
 	void update_viewers_menu();
+	QList <viewer*> *get_viewers() const;
 
 public:
     panel(QWidget *_panels_layout,
@@ -57,7 +58,7 @@ public:
 
     panel *split(Qt::Orientation orientation);
 	void add_tab(QWidget *widget, QString name);
-	void add_viewer(viewer *_viewer, QString name);
+	void add_viewer(viewer *_viewer);
     void add_tabs(QStringList tabs_list);
     void close_panel();
     void remove_all_tab();

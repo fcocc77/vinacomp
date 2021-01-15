@@ -13,6 +13,7 @@
 
 class tab_widget : public QWidget
 {
+	Q_OBJECT
 private:
     QVBoxLayout *layout;
 
@@ -42,6 +43,8 @@ public:
     QPushButton *add_cornel_button(QString icon);
     int get_current_index() const;
     void clear();
+signals:
+	void closed_tab(QString name);
 };
 
 #endif // TAB_WIDGET_H
