@@ -35,7 +35,7 @@ maker *node_graph::get_maker() const
     return _maker;
 }
 
-QJsonObject node_graph::get_tree()
+QJsonObject node_graph::get_tree() const
 {
     // genera un arbol con todos los nodos con su informacion,
     // para guardarla en el proyecto.
@@ -114,7 +114,7 @@ void node_graph::restore_tree(QJsonObject _nodes)
     //
 }
 
-QJsonObject node_graph::get_scene_data()
+QJsonObject node_graph::get_scene_data() const
 {
     QJsonObject matrix = {
         {"m11", _node_view->transform().m11()},

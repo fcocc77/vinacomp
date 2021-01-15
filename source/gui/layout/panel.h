@@ -8,8 +8,6 @@
 #include <QPushButton>
 #include <QMenu>
 #include <QSplitter>
-#include <QTabWidget>
-#include <QTabBar>
 
 #include <qt.h>
 #include <util.h>

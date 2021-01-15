@@ -27,9 +27,9 @@ public:
 		properties *_properties);
     ~node_graph();
 
-    QJsonObject get_tree();
+    QJsonObject get_tree() const;
     void restore_tree(QJsonObject nodes);
-    QJsonObject get_scene_data();
+    QJsonObject get_scene_data() const;
     void restore_scene_data(QJsonObject scene_data);
     node_view *get_node_view() const;
     maker *get_maker() const;
