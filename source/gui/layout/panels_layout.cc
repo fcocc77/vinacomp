@@ -92,18 +92,34 @@ panel *panels_layout::get_viewer_panel() const
 	return nullptr;
 }
 
-void *panels_layout::add_viewer(viewer *_viewer)
+void panels_layout::add_viewer(viewer *_viewer)
 {
+	auto panels = get_all_panels();
+
+	// si el viewer ya esta en algun panel lo visualiza y retorna
+	for (panel *_panel : panels)
+	{
+		QString name = _viewer->get_name();
+		if (_panel->get_tabs_list().contains(name))
+		{
+			_panel->get_tab_widget()->set_tab(name);
+			return;
+		}
+	}
+	//
 
 	panel *empty_panel = get_some_empty_panel();
 	panel *viewer_panel = get_viewer_panel();
 
 	// panel a insertar el nuevo 'viewer'
-	// primero busca donde hay algun panel con algun 'viewer' si no, busca un panel vacio
+	// primero busca donde hay algun panel con algun 'viewer' si no, busca un panel vacio,
+	// si no lo inserte en el primer panel de la lista
 	if (viewer_panel)
 		viewer_panel->add_viewer(_viewer);
 	else if (empty_panel)
 		empty_panel->add_viewer(_viewer);
+	else
+		panels.value(0)->add_viewer(_viewer);
 }
 
 panel *panels_layout::get_some_empty_panel() const
