@@ -154,12 +154,12 @@ void node::set_selected(bool enable)
         link->set_selected(enable);
 }
 
-bool node::is_selected()
+bool node::is_selected() const
 {
     return selected;
 }
 
-QPointF node::get_center_position()
+QPointF node::get_center_position() const
 {
     float x = this->x() + current_width / 2;
     float y = this->y() + current_height / 2;
@@ -194,7 +194,7 @@ void node::set_name(QString _name)
 		_trim_panel->set_name(_name);
 }
 
-QString node::get_name()
+QString node::get_name() const
 {
     return name->toPlainText();
 }
@@ -205,12 +205,17 @@ void node::set_tips(QString _tips)
     tips->setPos(60, 20);
 }
 
-QSize node::get_size()
+QSize node::get_size() const
 {
     return QSize(current_width, current_height);
 }
 
-QColor node::get_color()
+trim_panel *node::get_trim_panel() const
+{
+	return _trim_panel;
+}
+
+QColor node::get_color() const
 {
     return color;
 }
@@ -231,7 +236,7 @@ void node::remove_output_node(node *_node)
     nodes_connected_to_the_output->remove(_node->get_name());
 }
 
-QMap<QString, node *> *node::get_output_nodes()
+QMap<QString, node *> *node::get_output_nodes() const
 {
     return nodes_connected_to_the_output;
 }
@@ -246,7 +251,7 @@ void node::remove_input_node(node *_node)
     nodes_connected_to_the_inputs->remove(_node->get_name());
 }
 
-QList<node_link *> *node::get_links()
+QList<node_link *> *node::get_links() const
 {
     return links;
 }

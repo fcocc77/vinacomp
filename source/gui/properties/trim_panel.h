@@ -51,6 +51,11 @@ private:
     QString name;
     QString icon_name;
 
+	// datos de todos los parametros, esto se usara para guardar
+	// los parametros en el proyecto '.vina'
+	QJsonObject *data;
+	//
+
 	void knob_editor_toggle();
     void setup_ui();
     QWidget *top_buttons_setup_ui();
@@ -68,6 +73,8 @@ public:
     void setup_knobs(QJsonArray *knobs);
     void maximize(bool _maximize);
     void set_name(QString _name);
+	QJsonObject *get_data() const;
+	QJsonObject *get_modified_data() const;
 };
 
 #endif //TRIM_PANEL_HPP

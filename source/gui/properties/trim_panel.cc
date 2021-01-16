@@ -15,6 +15,8 @@ trim_panel::trim_panel(properties *__properties,
 	this->setObjectName("trim_panel");
 	this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
+	data = new QJsonObject({});
+
 	setup_ui();
 	setup_knobs(_knobs);
 }
@@ -318,4 +320,15 @@ void trim_panel::maximize(bool _maximize)
 {
     tabs->setVisible(_maximize);
     is_maximize = _maximize;
+}
+
+QJsonObject *trim_panel::get_data() const
+{
+	return data;
+}
+
+QJsonObject *trim_panel::get_modified_data() const
+{
+	// solo obtiene los datos de los parametros modificados
+	return data;
 }

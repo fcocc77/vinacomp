@@ -10,6 +10,7 @@
 #include <nodes_load.h>
 #include <node_view.h>
 #include <nodes_bar.h>
+#include <trim_panel.h>
 
 class node_graph : public QWidget
 {

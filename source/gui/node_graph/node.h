@@ -77,21 +77,22 @@ public:
 
     void set_name(QString name);
     void set_tips(QString tips);
-    QString get_name();
+    QString get_name() const;
     void set_position(float x, float y);
-    QPointF get_center_position();
-    QSize get_size();
+    QPointF get_center_position() const;
+    QSize get_size() const;
     void set_icon(QString icon_name);
     void set_selected(bool enable);
-    QMap<QString, node *> *get_output_nodes();
+    QMap<QString, node *> *get_output_nodes() const;
     void add_output_node(node *_node);
     void remove_output_node(node *_node);
     void add_input_node(node *_node);
     void remove_input_node(node *_node);
-    bool is_selected();
-    QColor get_color();
+    bool is_selected() const;
+    QColor get_color() const;
     void refresh();
-    QList<node_link *> *get_links();
+    QList<node_link *> *get_links() const;
+	trim_panel *get_trim_panel() const;
 };
 
 #endif // NODE_H

@@ -57,11 +57,22 @@ QJsonObject node_graph::get_tree() const
 
             inputs.push_back(link_data);
         }
+
         QColor color = _node->get_color();
+
+		// obtiene los parametros del nodo, pero no todos lo nodos tienen 'trim_panel'
+		trim_panel *_trim_panel = _node->get_trim_panel();
+		QJsonObject parameters;
+		if (_trim_panel)
+			parameters = *_trim_panel->get_modified_data();
+		//
+
         QJsonObject data = {
             {"position", QJsonArray{_node->x(), _node->y()}},
             {"color", QJsonArray{color.red(), color.green(), color.blue()}},
-            {"inputs", inputs}};
+            {"inputs", inputs},
+			{"parameters", parameters }
+		};
 
         tree[_node->get_name()] = data;
     }
