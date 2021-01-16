@@ -29,9 +29,9 @@ project_settings::project_settings(
 	frame_range_knob->set_init_space(init_space, "Frame Range");
 	//
 	//
-	
+
 	// Proxy Scale
-	knob_floating *proxy_scale_knob = new knob_floating(proxy_scale);
+	knob_floating *proxy_scale_knob = new knob_floating(0.1, 1, proxy_scale);
 	proxy_scale_knob->set_init_space(init_space, "Proxy Scale");
 	//
 

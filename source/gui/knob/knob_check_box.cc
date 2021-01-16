@@ -2,10 +2,10 @@
 
 knob_check_box::knob_check_box(
     QString _label,
-    bool _default_value)
+    bool default_value)
 
 	: label(_label),
-	checked(_default_value)
+	checked(default_value)
 {
     this->setObjectName("knob_check_box");
 
@@ -17,6 +17,7 @@ knob_check_box::knob_check_box(
     checkbox = new QCheckBox(this);
 	connect(checkbox, &QCheckBox::stateChanged, this, [=](int state){
 		checked = state != 0;
+		changed(checked); // Signal
 	});
     set_check(checked);
     layout->addWidget(checkbox);

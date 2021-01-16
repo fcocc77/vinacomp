@@ -13,21 +13,24 @@
 
 class knob_floating : public knob
 {
+	Q_OBJECT
 private:
-	float min;
-	float max;
     QHBoxLayout *layout;
     QString label;
-    float default_value;
 	slider *_slider;
 	QLineEdit *value_edit;
 public:
     knob_floating(
-        float _default_value = 1);
+		float min,
+		float max,
+        float default_value = 1
+	);
     ~knob_floating();
 
 	void set_value(float value);
 	float get_value() const;
+signals:
+	void changed(float value);
 };
 
 #endif //KNOB_FLOATING_HPP

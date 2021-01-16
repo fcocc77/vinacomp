@@ -33,12 +33,7 @@ QWidget *viewer::control_setup_ui()
     combo_box *layers = new combo_box();
     layout->addWidget(layers);
 
-    combo_box *display_channel = new combo_box();
-    display_channel->add_item("RGB");
-    display_channel->add_item("Red");
-    display_channel->add_item("Green");
-    display_channel->add_item("Blue");
-    display_channel->add_item("Alpha");
+	combo_box *display_channel = new combo_box({"RGB", "Red", "Green", "Blue", "Alpha"});
     layout->addWidget(display_channel);
 
     layout->addStretch();
@@ -84,14 +79,14 @@ QWidget *viewer::image_correction_setup_ui()
 	gain_action->connect_to(this, [](){
 	});
 
-	knob_floating *gain_knob = new knob_floating();
+	knob_floating *gain_knob = new knob_floating(0.015, 64);
 
 	action *gamma_action = new action("Gamma", "", "gamma");
 	gamma_action->set_checkable();
 	gamma_action->connect_to(this, [](){
 	});
 
-	knob_floating *gamma_knob = new knob_floating();
+	knob_floating *gamma_knob = new knob_floating(0, 4);
 
 	bar->add_action(gain_action);
 	bar->add_widget(gain_knob);
@@ -263,38 +258,26 @@ QWidget *viewer::player_setup_ui()
 
 	//
 	//
-	frame_rate_menu = new combo_box();
+	frame_rate_menu = new combo_box({"12", "24", "30", "48", "50", "60"});
 	connect(frame_rate_menu, &combo_box::changed, this, [=](QString name){
 		set_frame_rate(name.toInt());
 	});
-	frame_rate_menu->add_item("12");
-	frame_rate_menu->add_item("24");
-	frame_rate_menu->add_item("30");
-	frame_rate_menu->add_item("48");
-	frame_rate_menu->add_item("50");
-	frame_rate_menu->add_item("60");
 	//
 	//
 
 	//
 	// Play Back Option
-	play_back_options = new combo_box();
+	play_back_options = new combo_box({"Repeat", "Bounce", "Stop"});
 	connect(play_back_options, &combo_box::changed, this, [=](QString name){
 		set_playing_option(name);
 	});
-	play_back_options->add_item("Repeat");
-	play_back_options->add_item("Bounce");
-	play_back_options->add_item("Stop");
 	//
 	//
 
 	//
 	//
-	visible_range = new combo_box();
+	visible_range = new combo_box({"Global", "Input", "In/Out", "Visible"});
 	visible_range->add_item("Global");
-	visible_range->add_item("Input");
-	visible_range->add_item("In/Out");
-	visible_range->add_item("Visible");
 	//
 	//
 

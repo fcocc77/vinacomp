@@ -1,7 +1,6 @@
 #include <combo_box.h>
 
-combo_box::combo_box()
-    : current_index(0)
+combo_box::combo_box(QStringList items, int default_index)
 {
 	this->setObjectName("combo_box");
 	this->setMinimumHeight(20);
@@ -27,6 +26,11 @@ combo_box::combo_box()
     //
 
     layout->addWidget(arrow);
+
+	for (QString item : items)
+		add_item(item);
+
+	set_index(default_index, false);
 }
 
 combo_box::~combo_box()
@@ -40,15 +44,20 @@ combo_box::~combo_box()
     delete arrow;
 }
 
-void combo_box::set_index(int _index)
+void combo_box::set_index(int _index, bool emit_signal)
 {
+	if (_index >= actions.count())
+		return;
+
     current_index = _index;
 
     action *_action = actions.value(_index);
 	_action->set_icon("radio_button_checked_b");
 	QString name = _action->get_label();
-	changed(name, current_index); // Signal
     label->setText(name);
+
+	if (emit_signal)
+		changed(name, current_index); // Signal
 }
 
 void combo_box::set_value(QString name)
@@ -71,23 +80,8 @@ void combo_box::add_item(QString name)
         set_value(name);
     });
 
-	// si es la primera action creada la deja por defecto 'checked', se usa aqui
-	// y no con 'set_index' para que no afecte a la señal 'changed'
-	if (actions.empty())
-	{
-		label->setText(_action->get_label());
-		_action->set_icon("radio_button_checked_b");
-	}
-	//
-
     actions.push_back(_action);
     menu->addAction(_action);
-}
-
-void combo_box::add_items(QStringList list)
-{
-    for (QString name : list)
-        add_item(name);
 }
 
 void combo_box::mousePressEvent(QMouseEvent *event)

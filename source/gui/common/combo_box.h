@@ -27,12 +27,11 @@ private:
     int current_index;
 
 public:
-    combo_box(/* args */);
+    combo_box(QStringList items = {}, int default_index = 0);
    ~combo_box();
 
     void add_item(QString name);
-    void add_items(QStringList list);
-    void set_index(int _index);
+    void set_index(int _index, bool emit_signal = true);
     void set_value(QString name);
 
 protected:

@@ -103,12 +103,18 @@ void trim_panel::setup_knobs(QJsonArray *knobs)
 
         else if (type == "check_box")
         {
-            bool _default = knob_object.value("default").toBool();
-            _knob = new knob_check_box(
-                label,
-                _default);
+            bool default_value = knob_object.value("default").toBool();
+            knob_check_box *_knob_check_box = new knob_check_box(label, default_value);
+
+			connect(_knob_check_box, &knob_check_box::changed, this, [=](bool value){
+				if (default_value != value)
+					data->insert(name, value);
+				else
+					data->remove(name);
+			});
 
             label = "";
+			_knob = _knob_check_box;
         }
 
         else if (type == "file")
@@ -119,7 +125,17 @@ void trim_panel::setup_knobs(QJsonArray *knobs)
         else if (type == "choice")
         {
             QJsonArray items = knob_object.value("items").toArray();
-            _knob = new knob_choice(qt::array_to_list(items));
+			int default_index = knob_object.value("default").toInt();
+
+            knob_choice *_knob_choice = new knob_choice(qt::array_to_list(items), default_index);
+			connect(_knob_choice, &knob_choice::changed, this, [=](QString item_name, int index){
+				if (default_index != index)
+					data->insert(name, index);
+				else
+					data->remove(name);
+			});
+
+			_knob = _knob_choice;
         }
 
         else if (type == "text")
@@ -152,8 +168,21 @@ void trim_panel::setup_knobs(QJsonArray *knobs)
 
         else if (type == "floating")
         {
-            float _default = knob_object.value("default").toDouble();
-            _knob = new knob_floating(_default);
+            float default_value = knob_object.value("default").toDouble();
+			knob_floating *_knob_floating = new knob_floating(
+				knob_object.value("minimum").toDouble(),
+				knob_object.value("maximum").toDouble(),
+				default_value
+			);
+
+			connect(_knob_floating, &knob_floating::changed, this, [=](float value){
+				if (default_value != value)
+					data->insert(name, value);
+				else
+					data->remove(name);
+			});
+
+			_knob = _knob_floating;
         }
 
         else if (type == "separator")
@@ -340,6 +369,7 @@ void trim_panel::maximize(bool _maximize)
 
 QJsonObject *trim_panel::get_modified_data() const
 {
+	print(*data);
 	// solo obtiene los datos de los parametros modificados
 	return data;
 }

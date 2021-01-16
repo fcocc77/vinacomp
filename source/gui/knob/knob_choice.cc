@@ -1,6 +1,6 @@
 #include <knob_choice.h>
 
-knob_choice::knob_choice(QStringList _list)
+knob_choice::knob_choice(QStringList items, int default_index)
 {
 	this->setObjectName("knob_choice");
     QHBoxLayout *layout = new QHBoxLayout(this);
@@ -8,19 +8,13 @@ knob_choice::knob_choice(QStringList _list)
 
     layout->addWidget(init_space);
 
-    choice = new combo_box();
+    choice = new combo_box(items, default_index);
+	connect(choice, &combo_box::changed, this, &knob_choice::changed);
+
     layout->addWidget(choice);
-
-    add_items(_list);
-
     layout->addStretch();
 }
 
 knob_choice::~knob_choice()
 {
-}
-
-void knob_choice::add_items(QStringList list)
-{
-    choice->add_items(list);
 }

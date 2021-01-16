@@ -51,6 +51,7 @@ gui__node:
 gui__knobs:
 	☐ slider: mover el manejador en la posicion del click
 	☐ slider: cuando el valor sea mayor o menor al limite, cambiar la forma del manejador a una flecha
+	☐ slider: opcion para mantener el 'handler' siempre al centro independiente del valor minimo y maximo
 	☐ que los qlineedit con boton derecho despliegue el menu de animacion
 	☐ terminar button knob'
 	☐ que el boton de keyframe despliegue un menu con las opciones de animacion

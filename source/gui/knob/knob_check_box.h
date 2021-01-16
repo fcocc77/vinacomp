@@ -11,6 +11,7 @@
 
 class knob_check_box : public knob
 {
+	Q_OBJECT
 private:
     QLabel *label_widget;
     QCheckBox *checkbox;
@@ -29,6 +30,8 @@ public:
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;
+signals:
+	void changed(bool value);
 };
 
 #endif //KNOB_CHECK_BOX_HPP

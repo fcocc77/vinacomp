@@ -1,10 +1,6 @@
 #include <knob_floating.h>
 
-knob_floating::knob_floating(
-		float _default_value)
-	: default_value(_default_value),
-	min(0),
-	max(5)
+knob_floating::knob_floating(float min, float max, float default_value)
 {
     this->setObjectName("knob_floating");
 	layout = new QHBoxLayout(this);
@@ -23,6 +19,7 @@ knob_floating::knob_floating(
 	_slider = new slider(min, max);
 	connect(_slider, &slider::moved, this, [=](float value){
 		value_edit->setText(QString::number(value));
+		changed(value); // Signal
 	});
 
     layout->addWidget(_slider);
