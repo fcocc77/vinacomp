@@ -5,24 +5,14 @@
     "icon": "grade_a",
     "knobs": [
         {
-            "name": "label1",
-            "type": "label",
-            "label": "Color",
-            "tooltip": ""
-        },
-        {
             "name": "blackpoint",
             "type": "color",
             "label": "Black Point",
             "tooltip": "",
-            "minimum": 0,
-            "maximum": 255,
+            "minimum": -1,
+            "maximum": 1,
             "visible": true,
-            "default": [
-                20,
-                255,
-                255
-            ]
+			"default": [0, 0, 0, 0]
         },
         {
             "name": "whitepoint",
@@ -30,49 +20,9 @@
             "label": "White Point",
             "tooltip": "",
             "minimum": 0,
-            "maximum": 255,
+            "maximum": 4,
             "visible": true,
-            "default": [
-                20,
-                255,
-                255
-            ]
-        },
-        {
-            "name": "group1",
-            "type": "group",
-			"open": false,
-            "label": "GRUPO A",
-			"knobs": 2,
-            "tooltip": ""
-        },
-        {
-            "name": "gain",
-            "type": "color",
-            "label": "Gain",
-            "tooltip": "",
-            "minimum": 0,
-            "maximum": 255,
-            "visible": true,
-            "default": [
-                20,
-                255,
-                255
-            ]
-        },
-        {
-            "name": "multiply",
-            "type": "color",
-            "label": "Multiply",
-            "tooltip": "",
-            "minimum": 0,
-            "maximum": 255,
-            "visible": true,
-            "default": [
-                20,
-                255,
-                255
-            ]
+			"default": [1, 1, 1, 1]
         },
         {
             "name": "separator1",
@@ -80,32 +30,59 @@
             "visible": true
         },
         {
+            "name": "lift",
+            "type": "color",
+            "label": "Lift",
+            "tooltip": "",
+            "minimum": -1,
+            "maximum": 1,
+            "visible": true,
+			"default": [0, 0, 0, 0]
+        },
+        {
+            "name": "gain",
+            "type": "color",
+            "label": "Gain",
+            "tooltip": "",
+            "minimum": 0,
+            "maximum": 4,
+            "visible": true,
+			"default": [1, 1, 1, 1]
+        },
+        {
+            "name": "multiply",
+            "type": "color",
+            "label": "Multiply",
+            "tooltip": "",
+            "minimum": 0,
+            "maximum": 4,
+            "visible": true,
+			"default": [1, 1, 1, 1]
+        },
+        {
             "name": "offset",
             "type": "color",
             "label": "Offset",
             "tooltip": "",
-            "minimum": 0,
-            "maximum": 255,
+            "minimum": -1,
+            "maximum": 1,
             "visible": true,
-            "default": [
-                20,
-                255,
-                255
-            ]
+			"default": [0, 0, 0, 0]
         },
         {
             "name": "gamma",
             "type": "color",
             "label": "Gamma",
             "tooltip": "",
-            "minimum": 0,
-            "maximum": 255,
+            "minimum": 0.2,
+            "maximum": 5,
             "visible": true,
-            "default": [
-                20,
-                255,
-                255
-            ]
+			"default": [1, 1, 1, 1]
+        },
+        {
+            "name": "separator2",
+            "type": "separator",
+            "visible": true
         },
         {
             "name": "black_clamp",

@@ -1,12 +1,13 @@
 #include <knob_color.h>
 
-knob_color::knob_color(QColor color)
-	: red(color.red() / 255.0),
-	green(color.green() / 255.0),
-	blue(color.blue() / 255.0),
-	alpha(color.alpha() / 255.0),
-	mono_color(false),
-	sliders_colors(false)
+knob_color::knob_color(float min, float max, float r, float g, float b, float a)
+	: red(r)
+	, green(g)
+	, blue(b)
+	, alpha(a)
+   
+	, mono_color(false)
+	, sliders_colors(false)
 {
     this->setObjectName("knob_color");
 
@@ -19,7 +20,7 @@ knob_color::knob_color(QColor color)
 	separate_colors_slider_layout = new QVBoxLayout(separate_colors_slider);
 
     mono_edit = new QLineEdit(this);
-    mono_slider = new slider(-1, 1);
+    mono_slider = new slider(min, max);
 
 	red_widget = new QWidget(this);
 	green_widget = new QWidget(this);
@@ -40,10 +41,10 @@ knob_color::knob_color(QColor color)
 	blue_vedit = new QLineEdit(this);
 	alpha_vedit = new QLineEdit(this);
 
-	red_slider = new slider(-1, 1);
-	green_slider = new slider(-1, 1);
-	blue_slider = new slider(-1, 1);
-	alpha_slider = new slider(-1, 1);
+	red_slider = new slider(min, max);
+	green_slider = new slider(min, max);
+	blue_slider = new slider(min, max);
+	alpha_slider = new slider(min, max);
 
 	picker_button = new QPushButton(this);
     palette_button = new QPushButton(this);
@@ -51,11 +52,6 @@ knob_color::knob_color(QColor color)
 
 	connections();
     setup_ui();
-
-	red = 0.5;
-	green = 0.5;
-	blue = 0.5;
-	alpha = 0.5;
 
 	// si los colores son todos iguale activa el 'knob' mono cromatico
 	if (red == green && red == blue && red == alpha)
@@ -203,6 +199,8 @@ void knob_color::set_color(float _red, float _green, float _blue, float _alpha)
 	alpha_vedit->setText(QString::number(alpha));
 	alpha_hedit->setText(QString::number(alpha));
 	alpha_slider->set_value(alpha);
+
+	changed(red, green, blue, alpha); // Signal
 
 	if (_red < 0) _red = 0;
 	if (_red > 1) _red = 1;

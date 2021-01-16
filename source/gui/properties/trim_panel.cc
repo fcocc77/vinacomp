@@ -71,6 +71,7 @@ void trim_panel::setup_knobs(QJsonArray *knobs)
     {
         QJsonObject knob_object = knobs->at(i).toObject();
         QString type = knob_object.value("type").toString();
+        QString name = knob_object.value("name").toString();
         QString label = knob_object.value("label").toString();
         bool over_line = knob_object.value("over_line").toBool();
 
@@ -78,11 +79,26 @@ void trim_panel::setup_knobs(QJsonArray *knobs)
         if (type == "color")
         {
             QJsonArray _default = knob_object.value("default").toArray();
-            _knob = new knob_color(
-                QColor(
-                    _default.at(0).toInt(),
-                    _default.at(1).toInt(),
-                    _default.at(2).toInt()));
+			float red = _default.at(0).toDouble();
+			float green = _default.at(1).toDouble();
+			float blue = _default.at(2).toDouble();
+			float alpha = _default.at(3).toDouble();
+
+            knob_color *_knob_color = new knob_color(
+				knob_object.value("minimum").toDouble(),
+				knob_object.value("maximum").toDouble(),
+				red, green, blue, alpha
+			);
+
+			connect(_knob_color, &knob_color::changed, this, [=](float r, float g, float b, float a){
+				// si el color es igual al predeterminado, borra el dato
+				if (red != r || green != g || blue != b || alpha != a)
+					data->insert(name, QJsonArray{r, g, b, a});
+				else
+					data->remove(name);
+			});
+
+			_knob = _knob_color;
         }
 
         else if (type == "check_box")
@@ -320,11 +336,6 @@ void trim_panel::maximize(bool _maximize)
 {
     tabs->setVisible(_maximize);
     is_maximize = _maximize;
-}
-
-QJsonObject *trim_panel::get_data() const
-{
-	return data;
 }
 
 QJsonObject *trim_panel::get_modified_data() const

@@ -52,7 +52,7 @@ private:
     QString icon_name;
 
 	// datos de todos los parametros, esto se usara para guardar
-	// los parametros en el proyecto '.vina'
+	// los parametros en el proyecto '.vina', o renderizar en el 'motor'
 	QJsonObject *data;
 	//
 
@@ -73,7 +73,6 @@ public:
     void setup_knobs(QJsonArray *knobs);
     void maximize(bool _maximize);
     void set_name(QString _name);
-	QJsonObject *get_data() const;
 	QJsonObject *get_modified_data() const;
 };
 

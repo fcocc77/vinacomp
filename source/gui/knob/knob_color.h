@@ -15,6 +15,7 @@
 
 class knob_color : public knob
 {
+	Q_OBJECT
 private:
 	QHBoxLayout *layout;
 
@@ -68,11 +69,12 @@ private:
 	void set_visible_sliders_colors(bool visible);
 
 public:
-    knob_color(
-        QColor _default_value);
+    knob_color(float min, float max, float r, float g, float b, float a = 1);
     ~knob_color();
 
 	void set_color(float red, float green, float blue, float alpha = 1);
+signals:
+	void changed(float r, float g, float b, float a);
 };
 
 #endif //KNOB_COLOR_HPP
