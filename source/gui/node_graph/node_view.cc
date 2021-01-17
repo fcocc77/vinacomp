@@ -136,6 +136,7 @@ node *node_view::create_node(
 	viewer *_viewer,
     QString icon_name,
     QColor color,
+	QString type,
     QPointF position,
     QString tips)
 {
@@ -153,6 +154,7 @@ node *node_view::create_node(
         selected_nodes,
         1,
         color,
+		type,
         panel,
 		_viewer,
         _properties,

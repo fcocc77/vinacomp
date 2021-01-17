@@ -10,9 +10,6 @@ knob_button::knob_button(QString label)
 	layout->addWidget(init_space);
 
     QPushButton *button = new QPushButton(label);
-	// button->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-	// button->setMinimumWidth(100);
-	// button->setMaximumWidth(100);
     layout->addWidget(button);
 }
 

@@ -121,7 +121,7 @@ QString maker::create_fx(QString id)
 	//
 
     // Creación del nodo, con un número que no se ha utilizado.
-    _node_view->create_node(name, _trim_panel, _viewer, icon_name, color);
+    _node_view->create_node(name, _trim_panel, _viewer, icon_name, color, id);
     //
     //
 

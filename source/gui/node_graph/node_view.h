@@ -71,6 +71,7 @@ public:
 		viewer *_viewer,
         QString icon_name,
         QColor color,
+		QString type,
         QPointF position = QPointF(),
         QString tips = "");
     void rename_node(node *_node, QString name, QString new_name);

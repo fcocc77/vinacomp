@@ -71,7 +71,8 @@ QJsonObject node_graph::get_tree() const
             {"position", QJsonArray{_node->x(), _node->y()}},
             {"color", QJsonArray{color.red(), color.green(), color.blue()}},
             {"inputs", inputs},
-			{"parameters", parameters }
+			{"parameters", parameters},
+			{"type", _node->get_type()}
 		};
 
         tree[_node->get_name()] = data;
@@ -86,20 +87,32 @@ void node_graph::restore_tree(QJsonObject _nodes)
     for (QString name : _nodes.keys())
     {
         QJsonObject data = _nodes.value(name).toObject();
+		QString type = data["type"].toString();
+		QJsonObject effect = nodes_loaded->get_effect(type);
+
+		if (effect.empty())
+			continue;
+
+		QString icon_name = effect["icon"].toString();
 
         QJsonArray color = data["color"].toArray();
         int red = color[0].toInt();
         int green = color[1].toInt();
         int blue = color[2].toInt();
+
         QPointF position = {data["position"].toArray()[0].toDouble(),
                             data["position"].toArray()[1].toDouble()};
+
+
         _node_view->create_node(
             name,
-            NULL,
-			NULL,
-            "grade_a",
+            nullptr, // trim_panel
+			nullptr, // viewer
+            icon_name,
             QColor(red, green, blue),
-            position);
+			type,
+            position
+		);
     }
 
     // conecta todos los nodos
@@ -121,7 +134,6 @@ void node_graph::restore_tree(QJsonObject _nodes)
                 link->connect_node(node_to_connect);
         }
     }
-
     //
 }
 

@@ -54,6 +54,7 @@ private:
     const int icon_area_width;
     QGraphicsTextItem *name;
     QGraphicsTextItem *tips;
+	QString type;
 
     void change_size_rectangle(int _width, int _height);
 
@@ -69,6 +70,7 @@ public:
          QMap<QString, node *> *_selected_nodes,
          int inputs,
          QColor color,
+		 QString type,
          trim_panel *_trim_panel,
 		 viewer *_viewer,
          properties *_properties,
@@ -93,6 +95,7 @@ public:
     void refresh();
     QList<node_link *> *get_links() const;
 	trim_panel *get_trim_panel() const;
+	QString get_type() const;
 };
 
 #endif // NODE_H

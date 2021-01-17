@@ -8,6 +8,7 @@ node::node(QGraphicsScene *_scene,
            QMap<QString, node *> *_selected_nodes,
            int inputs,
            QColor _color,
+		   QString _type,
            trim_panel *__trim_panel,
 		   viewer *__viewer,
            properties *__properties,
@@ -18,6 +19,7 @@ node::node(QGraphicsScene *_scene,
 	, _properties(__properties)
 	, _vinacomp(__vinacomp)
 	, color(_color)
+	, type(_type)
 	, scene(_scene)
 	, current_z_value(_current_z_value)
 	, selected_nodes(_selected_nodes)
@@ -254,6 +256,11 @@ void node::remove_input_node(node *_node)
 QList<node_link *> *node::get_links() const
 {
     return links;
+}
+
+QString node::get_type() const
+{
+	return type;
 }
 
 void node::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
