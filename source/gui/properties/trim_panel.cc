@@ -119,7 +119,16 @@ void trim_panel::setup_knobs(QJsonArray *knobs)
 
         else if (type == "file")
         {
-            _knob = new knob_file();
+			QString default_value = knob_object.value("default").toString();
+            knob_file *_knob_file = new knob_file(default_value);
+			connect(_knob_file, &knob_file::changed, this, [=](QString file_path){
+				if (default_value != file_path)
+					data->insert(name, file_path);
+				else
+					data->remove(name);
+			});
+
+			_knob = _knob_file;
         }
 
         else if (type == "choice")

@@ -13,12 +13,18 @@
 
 class knob_file : public knob
 {
+	Q_OBJECT
 private:
+	QPushButton *file_open;
+	QLineEdit *filename;
+
     void open_file();
 
 public:
-    knob_file(/* args */);
+    knob_file(QString file_path = "");
     ~knob_file();
+signals:
+	void changed(QString file_path);
 };
 
 #endif //KNOB_FILE_HPP
