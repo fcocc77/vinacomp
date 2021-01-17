@@ -2,12 +2,19 @@
 
 trim_panel::trim_panel(properties *__properties,
                        QString _name,
+					   QString _type,
                        QString _icon_name,
-                       QJsonArray *_knobs)
+					   nodes_load *_nodes_loaded,
+					   QJsonObject *_data
+					   )
 
     : _properties(__properties)
 	, name(_name)
+	, type(_type)
 	, icon_name(_icon_name)
+	, nodes_loaded(_nodes_loaded)
+	, data(_data)
+
 	, knob_editor_visible(false)
 	, _knob_editor(nullptr)
 {
@@ -15,10 +22,8 @@ trim_panel::trim_panel(properties *__properties,
 	this->setObjectName("trim_panel");
 	this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-	data = new QJsonObject({});
-
 	setup_ui();
-	setup_knobs(_knobs);
+	setup_knobs();
 }
 
 trim_panel::~trim_panel()
@@ -42,14 +47,16 @@ void trim_panel::setup_ui()
     layout->addWidget(tabs);
 }
 
-void trim_panel::setup_knobs(QJsonArray *knobs)
+void trim_panel::setup_knobs()
 {
+	QJsonArray knobs = nodes_loaded->get_effect(type).value("knobs").toArray();
+
     // Obtiene el ancho maximo a partir de las 'label'
     // para usarlo en el espacio inicial de cada parametro.
     int init_space_width = 0;
-    for (int i = 0; i < knobs->count(); i++)
+    for (int i = 0; i < knobs.count(); i++)
     {
-        QJsonObject knob_object = knobs->at(i).toObject();
+        QJsonObject knob_object = knobs.at(i).toObject();
         QString type = knob_object.value("type").toString();
         QString label = knob_object.value("label").toString();
         bool over_line = knob_object.value("over_line").toBool();
@@ -71,9 +78,9 @@ void trim_panel::setup_knobs(QJsonArray *knobs)
 
     QList<knob *> knob_list;
     QList<knob *> over_line_knobs;
-    for (int i = 0; i < knobs->count(); i++)
+    for (int i = 0; i < knobs.count(); i++)
     {
-        QJsonObject knob_object = knobs->at(i).toObject();
+        QJsonObject knob_object = knobs.at(i).toObject();
         QString type = knob_object.value("type").toString();
         QString name = knob_object.value("name").toString();
         QString label = knob_object.value("label").toString();
@@ -419,11 +426,4 @@ void trim_panel::maximize(bool _maximize)
 {
     tabs->setVisible(_maximize);
     is_maximize = _maximize;
-}
-
-QJsonObject *trim_panel::get_modified_data() const
-{
-	print(*data);
-	// solo obtiene los datos de los parametros modificados
-	return data;
 }

@@ -13,7 +13,7 @@ node_graph::node_graph(
 
     nodes_loaded = new nodes_load();
 
-    _node_view = new node_view(_vinacomp, _project, _properties);
+    _node_view = new node_view(_vinacomp, _project, _properties, nodes_loaded);
     _maker = new maker(_vinacomp, _properties, nodes_loaded, _node_view);
     _nodes_bar = new nodes_bar(_maker, nodes_loaded);
 
@@ -60,18 +60,11 @@ QJsonObject node_graph::get_tree() const
 
         QColor color = _node->get_color();
 
-		// obtiene los parametros del nodo, pero no todos lo nodos tienen 'trim_panel'
-		trim_panel *_trim_panel = _node->get_trim_panel();
-		QJsonObject parameters;
-		if (_trim_panel)
-			parameters = *_trim_panel->get_modified_data();
-		//
-
         QJsonObject data = {
             {"position", QJsonArray{_node->x(), _node->y()}},
             {"color", QJsonArray{color.red(), color.green(), color.blue()}},
             {"inputs", inputs},
-			{"parameters", parameters},
+			{"parameters", *_node->get_parameters_data()},
 			{"type", _node->get_type()}
 		};
 
@@ -88,12 +81,6 @@ void node_graph::restore_tree(QJsonObject _nodes)
     {
         QJsonObject data = _nodes.value(name).toObject();
 		QString type = data["type"].toString();
-		QJsonObject effect = nodes_loaded->get_effect(type);
-
-		if (effect.empty())
-			continue;
-
-		QString icon_name = effect["icon"].toString();
 
         QJsonArray color = data["color"].toArray();
         int red = color[0].toInt();
@@ -106,9 +93,6 @@ void node_graph::restore_tree(QJsonObject _nodes)
 
         _node_view->create_node(
             name,
-            nullptr, // trim_panel
-			nullptr, // viewer
-            icon_name,
             QColor(red, green, blue),
 			type,
             position

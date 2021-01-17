@@ -9,21 +9,24 @@ node::node(QGraphicsScene *_scene,
            int inputs,
            QColor _color,
 		   QString _type,
-           trim_panel *__trim_panel,
-		   viewer *__viewer,
+		   QString name,
+		   QString tips,
            properties *__properties,
-		   QWidget *__vinacomp)
+		   QWidget *__vinacomp,
+		   nodes_load *_nodes_loaded
+		)
 
-    : _trim_panel(__trim_panel)
-	, _viewer(__viewer)
-	, _properties(__properties)
+	: _properties(__properties)
 	, _vinacomp(__vinacomp)
+	, nodes_loaded(_nodes_loaded)
 	, color(_color)
 	, type(_type)
 	, scene(_scene)
 	, current_z_value(_current_z_value)
 	, selected_nodes(_selected_nodes)
 
+    , _trim_panel(nullptr)
+	, _viewer(nullptr)
 	, minimum_width(150)
 	, minimum_height(50)
 	, icon_area_width(45)
@@ -42,18 +45,18 @@ node::node(QGraphicsScene *_scene,
 
     // Texto
     {
-        name = new QGraphicsTextItem;
+        name_text = new QGraphicsTextItem;
         QFont font;
         font.setPointSize(15);
-        name->setFont(font);
-        name->setParentItem(this);
-        name->setDefaultTextColor(Qt::black);
+        name_text->setFont(font);
+        name_text->setParentItem(this);
+        name_text->setDefaultTextColor(Qt::black);
 
-        tips = new QGraphicsTextItem;
+        tips_text = new QGraphicsTextItem;
         QFont font_tips;
         font_tips.setPointSize(10);
-        tips->setFont(font_tips);
-        tips->setParentItem(this);
+        tips_text->setFont(font_tips);
+        tips_text->setParentItem(this);
     }
     //
     //
@@ -90,10 +93,54 @@ node::node(QGraphicsScene *_scene,
     scene->addItem(this);
 
     this->setZValue((*current_z_value) + 1);
+
+	parameters_data = new QJsonObject();
+
+    set_name(name);
+    set_tips(tips);
+	set_icon(nodes_loaded->get_effect(type).value("icon").toString());
 }
 
 node::~node()
 {
+}
+
+void node::make_trim_panel()
+{
+	QString name = get_name();
+
+    // Crear panel de 'knobs'
+	QStringList nodes_without_panel = {"viewer", "dot", "backdrop"};
+
+	if (!nodes_without_panel.contains(type))
+	{
+		_trim_panel = new trim_panel(
+			_properties,
+			name,
+			type,
+			icon_name,
+			nodes_loaded,
+			parameters_data
+		);
+		_properties->add_trim_panel(_trim_panel);
+	}
+    //
+    //
+
+	// Viewer
+	vinacomp *__vinacomp = dynamic_cast<vinacomp *>(_vinacomp);
+	if (type == "viewer")
+	{
+		_viewer = new viewer(name);
+		__vinacomp->get_viewers()->push_back(_viewer);
+		__vinacomp->get_panels_layout()->add_viewer(_viewer);
+	}
+	//
+}
+
+QJsonObject *node::get_parameters_data() const
+{
+	return parameters_data;
 }
 
 void node::refresh()
@@ -174,9 +221,9 @@ QPointF node::get_center_position() const
 void node::set_name(QString _name)
 {
     this->setData(0, _name);
-    name->setPlainText(_name);
+    name_text->setPlainText(_name);
 
-    int text_width = name->boundingRect().width();
+    int text_width = name_text->boundingRect().width();
     int new_width = text_width + icon_area_width;
 
     if (new_width < minimum_width)
@@ -186,7 +233,7 @@ void node::set_name(QString _name)
     int text_area = new_width - icon_area_width;
     int text_pos_x = (text_area - text_width) / 2;
 
-    name->setPos(icon_area_width + text_pos_x, 0);
+    name_text->setPos(icon_area_width + text_pos_x, 0);
     //
     //
 
@@ -198,13 +245,13 @@ void node::set_name(QString _name)
 
 QString node::get_name() const
 {
-    return name->toPlainText();
+    return name_text->toPlainText();
 }
 
 void node::set_tips(QString _tips)
 {
-    tips->setPlainText(_tips);
-    tips->setPos(60, 20);
+    tips_text->setPlainText(_tips);
+    tips_text->setPos(60, 20);
 }
 
 QSize node::get_size() const
@@ -265,7 +312,9 @@ QString node::get_type() const
 
 void node::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
-	if (_trim_panel)
+	if (!_trim_panel)
+		make_trim_panel();
+	else
 		_properties->add_trim_panel(_trim_panel);
 
 	if (_viewer)

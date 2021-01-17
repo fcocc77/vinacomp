@@ -19,6 +19,7 @@
 #include <trim_panel.h>
 #include <node_link.h>
 #include <viewer.h>
+#include <nodes_load.h>
 
 class node : public QGraphicsPathItem
 {
@@ -27,6 +28,7 @@ private:
     trim_panel *_trim_panel;
     properties *_properties;
 	viewer *_viewer;
+	nodes_load *nodes_loaded;
 
     QGraphicsScene *scene;
     QMap<QString, node *> *nodes_connected_to_the_inputs;
@@ -52,9 +54,15 @@ private:
     int *current_z_value;
 
     const int icon_area_width;
-    QGraphicsTextItem *name;
-    QGraphicsTextItem *tips;
+    QGraphicsTextItem *name_text;
+    QGraphicsTextItem *tips_text;
 	QString type;
+	QString icon_name;
+
+	// datos de todos los parametros, esto se usara para guardar
+	// los parametros en el proyecto '.vina', o renderizar en el 'motor'
+	QJsonObject *parameters_data;
+	//
 
     void change_size_rectangle(int _width, int _height);
 
@@ -71,10 +79,12 @@ public:
          int inputs,
          QColor color,
 		 QString type,
-         trim_panel *_trim_panel,
-		 viewer *_viewer,
+		 QString name,
+		 QString tips,
          properties *_properties,
-		 QWidget *_vinacomp);
+		 QWidget *_vinacomp,
+		 nodes_load *nodes_loaded
+	);
     ~node();
 
     void set_name(QString name);
@@ -96,6 +106,8 @@ public:
     QList<node_link *> *get_links() const;
 	trim_panel *get_trim_panel() const;
 	QString get_type() const;
+	QJsonObject *get_parameters_data() const;
+	void make_trim_panel();
 };
 
 #endif // NODE_H

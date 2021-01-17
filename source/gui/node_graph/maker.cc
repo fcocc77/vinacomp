@@ -69,15 +69,12 @@ void maker::setup_shortcut()
 
 QString maker::create_fx(QString id)
 {
-
     QJsonObject effect = nodes_loaded->get_effect(id);
     if (effect.empty())
         return 0;
 
     QString group = effect["group"].toString();
     QString label = effect["label"].toString();
-    QString icon_name = effect["icon"].toString();
-    QJsonArray knobs = effect["knobs"].toArray();
     QColor color = default_color(group);
 
     // Encuentra un nombre disponible
@@ -93,35 +90,9 @@ QString maker::create_fx(QString id)
     //
     //
 
-    // Crear panel de 'knobs'
-	QStringList nodes_without_panel = {"viewer", "dot", "backdrop"};
-
-	trim_panel *_trim_panel = nullptr;
-	if (!nodes_without_panel.contains(id))
-	{
-		_trim_panel = new trim_panel(
-			_properties,
-			name,
-			icon_name,
-			&knobs);
-		_properties->add_trim_panel(_trim_panel);
-	}
-    //
-    //
-
-	// Viewer
-	viewer *_viewer = nullptr;
-	vinacomp *__vinacomp = dynamic_cast<vinacomp *>(_vinacomp);
-	if (id == "viewer")
-	{
-		_viewer = new viewer(name);
-		__vinacomp->get_viewers()->push_back(_viewer);
-		__vinacomp->get_panels_layout()->add_viewer(_viewer);
-	}
-	//
-
-    // Creación del nodo, con un número que no se ha utilizado.
-    _node_view->create_node(name, _trim_panel, _viewer, icon_name, color, id);
+    // Creación del nodo, con un nombre que no se ha utilizado.
+    node *_node = _node_view->create_node(name, color, id);
+	_node->make_trim_panel();
     //
     //
 

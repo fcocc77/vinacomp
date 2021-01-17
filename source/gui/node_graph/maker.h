@@ -8,6 +8,7 @@
 #include <util.h>
 #include <os.h>
 #include <qt.h>
+#include <node.h>
 #include <node_finder.h>
 #include <properties.h>
 #include <trim_panel.h>

@@ -3,11 +3,13 @@
 node_view::node_view(
 	QWidget *__vinacomp,
     QJsonObject *_project,
-    properties *__properties)
+    properties *__properties,
+	nodes_load *_nodes_loaded)
 
     : _vinacomp(__vinacomp)
 	, project(_project)
 	, _properties(__properties)
+	, nodes_loaded(_nodes_loaded)
 {
 
     scene = new QGraphicsScene();
@@ -132,9 +134,6 @@ void node_view::change_node_name()
 
 node *node_view::create_node(
     QString name,
-    trim_panel *panel,
-	viewer *_viewer,
-    QString icon_name,
     QColor color,
 	QString type,
     QPointF position,
@@ -155,16 +154,14 @@ node *node_view::create_node(
         1,
         color,
 		type,
-        panel,
-		_viewer,
+		name,
+		tips,
         _properties,
-		_vinacomp
+		_vinacomp,
+		nodes_loaded
 	);
     auto size = _node->get_size();
-    _node->set_name(name);
     _node->set_position(position.x() - (size.width() / 2), position.y() - (size.height() / 2));
-    _node->set_icon(icon_name);
-    _node->set_tips(tips);
 
     nodes->insert(name, _node);
 

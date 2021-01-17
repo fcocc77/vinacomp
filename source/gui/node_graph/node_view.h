@@ -25,6 +25,7 @@
 #include <trim_panel.h>
 #include <properties.h>
 #include <viewer.h>
+#include <nodes_load.h>
 
 class node_view : public graphics_view
 {
@@ -33,6 +34,7 @@ private:
     QGraphicsScene *scene;
     properties *_properties;
 	QWidget *_vinacomp;
+	nodes_load *nodes_loaded;
 
     QMap<QString, node *> *nodes;
     QMap<QString, node *> *selected_nodes;
@@ -62,14 +64,13 @@ public:
     node_view(
 		QWidget *_vinacomp,
         QJsonObject *_project,
-        properties *_properties);
+        properties *_properties,
+		nodes_load *nodes_loaded
+	);
     ~node_view();
 
     node *create_node(
         QString name,
-        trim_panel *panel,
-		viewer *_viewer,
-        QString icon_name,
         QColor color,
 		QString type,
         QPointF position = QPointF(),
