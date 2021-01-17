@@ -108,8 +108,22 @@
                     border-bottom: 1px solid mix(white, $b12, 50%)
                 &::handle
                     background: white
-        QPushButton
+        #small_button
             width: 25px
             height: 22px
             border-radius: 2px
             background: $b25
+        #knob_button
+            QPushButton
+                height: 22px
+                border-radius: 2px
+                background: $b27
+                padding-right: 10px
+                padding-left: 10px
+                &:hover
+                    color: $base
+                &:pressed
+                    background: $b17
+                    color: $b80
+
+

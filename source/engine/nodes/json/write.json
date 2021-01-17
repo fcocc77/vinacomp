@@ -12,6 +12,12 @@
             "minimum": 0,
             "maximum": 1,
             "default": 0.5
-        }
+        },
+		{
+			"name": "render",
+			"type": "button",
+			"label": "Render",
+			"tooltip": "render"
+		}
     ]
 }

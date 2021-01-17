@@ -50,6 +50,7 @@ void trim_panel::setup_knobs(QJsonArray *knobs)
     for (int i = 0; i < knobs->count(); i++)
     {
         QJsonObject knob_object = knobs->at(i).toObject();
+        QString type = knob_object.value("type").toString();
         QString label = knob_object.value("label").toString();
         bool over_line = knob_object.value("over_line").toBool();
 
@@ -57,6 +58,9 @@ void trim_panel::setup_knobs(QJsonArray *knobs)
         {
             QLabel _label(label);
             int width = _label.fontMetrics().boundingRect(_label.text()).width();
+
+			if (type == "button" || type == "label")
+				width = 0;
 
             if (width > init_space_width)
                 init_space_width = width;
@@ -169,7 +173,8 @@ void trim_panel::setup_knobs(QJsonArray *knobs)
 
         else if (type == "button")
         {
-            _knob = new knob_button();
+            _knob = new knob_button(label);
+			label = "";
         }
 
         else if (type == "group")

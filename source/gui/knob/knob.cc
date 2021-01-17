@@ -50,6 +50,7 @@ void knob::set_animatable(bool _animatable)
 		return;
 
 	animation_button = new QPushButton();
+	animation_button->setObjectName("small_button");
 	qt::set_icon(animation_button, "key_a", icon_size);
 	knob_layout->addWidget(animation_button);
 }

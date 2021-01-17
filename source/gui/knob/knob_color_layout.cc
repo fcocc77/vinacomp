@@ -81,13 +81,16 @@ void knob_color::setup_ui()
     //
     //
 
+	picker_button->setObjectName("small_button");
 	picker_button->setAutoFillBackground(true);
 	picker_button->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
     layout->addWidget(picker_button);
 
+	palette_button->setObjectName("small_button");
     qt::set_icon(palette_button, "color_a", icon_size);
     layout->addWidget(palette_button);
 
+	mono_color_button->setObjectName("small_button");
 	mono_color_button->setText("4");
     layout->addWidget(mono_color_button);
 }
