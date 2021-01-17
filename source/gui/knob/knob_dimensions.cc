@@ -1,7 +1,7 @@
 #include <knob_dimensions.h>
 
-knob_dimensions::knob_dimensions(int _dimensions, QList <float> default_values)
-	: dimensions(_dimensions)
+knob_dimensions::knob_dimensions(QList <float> default_values, bool _integer)
+	: integer(_integer)
 {
 	this->setObjectName("knob_dimensions");
     QHBoxLayout *layout = new QHBoxLayout(this);
@@ -10,17 +10,26 @@ knob_dimensions::knob_dimensions(int _dimensions, QList <float> default_values)
 
     layout->addWidget(init_space);
 
+	int dimensions = default_values.count();
 	for ( int i = 0; i < dimensions; i++ )
 	{
 		float value = default_values.value(i);
 		QLineEdit *dimension_edit = new QLineEdit(QString::number(value));
 		connect(dimension_edit, &QLineEdit::editingFinished, this, [=](){
-			changed(
-				get_value(0),
-				get_value(1),
-				get_value(2),
-				get_value(3)
-			);
+			if (integer)
+			{
+				QList <int> values;
+				for ( int i = 0; i < dimensions; i++ )
+					values.push_back(get_value(i));
+				changed_int(values);
+			}
+			else
+			{
+				QList <float> values;
+				for ( int i = 0; i < dimensions; i++ )
+					values.push_back(get_value(i));
+				changed_float(values);
+			}
 		});
 		dimension_edit->setMaximumWidth(50);
 		layout->addWidget(dimension_edit);

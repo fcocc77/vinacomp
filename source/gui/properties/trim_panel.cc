@@ -225,7 +225,23 @@ void trim_panel::setup_knobs(QJsonArray *knobs)
 
         else if (type == "position")
         {
-            _knob = new knob_dimensions();
+			QList <float> default_position;
+			for (QJsonValue value : knob_object.value("default").toArray())
+				default_position.push_back(value.toDouble());
+
+			knob_dimensions *knob_position = new knob_dimensions(default_position);
+			connect(knob_position, &knob_dimensions::changed_float, this, [=](QList <float> values){
+				QJsonArray _values;
+				for (float value : values)
+					_values.push_back(value);
+
+				if (values != default_position)
+					data->insert(name, _values);
+				else
+					data->remove(name);
+			});
+
+			_knob = knob_position;
         }
 
         if (_knob)

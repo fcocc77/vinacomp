@@ -9,12 +9,7 @@
             "type": "position",
             "label": "Translate",
             "tooltip": "Translate",
-            "minimum": null,
-            "maximum": null,
-            "default": [
-                10,
-                20
-            ]
+            "default": [0, 0]
         },
         {
             "name": "rotate",
