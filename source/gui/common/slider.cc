@@ -1,9 +1,7 @@
 #include <slider.h>
 
-slider::slider(float _min, float _max, bool _floating)
+slider::slider(float min, float max, float default_value, bool _floating)
 	: floating(_floating),
-	min(_min),
-	max(_max),
 	float_interval(100)
 {
     this->setOrientation(Qt::Horizontal);
@@ -25,6 +23,8 @@ slider::slider(float _min, float _max, bool _floating)
 		else
 			moved(value);
 	});
+
+	this->setValue(default_value);
 }
 
 slider::~slider()
@@ -33,8 +33,10 @@ slider::~slider()
 
 void slider::set_value(float value)
 {
-	int _value = value * float_interval;
-	this->setValue(_value);
+	if (floating)
+		value *= float_interval;
+
+	this->setValue(value);
 }
 
 void slider::mousePressEvent(QMouseEvent *event)

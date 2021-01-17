@@ -10,11 +10,14 @@
 
 class knob_text : public knob
 {
+	Q_OBJECT
 private:
     /* data */
 public:
-    knob_text(/* args */);
+    knob_text(QString default_text = "");
     ~knob_text();
+signals:
+	void changed(QString text);
 };
 
 #endif //KNOB_TEXT_HPP

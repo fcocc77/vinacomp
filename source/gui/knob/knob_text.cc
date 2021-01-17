@@ -1,17 +1,17 @@
 #include <knob_text.h>
 
-knob_text::knob_text(/* args */)
+knob_text::knob_text(QString default_text)
 {
-
     QHBoxLayout *layout = new QHBoxLayout(this);
+	layout->setMargin(0);
+	layout->addWidget(init_space);
 
-    QLabel *label = new QLabel("Text");
-    layout->addWidget(label);
+    QLineEdit *text = new QLineEdit(default_text);
+	connect(text, &QLineEdit::editingFinished, this, [=](){
+		changed(text->text());
+	});
 
-    QLineEdit *text = new QLineEdit();
     layout->addWidget(text);
-
-    layout->addStretch();
 }
 
 knob_text::~knob_text()

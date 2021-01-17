@@ -10,13 +10,12 @@ class slider : public QSlider
 	Q_OBJECT
 private:
 	bool floating;
-	float min;
-	float max;
 	float float_interval;
 
 public:
     slider(float _min = 0,
 			float _max = 100,
+			float default_value = 0,
 			bool _floating = true);
     ~slider();
 

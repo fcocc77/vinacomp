@@ -4,14 +4,21 @@
     "label": "Text",
     "icon": "text_a",
     "knobs": [
+		{
+			"name": "text",
+			"type": "text",
+			"label": "Text",
+			"tooltip": "text",
+			"default": ""
+		},
         {
             "name": "mix",
             "type": "floating",
             "label": "Mix",
-            "tooltip": "",
+            "tooltip": "text",
             "minimum": 0,
             "maximum": 1,
-            "default": 0.5
+            "default": 1
         }
     ]
 }

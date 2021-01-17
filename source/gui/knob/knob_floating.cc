@@ -9,7 +9,7 @@ knob_floating::knob_floating(float min, float max, float default_value)
 	this->set_knob_layout(layout);
 
     value_edit = new QLineEdit();
-	connect(value_edit, &QLineEdit::returnPressed, this, [=](){
+	connect(value_edit, &QLineEdit::editingFinished, this, [=](){
 		float value = value_edit->text().toDouble();
 		set_value(value);
 	});

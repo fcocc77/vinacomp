@@ -149,7 +149,17 @@ void trim_panel::setup_knobs(QJsonArray *knobs)
 
         else if (type == "text")
         {
-            _knob = new knob_text();
+			QString default_text = knob_object.value("default").toString();
+            knob_text *_knob_text = new knob_text(default_text);
+
+			connect(_knob_text, &knob_text::changed, this, [=](QString text){
+				if (default_text != text)
+					data->insert(name, text);
+				else
+					data->remove(name);
+			});
+
+			_knob = _knob_text;
         }
 
         else if (type == "label")
@@ -172,7 +182,21 @@ void trim_panel::setup_knobs(QJsonArray *knobs)
 
         else if (type == "integer")
         {
-            _knob = new knob_integer();
+			int default_value = knob_object.value("default").toInt();
+			knob_integer *_knob_integer = new knob_integer(
+				knob_object.value("minimum").toInt(),
+				knob_object.value("maximum").toInt(),
+				default_value
+			);
+
+			connect(_knob_integer, &knob_integer::changed, this, [=](int value){
+				if (default_value != value)
+					data->insert(name, value);
+				else
+					data->remove(name);
+			});
+
+			_knob = _knob_integer;
         }
 
         else if (type == "floating")
