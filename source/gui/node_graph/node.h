@@ -59,11 +59,6 @@ private:
 	QString type;
 	QString icon_name;
 
-	// datos de todos los parametros, esto se usara para guardar
-	// los parametros en el proyecto '.vina', o renderizar en el 'motor'
-	QJsonObject *parameters_data;
-	//
-
     void change_size_rectangle(int _width, int _height);
 
     // eventos
@@ -83,8 +78,7 @@ public:
 		 QString tips,
          properties *_properties,
 		 QWidget *_vinacomp,
-		 nodes_load *nodes_loaded,
-		 QJsonObject _parameters_data
+		 nodes_load *nodes_loaded
 	);
     ~node();
 
@@ -107,7 +101,6 @@ public:
     QList<node_link *> *get_links() const;
 	trim_panel *get_trim_panel() const;
 	QString get_type() const;
-	QJsonObject *get_parameters_data() const;
 	void make_panel();
 };
 

@@ -5,7 +5,7 @@ trim_panel::trim_panel(properties *__properties,
 					   QString _type,
                        QString _icon_name,
 					   nodes_load *_nodes_loaded,
-					   QJsonObject *_data
+					   project_struct *project
 					   )
 
     : _properties(__properties)
@@ -13,7 +13,7 @@ trim_panel::trim_panel(properties *__properties,
 	, type(_type)
 	, icon_name(_icon_name)
 	, nodes_loaded(_nodes_loaded)
-	, data(_data)
+	, data(project->nodes[_name].params)
 
 	, knob_editor_visible(false)
 	, _knob_editor(nullptr)

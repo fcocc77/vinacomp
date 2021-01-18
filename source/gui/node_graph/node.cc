@@ -13,8 +13,7 @@ node::node(QGraphicsScene *_scene,
 		   QString tips,
            properties *__properties,
 		   QWidget *__vinacomp,
-		   nodes_load *_nodes_loaded,
-		   QJsonObject _parameters_data
+		   nodes_load *_nodes_loaded
 		)
 
 	: _properties(__properties)
@@ -95,8 +94,6 @@ node::node(QGraphicsScene *_scene,
 
     this->setZValue((*current_z_value) + 1);
 
-	parameters_data = new QJsonObject(_parameters_data);
-
     set_name(name);
     set_tips(tips);
 	set_icon(nodes_loaded->get_effect(type).value("icon").toString());
@@ -109,6 +106,8 @@ node::~node()
 void node::make_panel()
 {
 	QString name = get_name();
+	vinacomp *__vinacomp = dynamic_cast<vinacomp *>(_vinacomp);
+	print(*__vinacomp->get_project()->nodes[name].params);
 
     // Crear panel de 'knobs'
 	QStringList nodes_without_panel = {"viewer", "dot", "backdrop"};
@@ -122,7 +121,7 @@ void node::make_panel()
 				type,
 				icon_name,
 				nodes_loaded,
-				parameters_data
+				__vinacomp->get_project()
 			);
 		_properties->add_trim_panel(_trim_panel);
 	}
@@ -130,7 +129,6 @@ void node::make_panel()
     //
 
 	// Viewer
-	vinacomp *__vinacomp = dynamic_cast<vinacomp *>(_vinacomp);
 	if (type == "viewer")
 	{
 		if (!_viewer)
@@ -141,11 +139,6 @@ void node::make_panel()
 		__vinacomp->get_panels_layout()->add_viewer(_viewer);
 	}
 	//
-}
-
-QJsonObject *node::get_parameters_data() const
-{
-	return parameters_data;
 }
 
 void node::refresh()

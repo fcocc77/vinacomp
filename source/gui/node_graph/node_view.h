@@ -77,7 +77,6 @@ public:
         QColor color,
 		QString type,
         QPointF position = QPointF(),
-		QJsonObject data = {},
         QString tips = "");
     void rename_node(node *_node, QString name, QString new_name);
     void change_node_name_dialog();

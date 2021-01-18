@@ -9,14 +9,13 @@
 #include <QTabWidget>
 #include <QJsonArray>
 
-// VinaComp
+// Gui
 #include <trim_panel.h>
 #include <properties.h>
 #include <qt.h>
 #include <tab_widget.h>
 #include <nodes_load.h>
 #include <knob_editor.h>
-
 #include <knob.h>
 #include <knob_color.h>
 #include <knob_check_box.h>
@@ -30,6 +29,9 @@
 #include <knob_floating.h>
 #include <knob_separator.h>
 #include <knob_dimensions.h>
+
+// Engine
+#include <project_struct.h>
 
 class trim_panel : public QWidget
 {
@@ -70,7 +72,7 @@ public:
 		QString _type,
         QString _icon_name,
 		nodes_load *nodes_loaded,
-		QJsonObject *_data
+		project_struct *project
 	);
     ~trim_panel();
 
