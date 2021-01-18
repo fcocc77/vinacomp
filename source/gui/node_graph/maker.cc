@@ -92,7 +92,7 @@ QString maker::create_fx(QString id)
 
     // Creación del nodo, con un nombre que no se ha utilizado.
     node *_node = _node_view->create_node(name, color, id);
-	_node->make_trim_panel();
+	_node->make_panel();
     //
     //
 

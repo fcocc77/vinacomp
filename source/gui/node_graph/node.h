@@ -107,7 +107,7 @@ public:
 	trim_panel *get_trim_panel() const;
 	QString get_type() const;
 	QJsonObject *get_parameters_data() const;
-	void make_trim_panel();
+	void make_panel();
 };
 
 #endif // NODE_H

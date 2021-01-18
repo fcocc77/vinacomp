@@ -105,7 +105,7 @@ node::~node()
 {
 }
 
-void node::make_trim_panel()
+void node::make_panel()
 {
 	QString name = get_name();
 
@@ -114,14 +114,15 @@ void node::make_trim_panel()
 
 	if (!nodes_without_panel.contains(type))
 	{
-		_trim_panel = new trim_panel(
-			_properties,
-			name,
-			type,
-			icon_name,
-			nodes_loaded,
-			parameters_data
-		);
+		if (!_trim_panel)
+			_trim_panel = new trim_panel(
+				_properties,
+				name,
+				type,
+				icon_name,
+				nodes_loaded,
+				parameters_data
+			);
 		_properties->add_trim_panel(_trim_panel);
 	}
     //
@@ -131,8 +132,11 @@ void node::make_trim_panel()
 	vinacomp *__vinacomp = dynamic_cast<vinacomp *>(_vinacomp);
 	if (type == "viewer")
 	{
-		_viewer = new viewer(name);
-		__vinacomp->get_viewers()->push_back(_viewer);
+		if (!_viewer)
+		{
+			_viewer = new viewer(name);
+			__vinacomp->get_viewers()->push_back(_viewer);
+		}
 		__vinacomp->get_panels_layout()->add_viewer(_viewer);
 	}
 	//
@@ -312,16 +316,7 @@ QString node::get_type() const
 
 void node::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
-	if (!_trim_panel)
-		make_trim_panel();
-	else
-		_properties->add_trim_panel(_trim_panel);
-
-	if (_viewer)
-	{
-		panels_layout *_panels_layout = dynamic_cast<vinacomp*>(_vinacomp)->get_panels_layout();
-		_panels_layout->add_viewer(_viewer);
-	}
+	make_panel();
 }
 
 void node::mousePressEvent(QGraphicsSceneMouseEvent *event)
