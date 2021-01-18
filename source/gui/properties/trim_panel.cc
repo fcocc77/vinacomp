@@ -76,7 +76,6 @@ void trim_panel::setup_knobs()
     //
     //
 
-    QList<knob *> knob_list;
     QList<knob *> over_line_knobs;
     for (int i = 0; i < knobs.count(); i++)
     {
@@ -90,10 +89,30 @@ void trim_panel::setup_knobs()
         if (type == "color")
         {
             QJsonArray _default = knob_object.value("default").toArray();
-			float red = _default.at(0).toDouble();
-			float green = _default.at(1).toDouble();
-			float blue = _default.at(2).toDouble();
-			float alpha = _default.at(3).toDouble();
+
+			float dred = _default.at(0).toDouble();
+			float dgreen = _default.at(1).toDouble();
+			float dblue = _default.at(2).toDouble();
+			float dalpha = _default.at(3).toDouble();
+
+			float red, green, blue, alpha;
+
+			if (data->contains(name))
+			{
+				QJsonArray value = data->value(name).toArray();
+				red = value.at(0).toDouble();
+				green = value.at(1).toDouble();
+				blue = value.at(2).toDouble();
+				alpha = value.at(3).toDouble();
+			}
+			else
+			{
+				red = dred;
+				green = dgreen;
+				blue = dblue;
+				alpha = dalpha;
+			}
+
 
             knob_color *_knob_color = new knob_color(
 				knob_object.value("minimum").toDouble(),
@@ -103,7 +122,7 @@ void trim_panel::setup_knobs()
 
 			connect(_knob_color, &knob_color::changed, this, [=](float r, float g, float b, float a){
 				// si el color es igual al predeterminado, borra el dato
-				if (red != r || green != g || blue != b || alpha != a)
+				if (dred != r || dgreen != g || dblue != b || dalpha != a)
 					data->insert(name, QJsonArray{r, g, b, a});
 				else
 					data->remove(name);
@@ -115,11 +134,18 @@ void trim_panel::setup_knobs()
         else if (type == "check_box")
         {
             bool default_value = knob_object.value("default").toBool();
-            knob_check_box *_knob_check_box = new knob_check_box(label, default_value);
+			bool value;
 
-			connect(_knob_check_box, &knob_check_box::changed, this, [=](bool value){
-				if (default_value != value)
-					data->insert(name, value);
+			if (data->contains(name))
+				value = data->value(name).toBool();
+			else
+				value = default_value;
+
+            knob_check_box *_knob_check_box = new knob_check_box(label, value);
+
+			connect(_knob_check_box, &knob_check_box::changed, this, [=](bool _value){
+				if (default_value != _value)
+					data->insert(name, _value);
 				else
 					data->remove(name);
 			});
@@ -131,7 +157,15 @@ void trim_panel::setup_knobs()
         else if (type == "file")
         {
 			QString default_value = knob_object.value("default").toString();
-            knob_file *_knob_file = new knob_file(default_value);
+			QString value;
+
+			if (data->contains(name))
+				value = data->value(name).toString();
+			else
+				value = default_value;
+
+            knob_file *_knob_file = new knob_file(value);
+
 			connect(_knob_file, &knob_file::changed, this, [=](QString file_path){
 				if (default_value != file_path)
 					data->insert(name, file_path);
@@ -146,11 +180,18 @@ void trim_panel::setup_knobs()
         {
             QJsonArray items = knob_object.value("items").toArray();
 			int default_index = knob_object.value("default").toInt();
+			int index;
 
-            knob_choice *_knob_choice = new knob_choice(qt::array_to_list(items), default_index);
-			connect(_knob_choice, &knob_choice::changed, this, [=](QString item_name, int index){
-				if (default_index != index)
-					data->insert(name, index);
+			if (data->contains(name))
+				index = data->value(name).toInt();
+			else
+				index = default_index;
+
+            knob_choice *_knob_choice = new knob_choice(qt::array_to_list(items), index);
+
+			connect(_knob_choice, &knob_choice::changed, this, [=](QString item_name, int _index){
+				if (default_index != _index)
+					data->insert(name, _index);
 				else
 					data->remove(name);
 			});
@@ -161,11 +202,18 @@ void trim_panel::setup_knobs()
         else if (type == "text")
         {
 			QString default_text = knob_object.value("default").toString();
-            knob_text *_knob_text = new knob_text(default_text);
+			QString text;
 
-			connect(_knob_text, &knob_text::changed, this, [=](QString text){
-				if (default_text != text)
-					data->insert(name, text);
+			if (data->contains(name))
+				text = data->value(name).toString();
+			else
+				text = default_text;
+
+            knob_text *_knob_text = new knob_text(text);
+
+			connect(_knob_text, &knob_text::changed, this, [=](QString _text){
+				if (default_text != _text)
+					data->insert(name, _text);
 				else
 					data->remove(name);
 			});
@@ -195,15 +243,22 @@ void trim_panel::setup_knobs()
         else if (type == "integer")
         {
 			int default_value = knob_object.value("default").toInt();
+			int value;
+
+			if (data->contains(name))
+				value = data->value(name).toInt();
+			else
+				value = default_value;
+
 			knob_integer *_knob_integer = new knob_integer(
 				knob_object.value("minimum").toInt(),
 				knob_object.value("maximum").toInt(),
-				default_value
+				value
 			);
 
-			connect(_knob_integer, &knob_integer::changed, this, [=](int value){
-				if (default_value != value)
-					data->insert(name, value);
+			connect(_knob_integer, &knob_integer::changed, this, [=](int _value){
+				if (default_value != _value)
+					data->insert(name, _value);
 				else
 					data->remove(name);
 			});
@@ -214,15 +269,22 @@ void trim_panel::setup_knobs()
         else if (type == "floating")
         {
             float default_value = knob_object.value("default").toDouble();
+			float value;
+
+			if (data->contains(name))
+				value = data->value(name).toDouble();
+			else
+				value = default_value;
+
 			knob_floating *_knob_floating = new knob_floating(
 				knob_object.value("minimum").toDouble(),
 				knob_object.value("maximum").toDouble(),
-				default_value
+				value
 			);
 
-			connect(_knob_floating, &knob_floating::changed, this, [=](float value){
-				if (default_value != value)
-					data->insert(name, value);
+			connect(_knob_floating, &knob_floating::changed, this, [=](float _value){
+				if (default_value != _value)
+					data->insert(name, _value);
 				else
 					data->remove(name);
 			});
@@ -237,18 +299,25 @@ void trim_panel::setup_knobs()
 
         else if (type == "position")
         {
-			QList <float> default_position;
+			QList <float> default_position, position;
 			for (QJsonValue value : knob_object.value("default").toArray())
 				default_position.push_back(value.toDouble());
 
-			knob_dimensions *knob_position = new knob_dimensions(default_position);
-			connect(knob_position, &knob_dimensions::changed_float, this, [=](QList <float> values){
-				QJsonArray _values;
-				for (float value : values)
-					_values.push_back(value);
+			if (data->contains(name))
+				for (QJsonValue value : data->value(name).toArray())
+					position.push_back(value.toDouble());
+			else
+				position = default_position;
 
-				if (values != default_position)
-					data->insert(name, _values);
+			knob_dimensions *knob_position = new knob_dimensions(position);
+
+			connect(knob_position, &knob_dimensions::changed_float, this, [=](QList <float> _position){
+				QJsonArray __position;
+				for (float value : _position)
+					__position.push_back(value);
+
+				if (_position != default_position)
+					data->insert(name, __position);
 				else
 					data->remove(name);
 			});

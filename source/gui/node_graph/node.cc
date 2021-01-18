@@ -13,7 +13,8 @@ node::node(QGraphicsScene *_scene,
 		   QString tips,
            properties *__properties,
 		   QWidget *__vinacomp,
-		   nodes_load *_nodes_loaded
+		   nodes_load *_nodes_loaded,
+		   QJsonObject _parameters_data
 		)
 
 	: _properties(__properties)
@@ -94,7 +95,7 @@ node::node(QGraphicsScene *_scene,
 
     this->setZValue((*current_z_value) + 1);
 
-	parameters_data = new QJsonObject();
+	parameters_data = new QJsonObject(_parameters_data);
 
     set_name(name);
     set_tips(tips);

@@ -83,7 +83,8 @@ public:
 		 QString tips,
          properties *_properties,
 		 QWidget *_vinacomp,
-		 nodes_load *nodes_loaded
+		 nodes_load *nodes_loaded,
+		 QJsonObject _parameters_data
 	);
     ~node();
 

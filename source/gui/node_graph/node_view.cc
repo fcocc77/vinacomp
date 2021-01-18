@@ -137,6 +137,7 @@ node *node_view::create_node(
     QColor color,
 	QString type,
     QPointF position,
+	QJsonObject data,
     QString tips)
 {
     if (position.isNull())
@@ -158,7 +159,8 @@ node *node_view::create_node(
 		tips,
         _properties,
 		_vinacomp,
-		nodes_loaded
+		nodes_loaded,
+		data
 	);
     auto size = _node->get_size();
     _node->set_position(position.x() - (size.width() / 2), position.y() - (size.height() / 2));

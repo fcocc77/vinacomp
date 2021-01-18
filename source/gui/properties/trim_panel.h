@@ -35,6 +35,7 @@ class trim_panel : public QWidget
 {
 private:
 	QVBoxLayout *layout;
+    QList<knob *> knob_list;
 
 	knob_editor *_knob_editor;
 	nodes_load *nodes_loaded;

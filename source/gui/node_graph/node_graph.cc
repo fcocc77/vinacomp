@@ -95,7 +95,8 @@ void node_graph::restore_tree(QJsonObject _nodes)
             name,
             QColor(red, green, blue),
 			type,
-            position
+            position,
+			data.value("parameters").toObject()
 		);
     }
 
