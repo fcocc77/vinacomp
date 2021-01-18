@@ -2,8 +2,10 @@
 
 node_graph::node_graph(
 	QWidget *_vinacomp,
-    QJsonObject *_project,
+    project_struct *_project,
     properties *_properties)
+
+	: project(_project)
 {
 
     this->setObjectName("node_graph");
@@ -13,7 +15,7 @@ node_graph::node_graph(
 
     nodes_loaded = new nodes_load();
 
-    _node_view = new node_view(_vinacomp, _project, _properties, nodes_loaded);
+    _node_view = new node_view(_vinacomp, _properties, nodes_loaded);
     _maker = new maker(_vinacomp, _properties, nodes_loaded, _node_view);
     _nodes_bar = new nodes_bar(_maker, nodes_loaded);
 
@@ -41,84 +43,94 @@ QJsonObject node_graph::get_tree() const
     // para guardarla en el proyecto.
     QJsonObject tree = {};
 
-    for (node *_node : *_node_view->get_nodes())
-    {
-        QJsonArray inputs = {};
+    // for (node *_node : *_node_view->get_nodes())
+    // {
+        // QJsonArray inputs = {};
 
-        for (node_link *link : *_node->get_links())
-        {
-            node *connected_node = dynamic_cast<node *>(link->get_connected_node());
-            QString _connected_node = "NULL";
-            if (connected_node)
-                _connected_node = connected_node->get_name();
+        // for (node_link *link : *_node->get_links())
+        // {
+            // node *connected_node = dynamic_cast<node *>(link->get_connected_node());
+            // QString _connected_node = "NULL";
+            // if (connected_node)
+                // _connected_node = connected_node->get_name();
 
-            QJsonObject link_data = {
-                {"connected_node", _connected_node}};
+            // QJsonObject link_data = {
+                // {"connected_node", _connected_node}};
 
-            inputs.push_back(link_data);
-        }
+            // inputs.push_back(link_data);
+        // }
 
-        QColor color = _node->get_color();
+        // QColor color = _node->get_color();
 
-        QJsonObject data = {
-            {"pos", QJsonArray{_node->x(), _node->y()}},
-            {"color", QJsonArray{color.red(), color.green(), color.blue()}},
-            {"inputs", inputs},
-			{"params", *_node->get_parameters_data()},
-			{"type", _node->get_type()}
-		};
+        // QJsonObject data = {
+            // {"pos", QJsonArray{_node->x(), _node->y()}},
+            // {"color", QJsonArray{color.red(), color.green(), color.blue()}},
+            // {"inputs", inputs},
+			// {"params", *_node->get_parameters_data()},
+			// {"type", _node->get_type()}
+		// };
 
-        tree[_node->get_name()] = data;
-    }
+        // tree[_node->get_name()] = data;
+    // }
 
     return tree;
 }
 
-void node_graph::restore_tree(QJsonObject _nodes)
+void node_graph::restore_tree()
 {
+	for (QString name : project->nodes.keys())
+	{
+		auto node = project->nodes.value(name);
 
-    for (QString name : _nodes.keys())
-    {
-        QJsonObject data = _nodes.value(name).toObject();
-		QString type = data["type"].toString();
-
-        QJsonArray color = data["color"].toArray();
-        int red = color[0].toInt();
-        int green = color[1].toInt();
-        int blue = color[2].toInt();
-
-        QPointF position = {data["pos"].toArray()[0].toDouble(),
-                            data["pos"].toArray()[1].toDouble()};
-
-
-        _node_view->create_node(
-            name,
-            QColor(red, green, blue),
-			type,
-            position,
-			data.value("params").toObject()
+		_node_view->create_node(
+			name,
+			node.color,
+			node.type,
+			node.pos
 		);
-    }
+	}
+    // for (QString name : _nodes.keys())
+    // {
+        // QJsonObject data = _nodes.value(name).toObject();
+		// QString type = data["type"].toString();
 
-    // conecta todos los nodos
-    for (QString name : _nodes.keys())
-    {
-        QJsonObject data = _nodes.value(name).toObject();
-        node *_node = _node_view->get_nodes()->value(name);
+        // QJsonArray color = data["color"].toArray();
+        // int red = color[0].toInt();
+        // int green = color[1].toInt();
+        // int blue = color[2].toInt();
 
-        QJsonArray inputs = data["inputs"].toArray();
+        // QPointF position = {data["pos"].toArray()[0].toDouble(),
+                            // data["pos"].toArray()[1].toDouble()};
 
-        for (int i = 0; i < inputs.count(); i++)
-        {
-            QJsonObject link_data = inputs[i].toObject();
-            QString connected_node = link_data["connected_node"].toString();
-            node *node_to_connect = _node_view->get_node(connected_node);
 
-            node_link *link = _node_view->get_node_link(_node, i);
-            if (link)
-                link->connect_node(node_to_connect);
-        }
-    }
+        // _node_view->create_node(
+            // name,
+            // QColor(red, green, blue),
+			// type,
+            // position,
+			// data.value("params").toObject()
+		// );
+    // }
+
+    // // conecta todos los nodos
+    // for (QString name : _nodes.keys())
+    // {
+        // QJsonObject data = _nodes.value(name).toObject();
+        // node *_node = _node_view->get_nodes()->value(name);
+
+        // QJsonArray inputs = data["inputs"].toArray();
+
+        // for (int i = 0; i < inputs.count(); i++)
+        // {
+            // QJsonObject link_data = inputs[i].toObject();
+            // QString connected_node = link_data["connected_node"].toString();
+            // node *node_to_connect = _node_view->get_node(connected_node);
+
+            // node_link *link = _node_view->get_node_link(_node, i);
+            // if (link)
+                // link->connect_node(node_to_connect);
+        // }
+    // }
     //
 }
 

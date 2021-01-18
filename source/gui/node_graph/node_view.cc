@@ -3,12 +3,10 @@
 
 node_view::node_view(
 	QWidget *__vinacomp,
-    QJsonObject *_project,
     properties *__properties,
 	nodes_load *_nodes_loaded)
 
     : _vinacomp(__vinacomp)
-	, project(_project)
 	, _properties(__properties)
 	, nodes_loaded(_nodes_loaded)
 {

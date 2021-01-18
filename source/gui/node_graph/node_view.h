@@ -46,7 +46,6 @@ private:
     bool selecting = false;
     QPoint click_position;
 
-    QJsonObject *project;
     int *current_z_value;
 
     QLineEdit *node_rename_edit;
@@ -66,7 +65,6 @@ private:
 public:
     node_view(
 		QWidget *_vinacomp,
-        QJsonObject *_project,
         properties *_properties,
 		nodes_load *nodes_loaded
 	);

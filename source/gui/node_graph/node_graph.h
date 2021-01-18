@@ -5,12 +5,16 @@
 #include <QJsonObject>
 #include <QVBoxLayout>
 
+// Gui
 #include <properties.h>
 #include <maker.h>
 #include <nodes_load.h>
 #include <node_view.h>
 #include <nodes_bar.h>
 #include <trim_panel.h>
+
+// Engine
+#include <project_struct.h>
 
 class node_graph : public QWidget
 {
@@ -20,16 +24,18 @@ private:
     nodes_bar *_nodes_bar;
     nodes_load *nodes_loaded;
     maker *_maker;
+	project_struct *project;
 
 public:
     node_graph(
 		QWidget *_vinacomp,
-		QJsonObject *_project,
-		properties *_properties);
+		project_struct *_project,
+		properties *_properties
+	);
     ~node_graph();
 
     QJsonObject get_tree() const;
-    void restore_tree(QJsonObject nodes);
+    void restore_tree();
     QJsonObject get_scene_data() const;
     void restore_scene_data(QJsonObject scene_data);
     node_view *get_node_view() const;

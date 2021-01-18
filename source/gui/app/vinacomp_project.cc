@@ -78,18 +78,18 @@ void vinacomp::open_project_dialog()
 
 void vinacomp::open_project(QString project_path)
 {
-    project_opened = true;
-    current_project = project_path;
-    recorder_recent_projects(project_path);
+	project_opened = true;
+	current_project = project_path;
+	recorder_recent_projects(project_path);
 
-    (*project_old) = jread(project_path);
+	project->load(project_path);
 
-    // actualiza componentes con el proyecto cargado
-    _node_graph->restore_tree(project_old->value("nodes").toObject());
-    _node_graph->restore_scene_data(project_old->value("scene").toObject());
-    _script_editor->open_script_from_project();
+	// actualiza componentes con el proyecto cargado
+	_node_graph->restore_tree();
+    // _node_graph->restore_scene_data(project_old->value("scene").toObject());
+    // _script_editor->open_script_from_project();
 
-    this->setWindowTitle(os::basename(project_path) + " - VinaComp");
+	this->setWindowTitle(os::basename(project_path) + " - VinaComp");
 }
 
 void vinacomp::to_save_project()
@@ -121,13 +121,14 @@ void vinacomp::save_as()
 
 void vinacomp::save_project(QString project_path)
 {
-    project_old->insert("nodes", _node_graph->get_tree());
-    project_old->insert("scene", _node_graph->get_scene_data());
+	project->save(project_path);
+    // project_old->insert("nodes", _node_graph->get_tree());
+    // project_old->insert("scene", _node_graph->get_scene_data());
 
-    recorder_recent_projects(project_path);
-    jwrite(project_path, *project_old);
+    // recorder_recent_projects(project_path);
+    // jwrite(project_path, project->get_project_json());
 
-    project_opened = true;
+    // project_opened = true;
 
-    this->setWindowTitle(os::basename(project_path) + " - VinaComp");
+    // this->setWindowTitle(os::basename(project_path) + " - VinaComp");
 }

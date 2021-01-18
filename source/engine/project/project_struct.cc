@@ -61,8 +61,9 @@ void project_struct::load(QString project_path)
 		QPointF _position = {position[0].toDouble(), position[1].toDouble()};
 
 		QString type = node.value("type").toString();
+
+		insert_node(name, _color, type, _position);
 	}
-	print(nodes.value("Blur2").type);
 }
 
 void project_struct::save(QString project_path) const
