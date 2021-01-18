@@ -1,7 +1,9 @@
 #include <viewer.h>
 
-viewer::viewer(QString _name)
+viewer::viewer(QString _name, project_struct *_project)
 	: name(_name)
+	, project(_project)
+
 	, current_frame(0)
 	, frame_rate(24)
 	, first_frame(1)
@@ -36,6 +38,9 @@ viewer::viewer(QString _name)
 	connect(_time_line, &time_line::in_out_changed, this, [=](int _input, int _output){
 		set_in_out(_input, _output);
 	});
+
+	// pasar el puntero de la estructura del proyecto
+	_renderer = new renderer();
 }
 
 viewer::~viewer()
@@ -51,6 +56,8 @@ void viewer::set_frame(int frame)
 {
 	current_frame = frame;
 	_time_line->go_to_frame(frame);
+
+	_renderer->render(frame);
 	// aqui se pone toda la actualizacion de la imagen del frame
 	// ...
 }

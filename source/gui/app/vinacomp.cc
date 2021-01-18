@@ -8,7 +8,8 @@ vinacomp::vinacomp()
 	, current_project("")
 {
     this->setObjectName("vinacomp");
-    project = new QJsonObject();
+    project_old = new QJsonObject();
+	project = new project_struct();
     setup_ui();
 }
 
@@ -27,8 +28,8 @@ void vinacomp::setup_ui()
 
 	//
     _properties = new properties();
-    _node_graph = new node_graph(this, project, _properties);
-    _script_editor = new script_editor(project, _node_graph);
+    _node_graph = new node_graph(this, project_old, _properties);
+    _script_editor = new script_editor(project_old, _node_graph);
     _curve_editor = new curve_editor();
     _settings = new settings();
 	_project_settings = new project_settings(this);
@@ -74,6 +75,11 @@ panels_layout *vinacomp::get_panels_layout() const
 QList <viewer*> *vinacomp::get_viewers() const
 {
 	return viewers;
+}
+
+project_struct *vinacomp::get_project() const
+{
+	return project;
 }
 
 void vinacomp::setup_style()

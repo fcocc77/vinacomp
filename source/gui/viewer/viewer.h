@@ -11,6 +11,7 @@
 #include <QLineEdit>
 #include <QTimeLine>
 
+// Gui
 #include <qt.h>
 #include <util.h>
 #include <combo_box.h>
@@ -21,15 +22,22 @@
 #include <action.h>
 #include <knob_floating.h>
 
+// Engine
+#include <renderer.h>
+#include <project_struct.h>
+
 class viewer : public QWidget
 {
 private:
     QVBoxLayout *layout;
+	project_struct *project;
 
     viewer_gl *_viewer_gl;
     time_line *_time_line;
 	QString playing_option;
 	QString name;
+
+	renderer *_renderer;
 
 	int first_frame, last_frame;
 	int input, output;
@@ -88,7 +96,7 @@ private:
 	pair<int, int> get_current_range() const;
 	//
 public:
-	viewer(QString _name);
+	viewer(QString _name, project_struct *_project);
     ~viewer();
 
 	void set_frame_range(int _first_frame, int _last_frame);

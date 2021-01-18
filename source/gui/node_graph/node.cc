@@ -135,7 +135,7 @@ void node::make_panel()
 	{
 		if (!_viewer)
 		{
-			_viewer = new viewer(name);
+			_viewer = new viewer(name, __vinacomp->get_project());
 			__vinacomp->get_viewers()->push_back(_viewer);
 		}
 		__vinacomp->get_panels_layout()->add_viewer(_viewer);

@@ -1,4 +1,5 @@
 #include <node_view.h>
+#include <vinacomp.h>
 
 node_view::node_view(
 	QWidget *__vinacomp,
@@ -163,9 +164,15 @@ node *node_view::create_node(
 		data
 	);
     auto size = _node->get_size();
-    _node->set_position(position.x() - (size.width() / 2), position.y() - (size.height() / 2));
+	QPointF new_position = { position.x() - (size.width() / 2), position.y() - (size.height() / 2) };
+	_node->set_position(new_position.x(), new_position.y());
 
     nodes->insert(name, _node);
+
+	// inserta un item de nodo en el proyecto
+	project_struct *project = dynamic_cast<vinacomp *>(_vinacomp)->get_project();
+	project->insert_node(name, color, type, new_position);
+	//
 
     return _node;
 }

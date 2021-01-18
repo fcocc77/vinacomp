@@ -61,10 +61,10 @@ QJsonObject node_graph::get_tree() const
         QColor color = _node->get_color();
 
         QJsonObject data = {
-            {"position", QJsonArray{_node->x(), _node->y()}},
+            {"pos", QJsonArray{_node->x(), _node->y()}},
             {"color", QJsonArray{color.red(), color.green(), color.blue()}},
             {"inputs", inputs},
-			{"parameters", *_node->get_parameters_data()},
+			{"params", *_node->get_parameters_data()},
 			{"type", _node->get_type()}
 		};
 
@@ -87,8 +87,8 @@ void node_graph::restore_tree(QJsonObject _nodes)
         int green = color[1].toInt();
         int blue = color[2].toInt();
 
-        QPointF position = {data["position"].toArray()[0].toDouble(),
-                            data["position"].toArray()[1].toDouble()};
+        QPointF position = {data["pos"].toArray()[0].toDouble(),
+                            data["pos"].toArray()[1].toDouble()};
 
 
         _node_view->create_node(
@@ -96,7 +96,7 @@ void node_graph::restore_tree(QJsonObject _nodes)
             QColor(red, green, blue),
 			type,
             position,
-			data.value("parameters").toObject()
+			data.value("params").toObject()
 		);
     }
 

@@ -16,7 +16,7 @@
 #include <QLineEdit>
 #include <QPoint>
 
-// VINA COMP
+// Gui
 #include <graphics_view.h>
 #include <node.h>
 #include <node_link.h>
@@ -26,6 +26,9 @@
 #include <properties.h>
 #include <viewer.h>
 #include <nodes_load.h>
+
+// Engine
+#include <project_struct.h>
 
 class node_view : public graphics_view
 {

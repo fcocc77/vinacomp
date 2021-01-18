@@ -8,7 +8,7 @@
 #include <QApplication>
 #include <QFileDialog>
 
-// VINA COMP
+// Gui
 #include <node_graph.h>
 #include <script_editor.h>
 #include <properties.h>
@@ -19,6 +19,9 @@
 #include <action.h>
 #include <project_settings.h>
 #include <viewer.h>
+
+// Engine
+#include <project_struct.h>
 
 class vinacomp : public QMainWindow
 {
@@ -52,7 +55,8 @@ private:
     // para guardarlo en un archivo o enviarlo al motor de render.
     bool project_opened;
     QString current_project;
-    QJsonObject *project;
+	project_struct *project;
+    QJsonObject *project_old;
     //
     //
 
@@ -76,6 +80,7 @@ public:
 
 	panels_layout *get_panels_layout() const;
 	QList <viewer*> *get_viewers() const;
+	project_struct *get_project() const;
 };
 
 #endif // VINACOMP_H
