@@ -57,7 +57,7 @@ void viewer::set_frame(int frame)
 	current_frame = frame;
 	_time_line->go_to_frame(frame);
 
-	QImage image = _renderer->render(frame);
+	QImage image = _renderer->render(frame, "Viewer1");
 	_viewer_gl->set_image(image);
 }
 

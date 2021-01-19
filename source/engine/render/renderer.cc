@@ -11,8 +11,25 @@ renderer::~renderer()
 
 }
 
-QImage renderer::render(int frame)
+QImage renderer::render(int frame, QString node_name)
 {
-	QJsonObject *params = project->nodes["Read1"].params;
-	return read->render(params);
+	QImage image;
+
+	if (!project->nodes.contains(node_name))
+		return image;
+
+	node_struct *root = &project->nodes[node_name];
+	QString type = root->type;
+
+
+	if (type == "viewer")
+	{
+		QString input_node = root->inputs.value("in0").toString();
+		image = render(frame, input_node);
+	}
+
+	else if (type == "read")
+		image = read->render(root->params, frame);
+
+	return image;
 }

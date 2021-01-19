@@ -17,7 +17,7 @@ public:
 	renderer(project_struct *_project);
 	~renderer();
 
-	QImage render(int frame);
+	QImage render(int frame, QString node_name);
 };
 
 #endif // RENDERER_H
