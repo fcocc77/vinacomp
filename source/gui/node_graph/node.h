@@ -14,12 +14,16 @@
 #include <QStyleOptionGraphicsItem>
 #include <QGraphicsRectItem>
 
+// Gui
 #include <util.h>
 #include <properties.h>
 #include <trim_panel.h>
 #include <node_link.h>
 #include <viewer.h>
 #include <nodes_load.h>
+
+// Engine
+#include <project_struct.h>
 
 class node : public QGraphicsPathItem
 {
@@ -29,6 +33,7 @@ private:
     properties *_properties;
 	viewer *_viewer;
 	nodes_load *nodes_loaded;
+	project_struct *project;
 
     QGraphicsScene *scene;
     QMap<QString, node *> *nodes_connected_to_the_inputs;
@@ -78,7 +83,8 @@ public:
 		 QString tips,
          properties *_properties,
 		 QWidget *_vinacomp,
-		 nodes_load *nodes_loaded
+		 nodes_load *nodes_loaded,
+		 project_struct *project
 	);
     ~node();
 

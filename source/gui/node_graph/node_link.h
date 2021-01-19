@@ -12,7 +12,11 @@
 
 #include <math.h>
 
+// Gui
 #include <util.h>
+
+// Engine
+#include <project_struct.h>
 
 class node_link : public QGraphicsRectItem
 {
@@ -21,6 +25,7 @@ private:
     QGraphicsItem *this_node;
     QGraphicsItem *connected_node;
     QJsonObject *link_connecting;
+	project_struct *project;
     int link_size;
     int index;
     bool dragging = false;
@@ -46,9 +51,11 @@ private:
 
 public:
     node_link(int _index,
-              QGraphicsScene *_scene,
-              QGraphicsItem *_node,
-              QJsonObject *_link_connecting);
+		  QGraphicsScene *_scene,
+		  QGraphicsItem *_node,
+		  QJsonObject *_link_connecting,
+		  project_struct *_project
+	);
     ~node_link();
 
     void refresh();

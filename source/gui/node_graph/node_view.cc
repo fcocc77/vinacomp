@@ -145,6 +145,8 @@ node *node_view::create_node(
         position = this->mapToScene(origin);
     }
 
+	project_struct *project = dynamic_cast<vinacomp *>(_vinacomp)->get_project();
+
     node *_node = new node(
         scene,
         current_z_value,
@@ -157,7 +159,8 @@ node *node_view::create_node(
 		tips,
         _properties,
 		_vinacomp,
-		nodes_loaded
+		nodes_loaded,
+		project
 	);
     auto size = _node->get_size();
 	QPointF new_position = { position.x() - (size.width() / 2), position.y() - (size.height() / 2) };
@@ -166,7 +169,6 @@ node *node_view::create_node(
     nodes->insert(name, _node);
 
 	// inserta un item de nodo en el proyecto
-	project_struct *project = dynamic_cast<vinacomp *>(_vinacomp)->get_project();
 	project->insert_node(name, color, type, new_position);
 	//
 

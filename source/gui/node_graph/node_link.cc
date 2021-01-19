@@ -4,14 +4,17 @@
 node_link::node_link(int _index,
                      QGraphicsScene *_scene,
                      QGraphicsItem *__node,
-                     QJsonObject *_link_connecting)
+                     QJsonObject *_link_connecting,
+					 project_struct *_project
+					 )
 
-    : index(_index),
-      scene(_scene),
-      this_node(__node),
-      link_connecting(_link_connecting),
+    : index(_index)
+	, scene(_scene)
+	, this_node(__node)
+	, link_connecting(_link_connecting)
+	, project(_project)
 
-      connected_node(NULL)
+	, connected_node(nullptr)
 
 {
 
@@ -253,7 +256,7 @@ QLineF node_link::subtract_distance_line(QLineF line, float distance)
 
 void node_link::connect_node(QGraphicsItem *to_node)
 {
-    if (to_node == NULL)
+    if (!to_node)
         return;
 
     node *_to_node = dynamic_cast<node *>(to_node);
@@ -270,6 +273,9 @@ void node_link::connect_node(QGraphicsItem *to_node)
 
     connected_node = _to_node;
     refresh();
+
+	// añade la entrada al proyecto
+	project->insert_input(_this_node->get_name(), _to_node->get_name(), index);
 }
 
 QGraphicsItem *node_link::get_connected_node()
@@ -286,9 +292,12 @@ void node_link::disconnect_node()
 
         _connected_node->remove_output_node(_this_node);
         _this_node->remove_input_node(_connected_node);
+
+		// borra la entrada del proyecto
+		project->delete_input(_this_node->get_name(), index);
     }
 
-    connected_node = NULL;
+    connected_node = nullptr;
     refresh();
 }
 

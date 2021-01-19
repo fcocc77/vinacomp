@@ -34,7 +34,7 @@ public:
 	);
     ~node_graph();
 
-    QJsonObject get_tree() const;
+	void update_node_position_from_project();
     void restore_tree();
     QJsonObject get_scene_data() const;
     void restore_scene_data(QJsonObject scene_data);

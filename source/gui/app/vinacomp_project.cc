@@ -121,14 +121,14 @@ void vinacomp::save_as()
 
 void vinacomp::save_project(QString project_path)
 {
-	project->save(project_path);
-    // project_old->insert("nodes", _node_graph->get_tree());
     // project_old->insert("scene", _node_graph->get_scene_data());
 
-    // recorder_recent_projects(project_path);
-    // jwrite(project_path, project->get_project_json());
+	_node_graph->update_node_position_from_project();
 
-    // project_opened = true;
+	recorder_recent_projects(project_path);
+	project->save(project_path);
 
-    // this->setWindowTitle(os::basename(project_path) + " - VinaComp");
+	project_opened = true;
+
+	this->setWindowTitle(os::basename(project_path) + " - VinaComp");
 }

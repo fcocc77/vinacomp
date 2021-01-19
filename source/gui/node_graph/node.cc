@@ -13,7 +13,8 @@ node::node(QGraphicsScene *_scene,
 		   QString tips,
            properties *__properties,
 		   QWidget *__vinacomp,
-		   nodes_load *_nodes_loaded
+		   nodes_load *_nodes_loaded,
+		   project_struct *_project
 		)
 
 	: _properties(__properties)
@@ -24,6 +25,7 @@ node::node(QGraphicsScene *_scene,
 	, scene(_scene)
 	, current_z_value(_current_z_value)
 	, selected_nodes(_selected_nodes)
+	, project(_project)
 
     , _trim_panel(nullptr)
 	, _viewer(nullptr)
@@ -83,7 +85,7 @@ node::node(QGraphicsScene *_scene,
         links = new QList<node_link *>;
         for (int i = 0; i < inputs; i++)
         {
-            node_link *link = new node_link(i, scene, this, _link_connecting);
+            node_link *link = new node_link(i, scene, this, _link_connecting, project);
             links->push_back(link);
         }
     }
@@ -105,9 +107,8 @@ node::~node()
 
 void node::make_panel()
 {
+	print(project->nodes.value(get_name()).inputs);
 	QString name = get_name();
-	vinacomp *__vinacomp = dynamic_cast<vinacomp *>(_vinacomp);
-	print(*__vinacomp->get_project()->nodes[name].params);
 
     // Crear panel de 'knobs'
 	QStringList nodes_without_panel = {"viewer", "dot", "backdrop"};
@@ -121,7 +122,7 @@ void node::make_panel()
 				type,
 				icon_name,
 				nodes_loaded,
-				__vinacomp->get_project()
+				project
 			);
 		_properties->add_trim_panel(_trim_panel);
 	}
@@ -129,11 +130,12 @@ void node::make_panel()
     //
 
 	// Viewer
+	vinacomp *__vinacomp = dynamic_cast<vinacomp *>(_vinacomp);
 	if (type == "viewer")
 	{
 		if (!_viewer)
 		{
-			_viewer = new viewer(name, __vinacomp->get_project());
+			_viewer = new viewer(name, project);
 			__vinacomp->get_viewers()->push_back(_viewer);
 		}
 		__vinacomp->get_panels_layout()->add_viewer(_viewer);

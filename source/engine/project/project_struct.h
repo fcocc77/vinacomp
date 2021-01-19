@@ -15,7 +15,7 @@ struct node_struct
 	QString type;
 	QPointF pos;
 	QJsonObject *params;
-	QList <QJsonObject> inputs;
+	QJsonObject inputs;
 };
 
 class project_struct
@@ -26,8 +26,12 @@ public:
 
 	QMap <QString, node_struct> nodes;
 
-	void insert_node(QString _name, QColor _color, QString _type, QPointF _pos);
+	void insert_node(QString _name, QColor _color, QString _type, QPointF _pos, 
+			QJsonObject _params = {}, QJsonObject _inputs = {} );
 	void delete_node(QString name);
+
+	void insert_input(QString src, QString dst, int index);
+	void delete_input(QString node, int index);
 
 	QJsonObject get_project_json() const;
 
