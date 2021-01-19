@@ -107,7 +107,6 @@ node::~node()
 
 void node::make_panel()
 {
-	print(project->nodes.value(get_name()).inputs);
 	QString name = get_name();
 
     // Crear panel de 'knobs'

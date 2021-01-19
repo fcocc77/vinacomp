@@ -63,7 +63,8 @@ gui__knobs:
 	☐ terminar text knob'
 nodes:
 	☐ crear nodo de speed, para que cambie todas las velocidades como 'videovina' y asi no lo tenemos que hacer en videovina
-
+engine__project_struct:
+	☐ Una vez tengamos las entrada de los nodos ok, cambiar el tipo de los 'inputs' de QJsonObject a QJsonArray
 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
 Archive:
 	✔ que los botones tengan hover @done(2021-01-08 15:18) @project(gui__knobs)

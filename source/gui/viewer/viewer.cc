@@ -40,7 +40,7 @@ viewer::viewer(QString _name, project_struct *_project)
 	});
 
 	// pasar el puntero de la estructura del proyecto
-	_renderer = new renderer();
+	_renderer = new renderer(project);
 }
 
 viewer::~viewer()
@@ -57,9 +57,8 @@ void viewer::set_frame(int frame)
 	current_frame = frame;
 	_time_line->go_to_frame(frame);
 
-	_renderer->render(frame);
-	// aqui se pone toda la actualizacion de la imagen del frame
-	// ...
+	QImage image = _renderer->render(frame);
+	_viewer_gl->set_image(image);
 }
 
 void viewer::set_frame_range(int _first_frame, int _last_frame)

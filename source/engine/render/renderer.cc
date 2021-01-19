@@ -1,8 +1,9 @@
 #include <renderer.h>
 
-renderer::renderer()
+renderer::renderer(project_struct *_project)
+	: project(_project)
 {
-
+	read = new read_node();
 }
 
 renderer::~renderer()
@@ -10,7 +11,8 @@ renderer::~renderer()
 
 }
 
-void renderer::render(int frame)
+QImage renderer::render(int frame)
 {
-	print("render:" + QString::number(frame));
+	QJsonObject *params = project->nodes["Read1"].params;
+	return read->render(params);
 }

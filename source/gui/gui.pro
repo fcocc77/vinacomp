@@ -9,6 +9,7 @@ INCLUDEPATH += ../../utils/c++
 INCLUDEPATH += ../python_api
 INCLUDEPATH += ../engine/render
 INCLUDEPATH += ../engine/project
+INCLUDEPATH += ../engine/nodes
 
 QT += core gui widgets multimedia
 
@@ -20,6 +21,7 @@ HEADERS +=  $$system(ls */*.h) \
             ../python_api/*.h \
 			../engine/render/*.h \
 			../engine/project/*.h \
+			../engine/nodes/*.h \
 
 SOURCES += 	 $$system(ls */*.cc) \
             ../../utils/c++/*.cc \
@@ -27,3 +29,4 @@ SOURCES += 	 $$system(ls */*.cc) \
             ../python_api/*.cc \
 			../engine/render/*.cc \
 			../engine/project/*.cc \
+			../engine/nodes/*.cc \

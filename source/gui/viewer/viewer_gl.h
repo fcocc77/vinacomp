@@ -8,8 +8,6 @@
 class viewer_gl : public gl_view
 {
 private:
-	QImage image;
-
     void draw_frame(int width, int height, QColor color);
 	void draw_image();
 public:
@@ -21,9 +19,14 @@ public:
     action *fit_100_percent;
     //
 
+	QImage image;
+	int image_width, image_height;
+
 	bool fitted;
 	void fit_to_viewport();
 	void fit_to_percent(int percent);
+
+	void set_image(QImage image, int image_width = 1920, int image_height = 1080);
 protected:
     void initializeGL() override;
     void paintGL() override;

@@ -1,8 +1,8 @@
 #include <viewer_gl.h>
 
 viewer_gl::viewer_gl()
-	: gl_view(true),
-	fitted(true)
+	: gl_view(true)
+	, fitted(true)
 {
     center_viewer = new action("Center Image", "F", "center");
 	center_viewer->connect_to(this, [=]() { fit_to_viewport(); });
@@ -19,9 +19,6 @@ void viewer_gl::initializeGL()
 {
     initializeOpenGLFunctions();
     glClearColor(0, 0, 0, 1);
-
-	image = QImage("/home/pancho/Desktop/coffe.jpg");
-	image = image.mirrored();
 }
 
 void viewer_gl::resizeGL(int w, int h)
@@ -69,6 +66,14 @@ void viewer_gl::fit_to_percent(int percent)
 	update();
 }
 
+void viewer_gl::set_image(QImage _image, int _image_width, int _image_height)
+{
+	image = _image;
+	image_width = image.width();
+	image_height = image.height();
+	update();
+}
+
 void viewer_gl::draw_frame(int width, int height, QColor color)
 {
     draw_line({0, 0}, {0, height}, color);
@@ -79,11 +84,8 @@ void viewer_gl::draw_frame(int width, int height, QColor color)
 
 void viewer_gl::draw_image()
 {
-	int width = image.width();
-	int height = image.height();
-
 	// genera la textura 2d a partir de los bits de la imagen
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_BGRA, GL_UNSIGNED_BYTE, image.constBits());
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, image_width, image_height, 0, GL_BGRA, GL_UNSIGNED_BYTE, image.bits());
 	glGenerateMipmap(GL_TEXTURE_2D);
 	//
 
@@ -105,9 +107,9 @@ void viewer_gl::draw_image()
 	glBegin(GL_QUADS);
 	glColor3f(1, 1, 1);
 	glTexCoord2f(0.0f, 0.0f); glVertex2f(0, 0); // Inferior Izquierda
-	glTexCoord2f(1.0f, 0.0f); glVertex2f(width, 0); // Inferior Derecha
-	glTexCoord2f(1.0f, 1.0f); glVertex2f(width, height); // Superior Derecha
-	glTexCoord2f(0.0f, 1.0f); glVertex2f(0, height); // Superior Izquierda
+	glTexCoord2f(1.0f, 0.0f); glVertex2f(image_width, 0); // Inferior Derecha
+	glTexCoord2f(1.0f, 1.0f); glVertex2f(image_width, image_height); // Superior Derecha
+	glTexCoord2f(0.0f, 1.0f); glVertex2f(0, image_height); // Superior Izquierda
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
 	//
