@@ -10,7 +10,7 @@ read_node::~read_node()
 
 }
 
-QImage *read_node::render(QImage *image, QJsonObject *params, int frame)
+void read_node::render(QImage *image, QJsonObject *params, int frame)
 {
 	QString file_path = params->value("file").toString();
 	QString _frame = frame_to_string(frame, 3);
@@ -18,8 +18,6 @@ QImage *read_node::render(QImage *image, QJsonObject *params, int frame)
 	file_path.replace("###", _frame);
 
 	(*image) = QImage(file_path).mirrored();
-
-	return image;
 }
 
 QString read_node::frame_to_string(int frame, int frame_digits)

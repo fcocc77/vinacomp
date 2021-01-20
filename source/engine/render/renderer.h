@@ -19,13 +19,11 @@ private:
 	QMap <QString, node_engine*> nodes;
 	time_offset_node *time_offset;
 
-	QImage *image;
-
 public:
 	renderer(project_struct *_project);
 	~renderer();
 
-	QImage *render(int frame, QString node_name);
+	void render(QImage *image, int frame, QString node_name);
 };
 
 #endif // RENDERER_H

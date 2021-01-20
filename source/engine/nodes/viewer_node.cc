@@ -10,8 +10,7 @@ viewer_node::~viewer_node()
 
 }
 
-QImage *viewer_node::render(QImage *image, QJsonObject *params, int frame)
+void viewer_node::render(QImage *image, QJsonObject *params, int frame)
 {
-	return image;
 }
 

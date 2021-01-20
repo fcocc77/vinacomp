@@ -31,6 +31,7 @@ class viewer : public QWidget
 private:
     QVBoxLayout *layout;
 	project_struct *project;
+	QImage *image;
 
     viewer_gl *_viewer_gl;
     time_line *_time_line;

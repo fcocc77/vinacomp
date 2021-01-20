@@ -10,7 +10,6 @@ node_engine::~node_engine()
 
 }
 
-QImage *node_engine::render(QImage *image, QJsonObject *params, int frame)
+void node_engine::render(QImage *image, QJsonObject *params, int frame)
 {
-	return image;
 }

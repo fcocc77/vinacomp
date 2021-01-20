@@ -16,6 +16,8 @@ viewer::viewer(QString _name, project_struct *_project, renderer *__renderer)
     _viewer_gl = new viewer_gl();
     _viewer_gl->setObjectName("viewer_graphics");
 
+	image = new QImage();
+
     layout = new QVBoxLayout(this);
     layout->setMargin(0);
     layout->setSpacing(1);
@@ -60,7 +62,7 @@ void viewer::set_frame(int frame)
 
 void viewer::update_render()
 {
-	QImage *image = _renderer->render(current_frame, name);
+	_renderer->render(image, current_frame, name);
 	_viewer_gl->set_image(image);
 }
 

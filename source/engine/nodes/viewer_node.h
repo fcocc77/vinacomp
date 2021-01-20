@@ -11,7 +11,7 @@ public:
 	viewer_node();
 	~viewer_node();
 
-	QImage *render(QImage *image, QJsonObject *params, int frame) override;
+	void render(QImage *image, QJsonObject *params, int frame) override;
 };
 
 #endif // VIEWER_NODE_H

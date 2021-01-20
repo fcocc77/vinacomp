@@ -3,8 +3,6 @@
 renderer::renderer(project_struct *_project)
 	: project(_project)
 {
-	image = new QImage();
-
 	// los nodos que se definen globalmente aparte de insertarlos a la lista 'nodes'
 	// es porque tienen funciones aparte de 'render'
 	time_offset = new time_offset_node();
@@ -21,10 +19,10 @@ renderer::~renderer()
 
 }
 
-QImage *renderer::render(int frame, QString node_name)
+void renderer::render(QImage *image, int frame, QString node_name)
 {
 	if (!project->nodes.contains(node_name))
-		return image;
+		return;
 
 	node_struct *node = &project->nodes[node_name];
 	node_engine *_node_engine = nodes.value(node->type);
@@ -38,13 +36,11 @@ QImage *renderer::render(int frame, QString node_name)
 	// renderiza las entradas del nodo antes que el nodo
 	QString input_node = node->inputs.value("in0").toString();
 	if (!input_node.isEmpty())
-		image = render(frame, input_node);
+		render(image, frame, input_node);
 	//
 
 	// renderiza el nodo actual
 	if (_node_engine)
-		image = _node_engine->render(image, node->params, frame);
+		_node_engine->render(image, node->params, frame);
 	//
-
-	return image;
 }

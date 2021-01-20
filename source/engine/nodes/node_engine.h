@@ -11,7 +11,7 @@ public:
 	node_engine();
 	~node_engine();
 
-	virtual QImage *render(QImage *image, QJsonObject *params, int frame);
+	virtual void render(QImage *image, QJsonObject *params, int frame);
 };
 
 #endif // NODE_ENGINE_H
