@@ -46,6 +46,9 @@ void knob::set_knob_layout(QHBoxLayout *layout)
 
 void knob::set_animatable(bool _animatable)
 {
+	if (!_animatable)
+		return;
+
 	if (animation_button || !knob_layout)
 		return;
 

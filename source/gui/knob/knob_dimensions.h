@@ -15,11 +15,12 @@ class knob_dimensions : public knob
 {
 	Q_OBJECT
 private:
-	bool integer;
 	QList < QLineEdit * > dimensions_edits;
+	void setup(QList <float> default_values, bool integer);
 
 public:
-    knob_dimensions(QList <float> default_values = {0, 1}, bool integer = false);
+    knob_dimensions(QList <int> default_values = {0, 1});
+    knob_dimensions(QList <float> default_values = {0, 1});
     ~knob_dimensions();
 
 	float get_value(int dimension) const;

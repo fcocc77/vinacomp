@@ -6,7 +6,7 @@
     "knobs": [
         {
             "name": "translate",
-            "type": "position",
+            "type": "floating_dimensions",
             "label": "Translate",
             "tooltip": "Translate",
             "default": [0, 0]
@@ -50,7 +50,7 @@
         },
         {
             "name": "center",
-            "type": "position",
+            "type": "floating_dimensions",
             "label": "Center",
             "tooltip": "Center",
             "minimum": null,

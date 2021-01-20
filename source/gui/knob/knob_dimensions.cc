@@ -1,7 +1,22 @@
 #include <knob_dimensions.h>
 
-knob_dimensions::knob_dimensions(QList <float> default_values, bool _integer)
-	: integer(_integer)
+knob_dimensions::knob_dimensions(QList <float> default_values)
+{
+	setup(default_values, false);
+}
+
+knob_dimensions::knob_dimensions(QList <int> default_values)
+{
+	// convierte la lista 'int' a 'float' porque al final se retornara en 'int'
+	// asi que da igual que este en 'float'
+	QList <float> float_list;
+	for (int value : default_values)
+		float_list.push_back(value);
+
+	setup(float_list, true);
+}
+
+void knob_dimensions::setup(QList <float> default_values, bool integer)
 {
 	this->setObjectName("knob_dimensions");
     QHBoxLayout *layout = new QHBoxLayout(this);

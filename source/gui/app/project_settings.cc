@@ -20,7 +20,8 @@ project_settings::project_settings(
 	int init_space = 140;
 
 	// Frame Range
-	knob_dimensions *frame_range_knob = new knob_dimensions({1, 100}, true);
+	QList <int> default_value = {1, 100};
+	knob_dimensions *frame_range_knob = new knob_dimensions(default_value);
 	connect(frame_range_knob, &knob_dimensions::changed_int, this, [=](QList <int> values){
 		auto *viewers = dynamic_cast<vinacomp *>(_vinacomp)->get_viewers();
 		for ( viewer *_viewer : *viewers )

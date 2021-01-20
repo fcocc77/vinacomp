@@ -5,13 +5,19 @@
     "icon": "time_offset_a",
     "knobs": [
         {
-            "name": "mix",
-            "type": "floating",
-            "label": "Mix",
-            "tooltip": "",
-            "minimum": 0,
-            "maximum": 1,
-            "default": 0.5
+            "name": "time_offset",
+            "type": "integer_dimensions",
+            "label": "Time Offset ( frames )",
+            "tooltip": "time_offset",
+            "default": [0],
+			"animatable": false
+        },
+        {
+            "name": "reverse_input",
+            "type": "check_box",
+            "label": "Reverse Input",
+            "tooltip": "Reverse Input",
+            "default": false
         }
     ]
 }

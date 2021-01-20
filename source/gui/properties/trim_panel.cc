@@ -85,6 +85,10 @@ void trim_panel::setup_knobs()
         QString label = knob_object.value("label").toString();
         bool over_line = knob_object.value("over_line").toBool();
 
+		bool animatable = true;
+		if (knob_object.contains("animatable"))
+			animatable = knob_object.value("animatable").toBool();
+
         knob *_knob;
         if (type == "color")
         {
@@ -297,37 +301,45 @@ void trim_panel::setup_knobs()
             _knob = new knob_separator();
         }
 
-        else if (type == "position")
+        else if (type == "floating_dimensions")
+		{
+			QList <float> default_dimensions = {0, 0};
+			knob_dimensions *knob_floating_dimensions = new knob_dimensions(default_dimensions);
+
+			_knob = knob_floating_dimensions;
+		}
+
+        else if (type == "integer_dimensions")
         {
-			QList <float> default_position, position;
+			QList <int> default_dimensions, dimensions;
 			for (QJsonValue value : knob_object.value("default").toArray())
-				default_position.push_back(value.toDouble());
+				default_dimensions.push_back(value.toInt());
 
 			if (data->contains(name))
 				for (QJsonValue value : data->value(name).toArray())
-					position.push_back(value.toDouble());
+					dimensions.push_back(value.toInt());
 			else
-				position = default_position;
+				dimensions = default_dimensions;
 
-			knob_dimensions *knob_position = new knob_dimensions(position);
+			knob_dimensions *knob_integer_dimensions = new knob_dimensions(dimensions);
 
-			connect(knob_position, &knob_dimensions::changed_float, this, [=](QList <float> _position){
-				QJsonArray __position;
-				for (float value : _position)
-					__position.push_back(value);
+			connect(knob_integer_dimensions, &knob_dimensions::changed_int, this, [=](QList <int> _dimensions){
+				QJsonArray __dimensions;
+				for (float value : _dimensions)
+					__dimensions.push_back(value);
 
-				if (_position != default_position)
-					data->insert(name, __position);
+				if (_dimensions != default_dimensions)
+					data->insert(name, __dimensions);
 				else
 					data->remove(name);
 			});
 
-			_knob = knob_position;
+			_knob = knob_integer_dimensions;
         }
 
         if (_knob)
         {
-			_knob->set_animatable();
+			_knob->set_animatable(animatable);
 
             if (over_line)
             {
