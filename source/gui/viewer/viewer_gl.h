@@ -19,14 +19,14 @@ public:
     action *fit_100_percent;
     //
 
-	QImage image;
+	QImage *image;
 	int image_width, image_height;
 
 	bool fitted;
 	void fit_to_viewport();
 	void fit_to_percent(int percent);
 
-	void set_image(QImage image, int image_width = 1920, int image_height = 1080);
+	void set_image(QImage *image, int image_width = 1920, int image_height = 1080);
 protected:
     void initializeGL() override;
     void paintGL() override;

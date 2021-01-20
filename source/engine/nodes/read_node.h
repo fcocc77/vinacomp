@@ -4,9 +4,10 @@
 #include <QJsonObject>
 #include <QImage>
 
+#include <node_engine.h>
 #include <util.h>
 
-class read_node
+class read_node : public node_engine
 {
 private:
 	QString frame_to_string(int frame, int frame_digits);
@@ -15,7 +16,7 @@ public:
 	~read_node();
 
 	// debe retornar un imagen en bits
-	QImage render(QJsonObject *params, int frame);
+	QImage *render(QImage *image, QJsonObject *params, int frame) override;
 };
 
 #endif // READ_H

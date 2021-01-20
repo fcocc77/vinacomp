@@ -3,6 +3,7 @@
 viewer_gl::viewer_gl()
 	: gl_view(true)
 	, fitted(true)
+	, image(nullptr)
 {
     center_viewer = new action("Center Image", "F", "center");
 	center_viewer->connect_to(this, [=]() { fit_to_viewport(); });
@@ -66,11 +67,11 @@ void viewer_gl::fit_to_percent(int percent)
 	update();
 }
 
-void viewer_gl::set_image(QImage _image, int _image_width, int _image_height)
+void viewer_gl::set_image(QImage *_image, int _image_width, int _image_height)
 {
 	image = _image;
-	image_width = image.width();
-	image_height = image.height();
+	image_width = image->width();
+	image_height = image->height();
 	update();
 }
 
@@ -84,8 +85,11 @@ void viewer_gl::draw_frame(int width, int height, QColor color)
 
 void viewer_gl::draw_image()
 {
+	if (!image)
+		return;
+
 	// genera la textura 2d a partir de los bits de la imagen
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, image_width, image_height, 0, GL_BGRA, GL_UNSIGNED_BYTE, image.bits());
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, image_width, image_height, 0, GL_BGRA, GL_UNSIGNED_BYTE, image->bits());
 	glGenerateMipmap(GL_TEXTURE_2D);
 	//
 

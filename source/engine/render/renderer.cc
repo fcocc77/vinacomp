@@ -3,8 +3,11 @@
 renderer::renderer(project_struct *_project)
 	: project(_project)
 {
-	read = new read_node();
-	blur = new blur_node();
+	image = new QImage();
+
+	nodes.insert("viewer", new viewer_node());
+	nodes.insert("read", new read_node());
+	nodes.insert("blur", new blur_node());
 }
 
 renderer::~renderer()
@@ -12,33 +15,19 @@ renderer::~renderer()
 
 }
 
-QImage renderer::render(int frame, QString node_name)
+QImage *renderer::render(int frame, QString node_name)
 {
-	QImage image;
-
 	if (!project->nodes.contains(node_name))
 		return image;
 
 	node_struct *node = &project->nodes[node_name];
 	QString type = node->type;
 
-
-	if (type == "viewer")
-	{
-		QString input_node = node->inputs.value("in0").toString();
+	// renderiza las entradas del nodo antes que el nodo
+	QString input_node = node->inputs.value("in0").toString();
+	if (!input_node.isEmpty())
 		image = render(frame, input_node);
-	}
+	//
 
-	else if (type == "read")
-		image = read->render(node->params, frame);
-
-	else if (type == "blur")
-	{
-		QString input_node = node->inputs.value("in0").toString();
-		QImage input_0_image = render(frame, input_node);
-
-		image = blur->render(input_0_image);
-	}
-
-	return image;
+	return nodes.value(node->type)->render(image, node->params, frame);
 }

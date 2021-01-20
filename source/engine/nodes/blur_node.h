@@ -3,15 +3,16 @@
 
 #include <QImage>
 
+#include <node_engine.h>
 #include <util.h>
 
-class blur_node
+class blur_node : public node_engine
 {
 public:
 	blur_node();
 	~blur_node();
 
-	QImage render(QImage &image);
+	QImage *render(QImage *image, QJsonObject *params, int frame) override;
 };
 
 #endif // BLUR_NODE_H

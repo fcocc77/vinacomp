@@ -5,21 +5,24 @@
 
 #include <util.h>
 #include <project_struct.h>
+#include <node_engine.h>
 #include <read_node.h>
 #include <blur_node.h>
+#include <viewer_node.h>
 
 class renderer
 {
 private:
 	project_struct *project;
-	read_node *read;
-	blur_node *blur;
+
+	QMap <QString, node_engine*> nodes;
+	QImage *image;
 
 public:
 	renderer(project_struct *_project);
 	~renderer();
 
-	QImage render(int frame, QString node_name);
+	QImage *render(int frame, QString node_name);
 };
 
 #endif // RENDERER_H
