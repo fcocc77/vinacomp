@@ -1,11 +1,13 @@
 #include <node_link.h>
 #include <node.h>
+#include <vinacomp.h>
 
 node_link::node_link(int _index,
                      QGraphicsScene *_scene,
                      QGraphicsItem *__node,
                      QJsonObject *_link_connecting,
-					 project_struct *_project
+					 project_struct *_project,
+					 QWidget *__vinacomp
 					 )
 
     : index(_index)
@@ -13,6 +15,7 @@ node_link::node_link(int _index,
 	, this_node(__node)
 	, link_connecting(_link_connecting)
 	, project(_project)
+	, _vinacomp(__vinacomp)
 
 	, connected_node(nullptr)
 
@@ -274,8 +277,10 @@ void node_link::connect_node(QGraphicsItem *to_node)
     connected_node = _to_node;
     refresh();
 
-	// añade la entrada al proyecto
+	// añade la entrada al proyecto y actualiza el render
 	project->insert_input(_this_node->get_name(), _to_node->get_name(), index);
+	dynamic_cast<vinacomp *>(_vinacomp)->update_render_all_viewer();
+	//
 }
 
 QGraphicsItem *node_link::get_connected_node()
@@ -293,8 +298,10 @@ void node_link::disconnect_node()
         _connected_node->remove_output_node(_this_node);
         _this_node->remove_input_node(_connected_node);
 
-		// borra la entrada del proyecto
+		// borra la entrada del proyecto y actualiza el render
 		project->delete_input(_this_node->get_name(), index);
+		dynamic_cast<vinacomp *>(_vinacomp)->update_render_all_viewer();
+		//
     }
 
     connected_node = nullptr;

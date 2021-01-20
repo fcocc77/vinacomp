@@ -85,7 +85,7 @@ node::node(QGraphicsScene *_scene,
         links = new QList<node_link *>;
         for (int i = 0; i < inputs; i++)
         {
-            node_link *link = new node_link(i, scene, this, _link_connecting, project);
+            node_link *link = new node_link(i, scene, this, _link_connecting, project, _vinacomp);
             links->push_back(link);
         }
     }
@@ -121,7 +121,8 @@ void node::make_panel()
 				type,
 				icon_name,
 				nodes_loaded,
-				project
+				project,
+				_vinacomp
 			);
 		_properties->add_trim_panel(_trim_panel);
 	}
@@ -134,7 +135,7 @@ void node::make_panel()
 	{
 		if (!_viewer)
 		{
-			_viewer = new viewer(name, project);
+			_viewer = new viewer(name, project, __vinacomp->get_renderer());
 			__vinacomp->get_viewers()->push_back(_viewer);
 		}
 		__vinacomp->get_panels_layout()->add_viewer(_viewer);

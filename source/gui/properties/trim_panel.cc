@@ -1,11 +1,13 @@
 #include <trim_panel.h>
+#include <vinacomp.h>
 
 trim_panel::trim_panel(properties *__properties,
                        QString _name,
 					   QString _type,
                        QString _icon_name,
 					   nodes_load *_nodes_loaded,
-					   project_struct *project
+					   project_struct *project,
+					   QWidget *__vinacomp
 					   )
 
     : _properties(__properties)
@@ -14,6 +16,7 @@ trim_panel::trim_panel(properties *__properties,
 	, icon_name(_icon_name)
 	, nodes_loaded(_nodes_loaded)
 	, data(project->nodes[_name].params)
+	, _vinacomp(__vinacomp)
 
 	, knob_editor_visible(false)
 	, _knob_editor(nullptr)
@@ -130,6 +133,8 @@ void trim_panel::setup_knobs()
 					data->insert(name, QJsonArray{r, g, b, a});
 				else
 					data->remove(name);
+
+				update_render();
 			});
 
 			_knob = _knob_color;
@@ -152,6 +157,8 @@ void trim_panel::setup_knobs()
 					data->insert(name, _value);
 				else
 					data->remove(name);
+
+				update_render();
 			});
 
             label = "";
@@ -175,6 +182,7 @@ void trim_panel::setup_knobs()
 					data->insert(name, file_path);
 				else
 					data->remove(name);
+				update_render();
 			});
 
 			_knob = _knob_file;
@@ -198,6 +206,7 @@ void trim_panel::setup_knobs()
 					data->insert(name, _index);
 				else
 					data->remove(name);
+				update_render();
 			});
 
 			_knob = _knob_choice;
@@ -220,6 +229,7 @@ void trim_panel::setup_knobs()
 					data->insert(name, _text);
 				else
 					data->remove(name);
+				update_render();
 			});
 
 			_knob = _knob_text;
@@ -265,6 +275,7 @@ void trim_panel::setup_knobs()
 					data->insert(name, _value);
 				else
 					data->remove(name);
+				update_render();
 			});
 
 			_knob = _knob_integer;
@@ -291,6 +302,7 @@ void trim_panel::setup_knobs()
 					data->insert(name, _value);
 				else
 					data->remove(name);
+				update_render();
 			});
 
 			_knob = _knob_floating;
@@ -332,6 +344,7 @@ void trim_panel::setup_knobs()
 					data->insert(name, __dimensions);
 				else
 					data->remove(name);
+				update_render();
 			});
 
 			_knob = knob_integer_dimensions;
@@ -507,4 +520,9 @@ void trim_panel::maximize(bool _maximize)
 {
     tabs->setVisible(_maximize);
     is_maximize = _maximize;
+}
+
+void trim_panel::update_render()
+{
+	dynamic_cast<vinacomp*>(_vinacomp)->update_render_all_viewer();
 }

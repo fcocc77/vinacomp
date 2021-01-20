@@ -22,6 +22,7 @@
 
 // Engine
 #include <project_struct.h>
+#include <renderer.h>
 
 class vinacomp : public QMainWindow
 {
@@ -34,6 +35,7 @@ private:
     tools *_tool_bar;
     settings *_settings;
 	project_settings *_project_settings;
+	renderer *_renderer;
 	QList <viewer*> *viewers;
 
     panels_layout *_panels_layout;
@@ -81,6 +83,8 @@ public:
 	panels_layout *get_panels_layout() const;
 	QList <viewer*> *get_viewers() const;
 	project_struct *get_project() const;
+	renderer *get_renderer() const;
+	void update_render_all_viewer() const;
 };
 
 #endif // VINACOMP_H

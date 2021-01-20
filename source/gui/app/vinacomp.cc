@@ -65,6 +65,8 @@ void vinacomp::setup_ui()
 
     main_menu();
 	tool_bar();
+
+	_renderer = new renderer(project);
 }
 
 panels_layout *vinacomp::get_panels_layout() const
@@ -80,6 +82,17 @@ QList <viewer*> *vinacomp::get_viewers() const
 project_struct *vinacomp::get_project() const
 {
 	return project;
+}
+
+renderer *vinacomp::get_renderer() const
+{
+	return _renderer;
+}
+
+void vinacomp::update_render_all_viewer() const
+{
+	for (viewer *_viewer : *viewers)
+		_viewer->update_render();
 }
 
 void vinacomp::setup_style()

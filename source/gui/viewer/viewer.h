@@ -96,11 +96,12 @@ private:
 	pair<int, int> get_current_range() const;
 	//
 public:
-	viewer(QString _name, project_struct *_project);
+	viewer(QString _name, project_struct *_project, renderer *_renderer);
     ~viewer();
 
 	void set_frame_range(int _first_frame, int _last_frame);
 	QString get_name() const;
+	void update_render();
 };
 
 #endif // VIEWER_H

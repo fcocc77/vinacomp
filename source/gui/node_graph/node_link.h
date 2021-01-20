@@ -26,6 +26,8 @@ private:
     QGraphicsItem *connected_node;
     QJsonObject *link_connecting;
 	project_struct *project;
+	QWidget *_vinacomp;
+
     int link_size;
     int index;
     bool dragging = false;
@@ -54,7 +56,8 @@ public:
 		  QGraphicsScene *_scene,
 		  QGraphicsItem *_node,
 		  QJsonObject *_link_connecting,
-		  project_struct *_project
+		  project_struct *_project,
+		  QWidget *_vinacomp
 	);
     ~node_link();
 

@@ -44,6 +44,7 @@ private:
 	QWidget *knob_editor_container;
 	bool knob_editor_visible;
 	QPushButton *knob_editor_button;
+	QWidget *_vinacomp;
 
     tab_widget *tabs;
     bool is_maximize = true;
@@ -64,6 +65,7 @@ private:
     QWidget *top_buttons_setup_ui();
     tab_widget *tabs_ui();
     void setup_knobs();
+	void update_render();
 
 public:
     trim_panel(
@@ -72,7 +74,8 @@ public:
 		QString _type,
         QString _icon_name,
 		nodes_load *nodes_loaded,
-		project_struct *project
+		project_struct *project,
+		QWidget *_vinacomp
 	);
     ~trim_panel();
 
