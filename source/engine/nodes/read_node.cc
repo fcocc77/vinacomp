@@ -10,6 +10,14 @@ read_node::~read_node()
 
 }
 
+pair <int, int> read_node::get_frame_range(QJsonObject *params) const
+{
+	int first = get("first", params).toArray()[0].toInt();
+	int last = get("last", params).toArray()[0].toInt();
+
+	return {first, last};
+}
+
 void read_node::render(
 	QImage *image,
 	QJsonObject *params,
@@ -18,16 +26,13 @@ void read_node::render(
 	QRect &bbox)
 {
 	QString file_path = get("file", params).toString();
-	int first = get("first", params).toArray()[0].toInt();
-	int last = get("last", params).toArray()[0].toInt();
-
 	QString _frame = frame_to_string(frame, 3);
 
 	file_path.replace("###", _frame);
 
 	(*image) = QImage(file_path).mirrored();
 
-	frame_range = {first, last};
+	frame_range =  get_frame_range(params);
 }
 
 QString read_node::frame_to_string(int frame, int frame_digits)

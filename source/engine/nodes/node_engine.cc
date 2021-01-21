@@ -2,12 +2,10 @@
 
 node_engine::node_engine()
 {
-
 }
 
 node_engine::~node_engine()
 {
-
 }
 
 void node_engine::render(
@@ -21,7 +19,7 @@ void node_engine::render(
 
 void node_engine::load_default_params(QString node_json_name)
 {
-	// carga todos los valores por defecto de los parametros, 
+	// carga todos los valores por defecto de los parametros,
 	// para poder compararlos con los parametros de entrada en 'get()'
 	QString node_json = "source/engine/nodes/json/" + node_json_name + ".json";
 

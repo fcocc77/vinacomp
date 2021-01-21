@@ -15,6 +15,8 @@ public:
 		int frame,
 		pair <int, int> &frame_range,
 		QRect &bbox) override;
+
+	pair <int, int> get_frame_range(QJsonObject *params) const;
 };
 
 #endif // FRAME_RANGE_NODE_H

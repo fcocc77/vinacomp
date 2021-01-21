@@ -22,6 +22,8 @@ public:
 		pair <int, int> &frame_range,
 		QRect &bbox
 	) override;
+
+	pair <int, int> get_frame_range(QJsonObject *params) const;
 };
 
 #endif // READ_H

@@ -2,6 +2,7 @@
 #define RENDERER_H
 
 #include <QString>
+#include <QWidget>
 
 #include <util.h>
 #include <project_struct.h>
@@ -12,25 +13,29 @@
 #include <time_offset_node.h>
 #include <frame_range_node.h>
 
-class renderer
+class renderer : public QWidget
 {
 private:
 	project_struct *project;
 
 	QMap <QString, node_engine*> nodes;
 	time_offset_node *time_offset;
+	read_node *read;
+	frame_range_node *_frame_range;
 
 public:
 	renderer(project_struct *_project);
 	~renderer();
 
 	void render(
-		QImage *image, 
-		int frame, 
+		QImage *image,
+		int frame,
 		QString node_name, 
 		pair <int, int> &frame_range,
 		QRect &bbox
 	);
+
+	pair <int, int> get_frame_range(QString node_name) const;
 };
 
 #endif // RENDERER_H
