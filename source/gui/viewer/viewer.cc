@@ -1,9 +1,12 @@
 #include <viewer.h>
+#include <vinacomp.h>
+#include <project_settings.h>
 
-viewer::viewer(QString _name, project_struct *_project, renderer *__renderer)
+viewer::viewer(QString _name, project_struct *_project, renderer *__renderer, QWidget *__vinacomp)
 	: name(_name)
 	, project(_project)
 	, _renderer(__renderer)
+	, _vinacomp(__vinacomp)
 
 	, current_frame(0)
 	, frame_rate(24)
@@ -12,6 +15,7 @@ viewer::viewer(QString _name, project_struct *_project, renderer *__renderer)
 	, in_out(false)
 	, input(0)
 	, output(100)
+	, global_range(true)
 {
     _viewer_gl = new viewer_gl();
     _viewer_gl->setObjectName("viewer_graphics");
@@ -41,6 +45,13 @@ viewer::viewer(QString _name, project_struct *_project, renderer *__renderer)
 	connect(_time_line, &time_line::in_out_changed, this, [=](int _input, int _output){
 		set_in_out(_input, _output);
 	});
+
+	connect(_time_line, &time_line::panning, this, [=](){
+		if (global_range)
+			range_way_menu->set_index(0, false);
+		else
+			range_way_menu->set_index(1, false);
+	});
 }
 
 viewer::~viewer()
@@ -66,8 +77,33 @@ void viewer::update_render()
 	QRect bbox;
 	_renderer->render(image, current_frame, name, frame_range, bbox);
 
-	set_frame_range(frame_range.first, frame_range.second);
 	_viewer_gl->set_image(image);
+	if (input_range_way == "Input")
+		set_frame_range(frame_range.first, frame_range.second);
+}
+
+void viewer::update_input_range()
+{
+	if (input_range_way == "Global")
+	{
+		auto frame_range = dynamic_cast<vinacomp*>(_vinacomp)->get_project_settings()->get_frame_range();
+		set_frame_range(frame_range.first, frame_range.second);
+		global_range = true;
+	}
+	else if (input_range_way == "Input")
+	{
+		update_render();
+		global_range = false;
+	}
+	else if (input_range_way == "In/Out")
+	{
+		if (in_out)
+			_time_line->fit_to_range(input, output);
+
+		return;
+	}
+
+	_time_line->fit_to_range(first_frame, last_frame);
 }
 
 void viewer::set_frame_range(int _first_frame, int _last_frame)

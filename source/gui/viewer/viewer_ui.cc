@@ -276,7 +276,11 @@ QWidget *viewer::player_setup_ui()
 
 	//
 	//
-	visible_range = new combo_box({"Global", "Input", "In/Out", "Visible"});
+	range_way_menu = new combo_box({"Global", "Input", "In/Out"});
+	connect(range_way_menu, &combo_box::changed, this, [=](QString name){
+		input_range_way = name;
+		update_input_range();
+	});
 	//
 	//
 
@@ -284,7 +288,7 @@ QWidget *viewer::player_setup_ui()
     player_tools->add_widget(input_frame_edit);
 	player_tools->add_separator();
     player_tools->add_widget(frame_rate_menu);
-    player_tools->add_widget(visible_range);
+    player_tools->add_widget(range_way_menu);
     player_tools->add_stretch();
 
     player_tools->add_widget(play_back_options);

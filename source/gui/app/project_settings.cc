@@ -5,7 +5,7 @@ project_settings::project_settings(
 		QWidget *__vinacomp
 	)
 	: _vinacomp(__vinacomp)
-	, first_frame(0)
+	, first_frame(1)
 	, last_frame(100)
 	, proxy_scale(1)
 {
@@ -20,12 +20,16 @@ project_settings::project_settings(
 	int init_space = 140;
 
 	// Frame Range
-	QList <int> default_value = {1, 100};
+	QList <int> default_value = {first_frame, last_frame};
 	knob_dimensions *frame_range_knob = new knob_dimensions(default_value);
+
 	connect(frame_range_knob, &knob_dimensions::changed_int, this, [=](QList <int> values){
+		first_frame = values[0];
+		last_frame = values[1];
+
 		auto *viewers = dynamic_cast<vinacomp *>(_vinacomp)->get_viewers();
 		for ( viewer *_viewer : *viewers )
-			_viewer->set_frame_range(values[0], values[1]);
+			_viewer->update_input_range();
 	});
 	frame_range_knob->set_init_space(init_space, "Frame Range");
 	//
@@ -49,4 +53,9 @@ project_settings::project_settings(
 project_settings::~project_settings()
 {
 
+}
+
+pair <int, int> project_settings::get_frame_range() const
+{
+	return {first_frame, last_frame};
 }

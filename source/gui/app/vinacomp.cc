@@ -89,6 +89,11 @@ renderer *vinacomp::get_renderer() const
 	return _renderer;
 }
 
+project_settings *vinacomp::get_project_settings() const
+{
+	return _project_settings;
+}
+
 void vinacomp::update_render_all_viewer() const
 {
 	for (viewer *_viewer : *viewers)

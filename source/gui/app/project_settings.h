@@ -25,6 +25,8 @@ public:
 		QWidget *_vinacomp
 	);
 	~project_settings();
+
+	pair <int, int> get_frame_range() const;
 };
 
 #endif // PROJECT_SETTINGS_H

@@ -34,7 +34,6 @@ private:
 	QJsonObject palette;
 	QWidget *parent;
 
-    void fit_to_range();
 	void fit_switch();
 	void fit_to_selector();
     void set_in_out(int _input, int _output, bool emit_signal = true);
@@ -81,6 +80,7 @@ public:
 	void set_frame_range(int _first_frame, int _last_frame);
     void update_in_out(int _input, int _output);
 	void set_in_out_visible(bool visible);
+    void fit_to_range(int _first_frame, int _last_frame);
 
 protected:
     void initializeGL() override;
@@ -94,6 +94,7 @@ protected:
 signals:
 	void frame_changed(int frame);
 	void in_out_changed(int input, int output);
+	void panning();
 };
 
 #endif // TIME_LINE_HPP

@@ -1,6 +1,7 @@
 #include <combo_box.h>
 
 combo_box::combo_box(QStringList items, int default_index)
+	: current_index(0)
 {
 	this->setObjectName("combo_box");
 	this->setMinimumHeight(20);
@@ -49,6 +50,10 @@ void combo_box::set_index(int _index, bool emit_signal)
 	if (_index >= actions.count())
 		return;
 
+	// cambia el icono a la accion anterior
+	actions[current_index]->set_icon("radio_button_unchecked_a");
+	//
+
     current_index = _index;
 
     action *_action = actions.value(_index);
@@ -64,11 +69,11 @@ void combo_box::set_value(QString name)
 {
     for (int i = 0; i < actions.count(); i++)
     {
-        action *_action = actions[i];
-		_action->set_icon("radio_button_unchecked_a");
-
-		if (_action->get_label() == name)
+		if (actions[i]->get_label() == name)
+		{
 			set_index(i);
+			return;
+		}
     }
 }
 

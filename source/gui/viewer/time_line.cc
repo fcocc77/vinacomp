@@ -19,8 +19,8 @@ time_line::time_line(
 		dragging(false),
 		first_frame(1),
 		last_frame(100),
-		input(3),
-		output(40),
+		input(1),
+		output(100),
 		click_input(0),
 		click_output(0),
 		dragging_input(false),
@@ -38,11 +38,11 @@ time_line::time_line(
 
 	palette = jread("stylesheet/palette.json");
 
-    fit_to_range();
+    fit_to_range(first_frame, last_frame);
 
     action *fit_to_range_action = new action("Fit to Range", "F");
     fit_to_range_action->connect_to(this, [this]() {
-        fit_to_range();
+        fit_to_range(first_frame, last_frame);
     });
 
     action *next_frame_action = new action("Next Frame", "right");
@@ -142,16 +142,23 @@ void time_line::fit_switch()
 	// conmutador entre el la ultima seleccion que se hizo,
 	// y el ajuste al rango.
 	if (is_fit_to_selector)
-		fit_to_range();
+		fit_to_range(first_frame, last_frame);
 	else
 		fit_to_selector();
 }
 
-void time_line::fit_to_range()
+void time_line::fit_to_range(int _first_frame, int _last_frame)
 {
 	is_fit_to_selector = false;
     int padding = 5;
-    set_ortho(first_frame - padding, last_frame + padding, 0, 1);
+
+	// Equivalencia de padding tomando 100 frames de referencia
+	padding = (_last_frame - _first_frame) * padding / 100;
+	if (padding <= 1)
+		padding = 1;
+	//
+
+    set_ortho(_first_frame - padding, _last_frame + padding, 0, 1);
 }
 
 void time_line::fit_to_selector()
@@ -226,6 +233,8 @@ void time_line::mousePressEvent(QMouseEvent *event)
 			frame_changed(click_x_coords); // Signal
 		}
 	}
+	else
+		panning(); // Signal
 
     update();
 
