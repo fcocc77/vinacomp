@@ -15,8 +15,13 @@ public:
 	read_node();
 	~read_node();
 
-	// debe retornar un imagen en bits
-	void render(QImage *image, QJsonObject *params, int frame) override;
+	void render(
+		QImage *image,
+		QJsonObject *params, 
+		int frame,
+		pair <int, int> &frame_range,
+		QRect &bbox
+	) override;
 };
 
 #endif // READ_H

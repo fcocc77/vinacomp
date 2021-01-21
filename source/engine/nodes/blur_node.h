@@ -12,7 +12,13 @@ public:
 	blur_node();
 	~blur_node();
 
-	void render(QImage *image, QJsonObject *params, int frame) override;
+	void render(
+		QImage *image, 
+		QJsonObject *params, 
+		int frame,
+		pair <int, int> &frame_range,
+		QRect &bbox
+	) override;
 };
 
 #endif // BLUR_NODE_H

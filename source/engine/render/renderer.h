@@ -10,6 +10,7 @@
 #include <blur_node.h>
 #include <viewer_node.h>
 #include <time_offset_node.h>
+#include <frame_range_node.h>
 
 class renderer
 {
@@ -23,7 +24,13 @@ public:
 	renderer(project_struct *_project);
 	~renderer();
 
-	void render(QImage *image, int frame, QString node_name);
+	void render(
+		QImage *image, 
+		int frame, 
+		QString node_name, 
+		pair <int, int> &frame_range,
+		QRect &bbox
+	);
 };
 
 #endif // RENDERER_H

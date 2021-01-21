@@ -277,7 +277,6 @@ QWidget *viewer::player_setup_ui()
 	//
 	//
 	visible_range = new combo_box({"Global", "Input", "In/Out", "Visible"});
-	visible_range->add_item("Global");
 	//
 	//
 

@@ -62,12 +62,19 @@ void viewer::set_frame(int frame)
 
 void viewer::update_render()
 {
-	_renderer->render(image, current_frame, name);
+	pair<int, int> frame_range;
+	QRect bbox;
+	_renderer->render(image, current_frame, name, frame_range, bbox);
+
+	set_frame_range(frame_range.first, frame_range.second);
 	_viewer_gl->set_image(image);
 }
 
 void viewer::set_frame_range(int _first_frame, int _last_frame)
 {
+	if (_first_frame == first_frame && _last_frame == last_frame)
+		return;
+
 	first_frame = _first_frame;
 	last_frame = _last_frame;
 	_time_line->set_frame_range(_first_frame, _last_frame);

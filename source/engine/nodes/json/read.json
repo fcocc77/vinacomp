@@ -17,6 +17,48 @@
             "label": "Proxy",
             "tooltip": "",
             "default": ""
-        }
+        },
+		{
+			"name": "first",
+			"type": "integer_dimensions",
+			"label": "Frame Range",
+			"tooltip": "first",
+			"default": [1],
+			"animatable": false
+		},
+		{
+			"name": "before",
+			"type": "choice",
+			"tooltip": "before",
+			"items": [
+				"hold",
+				"loop",
+				"bounce",
+				"black"
+			],
+			"default": 0,
+			"over_line": true
+		},
+		{
+			"name": "last",
+			"type": "integer_dimensions",
+			"tooltip": "first",
+			"default": [100],
+			"animatable": false,
+			"over_line": true
+		},
+		{
+			"name": "after",
+			"type": "choice",
+			"tooltip": "after",
+			"items": [
+				"hold",
+				"loop",
+				"bounce",
+				"black"
+			],
+			"default": 0,
+			"over_line": true
+		}
     ]
 }

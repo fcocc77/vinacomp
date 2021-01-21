@@ -12,6 +12,7 @@ renderer::renderer(project_struct *_project)
 	nodes.insert("viewer", new viewer_node());
 	nodes.insert("read", new read_node());
 	nodes.insert("blur", new blur_node());
+	nodes.insert("frame_range", new frame_range_node());
 }
 
 renderer::~renderer()
@@ -19,7 +20,13 @@ renderer::~renderer()
 
 }
 
-void renderer::render(QImage *image, int frame, QString node_name)
+void renderer::render(
+		QImage *image, 
+		int frame, 
+		QString node_name, 
+		pair<int, int> &frame_range,
+		QRect &bbox
+		)
 {
 	if (!project->nodes.contains(node_name))
 		return;
@@ -36,11 +43,11 @@ void renderer::render(QImage *image, int frame, QString node_name)
 	// renderiza las entradas del nodo antes que el nodo
 	QString input_node = node->inputs.value("in0").toString();
 	if (!input_node.isEmpty())
-		render(image, frame, input_node);
+		render(image, frame, input_node, frame_range, bbox);
 	//
 
 	// renderiza el nodo actual
 	if (_node_engine)
-		_node_engine->render(image, node->params, frame);
+		_node_engine->render(image, node->params, frame, frame_range, bbox);
 	//
 }

@@ -356,17 +356,19 @@ QSlider {
       height: 22px;
       border-radius: 2px;
       background: #3c4149; }
-    #trim_panel #controls #knob_button QPushButton {
-      height: 22px;
-      border-radius: 2px;
-      background: #40464f;
-      padding-right: 10px;
-      padding-left: 10px; }
-      #trim_panel #controls #knob_button QPushButton:hover {
-        color: #ffcc00; }
-      #trim_panel #controls #knob_button QPushButton:pressed {
-        background: #292d32;
-        color: #caced3; }
+    #trim_panel #controls #knob_button {
+      background: none; }
+      #trim_panel #controls #knob_button QPushButton {
+        height: 22px;
+        border-radius: 2px;
+        background: #40464f;
+        padding-right: 10px;
+        padding-left: 10px; }
+        #trim_panel #controls #knob_button QPushButton:hover {
+          color: #ffcc00; }
+        #trim_panel #controls #knob_button QPushButton:pressed {
+          background: #292d32;
+          color: #caced3; }
 
 #tools {
   background: #2c2f35; }
