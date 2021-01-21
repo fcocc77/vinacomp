@@ -7,6 +7,9 @@
 
 class node_engine
 {
+private:
+	QJsonObject default_params;
+
 public:
 	node_engine();
 	~node_engine();
@@ -18,6 +21,9 @@ public:
 		pair <int, int> &frame_range,
 		QRect &bbox
 	);
+protected:
+	QJsonValue get(QString key, QJsonObject *params) const;
+	void load_default_params(QString node_json_name);
 };
 
 #endif // NODE_ENGINE_H

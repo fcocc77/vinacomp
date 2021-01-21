@@ -17,7 +17,7 @@ public:
 
 	void render(
 		QImage *image,
-		QJsonObject *params, 
+		QJsonObject *params,
 		int frame,
 		pair <int, int> &frame_range,
 		QRect &bbox

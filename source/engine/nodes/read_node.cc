@@ -2,7 +2,7 @@
 
 read_node::read_node()
 {
-
+	load_default_params("read");
 }
 
 read_node::~read_node()
@@ -17,9 +17,9 @@ void read_node::render(
 	pair <int, int> &frame_range,
 	QRect &bbox)
 {
-	QString file_path = params->value("file").toString();
-	int first = params->value("first").toArray()[0].toInt();
-	int last = params->value("last").toArray()[0].toInt();
+	QString file_path = get("file", params).toString();
+	int first = get("first", params).toArray()[0].toInt();
+	int last = get("last", params).toArray()[0].toInt();
 
 	QString _frame = frame_to_string(frame, 3);
 
