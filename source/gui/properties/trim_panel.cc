@@ -356,24 +356,39 @@ void trim_panel::setup_knobs()
 
             if (over_line)
             {
-                // si el parametro tiene 'over_line', crea un widget de linea
+                // si el parametro tiene 'over_line', crea un widget de linea si no esta creado
                 // e inserta todos los knob anteriores que tengan 'over_line'
-                QWidget *line_widget = new QWidget(controls_tab);
-                QHBoxLayout *line_layout = new QHBoxLayout(line_widget);
+				QObject *parent = over_line_knobs.value(0)->parent();
+				QWidget *line_widget;
+				QHBoxLayout *line_layout;
 
-                line_layout->setMargin(0);
+				if (parent->objectName() == "line_widget")
+				{
+					line_widget = dynamic_cast<QWidget*>(parent);
+					line_layout = dynamic_cast<QHBoxLayout*>(line_widget->layout());
+				}
+				else
+				{
+					line_widget = new QWidget(controls_tab);
+					line_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+					line_widget->setObjectName("line_widget");
 
-                for (knob *last_knob : over_line_knobs)
-                {
-                    line_layout->addWidget(last_knob);
+					line_layout = new QHBoxLayout(line_widget);
+					line_layout->setMargin(0);
+				}
+				//
+				//
+
+				for (knob *last_knob : over_line_knobs)
+				{
+					line_layout->addWidget(last_knob);
 					last_knob->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-                }
+				}
 
-                line_layout->addWidget(_knob);
-                line_layout->addStretch();
+				line_layout->addWidget(_knob);
 
-                _knob->set_init_space(0);
-                controls_layout->addWidget(line_widget);
+				_knob->set_init_space(0);
+				controls_layout->addWidget(line_widget);
             }
             else
             {
