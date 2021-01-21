@@ -4,6 +4,8 @@ viewer_gl::viewer_gl()
 	: gl_view(true)
 	, fitted(true)
 	, image(nullptr)
+	, image_width(1920)
+	, image_height(1080)
 {
     center_viewer = new action("Center Image", "F", "center");
 	center_viewer->connect_to(this, [=]() { fit_to_viewport(); });
@@ -28,19 +30,25 @@ void viewer_gl::resizeGL(int w, int h)
 		fit_to_viewport();
 }
 
+void viewer_gl::paintGL()
+{
+    gl_view::paintGL();
+	draw_image();
+	draw_frame();
+}
+
 void viewer_gl::fit_to_viewport()
 {
 	fitted = true;
 	int margin = 30;
-	int _width = 1920;
-	int _height = 1080;
+	margin = ( image_height * margin ) / 1080; // Mantiene el margen equivalente al formato
 
 	float viewport_aspect = get_aspect();
-	float resolution_aspect = float(_height) / _width;
+	float resolution_aspect = float(image_height) / image_width;
 
 	// primero lo ajusta a los bordes con ortho, y luego deja la escala simetrica
 	// dejando la 2 escalas iguales x, y dependiendo si es ancho o alto
-	set_ortho(-margin, _width + margin, -margin, _height + margin);
+	set_ortho(-margin, image_width + margin, -margin, image_height + margin);
 
 	if (viewport_aspect > resolution_aspect)
 	{
@@ -75,12 +83,17 @@ void viewer_gl::set_image(QImage *_image, int _image_width, int _image_height)
 	update();
 }
 
-void viewer_gl::draw_frame(int width, int height, QColor color)
+void viewer_gl::draw_frame()
 {
-    draw_line({0, 0}, {0, height}, color);
-    draw_line({0, height}, {width, height}, color);
-    draw_line({width, height}, {width, 0}, color);
-    draw_line({width, 0}, {0, 0}, color);
+	QColor color = Qt::darkGray;
+
+    draw_line({0, 0}, {0, image_height}, color);
+    draw_line({0, image_height}, {image_width, image_height}, color);
+    draw_line({image_width, image_height}, {image_width, 0}, color);
+    draw_line({image_width, 0}, {0, 0}, color);
+
+	QString format_label = QString::number(image_width) + " x " + QString::number(image_height);
+	draw_text(format_label, color, {image_width, image_height}, {-1, -1}, 9, Qt::AlignRight, {5, -10});
 }
 
 void viewer_gl::draw_image()
@@ -89,8 +102,9 @@ void viewer_gl::draw_image()
 		return;
 
 	// genera la textura 2d a partir de los bits de la imagen
+	GLuint texture; 
+	glBindTexture(GL_TEXTURE_2D, texture);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, image_width, image_height, 0, GL_BGRA, GL_UNSIGNED_BYTE, image->bits());
-	glGenerateMipmap(GL_TEXTURE_2D);
 	//
 
 	// si el zoom es menor a 100, muestra los pixels en la imagen
@@ -117,13 +131,6 @@ void viewer_gl::draw_image()
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
 	//
-}
-
-void viewer_gl::paintGL()
-{
-    gl_view::paintGL();
-	draw_image();
-	draw_frame(1920, 1080, Qt::darkGray);
 }
 
 void viewer_gl::mousePressEvent(QMouseEvent *event)

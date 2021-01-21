@@ -8,7 +8,7 @@
 class viewer_gl : public gl_view
 {
 private:
-    void draw_frame(int width, int height, QColor color);
+    void draw_frame();
 	void draw_image();
 public:
     viewer_gl();

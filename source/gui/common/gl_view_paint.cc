@@ -143,6 +143,7 @@ void gl_view::draw_text(
     x += offset.x();
     y -= offset.y();
 
+	aa_enable(false);
     painter.drawText(x, y, size.width(), size.height(), Qt::AlignCenter, text);
 
     painter.end();
