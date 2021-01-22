@@ -6,8 +6,8 @@ combo_box::combo_box(QList <pair<QString, QVariant>> _items, int default_index)
 {
 	this->setObjectName("combo_box");
 	this->setMinimumHeight(20);
-    this->setMinimumWidth(70);
-    this->setMaximumWidth(100);
+	this->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+	this->setMinimumWidth(70);
     layout = new QHBoxLayout(this);
     layout->setContentsMargins(10, 0, 10, 0);
 
