@@ -18,6 +18,7 @@ renderer::renderer(project_struct *_project)
 	nodes.insert("blur", new blur_node());
 	nodes.insert("position", new position_node());
 	nodes.insert("invert", new invert_node());
+	nodes.insert("reformat", new reformat_node());
 }
 
 renderer::~renderer()

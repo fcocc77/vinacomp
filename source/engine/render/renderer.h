@@ -14,6 +14,7 @@
 #include <frame_range_node.h>
 #include <position_node.h>
 #include <invert_node.h>
+#include <reformat_node.h>
 
 class renderer : public QWidget
 {
