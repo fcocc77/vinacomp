@@ -57,3 +57,8 @@ void knob::set_animatable(bool _animatable)
 	qt::set_icon(animation_button, "key_a", icon_size);
 	knob_layout->addWidget(animation_button);
 }
+
+void knob::set_visible(bool visible)
+{
+	this->setVisible(visible);
+}

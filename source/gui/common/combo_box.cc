@@ -94,3 +94,13 @@ void combo_box::mousePressEvent(QMouseEvent *event)
     menu->popup(this->mapToGlobal({0, this->height()}));
     menu->show();
 }
+
+int combo_box::get_index() const
+{
+	return current_index;
+}
+
+QString combo_box::get_value() const
+{
+	return actions.value(current_index)->get_label();
+}

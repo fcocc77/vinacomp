@@ -5,13 +5,62 @@
     "icon": "reformat_a",
     "knobs": [
         {
-            "name": "mix",
-            "type": "floating",
-            "label": "Mix",
-            "tooltip": "",
-            "minimum": 0,
-            "maximum": 1,
-            "default": 0.5
+            "name": "type",
+            "type": "choice",
+            "label": "Type",
+            "tooltip": "type",
+			"items": [
+				"Format",
+				"Scale",
+				"Custom"
+			],
+            "default": 0
+        },
+        {
+            "name": "format",
+            "type": "choice",
+            "label": "Format",
+            "tooltip": "format",
+			"items": [
+				"1920x1080",
+				"1280x720"
+			],
+            "default": 0
+        },
+		{
+			"name": "scale",
+			"type": "floating",
+			"label": "Scale",
+			"tooltip": "scale",
+			"minimum": 0.1,
+			"maximum": 10,
+			"default": 1,
+			"visible": false,
+			"animatable": false
+		},
+		{
+			"name": "custom",
+			"type": "integer_dimensions",
+			"label": "Custom",
+			"tooltip": "custom",
+			"default": [100, 100],
+			"visible": false,
+			"animatable": false
+		},
+		{
+			"name": "separator1",
+			"type": "separator"
+		},
+        {
+            "name": "filter",
+            "type": "choice",
+            "label": "Filter",
+            "tooltip": "filter",
+			"items": [
+				"Fast",
+				"Smooth"
+			],
+            "default": 0
         }
     ]
 }

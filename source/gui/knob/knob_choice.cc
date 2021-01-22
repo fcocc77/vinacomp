@@ -18,3 +18,13 @@ knob_choice::knob_choice(QStringList items, int default_index)
 knob_choice::~knob_choice()
 {
 }
+
+int knob_choice::get_index() const
+{
+	return choice->get_index();
+}
+
+QString knob_choice::get_value() const
+{
+	return choice->get_value();
+}

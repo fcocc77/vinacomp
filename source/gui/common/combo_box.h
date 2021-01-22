@@ -34,6 +34,9 @@ public:
     void set_index(int _index, bool emit_signal = true);
     void set_value(QString name);
 
+	int get_index() const;
+	QString get_value() const;
+
 protected:
     void mousePressEvent(QMouseEvent *event) override;
 

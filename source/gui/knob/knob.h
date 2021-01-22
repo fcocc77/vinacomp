@@ -21,6 +21,7 @@ public:
     void set_init_space(int space, QString label = "");
 	void set_knob_layout(QHBoxLayout *layout);
 	void set_animatable(bool _animatable = true);
+	void set_visible(bool visible);
 
     QLabel *label_widget;
     QWidget *init_space;

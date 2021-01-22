@@ -60,6 +60,8 @@ void trim_panel::setup_gui_panels()
 	// por eso solo son algunos nodos y no todos
 	if (type == "frame_range")
 		_node_gui = new frame_range_gui();
+	else if (type == "reformat")
+		_node_gui = new reformat_gui();
 
 	if (_node_gui)
 		_node_gui->setup(this, _vinacomp, name);
@@ -106,6 +108,10 @@ void trim_panel::setup_knobs()
 		bool animatable = true;
 		if (knob_object.contains("animatable"))
 			animatable = knob_object.value("animatable").toBool();
+
+		bool visible = true;
+		if (knob_object.contains("visible"))
+			visible = knob_object.value("visible").toBool();
 
         knob *_knob;
         if (type == "color")
@@ -221,6 +227,8 @@ void trim_panel::setup_knobs()
 					data->insert(name, _index);
 				else
 					data->remove(name);
+
+			   _node_gui->changed(name);
 				update_render();
 			});
 
@@ -373,8 +381,6 @@ void trim_panel::setup_knobs()
 
         if (_knob)
         {
-			_knob->set_animatable(animatable);
-
             if (over_line)
             {
                 // si el parametro tiene 'over_line', crea un widget de linea si no esta creado
@@ -422,7 +428,11 @@ void trim_panel::setup_knobs()
                 controls_layout->addWidget(_knob);
             }
 			_knob->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
+			_knob->set_animatable(animatable);
+			_knob->set_visible(visible);
         }
+
 		knobs->insert(name, _knob);
         over_line_knobs.push_back(_knob);
     }

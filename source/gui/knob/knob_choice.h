@@ -18,6 +18,9 @@ public:
     knob_choice(QStringList items, int default_index);
     ~knob_choice();
 
+	int get_index() const;
+	QString get_value() const;
+
 signals:
 	void changed(QString name, int index);
 };
