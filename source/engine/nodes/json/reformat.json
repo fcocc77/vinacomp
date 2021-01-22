@@ -14,7 +14,7 @@
 				["Scale", "scale"],
 				["Custom", "custom"]
 			],
-            "default": 0
+            "default": [0, "format"]
         },
         {
             "name": "format",
@@ -22,10 +22,10 @@
             "label": "Format",
             "tooltip": "format",
 			"items": [
-				["1920x1080", [1920, 1080]],
-				["1280x720", [1280, 720]]
+				["FULL HD    1920x1080", [1920, 1080]],
+				["HD-720     1280x720", [1280, 720]]
 			],
-            "default": 0
+            "default": [0, [1920, 1080]]
         },
 		{
 			"name": "scale",
@@ -60,7 +60,7 @@
 				["Fast", "fast"],
 				["Smooth", "smooth"]
 			],
-            "default": 0
+            "default": [0, "fast"]
         }
     ]
 }

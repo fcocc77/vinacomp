@@ -212,7 +212,8 @@ void trim_panel::setup_knobs()
         else if (type == "choice")
         {
             QJsonArray items = knob_object.value("items").toArray();
-			int default_index = knob_object.value("default").toInt();
+			QJsonArray default_value = knob_object.value("default").toArray();
+			int default_index = default_value[0].toInt();
 			int index;
 
 			if (data->contains(name))
@@ -235,7 +236,7 @@ void trim_panel::setup_knobs()
 
 			connect(_knob_choice, &knob_choice::changed, this, [=](QVariant value, int _index){
 				if (default_index != _index)
-					data->insert(name, _index);
+					data->insert(name, QJsonArray{_index, value.toJsonValue()});
 				else
 					data->remove(name);
 

@@ -14,8 +14,8 @@ void reformat_node::render(
 	pair <int, int> &frame_range,
 	QRect &bbox)
 {
-	int index = get("type", params).toInt();
-	int filter_index = get("filter", params).toInt();
+	int index = get("type", params).toArray()[0].toInt();
+	int filter_index = get("filter", params).toArray()[0].toInt();
 
 	// Filtro
 	Qt::TransformationMode filter;
@@ -25,24 +25,28 @@ void reformat_node::render(
 		filter = Qt::SmoothTransformation;
 	//
 
-	if (index == 1) // Scale
+	int width = image->width();
+	int height = image->height();
+	int x, y;
+
+	if (index == 0) // Format
+	{
+		x = get("format", params).toArray()[1].toArray()[0].toInt();
+		y = get("format", params).toArray()[1].toArray()[1].toInt();
+	}
+	else if (index == 1) // Scale
 	{
 		float scale = get("scale", params).toDouble();
 
-		int width = image->width();
-		int height = image->height();
-
-		int x = width * scale;
-		int y = height * scale;
-
-		if (x != width || y != height)
-			(*image) = image->scaled(x, y, Qt::IgnoreAspectRatio, filter);
+		x = width * scale;
+		y = height * scale;
 	}
 	else if (index == 2) // Custom
 	{
-		int x = get("custom", params).toArray()[0].toInt();
-		int y = get("custom", params).toArray()[1].toInt();
-
-		(*image) = image->scaled(x, y, Qt::IgnoreAspectRatio, filter);
+		x = get("custom", params).toArray()[0].toInt();
+		y = get("custom", params).toArray()[1].toInt();
 	}
+
+	if (x != width || y != height)
+		(*image) = image->scaled(x, y, Qt::IgnoreAspectRatio, filter);
 }
