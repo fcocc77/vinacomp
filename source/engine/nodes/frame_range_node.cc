@@ -8,8 +8,8 @@ frame_range_node::~frame_range_node(){}
 
 pair <int, int> frame_range_node::get_frame_range(QJsonObject *params) const
 {
-	int first_frame = get("first_frame", params).toArray()[0].toInt();
-	int last_frame = get("last_frame", params).toArray()[0].toInt();
+	int first_frame = get("frame_range", params).toArray()[0].toInt();
+	int last_frame = get("frame_range", params).toArray()[1].toInt();
 
 	return {first_frame, last_frame};
 }
