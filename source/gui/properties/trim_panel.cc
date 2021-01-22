@@ -20,13 +20,16 @@ trim_panel::trim_panel(properties *__properties,
 
 	, knob_editor_visible(false)
 	, _knob_editor(nullptr)
+	, _node_gui(nullptr)
 {
+	knobs = new QMap<QString, knob*>;
 
 	this->setObjectName("trim_panel");
 	this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
 	setup_ui();
 	setup_knobs();
+	setup_gui_panels();
 }
 
 trim_panel::~trim_panel()
@@ -50,16 +53,28 @@ void trim_panel::setup_ui()
     layout->addWidget(tabs);
 }
 
+void trim_panel::setup_gui_panels()
+{
+	// todos estos nodo gui son solo si el nodo efecto tiene algun boton
+	// u otra interface adicional a las que se generan en 'setup_knobs'
+	// por eso solo son algunos nodos y no todos
+	if (type == "frame_range")
+		_node_gui = new frame_range_gui();
+
+	if (_node_gui)
+		_node_gui->setup(this, _vinacomp);
+}
+
 void trim_panel::setup_knobs()
 {
-	QJsonArray knobs = nodes_loaded->get_effect(type).value("knobs").toArray();
+	QJsonArray _knobs = nodes_loaded->get_effect(type).value("knobs").toArray();
 
     // Obtiene el ancho maximo a partir de las 'label'
     // para usarlo en el espacio inicial de cada parametro.
     int init_space_width = 0;
-    for (int i = 0; i < knobs.count(); i++)
+    for (int i = 0; i < _knobs.count(); i++)
     {
-        QJsonObject knob_object = knobs.at(i).toObject();
+        QJsonObject knob_object = _knobs.at(i).toObject();
         QString type = knob_object.value("type").toString();
         QString label = knob_object.value("label").toString();
         bool over_line = knob_object.value("over_line").toBool();
@@ -80,9 +95,9 @@ void trim_panel::setup_knobs()
     //
 
     QList<knob *> over_line_knobs;
-    for (int i = 0; i < knobs.count(); i++)
+    for (int i = 0; i < _knobs.count(); i++)
     {
-        QJsonObject knob_object = knobs.at(i).toObject();
+        QJsonObject knob_object = _knobs.at(i).toObject();
         QString type = knob_object.value("type").toString();
         QString name = knob_object.value("name").toString();
         QString label = knob_object.value("label").toString();
@@ -242,8 +257,14 @@ void trim_panel::setup_knobs()
 
         else if (type == "button")
         {
-            _knob = new knob_button(label);
+            knob_button *_knob_button = new knob_button(label);
 			label = "";
+
+			connect(_knob_button, &knob_button::clicked, this, [=](){
+			   _node_gui->clicked();
+			});
+
+			_knob = _knob_button;
         }
 
         else if (type == "group")
@@ -402,15 +423,16 @@ void trim_panel::setup_knobs()
             }
 			_knob->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
         }
-        knob_list.push_back(_knob);
+		knobs->insert(name, _knob);
         over_line_knobs.push_back(_knob);
     }
 
 	// itera todos lo 'knobs' y si el 'knob' es un grupo lo actualiza, para que oculte o muestre
 	// los knob incluidos, si el grupo esta abierto o cerrado, no se puede hacer antes ya
 	// que tienen que estar todos los 'knobs' creados.
-	for (knob *_knob : knob_list)
+	for (QString key : knobs->keys())
 	{
+		knob *_knob = knobs->value(key);
 		knob_group *group = dynamic_cast<knob_group *>(_knob);
 		if (group)
 			group->update();
@@ -520,7 +542,12 @@ void trim_panel::knob_editor_toggle()
 		qt::set_icon(knob_editor_button, "edit_a", 20);
 }
 
-QString trim_panel::get_name()
+knob *trim_panel::get_knob(QString name) const
+{
+	return knobs->value(name);
+}
+
+QString trim_panel::get_name() const
 {
     return name;
 }

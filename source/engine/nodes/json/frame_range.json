@@ -5,20 +5,12 @@
     "icon": "frame_range_a",
     "knobs": [
         {
-            "name": "first_frame",
+            "name": "frame_range",
             "type": "integer_dimensions",
             "label": "Frame Range",
-            "tooltip": "first_frame",
-            "default": [0],
+            "tooltip": "frame_range",
+            "default": [0, 100],
 			"animatable": false
-		},
-        {
-            "name": "last_frame",
-            "type": "integer_dimensions",
-            "tooltip": "last_frame",
-            "default": [0],
-			"animatable": false,
-			"over_line": true
 		},
 		{
 			"name": "reset",

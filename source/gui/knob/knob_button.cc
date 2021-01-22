@@ -10,6 +10,9 @@ knob_button::knob_button(QString label)
 	layout->addWidget(init_space);
 
     QPushButton *button = new QPushButton(label);
+	connect(button, &QPushButton::clicked, this, [=](){
+		clicked();
+	});
     layout->addWidget(button);
 }
 

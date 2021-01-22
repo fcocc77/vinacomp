@@ -30,6 +30,9 @@
 #include <knob_separator.h>
 #include <knob_dimensions.h>
 
+#include <node_gui.h>
+#include <frame_range_gui.h>
+
 // Engine
 #include <project_struct.h>
 
@@ -37,7 +40,9 @@ class trim_panel : public QWidget
 {
 private:
 	QVBoxLayout *layout;
-    QList<knob *> knob_list;
+    QMap<QString, knob*> *knobs;
+
+    QMap<QString, knob_button*> connected_buttons;
 
 	knob_editor *_knob_editor;
 	nodes_load *nodes_loaded;
@@ -53,6 +58,7 @@ private:
 	QWidget *controls_tab;
     QVBoxLayout *controls_layout;
     QLineEdit *name_edit;
+	node_gui *_node_gui;
 
     QString name;
 	QString type;
@@ -62,6 +68,7 @@ private:
 
 	void knob_editor_toggle();
     void setup_ui();
+    void setup_gui_panels();
     QWidget *top_buttons_setup_ui();
     tab_widget *tabs_ui();
     void setup_knobs();
@@ -79,9 +86,10 @@ public:
 	);
     ~trim_panel();
 
-    QString get_name();
+    QString get_name() const;
     void maximize(bool _maximize);
     void set_name(QString _name);
+	knob *get_knob(QString name) const;
 };
 
 #endif //TRIM_PANEL_HPP

@@ -9,11 +9,14 @@
 
 class knob_button : public knob
 {
+	Q_OBJECT
 private:
     /* data */
 public:
     knob_button(QString label);
     ~knob_button();
+signals:
+	void clicked();
 };
 
 #endif //KNOB_BUTTON_HPP
