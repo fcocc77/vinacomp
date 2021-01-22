@@ -10,7 +10,7 @@ public:
 	frame_range_gui();
 	~frame_range_gui();
 
-	void clicked() override;
+	void changed(QString param_name) override;
 };
 
 #endif // FRAME_RANGE_GUI_H

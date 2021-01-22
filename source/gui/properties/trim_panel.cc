@@ -62,7 +62,7 @@ void trim_panel::setup_gui_panels()
 		_node_gui = new frame_range_gui();
 
 	if (_node_gui)
-		_node_gui->setup(this, _vinacomp);
+		_node_gui->setup(this, _vinacomp, name);
 }
 
 void trim_panel::setup_knobs()
@@ -261,7 +261,7 @@ void trim_panel::setup_knobs()
 			label = "";
 
 			connect(_knob_button, &knob_button::clicked, this, [=](){
-			   _node_gui->clicked();
+			   _node_gui->changed(name);
 			});
 
 			_knob = _knob_button;
@@ -344,7 +344,7 @@ void trim_panel::setup_knobs()
 
         else if (type == "integer_dimensions")
         {
-			QList <int> default_dimensions, dimensions;
+			QList <float> default_dimensions, dimensions;
 			for (QJsonValue value : knob_object.value("default").toArray())
 				default_dimensions.push_back(value.toInt());
 
@@ -356,7 +356,7 @@ void trim_panel::setup_knobs()
 
 			knob_dimensions *knob_integer_dimensions = new knob_dimensions(dimensions);
 
-			connect(knob_integer_dimensions, &knob_dimensions::changed_int, this, [=](QList <int> _dimensions){
+			connect(knob_integer_dimensions, &knob_dimensions::changed, this, [=](QList <float> _dimensions){
 				QJsonArray __dimensions;
 				for (float value : _dimensions)
 					__dimensions.push_back(value);

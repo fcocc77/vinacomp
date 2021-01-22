@@ -23,6 +23,14 @@ renderer::~renderer()
 
 }
 
+QString renderer::get_input_node(QString node_name, int input) const
+{
+	node_struct *node = &project->nodes[node_name];
+	QString input_node = node->inputs.value("in0").toString();
+
+	return input_node;
+}
+
 pair <int, int> renderer::get_frame_range(QString node_name) const
 {
 	// calcula el 'frame range' de un nodo, sin renderizar el nodo,

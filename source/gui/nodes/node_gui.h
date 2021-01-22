@@ -4,21 +4,28 @@
 #include <QWidget>
 
 #include <knob.h>
+#include <renderer.h>
+#include <project_struct.h>
+
 #include <util.h>
 
 class node_gui
 {
 private:
-	QWidget *_vinacomp;
 	QWidget *_trim_panel;
+
 public:
 	node_gui();
 	~node_gui();
 
-	void setup(QWidget *_trim_panel, QWidget *_vinacomp);
-	virtual void clicked();
+	void setup(QWidget *_trim_panel, QWidget *_vinacomp, QString name);
+	virtual void changed(QString param_name);
 
 protected:
+	renderer *_renderer;
+	project_struct *project;
+	QString name;
+
 	knob *get_knob(QString name) const;
 };
 

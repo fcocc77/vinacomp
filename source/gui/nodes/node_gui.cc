@@ -1,21 +1,27 @@
 #include <node_gui.h>
+#include <vinacomp.h>
 #include <trim_panel.h>
 
 node_gui::node_gui()
-	: _vinacomp(nullptr)
-	, _trim_panel(nullptr)
+	: _trim_panel(nullptr)
+	, _renderer(nullptr)
+	, project(nullptr)
 {
 }
 
 node_gui::~node_gui(){}
 
-void node_gui::setup(QWidget *__trim_panel, QWidget *__vinacomp)
+void node_gui::setup(QWidget *__trim_panel, QWidget *_vinacomp, QString _name)
 {
-	_vinacomp = __vinacomp;
 	_trim_panel = __trim_panel;
+	name = _name;
+	vinacomp *__vinacomp = dynamic_cast<vinacomp*>(_vinacomp);
+
+	_renderer = __vinacomp->get_renderer();
+	project = __vinacomp->get_project();
 }
 
-void node_gui::clicked()
+void node_gui::changed(QString param_name)
 {
 }
 
