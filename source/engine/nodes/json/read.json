@@ -31,10 +31,10 @@
 			"type": "choice",
 			"tooltip": "before",
 			"items": [
-				"hold",
-				"loop",
-				"bounce",
-				"black"
+				["Hold", "hold"],
+				["Loop", "loop"],
+				["Bounce", "bounce"],
+				["Black", "black"]
 			],
 			"default": 0,
 			"over_line": true
@@ -52,10 +52,10 @@
 			"type": "choice",
 			"tooltip": "after",
 			"items": [
-				"hold",
-				"loop",
-				"bounce",
-				"black"
+				["Hold", "hold"],
+				["Loop", "loop"],
+				["Bounce", "bounce"],
+				["Black", "black"]
 			],
 			"default": 0,
 			"over_line": true

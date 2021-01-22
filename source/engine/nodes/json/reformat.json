@@ -10,9 +10,9 @@
             "label": "Type",
             "tooltip": "type",
 			"items": [
-				"Format",
-				"Scale",
-				"Custom"
+				["Format", "format"],
+				["Scale", "scale"],
+				["Custom", "custom"]
 			],
             "default": 0
         },
@@ -22,8 +22,8 @@
             "label": "Format",
             "tooltip": "format",
 			"items": [
-				"1920x1080",
-				"1280x720"
+				["1920x1080", [1920, 1080]],
+				["1280x720", [1280, 720]]
 			],
             "default": 0
         },
@@ -57,8 +57,8 @@
             "label": "Filter",
             "tooltip": "filter",
 			"items": [
-				"Fast",
-				"Smooth"
+				["Fast", "fast"],
+				["Smooth", "smooth"]
 			],
             "default": 0
         }

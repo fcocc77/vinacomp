@@ -9,7 +9,7 @@ void viewer::player_init()
 	qtime_line->setEasingCurve(QEasingCurve::Linear);
 
 	frame_rate_menu->set_value(QString::number(frame_rate));
-	play_back_options->set_value("Repeat");
+	play_back_options->set_value("repeat");
 }
 
 void viewer::set_playing_option(QString option)
@@ -19,14 +19,14 @@ void viewer::set_playing_option(QString option)
 
 void viewer::play_finished()
 {
-	if (playing_option == "Bounce")
+	if (playing_option == "bounce")
 	{
 		if (qtime_line->direction() == QTimeLine::Forward)
 			play(QTimeLine::Backward);
 		else
 			play(QTimeLine::Forward);
 	}
-	else if (playing_option == "Repeat")
+	else if (playing_option == "repeat")
 	{
 		if (qtime_line->direction() == QTimeLine::Forward)
 		{

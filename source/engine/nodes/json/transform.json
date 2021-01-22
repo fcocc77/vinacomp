@@ -66,13 +66,12 @@
             "label": "Filter",
             "tooltip": "Filter",
             "items": [
-                "Impulse",
-                "Cubic",
-                "Keys",
-                "Parzen",
-                "Simon",
-                "Notch"
-
+				["Impulse", "impulse"],
+				["Cubic", "cubic"],
+				["Keys", "keys"],
+				["Parzen", "parzen"],
+				["Simon", "simon"],
+				["Notch", "notch"]
             ],
             "default": 1
         },

@@ -220,15 +220,27 @@ void trim_panel::setup_knobs()
 			else
 				index = default_index;
 
-            knob_choice *_knob_choice = new knob_choice(qt::array_to_list(items), index);
+			// convierte la lista de items
+			QList <pair<QString, QVariant>> _items;
+			for (QJsonValue item : items)
+			{
+				QJsonArray _item = item.toArray();
+				QString label = _item[0].toString();
+				QJsonValue value = _item[1];
+				_items.push_back({label, value});
+			}
+			//
 
-			connect(_knob_choice, &knob_choice::changed, this, [=](QString item_name, int _index){
+            knob_choice *_knob_choice = new knob_choice(_items, index);
+
+			connect(_knob_choice, &knob_choice::changed, this, [=](QVariant value, int _index){
 				if (default_index != _index)
 					data->insert(name, _index);
 				else
 					data->remove(name);
 
-			   _node_gui->changed(name);
+				if (_node_gui)
+				   _node_gui->changed(name);
 				update_render();
 			});
 
@@ -269,7 +281,8 @@ void trim_panel::setup_knobs()
 			label = "";
 
 			connect(_knob_button, &knob_button::clicked, this, [=](){
-			   _node_gui->changed(name);
+				if (_node_gui)
+				   _node_gui->changed(name);
 			});
 
 			_knob = _knob_button;

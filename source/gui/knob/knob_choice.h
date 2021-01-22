@@ -15,14 +15,14 @@ private:
     combo_box *choice;
 
 public:
-    knob_choice(QStringList items, int default_index);
+    knob_choice(QList <pair<QString, QVariant>> items = {}, int default_index = 0);
     ~knob_choice();
 
 	int get_index() const;
-	QString get_value() const;
+	QVariant get_value() const;
 
 signals:
-	void changed(QString name, int index);
+	void changed(QVariant value, int index);
 };
 
 #endif //KNOB_CHOICE_HPP

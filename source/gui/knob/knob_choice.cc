@@ -1,6 +1,6 @@
 #include <knob_choice.h>
 
-knob_choice::knob_choice(QStringList items, int default_index)
+knob_choice::knob_choice(QList <pair<QString, QVariant>> items, int default_index)
 {
 	this->setObjectName("knob_choice");
     QHBoxLayout *layout = new QHBoxLayout(this);
@@ -24,7 +24,7 @@ int knob_choice::get_index() const
 	return choice->get_index();
 }
 
-QString knob_choice::get_value() const
+QVariant knob_choice::get_value() const
 {
 	return choice->get_value();
 }

@@ -17,8 +17,7 @@ void viewer::setup_ui()
     layout->addWidget(player);
 }
 
-QWidget *viewer::control_setup_ui()
-{
+QWidget *viewer::control_setup_ui() {
     QWidget *widget = new QWidget();
     widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     widget->setObjectName("controls");
@@ -33,7 +32,13 @@ QWidget *viewer::control_setup_ui()
     combo_box *layers = new combo_box();
     layout->addWidget(layers);
 
-	combo_box *display_channel = new combo_box({"RGB", "Red", "Green", "Blue", "Alpha"});
+	combo_box *display_channel = new combo_box({
+		{"RGB", "rgb"},
+		{"Red", "red"},
+		{"Green", "green"},
+		{"Blue", "blue"},
+		{"Alpha", "alpha"}
+	});
     layout->addWidget(display_channel);
 
     layout->addStretch();
@@ -258,27 +263,42 @@ QWidget *viewer::player_setup_ui()
 
 	//
 	//
-	frame_rate_menu = new combo_box({"12", "24", "30", "48", "50", "60"});
-	connect(frame_rate_menu, &combo_box::changed, this, [=](QString name){
-		set_frame_rate(name.toInt());
+	frame_rate_menu = new combo_box({
+		{"12 fps", 12},
+		{"24 fps", 24},
+		{"30 fps", 30},
+		{"48 fps", 48},
+		{"50 fps", 50},
+		{"60 fps", 60}
+	});
+	connect(frame_rate_menu, &combo_box::changed, this, [=](QVariant value){
+		set_frame_rate(value.toInt());
 	});
 	//
 	//
 
 	//
 	// Play Back Option
-	play_back_options = new combo_box({"Repeat", "Bounce", "Stop"});
-	connect(play_back_options, &combo_box::changed, this, [=](QString name){
-		set_playing_option(name);
+	play_back_options = new combo_box({
+			{"Repeat", "repeat"},
+			{"Bounce", "bounce"},
+			{"Stop", "stop"}
+	});
+	connect(play_back_options, &combo_box::changed, this, [=](QVariant value){
+		set_playing_option(value.toString());
 	});
 	//
 	//
 
 	//
 	//
-	range_way_menu = new combo_box({"Global", "Input", "In/Out"});
-	connect(range_way_menu, &combo_box::changed, this, [=](QString name){
-		input_range_way = name;
+	range_way_menu = new combo_box({
+			{"Global", "global"},
+			{"Input", "input"},
+			{"In/Out", "inout"}
+	});
+	connect(range_way_menu, &combo_box::changed, this, [=](QVariant value){
+		input_range_way = value.toString();
 		update_input_range();
 	});
 	//

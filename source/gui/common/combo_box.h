@@ -22,26 +22,27 @@ private:
     QHBoxLayout *layout;
     QLabel *arrow;
 
-    QList<action *> actions;
-
+    QList <action *> actions;
+	QList <pair<QString, QVariant>> items;
     int current_index;
 
+    void add_item(pair <QString, QVariant> item);
+
 public:
-    combo_box(QStringList items = {}, int default_index = 0);
+    combo_box(QList <pair<QString, QVariant>> items = {}, int default_index = 0);
    ~combo_box();
 
-    void add_item(QString name);
     void set_index(int _index, bool emit_signal = true);
-    void set_value(QString name);
+    void set_value(QVariant value);
 
 	int get_index() const;
-	QString get_value() const;
+	QVariant get_value() const;
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;
 
 signals:
-	void changed(QString name, int index);
+	void changed(QVariant value, int index);
 };
 
 #endif // COMBO_BOX_HPP

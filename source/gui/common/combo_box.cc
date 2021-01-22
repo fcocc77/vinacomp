@@ -1,7 +1,8 @@
 #include <combo_box.h>
 
-combo_box::combo_box(QStringList items, int default_index)
-	: current_index(0)
+combo_box::combo_box(QList <pair<QString, QVariant>> _items, int default_index)
+	: items(_items)
+	, current_index(0)
 {
 	this->setObjectName("combo_box");
 	this->setMinimumHeight(20);
@@ -28,7 +29,7 @@ combo_box::combo_box(QStringList items, int default_index)
 
     layout->addWidget(arrow);
 
-	for (QString item : items)
+	for (auto item : items)
 		add_item(item);
 
 	set_index(default_index, false);
@@ -62,14 +63,14 @@ void combo_box::set_index(int _index, bool emit_signal)
     label->setText(name);
 
 	if (emit_signal)
-		changed(name, current_index); // Signal
+		changed(items[current_index].second, current_index); // Signal
 }
 
-void combo_box::set_value(QString name)
+void combo_box::set_value(QVariant value)
 {
-    for (int i = 0; i < actions.count(); i++)
+    for (int i = 0; i < items.count(); i++)
     {
-		if (actions[i]->get_label() == name)
+		if (items[i].second == value)
 		{
 			set_index(i);
 			return;
@@ -77,12 +78,14 @@ void combo_box::set_value(QString name)
     }
 }
 
-void combo_box::add_item(QString name)
+void combo_box::add_item(pair <QString, QVariant> item)
 {
-    action *_action = new action(name, "");
+	QString label = item.first;
+
+    action *_action = new action(label, "");
 	_action->set_icon("radio_button_unchecked_a");
     _action->connect_to(this, [=]() {
-        set_value(name);
+        set_value(item.second);
     });
 
     actions.push_back(_action);
@@ -100,7 +103,7 @@ int combo_box::get_index() const
 	return current_index;
 }
 
-QString combo_box::get_value() const
+QVariant combo_box::get_value() const
 {
-	return actions.value(current_index)->get_label();
+	return items.value(current_index).second;
 }

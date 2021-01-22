@@ -78,24 +78,24 @@ void viewer::update_render()
 	_renderer->render(image, current_frame, name, frame_range, bbox);
 
 	_viewer_gl->set_image(image);
-	if (input_range_way == "Input")
+	if (input_range_way == "input")
 		set_frame_range(frame_range.first, frame_range.second);
 }
 
 void viewer::update_input_range()
 {
-	if (input_range_way == "Global")
+	if (input_range_way == "global")
 	{
 		auto frame_range = dynamic_cast<vinacomp*>(_vinacomp)->get_project_settings()->get_frame_range();
 		set_frame_range(frame_range.first, frame_range.second);
 		global_range = true;
 	}
-	else if (input_range_way == "Input")
+	else if (input_range_way == "input")
 	{
 		update_render();
 		global_range = false;
 	}
-	else if (input_range_way == "In/Out")
+	else if (input_range_way == "inout")
 	{
 		if (in_out)
 			_time_line->fit_to_range(input, output);
