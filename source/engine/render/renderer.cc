@@ -16,6 +16,8 @@ renderer::renderer(project_struct *_project)
 
 	nodes.insert("viewer", new viewer_node());
 	nodes.insert("blur", new blur_node());
+	nodes.insert("position", new position_node());
+	nodes.insert("invert", new invert_node());
 }
 
 renderer::~renderer()

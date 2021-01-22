@@ -5,13 +5,11 @@
     "icon": "position_a",
     "knobs": [
         {
-            "name": "mix",
-            "type": "floating",
-            "label": "Mix",
-            "tooltip": "",
-            "minimum": 0,
-            "maximum": 1,
-            "default": 0.5
-        }
+            "name": "translate",
+            "type": "integer_dimensions",
+            "label": "Translate",
+            "tooltip": "translate",
+            "default": [0, 0]
+		}
     ]
 }
