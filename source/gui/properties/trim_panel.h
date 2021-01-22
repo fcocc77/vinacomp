@@ -28,7 +28,8 @@
 #include <knob_integer.h>
 #include <knob_floating.h>
 #include <knob_separator.h>
-#include <knob_dimensions.h>
+#include <knob_intd.h>
+#include <knob_floatd.h>
 
 #include <node_gui.h>
 #include <frame_range_gui.h>

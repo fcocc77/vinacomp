@@ -20,10 +20,9 @@ project_settings::project_settings(
 	int init_space = 140;
 
 	// Frame Range
-	QList <int> default_value = {first_frame, last_frame};
-	knob_dimensions *frame_range_knob = new knob_dimensions(default_value);
+	knob_intd *frame_range_knob = new knob_intd({first_frame, last_frame});
 
-	connect(frame_range_knob, &knob_dimensions::changed, this, [=](QList <float> values){
+	connect(frame_range_knob, &knob_intd::changed, this, [=](QList <int> values){
 		first_frame = values[0];
 		last_frame = values[1];
 

@@ -2,7 +2,7 @@
 #define FRAME_RANGE_GUI_H
 
 #include <node_gui.h>
-#include <knob_dimensions.h>
+#include <knob_intd.h>
 
 class frame_range_gui : public node_gui
 {

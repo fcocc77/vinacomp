@@ -337,14 +337,14 @@ void trim_panel::setup_knobs()
         else if (type == "floating_dimensions")
 		{
 			QList <float> default_dimensions = {0, 0};
-			knob_dimensions *knob_floating_dimensions = new knob_dimensions(default_dimensions);
+			knob_floatd *knob_floating_dimensions = new knob_floatd(default_dimensions);
 
 			_knob = knob_floating_dimensions;
 		}
 
         else if (type == "integer_dimensions")
         {
-			QList <float> default_dimensions, dimensions;
+			QList <int> default_dimensions, dimensions;
 			for (QJsonValue value : knob_object.value("default").toArray())
 				default_dimensions.push_back(value.toInt());
 
@@ -354,11 +354,11 @@ void trim_panel::setup_knobs()
 			else
 				dimensions = default_dimensions;
 
-			knob_dimensions *knob_integer_dimensions = new knob_dimensions(dimensions);
+			knob_intd *knob_integer_dimensions = new knob_intd(dimensions);
 
-			connect(knob_integer_dimensions, &knob_dimensions::changed, this, [=](QList <float> _dimensions){
+			connect(knob_integer_dimensions, &knob_intd::changed, this, [=](QList <int> _dimensions){
 				QJsonArray __dimensions;
-				for (float value : _dimensions)
+				for (int value : _dimensions)
 					__dimensions.push_back(value);
 
 				if (_dimensions != default_dimensions)

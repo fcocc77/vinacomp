@@ -9,7 +9,7 @@
 
 #include <viewer.h>
 #include <knob_floating.h>
-#include <knob_dimensions.h>
+#include <knob_intd.h>
 
 class project_settings : public QWidget
 {

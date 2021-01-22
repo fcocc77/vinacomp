@@ -1,5 +1,5 @@
-#ifndef KNOB_DIMENSIONS_H
-#define KNOB_DIMENSIONS_H
+#ifndef KNOB_FLOATD_H
+#define KNOB_FLOATD_H
 
 #include <QWidget>
 #include <QLabel>
@@ -11,17 +11,15 @@
 #include <qt.h>
 #include <knob.h>
 
-class knob_dimensions : public knob
+class knob_floatd : public knob
 {
 	Q_OBJECT
 private:
 	QList < QLineEdit * > dimensions_edits;
-	void setup(QList <float> default_values);
 
 public:
-    knob_dimensions(QList <int> default_values = {0, 1});
-    knob_dimensions(QList <float> default_values = {0, 1});
-    ~knob_dimensions();
+    knob_floatd(QList <float> default_values = {0, 1});
+    ~knob_floatd();
 
 	float get_value(int dimension) const;
 	void set_value(float value, int dimension = 0);
@@ -30,4 +28,4 @@ signals:
 	void changed(QList <float> values);
 };
 
-#endif // KNOB_DIMENSIONS_H
+#endif // KNOB_FLOATD_H

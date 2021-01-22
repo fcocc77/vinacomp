@@ -1,22 +1,6 @@
-#include <knob_dimensions.h>
+#include <knob_floatd.h>
 
-knob_dimensions::knob_dimensions(QList <float> default_values)
-{
-	setup(default_values);
-}
-
-knob_dimensions::knob_dimensions(QList <int> default_values)
-{
-	// convierte la lista 'int' a 'float' porque al final se retornara en 'int'
-	// asi que da igual que este en 'float'
-	QList <float> float_list;
-	for (int value : default_values)
-		float_list.push_back(value);
-
-	setup(float_list);
-}
-
-void knob_dimensions::setup(QList <float> default_values)
+knob_floatd::knob_floatd(QList <float> default_values)
 {
 	this->setObjectName("knob_dimensions");
     QHBoxLayout *layout = new QHBoxLayout(this);
@@ -30,28 +14,30 @@ void knob_dimensions::setup(QList <float> default_values)
 	{
 		float value = default_values.value(i);
 		QLineEdit *dimension_edit = new QLineEdit(QString::number(value));
+
 		connect(dimension_edit, &QLineEdit::editingFinished, this, [=](){
 			QList <float> values;
 			for ( int i = 0; i < dimensions; i++ )
 				values.push_back(get_value(i));
+
 			changed(values); // Signal
 		});
+
 		dimension_edit->setMaximumWidth(50);
 		layout->addWidget(dimension_edit);
-
 		dimensions_edits.push_back(dimension_edit);
 	}
 
     layout->addStretch();
 }
 
-knob_dimensions::~knob_dimensions()
+knob_floatd::~knob_floatd()
 {
 	for (QLineEdit *edit : dimensions_edits)
 		delete edit;
 }
 
-float knob_dimensions::get_value(int dimension) const
+float knob_floatd::get_value(int dimension) const
 {
 	if (dimension >= dimensions_edits.count())
 		return 0;
@@ -59,7 +45,7 @@ float knob_dimensions::get_value(int dimension) const
 	return dimensions_edits.value(dimension)->text().toDouble();
 }
 
-void knob_dimensions::set_value(float value, int dimension)
+void knob_floatd::set_value(float value, int dimension)
 {
 	if (dimension >= dimensions_edits.count())
 		return;
@@ -67,7 +53,7 @@ void knob_dimensions::set_value(float value, int dimension)
 	dimensions_edits.value(dimension)->setText(QString::number(value));
 }
 
-void knob_dimensions::set_value(QList <float> values)
+void knob_floatd::set_value(QList <float> values)
 {
 	for (int i = 0; i < dimensions_edits.count(); i++)
 		set_value(values.value(i), i);
