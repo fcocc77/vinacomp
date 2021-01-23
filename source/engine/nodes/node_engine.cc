@@ -22,8 +22,19 @@ void node_engine::load_default_params(QString node_json_name)
 	// carga todos los valores por defecto de los parametros,
 	// para poder compararlos con los parametros de entrada en 'get()'
 	QString node_json = "source/engine/nodes/json/" + node_json_name + ".json";
-
 	for (QJsonValue value : jread(node_json).value("knobs").toArray())
+	{
+		QJsonObject knob = value.toObject();
+		QString key = knob.value("name").toString();
+		QJsonValue default_param = knob.value("default");
+
+		default_params.insert(key, default_param);
+	}
+	//
+
+	// parametros compartidos por todos los nodos
+	QString shared_params = "source/engine/nodes/json/shared_params.json";
+	for (QJsonValue value : jread(shared_params).value("knobs").toArray())
 	{
 		QJsonObject knob = value.toObject();
 		QString key = knob.value("name").toString();

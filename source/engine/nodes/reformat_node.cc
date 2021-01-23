@@ -14,6 +14,8 @@ void reformat_node::render(
 	pair <int, int> &frame_range,
 	QRect &bbox)
 {
+	if ( get("disable_node", params).toBool() ) return;
+
 	int index = get("type", params).toArray()[0].toInt();
 	int filter_index = get("filter", params).toArray()[0].toInt();
 

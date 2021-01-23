@@ -255,118 +255,118 @@ QSlider {
   background: #2c2f35; }
   #trim_panel #butttons {
     background: #25282d; }
-  #trim_panel #controls {
+  #trim_panel #controls, #trim_panel #node_tab {
     background: #30343b; }
-    #trim_panel #controls QLineEdit {
+    #trim_panel #controls QLineEdit, #trim_panel #node_tab QLineEdit {
       padding: 0px;
       padding-left: 4px;
       height: 20px; }
-    #trim_panel #controls > QWidget {
+    #trim_panel #controls > QWidget, #trim_panel #node_tab > QWidget {
       background: #30343b; }
-    #trim_panel #controls #init_space {
+    #trim_panel #controls #init_space, #trim_panel #node_tab #init_space {
       background: transparent; }
-    #trim_panel #controls #knob_check_box {
+    #trim_panel #controls #knob_check_box, #trim_panel #node_tab #knob_check_box {
       background: transparent; }
-      #trim_panel #controls #knob_check_box QCheckBox {
+      #trim_panel #controls #knob_check_box QCheckBox, #trim_panel #node_tab #knob_check_box QCheckBox {
         spacing: 0px;
         background: #1e2024;
         border-radius: 2px;
         border: 1px solid #1e2024; }
-        #trim_panel #controls #knob_check_box QCheckBox:checked {
+        #trim_panel #controls #knob_check_box QCheckBox:checked, #trim_panel #node_tab #knob_check_box QCheckBox:checked {
           border-color: #76808f; }
-        #trim_panel #controls #knob_check_box QCheckBox::indicator {
+        #trim_panel #controls #knob_check_box QCheckBox::indicator, #trim_panel #node_tab #knob_check_box QCheckBox::indicator {
           border-radius: 2px; }
-          #trim_panel #controls #knob_check_box QCheckBox::indicator:checked {
+          #trim_panel #controls #knob_check_box QCheckBox::indicator:checked, #trim_panel #node_tab #knob_check_box QCheckBox::indicator:checked {
             border: 8px solid transparent;
             border-radius: 7px;
             background: #caced3; }
-    #trim_panel #controls #knob_choice {
+    #trim_panel #controls #knob_choice, #trim_panel #node_tab #knob_choice {
       background: transparent; }
-    #trim_panel #controls #knob_separator QWidget {
+    #trim_panel #controls #knob_separator QWidget, #trim_panel #node_tab #knob_separator QWidget {
       border-bottom: 1px solid #25282d; }
-    #trim_panel #controls #knob_label QWidget {
+    #trim_panel #controls #knob_label QWidget, #trim_panel #node_tab #knob_label QWidget {
       background: transparent;
       border-bottom: 1px solid #3c4149; }
-    #trim_panel #controls #knob_label QLabel {
+    #trim_panel #controls #knob_label QLabel, #trim_panel #node_tab #knob_label QLabel {
       font-weight: bold;
       color: #76808f;
       border: none; }
-    #trim_panel #controls #knob_group QWidget {
+    #trim_panel #controls #knob_group QWidget, #trim_panel #node_tab #knob_group QWidget {
       padding: 0px;
       background: #25282d;
       border-top-left-radius: 3px; }
-      #trim_panel #controls #knob_group QWidget[open=false] {
+      #trim_panel #controls #knob_group QWidget[open=false], #trim_panel #node_tab #knob_group QWidget[open=false] {
         border-bottom-left-radius: 3px; }
-    #trim_panel #controls #knob_group QLabel {
+    #trim_panel #controls #knob_group QLabel, #trim_panel #node_tab #knob_group QLabel {
       border-top-left-radius: none;
       border-top-right-radius: 3px;
       color: #929aa5;
       font-weight: bold;
       padding-left: 3px; }
-      #trim_panel #controls #knob_group QLabel[open=false] {
+      #trim_panel #controls #knob_group QLabel[open=false], #trim_panel #node_tab #knob_group QLabel[open=false] {
         border-bottom-right-radius: 3px; }
-    #trim_panel #controls #knob_color QWidget {
+    #trim_panel #controls #knob_color QWidget, #trim_panel #node_tab #knob_color QWidget {
       background: transparent; }
-    #trim_panel #controls #knob_color QLineEdit {
+    #trim_panel #controls #knob_color QLineEdit, #trim_panel #node_tab #knob_color QLineEdit {
       background: #202327; }
-    #trim_panel #controls #knob_color QPushButton {
+    #trim_panel #controls #knob_color QPushButton, #trim_panel #node_tab #knob_color QPushButton {
       background: #3c4149; }
-      #trim_panel #controls #knob_color QPushButton:hover {
+      #trim_panel #controls #knob_color QPushButton:hover, #trim_panel #node_tab #knob_color QPushButton:hover {
         background: #434851; }
-      #trim_panel #controls #knob_color QPushButton[active=true] {
+      #trim_panel #controls #knob_color QPushButton[active=true], #trim_panel #node_tab #knob_color QPushButton[active=true] {
         background: #25282d; }
-        #trim_panel #controls #knob_color QPushButton[active=true]:hover {
+        #trim_panel #controls #knob_color QPushButton[active=true]:hover, #trim_panel #node_tab #knob_color QPushButton[active=true]:hover {
           background: #1e2024; }
-      #trim_panel #controls #knob_color QPushButton[disable=true] {
+      #trim_panel #controls #knob_color QPushButton[disable=true], #trim_panel #node_tab #knob_color QPushButton[disable=true] {
         color: #474d57; }
-    #trim_panel #controls #knob_color #red_edit {
+    #trim_panel #controls #knob_color #red_edit, #trim_panel #node_tab #knob_color #red_edit {
       border-bottom-color: red; }
-      #trim_panel #controls #knob_color #red_edit::focus {
+      #trim_panel #controls #knob_color #red_edit::focus, #trim_panel #node_tab #knob_color #red_edit::focus {
         border-color: red; }
-    #trim_panel #controls #knob_color #green_edit {
+    #trim_panel #controls #knob_color #green_edit, #trim_panel #node_tab #knob_color #green_edit {
       border-bottom-color: green; }
-      #trim_panel #controls #knob_color #green_edit::focus {
+      #trim_panel #controls #knob_color #green_edit::focus, #trim_panel #node_tab #knob_color #green_edit::focus {
         border-color: green; }
-    #trim_panel #controls #knob_color #blue_edit {
+    #trim_panel #controls #knob_color #blue_edit, #trim_panel #node_tab #knob_color #blue_edit {
       border-bottom-color: blue; }
-      #trim_panel #controls #knob_color #blue_edit::focus {
+      #trim_panel #controls #knob_color #blue_edit::focus, #trim_panel #node_tab #knob_color #blue_edit::focus {
         border-color: blue; }
-    #trim_panel #controls #knob_color #alpha_edit {
+    #trim_panel #controls #knob_color #alpha_edit, #trim_panel #node_tab #knob_color #alpha_edit {
       border-bottom-color: white; }
-      #trim_panel #controls #knob_color #alpha_edit::focus {
+      #trim_panel #controls #knob_color #alpha_edit::focus, #trim_panel #node_tab #knob_color #alpha_edit::focus {
         border-color: white; }
-    #trim_panel #controls #knob_color #red_slider::groove {
+    #trim_panel #controls #knob_color #red_slider::groove, #trim_panel #node_tab #knob_color #red_slider::groove {
       border-bottom: 1px solid #8f1012; }
-    #trim_panel #controls #knob_color #red_slider::handle {
+    #trim_panel #controls #knob_color #red_slider::handle, #trim_panel #node_tab #knob_color #red_slider::handle {
       background: red; }
-    #trim_panel #controls #knob_color #green_slider::groove {
+    #trim_panel #controls #knob_color #green_slider::groove, #trim_panel #node_tab #knob_color #green_slider::groove {
       border-bottom: 1px solid #0f5012; }
-    #trim_panel #controls #knob_color #green_slider::handle {
+    #trim_panel #controls #knob_color #green_slider::handle, #trim_panel #node_tab #knob_color #green_slider::handle {
       background: green; }
-    #trim_panel #controls #knob_color #blue_slider::groove {
+    #trim_panel #controls #knob_color #blue_slider::groove, #trim_panel #node_tab #knob_color #blue_slider::groove {
       border-bottom: 1px solid #090abd; }
-    #trim_panel #controls #knob_color #blue_slider::handle {
+    #trim_panel #controls #knob_color #blue_slider::handle, #trim_panel #node_tab #knob_color #blue_slider::handle {
       background: blue; }
-    #trim_panel #controls #knob_color #alpha_slider::groove {
+    #trim_panel #controls #knob_color #alpha_slider::groove, #trim_panel #node_tab #knob_color #alpha_slider::groove {
       border-bottom: 1px solid #8f9092; }
-    #trim_panel #controls #knob_color #alpha_slider::handle {
+    #trim_panel #controls #knob_color #alpha_slider::handle, #trim_panel #node_tab #knob_color #alpha_slider::handle {
       background: white; }
-    #trim_panel #controls #small_button {
+    #trim_panel #controls #small_button, #trim_panel #node_tab #small_button {
       width: 25px;
       height: 22px;
       border-radius: 2px;
       background: #3c4149; }
-    #trim_panel #controls #knob_button {
+    #trim_panel #controls #knob_button, #trim_panel #node_tab #knob_button {
       background: none; }
-      #trim_panel #controls #knob_button QPushButton {
+      #trim_panel #controls #knob_button QPushButton, #trim_panel #node_tab #knob_button QPushButton {
         height: 22px;
         border-radius: 2px;
         background: #40464f;
         padding-right: 10px;
         padding-left: 10px; }
-        #trim_panel #controls #knob_button QPushButton:hover {
+        #trim_panel #controls #knob_button QPushButton:hover, #trim_panel #node_tab #knob_button QPushButton:hover {
           color: #ffcc00; }
-        #trim_panel #controls #knob_button QPushButton:pressed {
+        #trim_panel #controls #knob_button QPushButton:pressed, #trim_panel #node_tab #knob_button QPushButton:pressed {
           background: #292d32;
           color: #caced3; }
 

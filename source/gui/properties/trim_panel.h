@@ -59,6 +59,7 @@ private:
 
 	QWidget *controls_tab;
     QVBoxLayout *controls_layout;
+    QVBoxLayout *node_tab_layout;
     QLineEdit *name_edit;
 	node_gui *_node_gui;
 
@@ -73,7 +74,7 @@ private:
     void setup_gui_panels();
     QWidget *top_buttons_setup_ui();
     tab_widget *tabs_ui();
-    void setup_knobs();
+    void setup_knobs(QJsonArray _knobs, QVBoxLayout *layout);
 	void update_render();
 
 public:

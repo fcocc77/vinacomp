@@ -1,0 +1,18 @@
+{
+	"knobs": [
+		{
+			"name": "label",
+			"type": "text",
+			"label": "Label",
+			"tooltip": "label",
+			"default": ""
+		},
+		{
+			"name": "disable_node",
+			"type": "check_box",
+			"label": "Disable",
+			"tooltip": "disable_node",
+			"default": false
+		}
+	]
+}
