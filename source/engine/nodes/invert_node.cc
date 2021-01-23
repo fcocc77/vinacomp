@@ -11,7 +11,5 @@ void invert_node::render(
 	pair <int, int> &frame_range,
 	QRect &bbox)
 {
-	if ( get("disable_node", params).toBool() ) return;
-
 	image->invertPixels();
 }

@@ -21,8 +21,10 @@ public:
 		pair <int, int> &frame_range,
 		QRect &bbox
 	);
-protected:
+
 	QJsonValue get(QString key, QJsonObject *params) const;
+
+protected:
 	void load_default_params(QString node_json_name);
 };
 
