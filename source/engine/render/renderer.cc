@@ -55,7 +55,7 @@ pair <int, int> renderer::get_frame_range(QString node_name) const
 
 void renderer::render(
 		QImage *image,
-		int frame,
+		int frame, 
 		QString node_name,
 		pair<int, int> &frame_range,
 		QRect &bbox
@@ -67,9 +67,13 @@ void renderer::render(
 	node_struct *node = &project->nodes[node_name];
 	node_engine *_node_engine = nodes.value(node->type);
 
+	bool disable = false;
+	if (_node_engine)
+		disable = _node_engine->get("disable_node", node->params).toBool();
+
 	// los nodos de tiempo tienen que modificar todos los nodos entrantes
 	// por eso estos nodos tienen que ir antes de renderizar las entradas
-	if (node->type == "time_offset")
+	if (node->type == "time_offset" && !disable)
 		time_offset->set_offset(node->params, frame, node_name, this);
 	//
 
@@ -80,7 +84,7 @@ void renderer::render(
 	//
 
 	// renderiza el nodo actual
-	if (_node_engine)
+	if (_node_engine && !disable)
 		_node_engine->render(image, node->params, frame, frame_range, bbox);
 	//
 }
