@@ -5,13 +5,44 @@
     "icon": "ramp_a",
     "knobs": [
         {
-            "name": "mix",
-            "type": "floating",
-            "label": "Mix",
-            "tooltip": "",
+            "name": "format",
+            "type": "choice",
+            "label": "Format",
+            "tooltip": "format",
+			"items": [
+				["FULL HD    1920x1080", [1920, 1080]],
+				["HD-720     1280x720", [1280, 720]]
+			],
+            "default": [0, [1920, 1080]]
+        },
+        {
+            "name": "color",
+            "type": "color",
+            "label": "Color",
+            "tooltip": "color",
             "minimum": 0,
             "maximum": 1,
-            "default": 0.5
-        }
+			"default": [1, 1, 1, 1]
+        },
+		{
+			"name": "separator1",
+			"type": "separator"
+		},
+        {
+            "name": "point0",
+            "type": "integer_dimensions",
+            "label": "Point 0",
+            "tooltip": "point0",
+            "default": [100, 100],
+			"animatable": false
+		},
+        {
+            "name": "point1",
+            "type": "integer_dimensions",
+            "label": "Point 1",
+            "tooltip": "point1",
+            "default": [100, 200],
+			"animatable": false
+		}
     ]
 }

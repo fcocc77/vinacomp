@@ -20,6 +20,7 @@ renderer::renderer(project_struct *_project)
 	nodes.insert("invert", new invert_node());
 	nodes.insert("reformat", new reformat_node());
 	nodes.insert("constant", new constant_node());
+	nodes.insert("ramp", new ramp_node());
 }
 
 renderer::~renderer()

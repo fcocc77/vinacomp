@@ -16,6 +16,7 @@
 #include <invert_node.h>
 #include <reformat_node.h>
 #include <constant_node.h>
+#include <ramp_node.h>
 
 class renderer : public QWidget
 {
