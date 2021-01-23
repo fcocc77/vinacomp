@@ -13,8 +13,8 @@ time_offset_node::~time_offset_node()
 
 void time_offset_node::set_offset(QJsonObject *params, int &frame, QString node_name, QWidget *_renderer)
 {
-	int offset = get("time_offset", params).toArray()[0].toInt();
-	bool reverse = get("reverse_input", params).toBool();
+	int offset = get(params, "time_offset").toArray()[0].toInt();
+	bool reverse = get(params, "reverse_input").toBool();
 
 	frame -= offset;
 	if (reverse)
@@ -31,7 +31,7 @@ void time_offset_node::render(
 		pair <int, int> &frame_range,
 		QRect &bbox)
 {
-	int offset = get("time_offset", params).toArray()[0].toInt();
+	int offset = get(params, "time_offset").toArray()[0].toInt();
 	frame_range.first += offset;
 	frame_range.second += offset;
 }

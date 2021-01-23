@@ -17,6 +17,7 @@
 #include <reformat_node.h>
 #include <constant_node.h>
 #include <ramp_node.h>
+#include <radial_node.h>
 
 class renderer : public QWidget
 {

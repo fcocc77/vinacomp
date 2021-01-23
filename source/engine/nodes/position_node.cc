@@ -13,8 +13,8 @@ void position_node::render(
 	pair <int, int> &frame_range,
 	QRect &bbox)
 {
-	int x = get("translate", params).toArray()[0].toInt();
-	int y = get("translate", params).toArray()[1].toInt();
+	int x = get(params, "translate").toArray()[0].toInt();
+	int y = get(params, "translate").toArray()[1].toInt();
 
 	for ( int x = 0; x < 1920; x++)
 		for ( int y = 0; y < 1080; y++)

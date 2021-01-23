@@ -21,6 +21,7 @@ renderer::renderer(project_struct *_project)
 	nodes.insert("reformat", new reformat_node());
 	nodes.insert("constant", new constant_node());
 	nodes.insert("ramp", new ramp_node());
+	nodes.insert("radial", new radial_node());
 }
 
 renderer::~renderer()
@@ -71,7 +72,7 @@ void renderer::render(
 
 	bool disable = false;
 	if (_node_engine)
-		disable = _node_engine->get("disable_node", node->params).toBool();
+		disable = _node_engine->get(node->params, "disable_node").toBool();
 
 	// los nodos de tiempo tienen que modificar todos los nodos entrantes
 	// por eso estos nodos tienen que ir antes de renderizar las entradas

@@ -5,13 +5,33 @@
     "icon": "radial_a",
     "knobs": [
         {
-            "name": "mix",
-            "type": "floating",
-            "label": "Mix",
-            "tooltip": "",
+            "name": "color",
+            "type": "color",
+            "label": "Color",
+            "tooltip": "color",
             "minimum": 0,
             "maximum": 1,
-            "default": 0.5
-        }
+			"default": [1, 1, 1, 1]
+        },
+		{
+			"name": "separator1",
+			"type": "separator"
+		},
+        {
+            "name": "area",
+            "type": "integer_dimensions",
+            "label": "Area",
+            "tooltip": "area",
+            "default": [0, 0, 1000, 1000]
+		},
+		{
+			"name": "softness",
+			"type": "floating",
+			"label": "Softness",
+			"tooltip": "softness",
+			"minimum": 0,
+			"maximum": 1,
+			"default": 1
+		}
     ]
 }

@@ -12,8 +12,8 @@ read_node::~read_node()
 
 pair <int, int> read_node::get_frame_range(QJsonObject *params) const
 {
-	int first = get("first", params).toArray()[0].toInt();
-	int last = get("last", params).toArray()[0].toInt();
+	int first = get(params, "first").toArray()[0].toInt();
+	int last = get(params, "last").toArray()[0].toInt();
 
 	return {first, last};
 }
@@ -25,7 +25,7 @@ void read_node::render(
 	pair <int, int> &frame_range,
 	QRect &bbox)
 {
-	QString file_path = get("file", params).toString();
+	QString file_path = get(params, "file").toString();
 	QString _frame = frame_to_string(frame, 3);
 
 	file_path.replace("###", _frame);

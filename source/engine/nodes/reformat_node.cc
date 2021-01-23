@@ -14,8 +14,8 @@ void reformat_node::render(
 	pair <int, int> &frame_range,
 	QRect &bbox)
 {
-	int index = get("type", params).toArray()[0].toInt();
-	int filter_index = get("filter", params).toArray()[0].toInt();
+	int index = get(params, "type").toArray()[0].toInt();
+	int filter_index = get(params, "filter").toArray()[0].toInt();
 
 	// Filtro
 	Qt::TransformationMode filter;
@@ -31,20 +31,20 @@ void reformat_node::render(
 
 	if (index == 0) // Format
 	{
-		x = get("format", params).toArray()[1].toArray()[0].toInt();
-		y = get("format", params).toArray()[1].toArray()[1].toInt();
+		x = get(params, "format").toArray()[1].toArray()[0].toInt();
+		y = get(params, "format").toArray()[1].toArray()[1].toInt();
 	}
 	else if (index == 1) // Scale
 	{
-		float scale = get("scale", params).toDouble();
+		float scale = get(params, "scale").toDouble();
 
 		x = width * scale;
 		y = height * scale;
 	}
 	else if (index == 2) // Custom
 	{
-		x = get("custom", params).toArray()[0].toInt();
-		y = get("custom", params).toArray()[1].toInt();
+		x = get(params, "custom").toArray()[0].toInt();
+		y = get(params, "custom").toArray()[1].toInt();
 	}
 
 	if (x != width || y != height)
