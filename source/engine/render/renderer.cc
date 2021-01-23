@@ -19,6 +19,7 @@ renderer::renderer(project_struct *_project)
 	nodes.insert("position", new position_node());
 	nodes.insert("invert", new invert_node());
 	nodes.insert("reformat", new reformat_node());
+	nodes.insert("constant", new constant_node());
 }
 
 renderer::~renderer()

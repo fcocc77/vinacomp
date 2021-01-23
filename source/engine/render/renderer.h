@@ -15,6 +15,7 @@
 #include <position_node.h>
 #include <invert_node.h>
 #include <reformat_node.h>
+#include <constant_node.h>
 
 class renderer : public QWidget
 {
