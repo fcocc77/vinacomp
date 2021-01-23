@@ -18,6 +18,7 @@
 #include <constant_node.h>
 #include <ramp_node.h>
 #include <radial_node.h>
+#include <noise_node.h>
 
 class renderer : public QWidget
 {

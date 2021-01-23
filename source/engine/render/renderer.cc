@@ -22,6 +22,7 @@ renderer::renderer(project_struct *_project)
 	nodes.insert("constant", new constant_node());
 	nodes.insert("ramp", new ramp_node());
 	nodes.insert("radial", new radial_node());
+	nodes.insert("noise", new noise_node());
 }
 
 renderer::~renderer()
