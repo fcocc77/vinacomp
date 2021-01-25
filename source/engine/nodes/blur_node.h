@@ -3,6 +3,8 @@
 
 #include <QImage>
 
+#include <opencv2/opencv.hpp>
+
 #include <node_engine.h>
 #include <util.h>
 

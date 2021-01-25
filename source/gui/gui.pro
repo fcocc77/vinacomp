@@ -1,5 +1,11 @@
 include(../../config/config.pro)
 
+# Open CV
+LIBS += -lopencv_core
+LIBS += -lopencv_features2d
+LIBS += -lopencv_imgproc
+#
+
 TEMPLATE = app
 TARGET = "vinacomp"
 
@@ -13,7 +19,7 @@ INCLUDEPATH += ../engine/nodes
 
 QT += core gui widgets multimedia
 
-DEFINES += "GUI" 
+DEFINES += "GUI"
 
 HEADERS +=  $$system(ls */*.h) \
             ../../utils/c++/*.h \
