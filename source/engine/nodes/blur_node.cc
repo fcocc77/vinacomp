@@ -1,4 +1,7 @@
 #include <blur_node.h>
+#include <opencv2/opencv.hpp>
+
+using namespace cv;
 
 blur_node::blur_node()
 {
@@ -17,7 +20,6 @@ void blur_node::render(
 	pair <int, int> &frame_range,
 	QRect &bbox)
 {
-	for ( int x = 0; x < 1920; x++)
-		for ( int y = 0; y < 1080; y++)
-			QColor color = image->pixel(100, 108);
+	// Mat image_blurred_with_3x3_kernel;
+	// GaussianBlur(data, image_blurred_with_3x3_kernel, Size(3, 3), 0);
 }

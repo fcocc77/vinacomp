@@ -9,7 +9,7 @@ viewer::viewer(QString _name, project_struct *_project, renderer *__renderer, QW
 	, _vinacomp(__vinacomp)
 
 	, current_frame(0)
-	, frame_rate(24)
+	, frame_rate(60)
 	, first_frame(1)
 	, last_frame(100)
 	, in_out(false)

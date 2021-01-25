@@ -14,34 +14,25 @@ void noise_node::render(
 	pair <int, int> &frame_range,
 	QRect &bbox)
 {
-	(*image) = QImage(1920, 1080, QImage::Format_RGB32);
-	// (*image) = QImage(1920, 1080, QImage::Format_Mono);
-	image->fill(Qt::black);
-
-	float part = 255.0 / 1920;
-	float value = 0;
-
 	uchar *data = image->bits();
-
 	int lines = image->bytesPerLine();
-	QList <int> color = {0, 0, 0, 0};
-	int c = 0;
 	int channels = 4;
 
-	int horizontal = 1920 * channels;
-	for (int y = 0; y < 1080; y++)
+	float part = 255.0 / image->height();
+	float value = 0;
+
+	for (int y = 0; y < image->height(); y++)
 	{
-		// value += part;
-		for (int x = 0; x < horizontal; x++)
+		value += part;
+		for (int x = 0; x < image->width(); x++)
 		{
-			data[(lines * y) + x] = color[c];
+			int blue_index = (y * lines) + (x * channels + 0);
+			int green_index = (y * lines) + (x * channels + 1);
+			int red_index = (y * lines) + (x * channels + 2);
 
-			if (c == 3)
-				c = 0;
-			else
-				c++;
-
+			data[blue_index] = value;
+			data[green_index] = value;
+			data[red_index] = value;
 		}
 	}
-
 }
