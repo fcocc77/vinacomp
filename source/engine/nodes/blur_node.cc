@@ -16,10 +16,14 @@ void blur_node::render(
 	QRect &bbox)
 {
 	int blur_size = get(params, "size").toDouble();
+	int filter_index = get(params, "filter").toArray()[0].toInt();
 
 	cv::Mat img(image->height(), image->width(), CV_8UC4, image->bits(), image->bytesPerLine());
 	if (blur_size > 0)
-		// cv::GaussianBlur(img, img, cv::Size(99, 99), 0);
-		// cv::boxFilter(img, img, -1, cv::Size(blur_size, blur_size));
-		cv::blur(img, img, cv::Size(blur_size, blur_size));
+	{
+		if (filter_index == 0)
+			cv::blur(img, img, cv::Size(blur_size, blur_size));
+		else if (filter_index == 3)
+			cv::GaussianBlur(img, img, cv::Size(99, 99), 0);
+	}
 }
