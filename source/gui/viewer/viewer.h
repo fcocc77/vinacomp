@@ -48,6 +48,7 @@ private:
 	int current_frame;
 	float frame_rate;
 	bool in_out;
+	bool render_pause;
 
     //
     void setup_ui();

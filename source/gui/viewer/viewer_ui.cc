@@ -17,20 +17,13 @@ void viewer::setup_ui()
     layout->addWidget(player);
 }
 
-QWidget *viewer::control_setup_ui() {
-    QWidget *widget = new QWidget();
-    widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    widget->setObjectName("controls");
-    QHBoxLayout *layout = new QHBoxLayout();
-    layout->setSpacing(2);
-    layout->setMargin(5);
-    widget->setLayout(layout);
-    //
-
-    int icon_size = 25;
+QWidget *viewer::control_setup_ui() 
+{
+	tools *bar = new tools();
+    bar->setObjectName("controls");
 
     combo_box *layers = new combo_box();
-    layout->addWidget(layers);
+    bar->add_widget(layers);
 
 	combo_box *display_channel = new combo_box({
 		{"RGB", "rgb"},
@@ -39,39 +32,57 @@ QWidget *viewer::control_setup_ui() {
 		{"Blue", "blue"},
 		{"Alpha", "alpha"}
 	});
-    layout->addWidget(display_channel);
+    bar->add_widget(display_channel);
+    bar->add_stretch();
 
-    layout->addStretch();
+	action *free_ram = new action("Free Ram", "free_ram", "free_ram");
+	free_ram->connect_to(this, [](){
+	});
+	bar->add_action(free_ram);
 
-    QPushButton *free_ram = new QPushButton();
-    qt::set_icon(free_ram, "free_ram_a", icon_size);
-    layout->addWidget(free_ram);
+	bar->add_separator();
 
-    QPushButton *out_frame = new QPushButton();
-    qt::set_icon(out_frame, "out_frame_a", icon_size);
-    layout->addWidget(out_frame);
+	action *out_frame = new action("Show pixels out of frame", "out_frame", "out_frame");
+	out_frame->set_checkable();
+	out_frame->connect_to(this, [](){
+	});
+	bar->add_action(out_frame);
 
-    QPushButton *render_area = new QPushButton();
-    qt::set_icon(render_area, "render_area_a", icon_size);
-    layout->addWidget(render_area);
+	action *render_area = new action("Render Area", "render_area", "render_area");
+	render_area->set_checkable();
+	render_area->connect_to(this, [](){
+	});
+	bar->add_action(render_area);
 
-    QPushButton *proxy = new QPushButton();
-    qt::set_icon(proxy, "proxy_a", icon_size);
-    layout->addWidget(proxy);
+	bar->add_separator();
 
-    QPushButton *multi_lines = new QPushButton();
-    qt::set_icon(multi_lines, "multi_lines_a", icon_size);
-    layout->addWidget(multi_lines);
+	action *proxy = new action("Proxy", "proxy", "proxy");
+	proxy->set_checkable();
+	proxy->connect_to(this, [](){
+	});
+	bar->add_action(proxy);
 
-    QPushButton *refresh = new QPushButton();
-    qt::set_icon(refresh, "refresh_a", icon_size);
-    layout->addWidget(refresh);
+	action *multi_lines = new action("Render all lines", "multi_lines", "multi_lines");
+	multi_lines->set_checkable();
+	multi_lines->connect_to(this, [](){
+	});
+	bar->add_action(multi_lines);
 
-    QPushButton *pause = new QPushButton();
-    qt::set_icon(pause, "pause_a", icon_size);
-    layout->addWidget(pause);
+	bar->add_separator();
 
-    return widget;
+	action *refresh = new action("Refresh", "refresh", "refresh");
+	refresh->connect_to(this, [](){
+	});
+	bar->add_action(refresh);
+
+	action *pause = new action("Pause Render", "pause", "pause");
+	pause->set_checkable();
+	pause->connect_to(this, [=](){
+		render_pause = !render_pause;
+	});
+	bar->add_action(pause);
+
+    return bar;
 }
 
 QWidget *viewer::image_correction_setup_ui()
