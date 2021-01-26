@@ -8,12 +8,6 @@
 class viewer_gl : public gl_view
 {
 private:
-    void draw_frame();
-	void draw_image();
-public:
-    viewer_gl();
-    ~viewer_gl();
-
     // Acciones
     action *center_viewer;
     action *fit_100_percent;
@@ -21,10 +15,18 @@ public:
 
 	QImage *image;
 	int image_width, image_height;
-
 	bool fitted;
+
+    void draw_frame();
+	void draw_image();
+
+	void before_painting_image() const;
 	void fit_to_viewport();
 	void fit_to_percent(int percent);
+
+public:
+    viewer_gl();
+    ~viewer_gl();
 
 	void set_image(QImage *image, int image_width = 1920, int image_height = 1080);
 protected:

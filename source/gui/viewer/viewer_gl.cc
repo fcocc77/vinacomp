@@ -80,20 +80,16 @@ void viewer_gl::set_image(QImage *_image, int _image_width, int _image_height)
 	image = _image;
 	image_width = image->width();
 	image_height = image->height();
+
+	before_painting_image();
 	update();
 }
 
-void viewer_gl::draw_frame()
+void viewer_gl::before_painting_image() const
 {
-	QColor color = Qt::darkGray;
-
-    draw_line({0, 0}, {0, image_height}, color);
-    draw_line({0, image_height}, {image_width, image_height}, color);
-    draw_line({image_width, image_height}, {image_width, 0}, color);
-    draw_line({image_width, 0}, {0, 0}, color);
-
-	QString format_label = QString::number(image_width) + " x " + QString::number(image_height);
-	draw_text(format_label, color, {image_width, image_height}, {-1, -1}, 9, Qt::AlignRight, {5, -10});
+	// obtiene la imagen, pero copia el canal seleccionado
+	// a los diferentes canales r g b a para visualizar el canal
+	// seleccionado en escale de grices.
 }
 
 void viewer_gl::draw_image()
@@ -102,7 +98,7 @@ void viewer_gl::draw_image()
 		return;
 
 	// genera la textura 2d a partir de los bits de la imagen
-	GLuint texture; 
+	GLuint texture;
 	glBindTexture(GL_TEXTURE_2D, texture);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, image_width, image_height, 0, GL_BGRA, GL_UNSIGNED_BYTE, image->bits());
 	//
@@ -131,6 +127,19 @@ void viewer_gl::draw_image()
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
 	//
+}
+
+void viewer_gl::draw_frame()
+{
+	QColor color = Qt::darkGray;
+
+    draw_line({0, 0}, {0, image_height}, color);
+    draw_line({0, image_height}, {image_width, image_height}, color);
+    draw_line({image_width, image_height}, {image_width, 0}, color);
+    draw_line({image_width, 0}, {0, 0}, color);
+
+	QString format_label = QString::number(image_width) + " x " + QString::number(image_height);
+	draw_text(format_label, color, {image_width, image_height}, {-1, -1}, 9, Qt::AlignRight, {5, -10});
 }
 
 void viewer_gl::mousePressEvent(QMouseEvent *event)

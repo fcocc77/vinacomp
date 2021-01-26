@@ -19,6 +19,7 @@
 #include <ramp_node.h>
 #include <radial_node.h>
 #include <noise_node.h>
+#include <shuffle_node.h>
 
 class renderer : public QWidget
 {

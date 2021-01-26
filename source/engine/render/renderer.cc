@@ -23,6 +23,7 @@ renderer::renderer(project_struct *_project)
 	nodes.insert("ramp", new ramp_node());
 	nodes.insert("radial", new radial_node());
 	nodes.insert("noise", new noise_node());
+	nodes.insert("shuffle", new shuffle_node());
 }
 
 renderer::~renderer()
