@@ -68,6 +68,8 @@ void trim_panel::setup_gui_panels()
 		_node_gui = new frame_range_gui();
 	else if (type == "reformat")
 		_node_gui = new reformat_gui();
+	else if (type == "shuffle")
+		_node_gui = new shuffle_gui(controls_layout);
 
 	if (_node_gui)
 		_node_gui->setup(this, _vinacomp, name);

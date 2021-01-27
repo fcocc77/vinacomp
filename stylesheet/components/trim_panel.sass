@@ -126,4 +126,44 @@
                 &:pressed
                     background: $b17
                     color: $b80
+        #shuffle_node
+            > QWidget
+                background: none
+            #connection_viewer
+                // background: green
+            #input_channels, #output_channels
+                background: $b17
+                border-radius: 3px
+                border: 1px solid $b15
+                #inputs_menu
+                    background: none
+                #input, #output
+                    background: none
+
+                    #cred, #cgreen, #cblue, #calpha, #cwhite, #cblack
+                        width: 8px
+                        height: 8px
+                        border-radius: 6px
+                        border: 2px solid none
+                    #cred
+                        border-color: red
+                        background: red
+                    #cgreen
+                        border-color: green
+                        background: green
+                    #cblue
+                        border-color: blue
+                        background: blue
+                    #calpha
+                        border-color: white
+                        background: white
+                    #cblack
+                        border-color: black
+                        background: black
+                    #cwhite
+                        border-color: white
+                        background: white
+                    #cred, #cgreen, #cblue, #calpha, #cwhite, #cblack
+                        &[ connected = false ]
+                            background: none
 

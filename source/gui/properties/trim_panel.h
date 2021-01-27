@@ -34,6 +34,7 @@
 #include <node_gui.h>
 #include <frame_range_gui.h>
 #include <reformat_gui.h>
+#include <shuffle_gui.h>
 
 // Engine
 #include <project_struct.h>

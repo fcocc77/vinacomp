@@ -9,7 +9,7 @@
 
 #include <util.h>
 
-class node_gui
+class node_gui : public QWidget
 {
 private:
 	QWidget *_trim_panel;
