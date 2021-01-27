@@ -9,6 +9,7 @@
 struct connectors
 {
 	bool connected;
+	bool dragging;
 	QPoint position;
 	QColor color;
 };
@@ -22,6 +23,8 @@ private:
 	QWidget *input_a, *input_b, *output_a, *output_b;
 	QList <connectors> inputs_a, inputs_b, outputs_a, outputs_b;
 
+	QPoint mouse_position;
+
 	void init_connectors();
 	QWidget *create_input();
 	QWidget *create_output();
@@ -34,6 +37,8 @@ public:
 protected:
 	void paintEvent(QPaintEvent *event) override;
 	void mouseMoveEvent(QMouseEvent *event) override;
+	void mouseReleaseEvent(QMouseEvent *event) override;
+	void mousePressEvent(QMouseEvent *event) override;
 };
 
 #endif // SHUFFLE_GUI_H

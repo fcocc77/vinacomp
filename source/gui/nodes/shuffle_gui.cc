@@ -54,25 +54,30 @@ shuffle_gui::~shuffle_gui(){}
 
 void shuffle_gui::init_connectors()
 {
-	inputs_a.push_back({false, {0, 0}, Qt::red});
-	inputs_a.push_back({false, {0, 0}, Qt::green});
-	inputs_a.push_back({false, {0, 0}, Qt::blue});
-	inputs_a.push_back({false, {0, 0}, Qt::white});
+	QColor red = {200, 50, 50};
+	QColor green = {50, 200, 50};
+	QColor blue = {30, 70, 255};
+	QColor white = {200, 200, 200};
 
-	inputs_b.push_back({false, {0, 0}, Qt::red});
-	inputs_b.push_back({false, {0, 0}, Qt::green});
-	inputs_b.push_back({false, {0, 0}, Qt::blue});
-	inputs_b.push_back({false, {0, 0}, Qt::white});
+	inputs_a.push_back({false, false, {0, 0}, red});
+	inputs_a.push_back({false, false, {0, 0}, green});
+	inputs_a.push_back({false, false, {0, 0}, blue});
+	inputs_a.push_back({false, false, {0, 0}, white});
 
-	outputs_a.push_back({false, {0, 0}, Qt::red});
-	outputs_a.push_back({false, {0, 0}, Qt::green});
-	outputs_a.push_back({false, {0, 0}, Qt::blue});
-	outputs_a.push_back({false, {0, 0}, Qt::white});
+	inputs_b.push_back({false, false, {0, 0}, red});
+	inputs_b.push_back({false, false, {0, 0}, green});
+	inputs_b.push_back({false, false, {0, 0}, blue});
+	inputs_b.push_back({false, false, {0, 0}, white});
 
-	outputs_b.push_back({false, {0, 0}, Qt::red});
-	outputs_b.push_back({false, {0, 0}, Qt::green});
-	outputs_b.push_back({false, {0, 0}, Qt::blue});
-	outputs_b.push_back({false, {0, 0}, Qt::white});
+	outputs_a.push_back({false, false, {0, 0}, red});
+	outputs_a.push_back({false, false, {0, 0}, green});
+	outputs_a.push_back({false, false, {0, 0}, blue});
+	outputs_a.push_back({false, false, {0, 0}, white});
+
+	outputs_b.push_back({false, false, {0, 0}, red});
+	outputs_b.push_back({false, false, {0, 0}, green});
+	outputs_b.push_back({false, false, {0, 0}, blue});
+	outputs_b.push_back({false, false, {0, 0}, white});
 }
 
 QWidget *shuffle_gui::create_input()
@@ -102,7 +107,7 @@ QWidget *shuffle_gui::create_input()
 	menus_layout->addWidget(node_input);
 	menus_layout->addWidget(layer_box);
 
-	auto create_input_channel = [=](QString label, QString color_name)
+	auto create_input_channel = [=](QString label)
 	{
 		QWidget *widget = new QWidget();
 		widget->setObjectName("input");
@@ -110,28 +115,18 @@ QWidget *shuffle_gui::create_input()
 		layout->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 		layout->setMargin(0);
 
-		QLabel *channel = new QLabel(label);
-		channel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-
-		QPushButton *channel_connector = new QPushButton();
-		channel_connector->setProperty("connected", false);
-		channel_connector->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-		channel_connector->setObjectName("c" + color_name);
-
-		if (color_name == "green")
-			channel_connector->setProperty("connected", true);
-
-		layout->addWidget(channel);
-		layout->addWidget(channel_connector);
+		QLabel *channel_label = new QLabel(label);
+		channel_label->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+		layout->addWidget(channel_label);
 
 		input_layout->addWidget(widget);
 	};
 
 	input_layout->addWidget(menus);
-	create_input_channel("rgba.red", "red");
-	create_input_channel("rgba.green", "green");
-	create_input_channel("rgba.blue", "blue");
-	create_input_channel("rgba.alpha", "alpha");
+	create_input_channel("rgba.red");
+	create_input_channel("rgba.green");
+	create_input_channel("rgba.blue");
+	create_input_channel("rgba.alpha");
 
 	return input;
 }
@@ -152,7 +147,7 @@ QWidget *shuffle_gui::create_output()
 	});
 	layer_box->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-	auto create_output_channel = [=](QString label, QString color_name)
+	auto create_output_channel = [=](QString label)
 	{
 		QWidget *widget = new QWidget();
 		widget->setObjectName("output");
@@ -162,11 +157,6 @@ QWidget *shuffle_gui::create_output()
 
 		QLabel *channel = new QLabel(label);
 		channel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-
-		QPushButton *rgb_connector = new QPushButton();
-		rgb_connector->setProperty("connected", false);
-		rgb_connector->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-		rgb_connector->setObjectName("c" + color_name);
 
 		QPushButton *black_button = new QPushButton();
 		black_button->setProperty("connected", false);
@@ -178,7 +168,6 @@ QWidget *shuffle_gui::create_output()
 		white_button->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 		white_button->setObjectName("cwhite");
 
-		layout->addWidget(rgb_connector);
 		layout->addWidget(black_button);
 		layout->addWidget(white_button);
 		layout->addWidget(channel);
@@ -187,10 +176,10 @@ QWidget *shuffle_gui::create_output()
 	};
 
 	output_layout->addWidget(layer_box);
-	create_output_channel("rgba.red", "red");
-	create_output_channel("rgba.green", "green");
-	create_output_channel("rgba.blue", "blue");
-	create_output_channel("rgba.alpha", "alpha");
+	create_output_channel("rgba.red");
+	create_output_channel("rgba.green");
+	create_output_channel("rgba.blue");
+	create_output_channel("rgba.alpha");
 
 	return output;
 }
@@ -204,20 +193,19 @@ void shuffle_gui::changed(QString param_name)
 void shuffle_gui::paintEvent(QPaintEvent *event)
 {
 	QPainter painter(this);
-	// painter.setPen(QPen(Qt::black, 4));
-	// painter.drawLine(line);
 
 	int radius = 5;
 	int edge = 2;
 
-	auto draw_connectors = [=](QList<connectors> _connectors, QPoint position, QPainter &painter)
+	auto draw_connectors = [=](QList<connectors> &_connectors, QPoint position, QPainter &painter)
 	{
 		int x = position.x();
 		int y = position.y();
 
-		for (connectors conn : _connectors)
+		for (connectors &conn : _connectors)
 		{
 			painter.setPen(QPen(conn.color, edge));
+
 			if (conn.connected)
 				painter.setBrush(QBrush(conn.color));
 			else
@@ -226,32 +214,59 @@ void shuffle_gui::paintEvent(QPaintEvent *event)
 			y += 20;
 			conn.position = {x, y};
 
+			if (conn.dragging)
+				painter.drawLine(conn.position, mouse_position);
+
 			painter.drawEllipse(conn.position, radius, radius);
 		}
 	};
 
-	int ax = input_a->x() + input_a->width() + 30;
+	int in_x = input_a->x() + input_a->width() + 20;
 	int ay = input_a->y() + 30;
-	draw_connectors(inputs_a, {ax, ay}, painter);
-
-	int bx = input_b->x() + input_b->width() + 30;
 	int by = input_b->y() + 30;
-	draw_connectors(inputs_b, {bx, by}, painter);
+	draw_connectors(inputs_a, {in_x, ay}, painter);
+	draw_connectors(inputs_b, {in_x, by}, painter);
 
-	int out_ax = output_a->x();
+	int out_x = this->width() - 220;
 	int out_ay = output_a->y() + 30;
-	draw_connectors(outputs_a, {out_ax, out_ay}, painter);
-
-	int out_bx = output_b->x();
 	int out_by = output_b->y() + 30;
-	draw_connectors(outputs_b, {out_bx, out_by}, painter);
+	draw_connectors(outputs_a, {out_x, out_ay}, painter);
+	draw_connectors(outputs_b, {out_x, out_by}, painter);
 
 	QWidget::paintEvent(event);
 }
 
+void shuffle_gui::mousePressEvent(QMouseEvent *event)
+{
+	mouse_position = event->pos();
+
+	for (connectors &conn : inputs_a)
+	{
+		int x = conn.position.x();
+		int y = conn.position.y();
+		float distance = qt::distance_points({x, y}, {event->x(), event->y()});
+		if (distance < 10)
+		{
+			conn.connected = true;
+			conn.dragging = true;
+			break;
+		}
+	}
+
+	update();
+}
+
+void shuffle_gui::mouseReleaseEvent(QMouseEvent *event) 
+{
+	// desabilita el arrastre en todas las entradas
+	for (connectors &conn : inputs_a)
+		conn.dragging = false;
+
+	update();
+}
+
 void shuffle_gui::mouseMoveEvent(QMouseEvent *event)
 {
-	print(output_a->x());
-	line.setP2({event->x(), event->y()});
+	mouse_position = event->pos();
 	update();
 }
