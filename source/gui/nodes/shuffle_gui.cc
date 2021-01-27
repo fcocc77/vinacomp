@@ -6,9 +6,11 @@ shuffle_gui::shuffle_gui(QVBoxLayout *controls_layout)
 	QHBoxLayout *main_layout = new QHBoxLayout(this);
 
 	QWidget *input_layer = new QWidget();
-	input_layer->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 	QVBoxLayout *input_layer_layout = new QVBoxLayout(input_layer);
+	input_layer_layout->setMargin(0);
+	input_layer->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 	QLabel *input_label = new QLabel("Input Layer");
+	input_label->setAlignment(Qt::AlignCenter);
 	input_layer_layout->addWidget(input_label);
 	input_layer_layout->addWidget(create_input());
 	input_layer_layout->addWidget(create_input());
@@ -16,7 +18,9 @@ shuffle_gui::shuffle_gui(QVBoxLayout *controls_layout)
 	QWidget *output_layer = new QWidget();
 	output_layer->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 	QVBoxLayout *output_layer_layout = new QVBoxLayout(output_layer);
+	output_layer_layout->setMargin(0);
 	QLabel *output_label = new QLabel("Output Layer");
+	output_label->setAlignment(Qt::AlignCenter);
 	output_layer_layout->addWidget(output_label);
 	output_layer_layout->addWidget(create_output());
 	output_layer_layout->addWidget(create_output());

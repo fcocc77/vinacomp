@@ -371,6 +371,12 @@ QSlider {
           color: #caced3; }
     #trim_panel #controls #shuffle_node > QWidget, #trim_panel #node_tab #shuffle_node > QWidget {
       background: none; }
+      #trim_panel #controls #shuffle_node > QWidget > QLabel, #trim_panel #node_tab #shuffle_node > QWidget > QLabel {
+        padding: 6px;
+        border: 1px solid #25282d;
+        border-radius: 3px;
+        background: #2c2f35;
+        font-weight: bold; }
     #trim_panel #controls #shuffle_node #input_channels, #trim_panel #controls #shuffle_node #output_channels, #trim_panel #node_tab #shuffle_node #input_channels, #trim_panel #node_tab #shuffle_node #output_channels {
       background: #292d32;
       border-radius: 3px;
