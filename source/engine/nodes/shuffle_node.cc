@@ -22,6 +22,9 @@ void shuffle_node::copy(QImage *src, QImage *dst, QList<int> channels_order)
 	bool blue = new_blue != 2;
 	bool alpha = new_alpha != 3;
 
+	if (!red && !green && !blue && !alpha)
+		return;
+
 	int channels = 4;
 	for (int y = 0; y < src->height(); y++)
 	{
