@@ -7,6 +7,7 @@
 #include <action.h>
 #include <curve_key_frame.h>
 #include <vinacomp_namespace.h>
+#include <curve_utils.h>
 
 class curve_view : public gl_view
 {
@@ -36,11 +37,6 @@ private:
     void orient_linear_handler(key_frame *key);
 
     QLineF get_handler_points(key_frame *key, bool infinite = false);
-    QPointF cubic_bezier(
-        QPointF p1, QPointF p2,
-        QPointF p3, QPointF p4,
-        float value);
-    //
     //
 
     // Popup

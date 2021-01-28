@@ -190,9 +190,38 @@ void shuffle_gui::changed(QString param_name)
 	int y = input_a->y() + 50;
 }
 
+void shuffle_gui::draw_bezier(QPainter &painter, QPoint src, QPoint dst)
+{
+	float distance_x = dst.x() - src.x();
+	float mid_distance_x = distance_x / 1.7;
+
+	QPointF middle_src = {src.x() + mid_distance_x, src.y()};
+	QPointF middle_dst = {dst.x() - mid_distance_x, dst.y()};
+
+	int divisions = 30;
+
+	QPointF last_point = src;
+	for (int i = 1; i <= divisions; i++)
+	{
+		float value = float(i) / divisions;
+		QPointF point = cubic_bezier(
+			QPointF(src),
+			middle_src,
+			middle_dst,
+			QPointF(dst),
+			value
+		);
+
+		painter.drawLine(last_point, point);
+		last_point = point;
+	}
+}
+
+
 void shuffle_gui::paintEvent(QPaintEvent *event)
 {
 	QPainter painter(this);
+	painter.setRenderHints(QPainter::Antialiasing);
 
 	int radius = 5;
 	int edge = 2;
@@ -212,13 +241,13 @@ void shuffle_gui::paintEvent(QPaintEvent *event)
 			if (conn.dragging)
 			{
 				painter.setBrush(QBrush(conn.color));
-				painter.drawLine(conn.position, mouse_position);
+				draw_bezier(painter, conn.position, mouse_position);
 			}
 			else if (conn.channel_output != -2)
 			{
 				painter.setBrush(QBrush(conn.color));
 				QPoint output_position = outputs_a[conn.channel_output].position;
-				painter.drawLine(conn.position, output_position);
+				draw_bezier(painter, conn.position, output_position);
 			}
 			else{
 				painter.setBrush(Qt::transparent);

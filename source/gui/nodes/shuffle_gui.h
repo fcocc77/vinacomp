@@ -5,6 +5,7 @@
 
 #include <node_gui.h>
 #include <combo_box.h>
+#include <curve_utils.h>
 
 struct in_connector
 {
@@ -37,6 +38,7 @@ private:
 	void init_connectors();
 	QWidget *create_input();
 	QWidget *create_output();
+	void draw_bezier(QPainter &painter, QPoint src, QPoint dst);
 public:
 	shuffle_gui(QVBoxLayout *controls_layout);
 	~shuffle_gui();
