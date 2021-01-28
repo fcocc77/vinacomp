@@ -1,7 +1,10 @@
 #include <shuffle_gui.h>
 
 shuffle_gui::shuffle_gui(QVBoxLayout *controls_layout)
+	: dragging(false)
 {
+	init_connectors();
+
 	this->setObjectName("shuffle_node");
 	QHBoxLayout *main_layout = new QHBoxLayout(this);
 
@@ -30,8 +33,8 @@ shuffle_gui::shuffle_gui(QVBoxLayout *controls_layout)
 	output_label->setAlignment(Qt::AlignCenter);
 	output_layer_layout->addWidget(output_label);
 
-	output_a = create_output();
-	output_b = create_output();
+	output_a = create_output("a");
+	output_b = create_output("b");
 	output_layer_layout->addWidget(output_a);
 	output_layer_layout->addWidget(output_b);
 	//
@@ -47,7 +50,6 @@ shuffle_gui::shuffle_gui(QVBoxLayout *controls_layout)
 
 	controls_layout->addWidget(this);
 
-	init_connectors();
 	restore_connections();
 }
 
@@ -56,19 +58,18 @@ shuffle_gui::~shuffle_gui(){}
 void shuffle_gui::restore_connections()
 {
 	// ! estos datos tienen que venir del proyecto
-	QList <int> inputs = {0, 2, 1, -1};
+	QList <int> in_a = {0, 2, 1, -1};
 	//
 
-	int red_input = inputs[0];
-	int green_input = inputs[1];
-	int blue_input = inputs[2];
-	int alpha_input = inputs[3];
+	int red_input = in_a[0];
+	int green_input = in_a[1];
+	int blue_input = in_a[2];
+	int alpha_input = in_a[3];
 
-	connect_channel(0, red_input);
-	connect_channel(1, green_input);
-	connect_channel(2, blue_input);
-	connect_channel(3, alpha_input);
-
+	connect_channel("a", 0, red_input);
+	connect_channel("a", 1, green_input);
+	connect_channel("a", 2, blue_input);
+	connect_channel("a", 3, alpha_input);
 }
 
 void shuffle_gui::init_connectors()
@@ -78,25 +79,33 @@ void shuffle_gui::init_connectors()
 	QColor blue = {30, 70, 255};
 	QColor white = {200, 200, 200};
 
-	inputs_a.push_back({false, false, {0, 0}, red, -2});
-	inputs_a.push_back({false, false, {0, 0}, green, -2});
-	inputs_a.push_back({false, false, {0, 0}, blue, -2});
-	inputs_a.push_back({false, false, {0, 0}, white, -2});
+	QList <in_connector> in_a;
+	in_a.push_back({false, false, {0, 0}, red, -2});
+	in_a.push_back({false, false, {0, 0}, green, -2});
+	in_a.push_back({false, false, {0, 0}, blue, -2});
+	in_a.push_back({false, false, {0, 0}, white, -2});
+	inputs.insert("a", in_a);
 
-	inputs_b.push_back({false, false, {0, 0}, red, -2});
-	inputs_b.push_back({false, false, {0, 0}, green, -2});
-	inputs_b.push_back({false, false, {0, 0}, blue, -2});
-	inputs_b.push_back({false, false, {0, 0}, white, -2});
+	QList <in_connector> in_b;
+	in_b.push_back({false, false, {0, 0}, red, -2});
+	in_b.push_back({false, false, {0, 0}, green, -2});
+	in_b.push_back({false, false, {0, 0}, blue, -2});
+	in_b.push_back({false, false, {0, 0}, white, -2});
+	inputs.insert("b", in_b);
 
-	outputs_a.push_back({false, {0, 0}, red, -1, false});
-	outputs_a.push_back({false, {0, 0}, green, -1, false});
-	outputs_a.push_back({false, {0, 0}, blue, -1, false});
-	outputs_a.push_back({false, {0, 0}, white, -1, false});
+	QList <out_connector> out_a;
+	out_a.push_back({false, {0, 0}, red, -1, false, nullptr, nullptr});
+	out_a.push_back({false, {0, 0}, green, -1, false, nullptr, nullptr});
+	out_a.push_back({false, {0, 0}, blue, -1, false, nullptr, nullptr});
+	out_a.push_back({false, {0, 0}, white, -1, false, nullptr, nullptr});
+	outputs.insert("a", out_a);
 
-	outputs_b.push_back({false, {0, 0}, red, -1, false});
-	outputs_b.push_back({false, {0, 0}, green, -1, false});
-	outputs_b.push_back({false, {0, 0}, blue, -1, false});
-	outputs_b.push_back({false, {0, 0}, white, -1, false});
+	QList <out_connector> out_b;
+	out_b.push_back({false, {0, 0}, red, -1, false, nullptr, nullptr});
+	out_b.push_back({false, {0, 0}, green, -1, false, nullptr, nullptr});
+	out_b.push_back({false, {0, 0}, blue, -1, false, nullptr, nullptr});
+	out_b.push_back({false, {0, 0}, white, -1, false, nullptr, nullptr});
+	outputs.insert("b", out_b);
 }
 
 QWidget *shuffle_gui::create_input()
@@ -151,7 +160,7 @@ QWidget *shuffle_gui::create_input()
 }
 
 
-QWidget *shuffle_gui::create_output()
+QWidget *shuffle_gui::create_output(QString letter)
 {
 	QWidget *output = new QWidget();
 	output->setMaximumWidth(200);
@@ -166,7 +175,7 @@ QWidget *shuffle_gui::create_output()
 	});
 	layer_box->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-	auto create_output_channel = [=](QString label)
+	auto create_output_channel = [=](QString label, int index)
 	{
 		QWidget *widget = new QWidget();
 		widget->setObjectName("output");
@@ -178,14 +187,25 @@ QWidget *shuffle_gui::create_output()
 		channel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
 		QPushButton *black_button = new QPushButton();
+		connect(black_button, &QPushButton::clicked, this, [=]() {
+			connect_channel(letter, -1, index);
+			update();
+		});
 		black_button->setProperty("connected", false);
 		black_button->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 		black_button->setObjectName("cblack");
 
 		QPushButton *white_button = new QPushButton();
+		connect(white_button, &QPushButton::clicked, this, [=]() {
+			connect_channel(letter, -2, index);
+			update();
+		});
 		white_button->setProperty("connected", false);
 		white_button->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 		white_button->setObjectName("cwhite");
+
+		outputs[letter][index].black_button = black_button;
+		outputs[letter][index].white_button = white_button;
 
 		layout->addWidget(black_button);
 		layout->addWidget(white_button);
@@ -195,10 +215,10 @@ QWidget *shuffle_gui::create_output()
 	};
 
 	output_layout->addWidget(layer_box);
-	create_output_channel("rgba.red");
-	create_output_channel("rgba.green");
-	create_output_channel("rgba.blue");
-	create_output_channel("rgba.alpha");
+	create_output_channel("rgba.red", 0);
+	create_output_channel("rgba.green", 1);
+	create_output_channel("rgba.blue", 2);
+	create_output_channel("rgba.alpha", 3);
 
 	return output;
 }
@@ -209,9 +229,12 @@ void shuffle_gui::changed(QString param_name)
 	int y = input_a->y() + 50;
 }
 
-void shuffle_gui::disconnect_channel(int in_index)
+void shuffle_gui::disconnect_channel(QString letter, int in_index)
 {
-	in_connector &input_ch = inputs_a[in_index];
+	if (in_index < 0 || in_index > 3)
+		return;
+
+	in_connector &input_ch = inputs[letter][in_index];
 
 	if (input_ch.connected)
 	{
@@ -219,7 +242,7 @@ void shuffle_gui::disconnect_channel(int in_index)
 		int out_index = input_ch.ch_output;
 		if (out_index >= 0 && out_index <= 3)
 		{
-			out_connector &output_ch = outputs_a[out_index];
+			out_connector &output_ch = outputs[letter][out_index];
 			output_ch.connected = false;
 			output_ch.fill = false;
 			output_ch.ch_input = -2;
@@ -233,23 +256,62 @@ void shuffle_gui::disconnect_channel(int in_index)
 	}
 }
 
-void shuffle_gui::connect_channel(int in_index, int out_index)
+void shuffle_gui::set_bw_button(QString letter, int index, bool black, bool white)
 {
-	in_connector &input_ch = inputs_a[in_index];
-	out_connector &output_ch = outputs_a[out_index];
+	out_connector &output_ch = outputs[letter][index];
+
+	if (black)
+	{
+		output_ch.black_button->setProperty("connected", true);
+		output_ch.white_button->setProperty("connected", false);
+	}
+	else if (white)
+	{
+		output_ch.white_button->setProperty("connected", true);
+		output_ch.black_button->setProperty("connected", false);
+	}
+}
+
+void shuffle_gui::connect_channel(QString letter, int in_index, int out_index)
+{
+	in_connector &input_ch = inputs[letter][in_index];
+	out_connector &output_ch = outputs[letter][out_index];
 
 	// si la entrada conectada es la misma a la actual, retorna
-	if (input_ch.connected)
-		if (input_ch.ch_output == out_index)
-			return;
+	if (in_index >= 0 && in_index <= 3)
+		if (input_ch.connected)
+			if (input_ch.ch_output == out_index)
+				return;
 	//
 
-	disconnect_channel(in_index);
+	disconnect_channel(letter, in_index);
 	if (out_index < 0 || out_index > 3)
+		return;
+
+	// si la entrada es -1 o -2 que son blanco y negro,
+	// desconecta la entrada y activa el boton correspondiente
+	if (in_index == -2)
 	{
-		// si el output index no esta dentro de 0 - 3, desconecta la entrada
+		output_ch.white_button->setProperty("connected", true);
+		output_ch.black_button->setProperty("connected", false);
 		return;
 	}
+	else if (in_index == -1)
+	{
+		output_ch.black_button->setProperty("connected", true);
+		output_ch.white_button->setProperty("connected", false);
+		return;
+	}
+	else
+	{
+		output_ch.white_button->setProperty("connected", false);
+		output_ch.black_button->setProperty("connected", false);
+	}
+	//
+	//
+
+
+
 
 	input_ch.connected = true;
 	input_ch.ch_output = out_index;
@@ -257,7 +319,7 @@ void shuffle_gui::connect_channel(int in_index, int out_index)
 	// desconecta la salida actual del input, ya que en el output no puede
 	// haber mas de 1 entrada a la vez
 	if (output_ch.connected)
-		inputs_a[output_ch.ch_input].ch_output = -2;
+		inputs[letter][output_ch.ch_input].ch_output = -2;
 	//
 
 	//
@@ -303,8 +365,9 @@ void shuffle_gui::paintEvent(QPaintEvent *event)
 	int radius = 5;
 	int edge = 2;
 
-	auto draw_in_connector = [=](QList<in_connector> &_connectors, QPoint position, QPainter &painter)
+	auto draw_in_connector = [=](QString letter, QPoint position, QPainter &painter)
 	{
+		auto &_connectors = inputs[letter];
 		int x = position.x();
 		int y = position.y();
 
@@ -323,7 +386,7 @@ void shuffle_gui::paintEvent(QPaintEvent *event)
 			else if (conn.ch_output != -2)
 			{
 				painter.setBrush(QBrush(conn.color));
-				QPoint output_position = outputs_a[conn.ch_output].position;
+				QPoint output_position = outputs[letter][conn.ch_output].position;
 				draw_bezier(painter, conn.position, output_position);
 			}
 			else{
@@ -334,8 +397,9 @@ void shuffle_gui::paintEvent(QPaintEvent *event)
 		}
 	};
 
-	auto draw_out_connector = [=](QList<out_connector> &_connectors, QPoint position, QPainter &painter)
+	auto draw_out_connector = [=](QString letter, QPoint position, QPainter &painter)
 	{
+		auto &_connectors = outputs[letter];
 		int x = position.x();
 		int y = position.y();
 
@@ -357,25 +421,26 @@ void shuffle_gui::paintEvent(QPaintEvent *event)
 	int in_x = input_a->x() + input_a->width() + 20;
 	int ay = input_a->y() + 30;
 	int by = input_b->y() + 30;
-	draw_in_connector(inputs_a, {in_x, ay}, painter);
-	draw_in_connector(inputs_b, {in_x, by}, painter);
+	draw_in_connector("a", {in_x, ay}, painter);
+	draw_in_connector("b", {in_x, by}, painter);
 
 	int out_x = this->width() - 220;
 	int out_ay = output_a->y() + 30;
 	int out_by = output_b->y() + 30;
-	draw_out_connector(outputs_a, {out_x, out_ay}, painter);
-	draw_out_connector(outputs_b, {out_x, out_by}, painter);
+	draw_out_connector("a", {out_x, out_ay}, painter);
+	draw_out_connector("b", {out_x, out_by}, painter);
 
 	QWidget::paintEvent(event);
 }
 
-int shuffle_gui::get_output_index(QPoint position)
+int shuffle_gui::get_output_index(QString letter, QPoint position)
 {
 	// obtiene el index del conector de salida a partir de la position
+	auto &_outputs = outputs[letter];
 	int out_index = -2;
-	for (int i = 0; i < outputs_a.count(); i++)
+	for (int i = 0; i < _outputs.count(); i++)
 	{
-		out_connector &conn = outputs_a[i];
+		out_connector &conn = _outputs[i];
 		int x = conn.position.x();
 		int y = conn.position.y();
 		float distance = qt::distance_points({x, y}, {position.x(), position.y()});
@@ -389,12 +454,13 @@ int shuffle_gui::get_output_index(QPoint position)
 	return out_index;
 }
 
-int shuffle_gui::get_input_index(QPoint position)
+int shuffle_gui::get_input_index(QString letter, QPoint position)
 {
+	auto &_inputs = inputs[letter];
 	int index = -2;
-	for (int i = 0; i < inputs_a.count(); i++)
+	for (int i = 0; i < _inputs.count(); i++)
 	{
-		in_connector &conn = inputs_a[i];
+		in_connector &conn = _inputs[i];
 
 		int x = conn.position.x();
 		int y = conn.position.y();
@@ -413,31 +479,58 @@ void shuffle_gui::resizeEvent(QResizeEvent *event)
 	update();
 }
 
+void shuffle_gui::mouseDoubleClickEvent(QMouseEvent *event)
+{
+	for (QString letter : {"a", "b"})
+	{
+		int in_index = get_input_index(letter, event->pos());
+		int out_index = get_output_index(letter, event->pos());
+
+		if (in_index == 0 || out_index == 0) connect_channel(letter, 0, 0);
+		if (in_index == 1 || out_index == 1) connect_channel(letter, 1, 1);
+		if (in_index == 2 || out_index == 2) connect_channel(letter, 2, 2);
+		if (in_index == 3 || out_index == 3) connect_channel(letter, 3, 3);
+	}
+}
+
 void shuffle_gui::mousePressEvent(QMouseEvent *event)
 {
 	mouse_position = event->pos();
 
-	int input_index = get_input_index(event->pos());
-	if (input_index >= 0 && input_index <= 3)
-		inputs_a[input_index].dragging = true;
+	for (QString letter : {"a", "b"})
+	{
+		int input_index = get_input_index(letter, event->pos());
+		if (input_index >= 0 && input_index <= 3)
+		{
+			inputs[letter][input_index].dragging = true;
+			dragging = true;
+		}
+	}
 
 	update();
 }
 
-void shuffle_gui::mouseReleaseEvent(QMouseEvent *event) 
+void shuffle_gui::mouseReleaseEvent(QMouseEvent *event)
 {
-	int out_index = get_output_index(event->pos());
 
 	// conecta el canal de salida y desabilita el arrastre en todas las entradas
-	for (int i = 0; i < inputs_a.count(); i++)
+	for (QString letter : {"a", "b"})
 	{
-		in_connector &conn = inputs_a[i];
+		int out_index = get_output_index(letter, event->pos());
 
-		if (conn.dragging)
-			connect_channel(i, out_index);
+		auto &_inputs = inputs[letter];
+		for (int i = 0; i < _inputs.count(); i++)
+		{
+			in_connector &conn = _inputs[i];
 
-		conn.dragging = false;
+			if (conn.dragging)
+				connect_channel(letter, i, out_index);
+
+			conn.dragging = false;
+		}
 	}
+
+	dragging = false;
 
 	update();
 }
@@ -448,15 +541,22 @@ void shuffle_gui::mouseMoveEvent(QMouseEvent *event)
 
 	// si la salida no esta connectada, quita el rellono del circulo
 	// a todas las salidas.
-	for (out_connector &conn : outputs_a)
-		if (!conn.connected)
-			conn.fill = false;
+	for (QString letter : {"a", "b"})
+		for (out_connector &conn : outputs[letter])
+			if (!conn.connected)
+				conn.fill = false;
 	//
 
 	// si el output existe rellena el circulo
-	int out_index = get_output_index(event->pos());
-	if (out_index >= 0 && out_index <= 3)
-		outputs_a[out_index].fill = true;
+	if (dragging)
+	{
+		for (QString letter : {"a", "b"})
+		{
+			int out_index = get_output_index(letter, event->pos());
+			if (out_index >= 0 && out_index <= 3)
+				outputs[letter][out_index].fill = true;
+		}
+	}
 	//
 
 	update();

@@ -23,6 +23,8 @@ struct out_connector
 	QColor color;
 	int ch_input;
 	bool fill; // relleno de circulo
+	QPushButton *black_button;
+	QPushButton *white_button;
 };
 
 class shuffle_gui : public node_gui
@@ -32,20 +34,22 @@ private:
 	QLine line;
 
 	QWidget *input_a, *input_b, *output_a, *output_b;
-	QList <in_connector> inputs_a, inputs_b;
-	QList <out_connector> outputs_a, outputs_b;
+	QMap <QString, QList <in_connector>> inputs;
+	QMap <QString, QList <out_connector>> outputs;
 
 	QPoint mouse_position;
+	bool dragging;
 
 	void init_connectors();
 	QWidget *create_input();
-	QWidget *create_output();
+	QWidget *create_output(QString letter);
 	void draw_bezier(QPainter &painter, QPoint src, QPoint dst);
-	void connect_channel(int in_index, int out_index);
-	void disconnect_channel(int in_index);
+	void connect_channel(QString letter, int in_index, int out_index);
+	void disconnect_channel(QString letter, int in_index);
 	void restore_connections();
-	int get_output_index(QPoint position);
-	int get_input_index(QPoint position);
+	int get_output_index(QString letter, QPoint position);
+	int get_input_index(QString letter, QPoint position);
+	void set_bw_button(QString letter, int index, bool black, bool white);
 public:
 	shuffle_gui(QVBoxLayout *controls_layout);
 	~shuffle_gui();
@@ -55,6 +59,7 @@ public:
 protected:
 	void paintEvent(QPaintEvent *event) override;
 	void resizeEvent(QResizeEvent *event) override;
+	void mouseDoubleClickEvent(QMouseEvent *event) override;
 	void mouseMoveEvent(QMouseEvent *event) override;
 	void mouseReleaseEvent(QMouseEvent *event) override;
 	void mousePressEvent(QMouseEvent *event) override;
