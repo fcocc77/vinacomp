@@ -13,7 +13,9 @@ struct in_connector
 	bool dragging;
 	QPoint position;
 	QColor color;
-	int ch_output;
+	const QString layer;
+	QString out_layer;
+	int output;
 };
 
 struct out_connector
@@ -21,7 +23,8 @@ struct out_connector
 	bool connected;
 	QPoint position;
 	QColor color;
-	int ch_input;
+	QString in_layer;
+	int input;
 	bool fill; // relleno de circulo
 	QPushButton *black_button;
 	QPushButton *white_button;
@@ -42,14 +45,14 @@ private:
 
 	void init_connectors();
 	QWidget *create_input();
-	QWidget *create_output(QString letter);
+	QWidget *create_output(QString layer);
 	void draw_bezier(QPainter &painter, QPoint src, QPoint dst);
-	void connect_channel(QString letter, int in_index, int out_index);
-	void disconnect_channel(QString letter, int in_index);
+	void connect_channel(QString in_layer, int in_index, QString out_layer, int out_index);
+	void disconnect_channel(QString layer, int in_index);
 	void restore_connections();
-	int get_output_index(QString letter, QPoint position);
-	int get_input_index(QString letter, QPoint position);
-	void set_bw_button(QString letter, int index, bool black, bool white);
+	int get_output_index(QString layer, QPoint position);
+	int get_input_index(QString layer, QPoint position);
+	void set_bw_button(QString layer, int index, bool black, bool white);
 public:
 	shuffle_gui(QVBoxLayout *controls_layout);
 	~shuffle_gui();
