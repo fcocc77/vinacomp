@@ -6,10 +6,18 @@
 #include <node_gui.h>
 #include <combo_box.h>
 
-struct connectors
+struct in_connector
 {
 	bool connected;
 	bool dragging;
+	QPoint position;
+	QColor color;
+	int channel_output;
+};
+
+struct out_connector
+{
+	bool connected;
 	QPoint position;
 	QColor color;
 };
@@ -21,7 +29,8 @@ private:
 	QLine line;
 
 	QWidget *input_a, *input_b, *output_a, *output_b;
-	QList <connectors> inputs_a, inputs_b, outputs_a, outputs_b;
+	QList <in_connector> inputs_a, inputs_b;
+	QList <out_connector> outputs_a, outputs_b;
 
 	QPoint mouse_position;
 
