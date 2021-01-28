@@ -13,7 +13,7 @@ struct in_connector
 	bool dragging;
 	QPoint position;
 	QColor color;
-	int channel_output;
+	int ch_output;
 };
 
 struct out_connector
@@ -21,6 +21,8 @@ struct out_connector
 	bool connected;
 	QPoint position;
 	QColor color;
+	int ch_input;
+	bool fill; // relleno de circulo
 };
 
 class shuffle_gui : public node_gui
@@ -39,6 +41,11 @@ private:
 	QWidget *create_input();
 	QWidget *create_output();
 	void draw_bezier(QPainter &painter, QPoint src, QPoint dst);
+	void connect_channel(int in_index, int out_index);
+	void disconnect_channel(int in_index);
+	void restore_connections();
+	int get_output_index(QPoint position);
+	int get_input_index(QPoint position);
 public:
 	shuffle_gui(QVBoxLayout *controls_layout);
 	~shuffle_gui();
@@ -47,6 +54,7 @@ public:
 
 protected:
 	void paintEvent(QPaintEvent *event) override;
+	void resizeEvent(QResizeEvent *event) override;
 	void mouseMoveEvent(QMouseEvent *event) override;
 	void mouseReleaseEvent(QMouseEvent *event) override;
 	void mousePressEvent(QMouseEvent *event) override;
