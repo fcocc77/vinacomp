@@ -259,17 +259,33 @@ void shuffle_gui::disconnect_channel(QString letter, int in_index)
 void shuffle_gui::set_bw_button(QString letter, int index, bool black, bool white)
 {
 	out_connector &output_ch = outputs[letter][index];
+	QPushButton *white_bt = output_ch.white_button;
+	QPushButton *black_bt = output_ch.black_button;
 
 	if (black)
 	{
-		output_ch.black_button->setProperty("connected", true);
-		output_ch.white_button->setProperty("connected", false);
+		black_bt->setProperty("connected", true);
+		white_bt->setProperty("connected", false);
 	}
 	else if (white)
 	{
-		output_ch.white_button->setProperty("connected", true);
-		output_ch.black_button->setProperty("connected", false);
+		white_bt->setProperty("connected", true);
+		black_bt->setProperty("connected", false);
 	}
+	else
+	{
+		white_bt->setProperty("connected", false);
+		black_bt->setProperty("connected", false);
+	}
+
+	// actualiza botones en el stylesheet
+	white_bt->style()->unpolish(white_bt);
+	white_bt->style()->polish(white_bt);
+	white_bt->update();
+
+	black_bt->style()->unpolish(black_bt);
+	black_bt->style()->polish(black_bt);
+	black_bt->update();
 }
 
 void shuffle_gui::connect_channel(QString letter, int in_index, int out_index)
@@ -292,26 +308,22 @@ void shuffle_gui::connect_channel(QString letter, int in_index, int out_index)
 	// desconecta la entrada y activa el boton correspondiente
 	if (in_index == -2)
 	{
-		output_ch.white_button->setProperty("connected", true);
-		output_ch.black_button->setProperty("connected", false);
+		disconnect_channel(letter, output_ch.ch_input);
+		set_bw_button(letter, out_index, false, true);
 		return;
 	}
 	else if (in_index == -1)
 	{
-		output_ch.black_button->setProperty("connected", true);
-		output_ch.white_button->setProperty("connected", false);
+		disconnect_channel(letter, output_ch.ch_input);
+		set_bw_button(letter, out_index, true, false);
 		return;
 	}
 	else
 	{
-		output_ch.white_button->setProperty("connected", false);
-		output_ch.black_button->setProperty("connected", false);
+		set_bw_button(letter, out_index, false, false);
 	}
 	//
 	//
-
-
-
 
 	input_ch.connected = true;
 	input_ch.ch_output = out_index;
