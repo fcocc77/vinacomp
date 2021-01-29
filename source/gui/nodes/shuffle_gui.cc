@@ -58,18 +58,18 @@ shuffle_gui::~shuffle_gui(){}
 void shuffle_gui::restore_connections()
 {
 	// ! estos datos tienen que venir del proyecto
-	QList <int> in_a = {0, 2, 1, -1};
+	QList <int> in_a = {2, 2, 2, -1};
 	//
 
-	int red_input = in_a[0];
-	int green_input = in_a[1];
-	int blue_input = in_a[2];
-	int alpha_input = in_a[3];
+	int red_src = in_a[0];
+	int green_src = in_a[1];
+	int blue_src = in_a[2];
+	int alpha_src = in_a[3];
 
-	connect_channel("a", 0, "a", red_input);
-	connect_channel("a", 1, "a", green_input);
-	connect_channel("a", 2, "a", blue_input);
-	connect_channel("a", 3, "a", alpha_input);
+	connect_channel("a", red_src, "a", 0);
+	connect_channel("a", green_src, "a", 1);
+	connect_channel("a", blue_src, "a", 2);
+	connect_channel("a", alpha_src, "a", 3);
 }
 
 void shuffle_gui::init_connectors()
@@ -333,7 +333,6 @@ void shuffle_gui::connect_channel(QString in_layer, int in_index, QString out_la
 	//
 	//
 
-	print(in_index);
 	input_ch.connected = true;
 	input_ch.output = out_index;
 	input_ch.out_layer = out_layer;
