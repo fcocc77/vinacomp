@@ -45,6 +45,8 @@ public:
 	void set_bw_button(bool _black, bool _white);
 	void connect_input(connector *in_conn);
 	void disconnect();
+
+	connector *get_in_connector() const;
 };
 
 

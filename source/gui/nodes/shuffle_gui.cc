@@ -136,6 +136,20 @@ void shuffle_gui::mousePressEvent(QMouseEvent *event)
 	if (dragging_input)
 		dragging = true;
 
+	// si es que el click fue hecho en una salida, y si la salida esta conectada,
+	// arrastra la estrada conectada.
+	out_connector *out_conn = get_out_connector(event->pos());
+	if (out_conn)
+	{
+		if (out_conn->is_connected())
+		{
+			dragging_input = dynamic_cast<in_connector*>(out_conn->get_in_connector());
+			dragging = true;
+			out_conn->disconnect();
+		}
+	}
+	//
+
 	update();
 }
 

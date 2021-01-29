@@ -125,6 +125,11 @@ void out_connector::set_bw_button(bool _black, bool _white)
 	parent->update();
 }
 
+connector *out_connector::get_in_connector() const
+{
+	return in_conn;
+}
+
 in_connector::in_connector(QString _layer, int _index,  QString label, QColor _color)
 	: connector(_layer, _index, _color)
 {
