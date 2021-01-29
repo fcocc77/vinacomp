@@ -235,7 +235,7 @@ void shuffle_gui::changed(QString param_name)
 
 void shuffle_gui::disconnect_channel(QString layer, int in_index)
 {
-	if (in_index < 0 || in_index > 3)
+	if (in_index < 0 || in_index > 3 || layer.isEmpty())
 		return;
 
 	in_connector &input_ch = inputs[layer][in_index];
@@ -295,6 +295,9 @@ void shuffle_gui::set_bw_button(QString layer, int index, bool black, bool white
 
 void shuffle_gui::connect_channel(QString in_layer, int in_index, QString out_layer, int out_index)
 {
+	if (in_index == -3)
+		return;
+
 	in_connector &input_ch = inputs[in_layer][in_index];
 	out_connector &output_ch = outputs[out_layer][out_index];
 
@@ -330,6 +333,7 @@ void shuffle_gui::connect_channel(QString in_layer, int in_index, QString out_la
 	//
 	//
 
+	print(in_index);
 	input_ch.connected = true;
 	input_ch.output = out_index;
 	input_ch.out_layer = out_layer;
@@ -337,7 +341,7 @@ void shuffle_gui::connect_channel(QString in_layer, int in_index, QString out_la
 	// desconecta la salida actual del input, ya que en el output no puede
 	// haber mas de 1 entrada a la vez
 	if (output_ch.connected)
-		inputs[out_layer][output_ch.input].output = -2;
+		inputs[output_ch.in_layer][output_ch.input].output = -2;
 	//
 
 	//
@@ -533,7 +537,7 @@ void shuffle_gui::mouseReleaseEvent(QMouseEvent *event)
 {
 
 	// encuentra la entrada de origen que se esta arrastrando para conectar
-	int src_index = -1;
+	int src_index = -3;
 	QString src_layer = "";
 
 	for (QString in_layer : {"a", "b"})
