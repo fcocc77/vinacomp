@@ -6,63 +6,109 @@
 #include <node_gui.h>
 #include <combo_box.h>
 #include <curve_utils.h>
+#include <util.h>
 
-struct in_connector
+class connector : public QWidget
 {
-	bool connected;
-	bool dragging;
+private:
 	QPoint position;
-	QColor color;
+	const QColor color;
 	const QString layer;
-	QString out_layer;
-	int output;
+public:
+	connector(QString layer, QColor color);
+
+	QColor get_color() const;
+	QPoint get_position() const;
+	void set_position(QPoint _position);
+	bool is_connected() const;
+	void set_connected(bool _connected);
+protected:
+	bool connected;
 };
 
-struct out_connector
+class out_connector : public connector
 {
-	bool connected;
-	QPoint position;
-	QColor color;
-	QString in_layer;
-	int input;
-	bool fill; // relleno de circulo
+private:
+	connector *in_conn;
 	QPushButton *black_button;
 	QPushButton *white_button;
+public:
+	out_connector(QString layer, QString label, QColor color);
+	~out_connector();
+
+	void connect_input(connector *in_conn);
+	void disconnect();
+};
+
+
+class in_connector : public connector
+{
+private:
+	QList <out_connector*> outputs;
+public:
+	in_connector(QString layer, QString label, QColor color);
+	~in_connector();
+
+	QList <out_connector*> get_outputs() const;
+	void connect_output(out_connector *out_conn);
+	void disconnect(out_connector *out_conn);
+};
+
+class in_layer : public QWidget
+{
+private:
+	in_connector *red_connector;
+	in_connector *green_connector;
+	in_connector *blue_connector;
+	in_connector *alpha_connector;
+public:
+	in_layer(QString layer);
+	~in_layer();
+
+	QList<in_connector*> get_connectors() const;
+};
+
+class out_layer : public QWidget
+{
+private:
+	out_connector *red_connector;
+	out_connector *green_connector;
+	out_connector *blue_connector;
+	out_connector *alpha_connector;
+public:
+	out_layer(QString layer);
+	~out_layer();
+
+	QList<out_connector*> get_connectors() const;
 };
 
 class shuffle_gui : public node_gui
 {
 private:
 	QWidget *connection_viewer;
-	QLine line;
 
-	QWidget *input_a, *input_b, *output_a, *output_b;
-	QMap <QString, QList <in_connector>> inputs;
-	QMap <QString, QList <out_connector>> outputs;
+	// capas
+	in_layer *in_layer_a;
+	in_layer *in_layer_b;
+	out_layer *out_layer_a;
+	out_layer *out_layer_b;
+	//
 
+	in_connector *dragging_input;
 	QPoint mouse_position;
 	bool dragging;
 
-	void init_connectors();
-	QWidget *create_input();
-	QWidget *create_output(QString layer);
 	void draw_bezier(QPainter &painter, QPoint src, QPoint dst);
-	void connect_channel(QString in_layer, int in_index, QString out_layer, int out_index);
-	void disconnect_channel(QString layer, int in_index);
-	void restore_connections();
-	int get_output_index(QString layer, QPoint position);
-	int get_input_index(QString layer, QPoint position);
-	void set_bw_button(QString layer, int index, bool black, bool white);
+	in_connector *get_in_connector(QPoint position) const;
+	out_connector *get_out_connector(QPoint position) const;
 public:
 	shuffle_gui(QVBoxLayout *controls_layout);
 	~shuffle_gui();
 
-	void changed(QString param_name) override;
 
 protected:
 	void paintEvent(QPaintEvent *event) override;
-	void resizeEvent(QResizeEvent *event) override;
-	void mouseDoubleClickEvent(QMouseEvent *event) override;
+	// void mouseDoubleClickEvent(QMouseEvent *event) override;
 	void mouseMoveEvent(QMouseEvent *event) override;
 	void mouseReleaseEvent(QMouseEvent *event) override;
 	void mousePressEvent(QMouseEvent *event) override;
