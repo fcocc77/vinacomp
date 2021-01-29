@@ -77,10 +77,10 @@ void shuffle_gui::paintEvent(QPaintEvent *event)
 		{
 			painter.setPen(QPen(conn->get_color(), edge));
 
-			// if (conn.fill)
+			if (conn->is_connected())
 				painter.setBrush(QBrush(conn->get_color()));
-			// else
-				// painter.setBrush(Qt::transparent);
+			else
+				painter.setBrush(Qt::transparent);
 
 			y += 20;
 			QPoint position = {x, y};

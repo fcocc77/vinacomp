@@ -1,14 +1,25 @@
 #include <shuffle_gui.h>
 
-connector::connector(QString _layer, QColor _color)
+connector::connector(QString _layer, int _index, QColor _color)
 	: layer(_layer)
 	, color(_color)
 	, connected(false)
+	, index(_index)
 { }
 
 QColor connector::get_color() const
 {
 	return color;
+}
+
+QString connector::get_layer() const
+{
+	return layer;
+}
+
+int connector::get_index() const
+{
+	return index;
 }
 
 QPoint connector::get_position() const
@@ -31,8 +42,9 @@ void connector::set_connected(bool _connected)
 	connected = _connected;
 }
 
-out_connector::out_connector(QString _layer, QString label, QColor _color)
-	: connector(_layer, _color)
+out_connector::out_connector(node_gui *_parent, QString _layer, int _index, QString label, QColor _color)
+	: parent(_parent)
+	, connector(_layer, _index, _color)
 {
 	this->setObjectName("output");
 	QHBoxLayout *layout = new QHBoxLayout(this);
@@ -44,19 +56,15 @@ out_connector::out_connector(QString _layer, QString label, QColor _color)
 
 	black_button = new QPushButton();
 	connect(black_button, &QPushButton::clicked, this, [=]() {
-		// connect_channel(layer, -1, layer, index);
-		// update();
+		set_bw_button(true, false);
 	});
-	black_button->setProperty("connected", false);
 	black_button->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 	black_button->setObjectName("cblack");
 
 	white_button = new QPushButton();
 	connect(white_button, &QPushButton::clicked, this, [=]() {
-		// connect_channel(layer, -2, layer, index);
-		// update();
+		set_bw_button(false, true);
 	});
-	white_button->setProperty("connected", false);
 	white_button->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 	white_button->setObjectName("cwhite");
 
@@ -64,6 +72,7 @@ out_connector::out_connector(QString _layer, QString label, QColor _color)
 	layout->addWidget(white_button);
 	layout->addWidget(channel);
 
+	set_bw_button(false, false);
 }
 
 out_connector::~out_connector() { }
@@ -75,6 +84,8 @@ void out_connector::connect_input(connector *_in_conn)
 	// si es que la salida esta conectada, la desconecta antes de conectar la otra
 	disconnect();
 	//
+
+	set_bw_button(false, false);
 
 	in_conn = _in_conn;
 	set_connected(true);
@@ -92,8 +103,30 @@ void out_connector::disconnect()
 	set_connected(false);
 }
 
-in_connector::in_connector(QString _layer, QString label, QColor _color)
-	: connector(_layer, _color)
+void out_connector::set_bw_button(bool _black, bool _white)
+{
+	disconnect();
+	black = _black;
+	white = _white;
+
+	white_button->setProperty("connected", white);
+	black_button->setProperty("connected", black);
+
+	// actualiza botones en el stylesheet
+	white_button->style()->unpolish(white_button);
+	white_button->style()->polish(white_button);
+	white_button->update();
+
+	black_button->style()->unpolish(black_button);
+	black_button->style()->polish(black_button);
+	black_button->update();
+	//
+
+	parent->update();
+}
+
+in_connector::in_connector(QString _layer, int _index,  QString label, QColor _color)
+	: connector(_layer, _index, _color)
 {
 	this->setObjectName("input");
 	QHBoxLayout *layout = new QHBoxLayout(this);
@@ -160,10 +193,10 @@ in_layer::in_layer(QString layer)
 	QColor blue_color = {30, 70, 255};
 	QColor white_color = {200, 200, 200};
 
-	red_connector = new in_connector(layer, "rgba.red", red_color);
-	green_connector = new in_connector(layer, "rgba.green", green_color);
-	blue_connector = new in_connector(layer, "rgba.blue", blue_color);
-	alpha_connector = new in_connector(layer, "rgba.alhpa", white_color);
+	red_connector = new in_connector(layer, 0, "rgba.red", red_color);
+	green_connector = new in_connector(layer, 1, "rgba.green", green_color);
+	blue_connector = new in_connector(layer, 2, "rgba.blue", blue_color);
+	alpha_connector = new in_connector(layer, 3, "rgba.alhpa", white_color);
 
 	input_layout->addWidget(menus);
 	input_layout->addWidget(red_connector);
@@ -179,7 +212,7 @@ QList<in_connector*> in_layer::get_connectors() const
 	return {red_connector, green_connector, blue_connector, alpha_connector};
 }
 
-out_layer::out_layer(QString layer)
+out_layer::out_layer(node_gui *parent, QString layer)
 {
 	this->setMaximumWidth(200);
 	this->setMinimumWidth(200);
@@ -198,10 +231,10 @@ out_layer::out_layer(QString layer)
 	QColor blue_color = {30, 70, 255};
 	QColor white_color = {200, 200, 200};
 
-	red_connector = new out_connector(layer, "rgba.red", red_color);
-	green_connector = new out_connector(layer, "rgba.green", green_color);
-	blue_connector = new out_connector(layer, "rgba.blue", blue_color);
-	alpha_connector = new out_connector(layer, "rgba.alpha", white_color);
+	red_connector = new out_connector(parent, layer, 0, "rgba.red", red_color);
+	green_connector = new out_connector(parent, layer, 1, "rgba.green", green_color);
+	blue_connector = new out_connector(parent, layer, 2, "rgba.blue", blue_color);
+	alpha_connector = new out_connector(parent, layer, 3, "rgba.alpha", white_color);
 
 	output_layout->addWidget(layer_box);
 	output_layout->addWidget(red_connector);

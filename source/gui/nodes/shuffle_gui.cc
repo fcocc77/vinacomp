@@ -33,8 +33,8 @@ shuffle_gui::shuffle_gui(QVBoxLayout *controls_layout)
 	output_label->setAlignment(Qt::AlignCenter);
 	output_layer_layout->addWidget(output_label);
 
-	out_layer_a = new out_layer("a");
-	out_layer_b = new out_layer("b");
+	out_layer_a = new out_layer(this, "a");
+	out_layer_b = new out_layer(this, "b");
 	output_layer_layout->addWidget(out_layer_a);
 	output_layer_layout->addWidget(out_layer_b);
 
@@ -48,10 +48,32 @@ shuffle_gui::shuffle_gui(QVBoxLayout *controls_layout)
 
 	controls_layout->addWidget(this);
 
-	// restore_connections();
+	restore_connections();
 }
 
 shuffle_gui::~shuffle_gui(){}
+
+void shuffle_gui::restore_connections()
+{
+	// ! estos datos tienen que venir del proyecto
+	QList <int> in_a = {2, 2, 2, -1};
+	//
+
+	auto in_conns = in_layer_a->get_connectors();
+	auto out_conns = out_layer_a->get_connectors();
+
+	for (int i = 0; i < 4; i++)
+	{
+		int index = in_a[i];
+
+		if (index == -1)
+			out_conns[i]->set_bw_button(true, false);
+		else if (index == -2)
+			out_conns[i]->set_bw_button(false, true);
+		else 
+			in_conns[index]->connect_output(out_conns[i]);
+	}
+}
 
 in_connector *shuffle_gui::get_in_connector(QPoint position) const
 {
@@ -126,74 +148,44 @@ void shuffle_gui::mouseReleaseEvent(QMouseEvent *event)
 	dragging_input = nullptr;
 	dragging = false;
 
-	// // encuentra la entrada de origen que se esta arrastrando para conectar
-	// int src_index = -3;
-	// QString src_layer = "";
-
-	// for (QString in_layer : {"a", "b"})
-	// {
-		// auto &_inputs = inputs[in_layer];
-		// for (int i = 0; i < _inputs.count(); i++)
-		// {
-			// in_connector &conn = _inputs[i];
-			// if (conn.dragging)
-			// {
-				// src_index = i;
-				// src_layer = in_layer;
-			// }
-
-			// conn.dragging = false;
-		// }
-	// }
-	// //
-	// //
-
-	// // encuentra la saida de destino
-	// int dst_index = -1;
-	// QString dst_layer = "";
-	// for (QString out_layer : {"a", "b"})
-	// {
-		// int out_index = get_output_index(out_layer, event->pos());
-		// if (out_index >= 0)
-		// {
-			// dst_index = out_index;
-			// dst_layer = out_layer;
-			// break;
-		// }
-	// }
-	// //
-	// //
-
-	// connect_channel(src_layer, src_index, dst_layer, dst_index);
-
-	// dragging = false;
-
 	update();
 }
 
 void shuffle_gui::mouseMoveEvent(QMouseEvent *event)
 {
 	mouse_position = event->pos();
-
-	// // si la salida no esta connectada, quita el rellono del circulo
-	// // a todas las salidas.
-	// for (QString layer : {"a", "b"})
-		// for (out_connector &conn : outputs[layer])
-			// if (!conn.connected)
-				// conn.fill = false;
-	// //
-
-	// // si el output existe rellena el circulo
-	// if (dragging)
-	// {
-		// for (QString layer : {"a", "b"})
-		// {
-			// int out_index = get_output_index(layer, event->pos());
-			// if (out_index >= 0 && out_index <= 3)
-				// outputs[layer][out_index].fill = true;
-		// }
-	// }
-	// //
-
 	update();
+}
+
+void shuffle_gui::mouseDoubleClickEvent(QMouseEvent *event)
+{
+	in_connector *in_conn = get_in_connector(event->pos());
+	out_connector *out_conn = get_out_connector(event->pos());
+
+	if (in_conn)
+	{
+		QString layer = in_conn->get_layer();
+		int index = in_conn->get_index();
+		out_connector *_out_conn;
+		if (layer == "a")
+			_out_conn = out_layer_a->get_connectors()[index];
+		else
+			_out_conn = out_layer_b->get_connectors()[index];
+
+		in_conn->connect_output(_out_conn);
+	}
+
+	if (out_conn)
+	{
+		QString layer = out_conn->get_layer();
+		int index = out_conn->get_index();
+
+		in_connector *_in_conn;
+		if (layer == "a")
+			_in_conn = in_layer_a->get_connectors()[index];
+		else
+			_in_conn = in_layer_b->get_connectors()[index];
+
+		_in_conn->connect_output(out_conn);
+	}
 }

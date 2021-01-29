@@ -14,11 +14,14 @@ private:
 	QPoint position;
 	const QColor color;
 	const QString layer;
+	const int index;
 public:
-	connector(QString layer, QColor color);
+	connector(QString layer, int _index, QColor color);
 
 	QColor get_color() const;
+	QString get_layer() const;
 	QPoint get_position() const;
+	int get_index() const;
 	void set_position(QPoint _position);
 	bool is_connected() const;
 	void set_connected(bool _connected);
@@ -29,13 +32,17 @@ protected:
 class out_connector : public connector
 {
 private:
+	node_gui *parent;
 	connector *in_conn;
 	QPushButton *black_button;
 	QPushButton *white_button;
+
+	bool black, white;
 public:
-	out_connector(QString layer, QString label, QColor color);
+	out_connector(node_gui *parent, QString layer, int index, QString label, QColor color);
 	~out_connector();
 
+	void set_bw_button(bool _black, bool _white);
 	void connect_input(connector *in_conn);
 	void disconnect();
 };
@@ -46,7 +53,7 @@ class in_connector : public connector
 private:
 	QList <out_connector*> outputs;
 public:
-	in_connector(QString layer, QString label, QColor color);
+	in_connector(QString layer, int index, QString label, QColor color);
 	~in_connector();
 
 	QList <out_connector*> get_outputs() const;
@@ -76,7 +83,7 @@ private:
 	out_connector *blue_connector;
 	out_connector *alpha_connector;
 public:
-	out_layer(QString layer);
+	out_layer(node_gui *parent, QString layer);
 	~out_layer();
 
 	QList<out_connector*> get_connectors() const;
@@ -98,6 +105,7 @@ private:
 	QPoint mouse_position;
 	bool dragging;
 
+	void restore_connections();
 	void draw_bezier(QPainter &painter, QPoint src, QPoint dst);
 	in_connector *get_in_connector(QPoint position) const;
 	out_connector *get_out_connector(QPoint position) const;
@@ -108,7 +116,7 @@ public:
 
 protected:
 	void paintEvent(QPaintEvent *event) override;
-	// void mouseDoubleClickEvent(QMouseEvent *event) override;
+	void mouseDoubleClickEvent(QMouseEvent *event) override;
 	void mouseMoveEvent(QMouseEvent *event) override;
 	void mouseReleaseEvent(QMouseEvent *event) override;
 	void mousePressEvent(QMouseEvent *event) override;
