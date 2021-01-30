@@ -56,9 +56,13 @@ out_connector::out_connector(node_gui *_parent, QString _layer, int _index, QStr
 	channel_label = new QLabel(label);
 	channel_label->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
+	shuffle_gui *__parent = dynamic_cast<shuffle_gui*>(parent);
+
 	black_button = new QPushButton();
 	connect(black_button, &QPushButton::clicked, this, [=]() {
 		set_bw_button(true, false);
+		__parent->update();
+		__parent->emmit_signal();
 	});
 	black_button->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 	black_button->setObjectName("cblack");
@@ -67,6 +71,8 @@ out_connector::out_connector(node_gui *_parent, QString _layer, int _index, QStr
 	white_button = new QPushButton();
 	connect(white_button, &QPushButton::clicked, this, [=]() {
 		set_bw_button(false, true);
+		__parent->update();
+		__parent->emmit_signal();
 	});
 	white_button->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 	white_button->setObjectName("cwhite");
@@ -128,11 +134,6 @@ void out_connector::set_bw_button(bool _black, bool _white)
 	black_button->style()->polish(black_button);
 	black_button->update();
 	//
-
-	shuffle_gui *_parent = dynamic_cast<shuffle_gui*>(parent);
-
-	_parent->update();
-	_parent->emmit_signal();
 }
 
 connector *out_connector::get_in_connector() const

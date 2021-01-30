@@ -3,7 +3,6 @@
 shuffle_gui::shuffle_gui(QVBoxLayout *controls_layout)
 	: dragging_input(nullptr)
 	, dragging(false)
-	, connector_clicked(false)
 {
 	// init_connectors();
 
@@ -123,6 +122,47 @@ void shuffle_gui::emmit_signal()
 	changed(data);
 	last_data = data;
 }
+void shuffle_gui::to_connect(in_connector *in_conn, out_connector *out_conn)
+{
+	if (in_conn && out_conn)
+	{
+		if (qt::control())
+		{
+			// con control presionado se conectan todo los canales de la misma capa
+			if (out_conn->get_layer() == "a")
+				for (out_connector *conn : out_layer_a->get_connectors())
+					in_conn->connect_output(conn);
+			else
+				for (out_connector *conn : out_layer_b->get_connectors())
+					in_conn->connect_output(conn);
+		}
+		else if (qt::alt())
+		{
+			// si el alt esta presionado conectta todas los canales
+			// a su canal por defecto
+			if (in_conn->get_layer() == "a")
+			{
+				auto in_a_conns = in_layer_a->get_connectors();
+				auto out_a_conns = out_layer_a->get_connectors();
+				for (int i = 0; i < 4; i++)
+					in_a_conns[i]->connect_output(out_a_conns[i]);
+			}
+			else
+			{
+				auto in_b_conns = in_layer_b->get_connectors();
+				auto out_b_conns = out_layer_b->get_connectors();
+				for (int i = 0; i < 4; i++)
+					in_b_conns[i]->connect_output(out_b_conns[i]);
+			}
+		}
+		else
+		{
+			in_conn->connect_output(out_conn);
+		}
+	}
+
+	emmit_signal();
+}
 
 in_connector *shuffle_gui::get_in_connector(QPoint position) const
 {
@@ -199,22 +239,16 @@ void shuffle_gui::mousePressEvent(QMouseEvent *event)
 	}
 	//
 
-	connector_clicked = dragging_input || out_conn;
 	update();
 }
 
 void shuffle_gui::mouseReleaseEvent(QMouseEvent *event)
 {
 	out_connector *out_conn = get_out_connector(event->pos());
-	if (dragging_input && out_conn)
-		dragging_input->connect_output(out_conn);
-
-	if (connector_clicked)
-		emmit_signal();
+	to_connect(dragging_input, out_conn);
 
 	dragging_input = nullptr;
 	dragging = false;
-	connector_clicked = false;
 
 	update();
 }
@@ -230,17 +264,20 @@ void shuffle_gui::mouseDoubleClickEvent(QMouseEvent *event)
 	in_connector *in_conn = get_in_connector(event->pos());
 	out_connector *out_conn = get_out_connector(event->pos());
 
+	in_connector *_in_conn = nullptr;
+	out_connector *_out_conn = nullptr;
+
 	if (in_conn)
 	{
 		QString layer = in_conn->get_layer();
 		int index = in_conn->get_index();
-		out_connector *_out_conn;
+
 		if (layer == "a")
 			_out_conn = out_layer_a->get_connectors()[index];
 		else
 			_out_conn = out_layer_b->get_connectors()[index];
 
-		in_conn->connect_output(_out_conn);
+		_in_conn = in_conn;
 	}
 
 	if (out_conn)
@@ -248,15 +285,13 @@ void shuffle_gui::mouseDoubleClickEvent(QMouseEvent *event)
 		QString layer = out_conn->get_layer();
 		int index = out_conn->get_index();
 
-		in_connector *_in_conn;
 		if (layer == "a")
 			_in_conn = in_layer_a->get_connectors()[index];
 		else
 			_in_conn = in_layer_b->get_connectors()[index];
 
-		_in_conn->connect_output(out_conn);
+		_out_conn = out_conn;
 	}
 
-	if (in_conn || out_conn)
-		emmit_signal();
+	to_connect(_in_conn, _out_conn);
 }

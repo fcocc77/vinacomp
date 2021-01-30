@@ -7,6 +7,7 @@
 #include <combo_box.h>
 #include <curve_utils.h>
 #include <util.h>
+#include <qt.h>
 
 class connector : public QWidget
 {
@@ -109,7 +110,6 @@ private:
 	in_connector *dragging_input;
 	QPoint mouse_position;
 	bool dragging;
-	bool connector_clicked;
 	QJsonObject last_data;
 
 	QJsonObject get_data() const;
@@ -117,6 +117,7 @@ private:
 	void draw_bezier(QPainter &painter, QPoint src, QPoint dst);
 	in_connector *get_in_connector(QPoint position) const;
 	out_connector *get_out_connector(QPoint position) const;
+	void to_connect(in_connector *in_conn, out_connector *out_conn);
 public:
 	shuffle_gui(QVBoxLayout *controls_layout);
 	~shuffle_gui();
