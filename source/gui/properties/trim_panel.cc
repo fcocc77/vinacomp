@@ -69,7 +69,15 @@ void trim_panel::setup_gui_panels()
 	else if (type == "reformat")
 		_node_gui = new reformat_gui();
 	else if (type == "shuffle")
-		_node_gui = new shuffle_gui(controls_layout);
+	{
+		shuffle_gui *shuffle = new shuffle_gui(controls_layout);
+		connect(shuffle, &shuffle_gui::changed, this, [=](QJsonObject _data){
+			// ! falta borra el parametro si es igual al por defecto
+			data->insert("shuffle", _data);
+			update_render();
+		});
+		_node_gui = shuffle;
+	}
 
 	if (_node_gui)
 		_node_gui->setup(this, _vinacomp, name);

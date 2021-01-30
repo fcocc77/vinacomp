@@ -105,9 +105,17 @@ void shuffle_node::render(
 	pair <int, int> &frame_range,
 	QRect &bbox)
 {
+	QJsonObject shuffle = get(params, "shuffle").toObject();
+	QJsonArray channel_a = shuffle["a"].toArray();
+
 	// antes de copiar crea un auxiliar para poder copiar los pixels entre la misma imagen
 	QImage aux_image = *image;
-	copy(image, &aux_image, {-2, 2, 2, 3});
+	copy(image, &aux_image, {
+		channel_a[0].toArray()[1].toInt(),
+		channel_a[1].toArray()[1].toInt(),
+		channel_a[2].toArray()[1].toInt(),
+		channel_a[3].toArray()[1].toInt()
+	});
 	(*image) = aux_image;
 }
 

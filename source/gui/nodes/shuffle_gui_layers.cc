@@ -147,7 +147,7 @@ int out_connector::get_state() const
 	else if (white) 
 		return -2;
 	else if (!is_connected())
-		return -3;
+		return -1;
 
 	return dynamic_cast<in_connector*>(in_conn)->get_index();
 }
