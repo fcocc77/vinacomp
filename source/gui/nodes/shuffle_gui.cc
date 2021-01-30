@@ -140,19 +140,26 @@ void shuffle_gui::to_connect(in_connector *in_conn, out_connector *out_conn)
 		{
 			// si el alt esta presionado conectta todas los canales
 			// a su canal por defecto
-			if (in_conn->get_layer() == "a")
+			auto in_a_conns = in_layer_a->get_connectors();
+			auto in_b_conns = in_layer_b->get_connectors();
+			auto out_a_conns = out_layer_a->get_connectors();
+			auto out_b_conns = out_layer_b->get_connectors();
+
+			for (int i = 0; i < 4; i++)
 			{
-				auto in_a_conns = in_layer_a->get_connectors();
-				auto out_a_conns = out_layer_a->get_connectors();
-				for (int i = 0; i < 4; i++)
-					in_a_conns[i]->connect_output(out_a_conns[i]);
-			}
-			else
-			{
-				auto in_b_conns = in_layer_b->get_connectors();
-				auto out_b_conns = out_layer_b->get_connectors();
-				for (int i = 0; i < 4; i++)
-					in_b_conns[i]->connect_output(out_b_conns[i]);
+				in_connector *_in_conn;
+				out_connector *_out_conn;
+				if (in_conn->get_layer() == "a")
+					_in_conn = in_a_conns[i];
+				else
+					_in_conn = in_b_conns[i];
+
+				if (out_conn->get_layer() == "a")
+					_out_conn = out_a_conns[i];
+				else
+					_out_conn = out_b_conns[i];
+
+				_in_conn->connect_output(_out_conn);
 			}
 		}
 		else
