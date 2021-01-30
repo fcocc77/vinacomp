@@ -45,14 +45,16 @@ void connector::set_connected(bool _connected)
 out_connector::out_connector(node_gui *_parent, QString _layer, int _index, QString label, QColor _color)
 	: parent(_parent)
 	, connector(_layer, _index, _color)
+	, black(false)
+	, white(false)
 {
 	this->setObjectName("output");
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 	layout->setMargin(0);
 
-	QLabel *channel = new QLabel(label);
-	channel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+	channel_label = new QLabel(label);
+	channel_label->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
 	black_button = new QPushButton();
 	connect(black_button, &QPushButton::clicked, this, [=]() {
@@ -60,6 +62,7 @@ out_connector::out_connector(node_gui *_parent, QString _layer, int _index, QStr
 	});
 	black_button->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 	black_button->setObjectName("cblack");
+	black_button->setProperty("connected", black);
 
 	white_button = new QPushButton();
 	connect(white_button, &QPushButton::clicked, this, [=]() {
@@ -67,15 +70,19 @@ out_connector::out_connector(node_gui *_parent, QString _layer, int _index, QStr
 	});
 	white_button->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 	white_button->setObjectName("cwhite");
+	white_button->setProperty("connected", white);
 
 	layout->addWidget(black_button);
 	layout->addWidget(white_button);
-	layout->addWidget(channel);
-
-	set_bw_button(false, false);
+	layout->addWidget(channel_label);
 }
 
-out_connector::~out_connector() { }
+out_connector::~out_connector() 
+{
+	delete black_button;
+	delete white_button;
+	delete channel_label;
+}
 
 
 void out_connector::connect_input(connector *_in_conn)
@@ -122,12 +129,27 @@ void out_connector::set_bw_button(bool _black, bool _white)
 	black_button->update();
 	//
 
-	parent->update();
+	shuffle_gui *_parent = dynamic_cast<shuffle_gui*>(parent);
+
+	_parent->update();
+	_parent->emmit_signal();
 }
 
 connector *out_connector::get_in_connector() const
 {
 	return in_conn;
+}
+
+int out_connector::get_state() const
+{
+	if (black) 
+		return -1;
+	else if (white) 
+		return -2;
+	else if (!is_connected())
+		return -3;
+
+	return dynamic_cast<in_connector*>(in_conn)->get_index();
 }
 
 in_connector::in_connector(QString _layer, int _index,  QString label, QColor _color)

@@ -3,6 +3,7 @@
 shuffle_gui::shuffle_gui(QVBoxLayout *controls_layout)
 	: dragging_input(nullptr)
 	, dragging(false)
+	, connector_clicked(false)
 {
 	// init_connectors();
 
@@ -22,7 +23,7 @@ shuffle_gui::shuffle_gui(QVBoxLayout *controls_layout)
 	in_layer_b = new in_layer("b");
 	input_layer_layout->addWidget(in_layer_a);
 	input_layer_layout->addWidget(in_layer_b);
-	
+
 
 	// Outputs
 	QWidget *output_layer = new QWidget();
@@ -56,23 +57,71 @@ shuffle_gui::~shuffle_gui(){}
 void shuffle_gui::restore_connections()
 {
 	// ! estos datos tienen que venir del proyecto
-	QList <int> in_a = {2, 2, 2, -1};
+	QList <pair<QString, int>> in_a = {
+		{"a", 0},
+		{"a", 2},
+		{"b", -2},
+		{"a", 2}
+	};
 	//
 
-	auto in_conns = in_layer_a->get_connectors();
-	auto out_conns = out_layer_a->get_connectors();
+	auto in_a_conns = in_layer_a->get_connectors();
+	auto in_b_conns = in_layer_b->get_connectors();
+	auto out_a_conns = out_layer_a->get_connectors();
+	auto out_b_conns = out_layer_b->get_connectors();
 
 	for (int i = 0; i < 4; i++)
 	{
-		int index = in_a[i];
+		QString layer = in_a[i].first;
+		int index = in_a[i].second;
+
+		in_connector *in_conn = in_a_conns[index];
+
+		out_connector *out_conn;
+		if (layer == "a")
+			out_conn = out_a_conns[i];
+		else
+			out_conn = out_b_conns[i];
 
 		if (index == -1)
-			out_conns[i]->set_bw_button(true, false);
+			out_conn->set_bw_button(true, false);
 		else if (index == -2)
-			out_conns[i]->set_bw_button(false, true);
-		else 
-			in_conns[index]->connect_output(out_conns[i]);
+			out_conn->set_bw_button(false, true);
+		else
+			in_conn->connect_output(out_conn);
 	}
+
+	last_data = get_data();
+}
+
+QJsonObject shuffle_gui::get_data() const
+{
+	auto out_a_conns = out_layer_a->get_connectors();
+	auto out_b_conns = out_layer_b->get_connectors();
+
+	QJsonObject data;
+
+	QJsonArray out_a, out_b;
+	for (int i = 0; i < 4; i++)
+	{
+		out_a.push_back( QJsonArray{ "a", out_a_conns[i]->get_state() });
+		out_b.push_back( QJsonArray{ "b", out_b_conns[i]->get_state() });
+	}
+
+	data.insert("a", out_a);
+	data.insert("b", out_b);
+
+	return data;
+}
+
+void shuffle_gui::emmit_signal()
+{
+	QJsonObject data = get_data();
+	if (data == last_data)
+		return;
+
+	changed(data);
+	last_data = data;
 }
 
 in_connector *shuffle_gui::get_in_connector(QPoint position) const
@@ -150,6 +199,7 @@ void shuffle_gui::mousePressEvent(QMouseEvent *event)
 	}
 	//
 
+	connector_clicked = dragging_input || out_conn;
 	update();
 }
 
@@ -159,8 +209,12 @@ void shuffle_gui::mouseReleaseEvent(QMouseEvent *event)
 	if (dragging_input && out_conn)
 		dragging_input->connect_output(out_conn);
 
+	if (connector_clicked)
+		emmit_signal();
+
 	dragging_input = nullptr;
 	dragging = false;
+	connector_clicked = false;
 
 	update();
 }
@@ -202,4 +256,7 @@ void shuffle_gui::mouseDoubleClickEvent(QMouseEvent *event)
 
 		_in_conn->connect_output(out_conn);
 	}
+
+	if (in_conn || out_conn)
+		emmit_signal();
 }

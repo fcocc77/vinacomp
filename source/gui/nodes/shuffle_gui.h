@@ -36,6 +36,7 @@ private:
 	connector *in_conn;
 	QPushButton *black_button;
 	QPushButton *white_button;
+	QLabel *channel_label;
 
 	bool black, white;
 public:
@@ -46,6 +47,7 @@ public:
 	void connect_input(connector *in_conn);
 	void disconnect();
 
+	int get_state() const;
 	connector *get_in_connector() const;
 };
 
@@ -93,6 +95,7 @@ public:
 
 class shuffle_gui : public node_gui
 {
+	Q_OBJECT
 private:
 	QWidget *connection_viewer;
 
@@ -106,7 +109,10 @@ private:
 	in_connector *dragging_input;
 	QPoint mouse_position;
 	bool dragging;
+	bool connector_clicked;
+	QJsonObject last_data;
 
+	QJsonObject get_data() const;
 	void restore_connections();
 	void draw_bezier(QPainter &painter, QPoint src, QPoint dst);
 	in_connector *get_in_connector(QPoint position) const;
@@ -115,6 +121,7 @@ public:
 	shuffle_gui(QVBoxLayout *controls_layout);
 	~shuffle_gui();
 
+	void emmit_signal();
 
 protected:
 	void paintEvent(QPaintEvent *event) override;
@@ -122,6 +129,8 @@ protected:
 	void mouseMoveEvent(QMouseEvent *event) override;
 	void mouseReleaseEvent(QMouseEvent *event) override;
 	void mousePressEvent(QMouseEvent *event) override;
+signals:
+	void changed(QJsonObject connections);
 };
 
 #endif // SHUFFLE_GUI_H
