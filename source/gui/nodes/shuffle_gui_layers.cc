@@ -141,6 +141,14 @@ connector *out_connector::get_in_connector() const
 	return in_conn;
 }
 
+QString out_connector::get_input_layer() const
+{
+	if ( is_connected() )
+		return get_in_connector()->get_layer();
+	else
+		return "null";
+}
+
 int out_connector::get_state() const
 {
 	if (black) 
