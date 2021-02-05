@@ -103,8 +103,10 @@ QJsonObject shuffle_gui::get_data() const
 	QJsonArray out_a, out_b;
 	for (int i = 0; i < 4; i++)
 	{
-		out_a.push_back( QJsonArray{ "a", out_a_conns[i]->get_state() });
-		out_b.push_back( QJsonArray{ "b", out_b_conns[i]->get_state() });
+		out_connector *out_a_conn = out_a_conns[i];
+		out_connector *out_b_conn = out_b_conns[i];
+		out_a.push_back( QJsonArray{ out_a_conn->get_input_layer(), out_a_conn->get_state() });
+		out_b.push_back( QJsonArray{ out_b_conn->get_input_layer(), out_b_conn->get_state() });
 	}
 
 	data.insert("a", out_a);

@@ -50,6 +50,7 @@ public:
 
 	int get_state() const;
 	connector *get_in_connector() const;
+	QString get_input_layer() const;
 };
 
 

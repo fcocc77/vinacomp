@@ -83,7 +83,7 @@ out_connector::out_connector(node_gui *_parent, QString _layer, int _index, QStr
 	layout->addWidget(channel_label);
 }
 
-out_connector::~out_connector() 
+out_connector::~out_connector()
 {
 	delete black_button;
 	delete white_button;
