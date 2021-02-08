@@ -1,6 +1,6 @@
 #include <shuffle_gui.h>
 
-shuffle_gui::shuffle_gui(QVBoxLayout *controls_layout)
+shuffle_gui::shuffle_gui(QVBoxLayout *controls_layout, QJsonObject data)
 	: dragging_input(nullptr)
 	, dragging(false)
 {
@@ -48,21 +48,15 @@ shuffle_gui::shuffle_gui(QVBoxLayout *controls_layout)
 
 	controls_layout->addWidget(this);
 
-	restore_connections();
+	restore_connections(data);
 }
 
 shuffle_gui::~shuffle_gui(){}
 
-void shuffle_gui::restore_connections()
+void shuffle_gui::restore_connections(QJsonObject data)
 {
-	// ! estos datos tienen que venir del proyecto
-	QList <pair<QString, int>> in_a = {
-		{"a", 0},
-		{"a", 2},
-		{"b", -2},
-		{"a", 2}
-	};
-	//
+	QJsonArray in_a = data["a"].toArray();
+	QJsonArray in_b = data["b"].toArray();
 
 	auto in_a_conns = in_layer_a->get_connectors();
 	auto in_b_conns = in_layer_b->get_connectors();
@@ -71,8 +65,8 @@ void shuffle_gui::restore_connections()
 
 	for (int i = 0; i < 4; i++)
 	{
-		QString layer = in_a[i].first;
-		int index = in_a[i].second;
+		QString layer = in_a[i].toArray()[0].toString();
+		int index = in_a[i].toArray()[1].toInt();
 
 		in_connector *in_conn = in_a_conns[index];
 

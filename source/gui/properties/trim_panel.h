@@ -72,7 +72,7 @@ private:
 
 	void knob_editor_toggle();
     void setup_ui();
-    void setup_gui_panels();
+    void setup_gui_panels(QJsonArray _knobs);
     QWidget *top_buttons_setup_ui();
     tab_widget *tabs_ui();
     void setup_knobs(QJsonArray _knobs, QVBoxLayout *layout);

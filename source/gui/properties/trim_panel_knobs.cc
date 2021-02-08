@@ -44,7 +44,7 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout)
 		if (knob_object.contains("visible"))
 			visible = knob_object.value("visible").toBool();
 
-        knob *_knob;
+        knob *_knob = nullptr;
         if (type == "color")
         {
             QJsonArray _default = knob_object.value("default").toArray();

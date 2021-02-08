@@ -4,5 +4,47 @@
     "label": "Shuffle",
     "icon": "shuffle_a",
     "knobs": [
+		{
+			"name" : "shuffle1",
+			"type" : "shuffle",
+			"default": {
+				"a": [
+					[
+						"a",
+						0
+					],
+					[
+						"a",
+						1
+					],
+					[
+						"a",
+						2
+					],
+					[
+						"a",
+						3
+					]
+				],
+				"b": [
+					[
+						"null",
+						-1
+					],
+					[
+						"null",
+						-1
+					],
+					[
+						"null",
+						-1
+					],
+					[
+						"null",
+						-1
+					]
+				]
+			}
+		}
     ]
 }

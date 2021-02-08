@@ -35,7 +35,7 @@ trim_panel::trim_panel(properties *__properties,
 	QJsonArray shared_knobs = jread("source/engine/nodes/json/shared_params.json").value("knobs").toArray();
 	setup_knobs(shared_knobs, node_tab_layout);
 
-	setup_gui_panels();
+	setup_gui_panels(_knobs);
 }
 
 trim_panel::~trim_panel()
@@ -59,7 +59,7 @@ void trim_panel::setup_ui()
     layout->addWidget(tabs);
 }
 
-void trim_panel::setup_gui_panels()
+void trim_panel::setup_gui_panels(QJsonArray _knobs)
 {
 	// todos estos nodo gui son solo si el nodo efecto tiene algun boton
 	// u otra interface adicional a las que se generan en 'setup_knobs'
@@ -70,10 +70,22 @@ void trim_panel::setup_gui_panels()
 		_node_gui = new reformat_gui();
 	else if (type == "shuffle")
 	{
-		shuffle_gui *shuffle = new shuffle_gui(controls_layout);
+		QString name = "shuffle";
+		QJsonObject default_value = _knobs[0].toObject().value("default").toObject();
+		QJsonObject value;
+
+		if (data->contains(name))
+			value = data->value(name).toObject();
+		else
+			value = default_value;
+
+		shuffle_gui *shuffle = new shuffle_gui(controls_layout, value);
+
 		connect(shuffle, &shuffle_gui::changed, this, [=](QJsonObject _data){
-			// ! falta borra el parametro si es igual al por defecto
-			data->insert("shuffle", _data);
+			if (default_value != _data)
+				data->insert(name, _data);
+			else
+				data->remove(name);
 			update_render();
 		});
 		_node_gui = shuffle;
