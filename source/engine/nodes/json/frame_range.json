@@ -2,7 +2,7 @@
     "group": "time",
     "id": "frame_range",
     "label": "FrameRange",
-    "icon": "frame_range_a",
+    "icon": "frame_range",
     "knobs": [
         {
             "name": "frame_range",

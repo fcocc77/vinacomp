@@ -2,7 +2,7 @@
     "group": "image",
     "id": "viewer",
     "label": "Viewer",
-    "icon": "viewer_a",
+    "icon": "viewer",
     "knobs": [
         {
             "name": "mix",

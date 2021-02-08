@@ -2,7 +2,7 @@
     "group": "transform",
     "id": "position",
     "label": "Position",
-    "icon": "position_a",
+    "icon": "position",
     "knobs": [
         {
             "name": "translate",

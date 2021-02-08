@@ -30,41 +30,13 @@ maker::~maker()
 
 void maker::setup_shortcut()
 {
-    qt::shortcut("Tab", _node_view, [this]() {
-        finder->show_finder();
-    });
+	qt::shortcut("Tab", _node_view, [this]() {
+		finder->show_finder();
+	});
 
-    qt::shortcut("Escape", _node_view, [this]() {
-        finder->hide();
-    });
-
-    qt::shortcut("G", _node_view, [this]() {
-        create_fx("grade");
-    });
-
-    qt::shortcut("T", _node_view, [this]() {
-        create_fx("transform");
-    });
-
-    qt::shortcut("B", _node_view, [this]() {
-        create_fx("blur");
-    });
-
-    qt::shortcut("M", _node_view, [this]() {
-        create_fx("merge");
-    });
-
-    qt::shortcut("R", _node_view, [this]() {
-        create_fx("read");
-    });
-
-    qt::shortcut("W", _node_view, [this]() {
-        create_fx("write");
-    });
-
-    qt::shortcut("K", _node_view, [this]() {
-        create_fx("copy");
-    });
+	qt::shortcut("Escape", _node_view, [this]() {
+		finder->hide();
+	});
 }
 
 QString maker::create_fx(QString id)

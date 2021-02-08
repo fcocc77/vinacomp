@@ -2,7 +2,7 @@
     "group": "filter",
     "id": "edge_detect",
     "label": "EdgeDetect",
-    "icon": "edge_detect_a",
+    "icon": "edge_detect",
     "knobs": [
         {
             "name": "mix",

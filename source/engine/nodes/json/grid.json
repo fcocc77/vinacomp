@@ -2,7 +2,7 @@
     "group": "draw",
     "id": "grid",
     "label": "Grid",
-    "icon": "grid_a",
+    "icon": "grid",
     "knobs": [
         {
             "name": "mix",

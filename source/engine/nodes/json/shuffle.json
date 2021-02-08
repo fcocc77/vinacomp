@@ -2,7 +2,7 @@
     "group": "channel",
     "id": "shuffle",
     "label": "Shuffle",
-    "icon": "shuffle_a",
+    "icon": "shuffle",
     "knobs": [
 		{
 			"name" : "shuffle1",

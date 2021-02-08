@@ -2,7 +2,7 @@
     "group": "merge",
     "id": "premult",
     "label": "Premult",
-    "icon": "premult_a",
+    "icon": "premult",
     "knobs": [
         {
             "name": "mix",

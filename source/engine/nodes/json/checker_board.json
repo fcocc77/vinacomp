@@ -2,7 +2,7 @@
     "group": "image",
     "id": "checker_board",
     "label": "CheckerBoard",
-    "icon": "checker_a",
+    "icon": "checker",
     "knobs": [
         {
             "name": "box_size",

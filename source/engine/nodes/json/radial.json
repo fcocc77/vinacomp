@@ -2,7 +2,7 @@
     "group": "draw",
     "id": "radial",
     "label": "Radial",
-    "icon": "radial_a",
+    "icon": "radial",
     "knobs": [
         {
             "name": "color",

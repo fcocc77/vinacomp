@@ -2,7 +2,7 @@
     "group": "draw",
     "id": "ramp",
     "label": "Ramp",
-    "icon": "ramp_a",
+    "icon": "ramp",
     "knobs": [
         {
             "name": "format",

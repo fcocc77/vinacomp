@@ -2,7 +2,7 @@
     "group": "draw",
     "id": "noise",
     "label": "Noise",
-    "icon": "noise_a",
+    "icon": "noise",
     "knobs": [
         {
             "name": "mix",

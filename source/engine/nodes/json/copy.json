@@ -2,7 +2,7 @@
     "group": "channel",
     "id": "copy",
     "label": "Copy",
-    "icon": "copy_channel_a",
+    "icon": "copy_channel",
     "knobs": [
         {
             "name": "mix",

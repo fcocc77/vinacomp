@@ -2,7 +2,7 @@
     "group": "merge",
     "id": "switch",
     "label": "Switch",
-    "icon": "switch_a",
+    "icon": "switch",
     "knobs": [
         {
             "name": "mix",

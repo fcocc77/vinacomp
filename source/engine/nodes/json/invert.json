@@ -2,7 +2,7 @@
     "group": "color",
     "id": "invert",
     "label": "Invert",
-    "icon": "invert_a",
+    "icon": "invert",
     "knobs": [
         {
             "name": "mix",

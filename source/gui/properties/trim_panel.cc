@@ -121,7 +121,7 @@ QWidget *trim_panel::top_buttons_setup_ui()
     layout->addStretch();
 
     QPushButton *icon_node = new QPushButton(widget);
-    qt::set_icon(icon_node, icon_name, icon_size);
+    qt::set_icon(icon_node, icon_name + "_a", icon_size);
     layout->addWidget(icon_node);
 
     name_edit = new QLineEdit(widget);

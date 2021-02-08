@@ -2,7 +2,7 @@
     "group": "merge",
     "id": "unpremult",
     "label": "Unpremult",
-    "icon": "unpremult_a",
+    "icon": "unpremult",
     "knobs": [
         {
             "name": "mix",

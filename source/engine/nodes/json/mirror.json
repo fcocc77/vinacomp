@@ -2,7 +2,7 @@
     "group": "transform",
     "id": "mirror",
     "label": "Mirror",
-    "icon": "mirror_a",
+    "icon": "mirror",
     "knobs": [
         {
             "name": "mix",

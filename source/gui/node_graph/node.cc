@@ -160,9 +160,10 @@ void node::refresh()
     //
 }
 
-void node::set_icon(QString icon_name)
+void node::set_icon(QString _icon_name)
 {
-    QImage image("resources/images/" + icon_name + ".png");
+	icon_name = _icon_name;
+    QImage image("resources/images/" + icon_name + "_a.png");
     QPixmap icon = QPixmap::fromImage(image);
     icon = icon.scaledToHeight(40, Qt::SmoothTransformation);
     QGraphicsPixmapItem *item = new QGraphicsPixmapItem(icon);

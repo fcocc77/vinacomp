@@ -17,7 +17,7 @@ node_graph::node_graph(
 
     _node_view = new node_view(_vinacomp, _properties, nodes_loaded);
     _maker = new maker(_vinacomp, _properties, nodes_loaded, _node_view);
-    _nodes_bar = new nodes_bar(_maker, nodes_loaded);
+    _nodes_bar = new nodes_bar(this, _maker, nodes_loaded);
 
     layout->addWidget(_nodes_bar);
     layout->addWidget(_node_view);

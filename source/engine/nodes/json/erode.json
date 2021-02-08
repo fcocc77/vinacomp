@@ -2,7 +2,7 @@
     "group": "filter",
     "id": "erode",
     "label": "Erode",
-    "icon": "erode_a",
+    "icon": "erode",
     "knobs": [
         {
             "name": "mix",

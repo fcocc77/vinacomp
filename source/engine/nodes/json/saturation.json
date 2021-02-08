@@ -2,7 +2,7 @@
     "group": "color",
     "id": "saturation",
     "label": "Saturation",
-    "icon": "saturation_a",
+    "icon": "saturation",
     "knobs": [
         {
             "name": "mix",

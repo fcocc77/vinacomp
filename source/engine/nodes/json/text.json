@@ -2,7 +2,7 @@
     "group": "draw",
     "id": "text",
     "label": "Text",
-    "icon": "text_a",
+    "icon": "text",
     "knobs": [
 		{
 			"name": "text",

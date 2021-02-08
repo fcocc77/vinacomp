@@ -2,7 +2,7 @@
     "group": "image",
     "id": "constant",
     "label": "Constant",
-    "icon": "constant_a",
+    "icon": "constant",
     "knobs": [
         {
             "name": "color",

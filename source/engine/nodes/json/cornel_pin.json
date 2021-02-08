@@ -2,7 +2,7 @@
     "group": "transform",
     "id": "cornel_pin",
     "label": "CornelPin",
-    "icon": "cornel_pin_a",
+    "icon": "cornel_pin",
     "knobs": [
         {
             "name": "mix",

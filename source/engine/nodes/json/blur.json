@@ -2,7 +2,7 @@
     "group": "filter",
     "id": "blur",
     "label": "Blur",
-    "icon": "noise_a",
+    "icon": "noise",
     "knobs": [
         {
             "name": "size",

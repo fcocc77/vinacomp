@@ -2,7 +2,7 @@
     "group": "other",
     "id": "backdrop",
     "label": "Backdrop",
-    "icon": "backdrop_a",
+    "icon": "backdrop",
     "knobs": [
         {
             "name": "mix",

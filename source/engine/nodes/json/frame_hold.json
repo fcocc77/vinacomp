@@ -2,7 +2,7 @@
     "group": "time",
     "id": "frame_hold",
     "label": "FrameHold",
-    "icon": "frame_hold_a",
+    "icon": "frame_hold",
     "knobs": [
         {
             "name": "mix",

@@ -2,7 +2,7 @@
     "group": "filter",
     "id": "sharpen",
     "label": "Sharpen",
-    "icon": "sharpen_a",
+    "icon": "sharpen",
     "knobs": [
         {
             "name": "mix",

@@ -2,7 +2,7 @@
     "group": "other",
     "id": "dot",
     "label": "Dot",
-    "icon": "dot_a",
+    "icon": "dot",
     "knobs": [
         {
             "name": "mix",

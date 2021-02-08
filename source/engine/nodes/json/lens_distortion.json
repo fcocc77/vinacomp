@@ -2,7 +2,7 @@
     "group": "transform",
     "id": "lens_distortion",
     "label": "LensDistortion",
-    "icon": "lens_distortion_a",
+    "icon": "lens_distortion",
     "knobs": [
         {
             "name": "mix",

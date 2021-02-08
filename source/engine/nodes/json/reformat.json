@@ -2,7 +2,7 @@
     "group": "transform",
     "id": "reformat",
     "label": "Reformat",
-    "icon": "reformat_a",
+    "icon": "reformat",
     "knobs": [
         {
             "name": "type",

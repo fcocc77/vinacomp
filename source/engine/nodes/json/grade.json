@@ -2,7 +2,7 @@
     "group": "color",
     "id": "grade",
     "label": "Grade",
-    "icon": "grade_a",
+    "icon": "grade",
     "knobs": [
         {
             "name": "blackpoint",

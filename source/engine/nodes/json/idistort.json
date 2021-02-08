@@ -2,7 +2,7 @@
     "group": "transform",
     "id": "idistort",
     "label": "IDistort",
-    "icon": "idistort_a",
+    "icon": "idistort",
     "knobs": [
         {
             "name": "mix",

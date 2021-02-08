@@ -1,8 +1,10 @@
 #include <nodes_bar.h>
 
-nodes_bar::nodes_bar(maker *__maker, nodes_load *_nodes)
-    : _maker(__maker),
-      nodes(_nodes)
+nodes_bar::nodes_bar(QWidget *_parent, maker *__maker, nodes_load *_nodes)
+    : parent(_parent)
+	, _maker(__maker)
+	, nodes(_nodes)
+
 
 {
     this->setObjectName("nodes_bar");
@@ -70,13 +72,28 @@ void nodes_bar::add_menu(QString group, QString icon_group)
         QString id = effect["id"].toString();
         QString icon = effect["icon"].toString();
 
-        QAction *effect_action = new QAction(label);
-        effect_action->setIcon(QIcon("resources/images/" + icon + ".png"));
+		QString shortcut;
+		if ( id == "grade" )
+			shortcut = "G";
+		else if ( id == "transform" )
+			shortcut = "T";
+		else if ( id == "blur" )
+			shortcut = "B";
+		else if ( id == "merge" )
+			shortcut = "M";
+		else if ( id == "read" )
+			shortcut = "R";
+		else if ( id == "write" )
+			shortcut = "W";
+		else if ( id == "copy" )
+			shortcut = "K";
+
+        action *effect_action = new action(label, shortcut, icon);
         _menu->addAction(effect_action);
 
-        connect(effect_action, &QAction::triggered, this, [=]() {
+		effect_action->connect_to(parent, [=]() {
             _maker->create_fx(id);
-        });
+		});
     }
 
     layout->addWidget(popup_button);

@@ -2,7 +2,7 @@
     "group": "color",
     "id": "clamp",
     "label": "Clamp",
-    "icon": "clamp_a",
+    "icon": "clamp",
     "knobs": [
         {
             "name": "mix",

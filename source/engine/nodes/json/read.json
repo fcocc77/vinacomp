@@ -2,7 +2,7 @@
     "group": "image",
     "id": "read",
     "label": "Read",
-    "icon": "read_a",
+    "icon": "read",
     "knobs": [
         {
             "name": "file",

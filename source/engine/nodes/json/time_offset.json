@@ -2,7 +2,7 @@
     "group": "time",
     "id": "time_offset",
     "label": "TimeOffset",
-    "icon": "time_offset_a",
+    "icon": "time_offset",
     "knobs": [
         {
             "name": "time_offset",

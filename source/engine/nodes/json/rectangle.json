@@ -2,7 +2,7 @@
     "group": "draw",
     "id": "rectangle",
     "label": "Rectangle",
-    "icon": "constant_a",
+    "icon": "constant",
     "knobs": [
         {
             "name": "mix",

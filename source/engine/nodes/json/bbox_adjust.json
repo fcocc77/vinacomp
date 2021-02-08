@@ -2,7 +2,7 @@
     "group": "transform",
     "id": "bbox_adjust",
     "label": "BBoxAdjust",
-    "icon": "bbox_adjust_a",
+    "icon": "bbox_adjust",
     "knobs": [
         {
             "name": "mix",

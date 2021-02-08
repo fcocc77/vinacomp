@@ -2,7 +2,7 @@
     "group": "image",
     "id": "write",
     "label": "Write",
-    "icon": "save_a",
+    "icon": "save",
     "knobs": [
         {
             "name": "mix",

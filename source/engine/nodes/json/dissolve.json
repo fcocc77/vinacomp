@@ -2,7 +2,7 @@
     "group": "merge",
     "id": "dissolve",
     "label": "Dissolve",
-    "icon": "dissolve_a",
+    "icon": "dissolve",
     "knobs": [
         {
             "name": "mix",
