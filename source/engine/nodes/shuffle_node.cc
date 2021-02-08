@@ -10,7 +10,18 @@ shuffle_node::~shuffle_node()
 
 }
 
-void shuffle_node::copy(QImage *src, QImage *dst, QList<int> channels_order)
+void isolate_channel(QImage *image, int channel)
+{
+	if (channel < 0)
+		return;
+
+	QImage aux_image = *image;
+	copy(image, &aux_image, { channel, channel, channel, channel });
+
+	(*image) = aux_image;
+}
+
+void copy(QImage *src, QImage *dst, QList<int> channels_order)
 {
 	int new_red = channels_order[0];
 	int new_green = channels_order[1];

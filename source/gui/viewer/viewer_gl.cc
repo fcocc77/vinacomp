@@ -81,15 +81,7 @@ void viewer_gl::set_image(QImage *_image, int _image_width, int _image_height)
 	image_width = image->width();
 	image_height = image->height();
 
-	before_painting_image();
 	update();
-}
-
-void viewer_gl::before_painting_image() const
-{
-	// obtiene la imagen, pero copia el canal seleccionado
-	// a los diferentes canales r g b a para visualizar el canal
-	// seleccionado en escale de grices.
 }
 
 void viewer_gl::draw_image()

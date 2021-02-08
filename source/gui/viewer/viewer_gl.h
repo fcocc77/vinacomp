@@ -20,7 +20,6 @@ private:
     void draw_frame();
 	void draw_image();
 
-	void before_painting_image() const;
 	void fit_to_viewport();
 	void fit_to_percent(int percent);
 

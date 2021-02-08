@@ -25,6 +25,7 @@
 // Engine
 #include <renderer.h>
 #include <project_struct.h>
+#include <shuffle_node.h>
 
 class viewer : public QWidget
 {
@@ -49,6 +50,7 @@ private:
 	float frame_rate;
 	bool in_out;
 	bool render_pause;
+	int visible_channel;
 
     //
     void setup_ui();

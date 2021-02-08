@@ -5,10 +5,11 @@
 
 #include <node_engine.h>
 
+void isolate_channel(QImage *image, int channel);
+void copy(QImage *src, QImage *dst, QList<int> channels_order);
+
 class shuffle_node : public node_engine
 {
-private:
-	void copy(QImage *src, QImage *dst, QList<int> channels_order);
 public:
 	shuffle_node();
 	~shuffle_node();
