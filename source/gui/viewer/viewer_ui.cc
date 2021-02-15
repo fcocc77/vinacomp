@@ -17,7 +17,7 @@ void viewer::setup_ui()
     layout->addWidget(player);
 }
 
-QWidget *viewer::control_setup_ui()
+QWidget *viewer::control_setup_ui() 
 {
 	tools *bar = new tools();
     bar->setObjectName("controls");
@@ -30,12 +30,18 @@ QWidget *viewer::control_setup_ui()
 		{"Red", "red"},
 		{"Green", "green"},
 		{"Blue", "blue"},
-		{"Alpha", "alpha"}
-	});
+		{"Alpha", "alpha"} }
+		, 0, this
+	);
 	connect(display_channel, &combo_box::changed, this, [=](QVariant value, int index){
 		visible_channel = index - 1;
 		update_render();
 	});
+
+	display_channel->add_shortcut(1, "R");
+	display_channel->add_shortcut(2, "G");
+	display_channel->add_shortcut(3, "B");
+	display_channel->add_shortcut(4, "A");
     bar->add_widget(display_channel);
     bar->add_stretch();
 
