@@ -17,7 +17,7 @@ void viewer::setup_ui()
     layout->addWidget(player);
 }
 
-QWidget *viewer::control_setup_ui() 
+QWidget *viewer::control_setup_ui()
 {
 	tools *bar = new tools();
     bar->setObjectName("controls");

@@ -1,8 +1,9 @@
 #include <combo_box.h>
 
-combo_box::combo_box(QList <pair<QString, QVariant>> _items, int default_index)
+combo_box::combo_box(QList <pair<QString, QVariant>> _items, int default_index, QWidget *_parent)
 	: items(_items)
 	, current_index(0)
+	, parent(_parent)
 {
 	this->setObjectName("combo_box");
 	this->setMinimumHeight(20);
@@ -44,6 +45,21 @@ combo_box::~combo_box()
     delete menu;
     delete layout;
     delete arrow;
+}
+
+void combo_box::add_shortcut(int _index, QString key)
+{
+	if (_index >= actions.count())
+		return;
+
+	action *_action = actions[_index];
+
+    _action->setShortcutContext(Qt::WidgetWithChildrenShortcut);
+	if (!key.isEmpty())
+		_action->setShortcut(QKeySequence(key));
+
+	if (parent)
+		parent->addAction(_action);
 }
 
 void combo_box::set_index(int _index, bool emit_signal)
