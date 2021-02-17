@@ -17,7 +17,7 @@ void viewer::setup_ui()
     layout->addWidget(player);
 }
 
-QWidget *viewer::control_setup_ui()
+QWidget *viewer::control_setup_ui() 
 {
 	tools *bar = new tools();
     bar->setObjectName("controls");
@@ -34,7 +34,17 @@ QWidget *viewer::control_setup_ui()
 		, 0, this
 	);
 	connect(display_channel, &combo_box::changed, this, [=](QVariant value, int index){
-		visible_channel = index - 1;
+		if (visible_channel == (index - 1))
+		{
+			visible_channel = -1;
+			display_channel->set_index(0, false);
+		}
+		else
+		{
+			visible_channel = index - 1;
+			display_channel->set_index(index, false);
+		}
+
 		update_render();
 	});
 
