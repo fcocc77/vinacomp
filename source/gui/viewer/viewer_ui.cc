@@ -15,6 +15,30 @@ void viewer::setup_ui()
     layout->addWidget(info);
     layout->addWidget(_time_line);
     layout->addWidget(player);
+
+	create_menu();
+}
+
+void viewer::create_menu()
+{
+    menu = new QMenu(_vinacomp);
+
+	action *overlay_action = new action("Overlay", "Q");
+	overlay_action->set_checkable();
+	overlay_action->set_checked(true);
+	overlay_action->connect_to(this, [=](){
+		_viewer_gl->set_overlay(overlay_action->is_checked());
+	});
+
+	menu->addAction(overlay_action);
+
+	menu->addSeparator();
+
+	menu->addAction(pause_action);
+	menu->addAction(out_frame_action);
+	menu->addAction(render_area_action);
+	menu->addAction(multi_lines_action);
+	menu->addAction(refresh_action);
 }
 
 QWidget *viewer::control_setup_ui() 
@@ -62,45 +86,45 @@ QWidget *viewer::control_setup_ui()
 
 	bar->add_separator();
 
-	action *out_frame = new action("Show pixels out of frame", "out_frame", "out_frame");
-	out_frame->set_checkable();
-	out_frame->connect_to(this, [](){
+	out_frame_action = new action("Show pixels out of frame", "out_frame", "out_frame");
+	out_frame_action->set_checkable();
+	out_frame_action->connect_to(this, [](){
 	});
-	bar->add_action(out_frame);
+	bar->add_action(out_frame_action);
 
-	action *render_area = new action("Render Area", "render_area", "render_area");
-	render_area->set_checkable();
-	render_area->connect_to(this, [](){
+	render_area_action = new action("Render Area", "render_area", "render_area");
+	render_area_action->set_checkable();
+	render_area_action->connect_to(this, [](){
 	});
-	bar->add_action(render_area);
+	bar->add_action(render_area_action);
 
 	bar->add_separator();
 
-	action *proxy = new action("Proxy", "proxy", "proxy");
-	proxy->set_checkable();
-	proxy->connect_to(this, [](){
+	proxy_action = new action("Proxy", "proxy", "proxy");
+	proxy_action->set_checkable();
+	proxy_action->connect_to(this, [](){
 	});
-	bar->add_action(proxy);
+	bar->add_action(proxy_action);
 
-	action *multi_lines = new action("Render all lines", "multi_lines", "multi_lines");
-	multi_lines->set_checkable();
-	multi_lines->connect_to(this, [](){
+	multi_lines_action = new action("Render all lines", "multi_lines", "multi_lines");
+	multi_lines_action->set_checkable();
+	multi_lines_action->connect_to(this, [](){
 	});
-	bar->add_action(multi_lines);
+	bar->add_action(multi_lines_action);
 
 	bar->add_separator();
 
-	action *refresh = new action("Refresh", "refresh", "refresh");
-	refresh->connect_to(this, [](){
+	refresh_action = new action("Refresh", "refresh", "refresh");
+	refresh_action->connect_to(this, [](){
 	});
-	bar->add_action(refresh);
+	bar->add_action(refresh_action);
 
-	action *pause = new action("Pause Render", "pause", "pause");
-	pause->set_checkable();
-	pause->connect_to(this, [=](){
+	pause_action = new action("Pause Render", "pause", "pause");
+	pause_action->set_checkable();
+	pause_action->connect_to(this, [=](){
 		render_pause = !render_pause;
 	});
-	bar->add_action(pause);
+	bar->add_action(pause_action);
 
     return bar;
 }

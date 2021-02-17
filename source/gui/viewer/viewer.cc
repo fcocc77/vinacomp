@@ -54,6 +54,11 @@ viewer::viewer(QString _name, project_struct *_project, renderer *__renderer, QW
 		else
 			range_way_menu->set_index(1, false);
 	});
+
+	connect(_viewer_gl, &viewer_gl::right_click, this, [=](){
+		menu->move(QCursor::pos());
+		menu->show();
+	});
 }
 
 viewer::~viewer()

@@ -6,6 +6,7 @@ viewer_gl::viewer_gl()
 	, image(nullptr)
 	, image_width(1920)
 	, image_height(1080)
+	, overlay(true)
 {
     center_viewer = new action("Center Image", "F", "center");
 	center_viewer->connect_to(this, [=]() { fit_to_viewport(); });
@@ -34,7 +35,9 @@ void viewer_gl::paintGL()
 {
     gl_view::paintGL();
 	draw_image();
-	draw_frame();
+
+	if (overlay)
+		draw_frame();
 }
 
 void viewer_gl::fit_to_viewport()
@@ -134,11 +137,20 @@ void viewer_gl::draw_frame()
 	draw_text(format_label, color, {image_width, image_height}, {-1, -1}, 9, Qt::AlignRight, {5, -10});
 }
 
+void viewer_gl::set_overlay(bool _overlay)
+{
+	overlay = _overlay;
+	update();
+}
+
 void viewer_gl::mousePressEvent(QMouseEvent *event)
 {
 	// si es zoom desabilita el ajuste para el cuadro de resolucion
     if (qt::alt() && event->button() == Qt::MidButton)
 		fitted = false;
+
+	if (event->button() == Qt::RightButton)
+		right_click();
 
     gl_view::mousePressEvent(event);
 }

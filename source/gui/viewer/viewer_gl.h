@@ -7,6 +7,7 @@
 
 class viewer_gl : public gl_view
 {
+	Q_OBJECT
 private:
     // Acciones
     action *center_viewer;
@@ -16,6 +17,8 @@ private:
 	QImage *image;
 	int image_width, image_height;
 	bool fitted;
+
+	bool overlay;
 
     void draw_frame();
 	void draw_image();
@@ -28,6 +31,7 @@ public:
     ~viewer_gl();
 
 	void set_image(QImage *image, int image_width = 1920, int image_height = 1080);
+	void set_overlay(bool _overlay);
 protected:
     void initializeGL() override;
     void paintGL() override;
@@ -36,6 +40,8 @@ protected:
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
+signals:
+	void right_click();
 };
 
 #endif //VIEWER_GL_HPP

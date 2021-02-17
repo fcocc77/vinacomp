@@ -38,6 +38,7 @@ private:
     time_line *_time_line;
 	QString playing_option;
 	QString name;
+	QMenu *menu;
 
 	QWidget *_vinacomp;
 	renderer *_renderer;
@@ -54,6 +55,7 @@ private:
 
     //
     void setup_ui();
+	void create_menu();
     QWidget *player_setup_ui();
     QWidget *info_setup_ui();
     QWidget *control_setup_ui();
@@ -61,7 +63,15 @@ private:
     //
     //
 
-	// Acciones
+	// Acciones Control
+	action *pause_action;
+	action *out_frame_action;
+	action *render_area_action;
+	action *proxy_action;
+	action *multi_lines_action;
+	action *refresh_action;
+
+	// Acciones Player
 	action *play_forward_action;
 	action *stop_forward_action;
 	action *play_backward_action;

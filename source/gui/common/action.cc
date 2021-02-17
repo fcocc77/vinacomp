@@ -82,10 +82,13 @@ void action::set_checked(bool _checked)
 
 	checked = _checked;
 
-	if (checked)
-		qt::set_icon(button, icon_name + "_c", icon_size);
-	else
-		qt::set_icon(button, icon_name + "_a", icon_size);
+	if (button)
+	{
+		if (checked)
+			qt::set_icon(button, icon_name + "_c", icon_size);
+		else
+			qt::set_icon(button, icon_name + "_a", icon_size);
+	}
 }
 
 QString action::get_icon_name() const
