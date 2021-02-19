@@ -79,6 +79,8 @@ QMenu {
       color: #ffcc00; }
     QMenu::item:disabled {
       color: #7a7e83; }
+    QMenu::item:checked {
+      text-decoration: underline; }
   QMenu::separator {
     background-color: #30343b;
     margin: 5px;

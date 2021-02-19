@@ -89,6 +89,13 @@ void action::set_checked(bool _checked)
 		else
 			qt::set_icon(button, icon_name + "_a", icon_size);
 	}
+
+	if (checked)
+		this->setIcon(QIcon("resources/images/" + icon_name + "_c.png"));
+	else
+		this->setIcon(QIcon("resources/images/" + icon_name + "_a.png"));
+
+	this->setChecked(checked);
 }
 
 QString action::get_icon_name() const
@@ -104,6 +111,7 @@ void action::set_icon(QString icon_name)
 void action::set_checkable(bool _checkable)
 {
 	checkable = _checkable;
+	this->setCheckable(checkable);
 }
 
 bool action::is_checked() const
