@@ -5,13 +5,57 @@
     "icon": "grid",
     "knobs": [
         {
-            "name": "mix",
-            "type": "floating",
-            "label": "Mix",
-            "tooltip": "",
+            "name": "color",
+            "type": "color",
+            "label": "Color",
+            "tooltip": "color",
             "minimum": 0,
             "maximum": 1,
-            "default": 0.5
+			"default": [1, 1, 1, 1]
+        },
+        {
+            "name": "line_style",
+            "type": "choice",
+            "label": "Line Style",
+            "tooltip": "line_style",
+            "items": [
+				["Solid Line", "solid_line"],
+				["Dash Line", "dash_line"],
+				["Dot Line", "dot_line"],
+				["Dash Dot Line", "dash_dot_line"],
+				["Dash Dot Dot Line", "dash_dot_dot_line"]
+            ],
+            "default": 1
+        },
+		{
+			"name": "dashdot",
+			"type": "check_box",
+			"label": "Dash Dot",
+			"tooltip": "dashdot",
+			"over_line": true,
+			"default": false
+		},
+		{
+			"name": "separator1",
+			"type": "separator"
+		},
+        {
+            "name": "number",
+            "type": "floating",
+            "label": "Number",
+            "tooltip": "",
+            "minimum": 0,
+            "maximum": 10,
+            "default": 10
+        },
+        {
+            "name": "size",
+            "type": "floating",
+            "label": "Size",
+            "tooltip": "",
+            "minimum": 0,
+            "maximum": 100,
+            "default": 10
         }
     ]
 }

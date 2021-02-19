@@ -20,6 +20,7 @@
 #include <radial_node.h>
 #include <noise_node.h>
 #include <shuffle_node.h>
+#include <grid_node.h>
 
 class renderer : public QWidget
 {
