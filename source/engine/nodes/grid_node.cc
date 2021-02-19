@@ -16,7 +16,8 @@ void grid_node::render(
 {
 	float number = get(params, "number").toDouble();
 	float size = get(params, "size").toDouble();
-	bool dashdot = get(params, "dashdot").toBool();
+	bool round = get(params, "round").toBool();
+	QString style = get(params, "line_style").toArray()[1].toString();
 
 	QColor color = get_color(params);
 	QColor background = Qt::black;
@@ -28,21 +29,31 @@ void grid_node::render(
 	image->fill(background);
 
 	QPainter painter(image);
+	QPen pen(color, size);
 
-	if (dashdot)
-	{
-		painter.setPen(QPen(color, size, Qt::DashDotLine, Qt::RoundCap));
+	if (style == "solid_line");
+	else if (style == "dash_line")
+		pen.setStyle(Qt::DashLine);
+	else if (style == "dot_line")
+		pen.setStyle(Qt::DotLine);
+	else if (style == "dash_dot_line")
+		pen.setStyle(Qt::DashDotLine);
+	else if (style == "dash_dot_dot_line")
+		pen.setStyle(Qt::DashDotDotLine);
+
+	if (round)
+		pen.setCapStyle(Qt::RoundCap);
+
+	if (style != "solid_line" && round)
 		painter.setRenderHint(QPainter::Antialiasing);
-	}
-	else
-		painter.setPen(QPen(color, size));
 
+	painter.setPen(pen);
 
 	float height_number = number;
 	float width_number = number;
 
 	float height_part = float( height ) / height_number;
-	float height_current = 0;
+	float height_current = size / 2;
 	for (int h = 0; h <= height_number; h++)
 	{
 		painter.drawLine(0, height_current, width, height_current);
@@ -50,7 +61,7 @@ void grid_node::render(
 	}
 
 	float width_part = float( width ) / width_number;
-	float width_current = 0;
+	float width_current = size / 2;
 	for (int w = 0; w <= width_number; w++)
 	{
 		painter.drawLine(width_current, 0, width_current, height);

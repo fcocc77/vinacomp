@@ -25,12 +25,12 @@
 				["Dash Dot Line", "dash_dot_line"],
 				["Dash Dot Dot Line", "dash_dot_dot_line"]
             ],
-            "default": 1
+            "default": [0, "solid_line"]
         },
 		{
-			"name": "dashdot",
+			"name": "round",
 			"type": "check_box",
-			"label": "Dash Dot",
+			"label": "Round",
 			"tooltip": "dashdot",
 			"over_line": true,
 			"default": false
