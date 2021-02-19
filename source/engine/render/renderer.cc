@@ -25,6 +25,7 @@ renderer::renderer(project_struct *_project)
 	nodes.insert("noise", new noise_node());
 	nodes.insert("shuffle", new shuffle_node());
 	nodes.insert("grid", new grid_node());
+	nodes.insert("checker_board", new checker_board_node());
 }
 
 renderer::~renderer()

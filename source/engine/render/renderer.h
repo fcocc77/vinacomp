@@ -21,6 +21,7 @@
 #include <noise_node.h>
 #include <shuffle_node.h>
 #include <grid_node.h>
+#include <checker_board_node.h>
 
 class renderer : public QWidget
 {
