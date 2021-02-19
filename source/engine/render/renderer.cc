@@ -27,6 +27,7 @@ renderer::renderer(project_struct *_project)
 	nodes.insert("grid", new grid_node());
 	nodes.insert("text", new text_node());
 	nodes.insert("checker_board", new checker_board_node());
+	nodes.insert("mirror", new mirror_node());
 }
 
 renderer::~renderer()

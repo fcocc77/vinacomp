@@ -5,13 +5,19 @@
     "icon": "mirror",
     "knobs": [
         {
-            "name": "mix",
-            "type": "floating",
-            "label": "Mix",
-            "tooltip": "",
-            "minimum": 0,
-            "maximum": 1,
-            "default": 0.5
+            "name": "flip",
+            "type": "check_box",
+            "label": "Vertical ( Flip )",
+            "tooltip": "flip",
+            "default": false
+        },
+        {
+            "name": "flop",
+            "type": "check_box",
+            "label": "Horizontal ( Flop )",
+            "tooltip": "flop",
+            "default": false,
+			"over_line": true
         }
     ]
 }

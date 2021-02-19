@@ -23,6 +23,7 @@
 #include <grid_node.h>
 #include <checker_board_node.h>
 #include <text_node.h>
+#include <mirror_node.h>
 
 class renderer : public QWidget
 {
@@ -41,7 +42,7 @@ public:
 	void render(
 		QImage *image,
 		int frame,
-		QString node_name, 
+		QString node_name,
 		pair <int, int> &frame_range,
 		QRect &bbox
 	);

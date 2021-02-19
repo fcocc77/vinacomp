@@ -17,7 +17,7 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout)
             QLabel _label(label);
             int width = _label.fontMetrics().boundingRect(_label.text()).width();
 
-			if (type == "button" || type == "label")
+			if (type == "button" || type == "label" || type == "check_box")
 				width = 0;
 
             if (width > init_space_width)
