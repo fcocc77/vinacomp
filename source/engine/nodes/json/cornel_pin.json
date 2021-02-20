@@ -4,14 +4,94 @@
     "label": "CornelPin",
     "icon": "cornel_pin",
     "knobs": [
+		{
+			"name": "from_group",
+			"type": "group",
+			"label": "From",
+			"open": false,
+			"knobs": 5
+		},
         {
-            "name": "mix",
-            "type": "floating",
-            "label": "Mix",
-            "tooltip": "",
-            "minimum": 0,
-            "maximum": 1,
-            "default": 0.5
-        }
+            "name": "from1",
+            "type": "integer_dimensions",
+            "label": "From 1",
+            "tooltip": "from1",
+            "default": [0, 0]
+        },
+        {
+            "name": "from2",
+            "type": "integer_dimensions",
+            "label": "From 2",
+            "tooltip": "from2",
+            "default": [1920, 0]
+        },
+        {
+            "name": "from3",
+            "type": "integer_dimensions",
+            "label": "From 3",
+            "tooltip": "from3",
+            "default": [1920, 1080]
+        },
+        {
+            "name": "from4",
+            "type": "integer_dimensions",
+            "label": "From 4",
+            "tooltip": "from4",
+            "default": [0, 1080]
+        },
+		{
+			"name": "set_from_input",
+			"type": "button",
+			"label": "Set From Input",
+			"tooltip": "set_from_input"
+		},
+		{
+			"name": "copy_to",
+			"type": "button",
+			"label": "Copy To",
+			"tooltip": "copy_to",
+			"over_line": true
+		},
+		{
+			"name": "to_group",
+			"type": "group",
+			"label": "To",
+			"open": true,
+			"knobs": 5
+		},
+        {
+            "name": "to1",
+            "type": "integer_dimensions",
+            "label": "To 1",
+            "tooltip": "to1",
+            "default": [0, 0]
+        },
+        {
+            "name": "to2",
+            "type": "integer_dimensions",
+            "label": "To 2",
+            "tooltip": "to2",
+            "default": [1920, 0]
+        },
+        {
+            "name": "to3",
+            "type": "integer_dimensions",
+            "label": "To 3",
+            "tooltip": "to3",
+            "default": [1920, 1080]
+        },
+        {
+            "name": "to4",
+            "type": "integer_dimensions",
+            "label": "To 4",
+            "tooltip": "to4",
+            "default": [0, 1080]
+        },
+		{
+			"name": "copy_from",
+			"type": "button",
+			"label": "Copy From",
+			"tooltip": "copy_from"
+		}
     ]
 }

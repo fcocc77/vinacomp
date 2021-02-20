@@ -25,6 +25,7 @@
 #include <text_node.h>
 #include <mirror_node.h>
 #include <sharpen_node.h>
+#include <cornel_pin_node.h>
 
 class renderer : public QWidget
 {

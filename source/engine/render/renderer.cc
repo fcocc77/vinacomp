@@ -29,6 +29,7 @@ renderer::renderer(project_struct *_project)
 	nodes.insert("checker_board", new checker_board_node());
 	nodes.insert("mirror", new mirror_node());
 	nodes.insert("sharpen", new sharpen_node());
+	nodes.insert("cornel_pin", new cornel_pin_node());
 }
 
 renderer::~renderer()
