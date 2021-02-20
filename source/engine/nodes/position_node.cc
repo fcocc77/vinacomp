@@ -16,9 +16,8 @@ void position_node::render(
 	int x = get(params, "translate").toArray()[0].toInt();
 	int y = get(params, "translate").toArray()[1].toInt();
 
-	for ( int x = 0; x < 1920; x++)
-		for ( int y = 0; y < 1080; y++)
-			QColor color = image->pixel(100, 108);
+	cv::Mat img(image->height(), image->width(), CV_8UC4, image->bits(), image->bytesPerLine());
 
-	image->setOffset({x, y});
+	cv::Mat trans_mat = (cv::Mat_<double>(2,3) << 1, 0, x, 0, 1, y);
+	cv::warpAffine(img, img, trans_mat, img.size());
 }

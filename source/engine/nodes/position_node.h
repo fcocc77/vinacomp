@@ -3,6 +3,8 @@
 
 #include <node_engine.h>
 
+#include <opencv2/opencv.hpp>
+
 class position_node : public node_engine
 {
 public:
