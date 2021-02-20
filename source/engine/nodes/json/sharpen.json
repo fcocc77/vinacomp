@@ -5,13 +5,22 @@
     "icon": "sharpen",
     "knobs": [
         {
-            "name": "mix",
+            "name": "amount",
             "type": "floating",
-            "label": "Mix",
-            "tooltip": "",
+            "label": "Amount",
+            "tooltip": "amount",
             "minimum": 0,
             "maximum": 1,
-            "default": 0.5
+            "default": 1
+        },
+        {
+            "name": "size",
+            "type": "floating",
+            "label": "Size",
+            "tooltip": "size",
+            "minimum": 0,
+            "maximum": 100,
+            "default": 3
         }
     ]
 }

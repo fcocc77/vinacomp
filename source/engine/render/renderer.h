@@ -24,6 +24,7 @@
 #include <checker_board_node.h>
 #include <text_node.h>
 #include <mirror_node.h>
+#include <sharpen_node.h>
 
 class renderer : public QWidget
 {
