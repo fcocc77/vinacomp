@@ -30,6 +30,25 @@ renderer::renderer(project_struct *_project)
 	nodes.insert("mirror", new mirror_node());
 	nodes.insert("sharpen", new sharpen_node());
 	nodes.insert("cornel_pin", new cornel_pin_node());
+	nodes.insert("rectangle", new rectangle_node());
+	nodes.insert("frame_hold", new frame_hold_node());
+	nodes.insert("copy", new copy_node());
+	nodes.insert("clamp", new clamp_node());
+	nodes.insert("saturation", new saturation_node());
+	nodes.insert("grade", new grade_node());
+	nodes.insert("edge_detect", new edge_detect_node());
+	nodes.insert("erode", new erode_node());
+	nodes.insert("keyer", new keyer_node());
+	nodes.insert("dissolve", new dissolve_node());
+	nodes.insert("merge", new merge_node());
+	nodes.insert("premult", new premult_node());
+	nodes.insert("unpremult", new unpremult_node());
+	nodes.insert("switch", new switch_node());
+	nodes.insert("bbox_adjust", new bbox_adjust_node());
+	nodes.insert("crop", new crop_node());
+	nodes.insert("idistort", new idistort_node());
+	nodes.insert("lens_distortion", new lens_distortion_node());
+	nodes.insert("transform", new transform_node());
 }
 
 renderer::~renderer()

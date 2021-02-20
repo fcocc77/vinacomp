@@ -26,6 +26,25 @@
 #include <mirror_node.h>
 #include <sharpen_node.h>
 #include <cornel_pin_node.h>
+#include <rectangle_node.h>
+#include <frame_hold_node.h>
+#include <copy_node.h>
+#include <clamp_node.h>
+#include <saturation_node.h>
+#include <grade_node.h>
+#include <edge_detect_node.h>
+#include <erode_node.h>
+#include <keyer_node.h>
+#include <dissolve_node.h>
+#include <merge_node.h>
+#include <premult_node.h>
+#include <unpremult_node.h>
+#include <switch_node.h>
+#include <bbox_adjust_node.h>
+#include <crop_node.h>
+#include <idistort_node.h>
+#include <lens_distortion_node.h>
+#include <transform_node.h>
 
 class renderer : public QWidget
 {
