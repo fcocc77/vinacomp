@@ -1,6 +1,8 @@
 #ifndef VIEWER_GL_HPP
 #define VIEWER_GL_HPP
 
+#include <opencv2/opencv.hpp>
+
 #include <gl_view.h>
 #include <action.h>
 #include <util.h>
@@ -14,7 +16,7 @@ private:
     action *fit_100_percent;
     //
 
-	QImage *image;
+	cv::Mat *image;
 	int image_width, image_height;
 	bool fitted;
 
@@ -30,7 +32,7 @@ public:
     viewer_gl();
     ~viewer_gl();
 
-	void set_image(QImage *image, int image_width = 1920, int image_height = 1080);
+	void set_image(cv::Mat *image, int image_width = 1920, int image_height = 1080);
 	void set_overlay(bool _overlay);
 protected:
     void initializeGL() override;

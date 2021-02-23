@@ -16,7 +16,7 @@ public:
 	~read_node();
 
 	void render(
-		QImage *image,
+		cv::Mat *image,
 		QJsonObject *params,
 		int frame,
 		pair <int, int> &frame_range,

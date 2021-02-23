@@ -4,6 +4,7 @@ include(../../config/config.pro)
 LIBS += -lopencv_core
 LIBS += -lopencv_features2d
 LIBS += -lopencv_imgproc
+LIBS += -lopencv_highgui
 #
 
 TEMPLATE = app

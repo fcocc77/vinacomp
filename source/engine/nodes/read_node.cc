@@ -19,7 +19,7 @@ pair <int, int> read_node::get_frame_range(QJsonObject *params) const
 }
 
 void read_node::render(
-	QImage *image,
+	cv::Mat *image,
 	QJsonObject *params,
 	int frame,
 	pair <int, int> &frame_range,
@@ -30,9 +30,13 @@ void read_node::render(
 
 	file_path.replace("###", _frame);
 
-	(*image) = QImage(file_path).mirrored();
+	// (*image) = QImage(file_path).mirrored();
+	// CV_32F
+	(*image) = cv::imread(file_path.toStdString(), cv::IMREAD_COLOR);
+	image->convertTo(*image, CV_32F);
 
 	frame_range =  get_frame_range(params);
+
 }
 
 QString read_node::frame_to_string(int frame, int frame_digits)

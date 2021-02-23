@@ -5,11 +5,11 @@ invert_node::invert_node(){}
 invert_node::~invert_node(){}
 
 void invert_node::render(
-	QImage *image,
+	cv::Mat *image,
 	QJsonObject *params,
 	int frame,
 	pair <int, int> &frame_range,
 	QRect &bbox)
 {
-	image->invertPixels();
+	// image->invertPixels();
 }

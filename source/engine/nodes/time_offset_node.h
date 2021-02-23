@@ -12,7 +12,7 @@ public:
 
 	void set_offset(QJsonObject *params, int &frame, QString node_name, QWidget *_renderer);
 	void render(
-		QImage *image,
+		cv::Mat *image,
 		QJsonObject *params, 
 		int frame,
 		pair <int, int> &frame_range,

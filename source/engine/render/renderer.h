@@ -52,8 +52,8 @@ private:
 	project_struct *project;
 
 	QMap <QString, node_engine*> nodes;
-	time_offset_node *time_offset;
 	read_node *read;
+	time_offset_node *time_offset;
 	frame_range_node *_frame_range;
 
 public:
@@ -61,7 +61,7 @@ public:
 	~renderer();
 
 	void render(
-		QImage *image,
+		cv::Mat *image,
 		int frame,
 		QString node_name,
 		pair <int, int> &frame_range,

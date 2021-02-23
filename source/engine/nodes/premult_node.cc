@@ -8,7 +8,7 @@ premult_node::premult_node()
 premult_node::~premult_node() { }
 
 void premult_node::render(
-	QImage *image,
+	cv::Mat *image,
 	QJsonObject *params,
 	int frame,
 	pair <int, int> &frame_range,

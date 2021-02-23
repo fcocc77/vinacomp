@@ -8,7 +8,7 @@ crop_node::crop_node()
 crop_node::~crop_node() { }
 
 void crop_node::render(
-	QImage *image,
+	cv::Mat *image,
 	QJsonObject *params,
 	int frame,
 	pair <int, int> &frame_range,

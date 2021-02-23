@@ -8,7 +8,7 @@ clamp_node::clamp_node()
 clamp_node::~clamp_node() { }
 
 void clamp_node::render(
-	QImage *image,
+	cv::Mat *image,
 	QJsonObject *params,
 	int frame,
 	pair <int, int> &frame_range,

@@ -84,8 +84,8 @@ pair <int, int> renderer::get_frame_range(QString node_name) const
 }
 
 void renderer::render(
-		QImage *image,
-		int frame, 
+		cv::Mat *image,
+		int frame,
 		QString node_name,
 		pair<int, int> &frame_range,
 		QRect &bbox

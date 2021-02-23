@@ -8,7 +8,7 @@ lens_distortion_node::lens_distortion_node()
 lens_distortion_node::~lens_distortion_node() { }
 
 void lens_distortion_node::render(
-	QImage *image,
+	cv::Mat *image,
 	QJsonObject *params,
 	int frame,
 	pair <int, int> &frame_range,

@@ -15,7 +15,7 @@ pair <int, int> frame_range_node::get_frame_range(QJsonObject *params) const
 }
 
 void frame_range_node::render(
-	QImage *image,
+	cv::Mat *image,
 	QJsonObject *params,
 	int frame,
 	pair <int, int> &frame_range,

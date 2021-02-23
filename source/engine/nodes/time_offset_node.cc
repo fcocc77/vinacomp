@@ -25,7 +25,7 @@ void time_offset_node::set_offset(QJsonObject *params, int &frame, QString node_
 }
 
 void time_offset_node::render(
-		QImage *image,
+		cv::Mat *image,
 		QJsonObject *params,
 		int frame,
 		pair <int, int> &frame_range,

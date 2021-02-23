@@ -8,7 +8,7 @@ frame_hold_node::frame_hold_node()
 frame_hold_node::~frame_hold_node() { }
 
 void frame_hold_node::render(
-	QImage *image,
+	cv::Mat *image,
 	QJsonObject *params,
 	int frame,
 	pair <int, int> &frame_range,

@@ -110,7 +110,7 @@ void copy(QImage *src, QImage *dst, QList<int> channels_order)
 }
 
 void shuffle_node::render(
-	QImage *image,
+	cv::Mat *image,
 	QJsonObject *params,
 	int frame,
 	pair <int, int> &frame_range,
@@ -120,13 +120,13 @@ void shuffle_node::render(
 	QJsonArray channel_a = shuffle["a"].toArray();
 
 	// antes de copiar crea un auxiliar para poder copiar los pixels entre la misma imagen
-	QImage aux_image = *image;
-	copy(image, &aux_image, {
-		channel_a[0].toArray()[1].toInt(),
-		channel_a[1].toArray()[1].toInt(),
-		channel_a[2].toArray()[1].toInt(),
-		channel_a[3].toArray()[1].toInt()
-	});
-	(*image) = aux_image;
+	// QImage aux_image = *image;
+	// copy(image, &aux_image, {
+		// channel_a[0].toArray()[1].toInt(),
+		// channel_a[1].toArray()[1].toInt(),
+		// channel_a[2].toArray()[1].toInt(),
+		// channel_a[3].toArray()[1].toInt()
+	// });
+	// (*image) = aux_image;
 }
 

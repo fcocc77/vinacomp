@@ -8,7 +8,7 @@ erode_node::erode_node()
 erode_node::~erode_node() { }
 
 void erode_node::render(
-	QImage *image,
+	cv::Mat *image,
 	QJsonObject *params,
 	int frame,
 	pair <int, int> &frame_range,

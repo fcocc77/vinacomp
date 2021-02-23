@@ -8,7 +8,7 @@ text_node::text_node()
 text_node::~text_node() { }
 
 void text_node::render(
-	QImage *image,
+	cv::Mat *image,
 	QJsonObject *params,
 	int frame,
 	pair <int, int> &frame_range,
@@ -24,13 +24,13 @@ void text_node::render(
 	int width = 1920;
 	int height = 1080;
 
-	(*image) = QImage(width, height, QImage::Format_RGB32);
-	image->fill(background);
+	// (*image) = QImage(width, height, QImage::Format_RGB32);
+	// image->fill(background);
 
-	QPainter painter(image);
-	painter.setPen(QPen(color));
-	painter.setFont(QFont("Arial", font_size));
-	painter.scale(1.0, -1.0);
+	// QPainter painter(image);
+	// painter.setPen(QPen(color));
+	// painter.setFont(QFont("Arial", font_size));
+	// painter.scale(1.0, -1.0);
 
-	painter.drawText(0, 0, text);
+	// painter.drawText(0, 0, text);
 }

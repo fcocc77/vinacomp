@@ -78,11 +78,11 @@ void viewer_gl::fit_to_percent(int percent)
 	update();
 }
 
-void viewer_gl::set_image(QImage *_image, int _image_width, int _image_height)
+void viewer_gl::set_image(cv::Mat *_image, int _image_width, int _image_height)
 {
 	image = _image;
-	image_width = image->width();
-	image_height = image->height();
+	image_width = image->cols;
+	image_height = image->rows;
 
 	update();
 }
@@ -95,7 +95,10 @@ void viewer_gl::draw_image()
 	// genera la textura 2d a partir de los bits de la imagen
 	GLuint texture;
 	glBindTexture(GL_TEXTURE_2D, texture);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, image_width, image_height, 0, GL_BGRA, GL_UNSIGNED_BYTE, image->bits());
+
+	image->convertTo(*image, CV_8U);
+	// glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, image_width, image_height, 0, GL_BGRA, GL_UNSIGNED_BYTE, image->bytes());
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, image_width, image_height, 0, GL_BGR, GL_UNSIGNED_BYTE, image->data);
 	//
 
 	// si el zoom es menor a 100, muestra los pixels en la imagen

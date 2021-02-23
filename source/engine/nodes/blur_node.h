@@ -3,8 +3,6 @@
 
 #include <QImage>
 
-#include <opencv2/opencv.hpp>
-
 #include <node_engine.h>
 #include <util.h>
 
@@ -15,7 +13,7 @@ public:
 	~blur_node();
 
 	void render(
-		QImage *image, 
+		cv::Mat *image,
 		QJsonObject *params, 
 		int frame,
 		pair <int, int> &frame_range,

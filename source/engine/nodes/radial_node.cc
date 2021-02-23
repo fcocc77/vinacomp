@@ -8,7 +8,7 @@ radial_node::radial_node()
 radial_node::~radial_node() { }
 
 void radial_node::render(
-	QImage *image,
+	cv::Mat *image,
 	QJsonObject *params,
 	int frame,
 	pair <int, int> &frame_range,
@@ -23,33 +23,33 @@ void radial_node::render(
 	int width = 1920;
 	int height = 1080;
 
-	(*image) = QImage(width, height, QImage::Format_RGB32);
-	image->fill(background);
+	// (*image) = QImage(width, height, QImage::Format_RGB32);
+	// image->fill(background);
 
-	QPainter painter(image);
+	// QPainter painter(image);
 
-	if (softness == 0)
-	{
-		painter.setRenderHint(QPainter::Antialiasing);
-		painter.setBrush(QBrush(color, Qt::SolidPattern));
-		painter.drawEllipse(area);
-	}
-	else
-	{
-		// ! falta poder manipular el ancho y alto del radial
-		QPointF centerPoint(500, 100);
-		qreal centerRadius = 500;
+	// if (softness == 0)
+	// {
+		// painter.setRenderHint(QPainter::Antialiasing);
+		// painter.setBrush(QBrush(color, Qt::SolidPattern));
+		// painter.drawEllipse(area);
+	// }
+	// else
+	// {
+		// // ! falta poder manipular el ancho y alto del radial
+		// QPointF centerPoint(500, 100);
+		// qreal centerRadius = 500;
 
-		QRadialGradient radial(centerPoint, centerRadius);
-		radial.setColorAt(0.0, color);
-		radial.setColorAt(1.0 - softness, color);
-		radial.setColorAt(1.0, background);
+		// QRadialGradient radial(centerPoint, centerRadius);
+		// radial.setColorAt(0.0, color);
+		// radial.setColorAt(1.0 - softness, color);
+		// radial.setColorAt(1.0, background);
 
-		QPen pen;
-		pen.setWidth(1000);
-		pen.setBrush(radial);
+		// QPen pen;
+		// pen.setWidth(1000);
+		// pen.setBrush(radial);
 
-		painter.setPen(pen);
-		painter.drawPoint(centerPoint);
-	}
+		// painter.setPen(pen);
+		// painter.drawPoint(centerPoint);
+	// }
 }

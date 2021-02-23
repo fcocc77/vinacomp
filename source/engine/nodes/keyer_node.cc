@@ -8,7 +8,7 @@ keyer_node::keyer_node()
 keyer_node::~keyer_node() { }
 
 void keyer_node::render(
-	QImage *image,
+	cv::Mat *image,
 	QJsonObject *params,
 	int frame,
 	pair <int, int> &frame_range,

@@ -8,7 +8,7 @@ checker_board_node::checker_board_node()
 checker_board_node::~checker_board_node() { }
 
 void checker_board_node::render(
-	QImage *image,
+	cv::Mat *image,
 	QJsonObject *params,
 	int frame,
 	pair <int, int> &frame_range,
@@ -26,40 +26,40 @@ void checker_board_node::render(
 	int width = 1920;
 	int height = 1080;
 
-	(*image) = QImage(width, height, QImage::Format_RGB32);
-	image->fill(background);
+	// (*image) = QImage(width, height, QImage::Format_RGB32);
+	// image->fill(background);
 
-	QPainter painter(image);
-	if (border)
-		painter.setPen(QPen(border_color, border));
-	else
-		painter.setPen(Qt::NoPen);
+	// QPainter painter(image);
+	// if (border)
+		// painter.setPen(QPen(border_color, border));
+	// else
+		// painter.setPen(Qt::NoPen);
 
 
-	bool even_height = false;
-	int current_height = 0;
+	// bool even_height = false;
+	// int current_height = 0;
 
-	int height_count = float(height) / size;
-	int width_count = float(width) / size;
+	// int height_count = float(height) / size;
+	// int width_count = float(width) / size;
 
-	for (int h = 0; h <= height_count; h++)
-	{
-		bool even_width = even_height;
-		int current_width = 0;
-		for (int w = 0; w <= width_count; w++)
-		{
-			if (even_width)
-				painter.setBrush(QBrush(color_a));
-			else
-				painter.setBrush(QBrush(color_b));
+	// for (int h = 0; h <= height_count; h++)
+	// {
+		// bool even_width = even_height;
+		// int current_width = 0;
+		// for (int w = 0; w <= width_count; w++)
+		// {
+			// if (even_width)
+				// painter.setBrush(QBrush(color_a));
+			// else
+				// painter.setBrush(QBrush(color_b));
 
-			painter.drawRect(current_width, current_height, size, size);
+			// painter.drawRect(current_width, current_height, size, size);
 
-			even_width = !even_width;
-			current_width += size;
-		}
+			// even_width = !even_width;
+			// current_width += size;
+		// }
 
-		even_height = !even_height;
-		current_height += size;
-	}
+		// even_height = !even_height;
+		// current_height += size;
+	// }
 }

@@ -8,7 +8,7 @@ rectangle_node::rectangle_node()
 rectangle_node::~rectangle_node() { }
 
 void rectangle_node::render(
-	QImage *image,
+	cv::Mat *image,
 	QJsonObject *params,
 	int frame,
 	pair <int, int> &frame_range,

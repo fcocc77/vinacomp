@@ -11,7 +11,7 @@ viewer_node::~viewer_node()
 }
 
 void viewer_node::render(
-	QImage *image,
+	cv::Mat *image,
 	QJsonObject *params,
 	int frame,
 	pair <int, int> &frame_range,

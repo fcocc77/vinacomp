@@ -8,7 +8,7 @@ transform_node::transform_node()
 transform_node::~transform_node() { }
 
 void transform_node::render(
-	QImage *image,
+	cv::Mat *image,
 	QJsonObject *params,
 	int frame,
 	pair <int, int> &frame_range,

@@ -8,7 +8,7 @@ constant_node::constant_node()
 constant_node::~constant_node() { }
 
 void constant_node::render(
-	QImage *image,
+	cv::Mat *image,
 	QJsonObject *params,
 	int frame,
 	pair <int, int> &frame_range,
@@ -22,8 +22,8 @@ void constant_node::render(
 
 	QColor color = get_color(params);
 
-	(*image) = QImage(x, y, QImage::Format_RGB32);
-	image->fill(color);
+	// (*image) = QImage(x, y, QImage::Format_RGB32);
+	// image->fill(color);
 
 	frame_range = {first_frame, last_frame};
 }

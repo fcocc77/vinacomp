@@ -25,14 +25,14 @@
 // Engine
 #include <renderer.h>
 #include <project_struct.h>
-#include <shuffle_node.h>
+// #include <shuffle_node.h>
 
 class viewer : public QWidget
 {
 private:
     QVBoxLayout *layout;
 	project_struct *project;
-	QImage *image;
+	cv::Mat *image;
 
     viewer_gl *_viewer_gl;
     time_line *_time_line;

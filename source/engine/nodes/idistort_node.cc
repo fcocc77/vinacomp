@@ -8,7 +8,7 @@ idistort_node::idistort_node()
 idistort_node::~idistort_node() { }
 
 void idistort_node::render(
-	QImage *image,
+	cv::Mat *image,
 	QJsonObject *params,
 	int frame,
 	pair <int, int> &frame_range,

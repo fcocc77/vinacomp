@@ -8,7 +8,7 @@ edge_detect_node::edge_detect_node()
 edge_detect_node::~edge_detect_node() { }
 
 void edge_detect_node::render(
-	QImage *image,
+	cv::Mat *image,
 	QJsonObject *params,
 	int frame,
 	pair <int, int> &frame_range,

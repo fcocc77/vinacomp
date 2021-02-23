@@ -9,7 +9,7 @@ node_engine::~node_engine()
 }
 
 void node_engine::render(
-	QImage *image,
+	cv::Mat *image,
 	QJsonObject *params,
 	int frame,
 	pair <int, int> &frame_range,

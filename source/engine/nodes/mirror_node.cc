@@ -8,7 +8,7 @@ mirror_node::mirror_node()
 mirror_node::~mirror_node() { }
 
 void mirror_node::render(
-	QImage *image,
+	cv::Mat *image,
 	QJsonObject *params,
 	int frame,
 	pair <int, int> &frame_range,
@@ -17,6 +17,6 @@ void mirror_node::render(
 	bool flip = get(params, "flip").toBool();
 	bool flop = get(params, "flop").toBool();
 
-	if (flip || flop)
-		(*image) = image->mirrored(flip, flop);
+	// if (flip || flop)
+		// (*image) = image->mirrored(flip, flop);
 }

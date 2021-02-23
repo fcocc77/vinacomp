@@ -8,7 +8,7 @@ ramp_node::ramp_node()
 ramp_node::~ramp_node() { }
 
 void ramp_node::render(
-	QImage *image,
+	cv::Mat *image,
 	QJsonObject *params,
 	int frame,
 	pair <int, int> &frame_range,
@@ -24,11 +24,11 @@ void ramp_node::render(
 
 	QColor color = get_color(params);
 
-	QLinearGradient ramp(p0, p1);
-    ramp.setColorAt(0, Qt::black);
-    ramp.setColorAt(1, color);
+	// QLinearGradient ramp(p0, p1);
+    // ramp.setColorAt(0, Qt::black);
+    // ramp.setColorAt(1, color);
 
-	(*image) = QImage(x, y, QImage::Format_RGB32);
-	QPainter painter(image);
-	painter.fillRect(image->rect(), ramp);
+	// (*image) = QImage(x, y, QImage::Format_RGB32);
+	// QPainter painter(image);
+	// painter.fillRect(image->rect(), ramp);
 }

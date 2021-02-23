@@ -22,7 +22,7 @@ viewer::viewer(QString _name, project_struct *_project, renderer *__renderer, QW
     _viewer_gl = new viewer_gl();
     _viewer_gl->setObjectName("viewer_graphics");
 
-	image = new QImage();
+	image = new cv::Mat;
 
     layout = new QVBoxLayout(this);
     layout->setMargin(0);
@@ -87,7 +87,7 @@ void viewer::update_render()
 	QRect bbox;
 	_renderer->render(image, current_frame, name, frame_range, bbox);
 
-	isolate_channel(image, visible_channel);
+	// isolate_channel(image, visible_channel);
 
 	_viewer_gl->set_image(image);
 	if (input_range_way == "input")

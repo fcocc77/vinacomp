@@ -8,7 +8,7 @@ switch_node::switch_node()
 switch_node::~switch_node() { }
 
 void switch_node::render(
-	QImage *image,
+	cv::Mat *image,
 	QJsonObject *params,
 	int frame,
 	pair <int, int> &frame_range,

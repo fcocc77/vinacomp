@@ -8,7 +8,7 @@ dissolve_node::dissolve_node()
 dissolve_node::~dissolve_node() { }
 
 void dissolve_node::render(
-	QImage *image,
+	cv::Mat *image,
 	QJsonObject *params,
 	int frame,
 	pair <int, int> &frame_range,

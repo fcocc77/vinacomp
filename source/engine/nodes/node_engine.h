@@ -2,6 +2,7 @@
 #define NODE_ENGINE_H
 
 #include <QJsonObject>
+#include <opencv2/opencv.hpp>
 
 #include <util.h>
 
@@ -15,8 +16,8 @@ public:
 	~node_engine();
 
 	virtual void render(
-		QImage *image,
-		QJsonObject *params, 
+		cv::Mat *image,
+		QJsonObject *params,
 		int frame,
 		pair <int, int> &frame_range,
 		QRect &bbox

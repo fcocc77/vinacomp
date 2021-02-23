@@ -8,7 +8,7 @@ saturation_node::saturation_node()
 saturation_node::~saturation_node() { }
 
 void saturation_node::render(
-	QImage *image,
+	cv::Mat *image,
 	QJsonObject *params,
 	int frame,
 	pair <int, int> &frame_range,
