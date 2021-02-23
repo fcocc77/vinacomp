@@ -94,7 +94,7 @@ void viewer_gl::isolate_channel(int channel)
 		ch = GL_RGB8;
 	else if (channel == 0)
 		ch = GL_RED;
-	else if (channel == 1) 
+	else if (channel == 1)
 		ch = GL_GREEN;
 	else if (channel == 2)
 		ch = GL_BLUE;
