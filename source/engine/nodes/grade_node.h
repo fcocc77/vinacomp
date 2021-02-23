@@ -8,8 +8,6 @@
 
 class grade_node : public node_engine
 {
-private:
-	QImage mat_to_qimage(const cv::Mat3b &image);
 public:
 	grade_node();
 	~grade_node();
