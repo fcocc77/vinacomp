@@ -91,7 +91,7 @@
             "tooltip": "",
             "minimum": 0,
             "maximum": 1,
-            "default": false
+            "default": true
         },
         {
             "name": "white_clamp",
@@ -101,7 +101,7 @@
             "tooltip": "",
             "minimum": 0,
             "maximum": 1,
-            "default": true
+            "default": false
         },
         {
             "name": "mix",

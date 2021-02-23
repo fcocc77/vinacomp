@@ -19,6 +19,9 @@ void grade_node::render(
 	QJsonArray gain = get(params, "gain").toArray();
 	QJsonArray multiply = get(params, "multiply").toArray();
 	QJsonArray gamma = get(params, "gamma").toArray();
+	QJsonArray offset = get(params, "offset").toArray();
+	bool white_clamp = get(params, "white_clamp").toBool();
+	bool black_clamp = get(params, "black_clamp").toBool();
 
 	float black_red = blackpoint[0].toDouble();
 	float black_green = blackpoint[1].toDouble();
@@ -31,6 +34,10 @@ void grade_node::render(
 	float gain_red = gain[0].toDouble() * multiply[0].toDouble();
 	float gain_green = gain[1].toDouble() * multiply[1].toDouble();
 	float gain_blue = gain[2].toDouble() * multiply[2].toDouble();
+
+	float offset_red = offset[0].toDouble() * 255;
+	float offset_green = offset[1].toDouble() * 255;
+	float offset_blue = offset[2].toDouble() * 255;
 
 	float gamma_red = (1 - gamma[0].toDouble()) + 1;
 	float gamma_green = (1 - gamma[1].toDouble()) + 1;
@@ -64,6 +71,12 @@ void grade_node::render(
 			blue *= gain_blue;
 			//
 
+			//offset
+			red += offset_red;
+			green += offset_green;
+			blue += offset_blue;
+			//
+
 			// gamma
 			if (gamma_red != 1)
 				red = pow(red / 255.0, gamma_red) * 255.0;
@@ -71,6 +84,21 @@ void grade_node::render(
 				green = pow(green / 255.0, gamma_green) * 255.0;
 			if (gamma_blue != 1)
 				blue = pow(blue / 255.0, gamma_blue) * 255.0;
+			//
+
+			// clamp
+			if (black_clamp)
+			{
+				if (red < 0) red = 0;
+				if (green < 0) green = 0;
+				if (blue < 0) blue = 0;
+			}
+			if (white_clamp)
+			{
+				if (red > 255) red = 255;
+				if (green > 255) green = 255;
+				if (blue > 255) blue = 255;
+			}
 			//
         }
     }
