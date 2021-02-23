@@ -87,8 +87,6 @@ void viewer::update_render()
 	QRect bbox;
 	_renderer->render(image, current_frame, name, frame_range, bbox);
 
-	// isolate_channel(image, visible_channel);
-
 	_viewer_gl->set_image(image);
 	if (input_range_way == "input")
 		set_frame_range(frame_range.first, frame_range.second);

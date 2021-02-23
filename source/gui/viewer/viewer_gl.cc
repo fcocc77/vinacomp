@@ -78,7 +78,7 @@ void viewer_gl::fit_to_percent(int percent)
 	update();
 }
 
-void viewer_gl::set_image(cv::Mat *_image, int _image_width, int _image_height)
+void viewer_gl::set_image(cv::Mat *_image)
 {
 	image = _image;
 	image_width = image->cols;
@@ -87,19 +87,45 @@ void viewer_gl::set_image(cv::Mat *_image, int _image_width, int _image_height)
 	update();
 }
 
+void viewer_gl::isolate_channel(int channel)
+{
+	GLint ch;
+	if (channel == -1)
+		ch = GL_RGB8;
+	else if (channel == 0)
+		ch = GL_RED;
+	else if (channel == 1) 
+		ch = GL_GREEN;
+	else if (channel == 2)
+		ch = GL_BLUE;
+
+	// deja cada canal en su lugar, antes de isolar alguno si es que lo necesita
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_R, GL_RED);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_G, GL_GREEN);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_B, GL_BLUE);
+
+	if (channel != -1)
+	{
+		if (channel != 0)
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_R, ch);
+		if (channel != 1)
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_G, ch);
+		if (channel != 2)
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_B, ch);
+	}
+}
+
 void viewer_gl::draw_image()
 {
 	if (!image)
 		return;
 
-	// genera la textura 2d a partir de los bits de la imagen
 	GLuint texture;
 	glBindTexture(GL_TEXTURE_2D, texture);
 
+	// genera la textura 2d a partir de los bits de la imagen
 	image->convertTo(*image, CV_8U);
-	// glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, image_width, image_height, 0, GL_BGRA, GL_UNSIGNED_BYTE, image->bytes());
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, image_width, image_height, 0, GL_BGR, GL_UNSIGNED_BYTE, image->data);
-	//
 
 	// si el zoom es menor a 100, muestra los pixels en la imagen
 	if (get_scale().x() < 100)

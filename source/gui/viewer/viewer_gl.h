@@ -32,8 +32,9 @@ public:
     viewer_gl();
     ~viewer_gl();
 
-	void set_image(cv::Mat *image, int image_width = 1920, int image_height = 1080);
+	void set_image(cv::Mat *image);
 	void set_overlay(bool _overlay);
+	void isolate_channel(int channel);
 protected:
     void initializeGL() override;
     void paintGL() override;

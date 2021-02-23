@@ -69,6 +69,7 @@ QWidget *viewer::control_setup_ui()
 			display_channel->set_index(index, false);
 		}
 
+		_viewer_gl->isolate_channel(visible_channel);
 		update_render();
 	});
 

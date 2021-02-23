@@ -25,7 +25,6 @@
 // Engine
 #include <renderer.h>
 #include <project_struct.h>
-// #include <shuffle_node.h>
 
 class viewer : public QWidget
 {
