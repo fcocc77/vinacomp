@@ -22,6 +22,7 @@ void grade_node::render(
 	QJsonArray offset = get(params, "offset").toArray();
 	bool white_clamp = get(params, "white_clamp").toBool();
 	bool black_clamp = get(params, "black_clamp").toBool();
+	float saturation = get(params, "saturation").toDouble();
 
 	float black_red = blackpoint[0].toDouble();
 	float black_green = blackpoint[1].toDouble();
@@ -84,6 +85,17 @@ void grade_node::render(
 				green = pow(green / 255.0, gamma_green) * 255.0;
 			if (gamma_blue != 1)
 				blue = pow(blue / 255.0, gamma_blue) * 255.0;
+			//
+
+			// saturation
+			if (saturation != 1)
+			{
+				float average = (red + green + blue) / 3;
+
+				red = ( ( red - average ) * saturation ) + average;
+				green = ( ( green - average ) * saturation ) + average;
+				blue = ( ( blue - average ) * saturation ) + average;
+			}
 			//
 
 			// clamp

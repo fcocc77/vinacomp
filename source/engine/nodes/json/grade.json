@@ -40,6 +40,21 @@
 			"default": [0, 0, 0, 0]
         },
         {
+            "name": "offset",
+            "type": "color",
+            "label": "Offset",
+            "tooltip": "",
+            "minimum": -1,
+            "maximum": 1,
+            "visible": true,
+			"default": [0, 0, 0, 0]
+        },
+        {
+            "name": "separator2",
+            "type": "separator",
+            "visible": true
+        },
+        {
             "name": "gain",
             "type": "color",
             "label": "Gain",
@@ -60,16 +75,6 @@
 			"default": [1, 1, 1, 1]
         },
         {
-            "name": "offset",
-            "type": "color",
-            "label": "Offset",
-            "tooltip": "",
-            "minimum": -1,
-            "maximum": 1,
-            "visible": true,
-			"default": [0, 0, 0, 0]
-        },
-        {
             "name": "gamma",
             "type": "color",
             "label": "Gamma",
@@ -78,6 +83,15 @@
             "maximum": 5,
             "visible": true,
 			"default": [1, 1, 1, 1]
+        },
+        {
+            "name": "saturation",
+            "type": "floating",
+            "label": "Saturation",
+            "tooltip": "",
+            "minimum": 0,
+            "maximum": 4,
+            "default": 1
         },
         {
             "name": "separator2",

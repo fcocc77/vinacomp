@@ -5,6 +5,15 @@
     "icon": "saturation",
     "knobs": [
         {
+            "name": "saturation",
+            "type": "floating",
+            "label": "Saturation",
+            "tooltip": "",
+            "minimum": 0,
+            "maximum": 4,
+            "default": 1
+        },
+        {
             "name": "mix",
             "type": "floating",
             "label": "Mix",
