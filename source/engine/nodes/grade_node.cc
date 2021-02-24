@@ -44,9 +44,9 @@ void grade_node::render(
 	float offset_green = offset[1].toDouble() * 255;
 	float offset_blue = offset[2].toDouble() * 255;
 
-	float gamma_red = (1 - gamma[0].toDouble()) + 1;
-	float gamma_green = (1 - gamma[1].toDouble()) + 1;
-	float gamma_blue = (1 - gamma[2].toDouble()) + 1;
+	float gamma_red = gamma[0].toDouble();
+	float gamma_green = gamma[1].toDouble();
+	float gamma_blue = gamma[2].toDouble();
 
 	// levels
 	float low = black_red * 255;
@@ -88,11 +88,11 @@ void grade_node::render(
 
 			// gamma
 			if (gamma_red != 1)
-				red = pow(red / 255.0, gamma_red) * 255.0;
+				red = pow((red / 255.0), (1.0 / gamma_red)) * 255;
 			if (gamma_green != 1)
-				green = pow(green / 255.0, gamma_green) * 255.0;
+				green = pow((green / 255.0), (1.0 / gamma_green)) * 255;
 			if (gamma_blue != 1)
-				blue = pow(blue / 255.0, gamma_blue) * 255.0;
+				blue = pow((blue / 255.0), (1.0 / gamma_blue)) * 255;
 			//
 
 			// saturation
