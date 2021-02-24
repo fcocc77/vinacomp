@@ -30,13 +30,15 @@ void read_node::render(
 
 	file_path.replace("###", _frame);
 
-	// (*image) = QImage(file_path).mirrored();
-	// CV_32F
+	// ! mejorar la velocidad de carga, ya que ahora tiene
+	// dos iteraciones una para convertir a flotante y la otra para el flip
 	(*image) = cv::imread(file_path.toStdString(), cv::IMREAD_COLOR);
 	image->convertTo(*image, CV_32F);
+	cv::Mat flip;
+	cv::flip(*image, flip, 0);
+	(*image) = flip;
 
 	frame_range =  get_frame_range(params);
-
 }
 
 QString read_node::frame_to_string(int frame, int frame_digits)
