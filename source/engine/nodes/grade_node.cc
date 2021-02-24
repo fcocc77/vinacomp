@@ -14,6 +14,10 @@ void grade_node::render(
 	pair <int, int> &frame_range,
 	QRect &bbox)
 {
+	float mix = get(params, "mix").toDouble();
+	if (mix == 0)
+		return;
+
 	QJsonArray blackpoint = get(params, "blackpoint").toArray();
 	QJsonArray whitepoint = get(params, "whitepoint").toArray();
 	QJsonArray gain = get(params, "gain").toArray();
@@ -56,9 +60,13 @@ void grade_node::render(
         for( int x = 0; x < image->cols; x++ ) {
 			cv::Vec3f &pixel = image->at<cv::Vec3f>(y, x);
 
-			float &red = pixel[2];
-			float &green = pixel[1];
-			float &blue = pixel[0];
+			float &_red = pixel[2];
+			float &_green = pixel[1];
+			float &_blue = pixel[0];
+
+			float red = _red;
+			float green = _green;
+			float blue = _blue;
 
 			// levels
 			red = min + (red - low) * levels_alpha;
@@ -112,6 +120,19 @@ void grade_node::render(
 				if (blue > 255) blue = 255;
 			}
 			//
+
+			// mix
+			if (mix < 1)
+			{
+				red = ((1 - mix) * _red) + (red * mix);
+				green = ((1 - mix) * _green) + (green * mix);
+				blue = ((1 - mix) * _blue) + (blue * mix);
+			}
+			//
+
+			_red = red;
+			_green = green;
+			_blue = blue;
         }
     }
 }
