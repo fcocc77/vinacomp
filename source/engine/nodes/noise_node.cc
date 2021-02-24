@@ -5,7 +5,7 @@ noise_node::noise_node()
 {
 	load_default_params("noise");
 
-	int seed = 0;
+	int seed = 77;
 	p.resize(256);
 
 	// Llene p con valores de 0 a 255
@@ -23,7 +23,7 @@ noise_node::noise_node()
 
 noise_node::~noise_node() { }
 
-double noise_node::noise(double x, double y, double z) 
+double noise_node::noise(double x, double y, double z)
 {
 	// Encuentra el cubo unitario que contiene el punto
 	int X = (int) floor(x) & 255;
@@ -78,21 +78,43 @@ void noise_node::render(
 {
 	float size = get(params, "size").toDouble();
 	float zoffset = get(params, "zoffset").toDouble();
+	int samples = get(params, "samples").toInt();
+	float samples_gap = get(params, "samples_gap").toDouble();
 	float gain = get(params, "gain").toDouble();
 	float gamma = get(params, "gamma").toDouble();
 
-	cv::Mat3f noise_image(720, 1280);
+	float _gamma = (1 - gamma) + 1;
+
+	cv::Mat3f noise_image(300, 300);
+
 
     for( int y = 0; y < noise_image.rows; y++ ) {
         for( int x = 0; x < noise_image.cols; x++ ) {
 			cv::Vec3f &pixel = noise_image.at<cv::Vec3f>(y, x);
 
-			float nx = float(x) / size;
-			float ny = float(y) / size;
+			float amp = 1;
+			float n = 0;
+			float octave = 1;
+			float scale = size;
 
-			double n = noise(nx, ny, zoffset);
+			float first_value;
+			for (int s = 1; s <= samples; s++)
+			{
+				scale = size / octave;
+				octave *= samples_gap;
 
-			float value = floor(255 * n);
+				float nx = float(x) / scale;
+				float ny = float(y) / scale;
+
+				float nvalue = noise(nx, ny, zoffset);
+				n += nvalue * amp;
+
+				amp /= 2;
+			}
+			n *= gain;
+			n = pow(n, _gamma); // gamma
+
+			float value = n * 255;
 			pixel = {value, value, value};
 		}
 	}

@@ -23,6 +23,25 @@
             "default": 0
         },
         {
+            "name": "samples",
+            "type": "integer",
+            "label": "Samples",
+            "tooltip": "samples",
+            "minimum": 1,
+            "maximum": 10,
+            "default": 7,
+			"animatable": false
+        },
+        {
+            "name": "samples_gap",
+            "type": "floating",
+            "label": "Samples Gap",
+            "tooltip": "samples_gap",
+            "minimum": 1,
+            "maximum": 10,
+            "default": 2
+        },
+        {
             "name": "gain",
             "type": "floating",
             "label": "Gain",
@@ -38,7 +57,7 @@
             "tooltip": "gamma",
             "minimum": 0,
             "maximum": 1,
-            "default": 0.5
+            "default": .5
         }
     ]
 }
