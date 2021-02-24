@@ -83,10 +83,7 @@ void noise_node::render(
 	float gain = get(params, "gain").toDouble();
 	float gamma = get(params, "gamma").toDouble();
 
-	float _gamma = (1 - gamma) + 1;
-
 	cv::Mat3f noise_image(300, 300);
-
 
     for( int y = 0; y < noise_image.rows; y++ ) {
         for( int x = 0; x < noise_image.cols; x++ ) {
@@ -107,12 +104,12 @@ void noise_node::render(
 				float ny = float(y) / scale;
 
 				float nvalue = noise(nx, ny, zoffset);
+				nvalue *= gain;
 				n += nvalue * amp;
 
 				amp /= 2;
 			}
-			n *= gain;
-			n = pow(n, _gamma); // gamma
+			n = pow(n, 1.0 / gamma); // gamma
 
 			float value = n * 255;
 			pixel = {value, value, value};
