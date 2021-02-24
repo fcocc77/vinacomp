@@ -5,10 +5,37 @@
     "icon": "noise",
     "knobs": [
         {
-            "name": "mix",
+            "name": "size",
             "type": "floating",
-            "label": "Mix",
-            "tooltip": "",
+            "label": "X Y Size",
+            "tooltip": "size",
+            "minimum": 0,
+            "maximum": 1000,
+            "default": 350
+        },
+        {
+            "name": "zoffset",
+            "type": "floating",
+            "label": "Z",
+            "tooltip": "zoffset",
+            "minimum": 0,
+            "maximum": 5,
+            "default": 0
+        },
+        {
+            "name": "gain",
+            "type": "floating",
+            "label": "Gain",
+            "tooltip": "gain",
+            "minimum": 0,
+            "maximum": 1,
+            "default": 0.5
+        },
+        {
+            "name": "gamma",
+            "type": "floating",
+            "label": "Gamma",
+            "tooltip": "gamma",
             "minimum": 0,
             "maximum": 1,
             "default": 0.5
