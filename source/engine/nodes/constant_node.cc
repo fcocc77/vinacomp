@@ -22,8 +22,10 @@ void constant_node::render(
 
 	QColor color = get_color(params);
 
-	// (*image) = QImage(x, y, QImage::Format_RGB32);
-	// image->fill(color);
+	cv::Mat3f solid(1080, 1920);
+	solid.setTo(cv::Scalar(color.red(), color.green(), color.blue()));
+
+	(*image) = solid;
 
 	frame_range = {first_frame, last_frame};
 }

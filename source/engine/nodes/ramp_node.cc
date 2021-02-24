@@ -23,12 +23,20 @@ void ramp_node::render(
 	int y = get(params, "format").toArray()[1].toArray()[1].toInt();
 
 	QColor color = get_color(params);
+	float red = color.red();
+	float green = color.green();
+	float blue = color.blue();
 
-	// QLinearGradient ramp(p0, p1);
-    // ramp.setColorAt(0, Qt::black);
-    // ramp.setColorAt(1, color);
+	cv::Mat3f ramp(1080, 1920);
 
-	// (*image) = QImage(x, y, QImage::Format_RGB32);
-	// QPainter painter(image);
-	// painter.fillRect(image->rect(), ramp);
+	for (int y = 0; y < ramp.rows; y++)
+	{
+		float _red = (red * y) / ramp.rows;
+		float _green = (green * y) / ramp.rows;
+		float _blue = (blue * y) / ramp.rows;
+
+		ramp.row(y).setTo(cv::Vec3f(_blue, _green, _red));
+	}
+
+	(*image) = ramp;
 }
