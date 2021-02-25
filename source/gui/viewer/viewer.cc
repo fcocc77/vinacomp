@@ -20,7 +20,6 @@ viewer::viewer(QString _name, project_struct *_project, renderer *__renderer, QW
 	, visible_channel(-1)
 {
 	rdata = new render_data;
-	rdata->node_name = name;
 	rdata->width = 1920;
 	rdata->height = 1080;
 
@@ -86,7 +85,9 @@ void viewer::update_render()
 	if (render_pause)
 		return;
 
+	rdata->node_name = name;
 	rdata->frame = current_frame;
+
 	_renderer->render(rdata);
 	_viewer_gl->update();
 
