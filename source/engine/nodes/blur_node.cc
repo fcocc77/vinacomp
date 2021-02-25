@@ -8,12 +8,7 @@ blur_node::blur_node()
 
 blur_node::~blur_node() { }
 
-void blur_node::render(
-	cv::Mat *image,
-	QJsonObject *params,
-	int frame,
-	pair <int, int> &frame_range,
-	QRect &bbox)
+void blur_node::render( render_data *rdata, QJsonObject *params )
 {
 	int blur_size = get(params, "size").toDouble();
 	int filter_index = get(params, "filter").toArray()[0].toInt();
@@ -22,8 +17,8 @@ void blur_node::render(
 	if (blur_size > 0)
 	{
 		if (filter_index == 0)
-			cv::blur(*image, *image, cv::Size(blur_size, blur_size));
+			cv::blur(rdata->image, rdata->image, cv::Size(blur_size, blur_size));
 		else if (filter_index == 3)
-			cv::GaussianBlur(*image, *image, cv::Size(99, 99), 0);
+			cv::GaussianBlur(rdata->image, rdata->image, cv::Size(99, 99), 0);
 	}
 }

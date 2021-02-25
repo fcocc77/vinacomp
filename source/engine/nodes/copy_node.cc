@@ -7,11 +7,6 @@ copy_node::copy_node()
 
 copy_node::~copy_node() { }
 
-void copy_node::render(
-	cv::Mat *image,
-	QJsonObject *params,
-	int frame,
-	pair <int, int> &frame_range,
-	QRect &bbox)
+void copy_node::render( render_data *rdata, QJsonObject *params )
 {
 }

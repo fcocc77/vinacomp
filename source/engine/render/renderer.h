@@ -6,6 +6,8 @@
 
 #include <util.h>
 #include <project_struct.h>
+
+#include <render_data.h>
 #include <node_engine.h>
 #include <read_node.h>
 #include <blur_node.h>
@@ -60,13 +62,7 @@ public:
 	renderer(project_struct *_project);
 	~renderer();
 
-	void render(
-		cv::Mat *image,
-		int frame,
-		QString node_name,
-		pair <int, int> &frame_range,
-		QRect &bbox
-	);
+	void render(render_data *rdata);
 
 	pair <int, int> get_frame_range(QString node_name) const;
 	QString get_input_node(QString node_name, int input = 0) const;

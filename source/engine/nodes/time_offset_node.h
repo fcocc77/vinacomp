@@ -11,13 +11,7 @@ public:
 	~time_offset_node();
 
 	void set_offset(QJsonObject *params, int &frame, QString node_name, QWidget *_renderer);
-	void render(
-		cv::Mat *image,
-		QJsonObject *params, 
-		int frame,
-		pair <int, int> &frame_range,
-		QRect &bbox
-	) override;
+	void render(render_data *rdata, QJsonObject *params) override;
 };
 
 #endif // TIME_OFFSET_NODE_H

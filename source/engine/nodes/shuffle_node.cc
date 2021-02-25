@@ -109,12 +109,7 @@ void copy(QImage *src, QImage *dst, QList<int> channels_order)
 	}
 }
 
-void shuffle_node::render(
-	cv::Mat *image,
-	QJsonObject *params,
-	int frame,
-	pair <int, int> &frame_range,
-	QRect &bbox)
+void shuffle_node::render( render_data *rdata, QJsonObject *params )
 {
 	QJsonObject shuffle = get(params, "shuffle").toObject();
 	QJsonArray channel_a = shuffle["a"].toArray();

@@ -24,14 +24,9 @@ void time_offset_node::set_offset(QJsonObject *params, int &frame, QString node_
 	}
 }
 
-void time_offset_node::render(
-		cv::Mat *image,
-		QJsonObject *params,
-		int frame,
-		pair <int, int> &frame_range,
-		QRect &bbox)
+void time_offset_node::render( render_data *rdata, QJsonObject *params )
 {
 	int offset = get(params, "time_offset").toArray()[0].toInt();
-	frame_range.first += offset;
-	frame_range.second += offset;
+	rdata->first_frame += offset;
+	rdata->last_frame += offset;
 }

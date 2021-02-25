@@ -7,12 +7,7 @@ reformat_node::reformat_node()
 
 reformat_node::~reformat_node(){}
 
-void reformat_node::render(
-	cv::Mat *image,
-	QJsonObject *params,
-	int frame,
-	pair <int, int> &frame_range,
-	QRect &bbox)
+void reformat_node::render( render_data *rdata, QJsonObject *params )
 {
 	int index = get(params, "type").toArray()[0].toInt();
 	int filter_index = get(params, "filter").toArray()[0].toInt();

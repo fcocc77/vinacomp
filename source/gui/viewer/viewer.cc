@@ -19,10 +19,13 @@ viewer::viewer(QString _name, project_struct *_project, renderer *__renderer, QW
 	, render_pause(false)
 	, visible_channel(-1)
 {
-    _viewer_gl = new viewer_gl();
-    _viewer_gl->setObjectName("viewer_graphics");
+	rdata = new render_data;
+	rdata->node_name = name;
+	rdata->width = 1920;
+	rdata->height = 1080;
 
-	image = new cv::Mat;
+    _viewer_gl = new viewer_gl(rdata);
+    _viewer_gl->setObjectName("viewer_graphics");
 
     layout = new QVBoxLayout(this);
     layout->setMargin(0);
@@ -83,13 +86,12 @@ void viewer::update_render()
 	if (render_pause)
 		return;
 
-	pair<int, int> frame_range;
-	QRect bbox;
-	_renderer->render(image, current_frame, name, frame_range, bbox);
+	rdata->frame = current_frame;
+	_renderer->render(rdata);
+	_viewer_gl->update();
 
-	_viewer_gl->set_image(image);
 	if (input_range_way == "input")
-		set_frame_range(frame_range.first, frame_range.second);
+		set_frame_range(rdata->first_frame, rdata->last_frame);
 }
 
 void viewer::update_input_range()

@@ -69,12 +69,7 @@ double noise_node::grad(int hash, double x, double y, double z) {
 	return ((h & 1) == 0 ? u : -u) + ((h & 2) == 0 ? v : -v);
 }
 
-void noise_node::render(
-	cv::Mat *image,
-	QJsonObject *params,
-	int frame,
-	pair <int, int> &frame_range,
-	QRect &bbox)
+void noise_node::render( render_data *rdata, QJsonObject *params )
 {
 	float size = get(params, "size").toDouble();
 	float zoffset = get(params, "zoffset").toDouble();
@@ -116,6 +111,6 @@ void noise_node::render(
 		}
 	}
 
-	(*image) = noise_image;
-	image->convertTo(*image, CV_32F);
+	rdata->image = noise_image;
+	rdata->image.convertTo(rdata->image, CV_32F);
 }

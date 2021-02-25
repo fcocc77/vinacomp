@@ -7,11 +7,6 @@ bbox_adjust_node::bbox_adjust_node()
 
 bbox_adjust_node::~bbox_adjust_node() { }
 
-void bbox_adjust_node::render(
-	cv::Mat *image,
-	QJsonObject *params,
-	int frame,
-	pair <int, int> &frame_range,
-	QRect &bbox)
+void bbox_adjust_node::render( render_data *rdata, QJsonObject *params )
 {
 }

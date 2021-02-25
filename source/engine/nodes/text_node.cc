@@ -7,12 +7,7 @@ text_node::text_node()
 
 text_node::~text_node() { }
 
-void text_node::render(
-	cv::Mat *image,
-	QJsonObject *params,
-	int frame,
-	pair <int, int> &frame_range,
-	QRect &bbox)
+void text_node::render( render_data *rdata, QJsonObject *params)
 {
 	QString text = get(params, "text").toString();
 	int font_size = get(params, "font_size").toInt();

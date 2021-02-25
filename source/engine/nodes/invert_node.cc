@@ -4,12 +4,7 @@ invert_node::invert_node(){}
 
 invert_node::~invert_node(){}
 
-void invert_node::render(
-	cv::Mat *image,
-	QJsonObject *params,
-	int frame,
-	pair <int, int> &frame_range,
-	QRect &bbox)
+void invert_node::render( render_data *rdata, QJsonObject *params )
 {
 	// image->invertPixels();
 }

@@ -7,12 +7,7 @@ radial_node::radial_node()
 
 radial_node::~radial_node() { }
 
-void radial_node::render(
-	cv::Mat *image,
-	QJsonObject *params,
-	int frame,
-	pair <int, int> &frame_range,
-	QRect &bbox)
+void radial_node::render( render_data *rdata, QJsonObject *params )
 {
 	float softness = get(params, "softness").toDouble();
 	QRect area = get_rect(params, "area");

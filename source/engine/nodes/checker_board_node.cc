@@ -7,12 +7,7 @@ checker_board_node::checker_board_node()
 
 checker_board_node::~checker_board_node() { }
 
-void checker_board_node::render(
-	cv::Mat *image,
-	QJsonObject *params,
-	int frame,
-	pair <int, int> &frame_range,
-	QRect &bbox)
+void checker_board_node::render( render_data *rdata, QJsonObject *params )
 {
 	int size = get(params, "box_size").toInt();
 	int border = get(params, "border").toInt();

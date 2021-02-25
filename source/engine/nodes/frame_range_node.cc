@@ -14,12 +14,9 @@ pair <int, int> frame_range_node::get_frame_range(QJsonObject *params) const
 	return {first_frame, last_frame};
 }
 
-void frame_range_node::render(
-	cv::Mat *image,
-	QJsonObject *params,
-	int frame,
-	pair <int, int> &frame_range,
-	QRect &bbox)
+void frame_range_node::render( render_data *rdata, QJsonObject *params )
 {
-	frame_range = get_frame_range(params);
+	auto frame_range = get_frame_range(params);
+	rdata->first_frame = frame_range.first;
+	rdata->last_frame = frame_range.second;
 }

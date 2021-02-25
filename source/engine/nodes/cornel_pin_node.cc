@@ -6,12 +6,7 @@ cornel_pin_node::cornel_pin_node(){
 
 cornel_pin_node::~cornel_pin_node(){}
 
-void cornel_pin_node::render(
-	cv::Mat *image,
-	QJsonObject *params,
-	int frame,
-	pair <int, int> &frame_range,
-	QRect &bbox)
+void cornel_pin_node::render( render_data *rdata, QJsonObject *params )
 {
 	int x = get(params, "translate").toArray()[0].toInt();
 	int y = get(params, "translate").toArray()[1].toInt();

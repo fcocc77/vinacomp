@@ -7,11 +7,6 @@ clamp_node::clamp_node()
 
 clamp_node::~clamp_node() { }
 
-void clamp_node::render(
-	cv::Mat *image,
-	QJsonObject *params,
-	int frame,
-	pair <int, int> &frame_range,
-	QRect &bbox)
+void clamp_node::render( render_data *rdata, QJsonObject *params )
 {
 }

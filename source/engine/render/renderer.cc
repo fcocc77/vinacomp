@@ -83,18 +83,12 @@ pair <int, int> renderer::get_frame_range(QString node_name) const
 	return {};
 }
 
-void renderer::render(
-		cv::Mat *image,
-		int frame,
-		QString node_name,
-		pair<int, int> &frame_range,
-		QRect &bbox
-		)
+void renderer::render(render_data *rdata)
 {
-	if (!project->nodes.contains(node_name))
+	if (!project->nodes.contains(rdata->node_name))
 		return;
 
-	node_struct *node = &project->nodes[node_name];
+	node_struct *node = &project->nodes[rdata->node_name];
 	node_engine *_node_engine = nodes.value(node->type);
 
 	bool disable = false;
@@ -104,17 +98,20 @@ void renderer::render(
 	// los nodos de tiempo tienen que modificar todos los nodos entrantes
 	// por eso estos nodos tienen que ir antes de renderizar las entradas
 	if (node->type == "time_offset" && !disable)
-		time_offset->set_offset(node->params, frame, node_name, this);
+		time_offset->set_offset(node->params, rdata->frame, rdata->node_name, this);
 	//
 
 	// renderiza las entradas del nodo antes que el nodo
 	QString input_node = node->inputs.value("in0").toString();
 	if (!input_node.isEmpty())
-		render(image, frame, input_node, frame_range, bbox);
+	{
+		rdata->node_name = input_node;
+		render(rdata);
+	}
 	//
 
 	// renderiza el nodo actual
 	if (_node_engine && !disable)
-		_node_engine->render(image, node->params, frame, frame_range, bbox);
+		_node_engine->render(rdata, node->params);
 	//
 }

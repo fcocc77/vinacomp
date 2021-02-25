@@ -8,12 +8,7 @@ node_engine::~node_engine()
 {
 }
 
-void node_engine::render(
-	cv::Mat *image,
-	QJsonObject *params,
-	int frame,
-	pair <int, int> &frame_range,
-	QRect &bbox)
+void node_engine::render(render_data *rdata, QJsonObject *params)
 {
 }
 

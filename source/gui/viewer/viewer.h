@@ -23,6 +23,7 @@
 #include <knob_floating.h>
 
 // Engine
+#include <render_data.h>
 #include <renderer.h>
 #include <project_struct.h>
 
@@ -31,7 +32,8 @@ class viewer : public QWidget
 private:
     QVBoxLayout *layout;
 	project_struct *project;
-	cv::Mat *image;
+
+	render_data *rdata;
 
     viewer_gl *_viewer_gl;
     time_line *_time_line;

@@ -1,11 +1,9 @@
 #include <viewer_gl.h>
 
-viewer_gl::viewer_gl()
-	: gl_view(true)
+viewer_gl::viewer_gl(render_data *_rdata)
+	: rdata(_rdata)
+	, gl_view(true)
 	, fitted(true)
-	, image(nullptr)
-	, image_width(1920)
-	, image_height(1080)
 	, overlay(true)
 {
     center_viewer = new action("Center Image", "F", "center");
@@ -37,21 +35,24 @@ void viewer_gl::paintGL()
 	draw_image();
 
 	if (overlay)
+	{
+		draw_bbox();
 		draw_frame();
+	}
 }
 
 void viewer_gl::fit_to_viewport()
 {
 	fitted = true;
 	int margin = 30;
-	margin = ( image_height * margin ) / 1080; // Mantiene el margen equivalente al formato
+	margin = ( rdata->height * margin ) / 1080; // Mantiene el margen equivalente al formato
 
 	float viewport_aspect = get_aspect();
-	float resolution_aspect = float(image_height) / image_width;
+	float resolution_aspect = float(rdata->height) / rdata->width;
 
 	// primero lo ajusta a los bordes con ortho, y luego deja la escala simetrica
 	// dejando la 2 escalas iguales x, y dependiendo si es ancho o alto
-	set_ortho(-margin, image_width + margin, -margin, image_height + margin);
+	set_ortho(-margin, rdata->width + margin, -margin, rdata->height + margin);
 
 	if (viewport_aspect > resolution_aspect)
 	{
@@ -74,15 +75,6 @@ void viewer_gl::fit_to_percent(int percent)
 	int scale = scale_100 * 100 / percent;
 	set_scale({scale, scale});
 	//
-
-	update();
-}
-
-void viewer_gl::set_image(cv::Mat *_image)
-{
-	image = _image;
-	image_width = image->cols;
-	image_height = image->rows;
 
 	update();
 }
@@ -117,15 +109,12 @@ void viewer_gl::isolate_channel(int channel)
 
 void viewer_gl::draw_image()
 {
-	if (!image)
-		return;
-
 	GLuint texture;
 	glBindTexture(GL_TEXTURE_2D, texture);
 
 	// genera la textura 2d a partir de los bits de la imagen
-	image->convertTo(*image, CV_8U);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, image_width, image_height, 0, GL_BGR, GL_UNSIGNED_BYTE, image->data);
+	rdata->image.convertTo(rdata->image, CV_8U);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, rdata->image.cols, rdata->image.rows, 0, GL_BGR, GL_UNSIGNED_BYTE, rdata->image.data);
 
 	// si el zoom es menor a 100, muestra los pixels en la imagen
 	if (get_scale().x() < 100)
@@ -145,25 +134,36 @@ void viewer_gl::draw_image()
 	glBegin(GL_QUADS);
 	glColor3f(1, 1, 1);
 	glTexCoord2f(0.0f, 0.0f); glVertex2f(0, 0); // Inferior Izquierda
-	glTexCoord2f(1.0f, 0.0f); glVertex2f(image_width, 0); // Inferior Derecha
-	glTexCoord2f(1.0f, 1.0f); glVertex2f(image_width, image_height); // Superior Derecha
-	glTexCoord2f(0.0f, 1.0f); glVertex2f(0, image_height); // Superior Izquierda
+	glTexCoord2f(1.0f, 0.0f); glVertex2f(rdata->image.cols, 0); // Inferior Derecha
+	glTexCoord2f(1.0f, 1.0f); glVertex2f(rdata->image.cols, rdata->image.rows); // Superior Derecha
+	glTexCoord2f(0.0f, 1.0f); glVertex2f(0, rdata->image.rows); // Superior Izquierda
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
 	//
+}
+
+void viewer_gl::draw_bbox()
+{
+	QColor color = Qt::darkGray;
+
+	int stipple = 2;
+	draw_dashed_line({ rdata->bbox.bottomLeft(), rdata->bbox.topLeft()}, color, stipple);
+	draw_dashed_line({ rdata->bbox.bottomLeft(), rdata->bbox.bottomRight()}, color, stipple);
+	draw_dashed_line({ rdata->bbox.bottomRight(), rdata->bbox.topRight()}, color, stipple);
+	draw_dashed_line({ rdata->bbox.topRight(), rdata->bbox.topLeft()}, color, stipple);
 }
 
 void viewer_gl::draw_frame()
 {
 	QColor color = Qt::darkGray;
 
-    draw_line({0, 0}, {0, image_height}, color);
-    draw_line({0, image_height}, {image_width, image_height}, color);
-    draw_line({image_width, image_height}, {image_width, 0}, color);
-    draw_line({image_width, 0}, {0, 0}, color);
+    draw_line({0, 0}, {0, rdata->height}, color);
+    draw_line({0, rdata->height}, {rdata->width, rdata->height}, color);
+    draw_line({rdata->width, rdata->height}, {rdata->width, 0}, color);
+    draw_line({rdata->width, 0}, {0, 0}, color);
 
-	QString format_label = QString::number(image_width) + " x " + QString::number(image_height);
-	draw_text(format_label, color, {image_width, image_height}, {-1, -1}, 9, Qt::AlignRight, {5, -10});
+	QString format_label = QString::number(rdata->width) + " x " + QString::number(rdata->height);
+	draw_text(format_label, color, {rdata->width, rdata->height}, {-1, -1}, 9, Qt::AlignRight, {5, -10});
 }
 
 void viewer_gl::set_overlay(bool _overlay)

@@ -7,12 +7,7 @@ sharpen_node::sharpen_node()
 
 sharpen_node::~sharpen_node() { }
 
-void sharpen_node::render(
-	cv::Mat *image,
-	QJsonObject *params,
-	int frame,
-	pair <int, int> &frame_range,
-	QRect &bbox)
+void sharpen_node::render( render_data *rdata, QJsonObject *params )
 {
 	float amount = get(params, "amount").toDouble();
 	float size = get(params, "size").toDouble();
@@ -25,5 +20,5 @@ void sharpen_node::render(
 
 	// cv::Mat sharpenedLena;
 	cv::Mat kernel = (cv::Mat_<float>(3, 3) << 0, -1, 0, -1, 4, -1, 0, -1, 0);
-	cv::filter2D(*image, *image, image->depth(), kernel);
+	cv::filter2D(rdata->image, rdata->image, rdata->image.depth(), kernel);
 }

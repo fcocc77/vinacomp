@@ -6,6 +6,7 @@
 #include <gl_view.h>
 #include <action.h>
 #include <util.h>
+#include <render_data.h>
 
 class viewer_gl : public gl_view
 {
@@ -16,23 +17,22 @@ private:
     action *fit_100_percent;
     //
 
-	cv::Mat *image;
-	int image_width, image_height;
+	render_data *rdata;
 	bool fitted;
 
 	bool overlay;
 
     void draw_frame();
+	void draw_bbox();
 	void draw_image();
 
 	void fit_to_viewport();
 	void fit_to_percent(int percent);
 
 public:
-    viewer_gl();
+    viewer_gl(render_data *rdata);
     ~viewer_gl();
 
-	void set_image(cv::Mat *image);
 	void set_overlay(bool _overlay);
 	void isolate_channel(int channel);
 protected:

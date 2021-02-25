@@ -5,6 +5,7 @@
 #include <opencv2/opencv.hpp>
 
 #include <util.h>
+#include <render_data.h>
 
 class node_engine
 {
@@ -15,13 +16,7 @@ public:
 	node_engine();
 	~node_engine();
 
-	virtual void render(
-		cv::Mat *image,
-		QJsonObject *params,
-		int frame,
-		pair <int, int> &frame_range,
-		QRect &bbox
-	);
+	virtual void render(render_data *rdata, QJsonObject *params);
 
 	QJsonValue get(QJsonObject *params, QString key) const;
 

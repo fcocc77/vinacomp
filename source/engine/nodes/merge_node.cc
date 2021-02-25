@@ -7,11 +7,6 @@ merge_node::merge_node()
 
 merge_node::~merge_node() { }
 
-void merge_node::render(
-	cv::Mat *image,
-	QJsonObject *params,
-	int frame,
-	pair <int, int> &frame_range,
-	QRect &bbox)
+void merge_node::render( render_data *rdata, QJsonObject *params )
 {
 }

@@ -7,12 +7,7 @@ ramp_node::ramp_node()
 
 ramp_node::~ramp_node() { }
 
-void ramp_node::render(
-	cv::Mat *image,
-	QJsonObject *params,
-	int frame,
-	pair <int, int> &frame_range,
-	QRect &bbox)
+void ramp_node::render( render_data *rdata, QJsonObject *params )
 {
 	QJsonArray point0 = get(params, "point0").toArray();
 	QJsonArray point1 = get(params, "point1").toArray();
@@ -38,5 +33,5 @@ void ramp_node::render(
 		ramp.row(y).setTo(cv::Vec3f(_blue, _green, _red));
 	}
 
-	(*image) = ramp;
+	rdata->image = ramp;
 }

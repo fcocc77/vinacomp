@@ -6,16 +6,11 @@ position_node::position_node(){
 
 position_node::~position_node(){}
 
-void position_node::render(
-	cv::Mat *image,
-	QJsonObject *params,
-	int frame,
-	pair <int, int> &frame_range,
-	QRect &bbox)
+void position_node::render( render_data *rdata, QJsonObject *params )
 {
 	int x = get(params, "translate").toArray()[0].toInt();
 	int y = get(params, "translate").toArray()[1].toInt();
 
 	cv::Mat trans_mat = (cv::Mat_<double>(2,3) << 1, 0, x, 0, 1, y);
-	cv::warpAffine(*image, *image, trans_mat, image->size());
+	cv::warpAffine(rdata->image, rdata->image, trans_mat, rdata->image.size());
 }
