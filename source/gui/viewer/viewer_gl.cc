@@ -133,10 +133,16 @@ void viewer_gl::draw_image()
 	glEnable(GL_TEXTURE_2D);
 	glBegin(GL_QUADS);
 	glColor3f(1, 1, 1);
-	glTexCoord2f(0.0f, 0.0f); glVertex2f(rdata->bbox.left(), rdata->bbox.bottom() + 1); // Inferior Izquierda
-	glTexCoord2f(1.0f, 0.0f); glVertex2f(rdata->bbox.right() + 1, rdata->bbox.bottom() + 1); // Inferior Derecha
-	glTexCoord2f(1.0f, 1.0f); glVertex2f(rdata->bbox.right() + 1, rdata->bbox.top()); // Superior Derecha
-	glTexCoord2f(0.0f, 1.0f); glVertex2f(rdata->bbox.left(), rdata->bbox.top()); // Superior Izquierda
+
+	int x = rdata->bbox.x();
+	int y = rdata->bbox.y();
+	// if (x < 0) x = 0;
+	// if (y < 0) y = 0;
+
+	glTexCoord2f(0.0f, 0.0f); glVertex2f(x, y + rdata->image.rows); // Superior Izquierda
+	glTexCoord2f(1.0f, 0.0f); glVertex2f(x + rdata->image.cols, y + rdata->image.rows); // Superior Derecha;
+	glTexCoord2f(1.0f, 1.0f); glVertex2f(x + rdata->image.cols, y); // Inferior Derecha
+	glTexCoord2f(0.0f, 1.0f); glVertex2f(x, y); // Inferior Izquierda
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
 	//
