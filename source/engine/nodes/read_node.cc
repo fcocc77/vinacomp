@@ -29,12 +29,11 @@ void read_node::render(render_data *rdata, QJsonObject *params)
 	// dos iteraciones una para convertir a flotante y la otra para el flip
 	rdata->image = cv::imread(file_path.toStdString(), cv::IMREAD_COLOR);
 	rdata->image.convertTo(rdata->image, CV_32F);
-	cv::Mat flip;
-	cv::flip(rdata->image, flip, 0);
-	rdata->image = flip;
 
 	rdata->first_frame = get(params, "first").toArray()[0].toInt();
 	rdata->last_frame = get(params, "last").toArray()[0].toInt();
+
+	rdata->bbox.setRect(0, 0, rdata->image.cols, rdata->image.rows);
 }
 
 QString read_node::frame_to_string(int frame, int frame_digits)

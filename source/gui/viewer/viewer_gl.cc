@@ -133,10 +133,10 @@ void viewer_gl::draw_image()
 	glEnable(GL_TEXTURE_2D);
 	glBegin(GL_QUADS);
 	glColor3f(1, 1, 1);
-	glTexCoord2f(0.0f, 0.0f); glVertex2f(0, 0); // Inferior Izquierda
-	glTexCoord2f(1.0f, 0.0f); glVertex2f(rdata->image.cols, 0); // Inferior Derecha
-	glTexCoord2f(1.0f, 1.0f); glVertex2f(rdata->image.cols, rdata->image.rows); // Superior Derecha
-	glTexCoord2f(0.0f, 1.0f); glVertex2f(0, rdata->image.rows); // Superior Izquierda
+	glTexCoord2f(0.0f, 0.0f); glVertex2f(rdata->bbox.left(), rdata->bbox.bottom() + 1); // Inferior Izquierda
+	glTexCoord2f(1.0f, 0.0f); glVertex2f(rdata->bbox.right() + 1, rdata->bbox.bottom() + 1); // Inferior Derecha
+	glTexCoord2f(1.0f, 1.0f); glVertex2f(rdata->bbox.right() + 1, rdata->bbox.top()); // Superior Derecha
+	glTexCoord2f(0.0f, 1.0f); glVertex2f(rdata->bbox.left(), rdata->bbox.top()); // Superior Izquierda
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
 	//
@@ -145,12 +145,18 @@ void viewer_gl::draw_image()
 void viewer_gl::draw_bbox()
 {
 	QColor color = Qt::darkGray;
-
 	int stipple = 2;
-	draw_dashed_line({ rdata->bbox.bottomLeft(), rdata->bbox.topLeft()}, color, stipple);
-	draw_dashed_line({ rdata->bbox.bottomLeft(), rdata->bbox.bottomRight()}, color, stipple);
-	draw_dashed_line({ rdata->bbox.bottomRight(), rdata->bbox.topRight()}, color, stipple);
-	draw_dashed_line({ rdata->bbox.topRight(), rdata->bbox.topLeft()}, color, stipple);
+
+	QRect &bb = rdata->bbox;
+	QPoint top_left = { bb.x(), bb.y() + bb.height() };
+	QPoint top_right = { bb.x() + bb.width(), bb.y() + bb.height() };
+	QPoint bottom_right = { bb.x() + bb.width(), bb.y() };
+	QPoint bottom_left = { bb.x(), bb.y()};
+
+	draw_dashed_line({ bottom_left, top_left }, color, stipple);
+	draw_dashed_line({ bottom_left, bottom_right }, color, stipple);
+	draw_dashed_line({ bottom_right, top_right }, color, stipple);
+	draw_dashed_line({ top_right, top_left }, color, stipple);
 }
 
 void viewer_gl::draw_frame()
