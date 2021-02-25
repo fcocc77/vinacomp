@@ -85,7 +85,7 @@ void viewer::update_render()
 	if (render_pause)
 		return;
 
-	rdata->node_name = name;
+	rdata->root_node = name;
 	rdata->frame = current_frame;
 
 	_renderer->render(rdata);

@@ -85,10 +85,10 @@ pair <int, int> renderer::get_frame_range(QString node_name) const
 
 void renderer::render(render_data *rdata)
 {
-	if (!project->nodes.contains(rdata->node_name))
+	if (!project->nodes.contains(rdata->root_node))
 		return;
 
-	node_struct *node = &project->nodes[rdata->node_name];
+	node_struct *node = &project->nodes[rdata->root_node];
 	node_engine *_node_engine = nodes.value(node->type);
 
 	bool disable = false;
@@ -98,14 +98,14 @@ void renderer::render(render_data *rdata)
 	// los nodos de tiempo tienen que modificar todos los nodos entrantes
 	// por eso estos nodos tienen que ir antes de renderizar las entradas
 	if (node->type == "time_offset" && !disable)
-		time_offset->set_offset(node->params, rdata->frame, rdata->node_name, this);
+		time_offset->set_offset(node->params, rdata->frame, rdata->root_node, this);
 	//
 
 	// renderiza las entradas del nodo antes que el nodo
 	QString input_node = node->inputs.value("in0").toString();
 	if (!input_node.isEmpty())
 	{
-		rdata->node_name = input_node;
+		rdata->root_node = input_node;
 		render(rdata);
 	}
 	//

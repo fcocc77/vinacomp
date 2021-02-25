@@ -12,7 +12,7 @@ struct render_data
 	int first_frame;
 	int last_frame;
 	QRect bbox;
-	QString node_name;
+	QString root_node;
 };
 
 #endif //RENDER_DATA_H
