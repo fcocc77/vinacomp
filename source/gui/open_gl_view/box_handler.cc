@@ -1,5 +1,11 @@
 #include <gl_view.h>
 
+void gl_view::box_handler_init()
+{
+	transforming = false;
+	box_handler_visible = true;
+}
+
 void gl_view::box_handler_draw()
 {
     QColor color = {200, 200, 200};

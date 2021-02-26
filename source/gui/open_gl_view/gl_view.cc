@@ -10,6 +10,8 @@ gl_view::gl_view(bool _lock_scale)
 {
     this->setMouseTracking(true);
     this->setTabletTracking(true);
+
+	box_handler_init();
     set_default();
 }
 
