@@ -9,6 +9,7 @@
 #include <QPushButton>
 #include <QScrollArea>
 
+#include <viewer.h>
 #include <qt.h>
 
 class properties : public QWidget
@@ -19,6 +20,7 @@ private:
 
     QVBoxLayout *trim_panels_layout;
     QWidget *trim_panels;
+	QWidget *_vinacomp;
 
     bool is_maximize = true;
     int max_panels = 10;
@@ -27,13 +29,14 @@ private:
     void close_all();
     void limit_panels(int amount);
     QWidget *get_trim_panel(QString panel_name);
-    QList<QWidget *> get_trim_panels();
+	void update_viewers_handlers();
 
 public:
-    properties(/* args */);
+    properties(QWidget *_vinacomp);
     ~properties();
 
     void close_trim_panel(QString panel_name);
+    QList<QWidget *> get_trim_panels();
 
     template <class T>
     void add_trim_panel(T *_trim_panel);
@@ -50,6 +53,8 @@ void properties::add_trim_panel(T *_trim_panel)
     trim_panels_layout->addWidget(_trim_panel);
     _trim_panel->maximize(true);
 	_trim_panel->show();
+
+	update_viewers_handlers();
 }
 
 #endif // PROPERTIES_HPP

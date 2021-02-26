@@ -15,3 +15,6 @@ private:
 
 public:
 	void box_handler_draw();
+
+protected:
+	virtual void box_handler_changed(QRect box, QString name);

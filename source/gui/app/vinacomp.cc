@@ -27,7 +27,7 @@ void vinacomp::setup_ui()
 	//
 
 	//
-    _properties = new properties();
+    _properties = new properties(this);
     _node_graph = new node_graph(this, project, _properties);
     _script_editor = new script_editor(project_old, _node_graph);
     _curve_editor = new curve_editor();
@@ -92,6 +92,11 @@ renderer *vinacomp::get_renderer() const
 project_settings *vinacomp::get_project_settings() const
 {
 	return _project_settings;
+}
+
+properties *vinacomp::get_properties() const
+{
+	return _properties;
 }
 
 void vinacomp::update_render_all_viewer() const

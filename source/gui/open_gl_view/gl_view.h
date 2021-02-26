@@ -11,6 +11,7 @@
 class gl_view : public QOpenGLWidget,
                 public QOpenGLFunctions
 {
+	Q_OBJECT
 
 // Manejadores
 #include <box_handler.h>

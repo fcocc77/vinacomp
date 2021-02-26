@@ -1,11 +1,14 @@
 #include <viewer_gl.h>
+#include <vinacomp.h>
 
-viewer_gl::viewer_gl(render_data *_rdata)
+viewer_gl::viewer_gl(render_data *_rdata, QWidget *_vinacomp)
 	: rdata(_rdata)
 	, gl_view(true)
 	, fitted(true)
 	, overlay(true)
 {
+	_properties = dynamic_cast< vinacomp * >(_vinacomp)->get_properties();
+
     center_viewer = new action("Center Image", "F", "center");
 	center_viewer->connect_to(this, [=]() { fit_to_viewport(); });
 
@@ -13,9 +16,7 @@ viewer_gl::viewer_gl(render_data *_rdata)
 	fit_100_percent->connect_to(this, [=]() { fit_to_percent(100); });
 }
 
-viewer_gl::~viewer_gl()
-{
-}
+viewer_gl::~viewer_gl() { }
 
 void viewer_gl::initializeGL()
 {

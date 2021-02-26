@@ -23,7 +23,7 @@ viewer::viewer(QString _name, project_struct *_project, renderer *__renderer, QW
 	rdata->width = 1920;
 	rdata->height = 1080;
 
-    _viewer_gl = new viewer_gl(rdata);
+    _viewer_gl = new viewer_gl(rdata, _vinacomp);
     _viewer_gl->setObjectName("viewer_graphics");
 
     layout = new QVBoxLayout(this);
@@ -151,4 +151,9 @@ void viewer::set_in_out(int _input, int _output)
 	enable_in_out(true);
 
 	_time_line->update_in_out(input, output);
+}
+
+viewer_gl *viewer::get_viewer_gl() const
+{
+	return _viewer_gl;
 }

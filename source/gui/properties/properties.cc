@@ -1,7 +1,9 @@
 #include <properties.h>
 #include <trim_panel.h>
+#include <vinacomp.h>
 
-properties::properties(/* args */)
+properties::properties(QWidget *__vinacomp)
+	: _vinacomp(__vinacomp)
 {
     this->setObjectName("properties");
     setup_ui();
@@ -111,6 +113,8 @@ void properties::close_trim_panel(QString panel_name)
 
     _trim_panel->hide();
     _trim_panel->setParent(0);
+
+	update_viewers_handlers();
 }
 
 QWidget *properties::get_trim_panel(QString panel_name)
@@ -161,4 +165,11 @@ void properties::limit_panels(int amount)
 
         count = trim_panels_layout->count();
     }
+}
+
+void properties::update_viewers_handlers()
+{
+	auto *viewers = dynamic_cast< vinacomp *>(_vinacomp)->get_viewers();
+	for (viewer *_viewer : *viewers)
+		_viewer->get_viewer_gl()->handlers_update();
 }

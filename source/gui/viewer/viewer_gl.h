@@ -17,6 +17,8 @@ private:
     action *fit_100_percent;
     //
 
+	QWidget *_properties;
+
 	render_data *rdata;
 	bool fitted;
 
@@ -30,15 +32,18 @@ private:
 	void fit_to_percent(int percent);
 
 public:
-    viewer_gl(render_data *rdata);
+    viewer_gl(render_data *rdata, QWidget *_vinacomp);
     ~viewer_gl();
 
+	void handlers_update();
 	void set_overlay(bool _overlay);
 	void isolate_channel(int channel);
 protected:
     void initializeGL() override;
     void paintGL() override;
     void resizeGL(int w, int h) override;
+
+	void box_handler_changed(QRect box, QString name) override;
 
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);

@@ -86,6 +86,7 @@ public:
 	renderer *get_renderer() const;
 	void update_render_all_viewer() const;
 	project_settings *get_project_settings() const;
+	properties *get_properties() const;
 };
 
 #endif // VINACOMP_H

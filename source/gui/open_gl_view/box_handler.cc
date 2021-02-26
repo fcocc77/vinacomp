@@ -260,6 +260,15 @@ void gl_view::box_handler_move(QPoint cursor_position)
 	if (transforming)
 	{
 		box_handler_transform(cursor_position);
+		QRect box(
+			box_handler.x1(),
+			box_handler.y1(),
+			box_handler.x2() - box_handler.x1(),
+			box_handler.y2() - box_handler.y1()
+		);
+		box_handler_changed(box, "node_name");
 		update();
 	}
 }
+
+void gl_view::box_handler_changed(QRect box, QString name) {}
