@@ -13,6 +13,7 @@ void gl_view::wheelEvent(QWheelEvent *event)
 void gl_view::mousePressEvent(QMouseEvent *event)
 {
     click_position = event->pos();
+	center_button = event->button() == Qt::MidButton;
     pressed = true;
 
 	box_handler_press(click_position);
@@ -116,7 +117,11 @@ void gl_view::cursor_move_event(QPoint position)
 
 void gl_view::mouseMoveEvent(QMouseEvent *event)
 {
-	box_handler_move(event->pos());
+    if (!qt::alt() && !center_button)
+	{
+		box_handler_move(event->pos());
+	}
+
     cursor_move_event(event->pos());
     QOpenGLWidget::mouseMoveEvent(event);
 }

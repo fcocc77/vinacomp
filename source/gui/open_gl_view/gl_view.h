@@ -18,7 +18,7 @@ class gl_view : public QOpenGLWidget,
 
 private:
     QPoint click_position;
-    bool panning, zooming, pressed, lock_scale;
+    bool panning, zooming, pressed, lock_scale, center_button;
 
     QPointF scale, click_scale;
     QPointF translate, click_translate;

@@ -4,13 +4,13 @@ void gl_view::box_handler_init()
 {
 	transforming = false;
 	box_handler_visible = true;
+
+	box_handler.setLine(100, 100, 300, 300);
 }
 
 void gl_view::box_handler_draw()
 {
     QColor color = {200, 200, 200};
-
-	box_handler.setLine(100, 100, 300, 300);
 
     QPointF bottom_left = box_handler.p1();
     QPointF top_right = box_handler.p2();
@@ -153,7 +153,72 @@ QString gl_view::get_transform_action(QPoint cursor_position)
 
 void gl_view::box_handler_transform(QPoint cursor_position)
 {
-	print(resize_current_action);
+    // return;
+    QString action = resize_current_action;
+
+    QPointF click_coords = get_coordsf(click_position);
+    QPointF coords = get_coordsf(cursor_position);
+    QPointF add_translate = coords - click_coords;
+
+    if (action == "right_scale")
+    {
+        box_handler.setP2({coords.x(), box_handler.y2()});
+    }
+    else if (action == "left_scale")
+    {
+        box_handler.setP1({coords.x(), box_handler.y1()});
+    }
+    else if (action == "top_scale")
+    {
+        box_handler.setP2({box_handler.x2(), coords.y()});
+    }
+    else if (action == "bottom_scale")
+    {
+        box_handler.setP1({box_handler.x1(), coords.y()});
+    }
+
+    else if (action == "bottom_left_scale")
+    {
+        box_handler.setP1({coords.x(), box_handler.y1()});
+        box_handler.setP1({box_handler.x1(), coords.y()});
+    }
+    else if (action == "top_right_scale")
+    {
+        box_handler.setP2({coords.x(), box_handler.y2()});
+        box_handler.setP2({box_handler.x2(), coords.y()});
+    }
+    else if (action == "bottom_right_scale")
+    {
+        box_handler.setP1({box_handler.x1(), coords.y()});
+        box_handler.setP2({coords.x(), box_handler.y2()});
+    }
+    else if (action == "top_left_scale")
+    {
+        box_handler.setP1({coords.x(), box_handler.y1()});
+        box_handler.setP2({box_handler.x2(), coords.y()});
+    }
+
+    else if (action == "center_translate")
+    {
+        box_handler.setP1(last_box_handler.p1() + add_translate);
+        box_handler.setP2(last_box_handler.p2() + add_translate);
+    }
+    else if (action == "horizontal_translate")
+    {
+        QPointF p1 = {last_box_handler.x1() + add_translate.x(), last_box_handler.y1()};
+        QPointF p2 = {last_box_handler.x2() + add_translate.x(), last_box_handler.y2()};
+
+        box_handler.setP1(p1);
+        box_handler.setP2(p2);
+    }
+    else if (action == "vertical_translate")
+    {
+        QPointF p1 = {last_box_handler.x1(), last_box_handler.y1() + add_translate.y()};
+        QPointF p2 = {last_box_handler.x2(), last_box_handler.y2() + add_translate.y()};
+
+        box_handler.setP1(p1);
+        box_handler.setP2(p2);
+    }
 }
 
 void gl_view::box_handler_press(QPoint cursor_position)
@@ -166,6 +231,7 @@ void gl_view::box_handler_press(QPoint cursor_position)
     if (!action.isEmpty())
     {
         resize_current_action = action;
+        last_box_handler = box_handler;
         transforming = true;
     }
 }
@@ -192,5 +258,8 @@ void gl_view::box_handler_move(QPoint cursor_position)
 
 
 	if (transforming)
+	{
 		box_handler_transform(cursor_position);
+		update();
+	}
 }

@@ -1,11 +1,11 @@
 #include <gl_view.h>
 
 gl_view::gl_view(bool _lock_scale)
-    : lock_scale(_lock_scale),
-
-      panning(false),
-      zooming(false),
-      pressed(false)
+    : lock_scale(_lock_scale)
+	, panning(false)
+    , zooming(false)
+	, pressed(false)
+	, center_button(false)
 
 {
     this->setMouseTracking(true);

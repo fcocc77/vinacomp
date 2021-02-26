@@ -1,6 +1,8 @@
 
 private:
 	QLineF box_handler;
+    QLineF last_box_handler;
+
 	QString resize_current_action;
 	bool transforming;
 	bool box_handler_visible;
