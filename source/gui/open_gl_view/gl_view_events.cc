@@ -15,6 +15,8 @@ void gl_view::mousePressEvent(QMouseEvent *event)
     click_position = event->pos();
     pressed = true;
 
+	box_handler_press(click_position);
+
     this->setFocus();
 
     if (event->button() == Qt::MidButton)
@@ -51,6 +53,8 @@ void gl_view::mouseReleaseEvent(QMouseEvent *event)
     panning = false;
     zooming = false;
     pressed = false;
+
+    transforming = false;
 
     update();
 }
@@ -112,6 +116,7 @@ void gl_view::cursor_move_event(QPoint position)
 
 void gl_view::mouseMoveEvent(QMouseEvent *event)
 {
+	box_handler_move(event->pos());
     cursor_move_event(event->pos());
     QOpenGLWidget::mouseMoveEvent(event);
 }

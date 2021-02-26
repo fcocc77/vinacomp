@@ -16,6 +16,7 @@ gui__curve_view:
 	☐ los botones de curvas del toolbar deben ser checkeables segun la actual interpolacion del keyframe seleccionado
 	☐ opcion para bloquear o desbloquear el tamaño del manejador
 	☐ opcion de simetria para que los 2 puntos del manejador se escalen igual
+	☐ el transform_box esta repetido, integrar el que esta en gl_view
 gui__script_editor:
 	☐ boton de arrastre para poder arrastrar el script como acceso directo a una barra de herramienta en la parte inferior del node graph
 	☐ cambiar la barra por la propia 'tools'

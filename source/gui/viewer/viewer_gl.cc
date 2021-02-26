@@ -38,7 +38,10 @@ void viewer_gl::paintGL()
 	{
 		draw_bbox();
 		draw_frame();
+
+		box_handler_draw();
 	}
+
 }
 
 void viewer_gl::fit_to_viewport()

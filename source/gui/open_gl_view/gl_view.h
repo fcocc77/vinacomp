@@ -64,6 +64,18 @@ public:
     QPointF rotate_point(QPointF point, QPointF anchor_point, float angle, bool keep_aspect = false) const;
     float get_angle_two_points(QPointF a, QPointF b) const;
 
+	// Manejadores
+	void box_handler_draw();
+	void box_handler_transform(QPoint cursor_position);
+	void box_handler_press(QPoint cursor_position);
+	void box_handler_move(QPoint cursor_position);
+	QString get_transform_action(QPoint cursor_position);
+    QLineF box_handler;
+	QString resize_current_action;
+	bool transforming;
+	bool box_handler_visible = true;
+	//
+
 protected:
     void paintGL() override;
     void resizeGL(int w, int h) override;
