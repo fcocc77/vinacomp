@@ -91,6 +91,7 @@ public:
     ~trim_panel();
 
     QString get_name() const;
+    QString get_type() const;
     void maximize(bool _maximize);
     void set_name(QString _name);
 	knob *get_knob(QString name) const;

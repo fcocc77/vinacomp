@@ -209,6 +209,11 @@ QString trim_panel::get_name() const
     return name;
 }
 
+QString trim_panel::get_type() const
+{
+	return type;
+}
+
 void trim_panel::set_name(QString _name)
 {
     name = _name;

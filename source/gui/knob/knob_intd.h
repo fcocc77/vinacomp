@@ -22,6 +22,7 @@ public:
     ~knob_intd();
 
 	int get_value(int dimension) const;
+	QList <int> get_values() const;
 	void set_value(int value, int dimension = 0);
 	void set_value(QList <int> values);
 signals:

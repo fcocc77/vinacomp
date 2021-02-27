@@ -45,6 +45,15 @@ int knob_intd::get_value(int dimension) const
 	return dimensions_edits.value(dimension)->text().toInt();
 }
 
+QList <int> knob_intd::get_values() const
+{
+	QList <int> values;
+	for (int i = 0; i < dimensions_edits.count(); i++)
+		values.push_back( dimensions_edits.value(i)->text().toInt() );
+
+	return values;
+}
+
 void knob_intd::set_value(int value, int dimension)
 {
 	if (dimension >= dimensions_edits.count())

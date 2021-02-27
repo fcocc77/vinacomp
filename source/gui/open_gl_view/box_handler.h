@@ -14,7 +14,7 @@ private:
 	QString get_transform_action(QPoint cursor_position);
 
 public:
-	void box_handler_draw();
+	void box_handler_draw(QRect box);
 
 protected:
 	virtual void box_handler_changed(QRect box, QString name);

@@ -17,6 +17,7 @@ private:
     action *fit_100_percent;
     //
 
+	QList <QWidget*> panels;
 	QWidget *_properties;
 
 	render_data *rdata;
@@ -27,6 +28,7 @@ private:
     void draw_frame();
 	void draw_bbox();
 	void draw_image();
+	void draw_handlers();
 
 	void fit_to_viewport();
 	void fit_to_percent(int percent);

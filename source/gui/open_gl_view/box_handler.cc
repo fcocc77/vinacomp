@@ -8,8 +8,13 @@ void gl_view::box_handler_init()
 	box_handler.setLine(100, 100, 300, 300);
 }
 
-void gl_view::box_handler_draw()
+void gl_view::box_handler_draw(QRect box)
 {
+	box_handler.setLine(
+		box.x(), box.y(),
+		box.x() + box.width(),
+		box.y() + box.height()
+	);
     QColor color = {200, 200, 200};
 
     QPointF bottom_left = box_handler.p1();
