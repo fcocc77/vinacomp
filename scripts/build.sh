@@ -1,22 +1,22 @@
-pkill -9 gdb
+kill -9 gdb
 
 function run_gui() {
 
-	# crea la paleta de colores y genera el css a partir del sass
-	python3 'scripts/make_palette.py'
-    npm run d
+	if [ $1 == full ]; then
+		# crea la paleta de colores y genera el css a partir del sass
+		python3 'scripts/make_palette.py'
+		npm run d
 
-    # cambia 'path' del proyecto para el archivo 'style.css'
-    css='resources/css/style.css'
-    path=$(pwd)
-    sed -i "s|{{path}}|$path|g" $css
-    #
-    #
+		# cambia 'path' del proyecto para el archivo 'style.css'
+		css='resources/css/style.css'
+		path=$(pwd)
+		sed -i "s|{{path}}|$path|g" $css
+		#
 
-    # conversion de svg a png
-    sh scripts/svg_converter.sh
-    #
-    #
+		# conversion de svg a png
+		sh scripts/svg_converter.sh
+		#
+	fi
 
     rm source/gui/Makefile
 
@@ -57,6 +57,8 @@ function run_engine() {
 
 if [ $1 == engine ]; then
     run_engine
+elif [ $1 == full ]; then
+	run_gui 'full'
 else
-    run_gui
+    run_gui 'not'
 fi
