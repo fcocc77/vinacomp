@@ -2,19 +2,23 @@
 
 void gl_view::box_handler_init()
 {
-	transforming = false;
-	box_handler_visible = true;
+	handler_struct handler;
 
-	box_handler.setLine(100, 100, 300, 300);
+	handler.transforming = false;
+	handler.visible = true;
+	handler.box.setLine(100, 100, 300, 300);
+
+	handlers.insert("test", handler);
 }
 
-void gl_view::box_handler_draw(QRect box)
+void gl_view::box_handlers_draw()
 {
-	box_handler.setLine(
-		box.x(), box.y(),
-		box.x() + box.width(),
-		box.y() + box.height()
-	);
+	for (auto handler : handlers)
+		box_handler_draw(handler.box);
+}
+
+void gl_view::box_handler_draw(QLineF box_handler)
+{
     QColor color = {200, 200, 200};
 
     QPointF bottom_left = box_handler.p1();
@@ -72,7 +76,7 @@ void gl_view::box_handler_draw(QRect box)
     //
 }
 
-QString gl_view::get_transform_action(QPoint cursor_position)
+QString gl_view::get_transform_action(QPoint cursor_position, handler_struct &handler)
 {
     // Obtiene la accion del 'box_handler' a partir del cursor del mouse
     bool is_above = false;
@@ -87,14 +91,14 @@ QString gl_view::get_transform_action(QPoint cursor_position)
         return false;
     };
 
-    QPointF bottom_left = box_handler.p1();
-    QPointF top_right = box_handler.p2();
+    QPointF bottom_left = handler.box.p1();
+    QPointF top_right = handler.box.p2();
     QPointF bottom_right = {top_right.x(), bottom_left.y()};
     QPointF top_left = {bottom_left.x(), top_right.y()};
 
     // si las posiciones x o y de la caja de tranformacion son iguales, entoces solo se puede mover
-    if (box_handler.x1() == box_handler.x2() || box_handler.y1() == box_handler.y2())
-        if (is_cursor_above(cursor_position, box_handler.p1(), box_handler.p2()))
+    if (handler.box.x1() == handler.box.x2() || handler.box.y1() == handler.box.y2())
+        if (is_cursor_above(cursor_position, handler.box.p1(), handler.box.p2()))
             return "center_translate";
     //
 
@@ -156,10 +160,10 @@ QString gl_view::get_transform_action(QPoint cursor_position)
     return "";
 }
 
-void gl_view::box_handler_transform(QPoint cursor_position)
+void gl_view::box_handler_transform(QPoint cursor_position, handler_struct &handler)
 {
     // return;
-    QString action = resize_current_action;
+    QString action = handler.resize_current_action;
 
     QPointF click_coords = get_coordsf(click_position);
     QPointF coords = get_coordsf(cursor_position);
@@ -167,113 +171,117 @@ void gl_view::box_handler_transform(QPoint cursor_position)
 
     if (action == "right_scale")
     {
-        box_handler.setP2({coords.x(), box_handler.y2()});
+        handler.box.setP2({coords.x(), handler.box.y2()});
     }
     else if (action == "left_scale")
     {
-        box_handler.setP1({coords.x(), box_handler.y1()});
+        handler.box.setP1({coords.x(), handler.box.y1()});
     }
     else if (action == "top_scale")
     {
-        box_handler.setP2({box_handler.x2(), coords.y()});
+        handler.box.setP2({handler.box.x2(), coords.y()});
     }
     else if (action == "bottom_scale")
     {
-        box_handler.setP1({box_handler.x1(), coords.y()});
+        handler.box.setP1({handler.box.x1(), coords.y()});
     }
 
     else if (action == "bottom_left_scale")
     {
-        box_handler.setP1({coords.x(), box_handler.y1()});
-        box_handler.setP1({box_handler.x1(), coords.y()});
+        handler.box.setP1({coords.x(), handler.box.y1()});
+        handler.box.setP1({handler.box.x1(), coords.y()});
     }
     else if (action == "top_right_scale")
     {
-        box_handler.setP2({coords.x(), box_handler.y2()});
-        box_handler.setP2({box_handler.x2(), coords.y()});
+        handler.box.setP2({coords.x(), handler.box.y2()});
+        handler.box.setP2({handler.box.x2(), coords.y()});
     }
     else if (action == "bottom_right_scale")
     {
-        box_handler.setP1({box_handler.x1(), coords.y()});
-        box_handler.setP2({coords.x(), box_handler.y2()});
+        handler.box.setP1({handler.box.x1(), coords.y()});
+        handler.box.setP2({coords.x(), handler.box.y2()});
     }
     else if (action == "top_left_scale")
     {
-        box_handler.setP1({coords.x(), box_handler.y1()});
-        box_handler.setP2({box_handler.x2(), coords.y()});
+        handler.box.setP1({coords.x(), handler.box.y1()});
+        handler.box.setP2({handler.box.x2(), coords.y()});
     }
 
     else if (action == "center_translate")
     {
-        box_handler.setP1(last_box_handler.p1() + add_translate);
-        box_handler.setP2(last_box_handler.p2() + add_translate);
+        handler.box.setP1(handler.last_box.p1() + add_translate);
+        handler.box.setP2(handler.last_box.p2() + add_translate);
     }
     else if (action == "horizontal_translate")
     {
-        QPointF p1 = {last_box_handler.x1() + add_translate.x(), last_box_handler.y1()};
-        QPointF p2 = {last_box_handler.x2() + add_translate.x(), last_box_handler.y2()};
+        QPointF p1 = {handler.last_box.x1() + add_translate.x(), handler.last_box.y1()};
+        QPointF p2 = {handler.last_box.x2() + add_translate.x(), handler.last_box.y2()};
 
-        box_handler.setP1(p1);
-        box_handler.setP2(p2);
+        handler.box.setP1(p1);
+        handler.box.setP2(p2);
     }
     else if (action == "vertical_translate")
     {
-        QPointF p1 = {last_box_handler.x1(), last_box_handler.y1() + add_translate.y()};
-        QPointF p2 = {last_box_handler.x2(), last_box_handler.y2() + add_translate.y()};
+        QPointF p1 = {handler.last_box.x1(), handler.last_box.y1() + add_translate.y()};
+        QPointF p2 = {handler.last_box.x2(), handler.last_box.y2() + add_translate.y()};
 
-        box_handler.setP1(p1);
-        box_handler.setP2(p2);
+        handler.box.setP1(p1);
+        handler.box.setP2(p2);
     }
 }
 
 void gl_view::box_handler_press(QPoint cursor_position)
 {
-    if (!box_handler_visible)
-        return;
 
-    QString action = get_transform_action(cursor_position);
+	for (auto &handler : handlers)
+	{
+		QString action = get_transform_action(cursor_position, handler);
 
-    if (!action.isEmpty())
-    {
-        resize_current_action = action;
-        last_box_handler = box_handler;
-        transforming = true;
-    }
+		if (!action.isEmpty())
+		{
+			handler.resize_current_action = action;
+			handler.last_box = handler.box;
+			handler.transforming = true;
+		}
+	}
 }
 
 void gl_view::box_handler_move(QPoint cursor_position)
 {
-    if (!box_handler_visible)
-        return;
+	bool transforming = false;
+	for (auto &handler : handlers)
+	{
+		QString action = get_transform_action(cursor_position, handler);
 
-	QString action = get_transform_action(cursor_position);
+		if (action == "bottom_left_scale" || action == "top_right_scale")
+			this->setCursor(Qt::SizeBDiagCursor);
+		else if (action == "bottom_right_scale" || action == "top_left_scale")
+			this->setCursor(Qt::SizeFDiagCursor);
+		else if (action == "left_scale" || action == "right_scale" || action == "horizontal_translate")
+			this->setCursor(Qt::SizeHorCursor);
+		else if (action == "top_scale" || action == "bottom_scale" || action == "vertical_translate")
+			this->setCursor(Qt::SizeVerCursor);
+		else if (action == "center_translate")
+			this->setCursor(Qt::SizeAllCursor);
+		else
+			this->setCursor(Qt::ArrowCursor);
 
-	if (action == "bottom_left_scale" || action == "top_right_scale")
-		this->setCursor(Qt::SizeBDiagCursor);
-	else if (action == "bottom_right_scale" || action == "top_left_scale")
-		this->setCursor(Qt::SizeFDiagCursor);
-	else if (action == "left_scale" || action == "right_scale" || action == "horizontal_translate")
-		this->setCursor(Qt::SizeHorCursor);
-	else if (action == "top_scale" || action == "bottom_scale" || action == "vertical_translate")
-		this->setCursor(Qt::SizeVerCursor);
-	else if (action == "center_translate")
-		this->setCursor(Qt::SizeAllCursor);
-	else
-		this->setCursor(Qt::ArrowCursor);
-
+		if (handler.transforming)
+		{
+			box_handler_transform(cursor_position, handler);
+			QRect box(
+				handler.box.x1(),
+				handler.box.y1(),
+				handler.box.x2() - handler.box.x1(),
+				handler.box.y2() - handler.box.y1()
+			);
+			box_handler_changed(box, handler.name);
+			transforming = true;
+		}
+	}
 
 	if (transforming)
-	{
-		box_handler_transform(cursor_position);
-		QRect box(
-			box_handler.x1(),
-			box_handler.y1(),
-			box_handler.x2() - box_handler.x1(),
-			box_handler.y2() - box_handler.y1()
-		);
-		box_handler_changed(box, "node_name");
 		update();
-	}
 }
 
 void gl_view::box_handler_changed(QRect box, QString name) {}
