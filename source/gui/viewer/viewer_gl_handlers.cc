@@ -28,7 +28,9 @@ void viewer_gl::handlers_update()
 
 		else if (type == "position")
 		{
-			pos_handler_add(name, {100, 100});
+			knob_intd *translate = dynamic_cast <knob_intd*>(panel->get_knob("translate"));
+			auto values = translate->get_values();
+			pos_handler_add(name, {values[0], values[1]});
 		}
 	};
 	update();
@@ -56,5 +58,11 @@ void viewer_gl::box_handler_finished(QRect box, QString name)
 {
 	knob_intd *box_knob = dynamic_cast<knob_intd*>(get_knob(name, "box"));
 	box_knob->set_value({box.x(), box.y(), box.width(), box.height()});
+}
+
+void viewer_gl::pos_handler_finished(QString name, QPoint position)
+{
+	knob_intd *translate = dynamic_cast<knob_intd*>(get_knob(name, "translate"));
+	translate->set_value({position.x(), position.y()});
 }
 

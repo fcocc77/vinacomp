@@ -8,6 +8,7 @@ private:
 	};
 
 	QMap <QString, pos_handler_struct> pos_handlers;
+	void pos_handler_translate(pos_handler_struct &handler);
 
 	void pos_handler_press(QPoint cursor_position);
 	void pos_handler_release();

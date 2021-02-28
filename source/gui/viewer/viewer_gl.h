@@ -53,6 +53,9 @@ protected:
 
 	void box_handler_changed(QRect box, QString name) override;
 	void box_handler_finished(QRect box, QString name) override;
+	void pos_handler_finished(QString name, QPoint position) override;
+
+
 signals:
 	void right_click();
 };
