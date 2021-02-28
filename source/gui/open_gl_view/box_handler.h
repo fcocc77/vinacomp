@@ -7,7 +7,6 @@ private:
 		QLineF last_box;
 		QString resize_current_action;
 		bool transforming;
-		bool visible;
 	};
 
 	QMap <QString, handler_struct> handlers;

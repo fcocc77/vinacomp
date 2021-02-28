@@ -15,6 +15,7 @@ class gl_view : public QOpenGLWidget,
 
 // Manejadores
 #include <box_handler.h>
+#include <pos_handler.h>
 //
 
 private:

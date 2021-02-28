@@ -7,18 +7,29 @@ void viewer_gl::handlers_update()
 	panels = dynamic_cast< properties * >(_properties)->get_trim_panels();
 
 	clear_box_handler();
+	pos_handler_clear();
+
 	for (QWidget *_panel : panels)
 	{
 		trim_panel *panel = dynamic_cast<trim_panel *>(_panel);
-		if (panel->get_type() == "crop")
+
+		QString type = panel->get_type();
+		QString name = panel->get_name();
+
+		if (type == "crop")
 		{
 			knob_intd *box_knob = dynamic_cast <knob_intd*>(panel->get_knob("box"));
 			auto values = box_knob->get_values();
 			add_box_handler(
-				panel->get_name(),
+				name,
 				{ values[0], values[1], values[2], values[3] }
 			);
-		};
+		}
+
+		else if (type == "position")
+		{
+			pos_handler_add(name, {100, 100});
+		}
 	};
 	update();
 }
@@ -26,6 +37,7 @@ void viewer_gl::handlers_update()
 void viewer_gl::draw_handlers()
 {
 	box_handlers_draw();
+	pos_handler_draw();
 }
 
 knob *viewer_gl::get_knob(QString panel_name, QString knob_name)

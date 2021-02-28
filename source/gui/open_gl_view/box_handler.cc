@@ -9,7 +9,6 @@ void gl_view::add_box_handler(QString name, QRect box)
 	handler_struct handler;
 
 	handler.transforming = false;
-	handler.visible = true;
 	handler.name = name;
 	handler.box.setLine(
 		box.x(), box.y(),
