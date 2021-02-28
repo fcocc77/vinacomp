@@ -21,6 +21,9 @@ private:
 
 public:
 	void box_handlers_draw();
+	void add_box_handler(QString name, QRect box);
+	void remove_box_handler(QString name);
+	void clear_box_handler();
 
 protected:
 	virtual void box_handler_changed(QRect box, QString name);

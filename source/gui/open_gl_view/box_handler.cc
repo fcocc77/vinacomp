@@ -2,13 +2,32 @@
 
 void gl_view::box_handler_init()
 {
+}
+
+void gl_view::add_box_handler(QString name, QRect box)
+{
 	handler_struct handler;
 
 	handler.transforming = false;
 	handler.visible = true;
-	handler.box.setLine(100, 100, 300, 300);
+	handler.name = name;
+	handler.box.setLine(
+		box.x(), box.y(),
+		box.x() + box.width(),
+		box.y() + box.height()
+	);
 
-	handlers.insert("test", handler);
+	handlers.insert(name, handler);
+}
+
+void gl_view::clear_box_handler()
+{
+	handlers.clear();
+}
+
+void gl_view::remove_box_handler(QString name)
+{
+	handlers.remove(name);
 }
 
 void gl_view::box_handlers_draw()
@@ -249,9 +268,11 @@ void gl_view::box_handler_press(QPoint cursor_position)
 void gl_view::box_handler_move(QPoint cursor_position)
 {
 	bool transforming = false;
+	bool over = false;
 	for (auto &handler : handlers)
 	{
 		QString action = get_transform_action(cursor_position, handler);
+		if (!over) over = !action.isEmpty();
 
 		if (action == "bottom_left_scale" || action == "top_right_scale")
 			this->setCursor(Qt::SizeBDiagCursor);
@@ -263,8 +284,6 @@ void gl_view::box_handler_move(QPoint cursor_position)
 			this->setCursor(Qt::SizeVerCursor);
 		else if (action == "center_translate")
 			this->setCursor(Qt::SizeAllCursor);
-		else
-			this->setCursor(Qt::ArrowCursor);
 
 		if (handler.transforming)
 		{
@@ -279,6 +298,8 @@ void gl_view::box_handler_move(QPoint cursor_position)
 			transforming = true;
 		}
 	}
+	if (!over)
+		this->setCursor(Qt::ArrowCursor);
 
 	if (transforming)
 		update();
