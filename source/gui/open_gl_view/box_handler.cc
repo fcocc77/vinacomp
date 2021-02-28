@@ -251,7 +251,6 @@ void gl_view::box_handler_transform(QPoint cursor_position, handler_struct &hand
 
 void gl_view::box_handler_press(QPoint cursor_position)
 {
-
 	for (auto &handler : handlers)
 	{
 		QString action = get_transform_action(cursor_position, handler);
@@ -261,7 +260,29 @@ void gl_view::box_handler_press(QPoint cursor_position)
 			handler.resize_current_action = action;
 			handler.last_box = handler.box;
 			handler.transforming = true;
+
+			break;
 		}
+	}
+}
+
+void gl_view::box_handler_release()
+{
+	for (auto &handler : handlers)
+	{
+		if (handler.transforming)
+		{
+			QRect box(
+				handler.box.x1(),
+				handler.box.y1(),
+				handler.box.x2() - handler.box.x1(),
+				handler.box.y2() - handler.box.y1()
+			);
+
+			box_handler_finished(box, handler.name);
+		}
+
+		handler.transforming = false;
 	}
 }
 
@@ -294,6 +315,7 @@ void gl_view::box_handler_move(QPoint cursor_position)
 				handler.box.x2() - handler.box.x1(),
 				handler.box.y2() - handler.box.y1()
 			);
+
 			box_handler_changed(box, handler.name);
 			transforming = true;
 		}
@@ -306,3 +328,4 @@ void gl_view::box_handler_move(QPoint cursor_position)
 }
 
 void gl_view::box_handler_changed(QRect box, QString name) {}
+void gl_view::box_handler_finished(QRect box, QString name) {}

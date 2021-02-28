@@ -28,7 +28,6 @@ private:
     void minimize_all_panels();
     void close_all();
     void limit_panels(int amount);
-    QWidget *get_trim_panel(QString panel_name);
 	void update_viewers_handlers();
 
 public:
@@ -37,6 +36,7 @@ public:
 
     void close_trim_panel(QString panel_name);
     QList<QWidget *> get_trim_panels();
+    QWidget *get_trim_panel(QString panel_name);
 
     template <class T>
     void add_trim_panel(T *_trim_panel);

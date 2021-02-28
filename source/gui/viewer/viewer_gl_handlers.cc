@@ -28,7 +28,21 @@ void viewer_gl::draw_handlers()
 	box_handlers_draw();
 }
 
+knob *viewer_gl::get_knob(QString panel_name, QString knob_name)
+{
+	QWidget *_panel = dynamic_cast<properties*>(_properties)->get_trim_panel(panel_name);
+	trim_panel *panel = dynamic_cast<trim_panel *>(_panel);
+
+	return panel->get_knob(knob_name);
+}
+
 void viewer_gl::box_handler_changed(QRect box, QString name)
 {
+}
+
+void viewer_gl::box_handler_finished(QRect box, QString name)
+{
+	knob_intd *box_knob = dynamic_cast<knob_intd*>(get_knob(name, "box"));
+	box_knob->set_value({box.x(), box.y(), box.width(), box.height()});
 }
 

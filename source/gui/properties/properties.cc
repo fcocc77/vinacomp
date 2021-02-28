@@ -129,7 +129,7 @@ QWidget *properties::get_trim_panel(QString panel_name)
                 return widget;
     }
 
-    return NULL;
+    return nullptr;
 }
 
 QList<QWidget *> properties::get_trim_panels()

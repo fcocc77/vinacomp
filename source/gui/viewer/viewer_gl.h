@@ -7,6 +7,7 @@
 #include <action.h>
 #include <util.h>
 #include <render_data.h>
+#include <knob.h>
 
 class viewer_gl : public gl_view
 {
@@ -30,6 +31,7 @@ private:
 	void draw_image();
 	void draw_handlers();
 
+	knob *get_knob(QString panel_name, QString knob_name);
 	void fit_to_viewport();
 	void fit_to_percent(int percent);
 
@@ -45,11 +47,12 @@ protected:
     void paintGL() override;
     void resizeGL(int w, int h) override;
 
-	void box_handler_changed(QRect box, QString name) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
 
-    void mousePressEvent(QMouseEvent *event);
-    void mouseReleaseEvent(QMouseEvent *event);
-    void mouseMoveEvent(QMouseEvent *event);
+	void box_handler_changed(QRect box, QString name) override;
+	void box_handler_finished(QRect box, QString name) override;
 signals:
 	void right_click();
 };
