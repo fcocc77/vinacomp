@@ -27,6 +27,12 @@ knob::~knob()
 	delete animation_button;
 }
 
+void knob::set_names(QString _node_name, QString _param_name)
+{
+	node_name = _node_name;
+	param_name = _param_name;
+}
+
 void knob::set_viewers_gl(QList <QWidget *> *_viewers_gl)
 {
 	viewers_gl = _viewers_gl;

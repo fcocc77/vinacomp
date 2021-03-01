@@ -33,6 +33,12 @@ void viewer_gl::handlers_update()
 	update();
 }
 
+void viewer_gl::update_handler(QString node_name, QString param_name)
+{
+	// actualizar el manejador especifico en gl_view
+	print(node_name + " : " + param_name);
+}
+
 void viewer_gl::draw_handlers()
 {
 	box_handlers_draw();

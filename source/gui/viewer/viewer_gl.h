@@ -40,6 +40,7 @@ public:
     ~viewer_gl();
 
 	void handlers_update();
+	void update_handler(QString node_name, QString param_name);
 	void set_overlay(bool _overlay);
 	void isolate_channel(int channel);
 protected:
