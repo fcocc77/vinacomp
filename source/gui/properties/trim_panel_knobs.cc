@@ -1,6 +1,6 @@
 #include <trim_panel.h>
 
-void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout)
+void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout, QList <QWidget*> *viewers_gl)
 {
     // Obtiene el ancho maximo a partir de las 'label'
     // para usarlo en el espacio inicial de cada parametro.
@@ -17,7 +17,7 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout)
             QLabel _label(label);
             int width = _label.fontMetrics().boundingRect(_label.text()).width();
 
-			if (type == "button" || type == "label" || type == "check_box")
+			if (type == "button" || type == "label")
 				width = 0;
 
             if (width > init_space_width)
@@ -376,6 +376,7 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout)
 
 			_knob->set_animatable(animatable);
 			_knob->set_visible(visible);
+			_knob->set_viewers_gl(viewers_gl);
         }
 
 		knobs->insert(name, _knob);

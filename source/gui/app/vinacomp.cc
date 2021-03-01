@@ -24,6 +24,7 @@ void vinacomp::setup_ui()
 	empty_viewer->setAlignment(Qt::AlignCenter);
 	empty_viewer->setObjectName("empty_viewer");
 	viewers = new QList <viewer*>;
+	viewers_gl = new QList <QWidget*>;
 	//
 
 	//
@@ -77,6 +78,15 @@ panels_layout *vinacomp::get_panels_layout() const
 QList <viewer*> *vinacomp::get_viewers() const
 {
 	return viewers;
+}
+
+QList <QWidget*> *vinacomp::get_viewers_gl() const
+{
+	viewers_gl->clear();
+	for (viewer *_viewer : *viewers)
+		viewers_gl->push_back(_viewer->get_viewer_gl());
+
+	return viewers_gl;
 }
 
 project_struct *vinacomp::get_project() const

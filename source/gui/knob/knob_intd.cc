@@ -1,4 +1,5 @@
 #include <knob_intd.h>
+#include <viewer_gl.h>
 
 knob_intd::knob_intd(QList <int> default_values)
 {
@@ -21,6 +22,7 @@ knob_intd::knob_intd(QList <int> default_values)
 				values.push_back(get_value(i));
 
 			emmit_signal();
+			update_handler();
 		});
 
 		dimension_edit->setMaximumWidth(50);
@@ -35,6 +37,11 @@ knob_intd::~knob_intd()
 {
 	for (QLineEdit *edit : dimensions_edits)
 		delete edit;
+}
+
+void knob_intd::update_handler()
+{
+
 }
 
 void knob_intd::emmit_signal()

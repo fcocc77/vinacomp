@@ -1,8 +1,9 @@
 #include <knob.h>
 
-knob::knob(/* args */)
+knob::knob()
 	: animation_button(nullptr)
 	, knob_layout(nullptr)
+	, viewers_gl(nullptr)
 {
     // Espacio inicial
     init_space = new QWidget();
@@ -24,6 +25,11 @@ knob::knob(/* args */)
 knob::~knob()
 {
 	delete animation_button;
+}
+
+void knob::set_viewers_gl(QList <QWidget *> *_viewers_gl)
+{
+	viewers_gl = _viewers_gl;
 }
 
 void knob::set_init_space(int space, QString label)

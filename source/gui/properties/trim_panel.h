@@ -75,7 +75,7 @@ private:
     void setup_gui_panels(QJsonArray _knobs);
     QWidget *top_buttons_setup_ui();
     tab_widget *tabs_ui();
-    void setup_knobs(QJsonArray _knobs, QVBoxLayout *layout);
+    void setup_knobs(QJsonArray _knobs, QVBoxLayout *layout, QList <QWidget*> *viewers);
 	void update_render();
 
 public:

@@ -29,11 +29,16 @@ trim_panel::trim_panel(properties *__properties,
 
 	setup_ui();
 
+	// obtiene la lista de viewers en una lista de viewers pero con 'QWidget'
+	// para usarlos con dynamic_cast y no tener que importar el viewer.h a cada knob
+	QList <QWidget*> *viewers_gl = dynamic_cast<vinacomp*>(_vinacomp)->get_viewers_gl();
+	//
+
 	QJsonArray _knobs = nodes_loaded->get_effect(type).value("knobs").toArray();
-	setup_knobs(_knobs, controls_layout);
+	setup_knobs(_knobs, controls_layout, viewers_gl);
 
 	QJsonArray shared_knobs = jread("source/engine/nodes/json/shared_params.json").value("knobs").toArray();
-	setup_knobs(shared_knobs, node_tab_layout);
+	setup_knobs(shared_knobs, node_tab_layout, viewers_gl);
 
 	setup_gui_panels(_knobs);
 }

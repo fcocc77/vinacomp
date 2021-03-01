@@ -37,6 +37,7 @@ private:
 	project_settings *_project_settings;
 	renderer *_renderer;
 	QList <viewer*> *viewers;
+	QList <QWidget*> *viewers_gl;
 
     panels_layout *_panels_layout;
     bool fullscreen;
@@ -82,6 +83,7 @@ public:
 
 	panels_layout *get_panels_layout() const;
 	QList <viewer*> *get_viewers() const;
+	QList <QWidget*> *get_viewers_gl() const;
 	project_struct *get_project() const;
 	renderer *get_renderer() const;
 	void update_render_all_viewer() const;
