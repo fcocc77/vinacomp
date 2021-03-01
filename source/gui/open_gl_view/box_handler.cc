@@ -1,10 +1,6 @@
 #include <gl_view.h>
 
-void gl_view::box_handler_init()
-{
-}
-
-void gl_view::add_box_handler(QString name, QRect box)
+void gl_view::box_handler_add(QString name, QRect box)
 {
 	handler_struct handler;
 
@@ -19,14 +15,9 @@ void gl_view::add_box_handler(QString name, QRect box)
 	handlers.insert(name, handler);
 }
 
-void gl_view::clear_box_handler()
+void gl_view::box_handler_clear()
 {
 	handlers.clear();
-}
-
-void gl_view::remove_box_handler(QString name)
-{
-	handlers.remove(name);
 }
 
 void gl_view::box_handlers_draw()
@@ -265,12 +256,14 @@ void gl_view::box_handler_press(QPoint cursor_position)
 	}
 }
 
-void gl_view::box_handler_release()
+void gl_view::box_handler_release(QPoint cursor_position)
 {
 	for (auto &handler : handlers)
 	{
 		if (handler.transforming)
 		{
+			box_handler_transform(cursor_position, handler);
+
 			QRect box(
 				handler.box.x1(),
 				handler.box.y1(),
@@ -278,7 +271,7 @@ void gl_view::box_handler_release()
 				handler.box.y2() - handler.box.y1()
 			);
 
-			box_handler_finished(box, handler.name);
+			box_handler_changed(handler.name, box, true);
 		}
 
 		handler.transforming = false;
@@ -315,7 +308,7 @@ void gl_view::box_handler_move(QPoint cursor_position)
 				handler.box.y2() - handler.box.y1()
 			);
 
-			box_handler_changed(box, handler.name);
+			box_handler_changed(handler.name, box);
 			transforming = true;
 		}
 	}
@@ -326,5 +319,4 @@ void gl_view::box_handler_move(QPoint cursor_position)
 		update();
 }
 
-void gl_view::box_handler_changed(QRect box, QString name) {}
-void gl_view::box_handler_finished(QRect box, QString name) {}
+void gl_view::box_handler_changed(QString name, QRect box, bool release) {}

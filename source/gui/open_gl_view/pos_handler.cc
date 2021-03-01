@@ -25,8 +25,9 @@ void gl_view::pos_handler_clear()
 	pos_handlers.clear();
 }
 
-void gl_view::pos_handler_translate(pos_handler_struct &handler)
+void gl_view::pos_handler_translate(QPoint cursor_position, pos_handler_struct &handler)
 {
+	handler.position = get_coords(cursor_position).toPoint();
 }
 
 void gl_view::pos_handler_press(QPoint cursor_position)
@@ -41,12 +42,15 @@ void gl_view::pos_handler_press(QPoint cursor_position)
 	}
 }
 
-void gl_view::pos_handler_release()
+void gl_view::pos_handler_release(QPoint cursor_position)
 {
 	for (auto &handler : pos_handlers)
 	{
 		if (handler.moving)
-			pos_handler_finished(handler.name, handler.position);
+		{
+			pos_handler_translate(cursor_position, handler);
+			pos_handler_changed(handler.name, handler.position, true);
+		}
 
 		handler.moving = false;
 	}
@@ -58,12 +62,11 @@ void gl_view::pos_handler_move(QPoint cursor_position)
 	{
 		if (handler.moving)
 		{
-			handler.position = get_coords(cursor_position).toPoint();
+			pos_handler_translate(cursor_position, handler);
 			pos_handler_changed(handler.name, handler.position);
 			update();
 		}
 	}
 }
 
-void gl_view::pos_handler_changed(QString name, QPoint position){}
-void gl_view::pos_handler_finished(QString name, QPoint position){}
+void gl_view::pos_handler_changed(QString name, QPoint position, bool release){}

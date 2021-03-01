@@ -8,10 +8,10 @@ private:
 	};
 
 	QMap <QString, pos_handler_struct> pos_handlers;
-	void pos_handler_translate(pos_handler_struct &handler);
+	void pos_handler_translate(QPoint cursor_position, pos_handler_struct &handler);
 
 	void pos_handler_press(QPoint cursor_position);
-	void pos_handler_release();
+	void pos_handler_release(QPoint cursor_position);
 	void pos_handler_move(QPoint cursor_position);
 
 public:
@@ -21,5 +21,4 @@ public:
 	void pos_handler_clear();
 
 protected:
-	virtual void pos_handler_changed(QString name, QPoint position);
-	virtual void pos_handler_finished(QString name, QPoint position);
+	virtual void pos_handler_changed(QString name, QPoint position, bool release = false);

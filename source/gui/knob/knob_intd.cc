@@ -16,11 +16,11 @@ knob_intd::knob_intd(QList <int> default_values)
 		QLineEdit *dimension_edit = new QLineEdit(QString::number(value));
 
 		connect(dimension_edit, &QLineEdit::editingFinished, this, [=](){
-			QList <int> values;
+			values.clear();
 			for ( int i = 0; i < dimensions; i++ )
 				values.push_back(get_value(i));
 
-			changed(values); // Signal
+			emmit_signal();
 		});
 
 		dimension_edit->setMaximumWidth(50);
@@ -35,6 +35,11 @@ knob_intd::~knob_intd()
 {
 	for (QLineEdit *edit : dimensions_edits)
 		delete edit;
+}
+
+void knob_intd::emmit_signal()
+{
+	changed(values); // Signal
 }
 
 int knob_intd::get_value(int dimension) const
@@ -62,10 +67,13 @@ void knob_intd::set_value(int value, int dimension)
 	dimensions_edits.value(dimension)->setText(QString::number(value));
 }
 
-void knob_intd::set_value(QList <int> values)
+void knob_intd::set_values(QList <int> _values, bool _emmit_signal)
 {
+	values = _values;
+
 	for (int i = 0; i < dimensions_edits.count(); i++)
 		set_value(values.value(i), i);
 
-	changed(values); // Signal
+	if (_emmit_signal)
+		emmit_signal();
 }

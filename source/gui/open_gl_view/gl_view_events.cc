@@ -56,8 +56,8 @@ void gl_view::mouseReleaseEvent(QMouseEvent *event)
     zooming = false;
     pressed = false;
 
-	box_handler_release();
-	pos_handler_release();
+	box_handler_release(event->pos());
+	pos_handler_release(event->pos());
 
     update();
 }

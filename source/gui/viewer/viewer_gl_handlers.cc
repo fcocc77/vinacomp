@@ -6,7 +6,7 @@ void viewer_gl::handlers_update()
 {
 	panels = dynamic_cast< properties * >(_properties)->get_trim_panels();
 
-	clear_box_handler();
+	box_handler_clear();
 	pos_handler_clear();
 
 	for (QWidget *_panel : panels)
@@ -20,10 +20,7 @@ void viewer_gl::handlers_update()
 		{
 			knob_intd *box_knob = dynamic_cast <knob_intd*>(panel->get_knob("box"));
 			auto values = box_knob->get_values();
-			add_box_handler(
-				name,
-				{ values[0], values[1], values[2], values[3] }
-			);
+			box_handler_add( name, { values[0], values[1], values[2], values[3] });
 		}
 
 		else if (type == "position")
@@ -50,19 +47,19 @@ knob *viewer_gl::get_knob(QString panel_name, QString knob_name)
 	return panel->get_knob(knob_name);
 }
 
-void viewer_gl::box_handler_changed(QRect box, QString name)
-{
-}
-
-void viewer_gl::box_handler_finished(QRect box, QString name)
+void viewer_gl::box_handler_changed(QString name, QRect box, bool release)
 {
 	knob_intd *box_knob = dynamic_cast<knob_intd*>(get_knob(name, "box"));
-	box_knob->set_value({box.x(), box.y(), box.width(), box.height()});
+	box_knob->set_values({box.x(), box.y(), box.width(), box.height()}, false);
+	if (release)
+		box_knob->emmit_signal();
 }
 
-void viewer_gl::pos_handler_finished(QString name, QPoint position)
+void viewer_gl::pos_handler_changed(QString name, QPoint position, bool release)
 {
 	knob_intd *translate = dynamic_cast<knob_intd*>(get_knob(name, "translate"));
-	translate->set_value({position.x(), position.y()});
+	translate->set_values({position.x(), position.y()}, false);
+	if (release)
+		translate->emmit_signal();
 }
 

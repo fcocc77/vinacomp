@@ -51,9 +51,8 @@ protected:
     void mouseReleaseEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
 
-	void box_handler_changed(QRect box, QString name) override;
-	void box_handler_finished(QRect box, QString name) override;
-	void pos_handler_finished(QString name, QPoint position) override;
+	void box_handler_changed(QString name, QRect box, bool release) override;
+	void pos_handler_changed(QString name, QPoint position, bool release) override;
 
 
 signals:
