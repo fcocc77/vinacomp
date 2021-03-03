@@ -21,6 +21,7 @@ trim_panel::trim_panel(properties *__properties,
 	, knob_editor_visible(false)
 	, _knob_editor(nullptr)
 	, _node_gui(nullptr)
+	, is_maximize(true)
 {
 	knobs = new QMap<QString, knob*>;
 
@@ -31,7 +32,7 @@ trim_panel::trim_panel(properties *__properties,
 
 	// obtiene la lista de viewers en una lista de viewers pero con 'QWidget'
 	// para usarlos con static_cast y no tener que importar el viewer.h a cada knob
-	QList <QWidget*> *viewers_gl = static_cast<vinacomp*>(_vinacomp)->get_viewers_gl();
+	viewers_gl = static_cast<vinacomp*>(_vinacomp)->get_viewers_gl();
 	//
 
 	QJsonArray _knobs = nodes_loaded->get_effect(type).value("knobs").toArray();
@@ -229,6 +230,14 @@ void trim_panel::maximize(bool _maximize)
 {
     tabs->setVisible(_maximize);
     is_maximize = _maximize;
+
+	for (QWidget *vgl : *viewers_gl)
+		static_cast<viewer_gl*>(vgl)->handlers_update();
+}
+
+bool trim_panel::maximized() const
+{
+	return is_maximize;
 }
 
 void trim_panel::update_render()

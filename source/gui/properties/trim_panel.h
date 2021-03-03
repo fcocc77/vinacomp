@@ -53,9 +53,10 @@ private:
 	bool knob_editor_visible;
 	QPushButton *knob_editor_button;
 	QWidget *_vinacomp;
+	QList <QWidget *> *viewers_gl;
 
     tab_widget *tabs;
-    bool is_maximize = true;
+    bool is_maximize;
     properties *_properties;
 
 	QWidget *controls_tab;
@@ -95,6 +96,7 @@ public:
     void maximize(bool _maximize);
     void set_name(QString _name);
 	knob *get_knob(QString name) const;
+	bool maximized() const;
 };
 
 #endif //TRIM_PANEL_HPP

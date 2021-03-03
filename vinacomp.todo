@@ -50,6 +50,7 @@ gui__node:
 	☐ crear entrada de 'mask'
 	☐ crear dot y que se pueda insertar presionado control
 gui__knobs:
+	☐ slider: reacer el slider con QPainter para terner mas control de todo @today
 	☐ slider: mover el manejador en la posicion del click
 	☐ slider: cuando el valor sea mayor o menor al limite, cambiar la forma del manejador a una flecha
 	☐ slider: opcion para mantener el 'handler' siempre al centro independiente del valor minimo y maximo

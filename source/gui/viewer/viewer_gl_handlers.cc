@@ -12,18 +12,21 @@ void viewer_gl::handlers_update()
 	for (QWidget *_panel : panels)
 	{
 		trim_panel *panel = static_cast<trim_panel *>(_panel);
-		QString type = panel->get_type();
-
-		if (type == "crop")
-			knob_intd_update(panel->get_knob("box"));
-		else if (type == "position")
-			knob_intd_update(panel->get_knob("translate"));
-		else if (type == "cornel_pin")
+		if (panel->maximized())
 		{
-			knob_intd_update(panel->get_knob("to1"));
-			knob_intd_update(panel->get_knob("to2"));
-			knob_intd_update(panel->get_knob("to3"));
-			knob_intd_update(panel->get_knob("to4"));
+			QString type = panel->get_type();
+
+			if (type == "crop")
+				knob_intd_update(panel->get_knob("box"));
+			else if (type == "position")
+				knob_intd_update(panel->get_knob("translate"));
+			else if (type == "cornel_pin")
+			{
+				knob_intd_update(panel->get_knob("to1"));
+				knob_intd_update(panel->get_knob("to2"));
+				knob_intd_update(panel->get_knob("to3"));
+				knob_intd_update(panel->get_knob("to4"));
+			}
 		}
 	};
 	update();
