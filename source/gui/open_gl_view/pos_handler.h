@@ -17,7 +17,7 @@ private:
 public:
 	void pos_handler_draw();
 
-	void pos_handler_add(QString name, QPoint position);
+	void pos_handler_update(QString name, QPoint position);
 	void pos_handler_clear();
 
 protected:

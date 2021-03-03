@@ -27,10 +27,24 @@ knob::~knob()
 	delete animation_button;
 }
 
-void knob::set_names(QString _node_name, QString _param_name)
+void knob::set_names(QString _node_name, QString _node_type, QString _param_name)
 {
 	node_name = _node_name;
 	param_name = _param_name;
+	node_type = _node_type;
+}
+
+QString knob::get_node_type() const
+{
+	return node_type;
+}
+
+QString knob::get_full_name() const
+{
+	// Obtiene el nombre de la ruta completa del parametro
+	// 'node_name.param_name'
+
+	return node_name + "." + param_name;
 }
 
 void knob::set_viewers_gl(QList <QWidget *> *_viewers_gl)

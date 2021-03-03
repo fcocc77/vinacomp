@@ -10,7 +10,7 @@ void gl_view::pos_handler_draw()
 		draw_point(handler.position, color, size, smooth);
 }
 
-void gl_view::pos_handler_add(QString name, QPoint position)
+void gl_view::pos_handler_update(QString name, QPoint position)
 {
 	pos_handler_struct handler;
 	handler.name = name;

@@ -1,6 +1,6 @@
 #include <gl_view.h>
 
-void gl_view::box_handler_add(QString name, QRect box)
+void gl_view::box_handler_update(QString name, QRect box)
 {
 	handler_struct handler;
 

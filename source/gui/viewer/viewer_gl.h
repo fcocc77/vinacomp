@@ -31,7 +31,7 @@ private:
 	void draw_image();
 	void draw_handlers();
 
-	knob *get_knob(QString panel_name, QString knob_name);
+	knob *get_knob(QString full_name);
 	void fit_to_viewport();
 	void fit_to_percent(int percent);
 
@@ -40,7 +40,7 @@ public:
     ~viewer_gl();
 
 	void handlers_update();
-	void update_handler(QString node_name, QString param_name);
+	void knob_intd_update(knob *_knob);
 	void set_overlay(bool _overlay);
 	void isolate_channel(int channel);
 protected:

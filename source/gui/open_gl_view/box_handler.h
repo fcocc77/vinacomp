@@ -21,7 +21,7 @@ private:
 
 public:
 	void box_handlers_draw();
-	void box_handler_add(QString name, QRect box);
+	void box_handler_update(QString name, QRect box);
 	void box_handler_clear();
 
 protected:

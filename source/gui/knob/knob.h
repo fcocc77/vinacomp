@@ -17,6 +17,7 @@ private:
 protected:
 	QList <QWidget*> *viewers_gl;
 	QString node_name;
+	QString node_type;
 	QString param_name;
 
 public:
@@ -28,7 +29,9 @@ public:
 	void set_animatable(bool _animatable = true);
 	void set_visible(bool visible);
 	void set_viewers_gl(QList <QWidget *> *viewers_gl);
-	void set_names(QString node_name, QString param_name);
+	void set_names(QString node_name, QString _node_type, QString _param_name);
+	QString get_full_name() const;
+	QString get_node_type() const;
 
     QLabel *label_widget;
     QWidget *init_space;

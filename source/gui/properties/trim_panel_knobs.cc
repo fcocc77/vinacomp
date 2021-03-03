@@ -336,7 +336,7 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout, QList <QWid
 
 				if (parent->objectName() == "line_widget")
 				{
-					line_widget = static_cast<QWidget*>(parent);
+					line_widget = static_cast<QWidget*>(parent); // QObject -> QWidget
 					line_layout = static_cast<QHBoxLayout*>(line_widget->layout());
 				}
 				else
@@ -377,7 +377,7 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout, QList <QWid
 			_knob->set_animatable(animatable);
 			_knob->set_visible(visible);
 			_knob->set_viewers_gl(viewers_gl);
-			_knob->set_names(get_name(), name);
+			_knob->set_names(get_name(), get_type(), name);
         }
 
 		knobs->insert(name, _knob);

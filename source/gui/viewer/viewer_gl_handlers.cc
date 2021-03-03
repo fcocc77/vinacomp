@@ -12,31 +12,28 @@ void viewer_gl::handlers_update()
 	for (QWidget *_panel : panels)
 	{
 		trim_panel *panel = static_cast<trim_panel *>(_panel);
-
 		QString type = panel->get_type();
-		QString name = panel->get_name();
 
 		if (type == "crop")
-		{
-			knob_intd *box_knob = static_cast <knob_intd*>(panel->get_knob("box"));
-			auto values = box_knob->get_values();
-			box_handler_add( name, { values[0], values[1], values[2], values[3] });
-		}
-
+			knob_intd_update(panel->get_knob("box"));
 		else if (type == "position")
-		{
-			knob_intd *translate = static_cast <knob_intd*>(panel->get_knob("translate"));
-			auto values = translate->get_values();
-			pos_handler_add(name, {values[0], values[1]});
-		}
+			knob_intd_update(panel->get_knob("translate"));
 	};
 	update();
 }
 
-void viewer_gl::update_handler(QString node_name, QString param_name)
+void viewer_gl::knob_intd_update(knob *_knob)
 {
-	// actualizar el manejador especifico en gl_view
-	print(node_name + " : " + param_name);
+	// actualiza desde el knob integer dimension hacia el manejador
+
+	knob_intd *intd = static_cast <knob_intd*>(_knob);
+	auto values = intd->get_values();
+	QString type = intd->get_node_type();
+
+	if (type == "crop")
+		box_handler_update( intd->get_full_name(), { values[0], values[1], values[2], values[3] });
+	else if (type == "position")
+		pos_handler_update( intd->get_full_name(), {values[0], values[1]});
 }
 
 void viewer_gl::draw_handlers()
@@ -45,25 +42,31 @@ void viewer_gl::draw_handlers()
 	pos_handler_draw();
 }
 
-knob *viewer_gl::get_knob(QString panel_name, QString knob_name)
+knob *viewer_gl::get_knob(QString full_name)
 {
-	QWidget *_panel = static_cast<properties*>(_properties)->get_trim_panel(panel_name);
+	QStringList full = full_name.split(".");
+	QString node_name = full[0];
+	QString param_name = full[1];
+
+	QWidget *_panel = static_cast<properties*>(_properties)->get_trim_panel(node_name);
 	trim_panel *panel = static_cast<trim_panel *>(_panel);
 
-	return panel->get_knob(knob_name);
+	return panel->get_knob(param_name);
 }
 
-void viewer_gl::box_handler_changed(QString name, QRect box, bool release)
+void viewer_gl::box_handler_changed(QString full_name, QRect box, bool release)
 {
-	knob_intd *box_knob = static_cast<knob_intd*>(get_knob(name, "box"));
+	// actualiza desde el manejador hacia el knob
+
+	knob_intd *box_knob = static_cast<knob_intd*>(get_knob(full_name));
 	box_knob->set_values({box.x(), box.y(), box.width(), box.height()}, false);
 	if (release)
 		box_knob->emmit_signal();
 }
 
-void viewer_gl::pos_handler_changed(QString name, QPoint position, bool release)
+void viewer_gl::pos_handler_changed(QString full_name, QPoint position, bool release)
 {
-	knob_intd *translate = static_cast<knob_intd*>(get_knob(name, "translate"));
+	knob_intd *translate = static_cast<knob_intd*>(get_knob(full_name));
 	translate->set_values({position.x(), position.y()}, false);
 	if (release)
 		translate->emmit_signal();
