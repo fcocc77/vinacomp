@@ -130,7 +130,7 @@ void node::make_panel()
     //
 
 	// Viewer
-	vinacomp *__vinacomp = dynamic_cast<vinacomp *>(_vinacomp);
+	vinacomp *__vinacomp = static_cast<vinacomp *>(_vinacomp);
 	if (type == "viewer")
 	{
 		if (!_viewer)

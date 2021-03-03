@@ -8,7 +8,7 @@ void reformat_gui::changed(QString param_name)
 {
 	if (param_name == "type")
 	{
-		knob_choice *type = dynamic_cast<knob_choice*>(get_knob("type"));
+		knob_choice *type = static_cast<knob_choice*>(get_knob("type"));
 		int index = type->get_index();
 
 		knob *format_knob = get_knob("format");

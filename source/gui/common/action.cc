@@ -71,7 +71,7 @@ void action::uncheck_all()
 {
 	if (_tools)
 		if (_one_check_at_time)
-			dynamic_cast< tools * >(_tools)->set_checked_all(false);
+			static_cast< tools * >(_tools)->set_checked_all(false);
 
 }
 

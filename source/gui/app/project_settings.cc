@@ -26,7 +26,7 @@ project_settings::project_settings(
 		first_frame = values[0];
 		last_frame = values[1];
 
-		auto *viewers = dynamic_cast<vinacomp *>(_vinacomp)->get_viewers();
+		auto *viewers = static_cast<vinacomp *>(_vinacomp)->get_viewers();
 		for ( viewer *_viewer : *viewers )
 			_viewer->update_input_range();
 	});

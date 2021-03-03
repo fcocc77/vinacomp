@@ -235,7 +235,7 @@ void shuffle_gui::mousePressEvent(QMouseEvent *event)
 	{
 		if (out_conn->is_connected())
 		{
-			dragging_input = dynamic_cast<in_connector*>(out_conn->get_in_connector());
+			dragging_input = static_cast<in_connector*>(out_conn->get_in_connector());
 			dragging = true;
 			out_conn->disconnect();
 		}

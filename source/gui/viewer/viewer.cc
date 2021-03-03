@@ -99,7 +99,7 @@ void viewer::update_input_range()
 {
 	if (input_range_way == "global")
 	{
-		auto frame_range = dynamic_cast<vinacomp*>(_vinacomp)->get_project_settings()->get_frame_range();
+		auto frame_range = static_cast<vinacomp*>(_vinacomp)->get_project_settings()->get_frame_range();
 		set_frame_range(frame_range.first, frame_range.second);
 		global_range = true;
 	}

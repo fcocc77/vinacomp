@@ -19,7 +19,7 @@ void time_offset_node::set_offset(QJsonObject *params, int &frame, QString node_
 	frame -= offset;
 	if (reverse)
 	{
-		auto frame_range = dynamic_cast<renderer*>(_renderer)->get_frame_range(node_name);
+		auto frame_range = static_cast<renderer*>(_renderer)->get_frame_range(node_name);
 		frame = -frame + frame_range.first + frame_range.second + 1;
 	}
 }

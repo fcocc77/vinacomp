@@ -30,8 +30,8 @@ trim_panel::trim_panel(properties *__properties,
 	setup_ui();
 
 	// obtiene la lista de viewers en una lista de viewers pero con 'QWidget'
-	// para usarlos con dynamic_cast y no tener que importar el viewer.h a cada knob
-	QList <QWidget*> *viewers_gl = dynamic_cast<vinacomp*>(_vinacomp)->get_viewers_gl();
+	// para usarlos con static_cast y no tener que importar el viewer.h a cada knob
+	QList <QWidget*> *viewers_gl = static_cast<vinacomp*>(_vinacomp)->get_viewers_gl();
 	//
 
 	QJsonArray _knobs = nodes_loaded->get_effect(type).value("knobs").toArray();
@@ -233,5 +233,5 @@ void trim_panel::maximize(bool _maximize)
 
 void trim_panel::update_render()
 {
-	dynamic_cast<vinacomp*>(_vinacomp)->update_render_all_viewer();
+	static_cast<vinacomp*>(_vinacomp)->update_render_all_viewer();
 }

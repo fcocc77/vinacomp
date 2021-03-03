@@ -43,7 +43,7 @@ void knob_intd::update_handler()
 {
 	for (QWidget *vgl : *viewers_gl)
 	{
-		viewer_gl *_viewer_gl = dynamic_cast<viewer_gl*>(vgl);
+		viewer_gl *_viewer_gl = static_cast<viewer_gl*>(vgl);
 		_viewer_gl->update_handler(node_name, param_name);
 	}
 }

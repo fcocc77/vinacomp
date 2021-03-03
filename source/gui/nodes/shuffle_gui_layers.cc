@@ -56,7 +56,7 @@ out_connector::out_connector(node_gui *_parent, QString _layer, int _index, QStr
 	channel_label = new QLabel(label);
 	channel_label->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-	shuffle_gui *__parent = dynamic_cast<shuffle_gui*>(parent);
+	shuffle_gui *__parent = static_cast<shuffle_gui*>(parent);
 
 	black_button = new QPushButton();
 	connect(black_button, &QPushButton::clicked, this, [=]() {
@@ -109,7 +109,7 @@ void out_connector::disconnect()
 	if (!is_connected())
 		return;
 
-	in_connector *_in_conn = dynamic_cast<in_connector*>(in_conn);
+	in_connector *_in_conn = static_cast<in_connector*>(in_conn);
 	_in_conn->disconnect(this);
 
 	in_conn = nullptr;
@@ -158,7 +158,7 @@ int out_connector::get_state() const
 	else if (!is_connected())
 		return -1;
 
-	return dynamic_cast<in_connector*>(in_conn)->get_index();
+	return static_cast<in_connector*>(in_conn)->get_index();
 }
 
 in_connector::in_connector(QString _layer, int _index,  QString label, QColor _color)

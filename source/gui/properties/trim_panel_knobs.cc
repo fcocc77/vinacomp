@@ -336,8 +336,8 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout, QList <QWid
 
 				if (parent->objectName() == "line_widget")
 				{
-					line_widget = dynamic_cast<QWidget*>(parent);
-					line_layout = dynamic_cast<QHBoxLayout*>(line_widget->layout());
+					line_widget = static_cast<QWidget*>(parent);
+					line_layout = static_cast<QHBoxLayout*>(line_widget->layout());
 				}
 				else
 				{

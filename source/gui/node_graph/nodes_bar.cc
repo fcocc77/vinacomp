@@ -112,7 +112,7 @@ void menu::mouseMoveEvent(QMouseEvent *event)
     QPoint global_position = this->mapToGlobal(event->pos());
 
     QWidget *widget = qApp->widgetAt(global_position);
-    button *_button = dynamic_cast<button *>(widget);
+    button *_button = static_cast<button *>(widget);
     if (_button)
         if (_button->objectName() == "nodes_bar_button")
             if (_button != popup_button)

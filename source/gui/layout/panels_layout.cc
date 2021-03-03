@@ -61,7 +61,7 @@ panel *panels_layout::get_panel_from_cursor() const
         _panel = _panel->parentWidget();
     }
 
-    return dynamic_cast<panel *>(_panel);
+    return static_cast<panel *>(_panel);
 }
 
 panel *panels_layout::get_child_panel(QSplitter *splitter, QString _letter) const

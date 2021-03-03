@@ -76,14 +76,14 @@ node_link::~node_link()
 
 void node_link::refresh()
 {
-    node *_this_node = dynamic_cast<node *>(this_node);
+    node *_this_node = static_cast<node *>(this_node);
 
     QPointF src_pos, dst_pos;
 
     src_pos = _this_node->get_center_position();
     if (connected_node != NULL)
     {
-        node *_connected_node = dynamic_cast<node *>(connected_node);
+        node *_connected_node = static_cast<node *>(connected_node);
         dst_pos = _connected_node->get_center_position();
     }
     else
@@ -192,7 +192,7 @@ float node_link::arrow_refresh(QPointF point_a, QPointF point_b)
     //
 
     // calcular la distancia entre el centro del nodo hasta el borde
-    auto node_size = dynamic_cast<node *>(this_node)->get_size();
+    auto node_size = static_cast<node *>(this_node)->get_size();
     float node_width_x = node_size.width() / 2;
     float node_width_y = node_size.height() / 2;
 
@@ -262,12 +262,12 @@ void node_link::connect_node(QGraphicsItem *to_node)
     if (!to_node)
         return;
 
-    node *_to_node = dynamic_cast<node *>(to_node);
-    node *_this_node = dynamic_cast<node *>(this_node);
+    node *_to_node = static_cast<node *>(to_node);
+    node *_this_node = static_cast<node *>(this_node);
 
     if (connected_node)
     {
-        node *_connected_node = dynamic_cast<node *>(connected_node);
+        node *_connected_node = static_cast<node *>(connected_node);
         _connected_node->remove_output_node(_this_node);
     }
 
@@ -279,7 +279,7 @@ void node_link::connect_node(QGraphicsItem *to_node)
 
 	// añade la entrada al proyecto y actualiza el render
 	project->insert_input(_this_node->get_name(), _to_node->get_name(), index);
-	dynamic_cast<vinacomp *>(_vinacomp)->update_render_all_viewer();
+	static_cast<vinacomp *>(_vinacomp)->update_render_all_viewer();
 	//
 }
 
@@ -292,15 +292,15 @@ void node_link::disconnect_node()
 {
     if (connected_node)
     {
-        node *_connected_node = dynamic_cast<node *>(connected_node);
-        node *_this_node = dynamic_cast<node *>(this_node);
+        node *_connected_node = static_cast<node *>(connected_node);
+        node *_this_node = static_cast<node *>(this_node);
 
         _connected_node->remove_output_node(_this_node);
         _this_node->remove_input_node(_connected_node);
 
 		// borra la entrada del proyecto y actualiza el render
 		project->delete_input(_this_node->get_name(), index);
-		dynamic_cast<vinacomp *>(_vinacomp)->update_render_all_viewer();
+		static_cast<vinacomp *>(_vinacomp)->update_render_all_viewer();
 		//
     }
 
@@ -321,7 +321,7 @@ void node_link::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void node_link::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    node *_this_node = dynamic_cast<node *>(this_node);
+    node *_this_node = static_cast<node *>(this_node);
 
     dragging = true;
 

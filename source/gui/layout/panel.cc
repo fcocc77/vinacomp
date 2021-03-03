@@ -221,7 +221,7 @@ void panel::add_tab(QWidget *widget, QString name)
 
     // el tab que se va a agregar en este panel se borra en
     // todos los paneles, si es que esta en alguno.
-	auto panels = dynamic_cast<panels_layout*>(_panels_layout)->get_all_panels();
+	auto panels = static_cast<panels_layout*>(_panels_layout)->get_all_panels();
 
     for (panel *_panel : panels)
         _panel->tabs_list.removeOne(label);
@@ -238,7 +238,7 @@ void panel::add_viewer(viewer *_viewer)
 	add_tab(_viewer, _viewer->get_name());
 
 	// actualiza el munu de visores de todos los paneles
-	auto panels = dynamic_cast<panels_layout*>(_panels_layout)->get_all_panels();
+	auto panels = static_cast<panels_layout*>(_panels_layout)->get_all_panels();
     for (panel *_panel : panels)
 		_panel->update_viewers_menu();
 	//
@@ -260,7 +260,7 @@ void panel::update_viewers_menu()
 
 QList <viewer*> *panel::get_viewers() const
 {
-	return dynamic_cast<vinacomp *>(_vinacomp)->get_viewers();
+	return static_cast<vinacomp *>(_vinacomp)->get_viewers();
 }
 
 QSplitter *panel::get_splitter() const

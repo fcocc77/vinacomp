@@ -31,7 +31,7 @@ tab::tab(
         close_button->set_icon("close", 15);
 
         connect(close_button, &QPushButton::clicked, this, [this] {
-            dynamic_cast<tab_widget *>(_tab_widget)->close_tab(name);
+            static_cast<tab_widget *>(_tab_widget)->close_tab(name);
         });
 
         layout->addWidget(close_button);
@@ -77,5 +77,5 @@ void tab::set_checked(bool __checked)
 
 void tab::mousePressEvent(QMouseEvent *event)
 {
-    dynamic_cast<tab_widget *>(_tab_widget)->set_tab(name);
+    static_cast<tab_widget *>(_tab_widget)->set_tab(name);
 }

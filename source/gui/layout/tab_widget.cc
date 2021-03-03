@@ -139,7 +139,7 @@ void tab_widget::add_tab(QWidget *widget, QString name)
     auto *parent = widget->parent();
     if (parent)
     {
-        tab_widget *old_tab_widget = dynamic_cast<tab_widget *>(parent->parent());
+        tab_widget *old_tab_widget = static_cast<tab_widget *>(parent->parent());
         if (old_tab_widget)
             old_tab_widget->close_tab(name);
     }

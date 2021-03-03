@@ -7,7 +7,7 @@ viewer_gl::viewer_gl(render_data *_rdata, QWidget *_vinacomp)
 	, fitted(true)
 	, overlay(true)
 {
-	_properties = dynamic_cast< vinacomp * >(_vinacomp)->get_properties();
+	_properties = static_cast< vinacomp * >(_vinacomp)->get_properties();
 
     center_viewer = new action("Center Image", "F", "center");
 	center_viewer->connect_to(this, [=]() { fit_to_viewport(); });

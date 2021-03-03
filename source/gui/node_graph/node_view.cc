@@ -145,7 +145,7 @@ node *node_view::create_node(
         position = this->mapToScene(origin);
     }
 
-	project_struct *project = dynamic_cast<vinacomp *>(_vinacomp)->get_project();
+	project_struct *project = static_cast<vinacomp *>(_vinacomp)->get_project();
 
     node *_node = new node(
         scene,

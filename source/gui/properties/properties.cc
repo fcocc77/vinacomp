@@ -89,7 +89,7 @@ void properties::minimize_all_panels()
     is_maximize = !is_maximize;
     for (QWidget *widget : get_trim_panels())
     {
-        trim_panel *_trim_panel = dynamic_cast<trim_panel *>(widget);
+        trim_panel *_trim_panel = static_cast<trim_panel *>(widget);
         _trim_panel->maximize(is_maximize);
     }
 }
@@ -98,7 +98,7 @@ void properties::close_all()
 {
     for (QWidget *widget : get_trim_panels())
     {
-        trim_panel *_trim_panel = dynamic_cast<trim_panel *>(widget);
+        trim_panel *_trim_panel = static_cast<trim_panel *>(widget);
         close_trim_panel(_trim_panel->get_name());
     }
 }
@@ -106,7 +106,7 @@ void properties::close_all()
 void properties::close_trim_panel(QString panel_name)
 {
     QWidget *panel = get_trim_panel(panel_name);
-    trim_panel *_trim_panel = dynamic_cast<trim_panel *>(panel);
+    trim_panel *_trim_panel = static_cast<trim_panel *>(panel);
 
     if (!_trim_panel)
         return;
@@ -123,7 +123,7 @@ QWidget *properties::get_trim_panel(QString panel_name)
     // si no esta devuelve un NULL.
     for (QWidget *widget : get_trim_panels())
     {
-        trim_panel *_trim_panel = dynamic_cast<trim_panel *>(widget);
+        trim_panel *_trim_panel = static_cast<trim_panel *>(widget);
         if (_trim_panel)
             if (_trim_panel->get_name() == panel_name)
                 return widget;
@@ -138,7 +138,7 @@ QList<QWidget *> properties::get_trim_panels()
     for (int i = 0; i < trim_panels_layout->count(); i++)
     {
         QWidget *widget = trim_panels_layout->itemAt(i)->widget();
-        trim_panel *_trim_panel = dynamic_cast<trim_panel *>(widget);
+        trim_panel *_trim_panel = static_cast<trim_panel *>(widget);
         if (_trim_panel)
             panels.push_back(_trim_panel);
     }
@@ -157,7 +157,7 @@ void properties::limit_panels(int amount)
         if (layout_item)
         {
             QWidget *widget = layout_item->widget();
-            trim_panel *first_panel = dynamic_cast<trim_panel *>(widget);
+            trim_panel *first_panel = static_cast<trim_panel *>(widget);
 
             if (first_panel)
                 close_trim_panel(first_panel->get_name());
@@ -169,7 +169,7 @@ void properties::limit_panels(int amount)
 
 void properties::update_viewers_handlers()
 {
-	auto *viewers = dynamic_cast< vinacomp *>(_vinacomp)->get_viewers();
+	auto *viewers = static_cast< vinacomp *>(_vinacomp)->get_viewers();
 	for (viewer *_viewer : *viewers)
 		_viewer->get_viewer_gl()->handlers_update();
 }

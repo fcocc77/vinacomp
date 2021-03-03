@@ -9,7 +9,7 @@
 
     void py_nodes::init_module(QWidget *__node_graph)
     {
-        _node_graph = dynamic_cast<node_graph *>(__node_graph);
+        _node_graph = static_cast<node_graph *>(__node_graph);
         init_methods();
     }
 #elif ENGINE
