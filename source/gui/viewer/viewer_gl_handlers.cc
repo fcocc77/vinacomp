@@ -18,6 +18,13 @@ void viewer_gl::handlers_update()
 			knob_intd_update(panel->get_knob("box"));
 		else if (type == "position")
 			knob_intd_update(panel->get_knob("translate"));
+		else if (type == "cornel_pin")
+		{
+			knob_intd_update(panel->get_knob("to1"));
+			knob_intd_update(panel->get_knob("to2"));
+			knob_intd_update(panel->get_knob("to3"));
+			knob_intd_update(panel->get_knob("to4"));
+		}
 	};
 	update();
 }
@@ -32,7 +39,7 @@ void viewer_gl::knob_intd_update(knob *_knob)
 
 	if (type == "crop")
 		box_handler_update( intd->get_full_name(), { values[0], values[1], values[2], values[3] });
-	else if (type == "position")
+	else if (type == "position" || type == "cornel_pin")
 		pos_handler_update( intd->get_full_name(), {values[0], values[1]});
 }
 
