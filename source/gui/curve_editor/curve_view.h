@@ -47,7 +47,6 @@ private:
     //
 
     // Paint
-    void draw_circle();
     void draw_grid();
     void draw_coordinate_numbers();
     void draw_curve();

@@ -16,6 +16,7 @@ class gl_view : public QOpenGLWidget,
 // Manejadores
 #include <box_handler.h>
 #include <pos_handler.h>
+#include <transform_handler.h>
 //
 
 private:
@@ -43,6 +44,7 @@ public:
     void draw_line(QPointF src, QPointF dst, QColor color, float width = 1);
     void draw_dashed_line(QLineF line, QColor color, int stipple);
     void draw_triangle(QPointF position, float size, QColor color);
+    void draw_circle();
     //
     //
 
@@ -69,6 +71,7 @@ public:
     void set_transform(QPointF _translate, QPointF _scale);
     void set_ortho(float left, float right, float bottom, float top);
     QPointF rotate_point(QPointF point, QPointF anchor_point, float angle, bool keep_aspect = false) const;
+	QPointF arc_point(QPointF anchor_point, int ratio, float angle);
     float get_angle_two_points(QPointF a, QPointF b) const;
 
 

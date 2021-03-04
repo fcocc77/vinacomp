@@ -8,6 +8,7 @@ void viewer_gl::handlers_update()
 
 	box_handler_clear();
 	pos_handler_clear();
+	tf_handler_clear();
 
 	for (QWidget *_panel : panels)
 	{
@@ -27,6 +28,8 @@ void viewer_gl::handlers_update()
 				knob_intd_update(panel->get_knob("to3"));
 				knob_intd_update(panel->get_knob("to4"));
 			}
+			else if (type == "transform")
+				tf_handler_update("test_name", {0, 0});
 		}
 	};
 	update();
@@ -50,6 +53,7 @@ void viewer_gl::draw_handlers()
 {
 	box_handlers_draw();
 	pos_handler_draw();
+	tf_handler_draw();
 }
 
 knob *viewer_gl::get_knob(QString full_name)
