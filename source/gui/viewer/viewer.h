@@ -67,6 +67,7 @@ private:
 	// Acciones Control
 	action *pause_action;
 	action *out_frame_action;
+	action *handler_snap_action;
 	action *render_area_action;
 	action *proxy_action;
 	action *multi_lines_action;

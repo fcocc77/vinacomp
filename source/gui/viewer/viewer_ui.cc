@@ -87,6 +87,12 @@ QWidget *viewer::control_setup_ui()
 
 	bar->add_separator();
 
+	handler_snap_action = new action("Handler Snap", "handler_snap", "magnet");
+	handler_snap_action->set_checkable();
+	handler_snap_action->connect_to(this, [](){
+	});
+	bar->add_action(handler_snap_action);
+
 	out_frame_action = new action("Show pixels out of frame", "out_frame", "out_frame");
 	out_frame_action->set_checkable();
 	out_frame_action->connect_to(this, [](){
