@@ -18,6 +18,7 @@ void gl_view::mousePressEvent(QMouseEvent *event)
 
 	box_handler_press(click_position);
 	pos_handler_press(click_position);
+	tf_handler_press(click_position);
 
     this->setFocus();
 
@@ -58,6 +59,7 @@ void gl_view::mouseReleaseEvent(QMouseEvent *event)
 
 	box_handler_release(event->pos());
 	pos_handler_release(event->pos());
+	tf_handler_release(event->pos());
 
     update();
 }
@@ -123,6 +125,7 @@ void gl_view::mouseMoveEvent(QMouseEvent *event)
 	{
 		box_handler_move(event->pos());
 		pos_handler_move(event->pos());
+		tf_handler_move(event->pos());
 	}
 
     cursor_move_event(event->pos());

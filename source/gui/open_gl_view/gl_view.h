@@ -58,6 +58,7 @@ public:
 
     void aa_enable(bool enable);
     bool is_cursor_above(QPoint cursor, QPointF point, QPointF point2 = {}) const;
+	bool cursor_above_line(QPoint cursor, QLineF line) const;
     QPointF get_coordinate(QPoint cursor_position) const;
     QPointF get_position(QPointF coordinate) const;
     QPointF get_coords(QPoint mouse_position) const;

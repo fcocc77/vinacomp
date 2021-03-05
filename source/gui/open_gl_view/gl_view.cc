@@ -143,6 +143,24 @@ bool gl_view::is_cursor_above(QPoint cursor_position, QPointF point, QPointF poi
     return false;
 }
 
+bool gl_view::cursor_above_line(QPoint cursor, QLineF line) const
+{
+    int tolerance = 2;
+
+	QPointF p1 = get_position(line.p1());
+	QPointF p2 = get_position(line.p2());
+
+	float distance_p1 = qt::distance_points(cursor, p1);
+	float distance_p2 = qt::distance_points(cursor, p2);
+
+	float distance = distance_p1 + distance_p2;
+	float line_length = qt::distance_points(p1, p2);
+
+	float diff = abs(distance - line_length);
+
+	return diff < tolerance;
+}
+
 QPointF gl_view::get_scale() const
 {
     return scale;

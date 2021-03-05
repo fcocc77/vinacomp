@@ -5,6 +5,7 @@ private:
 		QString name;
 		QPoint position;
 		bool moving;
+		QLineF rotate_handler;
 	};
 
 	QMap <QString, tf_handler_struct> tf_handlers;
@@ -13,6 +14,7 @@ private:
 	void tf_handler_press(QPoint cursor_position);
 	void tf_handler_release(QPoint cursor_position);
 	void tf_handler_move(QPoint cursor_position);
+	QString tf_get_action(QPoint cursor_position, tf_handler_struct &handler);
 
 public:
 	void tf_handler_draw();
