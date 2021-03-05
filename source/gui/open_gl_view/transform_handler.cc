@@ -6,27 +6,25 @@ void gl_view::tf_handler_draw()
     int size = 6;
     int smooth = false;
 
-	int angle = 45;
-	QPoint translate = { 200, 200 };
-	int handler_ratio = 100;
-
-
-	QPointF translate_viewport = get_position(translate);
-
-	QPointF skew_h1 = arc_point({0, 0}, handler_ratio, angle + 180);
-	QPointF skew_h2 = arc_point({0, 0}, handler_ratio, angle);
-	QPointF skew_v1 = arc_point({0, 0}, handler_ratio, angle - 90);
-	QPointF skew_v2 = arc_point({0, 0}, handler_ratio, angle + 90);
-
-	skew_h1 = get_coordsf(skew_h1 + translate_viewport);
-	skew_h2 = get_coordsf(skew_h2 + translate_viewport);
-	skew_v1 = get_coordsf(skew_v1 + translate_viewport);
-	skew_v2 = get_coordsf(skew_v2 + translate_viewport);
+	int handler_ratio = 50;
 
 	for (auto &handler : tf_handlers)
 	{
+		float angle = handler.rotate;
+		QPointF translate_viewport = get_position(handler.translate);
+
+		QPointF skew_h1 = arc_point({0, 0}, handler_ratio, angle + 180);
+		QPointF skew_h2 = arc_point({0, 0}, handler_ratio, angle);
+		QPointF skew_v1 = arc_point({0, 0}, handler_ratio, angle - 90);
+		QPointF skew_v2 = arc_point({0, 0}, handler_ratio, angle + 90);
+
+		skew_h1 = get_coordsf(skew_h1 + translate_viewport);
+		skew_h2 = get_coordsf(skew_h2 + translate_viewport);
+		skew_v1 = get_coordsf(skew_v1 + translate_viewport);
+		skew_v2 = get_coordsf(skew_v2 + translate_viewport);
+
 		QPointF rotate_p1 = arc_point({0, 0}, handler_ratio, angle + 180);
-		QPointF rotate_p2 = arc_point({0, 0}, handler_ratio + 100, angle);
+		QPointF rotate_p2 = arc_point({0, 0}, handler_ratio + handler_ratio / 2, angle);
 
 		handler.rotate_handler = {
 			get_coordsf(rotate_p1 + translate_viewport),
@@ -37,6 +35,7 @@ void gl_view::tf_handler_draw()
 		draw_line(skew_v1, skew_v2, color);
 
 		draw_line(handler.rotate_handler.p1(), handler.rotate_handler.p2(), color);
+		draw_circle(handler.translate, 40);
 	}
 }
 
@@ -44,8 +43,9 @@ void gl_view::tf_handler_update(QString name, QPoint position)
 {
 	tf_handler_struct handler;
 	handler.name = name;
-	handler.position = position;
-	handler.moving = false;
+	handler.translate = {300, 300};
+	handler.rotate = 0;
+	handler.transforming = false;
 
 	tf_handlers.insert(name, handler);
 }
@@ -57,7 +57,18 @@ void gl_view::tf_handler_clear()
 
 void gl_view::tf_handler_translate(QPoint cursor_position, tf_handler_struct &handler)
 {
-	handler.position = get_coords(cursor_position).toPoint();
+}
+
+void gl_view::tf_handler_rotate(QPoint cursor_position, tf_handler_struct &handler)
+{
+	QPointF translate = get_position(handler.translate);
+
+    // calcular la rotacion a partir de 2 puntos
+    double delta_y = (translate.y() - cursor_position.y());
+    double delta_x = (cursor_position.x() - translate.x());
+
+    float rotate = atan2(delta_x, delta_y) * 180 / M_PI;
+	handler.rotate = rotate - 90;
 }
 
 QString gl_view::tf_get_action(QPoint cursor_position, tf_handler_struct &handler)
@@ -77,7 +88,8 @@ void gl_view::tf_handler_press(QPoint cursor_position)
 		QString action = tf_get_action(cursor_position, handler);
 		if ( !action.isEmpty() )
 		{
-			handler.moving = true;
+			handler.transforming = true;
+			handler.action = action;
 			break;
 		}
 	}
@@ -87,13 +99,14 @@ void gl_view::tf_handler_release(QPoint cursor_position)
 {
 	for (auto &handler : tf_handlers)
 	{
-		if (handler.moving)
+		if (handler.transforming)
 		{
 			tf_handler_translate(cursor_position, handler);
-			tf_handler_changed(handler.name, handler.position, true);
+			tf_handler_changed(handler.name, handler.translate, true);
 		}
 
-		handler.moving = false;
+		handler.transforming = false;
+		handler.action = "";
 	}
 }
 
@@ -106,12 +119,16 @@ void gl_view::tf_handler_move(QPoint cursor_position)
 		if (!over) over = !action.isEmpty();
 
 		if ( action == "rotate" )
-			this->setCursor(Qt::SizeBDiagCursor);
+			this->setCursor(Qt::CrossCursor);
 
-		if (handler.moving)
+
+		if ( handler.action == "rotate" )
+			tf_handler_rotate(cursor_position, handler);
+
+		if (handler.transforming)
 		{
-			tf_handler_translate(cursor_position, handler);
-			tf_handler_changed(handler.name, handler.position);
+			// tf_handler_translate(cursor_position, handler);
+			tf_handler_changed(handler.name, handler.translate);
 			update();
 		}
 	}

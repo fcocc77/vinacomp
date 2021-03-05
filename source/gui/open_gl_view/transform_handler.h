@@ -3,13 +3,16 @@ private:
 	struct tf_handler_struct
 	{
 		QString name;
-		QPoint position;
-		bool moving;
+		bool transforming;
+		QPoint translate;
+		float rotate;
 		QLineF rotate_handler;
+		QString action;
 	};
 
 	QMap <QString, tf_handler_struct> tf_handlers;
 	void tf_handler_translate(QPoint cursor_position, tf_handler_struct &handler);
+	void tf_handler_rotate(QPoint cursor_position, tf_handler_struct &handler);
 
 	void tf_handler_press(QPoint cursor_position);
 	void tf_handler_release(QPoint cursor_position);

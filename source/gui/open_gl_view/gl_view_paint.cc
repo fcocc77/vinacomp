@@ -189,10 +189,9 @@ void gl_view::draw_triangle(QPointF position, float size, QColor color)
     glEnd();
 }
 
-void gl_view::draw_circle()
+void gl_view::draw_circle(QPointF anchor_point, int ratio)
 {
     int num_segments = 100;
-    float radio = 100;
 
     glBegin(GL_LINE_STRIP);
     glColor4f(1, 0, 0, 0);
@@ -201,7 +200,7 @@ void gl_view::draw_circle()
     float angle = 0;
     for (int i = 0; i <= num_segments; i++)
     {
-        QPointF point = rotate_point({radio, 0}, {0.0, 0.0}, angle);
+		QPointF point = arc_point(anchor_point, ratio, angle);
         glVertex2f(point.x(), point.y());
 
         angle += segment;

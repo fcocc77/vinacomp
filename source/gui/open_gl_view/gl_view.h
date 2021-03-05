@@ -44,7 +44,7 @@ public:
     void draw_line(QPointF src, QPointF dst, QColor color, float width = 1);
     void draw_dashed_line(QLineF line, QColor color, int stipple);
     void draw_triangle(QPointF position, float size, QColor color);
-    void draw_circle();
+    void draw_circle(QPointF anchor_point, int ratio);
     //
     //
 
