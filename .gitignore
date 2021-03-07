@@ -17,3 +17,4 @@ bin/*
 session.vim
 resources/images/
 gdb.txt
+tags
