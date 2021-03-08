@@ -39,7 +39,7 @@ void gl_view::tf_handler_draw()
 	}
 }
 
-void gl_view::tf_handler_update(QString name, QPoint position)
+void gl_view::tf_handler_add(QString name)
 {
 	tf_handler_struct handler;
 	handler.name = name;
@@ -48,6 +48,15 @@ void gl_view::tf_handler_update(QString name, QPoint position)
 	handler.transforming = false;
 
 	tf_handlers.insert(name, handler);
+}
+
+void gl_view::tf_handler_rotate_update(QString name, float rotate)
+{
+	if (!tf_handlers.contains(name))
+		tf_handler_add(name);
+
+	tf_handler_struct &handler = tf_handlers[name];
+	handler.rotate = rotate;
 }
 
 void gl_view::tf_handler_clear()

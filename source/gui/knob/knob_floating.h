@@ -19,6 +19,7 @@ private:
     QString label;
 	slider *_slider;
 	QLineEdit *value_edit;
+	bool emmit_signal;
 public:
     knob_floating(
 		float min,
@@ -27,7 +28,7 @@ public:
 	);
     ~knob_floating();
 
-	void set_value(float value);
+	void set_value(float value, bool _emmit_signal = true);
 	float get_value() const;
 signals:
 	void changed(float value);

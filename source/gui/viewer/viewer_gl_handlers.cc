@@ -29,7 +29,9 @@ void viewer_gl::handlers_update()
 				knob_signal(panel->get_knob("to4"));
 			}
 			else if (type == "transform")
-				tf_handler_update(panel->get_name(), {0, 0});
+			{
+				knob_signal(panel->get_knob("rotate"));
+			}
 		}
 	};
 	update();
@@ -38,6 +40,8 @@ void viewer_gl::handlers_update()
 void viewer_gl::knob_signal(knob *_knob)
 {
 	// actualiza desde el knob hacia el manejador
+	QString param_name = _knob->get_name();
+	QString node_name = _knob->get_node_name();
 	QString type = _knob->get_node_type();
 	QString name = _knob->get_full_name();
 
@@ -48,7 +52,8 @@ void viewer_gl::knob_signal(knob *_knob)
 	{
 		if (floating)
 		{
-			print(floating->get_value());
+			if (param_name == "rotate")
+				tf_handler_rotate_update(node_name, floating->get_value());
 		}
 	}
 
@@ -117,8 +122,8 @@ void viewer_gl::pos_handler_changed(pos_handler_struct handler, bool release)
 void viewer_gl::tf_handler_changed(tf_handler_struct handler, bool release)
 {
 	knob_floating *rotate_knob = static_cast<knob_floating*>(get_knob(handler.name, "rotate"));
-	rotate_knob->set_value(handler.rotate);
+	rotate_knob->set_value(handler.rotate, false);
 	if (release)
-		print(handler.rotate);
+		rotate_knob->set_value(handler.rotate);
 }
 
