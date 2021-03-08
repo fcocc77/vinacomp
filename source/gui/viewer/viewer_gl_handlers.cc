@@ -34,6 +34,8 @@ void viewer_gl::handlers_update()
 			}
 		}
 	};
+
+	udpate();
 }
 
 void viewer_gl::knob_signal(knob *_knob)
