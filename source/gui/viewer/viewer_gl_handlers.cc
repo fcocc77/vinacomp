@@ -34,7 +34,6 @@ void viewer_gl::handlers_update()
 			}
 		}
 	};
-	update();
 }
 
 void viewer_gl::knob_signal(knob *_knob)
@@ -47,13 +46,16 @@ void viewer_gl::knob_signal(knob *_knob)
 
 	knob_floating *floating = dynamic_cast<knob_floating*>(_knob);
 	knob_intd *intd = dynamic_cast <knob_intd*>(_knob);
+	knob_floatd *floatd = dynamic_cast <knob_floatd*>(_knob);
 
 	if (type == "transform")
 	{
-		if (floating)
+		if (param_name == "rotate" && floating)
+			tf_handler_rotate_update(node_name, floating->get_value());
+		else if (param_name == "translate" && floatd)
 		{
-			if (param_name == "rotate")
-				tf_handler_rotate_update(node_name, floating->get_value());
+			auto values = floatd->get_values();
+			tf_handler_translate_update(node_name, {values[0], values[1]});
 		}
 	}
 
@@ -72,6 +74,8 @@ void viewer_gl::knob_signal(knob *_knob)
 		auto values = intd->get_values();
 		pos_handler_update(name, type, {values[0], values[1]});
 	}
+
+	update();
 }
 
 void viewer_gl::draw_handlers()
@@ -122,8 +126,9 @@ void viewer_gl::pos_handler_changed(pos_handler_struct handler, bool release)
 void viewer_gl::tf_handler_changed(tf_handler_struct handler, bool release)
 {
 	knob_floating *rotate_knob = static_cast<knob_floating*>(get_knob(handler.name, "rotate"));
-	rotate_knob->set_value(handler.rotate, false);
-	if (release)
-		rotate_knob->set_value(handler.rotate);
+	knob_floatd *translate_knob = static_cast<knob_floatd*>(get_knob(handler.name, "translate"));
+
+	rotate_knob->set_value(handler.rotate, release);
+	translate_knob->set_values({handler.translate.x(), handler.translate.y()}, release);
 }
 

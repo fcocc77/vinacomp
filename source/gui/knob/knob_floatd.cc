@@ -1,6 +1,7 @@
 #include <knob_floatd.h>
 
 knob_floatd::knob_floatd(QList <float> default_values)
+	: emmit_signal(true)
 {
 	this->setObjectName("knob_dimensions");
     QHBoxLayout *layout = new QHBoxLayout(this);
@@ -20,7 +21,9 @@ knob_floatd::knob_floatd(QList <float> default_values)
 			for ( int i = 0; i < dimensions; i++ )
 				values.push_back(get_value(i));
 
-			changed(values); // Signal
+			update_handler();
+			if (emmit_signal)
+				changed(values); // Signal
 		});
 
 		dimension_edit->setMaximumWidth(50);
@@ -45,6 +48,15 @@ float knob_floatd::get_value(int dimension) const
 	return dimensions_edits.value(dimension)->text().toDouble();
 }
 
+QList <float> knob_floatd::get_values() const
+{
+	QList <float> values;
+	for (int i = 0; i < dimensions_edits.count(); i++)
+		values.push_back( dimensions_edits.value(i)->text().toInt() );
+
+	return values;
+}
+
 void knob_floatd::set_value(float value, int dimension)
 {
 	if (dimension >= dimensions_edits.count())
@@ -53,10 +65,13 @@ void knob_floatd::set_value(float value, int dimension)
 	dimensions_edits.value(dimension)->setText(QString::number(value));
 }
 
-void knob_floatd::set_value(QList <float> values)
+void knob_floatd::set_values(QList <float> values, bool _emmit_signal)
 {
+	emmit_signal = _emmit_signal;
+
 	for (int i = 0; i < dimensions_edits.count(); i++)
 		set_value(values.value(i), i);
 
-	changed(values); // Signal
+	if (emmit_signal)
+		changed(values); // Signal
 }

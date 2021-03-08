@@ -43,11 +43,20 @@ void gl_view::tf_handler_add(QString name)
 {
 	tf_handler_struct handler;
 	handler.name = name;
-	handler.translate = {300, 300};
+	handler.translate = {0, 0};
 	handler.rotate = 0;
 	handler.transforming = false;
 
 	tf_handlers.insert(name, handler);
+}
+
+void gl_view::tf_handler_translate_update(QString name, QPoint translate)
+{
+	if (!tf_handlers.contains(name))
+		tf_handler_add(name);
+
+	tf_handler_struct &handler = tf_handlers[name];
+	handler.translate = translate;
 }
 
 void gl_view::tf_handler_rotate_update(QString name, float rotate)
