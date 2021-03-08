@@ -10,10 +10,11 @@ void gl_view::pos_handler_draw()
 		draw_point(handler.position, color, size, smooth);
 }
 
-void gl_view::pos_handler_update(QString name, QPoint position)
+void gl_view::pos_handler_update(QString name, QString type, QPoint position)
 {
 	pos_handler_struct handler;
 	handler.name = name;
+	handler.type = type;
 	handler.position = position;
 	handler.moving = false;
 
@@ -49,7 +50,7 @@ void gl_view::pos_handler_release(QPoint cursor_position)
 		if (handler.moving)
 		{
 			pos_handler_translate(cursor_position, handler);
-			pos_handler_changed(handler.name, handler.position, true);
+			pos_handler_changed(handler, true);
 		}
 
 		handler.moving = false;
@@ -63,10 +64,10 @@ void gl_view::pos_handler_move(QPoint cursor_position)
 		if (handler.moving)
 		{
 			pos_handler_translate(cursor_position, handler);
-			pos_handler_changed(handler.name, handler.position);
+			pos_handler_changed(handler);
 			update();
 		}
 	}
 }
 
-void gl_view::pos_handler_changed(QString name, QPoint position, bool release){}
+void gl_view::pos_handler_changed(pos_handler_struct handler, bool release){}

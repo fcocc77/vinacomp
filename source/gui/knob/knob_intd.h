@@ -18,7 +18,6 @@ private:
 	QList < QLineEdit * > dimensions_edits;
 	QList <int> values;
 
-	void update_handler();
 public:
     knob_intd(QList <int> default_values = {0, 1});
     ~knob_intd();

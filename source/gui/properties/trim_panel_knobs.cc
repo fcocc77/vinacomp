@@ -377,7 +377,7 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout, QList <QWid
 			_knob->set_animatable(animatable);
 			_knob->set_visible(visible);
 			_knob->set_viewers_gl(viewers_gl);
-			_knob->set_names(get_name(), get_type(), name);
+			_knob->set_names(get_name(), get_type(), name, type);
         }
 
 		knobs->insert(name, _knob);

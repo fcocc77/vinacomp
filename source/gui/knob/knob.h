@@ -14,11 +14,15 @@ private:
 	QHBoxLayout *knob_layout;
 	QPushButton *animation_button;
 
-protected:
 	QList <QWidget*> *viewers_gl;
+
+protected:
 	QString node_name;
 	QString node_type;
-	QString param_name;
+	QString name;
+	QString type;
+
+	void update_handler();
 
 public:
     knob();
@@ -29,9 +33,12 @@ public:
 	void set_animatable(bool _animatable = true);
 	void set_visible(bool visible);
 	void set_viewers_gl(QList <QWidget *> *viewers_gl);
-	void set_names(QString node_name, QString _node_type, QString _param_name);
+	void set_names(QString node_name, QString _node_type, QString _param_name, QString _param_type);
 	QString get_full_name() const;
 	QString get_node_type() const;
+	QString get_node_name() const;
+	QString get_type() const;
+	QString get_name() const;
 
     QLabel *label_widget;
     QWidget *init_space;

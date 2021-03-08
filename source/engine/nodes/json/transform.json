@@ -13,7 +13,7 @@
         },
         {
             "name": "rotate",
-            "type": "integer",
+            "type": "floating",
             "label": "Rotate",
             "tooltip": "Rotate",
             "minimum": -180,

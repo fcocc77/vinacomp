@@ -1,11 +1,12 @@
 #include <gl_view.h>
 
-void gl_view::box_handler_update(QString name, QRect box)
+void gl_view::box_handler_update(QString name, QString type, QRect box)
 {
-	handler_struct handler;
+	box_handler_struct handler;
 
 	handler.transforming = false;
 	handler.name = name;
+	handler.type = type;
 	handler.box.setLine(
 		box.x(), box.y(),
 		box.x() + box.width(),
@@ -85,7 +86,7 @@ void gl_view::box_handler_draw(QLineF box_handler)
     //
 }
 
-QString gl_view::get_transform_action(QPoint cursor_position, handler_struct &handler)
+QString gl_view::get_transform_action(QPoint cursor_position, box_handler_struct &handler)
 {
     // Obtiene la accion del 'box_handler' a partir del cursor del mouse
     bool is_above = false;
@@ -169,7 +170,7 @@ QString gl_view::get_transform_action(QPoint cursor_position, handler_struct &ha
     return "";
 }
 
-void gl_view::box_handler_transform(QPoint cursor_position, handler_struct &handler)
+void gl_view::box_handler_transform(QPoint cursor_position, box_handler_struct &handler)
 {
     // return;
     QString action = handler.resize_current_action;
@@ -271,7 +272,7 @@ void gl_view::box_handler_release(QPoint cursor_position)
 				handler.box.y2() - handler.box.y1()
 			);
 
-			box_handler_changed(handler.name, box, true);
+			box_handler_changed(handler.name, handler.type, box, true);
 		}
 
 		handler.transforming = false;
@@ -308,7 +309,7 @@ void gl_view::box_handler_move(QPoint cursor_position)
 				handler.box.y2() - handler.box.y1()
 			);
 
-			box_handler_changed(handler.name, box);
+			box_handler_changed(handler.name, handler.type, box);
 			transforming = true;
 		}
 	}
@@ -319,4 +320,4 @@ void gl_view::box_handler_move(QPoint cursor_position)
 		update();
 }
 
-void gl_view::box_handler_changed(QString name, QRect box, bool release) {}
+void gl_view::box_handler_changed(QString name, QString type, QRect box, bool release) {}

@@ -19,6 +19,7 @@ knob_floating::knob_floating(float min, float max, float default_value)
 	_slider = new slider(min, max);
 	connect(_slider, &slider::moved, this, [=](float value){
 		value_edit->setText(QString::number(value));
+		update_handler();
 		changed(value); // Signal
 	});
 

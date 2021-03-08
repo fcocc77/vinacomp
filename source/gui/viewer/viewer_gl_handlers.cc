@@ -18,35 +18,55 @@ void viewer_gl::handlers_update()
 			QString type = panel->get_type();
 
 			if (type == "crop")
-				knob_intd_update(panel->get_knob("box"));
+				knob_signal(panel->get_knob("box"));
 			else if (type == "position")
-				knob_intd_update(panel->get_knob("translate"));
+				knob_signal(panel->get_knob("translate"));
 			else if (type == "cornel_pin")
 			{
-				knob_intd_update(panel->get_knob("to1"));
-				knob_intd_update(panel->get_knob("to2"));
-				knob_intd_update(panel->get_knob("to3"));
-				knob_intd_update(panel->get_knob("to4"));
+				knob_signal(panel->get_knob("to1"));
+				knob_signal(panel->get_knob("to2"));
+				knob_signal(panel->get_knob("to3"));
+				knob_signal(panel->get_knob("to4"));
 			}
 			else if (type == "transform")
-				tf_handler_update("test_name", {0, 0});
+				tf_handler_update(panel->get_name(), {0, 0});
 		}
 	};
 	update();
 }
 
-void viewer_gl::knob_intd_update(knob *_knob)
+void viewer_gl::knob_signal(knob *_knob)
 {
-	// actualiza desde el knob integer dimension hacia el manejador
+	// actualiza desde el knob hacia el manejador
+	QString type = _knob->get_node_type();
+	QString name = _knob->get_full_name();
 
-	knob_intd *intd = static_cast <knob_intd*>(_knob);
-	auto values = intd->get_values();
-	QString type = intd->get_node_type();
+	knob_floating *floating = dynamic_cast<knob_floating*>(_knob);
+	knob_intd *intd = dynamic_cast <knob_intd*>(_knob);
 
-	if (type == "crop")
-		box_handler_update( intd->get_full_name(), { values[0], values[1], values[2], values[3] });
-	else if (type == "position" || type == "cornel_pin")
-		pos_handler_update( intd->get_full_name(), {values[0], values[1]});
+	if (type == "transform")
+	{
+		if (floating)
+		{
+			print(floating->get_value());
+		}
+	}
+
+	else if (type == "crop" && intd)
+	{
+		auto values = intd->get_values();
+		box_handler_update(name, type, { values[0], values[1], values[2], values[3] });
+	}
+	else if (type == "position" && intd)
+	{
+		auto values = intd->get_values();
+		pos_handler_update(name, type, {values[0], values[1]});
+	}
+	else if (type == "cornel_pin" && intd)
+	{
+		auto values = intd->get_values();
+		pos_handler_update(name, type, {values[0], values[1]});
+	}
 }
 
 void viewer_gl::draw_handlers()
@@ -56,33 +76,49 @@ void viewer_gl::draw_handlers()
 	tf_handler_draw();
 }
 
-knob *viewer_gl::get_knob(QString full_name)
+knob *viewer_gl::get_knob(QString node_name, QString param_name)
 {
-	QStringList full = full_name.split(".");
-	QString node_name = full[0];
-	QString param_name = full[1];
-
 	QWidget *_panel = static_cast<properties*>(_properties)->get_trim_panel(node_name);
 	trim_panel *panel = static_cast<trim_panel *>(_panel);
 
 	return panel->get_knob(param_name);
 }
 
-void viewer_gl::box_handler_changed(QString full_name, QRect box, bool release)
+void viewer_gl::box_handler_changed(QString name, QString type, QRect box, bool release)
 {
 	// actualiza desde el manejador hacia el knob
+	QString node_name = name.split(".")[0];
+	QString param_name = name.split(".")[1];
 
-	knob_intd *box_knob = static_cast<knob_intd*>(get_knob(full_name));
-	box_knob->set_values({box.x(), box.y(), box.width(), box.height()}, false);
-	if (release)
-		box_knob->emmit_signal();
+	if (type == "crop")
+	{
+		knob_intd *box_knob = static_cast<knob_intd*>(get_knob(node_name, param_name));
+		box_knob->set_values({box.x(), box.y(), box.width(), box.height()}, false);
+		if (release)
+			box_knob->emmit_signal();
+	}
 }
 
-void viewer_gl::pos_handler_changed(QString full_name, QPoint position, bool release)
+void viewer_gl::pos_handler_changed(pos_handler_struct handler, bool release)
 {
-	knob_intd *translate = static_cast<knob_intd*>(get_knob(full_name));
-	translate->set_values({position.x(), position.y()}, false);
+	QString type = handler.type;
+	QString node_name = handler.name.split(".")[0];
+	QString param_name = handler.name.split(".")[1];
+
+	if (type == "position" || type == "cornel_pin")
+	{
+		knob_intd *translate = static_cast<knob_intd*>(get_knob(node_name, param_name));
+		translate->set_values({handler.position.x(), handler.position.y()}, false);
+		if (release)
+			translate->emmit_signal();
+	}
+}
+
+void viewer_gl::tf_handler_changed(tf_handler_struct handler, bool release)
+{
+	knob_floating *rotate_knob = static_cast<knob_floating*>(get_knob(handler.name, "rotate"));
+	rotate_knob->set_value(handler.rotate);
 	if (release)
-		translate->emmit_signal();
+		print(handler.rotate);
 }
 

@@ -102,7 +102,7 @@ void gl_view::tf_handler_release(QPoint cursor_position)
 		if (handler.transforming)
 		{
 			tf_handler_translate(cursor_position, handler);
-			tf_handler_changed(handler.name, handler.translate, true);
+			tf_handler_changed(handler, true);
 		}
 
 		handler.transforming = false;
@@ -127,8 +127,7 @@ void gl_view::tf_handler_move(QPoint cursor_position)
 
 		if (handler.transforming)
 		{
-			// tf_handler_translate(cursor_position, handler);
-			tf_handler_changed(handler.name, handler.translate);
+			tf_handler_changed(handler);
 			update();
 		}
 	}
@@ -137,4 +136,4 @@ void gl_view::tf_handler_move(QPoint cursor_position)
 		this->setCursor(Qt::ArrowCursor);
 }
 
-void gl_view::tf_handler_changed(QString name, QPoint position, bool release){}
+void gl_view::tf_handler_changed(tf_handler_struct handler, bool release){}

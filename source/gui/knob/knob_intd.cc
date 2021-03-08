@@ -1,5 +1,4 @@
 #include <knob_intd.h>
-#include <viewer_gl.h>
 
 knob_intd::knob_intd(QList <int> default_values)
 {
@@ -37,15 +36,6 @@ knob_intd::~knob_intd()
 {
 	for (QLineEdit *edit : dimensions_edits)
 		delete edit;
-}
-
-void knob_intd::update_handler()
-{
-	for (QWidget *vgl : *viewers_gl)
-	{
-		viewer_gl *_viewer_gl = static_cast<viewer_gl*>(vgl);
-		_viewer_gl->knob_intd_update(this);
-	}
 }
 
 void knob_intd::emmit_signal()
