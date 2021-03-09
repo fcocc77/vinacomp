@@ -41,6 +41,9 @@ void gl_view::tf_handler_draw()
 
 void gl_view::tf_handler_add(QString name)
 {
+	if (tf_handlers.contains(name))
+		return;
+
 	tf_handler_struct handler;
 	handler.name = name;
 	handler.translate = {0, 0};
@@ -52,18 +55,14 @@ void gl_view::tf_handler_add(QString name)
 
 void gl_view::tf_handler_translate_update(QString name, QPoint translate)
 {
-	if (!tf_handlers.contains(name))
-		tf_handler_add(name);
-
+	tf_handler_add(name);
 	tf_handler_struct &handler = tf_handlers[name];
 	handler.translate = translate;
 }
 
 void gl_view::tf_handler_rotate_update(QString name, float rotate)
 {
-	if (!tf_handlers.contains(name))
-		tf_handler_add(name);
-
+	tf_handler_add(name);
 	tf_handler_struct &handler = tf_handlers[name];
 	handler.rotate = rotate;
 }
