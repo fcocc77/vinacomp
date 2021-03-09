@@ -289,8 +289,29 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout, QList <QWid
 
         else if (type == "floating_dimensions")
 		{
-			QList <float> default_dimensions = {0, 0};
-			knob_floatd *knob_floating_dimensions = new knob_floatd(default_dimensions);
+			QList <float> default_dimensions, dimensions;
+			for (QJsonValue value : knob_object.value("default").toArray())
+				default_dimensions.push_back(value.toDouble());
+
+			if (data->contains(name))
+				for (QJsonValue value : data->value(name).toArray())
+					dimensions.push_back(value.toDouble());
+			else
+				dimensions = default_dimensions;
+
+			knob_floatd *knob_floating_dimensions = new knob_floatd(dimensions);
+
+			connect(knob_floating_dimensions, &knob_floatd::changed, this, [=](QList <float> _dimensions){
+				QJsonArray __dimensions;
+				for (float value : _dimensions)
+					__dimensions.push_back(value);
+
+				if (_dimensions != default_dimensions)
+					data->insert(name, __dimensions);
+				else
+					data->remove(name);
+				update_render();
+			});
 
 			_knob = knob_floating_dimensions;
 		}

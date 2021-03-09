@@ -72,9 +72,7 @@ void gl_view::tf_handler_clear()
 	tf_handlers.clear();
 }
 
-void gl_view::tf_handler_translate(QPoint cursor_position, tf_handler_struct &handler)
-{
-}
+void gl_view::tf_handler_translate(QPoint cursor_position, tf_handler_struct &handler) { }
 
 void gl_view::tf_handler_rotate(QPoint cursor_position, tf_handler_struct &handler)
 {

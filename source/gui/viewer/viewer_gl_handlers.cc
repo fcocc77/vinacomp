@@ -31,6 +31,7 @@ void viewer_gl::handlers_update()
 			else if (type == "transform")
 			{
 				knob_signal(panel->get_knob("rotate"));
+				knob_signal(panel->get_knob("translate"));
 			}
 		}
 	};
