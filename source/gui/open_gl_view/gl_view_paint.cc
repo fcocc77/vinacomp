@@ -177,7 +177,7 @@ void gl_view::draw_triangle(QPointF position, float size, QColor color, bool anc
 	QPointF _position = anchor_point;
 
 	if (anchor_on_tip)
-		_position.setY(_position.y() - size);
+		_position.setY(_position.y() - size + 1);
 
     QPointF point_1 = {_position.x() - size, _position.y()};
     QPointF point_2 = {_position.x() + size, _position.y()};

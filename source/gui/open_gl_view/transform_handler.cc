@@ -7,6 +7,7 @@ void gl_view::tf_handler_draw()
     int smooth = false;
 
 	int handler_ratio = 50;
+	int arrow_size = 7;
 
 	for (auto &handler : tf_handlers)
 	{
@@ -37,14 +38,19 @@ void gl_view::tf_handler_draw()
 
 		handler.scale_handler_ratio = 100 * ( get_scale().x() / width() );
 
+		// pintar ejes
 		draw_line(handler.x_handler.p1(), handler.x_handler.p2(), Qt::red);
 		draw_line(handler.y_handler.p1(), handler.y_handler.p2(), Qt::green);
-		draw_triangle(handler.x_handler.p1(), 10, Qt::red, true, angle + 90);
-		draw_triangle(handler.x_handler.p2(), 10, Qt::red, true, angle - 90);
-		draw_triangle(handler.y_handler.p1(), 10, Qt::green, true, angle + 180);
-		draw_triangle(handler.y_handler.p2(), 10, Qt::green, true, angle);
 
+		// pintar flechas
+		draw_triangle(handler.x_handler.p1(), arrow_size, Qt::red, true, angle + 90);
+		draw_triangle(handler.x_handler.p2(), arrow_size, Qt::red, true, angle - 90);
+		draw_triangle(handler.y_handler.p1(), arrow_size, Qt::green, true, angle + 180);
+		draw_triangle(handler.y_handler.p2(), arrow_size, Qt::green, true, angle);
+
+		// pintar rotador
 		draw_line(handler.rotate_handler.p1(), handler.rotate_handler.p2(), color);
+
 		draw_circle(handler.translate, handler.scale_handler_ratio);
 		draw_point(handler.translate, Qt::white, 10, true);
 	}
