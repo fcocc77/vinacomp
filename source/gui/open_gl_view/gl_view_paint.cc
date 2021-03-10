@@ -168,15 +168,27 @@ void gl_view::draw_box(QLineF diagonal_line, QColor color, QColor border_color)
     glRectf(p1.x(), p1.y(), p3.x(), p3.y());
 }
 
-void gl_view::draw_triangle(QPointF position, float size, QColor color)
+void gl_view::draw_triangle(QPointF position, float size, QColor color, bool anchor_on_tip, float rotate)
 {
     glBegin(GL_TRIANGLES);
     glColor3f(color.red() / 255.0, color.green() / 255.0, color.blue() / 255.0);
 
-    QPointF _position = get_position(position);
+    QPointF anchor_point = get_position(position);
+	QPointF _position = anchor_point;
+
+	if (anchor_on_tip)
+		_position.setY(_position.y() - size);
+
     QPointF point_1 = {_position.x() - size, _position.y()};
     QPointF point_2 = {_position.x() + size, _position.y()};
     QPointF point_3 = {_position.x(), _position.y() + size};
+
+	if (rotate != 0)
+	{
+		point_1 = rotate_point(point_1, anchor_point, rotate, false, true);
+		point_2 = rotate_point(point_2, anchor_point, rotate, false, true);
+		point_3 = rotate_point(point_3, anchor_point, rotate, false, true);
+	}
 
     point_1 = get_coordsf(point_1);
     point_2 = get_coordsf(point_2);
@@ -200,7 +212,7 @@ void gl_view::draw_circle(QPointF anchor_point, int ratio)
     float angle = 0;
     for (int i = 0; i <= num_segments; i++)
     {
-		QPointF point = arc_point(anchor_point, ratio, angle);
+		QPointF point = rotate_point({anchor_point.x() + ratio, anchor_point.y()}, anchor_point, angle);
         glVertex2f(point.x(), point.y());
 
         angle += segment;

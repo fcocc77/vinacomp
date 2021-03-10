@@ -43,7 +43,7 @@ public:
     void draw_box(QLineF diagonal_line, QColor color, QColor border_color = {0, 0, 0});
     void draw_line(QPointF src, QPointF dst, QColor color, float width = 1);
     void draw_dashed_line(QLineF line, QColor color, int stipple);
-    void draw_triangle(QPointF position, float size, QColor color);
+    void draw_triangle(QPointF position, float size, QColor color, bool anchor_on_tip = false, float rotate = 0);
     void draw_circle(QPointF anchor_point, int ratio);
     //
     //
@@ -71,7 +71,7 @@ public:
     void set_default();
     void set_transform(QPointF _translate, QPointF _scale);
     void set_ortho(float left, float right, float bottom, float top);
-    QPointF rotate_point(QPointF point, QPointF anchor_point, float angle, bool keep_aspect = false) const;
+    QPointF rotate_point(QPointF point, QPointF anchor_point, float angle, bool keep_aspect = false, bool keep_offset = false) const;
 	QPointF arc_point(QPointF anchor_point, int ratio, float angle);
     float get_angle_two_points(QPointF a, QPointF b) const;
 

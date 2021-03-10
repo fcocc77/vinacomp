@@ -28,18 +28,24 @@ void gl_view::tf_handler_draw()
 			get_coordsf(y2 + translate_viewport)
 		};
 
-		QPointF rotate_point = arc_point({0, 0}, handler_ratio + handler_ratio, angle - 45);
+		QPointF rotate_point = arc_point({0, 0}, handler_ratio + handler_ratio, angle);
 
 		handler.rotate_handler = {
-			handler.translate,
+			handler.x_handler.p2() ,
 			get_coordsf(rotate_point + translate_viewport)
 		};
 
+		handler.scale_handler_ratio = 100 * ( get_scale().x() / width() );
+
 		draw_line(handler.x_handler.p1(), handler.x_handler.p2(), Qt::red);
 		draw_line(handler.y_handler.p1(), handler.y_handler.p2(), Qt::green);
+		draw_triangle(handler.x_handler.p1(), 10, Qt::red, true, angle + 90);
+		draw_triangle(handler.x_handler.p2(), 10, Qt::red, true, angle - 90);
+		draw_triangle(handler.y_handler.p1(), 10, Qt::green, true, angle + 180);
+		draw_triangle(handler.y_handler.p2(), 10, Qt::green, true, angle);
 
 		draw_line(handler.rotate_handler.p1(), handler.rotate_handler.p2(), color);
-		// draw_circle(handler.translate, 40);
+		draw_circle(handler.translate, handler.scale_handler_ratio);
 		draw_point(handler.translate, Qt::white, 10, true);
 	}
 }
@@ -148,7 +154,7 @@ void gl_view::tf_handler_rotate(QPoint cursor_position, tf_handler_struct &handl
     double delta_x = (cursor_position.x() - translate.x());
 
     float rotate = atan2(delta_x, delta_y) * 180 / M_PI;
-	handler.rotate = rotate - 45;
+	handler.rotate = rotate - 90;
 }
 
 QString gl_view::tf_get_action(QPoint cursor_position, tf_handler_struct &handler)

@@ -181,10 +181,13 @@ void gl_view::set_translate(QPointF _translate)
 	translate = _translate;
 }
 
-QPointF gl_view::rotate_point(QPointF point, QPointF anchor_point, float angle, bool keep_aspect) const
+QPointF gl_view::rotate_point(QPointF point, QPointF anchor_point, float angle, bool keep_aspect, bool keep_offset) const
 {
     // rota un punto alrededor de otro punto (punto de anclaje).
     float distance = qt::distance_points(point, anchor_point);
+
+	if (keep_offset)
+		angle += get_angle_two_points(point, anchor_point) + 90;
 
     angle = (M_PI * 2.0) * angle / 360.0;
 

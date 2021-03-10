@@ -8,6 +8,7 @@ protected:
 		QLineF rotate_handler;
 		QLineF x_handler;
 		QLineF y_handler;
+		float scale_handler_ratio;
 		QString action;
 	};
 
