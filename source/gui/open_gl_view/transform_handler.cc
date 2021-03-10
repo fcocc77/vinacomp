@@ -6,36 +6,40 @@ void gl_view::tf_handler_draw()
     int size = 6;
     int smooth = false;
 
-	int handler_ratio = 50;
+	int handler_ratio = 30;
 
 	for (auto &handler : tf_handlers)
 	{
 		float angle = handler.rotate;
 		QPointF translate_viewport = get_position(handler.translate);
 
-		QPointF skew_h1 = arc_point({0, 0}, handler_ratio, angle + 180);
-		QPointF skew_h2 = arc_point({0, 0}, handler_ratio, angle);
-		QPointF skew_v1 = arc_point({0, 0}, handler_ratio, angle - 90);
-		QPointF skew_v2 = arc_point({0, 0}, handler_ratio, angle + 90);
+		QPointF x1 = arc_point({0, 0}, handler_ratio, angle + 180);
+		QPointF x2 = arc_point({0, 0}, handler_ratio, angle);
+		QPointF y1 = arc_point({0, 0}, handler_ratio, angle - 90);
+		QPointF y2 = arc_point({0, 0}, handler_ratio, angle + 90);
 
-		skew_h1 = get_coordsf(skew_h1 + translate_viewport);
-		skew_h2 = get_coordsf(skew_h2 + translate_viewport);
-		skew_v1 = get_coordsf(skew_v1 + translate_viewport);
-		skew_v2 = get_coordsf(skew_v2 + translate_viewport);
-
-		QPointF rotate_p1 = arc_point({0, 0}, handler_ratio, angle + 180);
-		QPointF rotate_p2 = arc_point({0, 0}, handler_ratio + handler_ratio / 2, angle);
-
-		handler.rotate_handler = {
-			get_coordsf(rotate_p1 + translate_viewport),
-			get_coordsf(rotate_p2 + translate_viewport)
+		handler.x_handler = {
+			get_coordsf(x1 + translate_viewport),
+			get_coordsf(x2 + translate_viewport)
 		};
 
-		draw_line(skew_h1, skew_h2, color);
-		draw_line(skew_v1, skew_v2, color);
+		handler.y_handler = {
+			get_coordsf(y1 + translate_viewport),
+			get_coordsf(y2 + translate_viewport)
+		};
+
+		QPointF rotate_point = arc_point({0, 0}, handler_ratio + handler_ratio, angle - 45);
+
+		handler.rotate_handler = {
+			handler.translate,
+			get_coordsf(rotate_point + translate_viewport)
+		};
+
+		draw_line(handler.x_handler.p1(), handler.x_handler.p2(), Qt::red);
+		draw_line(handler.y_handler.p1(), handler.y_handler.p2(), Qt::green);
 
 		draw_line(handler.rotate_handler.p1(), handler.rotate_handler.p2(), color);
-		draw_circle(handler.translate, 40);
+		// draw_circle(handler.translate, 40);
 	}
 }
 
@@ -72,7 +76,24 @@ void gl_view::tf_handler_clear()
 	tf_handlers.clear();
 }
 
-void gl_view::tf_handler_translate(QPoint cursor_position, tf_handler_struct &handler) { }
+void gl_view::tf_handler_translate_x(QPoint cursor_position, tf_handler_struct &handler)
+{
+	QPointF cursor = get_coordsf(cursor_position);
+	QPointF cursor_click = get_coordsf(click_position);
+
+	float rotate = handler.rotate;
+	float x_diff = handler_click.translate.x() - cursor_click.x();
+
+	float x = cursor.x() + x_diff;
+	float x_distance = handler_click.translate.x() - x;
+
+    float angle = (M_PI * 2.0) * rotate / 360.0;
+    float y_separation = ( x_distance / cosf(angle) ) * sinf(angle);
+
+	float y = handler_click.translate.y() + y_separation;
+
+	handler.translate = {x, y};
+}
 
 void gl_view::tf_handler_rotate(QPoint cursor_position, tf_handler_struct &handler)
 {
@@ -83,14 +104,17 @@ void gl_view::tf_handler_rotate(QPoint cursor_position, tf_handler_struct &handl
     double delta_x = (cursor_position.x() - translate.x());
 
     float rotate = atan2(delta_x, delta_y) * 180 / M_PI;
-	handler.rotate = rotate - 90;
+	handler.rotate = rotate - 45;
 }
 
 QString gl_view::tf_get_action(QPoint cursor_position, tf_handler_struct &handler)
 {
 	QString action = "";
 
-	if ( cursor_above_line(cursor_position, handler.rotate_handler) )
+	if ( cursor_above_line(cursor_position, handler.x_handler) )
+		action = "translate_x";
+
+	else if ( cursor_above_line(cursor_position, handler.rotate_handler) )
 		action = "rotate";
 
 	return action;
@@ -105,6 +129,7 @@ void gl_view::tf_handler_press(QPoint cursor_position)
 		{
 			handler.transforming = true;
 			handler.action = action;
+			handler_click = handler;
 			break;
 		}
 	}
@@ -116,7 +141,7 @@ void gl_view::tf_handler_release(QPoint cursor_position)
 	{
 		if (handler.transforming)
 		{
-			tf_handler_translate(cursor_position, handler);
+			// tf_handler_translate(cursor_position, handler);
 			tf_handler_changed(handler, true);
 		}
 
@@ -135,13 +160,18 @@ void gl_view::tf_handler_move(QPoint cursor_position)
 
 		if ( action == "rotate" )
 			this->setCursor(Qt::CrossCursor);
-
-
-		if ( handler.action == "rotate" )
-			tf_handler_rotate(cursor_position, handler);
+		else if ( action == "translate_x" || action == "translate_y" )
+			this->setCursor(Qt::CrossCursor);
 
 		if (handler.transforming)
 		{
+			if ( handler.action == "rotate" )
+				tf_handler_rotate(cursor_position, handler);
+			else if ( handler.action == "translate_x" )
+				tf_handler_translate_x(cursor_position, handler);
+			else if ( handler.action == "translate_y" )
+				;
+
 			tf_handler_changed(handler);
 			update();
 		}

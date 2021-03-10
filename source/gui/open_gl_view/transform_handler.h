@@ -3,9 +3,11 @@ protected:
 	{
 		QString name;
 		bool transforming;
-		QPoint translate;
+		QPointF translate;
 		float rotate;
 		QLineF rotate_handler;
+		QLineF x_handler;
+		QLineF y_handler;
 		QString action;
 	};
 
@@ -18,7 +20,9 @@ protected:
 
 private:
 	QMap <QString, tf_handler_struct> tf_handlers;
-	void tf_handler_translate(QPoint cursor_position, tf_handler_struct &handler);
+	tf_handler_struct handler_click;
+
+	void tf_handler_translate_x(QPoint cursor_position, tf_handler_struct &handler);
 	void tf_handler_rotate(QPoint cursor_position, tf_handler_struct &handler);
 	void tf_handler_add(QString name);
 
