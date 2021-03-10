@@ -6,7 +6,7 @@ void gl_view::tf_handler_draw()
     int size = 6;
     int smooth = false;
 
-	int handler_ratio = 30;
+	int handler_ratio = 50;
 
 	for (auto &handler : tf_handlers)
 	{
@@ -40,6 +40,7 @@ void gl_view::tf_handler_draw()
 
 		draw_line(handler.rotate_handler.p1(), handler.rotate_handler.p2(), color);
 		// draw_circle(handler.translate, 40);
+		draw_point(handler.translate, Qt::white, 10, true);
 	}
 }
 
@@ -74,6 +75,20 @@ void gl_view::tf_handler_rotate_update(QString name, float rotate)
 void gl_view::tf_handler_clear()
 {
 	tf_handlers.clear();
+}
+
+void gl_view::tf_handler_translate(QPoint cursor_position, tf_handler_struct &handler)
+{
+	QPointF cursor = get_coordsf(cursor_position);
+	QPointF cursor_click = get_coordsf(click_position);
+
+	float x_diff = handler_click.translate.x() - cursor_click.x();
+	float y_diff = handler_click.translate.y() - cursor_click.y();
+
+	float x = cursor.x() + x_diff;
+	float y = cursor.y() + y_diff;
+
+	handler.translate = { x, y };
 }
 
 void gl_view::tf_handler_translate_axis(QPoint cursor_position, tf_handler_struct &handler, bool x_axis)
@@ -140,7 +155,10 @@ QString gl_view::tf_get_action(QPoint cursor_position, tf_handler_struct &handle
 {
 	QString action = "";
 
-	if ( cursor_above_line(cursor_position, handler.x_handler) )
+	if ( is_cursor_above(cursor_position, handler.translate) )
+		action = "translate";
+
+	else if ( cursor_above_line(cursor_position, handler.x_handler) )
 		action = "translate_x";
 
 	else if ( cursor_above_line(cursor_position, handler.y_handler) )
@@ -192,8 +210,8 @@ void gl_view::tf_handler_move(QPoint cursor_position)
 
 		if ( action == "rotate" )
 			this->setCursor(Qt::CrossCursor);
-		else if ( action == "translate_x" || action == "translate_y" )
-			this->setCursor(Qt::CrossCursor);
+		else if ( action == "translate" )
+			this->setCursor(Qt::SizeAllCursor);
 
 		if (handler.transforming)
 		{
@@ -203,6 +221,8 @@ void gl_view::tf_handler_move(QPoint cursor_position)
 				tf_handler_translate_axis(cursor_position, handler, true);
 			else if ( handler.action == "translate_y" )
 				tf_handler_translate_axis(cursor_position, handler, false);
+			else if ( handler.action == "translate" )
+				tf_handler_translate(cursor_position, handler);
 
 			tf_handler_changed(handler);
 			update();

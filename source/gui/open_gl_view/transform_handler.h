@@ -22,6 +22,7 @@ private:
 	QMap <QString, tf_handler_struct> tf_handlers;
 	tf_handler_struct handler_click;
 
+	void tf_handler_translate(QPoint cursor_position, tf_handler_struct &handler);
 	void tf_handler_translate_axis(QPoint cursor_position, tf_handler_struct &handler, bool x_axis = true);
 	void tf_handler_rotate(QPoint cursor_position, tf_handler_struct &handler);
 	void tf_handler_add(QString name);
