@@ -76,21 +76,50 @@ void gl_view::tf_handler_clear()
 	tf_handlers.clear();
 }
 
-void gl_view::tf_handler_translate_x(QPoint cursor_position, tf_handler_struct &handler)
+void gl_view::tf_handler_translate_axis(QPoint cursor_position, tf_handler_struct &handler, bool x_axis)
 {
 	QPointF cursor = get_coordsf(cursor_position);
 	QPointF cursor_click = get_coordsf(click_position);
 
 	float rotate = handler.rotate;
-	float x_diff = handler_click.translate.x() - cursor_click.x();
+	float click_rotate = handler_click.rotate;
 
-	float x = cursor.x() + x_diff;
-	float x_distance = handler_click.translate.x() - x;
+	if (!x_axis)
+	{
+		rotate += 90;
+		click_rotate += 90;
+	}
 
-    float angle = (M_PI * 2.0) * rotate / 360.0;
-    float y_separation = ( x_distance / cosf(angle) ) * sinf(angle);
+	bool horizontal = false;
 
-	float y = handler_click.translate.y() + y_separation;
+	if (click_rotate < 45 && click_rotate > -45)
+		horizontal = true;
+	if (click_rotate < -135 && click_rotate > -225)
+		horizontal = true;
+	if (click_rotate > 135 && click_rotate < 225)
+		horizontal = true;
+
+	float angle = (M_PI * 2.0) * rotate / 360.0;
+
+	float x, y;
+	if (horizontal)
+	{
+		float x_diff = handler_click.translate.x() - cursor_click.x();
+		x = cursor.x() + x_diff;
+
+		float x_distance = handler_click.translate.x() - x;
+		float y_separation = ( x_distance / cosf(angle) ) * sinf(angle);
+		y = handler_click.translate.y() + y_separation;
+	}
+	else
+	{
+		float y_diff = handler_click.translate.y() - cursor_click.y();
+		y = cursor.y() + y_diff;
+
+		float y_distance = handler_click.translate.y() - y;
+		float x_separation = ( y_distance / sinf(angle) ) * cosf(angle);
+		x = handler_click.translate.x() + x_separation;
+	}
 
 	handler.translate = {x, y};
 }
@@ -113,6 +142,9 @@ QString gl_view::tf_get_action(QPoint cursor_position, tf_handler_struct &handle
 
 	if ( cursor_above_line(cursor_position, handler.x_handler) )
 		action = "translate_x";
+
+	else if ( cursor_above_line(cursor_position, handler.y_handler) )
+		action = "translate_y";
 
 	else if ( cursor_above_line(cursor_position, handler.rotate_handler) )
 		action = "rotate";
@@ -168,9 +200,9 @@ void gl_view::tf_handler_move(QPoint cursor_position)
 			if ( handler.action == "rotate" )
 				tf_handler_rotate(cursor_position, handler);
 			else if ( handler.action == "translate_x" )
-				tf_handler_translate_x(cursor_position, handler);
+				tf_handler_translate_axis(cursor_position, handler, true);
 			else if ( handler.action == "translate_y" )
-				;
+				tf_handler_translate_axis(cursor_position, handler, false);
 
 			tf_handler_changed(handler);
 			update();
