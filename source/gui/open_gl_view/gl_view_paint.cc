@@ -241,8 +241,15 @@ void gl_view::draw_centered_box(QPointF pos, float size, QColor color, float rot
 	glEnd();
 }
 
-void gl_view::draw_circle(QPointF anchor_point, float ratio,
-		QColor color, bool keep_scale, int num_segments, bool fill)
+void gl_view::draw_circle(
+		QPointF anchor_point, 
+		float ratio,
+		QColor color, 
+		pair<float, float> scale, 
+		float rotate,
+		bool keep_scale,
+		int num_segments, 
+		bool fill)
 {
 	if (keep_scale)
 		ratio *= get_scale().x() / width();
@@ -256,13 +263,30 @@ void gl_view::draw_circle(QPointF anchor_point, float ratio,
 
     glColor3f(color.red() / 255.0, color.green() / 255.0, color.blue() / 255.0);
 
-
     float segment = 360.0 / num_segments;
     float angle = 0;
     for (int i = 0; i <= num_segments; i++)
     {
-		QPointF point = rotate_point({anchor_point.x() + ratio, anchor_point.y()}, anchor_point, angle);
-        glVertex2f(point.x(), point.y());
+		QPointF point = rotate_point({ratio, 0}, {0, 0}, angle);
+		float x = point.x();
+		float y = point.y();
+
+		x *= scale.first;
+		y *= scale.second;
+
+		if (rotate != 0)
+		{
+			QPointF out_point = {x, y};
+			out_point = rotate_point(out_point, {0, 0}, -rotate, false, true);
+
+			x = out_point.x();
+			y = out_point.y();
+		}
+
+		x += anchor_point.x();
+		y += anchor_point.y();
+
+        glVertex2f(x, y);
 
         angle += segment;
     }

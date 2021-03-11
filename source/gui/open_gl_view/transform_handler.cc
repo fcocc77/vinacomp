@@ -49,7 +49,7 @@ void gl_view::tf_handler_draw()
 
 		QPointF rotate_circle = arc_point({0, 0}, handler_ratio + 55, angle);
 		rotate_circle = get_coordsf(rotate_circle + translate_viewport);
-		draw_circle(rotate_circle, 50, Qt::cyan, true, 10, true);
+		draw_circle(rotate_circle, 50, Qt::cyan, {1, 1}, angle, true, 10, true);
 		//
 		//
 
@@ -65,7 +65,7 @@ void gl_view::tf_handler_draw()
 		handler.y1_scale_handler = get_coordsf(y1_scale + translate_viewport);
 		handler.y2_scale_handler = get_coordsf(y2_scale + translate_viewport);
 
-		draw_circle(handler.translate, 200, Qt::gray, true, 50);
+		draw_circle(handler.translate, 200, Qt::gray, {2, 1}, angle, true, 50);
 
 		draw_centered_box(handler.x1_scale_handler, scale_box_size, Qt::red, angle);
 		draw_centered_box(handler.x2_scale_handler, scale_box_size, Qt::red, angle);
@@ -81,7 +81,7 @@ void gl_view::tf_handler_draw()
 		draw_triangle(handler.y_handler.p2(), arrow_size, Qt::green, true, angle);
 
 		// Translate
-		draw_circle(handler.translate, 50, Qt::white, true, 10, true);
+		draw_circle(handler.translate, 50, Qt::white, {1, 1}, angle, true, 10, true);
 	}
 }
 
