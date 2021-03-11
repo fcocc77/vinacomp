@@ -46,12 +46,14 @@ void gl_view::tf_handler_draw()
 		};
 
 		draw_line(handler.rotate_handler.p1(), handler.rotate_handler.p2(), color);
+
+		QPointF rotate_circle = arc_point({0, 0}, handler_ratio + 44, angle);
+		rotate_circle = get_coordsf(rotate_circle + translate_viewport);
+		draw_circle(rotate_circle, 50, Qt::white, true, 10, true);
 		//
 		//
 
 		// Scale
-		handler.scale_handler_ratio = 100 * ( get_scale().x() / width() );
-
 		QPointF x1_scale = arc_point({0, 0}, handler_ratio / 2, angle + 180);
 		QPointF x2_scale = arc_point({0, 0}, handler_ratio / 2, angle);
 		QPointF y1_scale = arc_point({0, 0}, handler_ratio / 2, angle - 90);
@@ -67,7 +69,7 @@ void gl_view::tf_handler_draw()
 		draw_centered_box(handler.y1_scale_handler, scale_box_size, Qt::white, angle);
 		draw_centered_box(handler.y2_scale_handler, scale_box_size, Qt::white, angle);
 
-		draw_circle(handler.translate, handler.scale_handler_ratio);
+		draw_circle(handler.translate, 200, Qt::white, true, 50);
 		//
 		//
 
@@ -77,7 +79,8 @@ void gl_view::tf_handler_draw()
 		draw_triangle(handler.y_handler.p1(), arrow_size, Qt::green, true, angle + 180);
 		draw_triangle(handler.y_handler.p2(), arrow_size, Qt::green, true, angle);
 
-		draw_centered_box(handler.translate, 10, Qt::white, angle);
+		// Translate
+		draw_circle(handler.translate, 50, Qt::white, true, 10, true);
 	}
 }
 

@@ -168,7 +168,7 @@ void gl_view::draw_box(QLineF diagonal_line, QColor color, QColor border_color)
     glRectf(p1.x(), p1.y(), p3.x(), p3.y());
 }
 
-void gl_view::draw_triangle(QPointF pos, int size, QColor color, bool anchor_on_tip, float rotate)
+void gl_view::draw_triangle(QPointF pos, float size, QColor color, bool anchor_on_tip, float rotate)
 {
     glBegin(GL_TRIANGLES);
     glColor3f(color.red() / 255.0, color.green() / 255.0, color.blue() / 255.0);
@@ -201,7 +201,7 @@ void gl_view::draw_triangle(QPointF pos, int size, QColor color, bool anchor_on_
     glEnd();
 }
 
-void gl_view::draw_centered_box(QPointF pos, int size, QColor color, float rotate)
+void gl_view::draw_centered_box(QPointF pos, float size, QColor color, float rotate)
 {
     QPointF _pos = get_position(pos);
 
@@ -241,12 +241,21 @@ void gl_view::draw_centered_box(QPointF pos, int size, QColor color, float rotat
 	glEnd();
 }
 
-void gl_view::draw_circle(QPointF anchor_point, int ratio)
+void gl_view::draw_circle(QPointF anchor_point, float ratio,
+		QColor color, bool keep_scale, int num_segments, bool fill)
 {
-    int num_segments = 100;
+	if (keep_scale)
+		ratio *= get_scale().x() / width();
 
-    glBegin(GL_LINE_STRIP);
-    glColor4f(1, 0, 0, 0);
+	ratio /= 2;
+
+	if (fill)
+		glBegin(GL_POLYGON);
+	else
+		glBegin(GL_LINE_STRIP);
+
+    glColor3f(color.red() / 255.0, color.green() / 255.0, color.blue() / 255.0);
+
 
     float segment = 360.0 / num_segments;
     float angle = 0;

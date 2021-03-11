@@ -12,7 +12,6 @@ protected:
 		QLineF x_handler;
 		QLineF y_handler;
 
-		float scale_handler_ratio;
 		QPointF x1_scale_handler;
 		QPointF x2_scale_handler;
 		QPointF y1_scale_handler;
