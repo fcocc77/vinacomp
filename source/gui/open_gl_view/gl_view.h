@@ -54,7 +54,7 @@ public:
 		QPointF anchor_point,
 		float ratio, 
 		QColor color,
-		pair<float, float> scale = {1, 1}, 
+		QPointF scale = {1, 1},
 		float rotate = 0,
 		bool keep_scale = false, 
 		int num_segments = 100,

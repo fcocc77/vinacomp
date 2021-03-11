@@ -245,7 +245,7 @@ void gl_view::draw_circle(
 		QPointF anchor_point, 
 		float ratio,
 		QColor color, 
-		pair<float, float> scale, 
+		QPointF scale,
 		float rotate,
 		bool keep_scale,
 		int num_segments, 
@@ -271,16 +271,19 @@ void gl_view::draw_circle(
 		float x = point.x();
 		float y = point.y();
 
-		x *= scale.first;
-		y *= scale.second;
-
-		if (rotate != 0)
+		if ( scale.x() != 1 || scale.y() != 1 )
 		{
-			QPointF out_point = {x, y};
-			out_point = rotate_point(out_point, {0, 0}, -rotate, false, true);
+			x *= scale.x();
+			y *= scale.y();
 
-			x = out_point.x();
-			y = out_point.y();
+			if (rotate != 0 )
+			{
+				QPointF out_point = {x, y};
+				out_point = rotate_point(out_point, {0, 0}, -rotate, false, true);
+
+				x = out_point.x();
+				y = out_point.y();
+			}
 		}
 
 		x += anchor_point.x();

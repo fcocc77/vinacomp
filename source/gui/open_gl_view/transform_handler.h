@@ -5,6 +5,7 @@ protected:
 		bool transforming;
 		QPointF translate;
 		float rotate;
+		QPointF scale;
 		QString action;
 
 		QLineF rotate_handler;
@@ -32,6 +33,7 @@ private:
 	void tf_handler_translate(QPoint cursor_position, tf_handler_struct &handler);
 	void tf_handler_translate_axis(QPoint cursor_position, tf_handler_struct &handler, bool x_axis = true);
 	void tf_handler_rotate(QPoint cursor_position, tf_handler_struct &handler);
+	void tf_handler_scale_x(QPoint cursor_position, tf_handler_struct &handler);
 	void tf_handler_add(QString name);
 
 	void tf_handler_press(QPoint cursor_position);
