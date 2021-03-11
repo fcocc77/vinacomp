@@ -6,7 +6,7 @@ void gl_view::tf_handler_draw()
     int size = 6;
     int smooth = false;
 
-	int handler_ratio = 50;
+	int handler_ratio = 60;
 	int arrow_size = 7;
 	int scale_box_size = 7;
 
@@ -45,31 +45,32 @@ void gl_view::tf_handler_draw()
 			get_coordsf(rotate_point + translate_viewport)
 		};
 
-		draw_line(handler.rotate_handler.p1(), handler.rotate_handler.p2(), color);
+		draw_line(handler.rotate_handler.p1(), handler.rotate_handler.p2(), Qt::gray);
 
-		QPointF rotate_circle = arc_point({0, 0}, handler_ratio + 44, angle);
+		QPointF rotate_circle = arc_point({0, 0}, handler_ratio + 55, angle);
 		rotate_circle = get_coordsf(rotate_circle + translate_viewport);
-		draw_circle(rotate_circle, 50, Qt::white, true, 10, true);
+		draw_circle(rotate_circle, 50, Qt::cyan, true, 10, true);
 		//
 		//
 
 		// Scale
-		QPointF x1_scale = arc_point({0, 0}, handler_ratio / 2, angle + 180);
-		QPointF x2_scale = arc_point({0, 0}, handler_ratio / 2, angle);
-		QPointF y1_scale = arc_point({0, 0}, handler_ratio / 2, angle - 90);
-		QPointF y2_scale = arc_point({0, 0}, handler_ratio / 2, angle + 90);
+		float scale_box_separation = 26;
+		QPointF x1_scale = arc_point({0, 0}, scale_box_separation, angle + 180);
+		QPointF x2_scale = arc_point({0, 0}, scale_box_separation, angle);
+		QPointF y1_scale = arc_point({0, 0}, scale_box_separation, angle - 90);
+		QPointF y2_scale = arc_point({0, 0}, scale_box_separation, angle + 90);
 
 		handler.x1_scale_handler = get_coordsf(x1_scale + translate_viewport);
 		handler.x2_scale_handler = get_coordsf(x2_scale + translate_viewport);
 		handler.y1_scale_handler = get_coordsf(y1_scale + translate_viewport);
 		handler.y2_scale_handler = get_coordsf(y2_scale + translate_viewport);
 
-		draw_centered_box(handler.x1_scale_handler, scale_box_size, Qt::white, angle);
-		draw_centered_box(handler.x2_scale_handler, scale_box_size, Qt::white, angle);
-		draw_centered_box(handler.y1_scale_handler, scale_box_size, Qt::white, angle);
-		draw_centered_box(handler.y2_scale_handler, scale_box_size, Qt::white, angle);
+		draw_circle(handler.translate, 200, Qt::gray, true, 50);
 
-		draw_circle(handler.translate, 200, Qt::white, true, 50);
+		draw_centered_box(handler.x1_scale_handler, scale_box_size, Qt::red, angle);
+		draw_centered_box(handler.x2_scale_handler, scale_box_size, Qt::red, angle);
+		draw_centered_box(handler.y1_scale_handler, scale_box_size, Qt::green, angle);
+		draw_centered_box(handler.y2_scale_handler, scale_box_size, Qt::green, angle);
 		//
 		//
 
@@ -195,8 +196,20 @@ QString gl_view::tf_get_action(QPoint cursor_position, tf_handler_struct &handle
 {
 	QString action = "";
 
-	if ( is_cursor_above(cursor_position, handler.translate) )
+	if ( cursor_above_point(cursor_position, handler.translate, 15) )
 		action = "translate";
+
+	else if ( cursor_above_point(cursor_position, handler.x1_scale_handler) )
+		action = "scale_x1";
+
+	else if ( cursor_above_point(cursor_position, handler.x2_scale_handler) )
+		action = "scale_x2";
+
+	else if ( cursor_above_point(cursor_position, handler.y1_scale_handler) )
+		action = "scale_y1";
+
+	else if ( cursor_above_point(cursor_position, handler.y2_scale_handler) )
+		action = "scale_y2";
 
 	else if ( cursor_above_line(cursor_position, handler.x_handler) )
 		action = "translate_x";
@@ -252,6 +265,10 @@ void gl_view::tf_handler_move(QPoint cursor_position)
 			this->setCursor(Qt::CrossCursor);
 		else if ( action == "translate" )
 			this->setCursor(Qt::SizeAllCursor);
+		else if ( action == "scale_x1" || action == "scale_x2" )
+			this->setCursor(Qt::SizeHorCursor);
+		else if ( action == "scale_y1" || action == "scale_y2" )
+			this->setCursor(Qt::SizeVerCursor);
 
 		if (handler.transforming)
 		{

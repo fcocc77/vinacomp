@@ -100,8 +100,9 @@ QPointF gl_view::get_coordinate(QPoint cursor_position) const
     return {-x, y};
 }
 
-bool gl_view::is_cursor_above(QPoint cursor_position, QPointF point, QPointF point2) const
+bool gl_view::cursor_above_rect(QPoint cursor_position, QPointF point, QPointF point2) const
 {
+	// ! el rect lo genera a partir de dos puntos en diagonal
     int tolerance = 10;
 
     point = get_position(point);
@@ -114,28 +115,43 @@ bool gl_view::is_cursor_above(QPoint cursor_position, QPointF point, QPointF poi
     //
     //
 
-    // si es que hay un segundo puntos, puede servir para una linea o un rectangulo
-    if (!point2.isNull())
-    {
-        point2 = get_position(point2);
+	point2 = get_position(point2);
 
-        if (point2.x() < point.x())
-            left = point2.x() - tolerance;
+	if (point2.x() < point.x())
+		left = point2.x() - tolerance;
 
-        if (point2.x() > point.x())
-            right = point2.x() + tolerance;
+	if (point2.x() > point.x())
+		right = point2.x() + tolerance;
 
-        if (point2.y() < point.y())
-            bottom = point2.y() - tolerance;
+	if (point2.y() < point.y())
+		bottom = point2.y() - tolerance;
 
-        if (point2.y() > point.y())
-            top = point2.y() + tolerance;
-    }
-    //
-    //
+	if (point2.y() > point.y())
+		top = point2.y() + tolerance;
 
     int x = cursor_position.x();
     int y = cursor_position.y();
+
+    if (x > left && x < right && y > bottom && y < top)
+        return true;
+
+    return false;
+}
+
+bool gl_view::cursor_above_point(QPoint cursor, QPointF point, int tolerance) const
+{
+    point = get_position(point);
+
+    // bounding box
+    int left = point.x() - tolerance;
+    int right = point.x() + tolerance;
+    int bottom = point.y() - tolerance;
+    int top = point.y() + tolerance;
+    //
+    //
+
+    int x = cursor.x();
+    int y = cursor.y();
 
     if (x > left && x < right && y > bottom && y < top)
         return true;

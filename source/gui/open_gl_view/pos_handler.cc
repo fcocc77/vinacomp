@@ -35,7 +35,7 @@ void gl_view::pos_handler_press(QPoint cursor_position)
 {
 	for (auto &handler : pos_handlers)
 	{
-		if ( is_cursor_above(cursor_position, handler.position) )
+		if ( cursor_above_point(cursor_position, handler.position) )
 		{
 			handler.moving = true;
 			break;

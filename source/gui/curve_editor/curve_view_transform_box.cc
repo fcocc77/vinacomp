@@ -89,7 +89,7 @@ QString curve_view::get_transform_action(QPoint cursor_position)
     // Obtiene la accion del 'transform_box' a partir del cursor del mouse
     bool is_above = false;
     auto above = [&](QPointF point, Qt::CursorShape cursor, QPointF point2 = {}) {
-        if (is_cursor_above(cursor_position, point, point2))
+        if (cursor_above_rect(cursor_position, point, point2))
         {
             this->setCursor(cursor);
             is_above = true;
@@ -106,18 +106,18 @@ QString curve_view::get_transform_action(QPoint cursor_position)
 
     // si las posiciones x o y de la caja de tranformacion son iguales, entoces solo se puede mover
     if (transform_box.x1() == transform_box.x2() || transform_box.y1() == transform_box.y2())
-        if (is_cursor_above(cursor_position, transform_box.p1(), transform_box.p2()))
+        if (cursor_above_rect(cursor_position, transform_box.p1(), transform_box.p2()))
             return "center_translate";
     //
 
     // vertices
-    if (is_cursor_above(cursor_position, bottom_left))
+    if (cursor_above_point(cursor_position, bottom_left))
         return "bottom_left_scale";
-    if (is_cursor_above(cursor_position, top_right))
+    if (cursor_above_point(cursor_position, top_right))
         return "top_right_scale";
-    if (is_cursor_above(cursor_position, bottom_right))
+    if (cursor_above_point(cursor_position, bottom_right))
         return "bottom_right_scale";
-    if (is_cursor_above(cursor_position, top_left))
+    if (cursor_above_point(cursor_position, top_left))
         return "top_left_scale";
     //
     //
@@ -128,13 +128,13 @@ QString curve_view::get_transform_action(QPoint cursor_position)
     QLineF bottom = {bottom_left, bottom_right};
     QLineF top = {top_left, top_right};
 
-    if (is_cursor_above(cursor_position, left.p1(), left.p2()))
+    if (cursor_above_rect(cursor_position, left.p1(), left.p2()))
         return "left_scale";
-    if (is_cursor_above(cursor_position, right.p1(), right.p2()))
+    if (cursor_above_rect(cursor_position, right.p1(), right.p2()))
         return "right_scale";
-    if (is_cursor_above(cursor_position, bottom.p1(), bottom.p2()))
+    if (cursor_above_rect(cursor_position, bottom.p1(), bottom.p2()))
         return "bottom_scale";
-    if (is_cursor_above(cursor_position, top.p1(), top.p2()))
+    if (cursor_above_rect(cursor_position, top.p1(), top.p2()))
         return "top_scale";
     //
     //
@@ -150,11 +150,11 @@ QString curve_view::get_transform_action(QPoint cursor_position)
 
     QPointF horizontal_p1 = get_coordsf({center.x() - distance, center.y()});
     QPointF horizontal_p2 = get_coordsf({center.x() + distance, center.y()});
-    bool horizontal = is_cursor_above(cursor_position, horizontal_p1, horizontal_p2);
+    bool horizontal = cursor_above_rect(cursor_position, horizontal_p1, horizontal_p2);
 
     QPointF vertical_p1 = get_coordsf({center.x(), center.y() - distance});
     QPointF vertical_p2 = get_coordsf({center.x(), center.y() + distance});
-    bool vertical = is_cursor_above(cursor_position, vertical_p1, vertical_p2);
+    bool vertical = cursor_above_rect(cursor_position, vertical_p1, vertical_p2);
 
     if (vertical && horizontal)
         return "center_translate";

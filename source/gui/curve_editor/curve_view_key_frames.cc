@@ -177,14 +177,14 @@ void curve_view::key_press(QPoint cursor_position)
             // o se hizo en alguno de los 2 puntos manejadores.
             int handler_point = 0;
 
-            if (is_cursor_above(cursor_position, key->pos()))
+            if (cursor_above_point(cursor_position, key->pos()))
                 key->select(true);
-            else if (is_cursor_above(cursor_position, handler.p1()))
+            else if (cursor_above_point(cursor_position, handler.p1()))
             {
                 handler_point = 1;
                 key->set_interpolation(vina::custom, vina::none);
             }
-            else if (is_cursor_above(cursor_position, handler.p2()))
+            else if (cursor_above_point(cursor_position, handler.p2()))
             {
                 handler_point = 2;
                 key->set_interpolation(vina::none, vina::custom);
@@ -213,7 +213,7 @@ void curve_view::key_move(QPoint cursor_position)
     if (!transform_box_visible)
         for (auto keys : curves)
             for (key_frame *key : keys)
-                if (is_cursor_above(cursor_position, key->pos()))
+                if (cursor_above_point(cursor_position, key->pos()))
                     this->setCursor(Qt::CrossCursor);
     //
     //
