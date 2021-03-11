@@ -52,7 +52,7 @@ QList <float> knob_floatd::get_values() const
 {
 	QList <float> values;
 	for (int i = 0; i < dimensions_edits.count(); i++)
-		values.push_back( dimensions_edits.value(i)->text().toInt() );
+		values.push_back( dimensions_edits.value(i)->text().toFloat() );
 
 	return values;
 }
