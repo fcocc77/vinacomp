@@ -5,11 +5,18 @@ protected:
 		bool transforming;
 		QPointF translate;
 		float rotate;
+		QString action;
+
 		QLineF rotate_handler;
+
 		QLineF x_handler;
 		QLineF y_handler;
+
 		float scale_handler_ratio;
-		QString action;
+		QPointF x1_scale_handler;
+		QPointF x2_scale_handler;
+		QPointF y1_scale_handler;
+		QPointF y2_scale_handler;
 	};
 
 	void tf_handler_draw();

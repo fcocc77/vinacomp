@@ -168,12 +168,12 @@ void gl_view::draw_box(QLineF diagonal_line, QColor color, QColor border_color)
     glRectf(p1.x(), p1.y(), p3.x(), p3.y());
 }
 
-void gl_view::draw_triangle(QPointF position, float size, QColor color, bool anchor_on_tip, float rotate)
+void gl_view::draw_triangle(QPointF pos, int size, QColor color, bool anchor_on_tip, float rotate)
 {
     glBegin(GL_TRIANGLES);
     glColor3f(color.red() / 255.0, color.green() / 255.0, color.blue() / 255.0);
 
-    QPointF anchor_point = get_position(position);
+    QPointF anchor_point = get_position(pos);
 	QPointF _position = anchor_point;
 
 	if (anchor_on_tip)
@@ -199,6 +199,46 @@ void gl_view::draw_triangle(QPointF position, float size, QColor color, bool anc
     glVertex2f(point_3.x(), point_3.y());
 
     glEnd();
+}
+
+void gl_view::draw_centered_box(QPointF pos, int size, QColor color, float rotate)
+{
+    QPointF _pos = get_position(pos);
+
+	glBegin(GL_POLYGON);
+    glColor3f(color.red() / 255.0, color.green() / 255.0, color.blue() / 255.0);
+
+	size /= 2;
+
+	int x1 = _pos.x() - size;
+	int x2 = _pos.x() + size;
+	int y1 = _pos.y() - size;
+	int y2 = _pos.y() + size;
+
+	QPointF p1 = {x1, y1};
+	QPointF p2 = {x2, y1};
+	QPointF p3 = {x2, y2};
+	QPointF p4 = {x1, y2};
+
+	if (rotate != 0)
+	{
+		p1 = rotate_point(p1, _pos, rotate, false, true);
+		p2 = rotate_point(p2, _pos, rotate, false, true);
+		p3 = rotate_point(p3, _pos, rotate, false, true);
+		p4 = rotate_point(p4, _pos, rotate, false, true);
+	}
+
+	p1 = get_coordsf(p1);
+	p2 = get_coordsf(p2);
+	p3 = get_coordsf(p3);
+	p4 = get_coordsf(p4);
+
+	glVertex2f(p1.x(), p1.y());
+	glVertex2f(p2.x(), p2.y());
+	glVertex2f(p3.x(), p3.y());
+	glVertex2f(p4.x(), p4.y());
+
+	glEnd();
 }
 
 void gl_view::draw_circle(QPointF anchor_point, int ratio)

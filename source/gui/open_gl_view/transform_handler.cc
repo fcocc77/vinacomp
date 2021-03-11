@@ -8,12 +8,14 @@ void gl_view::tf_handler_draw()
 
 	int handler_ratio = 50;
 	int arrow_size = 7;
+	int scale_box_size = 7;
 
 	for (auto &handler : tf_handlers)
 	{
 		float angle = handler.rotate;
 		QPointF translate_viewport = get_position(handler.translate);
 
+		// pintar ejes
 		QPointF x1 = arc_point({0, 0}, handler_ratio, angle + 180);
 		QPointF x2 = arc_point({0, 0}, handler_ratio, angle);
 		QPointF y1 = arc_point({0, 0}, handler_ratio, angle - 90);
@@ -29,6 +31,13 @@ void gl_view::tf_handler_draw()
 			get_coordsf(y2 + translate_viewport)
 		};
 
+		draw_line(handler.x_handler.p1(), handler.x_handler.p2(), Qt::red);
+		draw_line(handler.y_handler.p1(), handler.y_handler.p2(), Qt::green);
+		//
+		//
+
+
+		// pintar rotador
 		QPointF rotate_point = arc_point({0, 0}, handler_ratio + handler_ratio, angle);
 
 		handler.rotate_handler = {
@@ -36,11 +45,31 @@ void gl_view::tf_handler_draw()
 			get_coordsf(rotate_point + translate_viewport)
 		};
 
+		draw_line(handler.rotate_handler.p1(), handler.rotate_handler.p2(), color);
+		//
+		//
+
+		// Scale
 		handler.scale_handler_ratio = 100 * ( get_scale().x() / width() );
 
-		// pintar ejes
-		draw_line(handler.x_handler.p1(), handler.x_handler.p2(), Qt::red);
-		draw_line(handler.y_handler.p1(), handler.y_handler.p2(), Qt::green);
+		QPointF x1_scale = arc_point({0, 0}, handler_ratio / 2, angle + 180);
+		QPointF x2_scale = arc_point({0, 0}, handler_ratio / 2, angle);
+		QPointF y1_scale = arc_point({0, 0}, handler_ratio / 2, angle - 90);
+		QPointF y2_scale = arc_point({0, 0}, handler_ratio / 2, angle + 90);
+
+		handler.x1_scale_handler = get_coordsf(x1_scale + translate_viewport);
+		handler.x2_scale_handler = get_coordsf(x2_scale + translate_viewport);
+		handler.y1_scale_handler = get_coordsf(y1_scale + translate_viewport);
+		handler.y2_scale_handler = get_coordsf(y2_scale + translate_viewport);
+
+		draw_centered_box(handler.x1_scale_handler, scale_box_size, Qt::white, angle);
+		draw_centered_box(handler.x2_scale_handler, scale_box_size, Qt::white, angle);
+		draw_centered_box(handler.y1_scale_handler, scale_box_size, Qt::white, angle);
+		draw_centered_box(handler.y2_scale_handler, scale_box_size, Qt::white, angle);
+
+		draw_circle(handler.translate, handler.scale_handler_ratio);
+		//
+		//
 
 		// pintar flechas
 		draw_triangle(handler.x_handler.p1(), arrow_size, Qt::red, true, angle + 90);
@@ -48,11 +77,7 @@ void gl_view::tf_handler_draw()
 		draw_triangle(handler.y_handler.p1(), arrow_size, Qt::green, true, angle + 180);
 		draw_triangle(handler.y_handler.p2(), arrow_size, Qt::green, true, angle);
 
-		// pintar rotador
-		draw_line(handler.rotate_handler.p1(), handler.rotate_handler.p2(), color);
-
-		draw_circle(handler.translate, handler.scale_handler_ratio);
-		draw_point(handler.translate, Qt::white, 10, true);
+		draw_centered_box(handler.translate, 10, Qt::white, angle);
 	}
 }
 

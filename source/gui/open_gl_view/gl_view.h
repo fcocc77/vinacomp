@@ -43,7 +43,8 @@ public:
     void draw_box(QLineF diagonal_line, QColor color, QColor border_color = {0, 0, 0});
     void draw_line(QPointF src, QPointF dst, QColor color, float width = 1);
     void draw_dashed_line(QLineF line, QColor color, int stipple);
-    void draw_triangle(QPointF position, float size, QColor color, bool anchor_on_tip = false, float rotate = 0);
+    void draw_triangle(QPointF pos, int size, QColor color, bool anchor_on_tip = false, float rotate = 0);
+	void draw_centered_box(QPointF pos, int size, QColor color, float rotate = 0);
     void draw_circle(QPointF anchor_point, int ratio);
     //
     //
