@@ -44,10 +44,12 @@ void time_line::drag_in_out(int _frame)
             set_in_out(_frame, output);
     }
     else if (dragging_output)
+	{
         if (qt::control() && click_over_in_out.second)
             set_in_out((click_input + _frame - click_x_coords), _frame);
         else
             set_in_out(input, _frame);
+	}
 
     if (dragging_input || dragging_output)
         update();
@@ -95,9 +97,6 @@ void time_line::change_in_out_with_control()
 {
     if (!qt::control())
         return;
-
-    int input_distance = output - frame;
-    int output_distance = frame - input;
 
     int aux_input = input,
         aux_output = output;

@@ -221,7 +221,7 @@ QPointF gl_view::rotate_point(QPointF point, QPointF anchor_point, float angle, 
 
 QPointF gl_view::arc_point(QPointF anchor_point, int ratio, float angle)
 {
-	return rotate_point({ ratio, 0 }, anchor_point, angle);
+	return rotate_point({ float( ratio ), 0 }, anchor_point, angle);
 }
 
 float gl_view::get_angle_two_points(QPointF point_a, QPointF point_b) const

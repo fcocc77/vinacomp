@@ -4,6 +4,7 @@
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions>
 #include <QPainter>
+#include <QMouseEvent>
 
 #include <util.h>
 #include <qt.h>

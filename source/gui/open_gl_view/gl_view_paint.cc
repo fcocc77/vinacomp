@@ -210,10 +210,10 @@ void gl_view::draw_centered_box(QPointF pos, float size, QColor color, float rot
 
 	size /= 2;
 
-	int x1 = _pos.x() - size;
-	int x2 = _pos.x() + size;
-	int y1 = _pos.y() - size;
-	int y2 = _pos.y() + size;
+	float x1 = _pos.x() - size;
+	float x2 = _pos.x() + size;
+	float y1 = _pos.y() - size;
+	float y2 = _pos.y() + size;
 
 	QPointF p1 = {x1, y1};
 	QPointF p2 = {x2, y1};

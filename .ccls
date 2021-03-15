@@ -1,5 +1,6 @@
 clang++
 %cc %h -std=c++11
+-Wunused-variable
 
 -I/usr/include/qt5
 -I/usr/include/qt5/QtWidgets
