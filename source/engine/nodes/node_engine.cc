@@ -60,7 +60,7 @@ QColor node_engine::get_color(QJsonObject *params, QString key) const
 	float blue = colors[2].toDouble() * 255;
 	float alpha = colors[3].toDouble() * 255;
 
-	return {red, green, blue, alpha};
+	return QColor(red, green, blue, alpha);
 }
 
 QRect node_engine::get_rect(QJsonObject *params, QString key) const

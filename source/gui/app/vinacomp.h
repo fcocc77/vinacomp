@@ -9,8 +9,8 @@
 #include <QFileDialog>
 
 // Gui
-#include <node_graph.h>
 #include <script_editor.h>
+#include <node_graph.h>
 #include <properties.h>
 #include <curve_editor.h>
 #include <util.h>
