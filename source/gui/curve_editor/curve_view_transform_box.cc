@@ -25,9 +25,9 @@ bool curve_view::is_point_in_rectangle(QPointF point, QLineF rectangle)
     bool iside_x = false;
     bool iside_y = false;
 
-    if (x > p1.x() and x < p2.x() || x < p1.x() and x > p2.x())
+    if ((x > p1.x() and x < p2.x()) || (x < p1.x() and x > p2.x()))
         iside_x = true;
-    if (y > p1.y() and y < p2.y() || y < p1.y() and y > p2.y())
+    if ((y > p1.y() and y < p2.y()) || (y < p1.y() and y > p2.y()))
         iside_y = true;
 
     return (iside_x && iside_y);
