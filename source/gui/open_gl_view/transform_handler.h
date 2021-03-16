@@ -22,6 +22,7 @@ protected:
 	void tf_handler_draw();
 	void tf_handler_rotate_update(QString name, float rotate);
 	void tf_handler_translate_update(QString name, QPointF translate);
+	void tf_handler_scale_update(QString name, float x, float y);
 	void tf_handler_clear();
 
 	virtual void tf_handler_changed(tf_handler_struct handler, bool release = false);
@@ -33,8 +34,10 @@ private:
 	void tf_handler_translate(QPoint cursor_position, tf_handler_struct &handler);
 	void tf_handler_translate_axis(QPoint cursor_position, tf_handler_struct &handler, bool x_axis = true);
 	void tf_handler_rotate(QPoint cursor_position, tf_handler_struct &handler);
-	void tf_handler_scale_x(QPoint cursor_position, tf_handler_struct &handler);
+	void tf_handler_scale_axis(QPoint cursor_position, tf_handler_struct &handler, bool x_axis = true);
 	void tf_handler_add(QString name);
+
+	bool horizontal_axis(float rotate) const;
 
 	void tf_handler_press(QPoint cursor_position);
 	void tf_handler_release(QPoint cursor_position);

@@ -10,15 +10,15 @@ void gl_view::tf_handler_draw()
 
 	for (auto &handler : tf_handlers)
 	{
-		float angle = handler.rotate;
+		float rotate = handler.rotate;
 
 		QPointF translate_viewport = get_position(handler.translate);
 
 		// pintar ejes
-		QPointF x1 = arc_point({0, 0}, handler_ratio, angle + 180);
-		QPointF x2 = arc_point({0, 0}, handler_ratio, angle);
-		QPointF y1 = arc_point({0, 0}, handler_ratio, angle - 90);
-		QPointF y2 = arc_point({0, 0}, handler_ratio, angle + 90);
+		QPointF x1 = arc_point({0, 0}, handler_ratio, rotate + 180);
+		QPointF x2 = arc_point({0, 0}, handler_ratio, rotate);
+		QPointF y1 = arc_point({0, 0}, handler_ratio, rotate - 90);
+		QPointF y2 = arc_point({0, 0}, handler_ratio, rotate + 90);
 
 		handler.x_handler = {
 			get_coordsf(x1 + translate_viewport),
@@ -37,7 +37,7 @@ void gl_view::tf_handler_draw()
 
 
 		// pintar rotador
-		QPointF rotate_point = arc_point({0, 0}, handler_ratio + handler_ratio, angle);
+		QPointF rotate_point = arc_point({0, 0}, handler_ratio + handler_ratio, rotate);
 
 		handler.rotate_handler = {
 			handler.x_handler.p2() ,
@@ -46,41 +46,41 @@ void gl_view::tf_handler_draw()
 
 		draw_line(handler.rotate_handler.p1(), handler.rotate_handler.p2(), Qt::gray);
 
-		QPointF rotate_circle = arc_point({0, 0}, handler_ratio + 55, angle);
+		QPointF rotate_circle = arc_point({0, 0}, handler_ratio + 55, rotate);
 		rotate_circle = get_coordsf(rotate_circle + translate_viewport);
-		draw_circle(rotate_circle, 50, Qt::cyan, {1, 1}, angle, true, 10, true);
+		draw_circle(rotate_circle, 50, Qt::cyan, {1, 1}, rotate, true, 10, true);
 		//
 		//
 
 		// Scale
 		float scale_box_separation = 26;
-		QPointF x1_scale = arc_point({0, 0}, scale_box_separation, angle + 180);
-		QPointF x2_scale = arc_point({0, 0}, scale_box_separation, angle);
-		QPointF y1_scale = arc_point({0, 0}, scale_box_separation, angle - 90);
-		QPointF y2_scale = arc_point({0, 0}, scale_box_separation, angle + 90);
+		QPointF x1_scale = arc_point({0, 0}, scale_box_separation, rotate + 180);
+		QPointF x2_scale = arc_point({0, 0}, scale_box_separation, rotate);
+		QPointF y1_scale = arc_point({0, 0}, scale_box_separation, rotate - 90);
+		QPointF y2_scale = arc_point({0, 0}, scale_box_separation, rotate + 90);
 
 		handler.x1_scale_handler = get_coordsf(x1_scale + translate_viewport);
 		handler.x2_scale_handler = get_coordsf(x2_scale + translate_viewport);
 		handler.y1_scale_handler = get_coordsf(y1_scale + translate_viewport);
 		handler.y2_scale_handler = get_coordsf(y2_scale + translate_viewport);
 
-		draw_circle(handler.translate, 200, Qt::gray, handler.scale, angle, true, 50);
+		draw_circle(handler.translate, 200, Qt::gray, handler.scale, rotate, true, 50);
 
-		draw_centered_box(handler.x1_scale_handler, scale_box_size, Qt::red, angle);
-		draw_centered_box(handler.x2_scale_handler, scale_box_size, Qt::red, angle);
-		draw_centered_box(handler.y1_scale_handler, scale_box_size, Qt::green, angle);
-		draw_centered_box(handler.y2_scale_handler, scale_box_size, Qt::green, angle);
+		draw_centered_box(handler.x1_scale_handler, scale_box_size, Qt::red, rotate);
+		draw_centered_box(handler.x2_scale_handler, scale_box_size, Qt::red, rotate);
+		draw_centered_box(handler.y1_scale_handler, scale_box_size, Qt::green, rotate);
+		draw_centered_box(handler.y2_scale_handler, scale_box_size, Qt::green, rotate);
 		//
 		//
 
 		// pintar flechas
-		draw_triangle(handler.x_handler.p1(), arrow_size, Qt::red, true, angle + 90);
-		draw_triangle(handler.x_handler.p2(), arrow_size, Qt::red, true, angle - 90);
-		draw_triangle(handler.y_handler.p1(), arrow_size, Qt::green, true, angle + 180);
-		draw_triangle(handler.y_handler.p2(), arrow_size, Qt::green, true, angle);
+		draw_triangle(handler.x_handler.p1(), arrow_size, Qt::red, true, rotate + 90);
+		draw_triangle(handler.x_handler.p2(), arrow_size, Qt::red, true, rotate - 90);
+		draw_triangle(handler.y_handler.p1(), arrow_size, Qt::green, true, rotate + 180);
+		draw_triangle(handler.y_handler.p2(), arrow_size, Qt::green, true, rotate);
 
 		// Translate
-		draw_circle(handler.translate, 50, Qt::white, {1, 1}, angle, true, 10, true);
+		draw_circle(handler.translate, 50, Qt::white, {1, 1}, rotate, true, 10, true);
 	}
 }
 
@@ -113,6 +113,13 @@ void gl_view::tf_handler_rotate_update(QString name, float rotate)
 	handler.rotate = rotate;
 }
 
+void gl_view::tf_handler_scale_update(QString name, float x, float y)
+{
+	tf_handler_add(name);
+	tf_handler_struct &handler = tf_handlers[name];
+	handler.scale = {x, y};
+}
+
 void gl_view::tf_handler_clear()
 {
 	tf_handlers.clear();
@@ -132,6 +139,23 @@ void gl_view::tf_handler_translate(QPoint cursor_position, tf_handler_struct &ha
 	handler.translate = { x, y };
 }
 
+bool gl_view::horizontal_axis(float rotate) const
+{
+	// verifica si una rotacion de un objecto esta horizontal,
+	// rompiendo el angulo en 45 grados.
+
+	bool horizontal = false;
+
+	if (rotate < 45 && rotate > -45)
+		horizontal = true;
+	if (rotate < -135 && rotate > -225)
+		horizontal = true;
+	if (rotate > 135 && rotate < 225)
+		horizontal = true;
+
+	return horizontal;
+}
+
 void gl_view::tf_handler_translate_axis(QPoint cursor_position, tf_handler_struct &handler, bool x_axis)
 {
 	QPointF cursor = get_coordsf(cursor_position);
@@ -146,19 +170,10 @@ void gl_view::tf_handler_translate_axis(QPoint cursor_position, tf_handler_struc
 		click_rotate += 90;
 	}
 
-	bool horizontal = false;
-
-	if (click_rotate < 45 && click_rotate > -45)
-		horizontal = true;
-	if (click_rotate < -135 && click_rotate > -225)
-		horizontal = true;
-	if (click_rotate > 135 && click_rotate < 225)
-		horizontal = true;
-
 	float angle = (M_PI * 2.0) * rotate / 360.0;
 
 	float x, y;
-	if (horizontal)
+	if (horizontal_axis(click_rotate))
 	{
 		float x_diff = handler_click.translate.x() - cursor_click.x();
 		x = cursor.x() + x_diff;
@@ -192,10 +207,31 @@ void gl_view::tf_handler_rotate(QPoint cursor_position, tf_handler_struct &handl
 	handler.rotate = rotate - 90;
 }
 
-void gl_view::tf_handler_scale_x(QPoint cursor_position, tf_handler_struct &handler)
+void gl_view::tf_handler_scale_axis(QPoint cursor_position, tf_handler_struct &handler, bool x_axis)
 {
-	float x = cursor_position.x() - click_position.x();
-	print(x);
+	QPointF translate = get_position(handler.translate);
+	QPointF x = get_position(handler.x1_scale_handler);
+
+	float distance = qt::distance_points(translate, cursor_position);
+	float handler_to_center = qt::distance_points(translate, x);
+	float scale = distance / handler_to_center;
+
+	if (x_axis)
+	{
+		translate.setY(0);
+		x.setY(0);
+		cursor_position.setY(0);
+
+		handler.scale.setX(scale);
+	}
+	else
+	{
+		translate.setX(0);
+		x.setX(0);
+		cursor_position.setX(0);
+
+		handler.scale.setY(scale);
+	}
 }
 
 QString gl_view::tf_get_action(QPoint cursor_position, tf_handler_struct &handler)
@@ -283,7 +319,9 @@ void gl_view::tf_handler_move(QPoint cursor_position)
 			else if ( handler.action == "translate" )
 				tf_handler_translate(cursor_position, handler);
 			else if ( handler.action == "scale_x" )
-				tf_handler_scale_x(cursor_position, handler);
+				tf_handler_scale_axis(cursor_position, handler, true);
+			else if ( handler.action == "scale_y" )
+				tf_handler_scale_axis(cursor_position, handler, false);
 
 			tf_handler_changed(handler);
 			update();

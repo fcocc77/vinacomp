@@ -60,6 +60,9 @@ void viewer_gl::knob_signal(knob *_knob)
 			auto values = floatd->get_values();
 			tf_handler_translate_update(node_name, {values[0], values[1]});
 		}
+		else if (param_name == "scale")
+			#pragma message("tf_handler_scale_update: falta poner el eje Y correcto")
+			tf_handler_scale_update(node_name, floating->get_value(), floating->get_value());
 	}
 
 	else if (type == "crop" && intd)
@@ -129,7 +132,11 @@ void viewer_gl::pos_handler_changed(pos_handler_struct handler, bool release)
 void viewer_gl::tf_handler_changed(tf_handler_struct handler, bool release)
 {
 	knob_floating *rotate_knob = static_cast<knob_floating*>(get_knob(handler.name, "rotate"));
+	knob_floating *scale_knob = static_cast<knob_floating*>(get_knob(handler.name, "scale"));
 	knob_floatd *translate_knob = static_cast<knob_floatd*>(get_knob(handler.name, "translate"));
+
+	#pragma message ("Falta ajustar el eje Y en la escala hasta que tenga 2 dimensiones el knob")
+	scale_knob->set_value(handler.scale.x(), release);
 
 	rotate_knob->set_value(handler.rotate, release);
 	translate_knob->set_values({ ( float ) handler.translate.x(), ( float ) handler.translate.y() }, release);
