@@ -21,7 +21,7 @@ protected:
 
 	void tf_handler_draw();
 	void tf_handler_rotate_update(QString name, float rotate);
-	void tf_handler_translate_update(QString name, QPoint translate);
+	void tf_handler_translate_update(QString name, QPointF translate);
 	void tf_handler_clear();
 
 	virtual void tf_handler_changed(tf_handler_struct handler, bool release = false);

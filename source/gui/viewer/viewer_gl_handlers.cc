@@ -132,6 +132,6 @@ void viewer_gl::tf_handler_changed(tf_handler_struct handler, bool release)
 	knob_floatd *translate_knob = static_cast<knob_floatd*>(get_knob(handler.name, "translate"));
 
 	rotate_knob->set_value(handler.rotate, release);
-	translate_knob->set_values({handler.translate.x(), handler.translate.y()}, release);
+	translate_knob->set_values({ ( float ) handler.translate.x(), ( float ) handler.translate.y() }, release);
 }
 

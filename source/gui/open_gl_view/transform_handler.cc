@@ -3,8 +3,6 @@
 void gl_view::tf_handler_draw()
 {
     QColor color = {200, 200, 200};
-    int size = 6;
-    int smooth = false;
 
 	int handler_ratio = 60;
 	int arrow_size = 7;
@@ -101,7 +99,7 @@ void gl_view::tf_handler_add(QString name)
 	tf_handlers.insert(name, handler);
 }
 
-void gl_view::tf_handler_translate_update(QString name, QPoint translate)
+void gl_view::tf_handler_translate_update(QString name, QPointF translate)
 {
 	tf_handler_add(name);
 	tf_handler_struct &handler = tf_handlers[name];
@@ -207,11 +205,11 @@ QString gl_view::tf_get_action(QPoint cursor_position, tf_handler_struct &handle
 	if ( cursor_above_point(cursor_position, handler.translate, 15) )
 		action = "translate";
 
-	else if ( cursor_above_point(cursor_position, handler.x1_scale_handler) 
+	else if ( cursor_above_point(cursor_position, handler.x1_scale_handler)
 			| cursor_above_point(cursor_position, handler.x2_scale_handler) )
 		action = "scale_x";
 
-	else if ( cursor_above_point(cursor_position, handler.y1_scale_handler) 
+	else if ( cursor_above_point(cursor_position, handler.y1_scale_handler)
 			| cursor_above_point(cursor_position, handler.y2_scale_handler) )
 		action = "scale_y";
 
