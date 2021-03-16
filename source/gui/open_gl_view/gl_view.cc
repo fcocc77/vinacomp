@@ -47,20 +47,10 @@ void gl_view::set_ortho(float left, float right, float bottom, float top)
     set_transform({translate_x, translate_y}, {scale_x, scale_y});
 }
 
-float gl_view::get_aspect() const
-{
-    return float(height()) / width();
-}
-
 QPointF gl_view::get_coords(QPoint mouse_position) const
 {
     QPointF coordinate = -get_coordinate(mouse_position) + translate;
     return {coordinate.x(), coordinate.y() * get_aspect()};
-}
-
-QPointF gl_view::get_coordsf(QPointF mouse_position) const
-{
-    return get_coords(mouse_position.toPoint());
 }
 
 QPointF gl_view::get_position(QPointF coordinate) const
@@ -177,26 +167,6 @@ bool gl_view::cursor_above_line(QPoint cursor, QLineF line) const
 	return diff < tolerance;
 }
 
-QPointF gl_view::get_scale() const
-{
-    return scale;
-}
-
-QPointF gl_view::get_translate() const
-{
-	return translate;
-}
-
-void gl_view::set_scale(QPointF _scale)
-{
-	scale = _scale;
-}
-
-void gl_view::set_translate(QPointF _translate)
-{
-	translate = _translate;
-}
-
 QPointF gl_view::rotate_point(QPointF point, QPointF anchor_point, float angle, bool keep_aspect, bool keep_offset) const
 {
     // rota un punto alrededor de otro punto (punto de anclaje).
@@ -217,11 +187,6 @@ QPointF gl_view::rotate_point(QPointF point, QPointF anchor_point, float angle, 
     y += anchor_point.y();
 
     return {x, y};
-}
-
-QPointF gl_view::arc_point(QPointF anchor_point, int ratio, float angle)
-{
-	return rotate_point({ float( ratio ), 0 }, anchor_point, angle);
 }
 
 float gl_view::get_angle_two_points(QPointF point_a, QPointF point_b) const
