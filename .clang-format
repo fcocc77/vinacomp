@@ -12,7 +12,7 @@ BraceWrapping:
     AfterNamespace: true
     BeforeElse: true
     AfterControlStatement: true
-AccessModifierOffset: '-2'
+AccessModifierOffset: '-4'
 SpacesInParentheses: true
 SpaceInEmptyParentheses: false
 SpacesInSquareBrackets: true
