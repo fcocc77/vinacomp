@@ -14,7 +14,8 @@
         "d": "npx webpack -d",
         "w": "npx webpack -d --watch",
         "build": "sh scripts/build.sh",
-        "install": "sh scripts/install.sh"
+        "install": "sh scripts/install.sh",
+        "clang-format": "sh scripts/clang-format.sh"
     },
     "keywords": [],
     "author": "Francisco José Contreras Cuevas",
