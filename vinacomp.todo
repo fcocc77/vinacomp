@@ -56,7 +56,7 @@ gui__knobs:
 	☐ slider: opcion para mantener el 'handler' siempre al centro independiente del valor minimo y maximo
 	☐ que los qlineedit con boton derecho despliegue el menu de animacion
 	☐ terminar button knob'
-	☐ que el boton de keyframe despliegue un menu con las opciones de animacion
+	✔ que el boton de keyframe despliegue un menu con las opciones de animacion @done(2021-03-17 17:30) @project(gui__knobs)
 	☐ terminar button knob'
 	☐ terminar choice knob'
 	☐ terminar file knob'
@@ -68,7 +68,7 @@ nodes:
 engine__project_struct:
 	☐ Una vez tengamos las entrada de los nodos ok, cambiar el tipo de los 'inputs' de QJsonObject a QJsonArray
 engine__grade:
-	☐ hacer que todos lo nodos de color solo iteren lo pixel una sola vez, para no gastar recursos inecesasios
+	☐ hacer que todos los nodos de color solo iteren lo pixel una sola vez, para no gastar recursos inecesasios
 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
 Archive:
 	✔ que los botones tengan hover @done(2021-01-08 15:18) @project(gui__knobs)

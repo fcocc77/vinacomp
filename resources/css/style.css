@@ -17,6 +17,8 @@ QLabel {
 
 QPushButton {
   background: transparent; }
+  QPushButton:menu-indicator {
+    width: 0px; }
 
 QMainWindow {
   qproperty-windowIcon: url("/home/pancho/Documents/develop/vinacomp/resources/images/vinacomp.png"); }

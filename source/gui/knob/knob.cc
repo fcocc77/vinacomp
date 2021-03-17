@@ -108,10 +108,58 @@ void knob::set_animatable(bool _animatable)
     if (animation_button || !knob_layout)
         return;
 
-    animation_button = new QPushButton();
+    animation_button = new button();
     animation_button->setObjectName("small_button");
-    qt::set_icon(animation_button, "key_a", icon_size);
+    animation_button->set_icon("key", icon_size);
     knob_layout->addWidget(animation_button);
+
+    QMenu *menu = new QMenu(this);
+
+    action *set_key_action = new action("Set Key", "", "key");
+    action *delete_key_action = new action("Delete Key", "");
+    action *no_animation_action = new action("No Animation", "");
+    action *curve_editor_action = new action("Curve Editor...", "", "curve_editor");
+    action *copy_values_action = new action("Copy Values", "");
+    action *copy_animation_action = new action("Copy Animation", "");
+    action *copy_links_action = new action("Copy Links", "");
+    action *paste_absolute_action = new action("Paste Absolute");
+    action *paste_relative_action = new action("Paste Relative");
+    action *generate_keys_action = new action("Generate Keys");
+    action *smooth_curve_action = new action("Smooth Curve");
+    action *loop_action = new action("Loop");
+
+    menu->addAction(set_key_action);
+    menu->addAction(delete_key_action);
+    menu->addAction(no_animation_action);
+    menu->addSeparator();
+    menu->addAction(curve_editor_action);
+    menu->addSeparator();
+    menu->addAction(copy_values_action);
+    menu->addAction(copy_animation_action);
+    menu->addAction(copy_links_action);
+    menu->addSeparator();
+    menu->addAction(paste_absolute_action);
+    menu->addAction(paste_relative_action);
+    menu->addSeparator();
+    menu->addAction(generate_keys_action);
+    menu->addAction(smooth_curve_action);
+    menu->addAction(loop_action);
+
+    animation_button->setMenu(menu);
+
+    // Conecciones
+    set_key_action->connect_to(this, [=]() { print("set key"); });
+    delete_key_action->connect_to(this, [=]() {});
+    no_animation_action->connect_to(this, [=]() {});
+    curve_editor_action->connect_to(this, [=]() {});
+    copy_values_action->connect_to(this, [=]() {});
+    copy_animation_action->connect_to(this, [=]() {});
+    copy_links_action->connect_to(this, [=]() {});
+    paste_absolute_action->connect_to(this, [=]() {});
+    paste_relative_action->connect_to(this, [=]() {});
+    generate_keys_action->connect_to(this, [=]() {});
+    smooth_curve_action->connect_to(this, [=]() {});
+    loop_action->connect_to(this, [=]() {});
 }
 
 void knob::set_visible(bool visible)

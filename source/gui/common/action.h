@@ -27,7 +27,7 @@ private:
     void uncheck_all();
 
 public:
-    action(QString label, QString shortcut_key, QString icon_name = "");
+    action(QString label, QString shortcut_key = "", QString icon_name = "");
     ~action();
 
     QString get_icon_name() const;

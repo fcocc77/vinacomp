@@ -5,14 +5,17 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QWidget>
+#include <QMenu>
 
 #include <qt.h>
+#include <button.h>
+#include <action.h>
 
 class knob : public QWidget
 {
 private:
     QHBoxLayout *knob_layout;
-    QPushButton *animation_button;
+    button *animation_button;
 
     QList<QWidget *> *viewers_gl;
 
