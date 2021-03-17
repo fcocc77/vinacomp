@@ -13,8 +13,8 @@ BraceWrapping:
     BeforeElse: true
     AfterControlStatement: true
 AccessModifierOffset: -4
-SpacesInParentheses: true
+SpacesInParentheses: false
 SpaceInEmptyParentheses: false
-SpacesInSquareBrackets: true
+SpacesInSquareBrackets: false
 Standard: Cpp11
 AllowShortFunctionsOnASingleLine: Empty
