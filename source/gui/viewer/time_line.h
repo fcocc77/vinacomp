@@ -3,23 +3,22 @@
 
 #include <QLineEdit>
 
-
+#include <action.h>
 #include <gl_view.h>
 #include <qt.h>
 #include <util.h>
-#include <action.h>
 
 class time_line : public gl_view
 {
-	Q_OBJECT
+    Q_OBJECT
 private:
     int frame;
     int ghost_frame;
     bool dragging, ghost_frame_visible, selector_visible;
 
     int click_x_coords;
-	bool is_fit_to_selector;
-	pair<int, int> selector;
+    bool is_fit_to_selector;
+    pair<int, int> selector;
 
     int first_frame, last_frame;
     int input, output, click_input, click_output;
@@ -27,74 +26,69 @@ private:
 
     bool right_button, middle_button, left_button;
     bool dragging_input, dragging_output;
-	bool in_out_visible;
+    bool in_out_visible;
 
-	float top_y, mid_y1, mid_y2, number_y;
+    float top_y, mid_y1, mid_y2, number_y;
 
-	QJsonObject palette;
-	QWidget *parent;
+    QJsonObject palette;
+    QWidget *parent;
 
-	void fit_switch();
-	void fit_to_selector();
-    void set_in_out(int _input, int _output, bool emit_signal = true);
+    void fit_switch();
+    void fit_to_selector();
+    void set_in_out( int _input, int _output, bool emit_signal = true );
 
-	// Input Output
-    void drag_in_out(int _frame);
-    void set_frame(int _frame);
-    pair<bool, bool> over_in_out(int x) const;
+    // Input Output
+    void drag_in_out( int _frame );
+    void set_frame( int _frame );
+    pair<bool, bool> over_in_out( int x ) const;
     void change_in_out_with_control();
-	//
+    //
 
-	// Paint
-	void draw_selector();
+    // Paint
+    void draw_selector();
     void draw_coordinate_numbers();
     void draw_cursor();
     void draw_in_out();
-	void draw_guide_frames();
+    void draw_guide_frames();
     //
     //
 
-	// From viewer
-	QLineEdit *frame_edit;
-	QLineEdit *input_frame_edit;
-	QLineEdit *output_frame_edit;
-	QLineEdit *skip_frame_edit;
-	//
-	//
+    // From viewer
+    QLineEdit *frame_edit;
+    QLineEdit *input_frame_edit;
+    QLineEdit *output_frame_edit;
+    QLineEdit *skip_frame_edit;
+    //
+    //
 
 public:
-    time_line(
-		QWidget *_parent,
-		QLineEdit *frame_edit,
-		QLineEdit *input_frame_edit,
-		QLineEdit *output_frame_edit,
-		QLineEdit *skip_frame_edit
-	);
+    time_line( QWidget *_parent, QLineEdit *frame_edit, QLineEdit *input_frame_edit,
+               QLineEdit *output_frame_edit, QLineEdit *skip_frame_edit );
     ~time_line();
 
-	void go_to_frame(int _frame);
-	void next_frame();
-	void previous_frame();
-	void next_frame_each(int frames);
-	void previous_frame_each(int frames);
-	void set_frame_range(int _first_frame, int _last_frame);
-    void update_in_out(int _input, int _output);
-	void set_in_out_visible(bool visible);
-    void fit_to_range(int _first_frame, int _last_frame);
+    void go_to_frame( int _frame );
+    void next_frame();
+    void previous_frame();
+    void next_frame_each( int frames );
+    void previous_frame_each( int frames );
+    void set_frame_range( int _first_frame, int _last_frame );
+    void update_in_out( int _input, int _output );
+    void set_in_out_visible( bool visible );
+    void fit_to_range( int _first_frame, int _last_frame );
 
 protected:
     void initializeGL() override;
     void paintGL() override;
 
-    void mousePressEvent(QMouseEvent *event) override;
-    void mouseReleaseEvent(QMouseEvent *event) override;
-    void cursor_move_event(QPoint position) override;
-	void focusOutEvent(QFocusEvent *event) override;
+    void mousePressEvent( QMouseEvent *event ) override;
+    void mouseReleaseEvent( QMouseEvent *event ) override;
+    void cursor_move_event( QPoint position ) override;
+    void focusOutEvent( QFocusEvent *event ) override;
 
 signals:
-	void frame_changed(int frame);
-	void in_out_changed(int input, int output);
-	void panning();
+    void frame_changed( int frame );
+    void in_out_changed( int input, int output );
+    void panning();
 };
 
 #endif // TIME_LINE_HPP

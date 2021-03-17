@@ -2,17 +2,19 @@
 #define RENDER_DATA_H
 
 #include <opencv2/opencv.hpp>
+#include <QRect>
+#include <QString>
 
 struct render_data
 {
-	cv::Mat image;
-	int frame;
-	int width;
-	int height;
-	int first_frame;
-	int last_frame;
-	QRect bbox;
-	QString root_node;
+    cv::Mat image;
+    int frame;
+    int width;
+    int height;
+    int first_frame;
+    int last_frame;
+    QRect bbox;
+    QString root_node;
 };
 
-#endif //RENDER_DATA_H
+#endif // RENDER_DATA_H

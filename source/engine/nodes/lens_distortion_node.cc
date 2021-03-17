@@ -2,11 +2,9 @@
 
 lens_distortion_node::lens_distortion_node()
 {
-	load_default_params("lens_distortion");
+    load_default_params( "lens_distortion" );
 }
 
-lens_distortion_node::~lens_distortion_node() { }
+lens_distortion_node::~lens_distortion_node() {}
 
-void lens_distortion_node::render( render_data *rdata, QJsonObject *params )
-{
-}
+void lens_distortion_node::render( render_data *rdata, QJsonObject *params ) {}

@@ -1,16 +1,16 @@
 #ifndef NODE_FINDER_H
 #define NODE_FINDER_H
 
-#include <QWidget>
+#include <QJsonObject>
 #include <QLineEdit>
-#include <QVBoxLayout>
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
-#include <QJsonObject>
+#include <QVBoxLayout>
+#include <QWidget>
 
-#include <util.h>
-#include <qt.h>
 #include <nodes_load.h>
+#include <qt.h>
+#include <util.h>
 
 class node_finder : public QWidget
 {
@@ -22,7 +22,7 @@ private:
     void update_tree();
 
 public:
-    node_finder(QWidget *_node_graph, nodes_load *_nodes);
+    node_finder( QWidget *_node_graph, nodes_load *_nodes );
     ~node_finder();
 
     QTreeWidget *tree;
@@ -32,4 +32,4 @@ public:
     void show_finder();
 };
 
-#endif //NODE_FINDER_H
+#endif // NODE_FINDER_H

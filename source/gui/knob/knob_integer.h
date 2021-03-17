@@ -1,29 +1,30 @@
 #ifndef KNOB_INTEGER_HPP
 #define KNOB_INTEGER_HPP
 
-#include <QWidget>
-#include <QLabel>
 #include <QHBoxLayout>
-#include <QPushButton>
+#include <QLabel>
 #include <QLineEdit>
+#include <QPushButton>
+#include <QWidget>
 
-#include <slider.h>
-#include <qt.h>
 #include <knob.h>
+#include <qt.h>
+#include <slider.h>
 
 class knob_integer : public knob
 {
-	Q_OBJECT
+    Q_OBJECT
 private:
-	QLineEdit *value_edit;
-	slider *_slider;
+    QLineEdit *value_edit;
+    slider *_slider;
+
 public:
-    knob_integer(int min, int max, int default_value = 0);
+    knob_integer( int min, int max, int default_value = 0 );
     ~knob_integer();
 
-	void set_value(int value);
+    void set_value( int value );
 signals:
-	void changed(int value);
+    void changed( int value );
 };
 
-#endif //KNOB_INTEGER_HPP
+#endif // KNOB_INTEGER_HPP

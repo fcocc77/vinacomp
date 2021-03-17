@@ -4,8 +4,8 @@
 #include <QGraphicsView>
 #include <QScrollBar>
 
-#include <util.h>
 #include <qt.h>
+#include <util.h>
 
 class graphics_view : public QGraphicsView
 {
@@ -18,21 +18,21 @@ private:
     bool zooming;
     int panning_start_x, panning_start_y;
 
-    void zoom(int delta, QPoint position);
+    void zoom( int delta, QPoint position );
 
 public:
-    graphics_view(/* args */);
+    graphics_view( /* args */ );
     ~graphics_view();
 
 protected:
     // Events
-    void mousePressEvent(QMouseEvent *event) override;
-    void mouseReleaseEvent(QMouseEvent *event) override;
-    void mouseMoveEvent(QMouseEvent *event) override;
-    void wheelEvent(QWheelEvent *event) override;
-    void keyPressEvent(QKeyEvent *event) override;
-    void keyReleaseEvent(QKeyEvent *event) override;
-    void focusOutEvent(QFocusEvent *event) override;
+    void mousePressEvent( QMouseEvent *event ) override;
+    void mouseReleaseEvent( QMouseEvent *event ) override;
+    void mouseMoveEvent( QMouseEvent *event ) override;
+    void wheelEvent( QWheelEvent *event ) override;
+    void keyPressEvent( QKeyEvent *event ) override;
+    void keyReleaseEvent( QKeyEvent *event ) override;
+    void focusOutEvent( QFocusEvent *event ) override;
 };
 
 #endif // GRAPHICS_VIEW_HPP

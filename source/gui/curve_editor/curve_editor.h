@@ -2,12 +2,12 @@
 #define CURVE_EDITOR_HPP
 
 // QT5
-#include <QWidget>
-#include <QHBoxLayout>
-#include <QTreeWidget>
 #include <QGraphicsScene>
+#include <QHBoxLayout>
 #include <QLabel>
 #include <QLineEdit>
+#include <QTreeWidget>
+#include <QWidget>
 
 #include <curve_view.h>
 #include <tools.h>
@@ -20,10 +20,10 @@ private:
 
     void setup_ui();
     QTreeWidget *knobs_tree_setup_ui();
-    void add_item(QString node, QString param, QString dimension);
+    void add_item( QString node, QString param, QString dimension );
 
 public:
-    curve_editor(/* args */);
+    curve_editor( /* args */ );
     ~curve_editor();
 
     void add_curve();

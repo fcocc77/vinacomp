@@ -1,8 +1,8 @@
 #ifndef NODES_LOAD_H
 #define NODES_LOAD_H
 
-#include <QObject>
 #include <QJsonObject>
+#include <QObject>
 
 #include <os.h>
 
@@ -15,8 +15,8 @@ public:
     nodes_load();
     ~nodes_load();
 
-    QJsonObject get_effect(QString id) const;
-    QJsonObject get_effects(QString group = "") const;
+    QJsonObject get_effect( QString id ) const;
+    QJsonObject get_effects( QString group = "" ) const;
 };
 
 #endif // NODES_LOAD_H

@@ -1,42 +1,40 @@
 #include <engine.h>
 #include <python_api.h>
 
-engine::engine(QString _input_py)
-    : input_py(_input_py)
+engine::engine( QString _input_py )
+    : input_py( _input_py )
 {
     project = new QJsonObject();
-    project->insert("nodes", {});
+    project->insert( "nodes", {} );
 
-    _app = new app(project);
-    _nodes = new nodes(project);
+    _app = new app( project );
+    _nodes = new nodes( project );
     python_initialize();
 }
 
-engine::~engine()
-{
-}
+engine::~engine() {}
 
 void engine::python_initialize()
 {
-    py_app::init_module(project, _app);
-    py_nodes::init_module(project, _nodes);
+    py_app::init_module( project, _app );
+    py_nodes::init_module( project, _nodes );
 
     Py_Initialize();
 
-    PyObject *sys_path = PySys_GetObject("path");
+    PyObject *sys_path = PySys_GetObject( "path" );
 
     // importacion de modulos de vinacomp
-    PyList_Append(sys_path, py_string("./modules"));
-    PyRun_SimpleString("from init import *");
+    PyList_Append( sys_path, py_string( "./modules" ) );
+    PyRun_SimpleString( "from init import *" );
     //
     //
 
     // importacion de archivo python del parametro entrante
-    QString input_py_dir = os::dirname(input_py);
-    string input_py_name = os::basename(input_py).split(".")[0].toStdString();
+    QString input_py_dir = os::dirname( input_py );
+    string input_py_name = os::basename( input_py ).split( "." )[ 0 ].toStdString();
     string input_py_module = "from " + input_py_name + " import *";
-    PyList_Append(sys_path, py_string(input_py_dir));
-    PyRun_SimpleString(input_py_module.c_str());
+    PyList_Append( sys_path, py_string( input_py_dir ) );
+    PyRun_SimpleString( input_py_module.c_str() );
     //
     //
 

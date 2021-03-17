@@ -1,117 +1,114 @@
 #include <renderer.h>
 
-renderer::renderer(project_struct *_project)
-	: project(_project)
+renderer::renderer( project_struct *_project )
+    : project( _project )
 {
-	// los nodos que se definen globalmente aparte de insertarlos a la lista 'nodes'
-	// es porque tienen funciones aparte de 'render'
-	time_offset = new time_offset_node();
-	read = new read_node();
-	_frame_range = new frame_range_node();
+    // los nodos que se definen globalmente aparte de insertarlos a la lista 'nodes'
+    // es porque tienen funciones aparte de 'render'
+    time_offset = new time_offset_node();
+    read = new read_node();
+    _frame_range = new frame_range_node();
 
-	nodes.insert("time_offset", time_offset);
-	nodes.insert("read", read);
-	nodes.insert("frame_range", _frame_range);
-	//
+    nodes.insert( "time_offset", time_offset );
+    nodes.insert( "read", read );
+    nodes.insert( "frame_range", _frame_range );
+    //
 
-	nodes.insert("viewer", new viewer_node());
-	nodes.insert("blur", new blur_node());
-	nodes.insert("position", new position_node());
-	nodes.insert("invert", new invert_node());
-	nodes.insert("reformat", new reformat_node());
-	nodes.insert("constant", new constant_node());
-	nodes.insert("ramp", new ramp_node());
-	nodes.insert("radial", new radial_node());
-	nodes.insert("noise", new noise_node());
-	nodes.insert("shuffle", new shuffle_node());
-	nodes.insert("grid", new grid_node());
-	nodes.insert("text", new text_node());
-	nodes.insert("checker_board", new checker_board_node());
-	nodes.insert("mirror", new mirror_node());
-	nodes.insert("sharpen", new sharpen_node());
-	nodes.insert("cornel_pin", new cornel_pin_node());
-	nodes.insert("rectangle", new rectangle_node());
-	nodes.insert("frame_hold", new frame_hold_node());
-	nodes.insert("copy", new copy_node());
-	nodes.insert("clamp", new clamp_node());
-	nodes.insert("saturation", new saturation_node());
-	nodes.insert("grade", new grade_node());
-	nodes.insert("edge_detect", new edge_detect_node());
-	nodes.insert("erode", new erode_node());
-	nodes.insert("keyer", new keyer_node());
-	nodes.insert("dissolve", new dissolve_node());
-	nodes.insert("merge", new merge_node());
-	nodes.insert("premult", new premult_node());
-	nodes.insert("unpremult", new unpremult_node());
-	nodes.insert("switch", new switch_node());
-	nodes.insert("bbox_adjust", new bbox_adjust_node());
-	nodes.insert("crop", new crop_node());
-	nodes.insert("idistort", new idistort_node());
-	nodes.insert("lens_distortion", new lens_distortion_node());
-	nodes.insert("transform", new transform_node());
+    nodes.insert( "viewer", new viewer_node() );
+    nodes.insert( "blur", new blur_node() );
+    nodes.insert( "position", new position_node() );
+    nodes.insert( "invert", new invert_node() );
+    nodes.insert( "reformat", new reformat_node() );
+    nodes.insert( "constant", new constant_node() );
+    nodes.insert( "ramp", new ramp_node() );
+    nodes.insert( "radial", new radial_node() );
+    nodes.insert( "noise", new noise_node() );
+    nodes.insert( "shuffle", new shuffle_node() );
+    nodes.insert( "grid", new grid_node() );
+    nodes.insert( "text", new text_node() );
+    nodes.insert( "checker_board", new checker_board_node() );
+    nodes.insert( "mirror", new mirror_node() );
+    nodes.insert( "sharpen", new sharpen_node() );
+    nodes.insert( "cornel_pin", new cornel_pin_node() );
+    nodes.insert( "rectangle", new rectangle_node() );
+    nodes.insert( "frame_hold", new frame_hold_node() );
+    nodes.insert( "copy", new copy_node() );
+    nodes.insert( "clamp", new clamp_node() );
+    nodes.insert( "saturation", new saturation_node() );
+    nodes.insert( "grade", new grade_node() );
+    nodes.insert( "edge_detect", new edge_detect_node() );
+    nodes.insert( "erode", new erode_node() );
+    nodes.insert( "keyer", new keyer_node() );
+    nodes.insert( "dissolve", new dissolve_node() );
+    nodes.insert( "merge", new merge_node() );
+    nodes.insert( "premult", new premult_node() );
+    nodes.insert( "unpremult", new unpremult_node() );
+    nodes.insert( "switch", new switch_node() );
+    nodes.insert( "bbox_adjust", new bbox_adjust_node() );
+    nodes.insert( "crop", new crop_node() );
+    nodes.insert( "idistort", new idistort_node() );
+    nodes.insert( "lens_distortion", new lens_distortion_node() );
+    nodes.insert( "transform", new transform_node() );
 }
 
-renderer::~renderer()
-{
+renderer::~renderer() {}
 
+QString renderer::get_input_node( QString node_name, int input ) const
+{
+    node_struct *node = &project->nodes[ node_name ];
+    QString input_node = node->inputs.value( "in0" ).toString();
+
+    return input_node;
 }
 
-QString renderer::get_input_node(QString node_name, int input) const
+pair<int, int> renderer::get_frame_range( QString node_name ) const
 {
-	node_struct *node = &project->nodes[node_name];
-	QString input_node = node->inputs.value("in0").toString();
+    // calcula el 'frame range' de un nodo, sin renderizar el nodo,
+    // el 'frame range' se encuentra solo en algunos nodos como
+    // read, frame_range, retime, y todo los nodos que tengan 'frame_range'
+    node_struct *node = &project->nodes[ node_name ];
 
-	return input_node;
+    if ( node->type == "read" )
+        return read->get_frame_range( node->params );
+    else if ( node->type == "frame_range" )
+        return _frame_range->get_frame_range( node->params );
+
+    QString input_node = node->inputs.value( "in0" ).toString();
+    if ( !input_node.isEmpty() )
+        return get_frame_range( input_node );
+
+    return {};
 }
 
-pair <int, int> renderer::get_frame_range(QString node_name) const
+void renderer::render( render_data *rdata )
 {
-	// calcula el 'frame range' de un nodo, sin renderizar el nodo,
-	// el 'frame range' se encuentra solo en algunos nodos como
-	// read, frame_range, retime, y todo los nodos que tengan 'frame_range'
-	node_struct *node = &project->nodes[node_name];
+    if ( !project->nodes.contains( rdata->root_node ) )
+        return;
 
-	if (node->type == "read")
-		return read->get_frame_range(node->params);
-	else if (node->type == "frame_range")
-		return _frame_range->get_frame_range(node->params);
+    node_struct *node = &project->nodes[ rdata->root_node ];
+    node_engine *_node_engine = nodes.value( node->type );
 
-	QString input_node = node->inputs.value("in0").toString();
-	if (!input_node.isEmpty())
-		return get_frame_range(input_node);
+    bool disable = false;
+    if ( _node_engine )
+        disable = _node_engine->get( node->params, "disable_node" ).toBool();
 
-	return {};
-}
+    // los nodos de tiempo tienen que modificar todos los nodos entrantes
+    // por eso estos nodos tienen que ir antes de renderizar las entradas
+    if ( node->type == "time_offset" && !disable )
+        time_offset->set_offset( node->params, rdata->frame, rdata->root_node, this );
+    //
 
-void renderer::render(render_data *rdata)
-{
-	if (!project->nodes.contains(rdata->root_node))
-		return;
+    // renderiza las entradas del nodo antes que el nodo
+    QString input_node = node->inputs.value( "in0" ).toString();
+    if ( !input_node.isEmpty() )
+    {
+        rdata->root_node = input_node;
+        render( rdata );
+    }
+    //
 
-	node_struct *node = &project->nodes[rdata->root_node];
-	node_engine *_node_engine = nodes.value(node->type);
-
-	bool disable = false;
-	if (_node_engine)
-		disable = _node_engine->get(node->params, "disable_node").toBool();
-
-	// los nodos de tiempo tienen que modificar todos los nodos entrantes
-	// por eso estos nodos tienen que ir antes de renderizar las entradas
-	if (node->type == "time_offset" && !disable)
-		time_offset->set_offset(node->params, rdata->frame, rdata->root_node, this);
-	//
-
-	// renderiza las entradas del nodo antes que el nodo
-	QString input_node = node->inputs.value("in0").toString();
-	if (!input_node.isEmpty())
-	{
-		rdata->root_node = input_node;
-		render(rdata);
-	}
-	//
-
-	// renderiza el nodo actual
-	if (_node_engine && !disable)
-		_node_engine->render(rdata, node->params);
-	//
+    // renderiza el nodo actual
+    if ( _node_engine && !disable )
+        _node_engine->render( rdata, node->params );
+    //
 }

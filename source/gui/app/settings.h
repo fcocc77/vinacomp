@@ -2,16 +2,17 @@
 #define SETTINGS_HPP
 
 // QT5
-#include <QWidget>
-#include <QVBoxLayout>
 #include <QTreeWidget>
+#include <QVBoxLayout>
+#include <QWidget>
 
 class settings : public QWidget
 {
 private:
-	QVBoxLayout *layout;
+    QVBoxLayout *layout;
+
 public:
-    settings(/* args */);
+    settings( /* args */ );
     ~settings();
 };
 

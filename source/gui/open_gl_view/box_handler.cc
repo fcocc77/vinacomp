@@ -1,33 +1,29 @@
 #include <gl_view.h>
 
-void gl_view::box_handler_update(QString name, QString type, QRect box)
+void gl_view::box_handler_update( QString name, QString type, QRect box )
 {
-	box_handler_struct handler;
+    box_handler_struct handler;
 
-	handler.transforming = false;
-	handler.name = name;
-	handler.type = type;
-	handler.box.setLine(
-		box.x(), box.y(),
-		box.x() + box.width(),
-		box.y() + box.height()
-	);
+    handler.transforming = false;
+    handler.name = name;
+    handler.type = type;
+    handler.box.setLine( box.x(), box.y(), box.x() + box.width(), box.y() + box.height() );
 
-	handlers.insert(name, handler);
+    handlers.insert( name, handler );
 }
 
 void gl_view::box_handler_clear()
 {
-	handlers.clear();
+    handlers.clear();
 }
 
 void gl_view::box_handlers_draw()
 {
-	for (auto handler : handlers)
-		box_handler_draw(handler.box);
+    for ( auto handler : handlers )
+        box_handler_draw( handler.box );
 }
 
-void gl_view::box_handler_draw(QLineF box_handler)
+void gl_view::box_handler_draw( QLineF box_handler )
 {
     QColor color = {200, 200, 200};
 
@@ -36,26 +32,26 @@ void gl_view::box_handler_draw(QLineF box_handler)
     QPointF bottom_right = {top_right.x(), bottom_left.y()};
     QPointF top_left = {bottom_left.x(), top_right.y()};
 
-    draw_box({bottom_left, top_right}, {10, 10, 10}, color);
+    draw_box( {bottom_left, top_right}, {10, 10, 10}, color );
     //
     //
 
     // Vertices
     int size = 6;
     int smooth = false;
-    draw_point(bottom_left, color, size, smooth);
-    draw_point(bottom_right, color, size, smooth);
-    draw_point(top_left, color, size, smooth);
-    draw_point(top_right, color, size, smooth);
+    draw_point( bottom_left, color, size, smooth );
+    draw_point( bottom_right, color, size, smooth );
+    draw_point( top_left, color, size, smooth );
+    draw_point( top_right, color, size, smooth );
     //
     //
 
     // + Central
-    float center_x = (bottom_left.x() + bottom_right.x()) / 2;
-    float center_y = (bottom_right.y() + top_right.y()) / 2;
+    float center_x = ( bottom_left.x() + bottom_right.x() ) / 2;
+    float center_y = ( bottom_right.y() + top_right.y() ) / 2;
 
     QPointF center = {center_x, center_y};
-    center = get_position(center);
+    center = get_position( center );
 
     int distance = 30;
     {
@@ -63,10 +59,10 @@ void gl_view::box_handler_draw(QLineF box_handler)
         QPointF horizontal_p1 = {center.x() - distance, center.y()};
         QPointF horizontal_p2 = {center.x() + distance, center.y()};
 
-        horizontal_p1 = get_coordsf(horizontal_p1);
-        horizontal_p2 = get_coordsf(horizontal_p2);
+        horizontal_p1 = get_coordsf( horizontal_p1 );
+        horizontal_p2 = get_coordsf( horizontal_p2 );
 
-        draw_line(horizontal_p1, horizontal_p2, color);
+        draw_line( horizontal_p1, horizontal_p2, color );
         //
     }
 
@@ -75,10 +71,10 @@ void gl_view::box_handler_draw(QLineF box_handler)
         QPointF vertical_p1 = {center.x(), center.y() - distance};
         QPointF vertical_p2 = {center.x(), center.y() + distance};
 
-        vertical_p1 = get_coordsf(vertical_p1);
-        vertical_p2 = get_coordsf(vertical_p2);
+        vertical_p1 = get_coordsf( vertical_p1 );
+        vertical_p2 = get_coordsf( vertical_p2 );
 
-        draw_line(vertical_p1, vertical_p2, color);
+        draw_line( vertical_p1, vertical_p2, color );
         //
     }
 
@@ -86,14 +82,14 @@ void gl_view::box_handler_draw(QLineF box_handler)
     //
 }
 
-QString gl_view::get_transform_action(QPoint cursor_position, box_handler_struct &handler)
+QString gl_view::get_transform_action( QPoint cursor_position, box_handler_struct &handler )
 {
     // Obtiene la accion del 'box_handler' a partir del cursor del mouse
     bool is_above = false;
-    auto above = [&](QPointF point, Qt::CursorShape cursor, QPointF point2 = {}) {
-        if (cursor_above_rect(cursor_position, point, point2))
+    auto above = [&]( QPointF point, Qt::CursorShape cursor, QPointF point2 = {} ) {
+        if ( cursor_above_rect( cursor_position, point, point2 ) )
         {
-            this->setCursor(cursor);
+            this->setCursor( cursor );
             is_above = true;
             return true;
         }
@@ -107,19 +103,19 @@ QString gl_view::get_transform_action(QPoint cursor_position, box_handler_struct
     QPointF top_left = {bottom_left.x(), top_right.y()};
 
     // si las posiciones x o y de la caja de tranformacion son iguales, entoces solo se puede mover
-    if (handler.box.x1() == handler.box.x2() || handler.box.y1() == handler.box.y2())
-        if (cursor_above_rect(cursor_position, handler.box.p1(), handler.box.p2()))
+    if ( handler.box.x1() == handler.box.x2() || handler.box.y1() == handler.box.y2() )
+        if ( cursor_above_rect( cursor_position, handler.box.p1(), handler.box.p2() ) )
             return "center_translate";
     //
 
     // vertices
-    if (cursor_above_point(cursor_position, bottom_left))
+    if ( cursor_above_point( cursor_position, bottom_left ) )
         return "bottom_left_scale";
-    if (cursor_above_point(cursor_position, top_right))
+    if ( cursor_above_point( cursor_position, top_right ) )
         return "top_right_scale";
-    if (cursor_above_point(cursor_position, bottom_right))
+    if ( cursor_above_point( cursor_position, bottom_right ) )
         return "bottom_right_scale";
-    if (cursor_above_point(cursor_position, top_left))
+    if ( cursor_above_point( cursor_position, top_left ) )
         return "top_left_scale";
     //
     //
@@ -130,13 +126,13 @@ QString gl_view::get_transform_action(QPoint cursor_position, box_handler_struct
     QLineF bottom = {bottom_left, bottom_right};
     QLineF top = {top_left, top_right};
 
-    if (cursor_above_rect(cursor_position, left.p1(), left.p2()))
+    if ( cursor_above_rect( cursor_position, left.p1(), left.p2() ) )
         return "left_scale";
-    if (cursor_above_rect(cursor_position, right.p1(), right.p2()))
+    if ( cursor_above_rect( cursor_position, right.p1(), right.p2() ) )
         return "right_scale";
-    if (cursor_above_rect(cursor_position, bottom.p1(), bottom.p2()))
+    if ( cursor_above_rect( cursor_position, bottom.p1(), bottom.p2() ) )
         return "bottom_scale";
-    if (cursor_above_rect(cursor_position, top.p1(), top.p2()))
+    if ( cursor_above_rect( cursor_position, top.p1(), top.p2() ) )
         return "top_scale";
     //
     //
@@ -144,25 +140,25 @@ QString gl_view::get_transform_action(QPoint cursor_position, box_handler_struct
     // Lineas centrales
     int distance = 30;
 
-    float center_x = (bottom_left.x() + bottom_right.x()) / 2;
-    float center_y = (bottom_right.y() + top_right.y()) / 2;
+    float center_x = ( bottom_left.x() + bottom_right.x() ) / 2;
+    float center_y = ( bottom_right.y() + top_right.y() ) / 2;
 
     QPointF center = {center_x, center_y};
-    center = get_position(center);
+    center = get_position( center );
 
-    QPointF horizontal_p1 = get_coordsf({center.x() - distance, center.y()});
-    QPointF horizontal_p2 = get_coordsf({center.x() + distance, center.y()});
-    bool horizontal = cursor_above_rect(cursor_position, horizontal_p1, horizontal_p2);
+    QPointF horizontal_p1 = get_coordsf( {center.x() - distance, center.y()} );
+    QPointF horizontal_p2 = get_coordsf( {center.x() + distance, center.y()} );
+    bool horizontal = cursor_above_rect( cursor_position, horizontal_p1, horizontal_p2 );
 
-    QPointF vertical_p1 = get_coordsf({center.x(), center.y() - distance});
-    QPointF vertical_p2 = get_coordsf({center.x(), center.y() + distance});
-    bool vertical = cursor_above_rect(cursor_position, vertical_p1, vertical_p2);
+    QPointF vertical_p1 = get_coordsf( {center.x(), center.y() - distance} );
+    QPointF vertical_p2 = get_coordsf( {center.x(), center.y() + distance} );
+    bool vertical = cursor_above_rect( cursor_position, vertical_p1, vertical_p2 );
 
-    if (vertical && horizontal)
+    if ( vertical && horizontal )
         return "center_translate";
-    else if (vertical)
+    else if ( vertical )
         return "vertical_translate";
-    else if (horizontal)
+    else if ( horizontal )
         return "horizontal_translate";
     //
     //
@@ -170,154 +166,149 @@ QString gl_view::get_transform_action(QPoint cursor_position, box_handler_struct
     return "";
 }
 
-void gl_view::box_handler_transform(QPoint cursor_position, box_handler_struct &handler)
+void gl_view::box_handler_transform( QPoint cursor_position, box_handler_struct &handler )
 {
     // return;
     QString action = handler.resize_current_action;
 
-    QPointF click_coords = get_coordsf(click_position);
-    QPointF coords = get_coordsf(cursor_position);
+    QPointF click_coords = get_coordsf( click_position );
+    QPointF coords = get_coordsf( cursor_position );
     QPointF add_translate = coords - click_coords;
 
-    if (action == "right_scale")
+    if ( action == "right_scale" )
     {
-        handler.box.setP2({coords.x(), handler.box.y2()});
+        handler.box.setP2( {coords.x(), handler.box.y2()} );
     }
-    else if (action == "left_scale")
+    else if ( action == "left_scale" )
     {
-        handler.box.setP1({coords.x(), handler.box.y1()});
+        handler.box.setP1( {coords.x(), handler.box.y1()} );
     }
-    else if (action == "top_scale")
+    else if ( action == "top_scale" )
     {
-        handler.box.setP2({handler.box.x2(), coords.y()});
+        handler.box.setP2( {handler.box.x2(), coords.y()} );
     }
-    else if (action == "bottom_scale")
+    else if ( action == "bottom_scale" )
     {
-        handler.box.setP1({handler.box.x1(), coords.y()});
-    }
-
-    else if (action == "bottom_left_scale")
-    {
-        handler.box.setP1({coords.x(), handler.box.y1()});
-        handler.box.setP1({handler.box.x1(), coords.y()});
-    }
-    else if (action == "top_right_scale")
-    {
-        handler.box.setP2({coords.x(), handler.box.y2()});
-        handler.box.setP2({handler.box.x2(), coords.y()});
-    }
-    else if (action == "bottom_right_scale")
-    {
-        handler.box.setP1({handler.box.x1(), coords.y()});
-        handler.box.setP2({coords.x(), handler.box.y2()});
-    }
-    else if (action == "top_left_scale")
-    {
-        handler.box.setP1({coords.x(), handler.box.y1()});
-        handler.box.setP2({handler.box.x2(), coords.y()});
+        handler.box.setP1( {handler.box.x1(), coords.y()} );
     }
 
-    else if (action == "center_translate")
+    else if ( action == "bottom_left_scale" )
     {
-        handler.box.setP1(handler.last_box.p1() + add_translate);
-        handler.box.setP2(handler.last_box.p2() + add_translate);
+        handler.box.setP1( {coords.x(), handler.box.y1()} );
+        handler.box.setP1( {handler.box.x1(), coords.y()} );
     }
-    else if (action == "horizontal_translate")
+    else if ( action == "top_right_scale" )
+    {
+        handler.box.setP2( {coords.x(), handler.box.y2()} );
+        handler.box.setP2( {handler.box.x2(), coords.y()} );
+    }
+    else if ( action == "bottom_right_scale" )
+    {
+        handler.box.setP1( {handler.box.x1(), coords.y()} );
+        handler.box.setP2( {coords.x(), handler.box.y2()} );
+    }
+    else if ( action == "top_left_scale" )
+    {
+        handler.box.setP1( {coords.x(), handler.box.y1()} );
+        handler.box.setP2( {handler.box.x2(), coords.y()} );
+    }
+
+    else if ( action == "center_translate" )
+    {
+        handler.box.setP1( handler.last_box.p1() + add_translate );
+        handler.box.setP2( handler.last_box.p2() + add_translate );
+    }
+    else if ( action == "horizontal_translate" )
     {
         QPointF p1 = {handler.last_box.x1() + add_translate.x(), handler.last_box.y1()};
         QPointF p2 = {handler.last_box.x2() + add_translate.x(), handler.last_box.y2()};
 
-        handler.box.setP1(p1);
-        handler.box.setP2(p2);
+        handler.box.setP1( p1 );
+        handler.box.setP2( p2 );
     }
-    else if (action == "vertical_translate")
+    else if ( action == "vertical_translate" )
     {
         QPointF p1 = {handler.last_box.x1(), handler.last_box.y1() + add_translate.y()};
         QPointF p2 = {handler.last_box.x2(), handler.last_box.y2() + add_translate.y()};
 
-        handler.box.setP1(p1);
-        handler.box.setP2(p2);
+        handler.box.setP1( p1 );
+        handler.box.setP2( p2 );
     }
 }
 
-void gl_view::box_handler_press(QPoint cursor_position)
+void gl_view::box_handler_press( QPoint cursor_position )
 {
-	for (auto &handler : handlers)
-	{
-		QString action = get_transform_action(cursor_position, handler);
+    for ( auto &handler : handlers )
+    {
+        QString action = get_transform_action( cursor_position, handler );
 
-		if (!action.isEmpty())
-		{
-			handler.resize_current_action = action;
-			handler.last_box = handler.box;
-			handler.transforming = true;
+        if ( !action.isEmpty() )
+        {
+            handler.resize_current_action = action;
+            handler.last_box = handler.box;
+            handler.transforming = true;
 
-			break;
-		}
-	}
+            break;
+        }
+    }
 }
 
-void gl_view::box_handler_release(QPoint cursor_position)
+void gl_view::box_handler_release( QPoint cursor_position )
 {
-	for (auto &handler : handlers)
-	{
-		if (handler.transforming)
-		{
-			box_handler_transform(cursor_position, handler);
+    for ( auto &handler : handlers )
+    {
+        if ( handler.transforming )
+        {
+            box_handler_transform( cursor_position, handler );
 
-			QRect box(
-				handler.box.x1(),
-				handler.box.y1(),
-				handler.box.x2() - handler.box.x1(),
-				handler.box.y2() - handler.box.y1()
-			);
+            QRect box( handler.box.x1(), handler.box.y1(), handler.box.x2() - handler.box.x1(),
+                       handler.box.y2() - handler.box.y1() );
 
-			box_handler_changed(handler.name, handler.type, box, true);
-		}
+            box_handler_changed( handler.name, handler.type, box, true );
+        }
 
-		handler.transforming = false;
-	}
+        handler.transforming = false;
+    }
 }
 
-void gl_view::box_handler_move(QPoint cursor_position)
+void gl_view::box_handler_move( QPoint cursor_position )
 {
-	bool transforming = false;
-	bool over = false;
-	for (auto &handler : handlers)
-	{
-		QString action = get_transform_action(cursor_position, handler);
-		if (!over) over = !action.isEmpty();
+    bool transforming = false;
+    bool over = false;
+    for ( auto &handler : handlers )
+    {
+        QString action = get_transform_action( cursor_position, handler );
+        if ( !over )
+            over = !action.isEmpty();
 
-		if (action == "bottom_left_scale" || action == "top_right_scale")
-			this->setCursor(Qt::SizeBDiagCursor);
-		else if (action == "bottom_right_scale" || action == "top_left_scale")
-			this->setCursor(Qt::SizeFDiagCursor);
-		else if (action == "left_scale" || action == "right_scale" || action == "horizontal_translate")
-			this->setCursor(Qt::SizeHorCursor);
-		else if (action == "top_scale" || action == "bottom_scale" || action == "vertical_translate")
-			this->setCursor(Qt::SizeVerCursor);
-		else if (action == "center_translate")
-			this->setCursor(Qt::SizeAllCursor);
+        if ( action == "bottom_left_scale" || action == "top_right_scale" )
+            this->setCursor( Qt::SizeBDiagCursor );
+        else if ( action == "bottom_right_scale" || action == "top_left_scale" )
+            this->setCursor( Qt::SizeFDiagCursor );
+        else if ( action == "left_scale" || action == "right_scale" ||
+                  action == "horizontal_translate" )
+            this->setCursor( Qt::SizeHorCursor );
+        else if ( action == "top_scale" || action == "bottom_scale" ||
+                  action == "vertical_translate" )
+            this->setCursor( Qt::SizeVerCursor );
+        else if ( action == "center_translate" )
+            this->setCursor( Qt::SizeAllCursor );
 
-		if (handler.transforming)
-		{
-			box_handler_transform(cursor_position, handler);
-			QRect box(
-				handler.box.x1(),
-				handler.box.y1(),
-				handler.box.x2() - handler.box.x1(),
-				handler.box.y2() - handler.box.y1()
-			);
+        if ( handler.transforming )
+        {
+            box_handler_transform( cursor_position, handler );
+            QRect box( handler.box.x1(), handler.box.y1(), handler.box.x2() - handler.box.x1(),
+                       handler.box.y2() - handler.box.y1() );
 
-			box_handler_changed(handler.name, handler.type, box);
-			transforming = true;
-		}
-	}
-	if (!over)
-		this->setCursor(Qt::ArrowCursor);
+            box_handler_changed( handler.name, handler.type, box );
+            transforming = true;
+        }
+    }
+    if ( !over )
+        this->setCursor( Qt::ArrowCursor );
 
-	if (transforming)
-		update();
+    if ( transforming )
+        update();
 }
 
-void gl_view::box_handler_changed(QString name, QString type, QRect box, bool release) {}
+void gl_view::box_handler_changed( QString name, QString type, QRect box, bool release ) {}

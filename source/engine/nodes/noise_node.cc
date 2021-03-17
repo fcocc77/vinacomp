@@ -1,116 +1,125 @@
 #include <noise_node.h>
 
-
 noise_node::noise_node()
 {
-	load_default_params("noise");
+    load_default_params( "noise" );
 
-	int seed = 77;
-	p.resize(256);
+    int seed = 77;
+    p.resize( 256 );
 
-	// Llene p con valores de 0 a 255
-	std::iota(p.begin(), p.end(), 0);
+    // Llene p con valores de 0 a 255
+    std::iota( p.begin(), p.end(), 0 );
 
-	// Inicializar un motor aleatorio con semilla
-	std::default_random_engine engine(seed);
+    // Inicializar un motor aleatorio con semilla
+    std::default_random_engine engine( seed );
 
-	// Mezclar usando el motor aleatorio anterior
-	std::shuffle(p.begin(), p.end(), engine);
+    // Mezclar usando el motor aleatorio anterior
+    std::shuffle( p.begin(), p.end(), engine );
 
-	// Duplica el vector de permutación
-	p.insert(p.end(), p.begin(), p.end());
+    // Duplica el vector de permutación
+    p.insert( p.end(), p.begin(), p.end() );
 }
 
-noise_node::~noise_node() { }
+noise_node::~noise_node() {}
 
-double noise_node::noise(double x, double y, double z)
+double noise_node::noise( double x, double y, double z )
 {
-	// Encuentra el cubo unitario que contiene el punto
-	int X = (int) floor(x) & 255;
-	int Y = (int) floor(y) & 255;
-	int Z = (int) floor(z) & 255;
+    // Encuentra el cubo unitario que contiene el punto
+    int X = (int)floor( x ) & 255;
+    int Y = (int)floor( y ) & 255;
+    int Z = (int)floor( z ) & 255;
 
-	// Encuentra el relativo x, y, z del punto en el cubo
-	x -= floor(x);
-	y -= floor(y);
-	z -= floor(z);
+    // Encuentra el relativo x, y, z del punto en el cubo
+    x -= floor( x );
+    y -= floor( y );
+    z -= floor( z );
 
-	// Encuentra el relativo x, y, z del punto en el cubo
-	double u = fade(x);
-	double v = fade(y);
-	double w = fade(z);
+    // Encuentra el relativo x, y, z del punto en el cubo
+    double u = fade( x );
+    double v = fade( y );
+    double w = fade( z );
 
-	// Coordenadas hash de las 8 esquinas del cubo
-	int A = p[X] + Y;
-	int AA = p[A] + Z;
-	int AB = p[A + 1] + Z;
-	int B = p[X + 1] + Y;
-	int BA = p[B] + Z;
-	int BB = p[B + 1] + Z;
+    // Coordenadas hash de las 8 esquinas del cubo
+    int A = p[ X ] + Y;
+    int AA = p[ A ] + Z;
+    int AB = p[ A + 1 ] + Z;
+    int B = p[ X + 1 ] + Y;
+    int BA = p[ B ] + Z;
+    int BB = p[ B + 1 ] + Z;
 
-	// Agrega resultados combinados de 8 esquinas del cubo
-	double res = lerp(w, lerp(v, lerp(u, grad(p[AA], x, y, z), grad(p[BA], x-1, y, z)), lerp(u, grad(p[AB], x, y-1, z), grad(p[BB], x-1, y-1, z))),	lerp(v, lerp(u, grad(p[AA+1], x, y, z-1), grad(p[BA+1], x-1, y, z-1)), lerp(u, grad(p[AB+1], x, y-1, z-1),	grad(p[BB+1], x-1, y-1, z-1))));
-	return (res + 1.0)/2.0;
+    // Agrega resultados combinados de 8 esquinas del cubo
+    double res = lerp(
+        w,
+        lerp( v, lerp( u, grad( p[ AA ], x, y, z ), grad( p[ BA ], x - 1, y, z ) ),
+              lerp( u, grad( p[ AB ], x, y - 1, z ), grad( p[ BB ], x - 1, y - 1, z ) ) ),
+        lerp( v, lerp( u, grad( p[ AA + 1 ], x, y, z - 1 ), grad( p[ BA + 1 ], x - 1, y, z - 1 ) ),
+              lerp( u, grad( p[ AB + 1 ], x, y - 1, z - 1 ),
+                    grad( p[ BB + 1 ], x - 1, y - 1, z - 1 ) ) ) );
+    return ( res + 1.0 ) / 2.0;
 }
 
-double noise_node::fade(double t) {
-	return t * t * t * (t * (t * 6 - 15) + 10);
+double noise_node::fade( double t )
+{
+    return t * t * t * ( t * ( t * 6 - 15 ) + 10 );
 }
 
-double noise_node::lerp(double t, double a, double b) {
-	return a + t * (b - a); 
+double noise_node::lerp( double t, double a, double b )
+{
+    return a + t * ( b - a );
 }
 
-double noise_node::grad(int hash, double x, double y, double z) {
-	int h = hash & 15;
-	// Convierta los 4 bits inferiores de hash en 12 direcciones de gradiente
-	double u = h < 8 ? x : y,
-		   v = h < 4 ? y : h == 12 || h == 14 ? x : z;
-	return ((h & 1) == 0 ? u : -u) + ((h & 2) == 0 ? v : -v);
+double noise_node::grad( int hash, double x, double y, double z )
+{
+    int h = hash & 15;
+    // Convierta los 4 bits inferiores de hash en 12 direcciones de gradiente
+    double u = h < 8 ? x : y, v = h < 4 ? y : h == 12 || h == 14 ? x : z;
+    return ( ( h & 1 ) == 0 ? u : -u ) + ( ( h & 2 ) == 0 ? v : -v );
 }
 
 void noise_node::render( render_data *rdata, QJsonObject *params )
 {
-	float size = get(params, "size").toDouble();
-	float zoffset = get(params, "zoffset").toDouble();
-	int samples = get(params, "samples").toInt();
-	float samples_gap = get(params, "samples_gap").toDouble();
-	float gain = get(params, "gain").toDouble();
-	float gamma = get(params, "gamma").toDouble();
+    float size = get( params, "size" ).toDouble();
+    float zoffset = get( params, "zoffset" ).toDouble();
+    int samples = get( params, "samples" ).toInt();
+    float samples_gap = get( params, "samples_gap" ).toDouble();
+    float gain = get( params, "gain" ).toDouble();
+    float gamma = get( params, "gamma" ).toDouble();
 
-	cv::Mat3f noise_image(300, 300);
+    cv::Mat3f noise_image( 300, 300 );
 
-    for( int y = 0; y < noise_image.rows; y++ ) {
-        for( int x = 0; x < noise_image.cols; x++ ) {
-			cv::Vec3f &pixel = noise_image.at<cv::Vec3f>(y, x);
+    for ( int y = 0; y < noise_image.rows; y++ )
+    {
+        for ( int x = 0; x < noise_image.cols; x++ )
+        {
+            cv::Vec3f &pixel = noise_image.at<cv::Vec3f>( y, x );
 
-			float amp = 1;
-			float n = 0;
-			float octave = 1;
-			float scale = size;
+            float amp = 1;
+            float n = 0;
+            float octave = 1;
+            float scale = size;
 
-			float first_value;
-			for (int s = 1; s <= samples; s++)
-			{
-				scale = size / octave;
-				octave *= samples_gap;
+            float first_value;
+            for ( int s = 1; s <= samples; s++ )
+            {
+                scale = size / octave;
+                octave *= samples_gap;
 
-				float nx = float(x) / scale;
-				float ny = float(y) / scale;
+                float nx = float( x ) / scale;
+                float ny = float( y ) / scale;
 
-				float nvalue = noise(nx, ny, zoffset);
-				nvalue *= gain;
-				n += nvalue * amp;
+                float nvalue = noise( nx, ny, zoffset );
+                nvalue *= gain;
+                n += nvalue * amp;
 
-				amp /= 2;
-			}
-			n = pow(n, 1.0 / gamma); // gamma
+                amp /= 2;
+            }
+            n = pow( n, 1.0 / gamma ); // gamma
 
-			float value = n * 255;
-			pixel = {value, value, value};
-		}
-	}
+            float value = n * 255;
+            pixel = {value, value, value};
+        }
+    }
 
-	rdata->image = noise_image;
-	rdata->image.convertTo(rdata->image, CV_32F);
+    rdata->image = noise_image;
+    rdata->image.convertTo( rdata->image, CV_32F );
 }

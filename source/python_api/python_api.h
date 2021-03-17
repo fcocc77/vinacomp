@@ -1,24 +1,23 @@
 #ifndef PYTHON_API_H
 #define PYTHON_API_H
 
-#include <python.h>
 #include <QList>
+#include <python.h>
 #include <util.h>
 
-static void init_py_module(
-    string _module_name,
-    PyMethodDef *methods,
-    QList<pair<const char *, PyObject *(*)(PyObject *, PyObject *)>> _methods)
+static void
+init_py_module( string _module_name, PyMethodDef *methods,
+                QList<pair<const char *, PyObject *(*)( PyObject *, PyObject * )>> _methods )
 {
     static string module_name = _module_name;
 
     // define todos los metodos para el modulo
-    for (int i = 0; i < _methods.count(); i++)
+    for ( int i = 0; i < _methods.count(); i++ )
     {
-        auto func_name = _methods[i].first;
-        auto func = _methods[i].second;
+        auto func_name = _methods[ i ].first;
+        auto func = _methods[ i ].second;
 
-        methods[i] = {func_name, func, METH_VARARGS, ""};
+        methods[ i ] = {func_name, func, METH_VARARGS, ""};
     }
     //
     //
@@ -30,35 +29,33 @@ static void init_py_module(
     //
 
     // funcion que retorna el modulo creado, para poder importarlo
-    auto _module = []() {
-        return PyModule_Create(&modDef);
-    };
+    auto _module = []() { return PyModule_Create( &modDef ); };
     //
     //
 
     // importa el modulo creado a vinacomp, para que al iniciar vinacomp
     // el modulo ya este cargado.
-    PyImport_AppendInittab(module_name.c_str(), _module);
+    PyImport_AppendInittab( module_name.c_str(), _module );
 }
 
-static PyObject *py_bool(bool _bool)
+static PyObject *py_bool( bool _bool )
 {
-    return PyBool_FromLong(_bool);
+    return PyBool_FromLong( _bool );
 }
 
-static PyObject *py_int(int _int)
+static PyObject *py_int( int _int )
 {
-    return PyLong_FromLong(_int);
+    return PyLong_FromLong( _int );
 }
 
-static PyObject *py_float(double _double)
+static PyObject *py_float( double _double )
 {
-    return PyFloat_FromDouble(_double);
+    return PyFloat_FromDouble( _double );
 }
 
-static PyObject *py_string(QString _string)
+static PyObject *py_string( QString _string )
 {
-    return PyUnicode_FromString(_string.toStdString().c_str());
+    return PyUnicode_FromString( _string.toStdString().c_str() );
 }
 
 #endif // PYTHON_API_H

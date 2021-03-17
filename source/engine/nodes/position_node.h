@@ -8,10 +8,10 @@
 class position_node : public node_engine
 {
 public:
-	position_node();
-	~position_node();
+    position_node();
+    ~position_node();
 
-	void render( render_data *rdata, QJsonObject *params ) override;
+    void render( render_data *rdata, QJsonObject *params ) override;
 };
 
 #endif // POSITION_NODE_H

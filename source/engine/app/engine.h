@@ -1,11 +1,11 @@
 #ifndef ENGINE_H
 #define ENGINE_H
 
-#include <util.h>
-#include <py_nodes.h>
-#include <py_app.h>
 #include <app.h>
 #include <nodes.h>
+#include <py_app.h>
+#include <py_nodes.h>
+#include <util.h>
 
 class engine
 {
@@ -18,7 +18,7 @@ private:
     void python_initialize();
 
 public:
-    engine(QString _input_py);
+    engine( QString _input_py );
     ~engine();
 };
 

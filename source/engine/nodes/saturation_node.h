@@ -7,10 +7,10 @@
 class saturation_node : public node_engine
 {
 public:
-	saturation_node();
-	~saturation_node();
+    saturation_node();
+    ~saturation_node();
 
-	void render(render_data *rdata, QJsonObject *params) override;
+    void render( render_data *rdata, QJsonObject *params ) override;
 };
 
 #endif // SATURATION_NODE_H

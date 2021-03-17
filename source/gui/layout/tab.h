@@ -1,14 +1,14 @@
 #ifndef TAB_H
 #define TAB_H
 
-#include <QWidget>
+#include <QHBoxLayout>
 #include <QLabel>
 #include <QPushButton>
-#include <QHBoxLayout>
 #include <QStyle>
+#include <QWidget>
 
-#include <qt.h>
 #include <button.h>
+#include <qt.h>
 
 class tab : public QWidget
 {
@@ -24,19 +24,16 @@ private:
     QHBoxLayout *layout;
 
 public:
-    tab(QWidget *_tab_widget,
-        QString name,
-        QWidget *_content,
-        bool _has_close_button = false);
+    tab( QWidget *_tab_widget, QString name, QWidget *_content, bool _has_close_button = false );
     ~tab();
 
     QWidget *get_content_widget() const;
     bool checked() const;
-    void set_checked(bool __checked);
+    void set_checked( bool __checked );
     QString get_name() const;
 
 protected:
-    void mousePressEvent(QMouseEvent *event) override;
+    void mousePressEvent( QMouseEvent *event ) override;
 };
 
 #endif // TAB_H

@@ -1,19 +1,19 @@
 #ifndef TAB_WIDGET_H
 #define TAB_WIDGET_H
 
-#include <QWidget>
-#include <QVBoxLayout>
 #include <QHBoxLayout>
-#include <QPushButton>
 #include <QLabel>
+#include <QPushButton>
+#include <QVBoxLayout>
+#include <QWidget>
 
-#include <util.h>
 #include <qt.h>
 #include <tab.h>
+#include <util.h>
 
 class tab_widget : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 private:
     QVBoxLayout *layout;
 
@@ -28,23 +28,23 @@ private:
 
     QList<tab *> tabs;
 
-    void delete_tab(tab *_tab);
+    void delete_tab( tab *_tab );
 
 public:
-    tab_widget(bool _has_close_button = false);
+    tab_widget( bool _has_close_button = false );
     ~tab_widget();
 
-    void add_tab(QWidget *tab, QString label);
-	void remove_tab(QString name);
-    int get_index_by_name(QString name) const;
-    void set_tab(QString name);
-    void set_index(int index);
-    void close_tab(QString name);
-    QPushButton *add_cornel_button(QString icon);
+    void add_tab( QWidget *tab, QString label );
+    void remove_tab( QString name );
+    int get_index_by_name( QString name ) const;
+    void set_tab( QString name );
+    void set_index( int index );
+    void close_tab( QString name );
+    QPushButton *add_cornel_button( QString icon );
     int get_current_index() const;
     void clear();
 signals:
-	void closed_tab(QString name);
+    void closed_tab( QString name );
 };
 
 #endif // TAB_WIDGET_H
