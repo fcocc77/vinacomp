@@ -3,6 +3,7 @@ BasedOnStyle: LLVM
 IndentWidth: 4
 UseTab: Never
 ColumnLimit: 100
+BreakConstructorInitializers: BeforeComma
 BreakBeforeBraces: Custom
 BraceWrapping:
     AfterFunction: true
@@ -14,5 +15,6 @@ BraceWrapping:
 AccessModifierOffset: '-2'
 SpacesInParentheses: true
 SpaceInEmptyParentheses: false
+SpacesInSquareBrackets: true
 Standard: Cpp11
-BreakConstructorInitializers: BeforeComma
+AllowShortFunctionsOnASingleLine: Empty
