@@ -20,13 +20,13 @@ private:
     button *popup_button;
 
 public:
-    menu( button *parent )
-        : QMenu( parent )
-        , popup_button( parent ){};
+    menu(button *parent)
+        : QMenu(parent)
+        , popup_button(parent){};
 
 protected:
-    void mouseMoveEvent( QMouseEvent *event ) override;
-    void hideEvent( QHideEvent *event ) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void hideEvent(QHideEvent *event) override;
 };
 
 class nodes_bar : public QWidget
@@ -38,10 +38,10 @@ private:
     QWidget *parent;
 
     void setup_ui();
-    void add_menu( QString group, QString icon_group );
+    void add_menu(QString group, QString icon_group);
 
 public:
-    nodes_bar( QWidget *parent, maker *_maker, nodes_load *_nodes );
+    nodes_bar(QWidget *parent, maker *_maker, nodes_load *_nodes);
     ~nodes_bar();
 };
 

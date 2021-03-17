@@ -10,7 +10,7 @@ public:
     keyer_node();
     ~keyer_node();
 
-    void render( render_data *rdata, QJsonObject *params ) override;
+    void render(render_data *rdata, QJsonObject *params) override;
 };
 
 #endif // KEYER_NODE_H

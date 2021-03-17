@@ -10,7 +10,7 @@ public:
     constant_node();
     ~constant_node();
 
-    void render( render_data *rdata, QJsonObject *params ) override;
+    void render(render_data *rdata, QJsonObject *params) override;
 };
 
 #endif // CONSTANT_NODE_H

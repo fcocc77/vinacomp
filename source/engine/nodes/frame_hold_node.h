@@ -10,7 +10,7 @@ public:
     frame_hold_node();
     ~frame_hold_node();
 
-    void render( render_data *rdata, QJsonObject *params ) override;
+    void render(render_data *rdata, QJsonObject *params) override;
 };
 
 #endif // FRAME_HOLD_NODE_H

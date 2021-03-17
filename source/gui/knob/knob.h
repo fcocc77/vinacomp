@@ -28,13 +28,12 @@ public:
     knob();
     ~knob();
 
-    void set_init_space( int space, QString label = "" );
-    void set_knob_layout( QHBoxLayout *layout );
-    void set_animatable( bool _animatable = true );
-    void set_visible( bool visible );
-    void set_viewers_gl( QList<QWidget *> *viewers_gl );
-    void set_names( QString node_name, QString _node_type, QString _param_name,
-                    QString _param_type );
+    void set_init_space(int space, QString label = "");
+    void set_knob_layout(QHBoxLayout *layout);
+    void set_animatable(bool _animatable = true);
+    void set_visible(bool visible);
+    void set_viewers_gl(QList<QWidget *> *viewers_gl);
+    void set_names(QString node_name, QString _node_type, QString _param_name, QString _param_type);
     QString get_full_name() const;
     QString get_node_type() const;
     QString get_node_name() const;

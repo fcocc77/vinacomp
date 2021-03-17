@@ -2,9 +2,9 @@
 
 switch_node::switch_node()
 {
-    load_default_params( "switch" );
+    load_default_params("switch");
 }
 
 switch_node::~switch_node() {}
 
-void switch_node::render( render_data *rdata, QJsonObject *params ) {}
+void switch_node::render(render_data *rdata, QJsonObject *params) {}

@@ -26,14 +26,14 @@ private:
     QWidget *_vinacomp;
 
     void setup_shortcut();
-    QColor default_color( QString effect_group );
+    QColor default_color(QString effect_group);
 
 public:
-    maker( QWidget *_vinacomp, properties *_properties, nodes_load *_nodes_loaded,
-           node_view *_node_view );
+    maker(QWidget *_vinacomp, properties *_properties, nodes_load *_nodes_loaded,
+          node_view *_node_view);
     ~maker();
 
-    QString create_fx( QString id );
+    QString create_fx(QString id);
 };
 
 #endif // MAKER_HPP

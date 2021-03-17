@@ -27,25 +27,25 @@ private:
     QList<pair<QString, QVariant>> items;
     int current_index;
 
-    void add_item( pair<QString, QVariant> item );
+    void add_item(pair<QString, QVariant> item);
 
 public:
-    combo_box( QList<pair<QString, QVariant>> items = {}, int default_index = 0,
-               QWidget *_parent = nullptr );
+    combo_box(QList<pair<QString, QVariant>> items = {}, int default_index = 0,
+              QWidget *_parent = nullptr);
     ~combo_box();
 
-    void set_index( int _index, bool emit_signal = true );
-    void set_value( QVariant value );
-    void add_shortcut( int index, QString key );
+    void set_index(int _index, bool emit_signal = true);
+    void set_value(QVariant value);
+    void add_shortcut(int index, QString key);
 
     int get_index() const;
     QVariant get_value() const;
 
 protected:
-    void mousePressEvent( QMouseEvent *event ) override;
+    void mousePressEvent(QMouseEvent *event) override;
 
 signals:
-    void changed( QVariant value, int index );
+    void changed(QVariant value, int index);
 };
 
 #endif // COMBO_BOX_HPP

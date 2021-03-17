@@ -19,12 +19,12 @@ private:
     slider *_slider;
 
 public:
-    knob_integer( int min, int max, int default_value = 0 );
+    knob_integer(int min, int max, int default_value = 0);
     ~knob_integer();
 
-    void set_value( int value );
+    void set_value(int value);
 signals:
-    void changed( int value );
+    void changed(int value);
 };
 
 #endif // KNOB_INTEGER_HPP

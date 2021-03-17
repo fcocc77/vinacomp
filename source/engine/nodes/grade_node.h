@@ -12,7 +12,7 @@ public:
     grade_node();
     ~grade_node();
 
-    void render( render_data *rdata, QJsonObject *params ) override;
+    void render(render_data *rdata, QJsonObject *params) override;
 };
 
 #endif // GRADE_NODE_H

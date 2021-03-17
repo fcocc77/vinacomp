@@ -10,7 +10,7 @@ public:
     dissolve_node();
     ~dissolve_node();
 
-    void render( render_data *rdata, QJsonObject *params ) override;
+    void render(render_data *rdata, QJsonObject *params) override;
 };
 
 #endif // DISSOLVE_NODE_H

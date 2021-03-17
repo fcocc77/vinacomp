@@ -10,7 +10,7 @@ public:
     erode_node();
     ~erode_node();
 
-    void render( render_data *rdata, QJsonObject *params ) override;
+    void render(render_data *rdata, QJsonObject *params) override;
 };
 
 #endif // ERODE_NODE_H

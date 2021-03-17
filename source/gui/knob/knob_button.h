@@ -13,7 +13,7 @@ class knob_button : public knob
 private:
     /* data */
 public:
-    knob_button( QString label );
+    knob_button(QString label);
     ~knob_button();
 signals:
     void clicked();

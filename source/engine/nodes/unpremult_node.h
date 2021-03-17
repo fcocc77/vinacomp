@@ -10,7 +10,7 @@ public:
     unpremult_node();
     ~unpremult_node();
 
-    void render( render_data *rdata, QJsonObject *params ) override;
+    void render(render_data *rdata, QJsonObject *params) override;
 };
 
 #endif // UNPREMULT_NODE_H

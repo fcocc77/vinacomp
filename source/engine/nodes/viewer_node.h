@@ -11,7 +11,7 @@ public:
     viewer_node();
     ~viewer_node();
 
-    void render( render_data *rdata, QJsonObject *params ) override;
+    void render(render_data *rdata, QJsonObject *params) override;
 };
 
 #endif // VIEWER_NODE_H

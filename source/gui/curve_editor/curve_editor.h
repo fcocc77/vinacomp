@@ -20,10 +20,10 @@ private:
 
     void setup_ui();
     QTreeWidget *knobs_tree_setup_ui();
-    void add_item( QString node, QString param, QString dimension );
+    void add_item(QString node, QString param, QString dimension);
 
 public:
-    curve_editor( /* args */ );
+    curve_editor(/* args */);
     ~curve_editor();
 
     void add_curve();

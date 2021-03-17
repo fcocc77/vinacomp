@@ -12,7 +12,7 @@ class knob_label : public knob
 private:
     /* data */
 public:
-    knob_label( QString label );
+    knob_label(QString label);
     ~knob_label();
 };
 

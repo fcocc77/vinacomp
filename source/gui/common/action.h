@@ -27,34 +27,34 @@ private:
     void uncheck_all();
 
 public:
-    action( QString label, QString shortcut_key, QString icon_name = "" );
+    action(QString label, QString shortcut_key, QString icon_name = "");
     ~action();
 
     QString get_icon_name() const;
-    void set_tool_tip( QString tip );
+    void set_tool_tip(QString tip);
     QString get_tool_tip() const;
     QString get_label() const;
-    void set_checkable( bool checkable = true );
+    void set_checkable(bool checkable = true);
     bool is_checked() const;
-    void set_checked( bool _checked );
-    QPushButton *make_button( QWidget *_tools, int _icon_size, bool _one_check_at_time );
-    void set_object_name( QString name );
+    void set_checked(bool _checked);
+    QPushButton *make_button(QWidget *_tools, int _icon_size, bool _one_check_at_time);
+    void set_object_name(QString name);
     void update();
-    void set_visible( bool _visible );
-    void set_icon( QString icon_name );
+    void set_visible(bool _visible);
+    void set_icon(QString icon_name);
 
-    template <class T, typename Func> void connect_to( T *obj, Func func )
+    template <class T, typename Func> void connect_to(T *obj, Func func)
     {
         // conecta la funcion a la accion
-        connect( this, &QAction::triggered, obj, [=]() {
+        connect(this, &QAction::triggered, obj, [=]() {
             bool _checked = checked; // Guardar estado antes de 'uncheck_all'
             uncheck_all();
-            set_checked( !_checked );
+            set_checked(!_checked);
 
             func();
-        } );
+        });
 
-        obj->addAction( this );
+        obj->addAction(this);
     }
 };
 

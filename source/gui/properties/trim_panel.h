@@ -73,22 +73,22 @@ private:
 
     void knob_editor_toggle();
     void setup_ui();
-    void setup_gui_panels( QJsonArray _knobs );
+    void setup_gui_panels(QJsonArray _knobs);
     QWidget *top_buttons_setup_ui();
     tab_widget *tabs_ui();
-    void setup_knobs( QJsonArray _knobs, QVBoxLayout *layout, QList<QWidget *> *viewers );
+    void setup_knobs(QJsonArray _knobs, QVBoxLayout *layout, QList<QWidget *> *viewers);
     void update_render();
 
 public:
-    trim_panel( properties *_properties, QString _name, QString _type, QString _icon_name,
-                nodes_load *nodes_loaded, project_struct *project, QWidget *_vinacomp );
+    trim_panel(properties *_properties, QString _name, QString _type, QString _icon_name,
+               nodes_load *nodes_loaded, project_struct *project, QWidget *_vinacomp);
     ~trim_panel();
 
     QString get_name() const;
     QString get_type() const;
-    void maximize( bool _maximize );
-    void set_name( QString _name );
-    knob *get_knob( QString name ) const;
+    void maximize(bool _maximize);
+    void set_name(QString _name);
+    knob *get_knob(QString name) const;
     bool maximized() const;
 };
 

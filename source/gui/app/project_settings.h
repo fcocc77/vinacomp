@@ -22,7 +22,7 @@ private:
     QTextEdit *comment_text_edit;
 
 public:
-    project_settings( QWidget *_vinacomp );
+    project_settings(QWidget *_vinacomp);
     ~project_settings();
 
     pair<int, int> get_frame_range() const;

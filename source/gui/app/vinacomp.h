@@ -66,8 +66,8 @@ private:
     QMenu *recent_projects_menu;
     QJsonArray get_recent_projects();
     void update_recent_projects();
-    void recorder_recent_projects( QString project_path );
-    void open_project( QString project_path );
+    void recorder_recent_projects(QString project_path);
+    void open_project(QString project_path);
     void open_project_dialog();
     void setup_ui();
     void setup_style();
@@ -75,7 +75,7 @@ private:
     void tool_bar();
     void save_as();
     void to_save_project();
-    void save_project( QString project_path );
+    void save_project(QString project_path);
 
 public:
     vinacomp();

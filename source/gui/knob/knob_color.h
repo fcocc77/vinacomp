@@ -65,16 +65,16 @@ private:
     void update();
     void toggle_mono_color();
     void toggle_sliders_colors();
-    void set_visible_mono_color( bool visible );
-    void set_visible_sliders_colors( bool visible );
+    void set_visible_mono_color(bool visible);
+    void set_visible_sliders_colors(bool visible);
 
 public:
-    knob_color( float min, float max, float r, float g, float b, float a = 1 );
+    knob_color(float min, float max, float r, float g, float b, float a = 1);
     ~knob_color();
 
-    void set_color( float red, float green, float blue, float alpha = 1 );
+    void set_color(float red, float green, float blue, float alpha = 1);
 signals:
-    void changed( float r, float g, float b, float a );
+    void changed(float r, float g, float b, float a);
 };
 
 #endif // KNOB_COLOR_HPP

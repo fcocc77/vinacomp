@@ -10,7 +10,7 @@ public:
     switch_node();
     ~switch_node();
 
-    void render( render_data *rdata, QJsonObject *params ) override;
+    void render(render_data *rdata, QJsonObject *params) override;
 };
 
 #endif // SWITCH_NODE_H

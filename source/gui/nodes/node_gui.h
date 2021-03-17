@@ -18,15 +18,15 @@ public:
     node_gui();
     ~node_gui();
 
-    void setup( QWidget *_trim_panel, QWidget *_vinacomp, QString name );
-    virtual void changed( QString param_name );
+    void setup(QWidget *_trim_panel, QWidget *_vinacomp, QString name);
+    virtual void changed(QString param_name);
 
 protected:
     renderer *_renderer;
     project_struct *project;
     QString name;
 
-    knob *get_knob( QString name ) const;
+    knob *get_knob(QString name) const;
 };
 
 #endif // NODE_GUI_H

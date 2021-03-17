@@ -1,9 +1,9 @@
 #ifndef RENDER_DATA_H
 #define RENDER_DATA_H
 
-#include <opencv2/opencv.hpp>
 #include <QRect>
 #include <QString>
+#include <opencv2/opencv.hpp>
 
 struct render_data
 {

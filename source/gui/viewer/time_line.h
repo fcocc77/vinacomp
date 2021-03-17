@@ -35,12 +35,12 @@ private:
 
     void fit_switch();
     void fit_to_selector();
-    void set_in_out( int _input, int _output, bool emit_signal = true );
+    void set_in_out(int _input, int _output, bool emit_signal = true);
 
     // Input Output
-    void drag_in_out( int _frame );
-    void set_frame( int _frame );
-    pair<bool, bool> over_in_out( int x ) const;
+    void drag_in_out(int _frame);
+    void set_frame(int _frame);
+    pair<bool, bool> over_in_out(int x) const;
     void change_in_out_with_control();
     //
 
@@ -62,32 +62,32 @@ private:
     //
 
 public:
-    time_line( QWidget *_parent, QLineEdit *frame_edit, QLineEdit *input_frame_edit,
-               QLineEdit *output_frame_edit, QLineEdit *skip_frame_edit );
+    time_line(QWidget *_parent, QLineEdit *frame_edit, QLineEdit *input_frame_edit,
+              QLineEdit *output_frame_edit, QLineEdit *skip_frame_edit);
     ~time_line();
 
-    void go_to_frame( int _frame );
+    void go_to_frame(int _frame);
     void next_frame();
     void previous_frame();
-    void next_frame_each( int frames );
-    void previous_frame_each( int frames );
-    void set_frame_range( int _first_frame, int _last_frame );
-    void update_in_out( int _input, int _output );
-    void set_in_out_visible( bool visible );
-    void fit_to_range( int _first_frame, int _last_frame );
+    void next_frame_each(int frames);
+    void previous_frame_each(int frames);
+    void set_frame_range(int _first_frame, int _last_frame);
+    void update_in_out(int _input, int _output);
+    void set_in_out_visible(bool visible);
+    void fit_to_range(int _first_frame, int _last_frame);
 
 protected:
     void initializeGL() override;
     void paintGL() override;
 
-    void mousePressEvent( QMouseEvent *event ) override;
-    void mouseReleaseEvent( QMouseEvent *event ) override;
-    void cursor_move_event( QPoint position ) override;
-    void focusOutEvent( QFocusEvent *event ) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
+    void cursor_move_event(QPoint position) override;
+    void focusOutEvent(QFocusEvent *event) override;
 
 signals:
-    void frame_changed( int frame );
-    void in_out_changed( int input, int output );
+    void frame_changed(int frame);
+    void in_out_changed(int input, int output);
     void panning();
 };
 

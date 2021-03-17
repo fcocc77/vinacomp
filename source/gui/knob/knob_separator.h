@@ -11,7 +11,7 @@ class knob_separator : public knob
 private:
     /* data */
 public:
-    knob_separator( /* args */ );
+    knob_separator(/* args */);
     ~knob_separator();
 };
 

@@ -2,9 +2,9 @@
 
 keyer_node::keyer_node()
 {
-    load_default_params( "keyer" );
+    load_default_params("keyer");
 }
 
 keyer_node::~keyer_node() {}
 
-void keyer_node::render( render_data *rdata, QJsonObject *params ) {}
+void keyer_node::render(render_data *rdata, QJsonObject *params) {}

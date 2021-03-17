@@ -18,7 +18,7 @@ private:
     void python_initialize();
 
 public:
-    engine( QString _input_py );
+    engine(QString _input_py);
     ~engine();
 };
 

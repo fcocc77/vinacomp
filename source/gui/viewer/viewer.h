@@ -84,10 +84,10 @@ private:
     //
 
     // General
-    void set_frame( int frame );
-    void set_frame_rate( float rate );
-    void enable_in_out( bool enable );
-    void set_in_out( int input, int output );
+    void set_frame(int frame);
+    void set_frame_rate(float rate);
+    void enable_in_out(bool enable);
+    void set_in_out(int input, int output);
     //
     // Player
     QLineEdit *frame_edit;
@@ -99,9 +99,9 @@ private:
     combo_box *range_way_menu;
     QTimeLine *qtime_line;
     void player_init();
-    void play( QTimeLine::Direction direction );
+    void play(QTimeLine::Direction direction);
     void play_finished();
-    void set_playing_option( QString option );
+    void set_playing_option(QString option);
     void stop();
     void go_to_first_frame();
     void go_to_last_frame();
@@ -114,10 +114,10 @@ private:
     pair<int, int> get_current_range() const;
     //
 public:
-    viewer( QString _name, project_struct *_project, renderer *_renderer, QWidget *_vinacomp );
+    viewer(QString _name, project_struct *_project, renderer *_renderer, QWidget *_vinacomp);
     ~viewer();
 
-    void set_frame_range( int _first_frame, int _last_frame );
+    void set_frame_range(int _first_frame, int _last_frame);
     QString get_name() const;
     void update_render();
     void update_input_range();

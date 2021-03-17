@@ -20,16 +20,16 @@ private:
     bool checked;
 
 public:
-    knob_check_box( QString _label, bool _default_value );
+    knob_check_box(QString _label, bool _default_value);
     ~knob_check_box();
 
-    void set_check( bool value );
+    void set_check(bool value);
     bool is_checked() const;
 
 protected:
-    void mousePressEvent( QMouseEvent *event ) override;
+    void mousePressEvent(QMouseEvent *event) override;
 signals:
-    void changed( bool value );
+    void changed(bool value);
 };
 
 #endif // KNOB_CHECK_BOX_HPP

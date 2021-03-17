@@ -17,17 +17,17 @@ private:
     bool open;
     QPushButton *arrow_button;
 
-    void set_open( bool _open );
+    void set_open(bool _open);
     QList<QWidget *> get_knobs_included();
 
 public:
-    knob_group( QString label, int knobs_included, bool open_group );
+    knob_group(QString label, int knobs_included, bool open_group);
     ~knob_group();
 
     void update();
 
 protected:
-    void mousePressEvent( QMouseEvent *event ) override;
+    void mousePressEvent(QMouseEvent *event) override;
 };
 
 #endif // KNOB_GROUP_HPP

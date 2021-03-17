@@ -10,7 +10,7 @@ public:
     rectangle_node();
     ~rectangle_node();
 
-    void render( render_data *rdata, QJsonObject *params ) override;
+    void render(render_data *rdata, QJsonObject *params) override;
 };
 
 #endif // RECTANGLE_NODE_H

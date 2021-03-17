@@ -2,19 +2,19 @@
 
 checker_board_node::checker_board_node()
 {
-    load_default_params( "checker_board" );
+    load_default_params("checker_board");
 }
 
 checker_board_node::~checker_board_node() {}
 
-void checker_board_node::render( render_data *rdata, QJsonObject *params )
+void checker_board_node::render(render_data *rdata, QJsonObject *params)
 {
-    int size = get( params, "box_size" ).toInt();
-    int border = get( params, "border" ).toInt();
+    int size = get(params, "box_size").toInt();
+    int border = get(params, "border").toInt();
 
-    QColor color_a = get_color( params, "color_a" );
-    QColor color_b = get_color( params, "color_b" );
-    QColor border_color = get_color( params, "border_color" );
+    QColor color_a = get_color(params, "color_a");
+    QColor color_b = get_color(params, "color_b");
+    QColor border_color = get_color(params, "border_color");
 
     QColor background = Qt::black;
 

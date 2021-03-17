@@ -59,13 +59,13 @@ private:
     frame_range_node *_frame_range;
 
 public:
-    renderer( project_struct *_project );
+    renderer(project_struct *_project);
     ~renderer();
 
-    void render( render_data *rdata );
+    void render(render_data *rdata);
 
-    pair<int, int> get_frame_range( QString node_name ) const;
-    QString get_input_node( QString node_name, int input = 0 ) const;
+    pair<int, int> get_frame_range(QString node_name) const;
+    QString get_input_node(QString node_name, int input = 0) const;
 };
 
 #endif // RENDERER_H

@@ -10,7 +10,7 @@ public:
     radial_node();
     ~radial_node();
 
-    void render( render_data *rdata, QJsonObject *params ) override;
+    void render(render_data *rdata, QJsonObject *params) override;
 };
 
 #endif // RADIAL_NODE_H

@@ -13,16 +13,16 @@ private:
     float float_interval;
 
 public:
-    slider( float _min = 0, float _max = 100, float default_value = 0, bool _floating = true );
+    slider(float _min = 0, float _max = 100, float default_value = 0, bool _floating = true);
     ~slider();
 
-    void set_value( float value );
+    void set_value(float value);
 
 protected:
-    void mousePressEvent( QMouseEvent *event ) override;
+    void mousePressEvent(QMouseEvent *event) override;
 
 signals:
-    void moved( float value );
+    void moved(float value);
 };
 
 #endif // SLIDER_HPP

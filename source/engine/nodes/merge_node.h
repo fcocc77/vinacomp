@@ -10,7 +10,7 @@ public:
     merge_node();
     ~merge_node();
 
-    void render( render_data *rdata, QJsonObject *params ) override;
+    void render(render_data *rdata, QJsonObject *params) override;
 };
 
 #endif // MERGE_NODE_H

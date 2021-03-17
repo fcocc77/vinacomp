@@ -12,7 +12,7 @@ private:
     QVBoxLayout *layout;
 
 public:
-    settings( /* args */ );
+    settings(/* args */);
     ~settings();
 };
 

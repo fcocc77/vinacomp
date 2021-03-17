@@ -18,14 +18,14 @@ private:
     void load_layout();
     void restore_default();
     void isolate_panel();
-    void set_visible_panels( bool visible );
+    void set_visible_panels(bool visible);
 
-    panel *get_child_panel( QSplitter *__splitter, QString _letter ) const;
+    panel *get_child_panel(QSplitter *__splitter, QString _letter) const;
     panel *get_panel_from_cursor() const;
 
-    void save_json_layout( QSplitter *splitter, int deep = 0, QString letter = "",
-                           QStringList parents = {} );
-    void load_splitter( QJsonObject splitter_obj, panel *panel_a );
+    void save_json_layout(QSplitter *splitter, int deep = 0, QString letter = "",
+                          QStringList parents = {});
+    void load_splitter(QJsonObject splitter_obj, panel *panel_a);
     QJsonObject json_layout;
 
     bool isolate;
@@ -33,9 +33,9 @@ private:
     QWidget *_vinacomp;
 
 public:
-    panels_layout( QWidget *_vinacomp, node_graph *_node_graph, QLabel *empty_viewer,
-                   script_editor *_script_editor, properties *_properties,
-                   curve_editor *_curve_editor );
+    panels_layout(QWidget *_vinacomp, node_graph *_node_graph, QLabel *empty_viewer,
+                  script_editor *_script_editor, properties *_properties,
+                  curve_editor *_curve_editor);
     ~panels_layout();
 
     QList<QSplitter *> *splitters;
@@ -46,7 +46,7 @@ public:
     panel *get_viewer_panel() const;
     panel *get_some_empty_panel() const;
     QList<panel *> get_all_panels() const;
-    void add_viewer( viewer *_viewer );
+    void add_viewer(viewer *_viewer);
 };
 
 #endif // PANELS_LAYOUT_HPP

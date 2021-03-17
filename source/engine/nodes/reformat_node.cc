@@ -2,15 +2,15 @@
 
 reformat_node::reformat_node()
 {
-    load_default_params( "reformat" );
+    load_default_params("reformat");
 }
 
 reformat_node::~reformat_node() {}
 
-void reformat_node::render( render_data *rdata, QJsonObject *params )
+void reformat_node::render(render_data *rdata, QJsonObject *params)
 {
-    int index = get( params, "type" ).toArray()[ 0 ].toInt();
-    int filter_index = get( params, "filter" ).toArray()[ 0 ].toInt();
+    int index = get(params, "type").toArray()[0].toInt();
+    int filter_index = get(params, "filter").toArray()[0].toInt();
 
     // // Filtro
     // Qt::TransformationMode filter;

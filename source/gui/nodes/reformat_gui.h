@@ -10,7 +10,7 @@ public:
     reformat_gui();
     ~reformat_gui();
 
-    void changed( QString param_name ) override;
+    void changed(QString param_name) override;
 };
 
 #endif // REFORMAT_GUI_H

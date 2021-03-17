@@ -22,13 +22,13 @@ private:
     bool emmit_signal;
 
 public:
-    knob_floating( float min, float max, float default_value = 1 );
+    knob_floating(float min, float max, float default_value = 1);
     ~knob_floating();
 
-    void set_value( float value, bool _emmit_signal = true );
+    void set_value(float value, bool _emmit_signal = true);
     float get_value() const;
 signals:
-    void changed( float value );
+    void changed(float value);
 };
 
 #endif // KNOB_FLOATING_HPP

@@ -12,10 +12,10 @@ private:
     QJsonObject *project;
 
 public:
-    nodes( QJsonObject *_project );
+    nodes(QJsonObject *_project);
     ~nodes();
 
-    void create_node( QString node_name );
+    void create_node(QString node_name);
 };
 
 #endif // NODES_H

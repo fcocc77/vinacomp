@@ -2,17 +2,17 @@
 
 radial_node::radial_node()
 {
-    load_default_params( "radial" );
+    load_default_params("radial");
 }
 
 radial_node::~radial_node() {}
 
-void radial_node::render( render_data *rdata, QJsonObject *params )
+void radial_node::render(render_data *rdata, QJsonObject *params)
 {
-    float softness = get( params, "softness" ).toDouble();
-    QRect area = get_rect( params, "area" );
+    float softness = get(params, "softness").toDouble();
+    QRect area = get_rect(params, "area");
 
-    QColor color = get_color( params );
+    QColor color = get_color(params);
     QColor background = Qt::black;
 
     int width = 1920;

@@ -22,7 +22,7 @@ private:
     void update_tree();
 
 public:
-    node_finder( QWidget *_node_graph, nodes_load *_nodes );
+    node_finder(QWidget *_node_graph, nodes_load *_nodes);
     ~node_finder();
 
     QTreeWidget *tree;

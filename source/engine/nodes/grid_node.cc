@@ -2,19 +2,19 @@
 
 grid_node::grid_node()
 {
-    load_default_params( "grid" );
+    load_default_params("grid");
 }
 
 grid_node::~grid_node() {}
 
-void grid_node::render( render_data *rdata, QJsonObject *params )
+void grid_node::render(render_data *rdata, QJsonObject *params)
 {
-    float number = get( params, "number" ).toDouble();
-    float size = get( params, "size" ).toDouble();
-    bool round = get( params, "round" ).toBool();
-    QString style = get( params, "line_style" ).toArray()[ 1 ].toString();
+    float number = get(params, "number").toDouble();
+    float size = get(params, "size").toDouble();
+    bool round = get(params, "round").toBool();
+    QString style = get(params, "line_style").toArray()[1].toString();
 
-    QColor color = get_color( params );
+    QColor color = get_color(params);
     QColor background = Qt::black;
 
     int width = 1920;

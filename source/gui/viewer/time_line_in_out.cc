@@ -1,75 +1,75 @@
 #include <time_line.h>
 
-pair<bool, bool> time_line::over_in_out( int x ) const
+pair<bool, bool> time_line::over_in_out(int x) const
 {
-    int viewport_x = get_position( {x, 0} ).x();
+    int viewport_x = get_position({x, 0}).x();
 
     // verifica si el cursor del mouse esta sobre el input o el output
-    QPointF viewport_input = get_position( {input, 0} );
-    float input_distance = qt::distance_points( {viewport_input.x(), 0}, {viewport_x, 0} );
+    QPointF viewport_input = get_position({input, 0});
+    float input_distance = qt::distance_points({viewport_input.x(), 0}, {viewport_x, 0});
 
-    QPointF viewport_output = get_position( {output, 0} );
-    float output_distance = qt::distance_points( {viewport_output.x(), 0}, {viewport_x, 0} );
+    QPointF viewport_output = get_position({output, 0});
+    float output_distance = qt::distance_points({viewport_output.x(), 0}, {viewport_x, 0});
 
     int tolerance = 10;
 
     return {input_distance < tolerance, output_distance < tolerance};
 }
 
-void time_line::drag_in_out( int _frame )
+void time_line::drag_in_out(int _frame)
 {
-    if ( !in_out_visible )
+    if (!in_out_visible)
     {
         ghost_frame_visible = true;
         return;
     }
 
-    auto _over_in_out = over_in_out( _frame );
-    if ( _over_in_out.first || _over_in_out.second )
+    auto _over_in_out = over_in_out(_frame);
+    if (_over_in_out.first || _over_in_out.second)
     {
-        this->setCursor( Qt::SizeHorCursor );
+        this->setCursor(Qt::SizeHorCursor);
         ghost_frame_visible = false;
     }
-    else if ( !dragging_input && !dragging_output )
+    else if (!dragging_input && !dragging_output)
     {
-        this->setCursor( Qt::ArrowCursor );
+        this->setCursor(Qt::ArrowCursor);
         ghost_frame_visible = true;
     }
 
-    if ( dragging_input )
+    if (dragging_input)
     {
-        if ( qt::control() && click_over_in_out.first )
-            set_in_out( _frame, ( click_output + _frame - click_x_coords ) );
+        if (qt::control() && click_over_in_out.first)
+            set_in_out(_frame, (click_output + _frame - click_x_coords));
         else
-            set_in_out( _frame, output );
+            set_in_out(_frame, output);
     }
-    else if ( dragging_output )
+    else if (dragging_output)
     {
-        if ( qt::control() && click_over_in_out.second )
-            set_in_out( ( click_input + _frame - click_x_coords ), _frame );
+        if (qt::control() && click_over_in_out.second)
+            set_in_out((click_input + _frame - click_x_coords), _frame);
         else
-            set_in_out( input, _frame );
+            set_in_out(input, _frame);
     }
 
-    if ( dragging_input || dragging_output )
+    if (dragging_input || dragging_output)
         update();
 }
 
-void time_line::set_in_out( int _input, int _output, bool emit_signal )
+void time_line::set_in_out(int _input, int _output, bool emit_signal)
 {
     // si el input o output sobrepasa al otro, los limita con 1 frame menos
-    if ( _input >= output )
+    if (_input >= output)
         _input = output - 1;
 
-    if ( _output <= input )
+    if (_output <= input)
         _output = input + 1;
     //
     //
 
     // si el frame esta fuera del rango, lo actualiza y retorna
-    if ( _input < first_frame )
+    if (_input < first_frame)
         _input = first_frame;
-    else if ( _output > last_frame )
+    else if (_output > last_frame)
         _output = last_frame;
     //
     //
@@ -78,24 +78,24 @@ void time_line::set_in_out( int _input, int _output, bool emit_signal )
     input = _input;
 
     // Actualiza los edits del panel de 'players'
-    input_frame_edit->setText( QString::number( input ) );
-    output_frame_edit->setText( QString::number( output ) );
+    input_frame_edit->setText(QString::number(input));
+    output_frame_edit->setText(QString::number(output));
 
     // Signal
-    if ( emit_signal )
-        in_out_changed( input, output );
+    if (emit_signal)
+        in_out_changed(input, output);
 }
 
-void time_line::update_in_out( int _input, int _output )
+void time_line::update_in_out(int _input, int _output)
 {
     // es igual al 'set_in_out' pero sin emitir señal ya que se puede
     // producir un bucle infinito.
-    set_in_out( _input, _output, false );
+    set_in_out(_input, _output, false);
 }
 
 void time_line::change_in_out_with_control()
 {
-    if ( !qt::control() )
+    if (!qt::control())
         return;
 
     int aux_input = input, aux_output = output;
@@ -103,9 +103,9 @@ void time_line::change_in_out_with_control()
     // si el click sobrepasa el frame hacia a izquierda, actua sobre el 'input',
     // si sobrepasa hacia la derecha actua sobre el 'output', y con otras condicionales
     // para definir cuando se arrastraran input y output a la vez
-    if ( click_x_coords > frame )
+    if (click_x_coords > frame)
     {
-        if ( input < frame || dragging_output )
+        if (input < frame || dragging_output)
         {
             aux_output = click_x_coords;
             dragging_output = true;
@@ -118,7 +118,7 @@ void time_line::change_in_out_with_control()
     }
     else
     {
-        if ( output > frame || dragging_input )
+        if (output > frame || dragging_input)
         {
             aux_input = click_x_coords;
             dragging_input = true;
@@ -132,5 +132,5 @@ void time_line::change_in_out_with_control()
     //
     //
 
-    set_in_out( aux_input, aux_output );
+    set_in_out(aux_input, aux_output);
 }

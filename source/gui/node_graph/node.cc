@@ -2,26 +2,26 @@
 #include <panels_layout.h>
 #include <vinacomp.h>
 
-node::node( QGraphicsScene *_scene, int *_current_z_value, QJsonObject *_link_connecting,
-            QMap<QString, node *> *_selected_nodes, int inputs, QColor _color, QString _type,
-            QString name, QString tips, properties *__properties, QWidget *__vinacomp,
-            nodes_load *_nodes_loaded, project_struct *_project )
+node::node(QGraphicsScene *_scene, int *_current_z_value, QJsonObject *_link_connecting,
+           QMap<QString, node *> *_selected_nodes, int inputs, QColor _color, QString _type,
+           QString name, QString tips, properties *__properties, QWidget *__vinacomp,
+           nodes_load *_nodes_loaded, project_struct *_project)
 
-    : _properties( __properties )
-    , _vinacomp( __vinacomp )
-    , nodes_loaded( _nodes_loaded )
-    , color( _color )
-    , type( _type )
-    , scene( _scene )
-    , current_z_value( _current_z_value )
-    , selected_nodes( _selected_nodes )
-    , project( _project )
+    : _properties(__properties)
+    , _vinacomp(__vinacomp)
+    , nodes_loaded(_nodes_loaded)
+    , color(_color)
+    , type(_type)
+    , scene(_scene)
+    , current_z_value(_current_z_value)
+    , selected_nodes(_selected_nodes)
+    , project(_project)
 
-    , _trim_panel( nullptr )
-    , _viewer( nullptr )
-    , minimum_width( 150 )
-    , minimum_height( 50 )
-    , icon_area_width( 45 )
+    , _trim_panel(nullptr)
+    , _viewer(nullptr)
+    , minimum_width(150)
+    , minimum_height(50)
+    , icon_area_width(45)
 
 {
     center_position = new QPointF;
@@ -31,7 +31,7 @@ node::node( QGraphicsScene *_scene, int *_current_z_value, QJsonObject *_link_co
     current_width = minimum_width;
     current_height = minimum_height;
 
-    this->setFlags( QGraphicsItem::ItemIsMovable );
+    this->setFlags(QGraphicsItem::ItemIsMovable);
     //
     //
 
@@ -39,33 +39,33 @@ node::node( QGraphicsScene *_scene, int *_current_z_value, QJsonObject *_link_co
     {
         name_text = new QGraphicsTextItem;
         QFont font;
-        font.setPointSize( 15 );
-        name_text->setFont( font );
-        name_text->setParentItem( this );
-        name_text->setDefaultTextColor( Qt::black );
+        font.setPointSize(15);
+        name_text->setFont(font);
+        name_text->setParentItem(this);
+        name_text->setDefaultTextColor(Qt::black);
 
         tips_text = new QGraphicsTextItem;
         QFont font_tips;
-        font_tips.setPointSize( 10 );
-        tips_text->setFont( font_tips );
-        tips_text->setParentItem( this );
+        font_tips.setPointSize(10);
+        tips_text->setFont(font_tips);
+        tips_text->setParentItem(this);
     }
     //
     //
 
     // Rectangulo Forma
     {
-        change_size_rectangle( minimum_width, minimum_height );
+        change_size_rectangle(minimum_width, minimum_height);
 
-        QPen pen( Qt::black );
-        QLinearGradient ramp( 0, 0, icon_area_width * 2, 0 );
-        ramp.setColorAt( 0.5000, QColor( 50, 50, 50 ) );
-        ramp.setColorAt( 0.5001, color );
+        QPen pen(Qt::black);
+        QLinearGradient ramp(0, 0, icon_area_width * 2, 0);
+        ramp.setColorAt(0.5000, QColor(50, 50, 50));
+        ramp.setColorAt(0.5001, color);
 
-        QBrush brush( ramp );
-        pen.setWidth( 0 );
-        this->setBrush( brush );
-        this->setPen( pen );
+        QBrush brush(ramp);
+        pen.setWidth(0);
+        this->setBrush(brush);
+        this->setPen(pen);
     }
     //
     //
@@ -73,22 +73,22 @@ node::node( QGraphicsScene *_scene, int *_current_z_value, QJsonObject *_link_co
     // Crea los links para el nodo
     {
         links = new QList<node_link *>;
-        for ( int i = 0; i < inputs; i++ )
+        for (int i = 0; i < inputs; i++)
         {
-            node_link *link = new node_link( i, scene, this, _link_connecting, project, _vinacomp );
-            links->push_back( link );
+            node_link *link = new node_link(i, scene, this, _link_connecting, project, _vinacomp);
+            links->push_back(link);
         }
     }
     //
     //
 
-    scene->addItem( this );
+    scene->addItem(this);
 
-    this->setZValue( ( *current_z_value ) + 1 );
+    this->setZValue((*current_z_value) + 1);
 
-    set_name( name );
-    set_tips( tips );
-    set_icon( nodes_loaded->get_effect( type ).value( "icon" ).toString() );
+    set_name(name);
+    set_tips(tips);
+    set_icon(nodes_loaded->get_effect(type).value("icon").toString());
 }
 
 node::~node() {}
@@ -100,26 +100,26 @@ void node::make_panel()
     // Crear panel de 'knobs'
     QStringList nodes_without_panel = {"viewer", "dot", "backdrop"};
 
-    if ( !nodes_without_panel.contains( type ) )
+    if (!nodes_without_panel.contains(type))
     {
-        if ( !_trim_panel )
-            _trim_panel = new trim_panel( _properties, name, type, icon_name, nodes_loaded, project,
-                                          _vinacomp );
-        _properties->add_trim_panel( _trim_panel );
+        if (!_trim_panel)
+            _trim_panel = new trim_panel(_properties, name, type, icon_name, nodes_loaded, project,
+                                         _vinacomp);
+        _properties->add_trim_panel(_trim_panel);
     }
     //
     //
 
     // Viewer
-    vinacomp *__vinacomp = static_cast<vinacomp *>( _vinacomp );
-    if ( type == "viewer" )
+    vinacomp *__vinacomp = static_cast<vinacomp *>(_vinacomp);
+    if (type == "viewer")
     {
-        if ( !_viewer )
+        if (!_viewer)
         {
-            _viewer = new viewer( name, project, __vinacomp->get_renderer(), _vinacomp );
-            __vinacomp->get_viewers()->push_back( _viewer );
+            _viewer = new viewer(name, project, __vinacomp->get_renderer(), _vinacomp);
+            __vinacomp->get_viewers()->push_back(_viewer);
         }
-        __vinacomp->get_panels_layout()->add_viewer( _viewer );
+        __vinacomp->get_panels_layout()->add_viewer(_viewer);
     }
     //
 }
@@ -127,62 +127,62 @@ void node::make_panel()
 void node::refresh()
 {
     // Actualizacion de todos lo links conectados al nodo
-    auto refresh_links = [this]( node *_node ) {
-        for ( node_link *_node_link : *_node->get_links() )
+    auto refresh_links = [this](node *_node) {
+        for (node_link *_node_link : *_node->get_links())
             _node_link->refresh();
     };
 
-    refresh_links( this );
+    refresh_links(this);
     // refresca los link de cada nodo seleccionado y los
     // link de los nodos que estan conectados a la salida.
-    for ( node *output_node : *this->get_output_nodes() )
-        refresh_links( output_node );
+    for (node *output_node : *this->get_output_nodes())
+        refresh_links(output_node);
     //
     //
 }
 
-void node::set_icon( QString _icon_name )
+void node::set_icon(QString _icon_name)
 {
     icon_name = _icon_name;
-    QImage image( "resources/images/" + icon_name + "_a.png" );
-    QPixmap icon = QPixmap::fromImage( image );
-    icon = icon.scaledToHeight( 40, Qt::SmoothTransformation );
-    QGraphicsPixmapItem *item = new QGraphicsPixmapItem( icon );
-    item->setPos( 2, 5 );
-    item->setParentItem( this );
+    QImage image("resources/images/" + icon_name + "_a.png");
+    QPixmap icon = QPixmap::fromImage(image);
+    icon = icon.scaledToHeight(40, Qt::SmoothTransformation);
+    QGraphicsPixmapItem *item = new QGraphicsPixmapItem(icon);
+    item->setPos(2, 5);
+    item->setParentItem(this);
 }
 
-void node::change_size_rectangle( int _width, int _height )
+void node::change_size_rectangle(int _width, int _height)
 {
-    if ( _width < minimum_width )
+    if (_width < minimum_width)
         _width = minimum_width;
 
     current_width = _width;
 
     int radius = 3;
     QPainterPath rectangle;
-    rectangle.addRoundedRect( QRectF( 0, 0, _width, _height ), radius, radius );
-    this->setPath( rectangle );
+    rectangle.addRoundedRect(QRectF(0, 0, _width, _height), radius, radius);
+    this->setPath(rectangle);
 }
 
-void node::set_selected( bool enable )
+void node::set_selected(bool enable)
 {
     selected = enable;
-    if ( enable )
+    if (enable)
     {
-        QPen pen( Qt::white );
-        pen.setWidth( 3 );
-        this->setPen( pen );
+        QPen pen(Qt::white);
+        pen.setWidth(3);
+        this->setPen(pen);
     }
     else
     {
-        QPen pen( Qt::black );
-        pen.setWidth( 0 );
-        this->setPen( pen );
+        QPen pen(Qt::black);
+        pen.setWidth(0);
+        this->setPen(pen);
     }
 
-    for ( node_link *link : *links )
-        link->set_selected( enable );
+    for (node_link *link : *links)
+        link->set_selected(enable);
 }
 
 bool node::is_selected() const
@@ -200,29 +200,29 @@ QPointF node::get_center_position() const
     return *center_position;
 }
 
-void node::set_name( QString _name )
+void node::set_name(QString _name)
 {
-    this->setData( 0, _name );
-    name_text->setPlainText( _name );
+    this->setData(0, _name);
+    name_text->setPlainText(_name);
 
     int text_width = name_text->boundingRect().width();
     int new_width = text_width + icon_area_width;
 
-    if ( new_width < minimum_width )
+    if (new_width < minimum_width)
         new_width = minimum_width;
 
     // centra texto al area de texto
     int text_area = new_width - icon_area_width;
-    int text_pos_x = ( text_area - text_width ) / 2;
+    int text_pos_x = (text_area - text_width) / 2;
 
-    name_text->setPos( icon_area_width + text_pos_x, 0 );
+    name_text->setPos(icon_area_width + text_pos_x, 0);
     //
     //
 
-    change_size_rectangle( new_width, current_height );
+    change_size_rectangle(new_width, current_height);
 
-    if ( _trim_panel )
-        _trim_panel->set_name( _name );
+    if (_trim_panel)
+        _trim_panel->set_name(_name);
 }
 
 QString node::get_name() const
@@ -230,15 +230,15 @@ QString node::get_name() const
     return name_text->toPlainText();
 }
 
-void node::set_tips( QString _tips )
+void node::set_tips(QString _tips)
 {
-    tips_text->setPlainText( _tips );
-    tips_text->setPos( 60, 20 );
+    tips_text->setPlainText(_tips);
+    tips_text->setPos(60, 20);
 }
 
 QSize node::get_size() const
 {
-    return QSize( current_width, current_height );
+    return QSize(current_width, current_height);
 }
 
 trim_panel *node::get_trim_panel() const
@@ -251,20 +251,20 @@ QColor node::get_color() const
     return color;
 }
 
-void node::set_position( float x, float y )
+void node::set_position(float x, float y)
 {
-    this->setPos( x, y );
+    this->setPos(x, y);
     this->refresh();
 }
 
-void node::add_output_node( node *_node )
+void node::add_output_node(node *_node)
 {
-    nodes_connected_to_the_output->insert( _node->get_name(), _node );
+    nodes_connected_to_the_output->insert(_node->get_name(), _node);
 }
 
-void node::remove_output_node( node *_node )
+void node::remove_output_node(node *_node)
 {
-    nodes_connected_to_the_output->remove( _node->get_name() );
+    nodes_connected_to_the_output->remove(_node->get_name());
 }
 
 QMap<QString, node *> *node::get_output_nodes() const
@@ -272,14 +272,14 @@ QMap<QString, node *> *node::get_output_nodes() const
     return nodes_connected_to_the_output;
 }
 
-void node::add_input_node( node *_node )
+void node::add_input_node(node *_node)
 {
-    nodes_connected_to_the_inputs->insert( _node->get_name(), _node );
+    nodes_connected_to_the_inputs->insert(_node->get_name(), _node);
 }
 
-void node::remove_input_node( node *_node )
+void node::remove_input_node(node *_node)
 {
-    nodes_connected_to_the_inputs->remove( _node->get_name() );
+    nodes_connected_to_the_inputs->remove(_node->get_name());
 }
 
 QList<node_link *> *node::get_links() const
@@ -292,32 +292,32 @@ QString node::get_type() const
     return type;
 }
 
-void node::mouseDoubleClickEvent( QGraphicsSceneMouseEvent *event )
+void node::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
     make_panel();
 }
 
-void node::mousePressEvent( QGraphicsSceneMouseEvent *event )
+void node::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     // con esto se mantiene siempre este nodo sobre los demas
-    ( *current_z_value )++;
-    this->setZValue( *current_z_value );
+    (*current_z_value)++;
+    this->setZValue(*current_z_value);
     //
     //
 
     start_position = this->pos();
-    click_position = mapToScene( event->pos() );
+    click_position = mapToScene(event->pos());
 
     selected_nodes_start_position.clear();
-    for ( node *selected_node : *selected_nodes )
-        selected_nodes_start_position[ selected_node->get_name() ] = selected_node->pos();
+    for (node *selected_node : *selected_nodes)
+        selected_nodes_start_position[selected_node->get_name()] = selected_node->pos();
 }
 
-void node::mouseMoveEvent( QGraphicsSceneMouseEvent *event )
+void node::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     int snap = 20;
 
-    QPointF position = mapToScene( event->pos() );
+    QPointF position = mapToScene(event->pos());
     QPointF click_position_on_node = click_position - start_position;
 
     float this_node_x = position.x() - click_position_on_node.x();
@@ -326,60 +326,60 @@ void node::mouseMoveEvent( QGraphicsSceneMouseEvent *event )
     float x_snap = NULL;
     float y_snap = NULL;
 
-    auto to_snap = [&]( node *connected_node ) {
-        if ( selected_nodes->contains( connected_node->get_name() ) )
+    auto to_snap = [&](node *connected_node) {
+        if (selected_nodes->contains(connected_node->get_name()))
             return;
 
         float size_x_difference =
-            ( connected_node->get_size().width() - this->get_size().width() ) / 2;
+            (connected_node->get_size().width() - this->get_size().width()) / 2;
         float size_y_difference =
-            ( connected_node->get_size().height() - this->get_size().height() ) / 2;
+            (connected_node->get_size().height() - this->get_size().height()) / 2;
 
         float _this_node_x = this_node_x - size_x_difference;
         float _this_node_y = this_node_y - size_y_difference;
 
-        float x_difference = abs( connected_node->x() - _this_node_x );
-        float y_difference = abs( connected_node->y() - _this_node_y );
+        float x_difference = abs(connected_node->x() - _this_node_x);
+        float y_difference = abs(connected_node->y() - _this_node_y);
 
-        if ( x_difference < snap )
+        if (x_difference < snap)
             x_snap = connected_node->x() + size_x_difference;
 
-        else if ( y_difference < snap )
+        else if (y_difference < snap)
             y_snap = connected_node->y() + size_y_difference;
     };
 
     // busca el snap en cada nodo conectado
-    for ( node *connected_node : *nodes_connected_to_the_inputs )
-        to_snap( connected_node );
-    for ( node *connected_node : *nodes_connected_to_the_output )
-        to_snap( connected_node );
+    for (node *connected_node : *nodes_connected_to_the_inputs)
+        to_snap(connected_node);
+    for (node *connected_node : *nodes_connected_to_the_output)
+        to_snap(connected_node);
     //
     //
 
     QPointF position_with_snap;
 
-    if ( x_snap && y_snap )
+    if (x_snap && y_snap)
         position_with_snap = {x_snap, y_snap};
-    else if ( x_snap )
+    else if (x_snap)
         position_with_snap = {x_snap, this_node_y};
-    else if ( y_snap )
+    else if (y_snap)
         position_with_snap = {this_node_x, y_snap};
     else
         position_with_snap = {this_node_x, this_node_y};
 
-    this->set_position( position_with_snap.x(), position_with_snap.y() );
+    this->set_position(position_with_snap.x(), position_with_snap.y());
     //
     //
 
     // Mueve los nodos seleccionados en relacion a este nodo
     QPointF difference = start_position - position_with_snap;
-    for ( node *selected_node : *selected_nodes )
+    for (node *selected_node : *selected_nodes)
     {
-        if ( selected_node != this )
+        if (selected_node != this)
         {
             QPointF new_position =
-                selected_nodes_start_position.value( selected_node->get_name() ) - difference;
-            selected_node->set_position( new_position.x(), new_position.y() );
+                selected_nodes_start_position.value(selected_node->get_name()) - difference;
+            selected_node->set_position(new_position.x(), new_position.y());
         }
     }
     //

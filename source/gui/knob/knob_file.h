@@ -21,10 +21,10 @@ private:
     void open_file();
 
 public:
-    knob_file( QString file_path = "" );
+    knob_file(QString file_path = "");
     ~knob_file();
 signals:
-    void changed( QString file_path );
+    void changed(QString file_path);
 };
 
 #endif // KNOB_FILE_HPP

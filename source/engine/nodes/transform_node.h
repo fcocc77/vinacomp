@@ -10,7 +10,7 @@ public:
     transform_node();
     ~transform_node();
 
-    void render( render_data *rdata, QJsonObject *params ) override;
+    void render(render_data *rdata, QJsonObject *params) override;
 };
 
 #endif // TRANSFORM_NODE_H

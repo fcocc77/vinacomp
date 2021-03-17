@@ -10,7 +10,7 @@ public:
     edge_detect_node();
     ~edge_detect_node();
 
-    void render( render_data *rdata, QJsonObject *params ) override;
+    void render(render_data *rdata, QJsonObject *params) override;
 };
 
 #endif // EDGE_DETECT_NODE_H

@@ -46,17 +46,17 @@ private:
     QWidget *node_graph;
 
     void run_script();
-    void append_output( QString text, QColor color = Qt::white );
+    void append_output(QString text, QColor color = Qt::white);
 
     // python
     void python_initialize();
-    QString python_run( QString command );
+    QString python_run(QString command);
     string std_out_err;
     PyObject *python_module;
     //
 
 public:
-    script_editor( QJsonObject *_project, QWidget *_node_graph );
+    script_editor(QJsonObject *_project, QWidget *_node_graph);
     ~script_editor();
 
     void open_script_from_project();

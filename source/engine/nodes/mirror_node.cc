@@ -2,28 +2,28 @@
 
 mirror_node::mirror_node()
 {
-    load_default_params( "mirror" );
+    load_default_params("mirror");
 }
 
-void flip_flop( cv::Mat &image, bool flip, bool flop )
+void flip_flop(cv::Mat &image, bool flip, bool flop)
 {
-    if ( !flip && !flop )
+    if (!flip && !flop)
         return;
 
-    cv::Mat3f new_image( image.rows, image.cols );
-    for ( int y = 0; y < image.rows; y++ )
+    cv::Mat3f new_image(image.rows, image.cols);
+    for (int y = 0; y < image.rows; y++)
     {
         int y_mirror = y;
-        if ( flip )
+        if (flip)
             y_mirror = image.rows - y;
 
-        for ( int x = 0; x < image.cols; x++ )
+        for (int x = 0; x < image.cols; x++)
         {
             int x_mirror = x;
-            if ( flop )
+            if (flop)
                 x_mirror = image.cols - x;
 
-            new_image.at<cv::Vec3f>( y, x ) = image.at<cv::Vec3f>( y_mirror, x_mirror );
+            new_image.at<cv::Vec3f>(y, x) = image.at<cv::Vec3f>(y_mirror, x_mirror);
         }
     }
 
@@ -32,10 +32,10 @@ void flip_flop( cv::Mat &image, bool flip, bool flop )
 
 mirror_node::~mirror_node() {}
 
-void mirror_node::render( render_data *rdata, QJsonObject *params )
+void mirror_node::render(render_data *rdata, QJsonObject *params)
 {
-    bool flip = get( params, "flip" ).toBool();
-    bool flop = get( params, "flop" ).toBool();
+    bool flip = get(params, "flip").toBool();
+    bool flop = get(params, "flop").toBool();
 
-    flip_flop( rdata->image, flip, flop );
+    flip_flop(rdata->image, flip, flop);
 }

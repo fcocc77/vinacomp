@@ -10,7 +10,7 @@ public:
     ramp_node();
     ~ramp_node();
 
-    void render( render_data *rdata, QJsonObject *params ) override;
+    void render(render_data *rdata, QJsonObject *params) override;
 };
 
 #endif // RAMP_NODE_H

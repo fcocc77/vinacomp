@@ -10,7 +10,7 @@ public:
     lens_distortion_node();
     ~lens_distortion_node();
 
-    void render( render_data *rdata, QJsonObject *params ) override;
+    void render(render_data *rdata, QJsonObject *params) override;
 };
 
 #endif // LENS_DISTORTION_NODE_H
