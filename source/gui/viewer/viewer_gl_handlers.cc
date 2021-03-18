@@ -32,6 +32,7 @@ void viewer_gl::handlers_update()
             {
                 knob_signal(panel->get_knob("rotate"));
                 knob_signal(panel->get_knob("translate"));
+                knob_signal(panel->get_knob("scale"));
             }
         }
     };

@@ -46,11 +46,15 @@ void gl_view::tf_handler_draw()
         //
 
         // Scale
-        float scale_box_separation = 26;
-        QPointF x1_scale = arc_point({0, 0}, scale_box_separation, rotate + 180);
-        QPointF x2_scale = arc_point({0, 0}, scale_box_separation, rotate);
-        QPointF y1_scale = arc_point({0, 0}, scale_box_separation, rotate - 90);
-        QPointF y2_scale = arc_point({0, 0}, scale_box_separation, rotate + 90);
+        // multiplica la escala a la separacion de los cuadros de escala
+        float scale_box_separation = 25;
+        float scale_x_box_separation = scale_box_separation * handler.scale.x();
+        float scale_y_box_separation = scale_box_separation * handler.scale.y();
+        //
+        QPointF x1_scale = arc_point({0, 0}, scale_x_box_separation, rotate + 180);
+        QPointF x2_scale = arc_point({0, 0}, scale_x_box_separation, rotate);
+        QPointF y1_scale = arc_point({0, 0}, scale_y_box_separation, rotate - 90);
+        QPointF y2_scale = arc_point({0, 0}, scale_y_box_separation, rotate + 90);
 
         handler.x1_scale_handler = get_coordsf(x1_scale + translate_viewport);
         handler.x2_scale_handler = get_coordsf(x2_scale + translate_viewport);
@@ -201,21 +205,42 @@ void gl_view::tf_handler_rotate(QPoint cursor_position, tf_handler_struct &handl
     handler.rotate = rotate - 90;
 }
 
-void gl_view::tf_handler_scale_axis(QPoint cursor_position, tf_handler_struct &handler, bool x_axis)
+void gl_view::tf_handler_scale_axis(QPoint cursor_position, tf_handler_struct &handler, QString axis)
 {
-    QPointF translate = get_position(handler.translate);
+    QPointF translate = get_position(handler_click.translate);
+    QPointF x_click = get_position(handler_click.x1_scale_handler);
     QPointF x = get_position(handler.x1_scale_handler);
 
+    // calcula la diferencia entre la posicion y el 'handler' para
+    // que al inicio del arrastre no salte
+    QPointF clicked_handler;
+
+    if (axis == "x1")
+        clicked_handler = handler_click.x1_scale_handler;
+    if (axis == "x2")
+        clicked_handler = handler_click.x2_scale_handler;
+    if (axis == "y1")
+        clicked_handler = handler_click.y1_scale_handler;
+    if (axis == "y2")
+        clicked_handler = handler_click.y2_scale_handler;
+
+    clicked_handler = get_position(clicked_handler);
+    QPoint diff = clicked_handler.toPoint() - click_position;
+    cursor_position += diff;
+    //
+
+    float handler_to_center = qt::distance_points(translate, clicked_handler);
     float distance = qt::distance_points(translate, cursor_position);
-    float handler_to_center = qt::distance_points(translate, x);
+
     float scale = distance / handler_to_center;
 
-    if (x_axis)
+    if (axis == "x1" || axis == "x2")
     {
         translate.setY(0);
         x.setY(0);
         cursor_position.setY(0);
 
+        scale *= handler_click.scale.x();
         handler.scale.setX(scale);
     }
     else
@@ -224,6 +249,7 @@ void gl_view::tf_handler_scale_axis(QPoint cursor_position, tf_handler_struct &h
         x.setX(0);
         cursor_position.setX(0);
 
+        scale *= handler_click.scale.y();
         handler.scale.setY(scale);
     }
 }
@@ -235,13 +261,17 @@ QString gl_view::tf_get_action(QPoint cursor_position, tf_handler_struct &handle
     if (cursor_above_point(cursor_position, handler.translate, 15))
         action = "translate";
 
-    else if (cursor_above_point(cursor_position, handler.x1_scale_handler) |
-             cursor_above_point(cursor_position, handler.x2_scale_handler))
-        action = "scale_x";
+    else if (cursor_above_point(cursor_position, handler.x1_scale_handler))
+        action = "scale_x1";
 
-    else if (cursor_above_point(cursor_position, handler.y1_scale_handler) |
-             cursor_above_point(cursor_position, handler.y2_scale_handler))
-        action = "scale_y";
+    else if (cursor_above_point(cursor_position, handler.x2_scale_handler))
+        action = "scale_x2";
+
+    else if (cursor_above_point(cursor_position, handler.y1_scale_handler))
+        action = "scale_y1";
+
+    else if (cursor_above_point(cursor_position, handler.y2_scale_handler))
+        action = "scale_y2";
 
     else if (cursor_above_line(cursor_position, handler.x_handler))
         action = "translate_x";
@@ -291,6 +321,10 @@ void gl_view::tf_handler_move(QPoint cursor_position)
     for (auto &handler : tf_handlers)
     {
         QString action = tf_get_action(cursor_position, handler);
+
+        if (handler.transforming)
+            action = handler.action;
+
         if (!over)
             over = !action.isEmpty();
 
@@ -298,28 +332,34 @@ void gl_view::tf_handler_move(QPoint cursor_position)
             this->setCursor(Qt::CrossCursor);
         else if (action == "translate")
             this->setCursor(Qt::SizeAllCursor);
-        else if (action == "scale_x")
+        else if (action == "scale_x1" || action == "scale_x2")
             this->setCursor(Qt::SizeHorCursor);
-        else if (action == "scale_y")
+        else if (action == "scale_y1" || action == "scale_y2")
             this->setCursor(Qt::SizeVerCursor);
 
         if (handler.transforming)
         {
-            if (handler.action == "rotate")
+            if (action == "rotate")
                 tf_handler_rotate(cursor_position, handler);
-            else if (handler.action == "translate_x")
+            else if (action == "translate_x")
                 tf_handler_translate_axis(cursor_position, handler, true);
-            else if (handler.action == "translate_y")
+            else if (action == "translate_y")
                 tf_handler_translate_axis(cursor_position, handler, false);
-            else if (handler.action == "translate")
+            else if (action == "translate")
                 tf_handler_translate(cursor_position, handler);
-            else if (handler.action == "scale_x")
-                tf_handler_scale_axis(cursor_position, handler, true);
-            else if (handler.action == "scale_y")
-                tf_handler_scale_axis(cursor_position, handler, false);
+            else if (action == "scale_x1")
+                tf_handler_scale_axis(cursor_position, handler, "x1");
+            else if (action == "scale_x2")
+                tf_handler_scale_axis(cursor_position, handler, "x2");
+            else if (action == "scale_y1")
+                tf_handler_scale_axis(cursor_position, handler, "y1");
+            else if (action == "scale_y2")
+                tf_handler_scale_axis(cursor_position, handler, "y2");
 
             tf_handler_changed(handler);
             update();
+
+            break;
         }
     }
 

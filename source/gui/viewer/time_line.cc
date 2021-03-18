@@ -8,9 +8,7 @@ time_line::time_line(QWidget *_parent, QLineEdit *_frame_edit, QLineEdit *_input
     , input_frame_edit(_input_frame_edit)
     , output_frame_edit(_output_frame_edit)
     , skip_frame_edit(_skip_frame_edit)
-    ,
-
-    frame(10)
+    , frame(10)
     , ghost_frame(10)
     , dragging(false)
     , first_frame(1)

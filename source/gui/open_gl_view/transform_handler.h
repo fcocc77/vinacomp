@@ -35,7 +35,7 @@ void tf_handler_translate(QPoint cursor_position, tf_handler_struct &handler);
 void tf_handler_translate_axis(QPoint cursor_position, tf_handler_struct &handler,
                                bool x_axis = true);
 void tf_handler_rotate(QPoint cursor_position, tf_handler_struct &handler);
-void tf_handler_scale_axis(QPoint cursor_position, tf_handler_struct &handler, bool x_axis = true);
+void tf_handler_scale_axis(QPoint cursor_position, tf_handler_struct &handler, QString axis);
 void tf_handler_add(QString name);
 
 bool horizontal_axis(float rotate) const;
