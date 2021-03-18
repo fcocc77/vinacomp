@@ -28,7 +28,7 @@
             "minimum": 0.1,
             "maximum": 10,
             "default": 1,
-            "dimension": 2
+            "dimensions": 2
         },
         {
             "name": "skew_x",

@@ -10,6 +10,7 @@
 #include <knob.h>
 #include <qt.h>
 #include <slider.h>
+#include <button.h>
 
 class knob_floating : public knob
 {
@@ -19,10 +20,13 @@ private:
     QString label;
     slider *_slider;
     QLineEdit *value_edit;
+    bool dimensions;
+    int dimensions_amount;
+    button *show_dimensions;
     bool emmit_signal;
 
 public:
-    knob_floating(float min, float max, float default_value = 1);
+    knob_floating(float min, float max, float default_value = 1, int dimensions_amount = 1);
     ~knob_floating();
 
     void set_value(float value, bool _emmit_signal = true);

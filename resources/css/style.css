@@ -21,7 +21,7 @@ QPushButton {
     width: 0px; }
 
 QMainWindow {
-  qproperty-windowIcon: url("/home/pancho/Documents/develop/vinacomp/resources/images/vinacomp.png"); }
+  qproperty-windowIcon: url("{{path}}/resources/images/vinacomp.png"); }
 
 QLineEdit {
   color: #aeb4bc;
@@ -153,13 +153,13 @@ QScrollBar {
   QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left-arrow:horizontal, QScrollBar::right-arrow:horizontal {
     background: transparent; }
   QScrollBar::up-arrow:vertical {
-    image: url("/home/pancho/Documents/develop/vinacomp/resources/images/up_arrow.png"); }
+    image: url("{{path}}/resources/images/up_arrow.png"); }
   QScrollBar::down-arrow:vertical {
-    image: url("/home/pancho/Documents/develop/vinacomp/resources/images/down_arrow.png"); }
+    image: url("{{path}}/resources/images/down_arrow.png"); }
   QScrollBar::left-arrow:horizontal {
-    image: url("/home/pancho/Documents/develop/vinacomp/resources/images/right_arrow.png"); }
+    image: url("{{path}}/resources/images/right_arrow.png"); }
   QScrollBar::right-arrow:horizontal {
-    image: url("/home/pancho/Documents/develop/vinacomp/resources/images/left_arrow.png"); }
+    image: url("{{path}}/resources/images/left_arrow.png"); }
 
 QSlider {
   height: 15px;
@@ -269,6 +269,19 @@ QSlider {
       background: #30343b; }
     #trim_panel #controls #init_space, #trim_panel #node_tab #init_space {
       background: transparent; }
+    #trim_panel #controls #knob_floating QPushButton, #trim_panel #controls #knob_integer QPushButton, #trim_panel #controls #knob_dimensions QPushButton, #trim_panel #node_tab #knob_floating QPushButton, #trim_panel #node_tab #knob_integer QPushButton, #trim_panel #node_tab #knob_dimensions QPushButton {
+      width: 25px;
+      height: 22px;
+      border-radius: 2px;
+      background: #3c4149; }
+      #trim_panel #controls #knob_floating QPushButton:hover, #trim_panel #controls #knob_integer QPushButton:hover, #trim_panel #controls #knob_dimensions QPushButton:hover, #trim_panel #node_tab #knob_floating QPushButton:hover, #trim_panel #node_tab #knob_integer QPushButton:hover, #trim_panel #node_tab #knob_dimensions QPushButton:hover {
+        background: #434851; }
+      #trim_panel #controls #knob_floating QPushButton[active=true], #trim_panel #controls #knob_integer QPushButton[active=true], #trim_panel #controls #knob_dimensions QPushButton[active=true], #trim_panel #node_tab #knob_floating QPushButton[active=true], #trim_panel #node_tab #knob_integer QPushButton[active=true], #trim_panel #node_tab #knob_dimensions QPushButton[active=true] {
+        background: #25282d; }
+        #trim_panel #controls #knob_floating QPushButton[active=true]:hover, #trim_panel #controls #knob_integer QPushButton[active=true]:hover, #trim_panel #controls #knob_dimensions QPushButton[active=true]:hover, #trim_panel #node_tab #knob_floating QPushButton[active=true]:hover, #trim_panel #node_tab #knob_integer QPushButton[active=true]:hover, #trim_panel #node_tab #knob_dimensions QPushButton[active=true]:hover {
+          background: #1e2024; }
+      #trim_panel #controls #knob_floating QPushButton[disable=true], #trim_panel #controls #knob_integer QPushButton[disable=true], #trim_panel #controls #knob_dimensions QPushButton[disable=true], #trim_panel #node_tab #knob_floating QPushButton[disable=true], #trim_panel #node_tab #knob_integer QPushButton[disable=true], #trim_panel #node_tab #knob_dimensions QPushButton[disable=true] {
+        color: #474d57; }
     #trim_panel #controls #knob_check_box, #trim_panel #node_tab #knob_check_box {
       background: transparent; }
       #trim_panel #controls #knob_check_box QCheckBox, #trim_panel #node_tab #knob_check_box QCheckBox {
@@ -314,6 +327,9 @@ QSlider {
     #trim_panel #controls #knob_color QLineEdit, #trim_panel #node_tab #knob_color QLineEdit {
       background: #202327; }
     #trim_panel #controls #knob_color QPushButton, #trim_panel #node_tab #knob_color QPushButton {
+      width: 25px;
+      height: 22px;
+      border-radius: 2px;
       background: #3c4149; }
       #trim_panel #controls #knob_color QPushButton:hover, #trim_panel #node_tab #knob_color QPushButton:hover {
         background: #434851; }
@@ -355,11 +371,6 @@ QSlider {
       border-bottom: 1px solid #8f9092; }
     #trim_panel #controls #knob_color #alpha_slider::handle, #trim_panel #node_tab #knob_color #alpha_slider::handle {
       background: white; }
-    #trim_panel #controls #small_button, #trim_panel #node_tab #small_button {
-      width: 25px;
-      height: 22px;
-      border-radius: 2px;
-      background: #3c4149; }
     #trim_panel #controls #knob_button, #trim_panel #node_tab #knob_button {
       background: none; }
       #trim_panel #controls #knob_button QPushButton, #trim_panel #node_tab #knob_button QPushButton {

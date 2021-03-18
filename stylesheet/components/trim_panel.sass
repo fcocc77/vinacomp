@@ -1,5 +1,19 @@
 #trim_panel
     background: $b18
+    @mixin small_button
+        QPushButton
+            width: 25px
+            height: 22px
+            border-radius: 2px
+            background: $b25
+            &:hover
+                background: $b28
+            &[ active = true ]
+                background: $b15
+                &:hover
+                    background: $b12
+            &[ disable = true ]
+                color: $b30
     #butttons
         background: $b15
     #controls, #node_tab
@@ -12,7 +26,8 @@
             background: $b20
         #init_space
             background: transparent
-        #knob_floating
+        #knob_floating, #knob_integer, #knob_dimensions
+            @include small_button
         #knob_check_box
             background: transparent
             QCheckBox
@@ -62,16 +77,7 @@
                 background: transparent
             QLineEdit
                 background: $b13
-            QPushButton
-                background: $b25
-                &:hover
-                    background: $b28
-                &[ active = true ]
-                    background: $b15
-                    &:hover
-                        background: $b12
-                &[ disable = true ]
-                    color: $b30
+            @include small_button
             #red_edit
                 border-bottom-color: red
                 &::focus
@@ -108,11 +114,6 @@
                     border-bottom: 1px solid mix(white, $b12, 50%)
                 &::handle
                     background: white
-        #small_button
-            width: 25px
-            height: 22px
-            border-radius: 2px
-            background: $b25
         #knob_button
             background: none
             QPushButton

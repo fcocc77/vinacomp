@@ -252,6 +252,7 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout, QList<QWidg
 
         else if (type == "floating")
         {
+            int dimensions = knob_object.value("dimensions").toInt();
             float default_value = knob_object.value("default").toDouble();
             float value;
 
@@ -262,7 +263,7 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout, QList<QWidg
 
             knob_floating *_knob_floating =
                 new knob_floating(knob_object.value("minimum").toDouble(),
-                                  knob_object.value("maximum").toDouble(), value);
+                                  knob_object.value("maximum").toDouble(), value, dimensions);
 
             connect(_knob_floating, &knob_floating::changed, this, [=](float _value) {
                 if (default_value != _value)
