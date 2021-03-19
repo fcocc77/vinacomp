@@ -11,12 +11,13 @@ class slider : public QSlider
 private:
     bool floating;
     float float_interval;
+    bool emmit_signal;
 
 public:
     slider(float _min = 0, float _max = 100, float default_value = 0, bool _floating = true);
     ~slider();
 
-    void set_value(float value);
+    void set_value(float value, bool emmit_signal = true);
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;

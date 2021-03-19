@@ -3,6 +3,7 @@
 slider::slider(float min, float max, float default_value, bool _floating)
     : floating(_floating)
     , float_interval(100)
+    , emmit_signal(true)
 {
     this->setOrientation(Qt::Horizontal);
 
@@ -18,10 +19,13 @@ slider::slider(float min, float max, float default_value, bool _floating)
     }
 
     connect(this, &QSlider::valueChanged, this, [=](int value) {
-        if (floating)
-            moved(float(value) / float_interval);
-        else
-            moved(value);
+        if (emmit_signal)
+        {
+            if (floating)
+                moved(float(value) / float_interval);
+            else
+                moved(value);
+        }
     });
 
     this->setValue(default_value);
@@ -29,8 +33,10 @@ slider::slider(float min, float max, float default_value, bool _floating)
 
 slider::~slider() {}
 
-void slider::set_value(float value)
+void slider::set_value(float value, bool _emmit_signal)
 {
+    emmit_signal = _emmit_signal;
+
     if (floating)
         value *= float_interval;
 

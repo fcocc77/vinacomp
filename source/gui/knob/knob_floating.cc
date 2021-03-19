@@ -68,7 +68,8 @@ knob_floating::knob_floating(float min, float max, float default_value, bool _tw
     }
 
     layout->addWidget(_slider);
-    layout->addWidget(show_dimensions);
+    if (two_dimensional)
+        layout->addWidget(show_dimensions);
 
     set_value(default_value);
 }
@@ -151,9 +152,10 @@ void knob_floating::set_values(pair<float, float> _values, bool _emmit_signal)
 
     separate_dimensions(values.first != values.second);
 
-    value_1_edit->setText(QString::number(_values.first));
-    value_2_edit->setText(QString::number(_values.second));
-    _slider->set_value(_values.first);
+    value_1_edit->setText(QString::number(values.first));
+    _slider->set_value(_values.first, false);
+
+    value_2_edit->setText(QString::number(values.second));
 }
 
 float knob_floating::get_value(int dimension) const
