@@ -69,8 +69,8 @@ private:
 protected:
     nodes_load *nodes_loaded;
 
-    const int minimum_width;
-    const int minimum_height;
+    int minimum_width;
+    int minimum_height;
     int current_width;
     int current_height;
 
@@ -79,6 +79,8 @@ protected:
     QString type;
     QString icon_name;
     QColor color;
+
+    void set_size(int minimum_width, int minimum_height);
 
 public:
     node(node_props _props, QMap<QString, node *> *_selected_nodes);

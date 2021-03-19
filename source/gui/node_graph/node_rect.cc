@@ -6,6 +6,7 @@ node_rect::node_rect(node_props _props, QMap<QString, node *> *_selected_nodes)
     , icon_area_width(45)
 {
     this->setFlags(QGraphicsItem::ItemIsMovable);
+    node::set_size(150, 50);
 
     // Texto
     {
@@ -51,7 +52,6 @@ node_rect::~node_rect() {}
 
 void node_rect::set_name(QString _name)
 {
-    this->setData(0, _name);
     name_text->setPlainText(_name);
 
     int text_width = name_text->boundingRect().width();

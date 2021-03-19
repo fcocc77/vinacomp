@@ -8,8 +8,6 @@ node::node(node_props _props, QMap<QString, node *> *_selected_nodes)
     , selected_nodes(_selected_nodes)
     , nodes_loaded(_props.nodes_loaded)
 
-    , minimum_width(150)
-    , minimum_height(50)
     , _trim_panel(nullptr)
     , _viewer(nullptr)
 
@@ -18,8 +16,6 @@ node::node(node_props _props, QMap<QString, node *> *_selected_nodes)
     nodes_connected_to_the_inputs = new QMap<QString, node *>;
     center_position = new QPointF;
 
-    current_width = minimum_width;
-    current_height = minimum_height;
 
     // Crea los links para el nodo
     {
@@ -44,6 +40,15 @@ node::node(node_props _props, QMap<QString, node *> *_selected_nodes)
 }
 
 node::~node() {}
+
+void node::set_size(int _minimum_width, int _minimum_height)
+{
+    minimum_width = _minimum_width;
+    minimum_height = _minimum_height;
+
+    current_width = minimum_width;
+    current_height = minimum_height;
+}
 
 void node::make_panel()
 {
@@ -115,6 +120,8 @@ void node::set_selected(bool enable)
 
 void node::set_name(QString _name)
 {
+    this->setData(0, _name);
+
     name = _name;
 
     if (_trim_panel)
