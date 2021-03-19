@@ -17,7 +17,7 @@
 
 // Gui
 #include <graphics_view.h>
-#include <node.h>
+#include "node_rect.h"
 #include <node_link.h>
 #include <nodes_load.h>
 #include <properties.h>

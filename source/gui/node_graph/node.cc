@@ -1,94 +1,46 @@
-#include <node.h>
+#include "./node.h"
 #include <panels_layout.h>
 #include <vinacomp.h>
 
-node::node(QGraphicsScene *_scene, int *_current_z_value, QJsonObject *_link_connecting,
-           QMap<QString, node *> *_selected_nodes, int inputs, QColor _color, QString _type,
-           QString name, QString tips, properties *__properties, QWidget *__vinacomp,
-           nodes_load *_nodes_loaded, project_struct *_project)
+node::node(node_props _props, QMap<QString, node *> *_selected_nodes)
 
-    : _properties(__properties)
-    , _vinacomp(__vinacomp)
-    , nodes_loaded(_nodes_loaded)
-    , color(_color)
-    , type(_type)
-    , scene(_scene)
-    , current_z_value(_current_z_value)
+    : props(_props)
     , selected_nodes(_selected_nodes)
-    , project(_project)
+    , nodes_loaded(_props.nodes_loaded)
 
-    , _trim_panel(nullptr)
-    , _viewer(nullptr)
     , minimum_width(150)
     , minimum_height(50)
-    , icon_area_width(45)
+    , _trim_panel(nullptr)
+    , _viewer(nullptr)
 
 {
-    center_position = new QPointF;
     nodes_connected_to_the_output = new QMap<QString, node *>;
     nodes_connected_to_the_inputs = new QMap<QString, node *>;
+    center_position = new QPointF;
 
     current_width = minimum_width;
     current_height = minimum_height;
 
-    this->setFlags(QGraphicsItem::ItemIsMovable);
-    //
-    //
-
-    // Texto
-    {
-        name_text = new QGraphicsTextItem;
-        QFont font;
-        font.setPointSize(15);
-        name_text->setFont(font);
-        name_text->setParentItem(this);
-        name_text->setDefaultTextColor(Qt::black);
-
-        tips_text = new QGraphicsTextItem;
-        QFont font_tips;
-        font_tips.setPointSize(10);
-        tips_text->setFont(font_tips);
-        tips_text->setParentItem(this);
-    }
-    //
-    //
-
-    // Rectangulo Forma
-    {
-        change_size_rectangle(minimum_width, minimum_height);
-
-        QPen pen(Qt::black);
-        QLinearGradient ramp(0, 0, icon_area_width * 2, 0);
-        ramp.setColorAt(0.5000, QColor(50, 50, 50));
-        ramp.setColorAt(0.5001, color);
-
-        QBrush brush(ramp);
-        pen.setWidth(0);
-        this->setBrush(brush);
-        this->setPen(pen);
-    }
-    //
-    //
-
     // Crea los links para el nodo
     {
         links = new QList<node_link *>;
-        for (int i = 0; i < inputs; i++)
+        for (int i = 0; i < props.inputs; i++)
         {
-            node_link *link = new node_link(i, scene, this, _link_connecting, project, _vinacomp);
+            node_link *link = new node_link(i, props.scene, this, props.link_connecting,
+                                            props.project, props.vinacomp);
             links->push_back(link);
         }
     }
     //
     //
+    name = props.name;
+    tips = props.name;
+    type = props.type;
+    color = props.color;
 
-    scene->addItem(this);
+    props.scene->addItem(this);
 
-    this->setZValue((*current_z_value) + 1);
-
-    set_name(name);
-    set_tips(tips);
-    set_icon(nodes_loaded->get_effect(type).value("icon").toString());
+    this->setZValue((*props.current_z_value) + 1);
 }
 
 node::~node() {}
@@ -103,20 +55,20 @@ void node::make_panel()
     if (!nodes_without_panel.contains(type))
     {
         if (!_trim_panel)
-            _trim_panel = new trim_panel(_properties, name, type, icon_name, nodes_loaded, project,
-                                         _vinacomp);
-        _properties->add_trim_panel(_trim_panel);
+            _trim_panel = new trim_panel(props._properties, name, type, icon_name, nodes_loaded,
+                                         props.project, props.vinacomp);
+        props._properties->add_trim_panel(_trim_panel);
     }
     //
     //
 
     // Viewer
-    vinacomp *__vinacomp = static_cast<vinacomp *>(_vinacomp);
+    vinacomp *__vinacomp = static_cast<vinacomp *>(props.vinacomp);
     if (type == "viewer")
     {
         if (!_viewer)
         {
-            _viewer = new viewer(name, project, __vinacomp->get_renderer(), _vinacomp);
+            _viewer = new viewer(name, props.project, __vinacomp->get_renderer(), props.vinacomp);
             __vinacomp->get_viewers()->push_back(_viewer);
         }
         __vinacomp->get_panels_layout()->add_viewer(_viewer);
@@ -141,30 +93,6 @@ void node::refresh()
     //
 }
 
-void node::set_icon(QString _icon_name)
-{
-    icon_name = _icon_name;
-    QImage image("resources/images/" + icon_name + "_a.png");
-    QPixmap icon = QPixmap::fromImage(image);
-    icon = icon.scaledToHeight(40, Qt::SmoothTransformation);
-    QGraphicsPixmapItem *item = new QGraphicsPixmapItem(icon);
-    item->setPos(2, 5);
-    item->setParentItem(this);
-}
-
-void node::change_size_rectangle(int _width, int _height)
-{
-    if (_width < minimum_width)
-        _width = minimum_width;
-
-    current_width = _width;
-
-    int radius = 3;
-    QPainterPath rectangle;
-    rectangle.addRoundedRect(QRectF(0, 0, _width, _height), radius, radius);
-    this->setPath(rectangle);
-}
-
 void node::set_selected(bool enable)
 {
     selected = enable;
@@ -185,9 +113,18 @@ void node::set_selected(bool enable)
         link->set_selected(enable);
 }
 
-bool node::is_selected() const
+void node::set_name(QString _name)
 {
-    return selected;
+    name = _name;
+
+    if (_trim_panel)
+        _trim_panel->set_name(_name);
+}
+
+void node::set_position(float x, float y)
+{
+    this->setPos(x, y);
+    this->refresh();
 }
 
 QPointF node::get_center_position() const
@@ -200,98 +137,6 @@ QPointF node::get_center_position() const
     return *center_position;
 }
 
-void node::set_name(QString _name)
-{
-    this->setData(0, _name);
-    name_text->setPlainText(_name);
-
-    int text_width = name_text->boundingRect().width();
-    int new_width = text_width + icon_area_width;
-
-    if (new_width < minimum_width)
-        new_width = minimum_width;
-
-    // centra texto al area de texto
-    int text_area = new_width - icon_area_width;
-    int text_pos_x = (text_area - text_width) / 2;
-
-    name_text->setPos(icon_area_width + text_pos_x, 0);
-    //
-    //
-
-    change_size_rectangle(new_width, current_height);
-
-    if (_trim_panel)
-        _trim_panel->set_name(_name);
-}
-
-QString node::get_name() const
-{
-    return name_text->toPlainText();
-}
-
-void node::set_tips(QString _tips)
-{
-    tips_text->setPlainText(_tips);
-    tips_text->setPos(60, 20);
-}
-
-QSize node::get_size() const
-{
-    return QSize(current_width, current_height);
-}
-
-trim_panel *node::get_trim_panel() const
-{
-    return _trim_panel;
-}
-
-QColor node::get_color() const
-{
-    return color;
-}
-
-void node::set_position(float x, float y)
-{
-    this->setPos(x, y);
-    this->refresh();
-}
-
-void node::add_output_node(node *_node)
-{
-    nodes_connected_to_the_output->insert(_node->get_name(), _node);
-}
-
-void node::remove_output_node(node *_node)
-{
-    nodes_connected_to_the_output->remove(_node->get_name());
-}
-
-QMap<QString, node *> *node::get_output_nodes() const
-{
-    return nodes_connected_to_the_output;
-}
-
-void node::add_input_node(node *_node)
-{
-    nodes_connected_to_the_inputs->insert(_node->get_name(), _node);
-}
-
-void node::remove_input_node(node *_node)
-{
-    nodes_connected_to_the_inputs->remove(_node->get_name());
-}
-
-QList<node_link *> *node::get_links() const
-{
-    return links;
-}
-
-QString node::get_type() const
-{
-    return type;
-}
-
 void node::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
     make_panel();
@@ -300,8 +145,8 @@ void node::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 void node::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     // con esto se mantiene siempre este nodo sobre los demas
-    (*current_z_value)++;
-    this->setZValue(*current_z_value);
+    (*props.current_z_value)++;
+    this->setZValue(*props.current_z_value);
     //
     //
 

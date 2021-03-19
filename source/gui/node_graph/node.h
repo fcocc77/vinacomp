@@ -23,17 +23,30 @@
 // Engine
 #include <project_struct.h>
 
+struct node_props
+{
+    QGraphicsScene *scene;
+    int *current_z_value;
+    QJsonObject *link_connecting;
+    int inputs;
+    QColor color;
+    QString type;
+    QString name;
+    QString tips;
+    properties *_properties;
+    QWidget *vinacomp;
+    nodes_load *nodes_loaded;
+    project_struct *project;
+};
+
 class node : public QGraphicsPathItem
 {
 private:
-    QWidget *_vinacomp;
     trim_panel *_trim_panel;
-    properties *_properties;
     viewer *_viewer;
-    nodes_load *nodes_loaded;
-    project_struct *project;
 
-    QGraphicsScene *scene;
+    node_props props;
+
     QMap<QString, node *> *nodes_connected_to_the_inputs;
     QMap<QString, node *> *nodes_connected_to_the_output;
     QMap<QString, node *> *selected_nodes;
@@ -41,61 +54,126 @@ private:
 
     QMap<QString, QPointF> selected_nodes_start_position;
 
-    QPointF *center_position;
     bool selected = false;
-
-    QColor color;
 
     QPointF start_position;
     QPointF click_position;
 
-    const int minimum_width;
-    const int minimum_height;
-    int current_width;
-    int current_height;
-
-    int *current_z_value;
-
-    const int icon_area_width;
-    QGraphicsTextItem *name_text;
-    QGraphicsTextItem *tips_text;
-    QString type;
-    QString icon_name;
-
-    void change_size_rectangle(int _width, int _height);
+    QPointF *center_position;
 
     // eventos
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
 
+protected:
+    nodes_load *nodes_loaded;
+
+    const int minimum_width;
+    const int minimum_height;
+    int current_width;
+    int current_height;
+
+    QString name;
+    QString tips;
+    QString type;
+    QString icon_name;
+    QColor color;
+
 public:
-    node(QGraphicsScene *_scene, int *_current_z_value, QJsonObject *_link_connecting,
-         QMap<QString, node *> *_selected_nodes, int inputs, QColor color, QString type,
-         QString name, QString tips, properties *_properties, QWidget *_vinacomp,
-         nodes_load *nodes_loaded, project_struct *project);
+    node(node_props _props, QMap<QString, node *> *_selected_nodes);
     ~node();
 
     void set_name(QString name);
-    void set_tips(QString tips);
-    QString get_name() const;
+    void set_icon_name(QString name);
+    inline void set_tips(QString tips);
+    inline QString get_name() const;
     void set_position(float x, float y);
-    QPointF get_center_position() const;
-    QSize get_size() const;
-    void set_icon(QString icon_name);
     void set_selected(bool enable);
     QMap<QString, node *> *get_output_nodes() const;
-    void add_output_node(node *_node);
-    void remove_output_node(node *_node);
-    void add_input_node(node *_node);
-    void remove_input_node(node *_node);
-    bool is_selected() const;
-    QColor get_color() const;
+    inline void add_output_node(node *_node);
+    inline void remove_output_node(node *_node);
+    inline void add_input_node(node *_node);
+    inline void remove_input_node(node *_node);
+    inline bool is_selected() const;
+    inline QColor get_color() const;
     void refresh();
-    QList<node_link *> *get_links() const;
-    trim_panel *get_trim_panel() const;
+    inline QList<node_link *> *get_links() const;
+    inline trim_panel *get_trim_panel() const;
     QString get_type() const;
+    QSize get_size() const;
     void make_panel();
+    QPointF get_center_position() const;
 };
+
+inline bool node::is_selected() const
+{
+    return selected;
+}
+
+inline void node::set_icon_name(QString name)
+{
+    icon_name = name;
+}
+
+inline QSize node::get_size() const
+{
+    return QSize(current_width, current_height);
+}
+
+inline QString node::get_name() const
+{
+    return name;
+}
+
+inline void node::set_tips(QString _tips)
+{
+    tips = _tips;
+}
+
+inline trim_panel *node::get_trim_panel() const
+{
+    return _trim_panel;
+}
+
+inline QColor node::get_color() const
+{
+    return color;
+}
+
+inline void node::add_output_node(node *_node)
+{
+    nodes_connected_to_the_output->insert(_node->get_name(), _node);
+}
+
+inline void node::remove_output_node(node *_node)
+{
+    nodes_connected_to_the_output->remove(_node->get_name());
+}
+
+inline QMap<QString, node *> *node::get_output_nodes() const
+{
+    return nodes_connected_to_the_output;
+}
+
+inline void node::add_input_node(node *_node)
+{
+    nodes_connected_to_the_inputs->insert(_node->get_name(), _node);
+}
+
+inline void node::remove_input_node(node *_node)
+{
+    nodes_connected_to_the_inputs->remove(_node->get_name());
+}
+
+inline QList<node_link *> *node::get_links() const
+{
+    return links;
+}
+
+inline QString node::get_type() const
+{
+    return type;
+}
 
 #endif // NODE_H

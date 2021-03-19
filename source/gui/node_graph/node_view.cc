@@ -130,8 +130,10 @@ node *node_view::create_node(QString name, QColor color, QString type, QPointF p
 
     project_struct *project = static_cast<vinacomp *>(_vinacomp)->get_project();
 
-    node *_node = new node(scene, current_z_value, link_connecting, selected_nodes, 1, color, type,
-                           name, tips, _properties, _vinacomp, nodes_loaded, project);
+    node_rect *_node = new node_rect({scene, current_z_value, link_connecting, 1, color, type, name,
+                                      tips, _properties, _vinacomp, nodes_loaded, project},
+                                     selected_nodes);
+
     auto size = _node->get_size();
     QPointF new_position = {position.x() - (size.width() / 2), position.y() - (size.height() / 2)};
     _node->set_position(new_position.x(), new_position.y());
