@@ -15,7 +15,6 @@ public:
     node_dot(node_props _props, QMap<QString, node *> *_selected_nodes);
     ~node_dot();
 
-    void set_name(QString name);
     void set_tips(QString _tips);
 };
 

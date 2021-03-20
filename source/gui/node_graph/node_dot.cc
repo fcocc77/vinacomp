@@ -21,7 +21,7 @@ node_dot::node_dot(node_props _props, QMap<QString, node *> *_selected_nodes)
 
     QPen pen(Qt::black);
 
-    QBrush brush(QColor(50, 50, 50));
+    QBrush brush(get_color());
     pen.setWidth(0);
     this->setBrush(brush);
     this->setPen(pen);

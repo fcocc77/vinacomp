@@ -10,25 +10,13 @@ node::node(node_props _props, QMap<QString, node *> *_selected_nodes)
 
     , _trim_panel(nullptr)
     , _viewer(nullptr)
+    , links(nullptr)
 
 {
     nodes_connected_to_the_output = new QMap<QString, node *>;
     nodes_connected_to_the_inputs = new QMap<QString, node *>;
     center_position = new QPointF;
 
-
-    // Crea los links para el nodo
-    {
-        links = new QList<node_link *>;
-        for (int i = 0; i < props.inputs; i++)
-        {
-            node_link *link = new node_link(i, props.scene, this, props.link_connecting,
-                                            props.project, props.vinacomp);
-            links->push_back(link);
-        }
-    }
-    //
-    //
     name = props.name;
     tips = props.name;
     type = props.type;
@@ -36,7 +24,23 @@ node::node(node_props _props, QMap<QString, node *> *_selected_nodes)
 
     props.scene->addItem(this);
 
-    this->setZValue((*props.current_z_value) + 1);
+    if (type == "backdrop")
+        this->setZValue(-100);
+    else
+    {
+        // Crea los links para el nodo
+        links = new QList<node_link *>;
+        for (int i = 0; i < props.inputs; i++)
+        {
+            node_link *link =
+                new node_link(i, props.scene, this, props.link_connecting,
+                              props.project, props.vinacomp);
+            links->push_back(link);
+        }
+        //
+
+        this->setZValue((*props.current_z_value) + 1);
+    }
 }
 
 node::~node() {}
@@ -60,8 +64,9 @@ void node::make_panel()
     if (!nodes_without_panel.contains(type))
     {
         if (!_trim_panel)
-            _trim_panel = new trim_panel(props._properties, name, type, icon_name, nodes_loaded,
-                                         props.project, props.vinacomp);
+            _trim_panel =
+                new trim_panel(props._properties, name, type, icon_name,
+                               nodes_loaded, props.project, props.vinacomp);
         props._properties->add_trim_panel(_trim_panel);
     }
     //
@@ -73,7 +78,8 @@ void node::make_panel()
     {
         if (!_viewer)
         {
-            _viewer = new viewer(name, props.project, __vinacomp->get_renderer(), props.vinacomp);
+            _viewer = new viewer(name, props.project,
+                                 __vinacomp->get_renderer(), props.vinacomp);
             __vinacomp->get_viewers()->push_back(_viewer);
         }
         __vinacomp->get_panels_layout()->add_viewer(_viewer);
@@ -83,6 +89,9 @@ void node::make_panel()
 
 void node::refresh()
 {
+    if (!links)
+        return;
+
     // Actualizacion de todos lo links conectados al nodo
     auto refresh_links = [this](node *_node) {
         for (node_link *_node_link : *_node->get_links())
@@ -114,8 +123,9 @@ void node::set_selected(bool enable)
         this->setPen(pen);
     }
 
-    for (node_link *link : *links)
-        link->set_selected(enable);
+    if (links)
+        for (node_link *link : *links)
+            link->set_selected(enable);
 }
 
 void node::set_name(QString _name)
@@ -131,6 +141,12 @@ void node::set_name(QString _name)
 void node::set_position(float x, float y)
 {
     this->setPos(x, y);
+    this->refresh();
+}
+
+void node::set_position(QPointF position)
+{
+    this->setPos(position);
     this->refresh();
 }
 
@@ -151,18 +167,20 @@ void node::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 
 void node::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    // con esto se mantiene siempre este nodo sobre los demas
-    (*props.current_z_value)++;
-    this->setZValue(*props.current_z_value);
-    //
-    //
+    if (type != "backdrop")
+    {
+        // con esto se mantiene siempre este nodo sobre los demas
+        (*props.current_z_value)++;
+        this->setZValue(*props.current_z_value);
+    }
 
-    start_position = this->pos();
+    freeze_position();
     click_position = mapToScene(event->pos());
 
     selected_nodes_start_position.clear();
     for (node *selected_node : *selected_nodes)
-        selected_nodes_start_position[selected_node->get_name()] = selected_node->pos();
+        selected_nodes_start_position[selected_node->get_name()] =
+            selected_node->pos();
 }
 
 void node::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
@@ -170,7 +188,7 @@ void node::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     int snap = 20;
 
     QPointF position = mapToScene(event->pos());
-    QPointF click_position_on_node = click_position - start_position;
+    QPointF click_position_on_node = click_position - _freeze_position;
 
     float this_node_x = position.x() - click_position_on_node.x();
     float this_node_y = position.y() - click_position_on_node.y();
@@ -185,7 +203,8 @@ void node::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         float size_x_difference =
             (connected_node->get_size().width() - this->get_size().width()) / 2;
         float size_y_difference =
-            (connected_node->get_size().height() - this->get_size().height()) / 2;
+            (connected_node->get_size().height() - this->get_size().height()) /
+            2;
 
         float _this_node_x = this_node_x - size_x_difference;
         float _this_node_y = this_node_y - size_y_difference;
@@ -224,13 +243,14 @@ void node::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     //
 
     // Mueve los nodos seleccionados en relacion a este nodo
-    QPointF difference = start_position - position_with_snap;
+    QPointF difference = _freeze_position - position_with_snap;
     for (node *selected_node : *selected_nodes)
     {
         if (selected_node != this)
         {
             QPointF new_position =
-                selected_nodes_start_position.value(selected_node->get_name()) - difference;
+                selected_nodes_start_position.value(selected_node->get_name()) -
+                difference;
             selected_node->set_position(new_position.x(), new_position.y());
         }
     }

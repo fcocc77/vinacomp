@@ -55,19 +55,13 @@ private:
     QMap<QString, QPointF> selected_nodes_start_position;
 
     bool selected = false;
-
-    QPointF start_position;
-    QPointF click_position;
+    QPointF _freeze_position;
 
     QPointF *center_position;
 
-    // eventos
-    void mousePressEvent(QGraphicsSceneMouseEvent *event);
-    void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
-
 protected:
     nodes_load *nodes_loaded;
+    QPointF click_position;
 
     int minimum_width;
     int minimum_height;
@@ -82,6 +76,11 @@ protected:
 
     void set_size(int minimum_width, int minimum_height);
 
+    // eventos
+    void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
+
 public:
     node(node_props _props, QMap<QString, node *> *_selected_nodes);
     ~node();
@@ -91,6 +90,7 @@ public:
     inline void set_tips(QString tips);
     inline QString get_name() const;
     void set_position(float x, float y);
+    void set_position(QPointF position);
     void set_selected(bool enable);
     QMap<QString, node *> *get_output_nodes() const;
     inline void add_output_node(node *_node);
@@ -106,7 +106,19 @@ public:
     QSize get_size() const;
     void make_panel();
     QPointF get_center_position() const;
+    inline void freeze_position();
+    inline QPointF get_freeze_position() const;
 };
+
+inline void node::freeze_position()
+{
+    _freeze_position = this->pos();
+}
+
+inline QPointF node::get_freeze_position() const
+{
+    return _freeze_position;
+}
 
 inline bool node::is_selected() const
 {

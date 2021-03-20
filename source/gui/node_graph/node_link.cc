@@ -257,6 +257,10 @@ void node_link::connect_node(QGraphicsItem *to_node)
         return;
 
     node *_to_node = static_cast<node *>(to_node);
+
+    if (_to_node->get_type() == "backdrop")
+        return;
+
     node *_this_node = static_cast<node *>(this_node);
 
     if (connected_node)
