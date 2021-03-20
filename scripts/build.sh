@@ -2,21 +2,21 @@ kill -9 gdb
 
 function run_gui() {
 
-	if [ $1 == full ]; then
-		# crea la paleta de colores y genera el css a partir del sass
-		python3 'scripts/make_palette.py'
-		npm run d
+    if [ $1 == 'full' ]; then
+        # crea la paleta de colores y genera el css a partir del sass
+        python3 'scripts/make_palette.py'
+        npm run d
 
-		# cambia 'path' del proyecto para el archivo 'style.css'
-		css='resources/css/style.css'
-		path=$(pwd)
-		sed -i "s|{{path}}|$path|g" $css
-		#
+        # cambia 'path' del proyecto para el archivo 'style.css'
+        css='resources/css/style.css'
+        path=$(pwd)
+        sed -i "s|{{path}}|$path|g" $css
+        #
 
-		# conversion de svg a png
-		sh scripts/svg_converter.sh
-		#
-	fi
+        # conversion de svg a png
+        sh scripts/svg_converter.sh
+        #
+    fi
 
     rm source/gui/Makefile
 
@@ -28,15 +28,19 @@ function run_gui() {
     make -j 4
 
     if [ -f $vinacomp ]; then
-		log_file='/tmp/vinacomp.log'
+        if [ $1 == 'debug' ]; then
+            log_file='/tmp/vinacomp.log'
 
-		gdb -ex "set confirm off" \
-			-ex "set pagination off" \
-			-ex "set logging on" \
-	 		-ex r \
-			-ex bt \
-			-ex q \
-			"$vinacomp"
+            gdb -ex "set confirm off" \
+                -ex "set pagination off" \
+                -ex "set logging on" \
+                -ex r \
+                -ex bt \
+                -ex q \
+                "$vinacomp"
+        else
+            $vinacomp
+        fi
     fi
 }
 
@@ -58,7 +62,9 @@ function run_engine() {
 if [ $1 == engine ]; then
     run_engine
 elif [ $1 == full ]; then
-	run_gui 'full'
+    run_gui 'full'
+elif [ $1 == debug ]; then
+    run_gui 'debug'
 else
     run_gui 'not'
 fi
