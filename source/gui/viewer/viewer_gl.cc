@@ -74,7 +74,7 @@ void viewer_gl::fit_to_percent(int percent)
 
     // al dividir el ancho del viewport por 4, obtenemos la escala del 100% de la imagen
     int scale_100 = this->width() / 4;
-    int scale = scale_100 * 100 / percent;
+    float scale = scale_100 * 100 / percent;
     set_scale({scale, scale});
     //
 
@@ -114,10 +114,12 @@ void viewer_gl::draw_image()
     GLuint texture;
     glBindTexture(GL_TEXTURE_2D, texture);
 
+    cv::Mat &image = rdata->channels["rgba"];
+
     // genera la textura 2d a partir de los bits de la imagen
-    rdata->image.convertTo(rdata->image, CV_8U);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, rdata->image.cols, rdata->image.rows, 0, GL_BGR,
-                 GL_UNSIGNED_BYTE, rdata->image.data);
+    image.convertTo(image, CV_8U);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, image.cols, image.rows, 0, GL_BGR,
+                 GL_UNSIGNED_BYTE, image.data);
 
     // si el zoom es menor a 100, muestra los pixels en la imagen
     if (get_scale().x() < 100)
@@ -143,11 +145,11 @@ void viewer_gl::draw_image()
     // if (y < 0) y = 0;
 
     glTexCoord2f(0.0f, 0.0f);
-    glVertex2f(x, y + rdata->image.rows); // Superior Izquierda
+    glVertex2f(x, y + image.rows); // Superior Izquierda
     glTexCoord2f(1.0f, 0.0f);
-    glVertex2f(x + rdata->image.cols, y + rdata->image.rows); // Superior Derecha;
+    glVertex2f(x + image.cols, y + image.rows); // Superior Derecha;
     glTexCoord2f(1.0f, 1.0f);
-    glVertex2f(x + rdata->image.cols, y); // Inferior Derecha
+    glVertex2f(x + image.cols, y); // Inferior Derecha
     glTexCoord2f(0.0f, 1.0f);
     glVertex2f(x, y); // Inferior Izquierda
     glEnd();

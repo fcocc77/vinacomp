@@ -15,8 +15,10 @@ void crop_node::render(render_data *rdata, QJsonObject *params)
     int w = box[2].toInt();
     int h = box[3].toInt();
 
-    int width = rdata->image.cols;
-    int height = rdata->image.rows;
+    cv::Mat &image = rdata->channels["rgba"];
+
+    int width = image.cols;
+    int height = image.rows;
 
     rdata->bbox.setRect(x, y, w, h);
     // cv::resize(rdata->image, rdata->image, cv::Size(500, 500), 0, 0, cv::INTER_CUBIC);
@@ -48,7 +50,7 @@ void crop_node::render(render_data *rdata, QJsonObject *params)
 
     if (w < 0 || h < 0)
     {
-        rdata->image = rdata->image(cv::Rect(0, 0, 0, 0));
+        image = image(cv::Rect(0, 0, 0, 0));
         return;
     }
 
@@ -56,5 +58,5 @@ void crop_node::render(render_data *rdata, QJsonObject *params)
     int h_correct = height - y_correct;
     y_correct -= y;
 
-    rdata->image = rdata->image(cv::Rect(x, y_correct, w, h_correct));
+    image = image(cv::Rect(x, y_correct, w, h_correct));
 }

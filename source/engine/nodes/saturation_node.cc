@@ -14,11 +14,13 @@ void saturation_node::render(render_data *rdata, QJsonObject *params)
     if (saturation == 1)
         return;
 
-    for (int y = 0; y < rdata->image.rows; y++)
+    cv::Mat &image = rdata->channels["rgba"];
+
+    for (int y = 0; y < image.rows; y++)
     {
-        for (int x = 0; x < rdata->image.cols; x++)
+        for (int x = 0; x < image.cols; x++)
         {
-            cv::Vec3f &pixel = rdata->image.at<cv::Vec3f>(y, x);
+            cv::Vec3f &pixel = image.at<cv::Vec3f>(y, x);
 
             float &red = pixel[2];
             float &green = pixel[1];

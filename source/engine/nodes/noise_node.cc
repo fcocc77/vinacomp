@@ -119,6 +119,8 @@ void noise_node::render(render_data *rdata, QJsonObject *params)
         }
     }
 
-    rdata->image = noise_image;
-    rdata->image.convertTo(rdata->image, CV_32F);
+    cv::Mat &image = rdata->channels["rgba"];
+
+    image = noise_image;
+    image.convertTo(image, CV_32F);
 }

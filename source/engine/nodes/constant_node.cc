@@ -20,5 +20,6 @@ void constant_node::render(render_data *rdata, QJsonObject *params)
     cv::Mat3f solid(1080, 1920);
     solid.setTo(cv::Scalar(color.red(), color.green(), color.blue()));
 
-    rdata->image = solid;
+
+    rdata->channels["rgba"] = solid;
 }

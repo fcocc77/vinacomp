@@ -19,6 +19,8 @@ void sharpen_node::render(render_data *rdata, QJsonObject *params)
     // cv::addWeighted(0, 1.5, img, -0.5, 0, img);
 
     // cv::Mat sharpenedLena;
+    cv::Mat &image = rdata->channels["rgba"];
+
     cv::Mat kernel = (cv::Mat_<float>(3, 3) << 0, -1, 0, -1, 4, -1, 0, -1, 0);
-    cv::filter2D(rdata->image, rdata->image, rdata->image.depth(), kernel);
+    cv::filter2D(image, image, image.depth(), kernel);
 }

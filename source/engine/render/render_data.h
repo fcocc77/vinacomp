@@ -3,11 +3,12 @@
 
 #include <QRect>
 #include <QString>
+#include <QMap>
 #include <opencv2/opencv.hpp>
 
 struct render_data
 {
-    cv::Mat image;
+    QMap<QString, cv::Mat> channels;
     int frame;
     int width;
     int height;
