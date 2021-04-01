@@ -34,8 +34,6 @@ private:
     QList<combo_box_item> items;
     int current_index;
 
-    void add_item(combo_box_item item);
-
 public:
     combo_box(QList<combo_box_item> items = {}, int default_index = 0,
               QWidget *_parent = nullptr);
@@ -44,6 +42,7 @@ public:
     void set_index(int _index, bool emit_signal = true);
     void set_value(QVariant value);
     void add_shortcut(int index, QString key);
+    void add_item(combo_box_item item);
 
     inline action *get_action(int index) const;
     inline int get_index() const;

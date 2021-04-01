@@ -9,6 +9,7 @@
 #include <button.h>
 #include <knob_check_box.h>
 #include <global.h>
+#include <combo_box.h>
 
 class new_layers : public QWidget
 {
@@ -20,13 +21,16 @@ private:
     knob_check_box *red, *green, *blue, *alpha;
 
     global *glob;
+    combo_box *layers;
 
     void accept();
     void cancel();
 
 public:
-    new_layers(global *glob);
+    new_layers(global *glob, combo_box *layers);
     ~new_layers();
+
+    void add_to_combo_box(combo_box *combo);
 };
 
 #endif // NEW_LAYERS_H

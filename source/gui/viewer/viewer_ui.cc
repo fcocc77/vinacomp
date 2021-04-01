@@ -59,7 +59,7 @@ QWidget *viewer::control_setup_ui()
     //
 
     // New Layer Widget
-    _new_layers = new new_layers(glob);
+    _new_layers = new new_layers(glob, layers);
     bar->add_widget(_new_layers);
     //
 

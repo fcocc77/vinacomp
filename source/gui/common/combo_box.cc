@@ -106,9 +106,6 @@ void combo_box::add_item(combo_box_item item)
         _action->set_icon("radio_button_unchecked_a");
         _action->connect_to(this, [=]() { set_value(item.value); });
     }
-    else
-    {
-    }
 
     actions.push_back(_action);
     menu->addAction(_action);

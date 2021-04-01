@@ -16,4 +16,5 @@ struct global {
     QList<layer_struct> layers;
 };
 
+
 #endif // GLOBAL_H
