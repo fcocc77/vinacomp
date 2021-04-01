@@ -15,7 +15,7 @@ private:
     combo_box *choice;
 
 public:
-    knob_choice(QList<pair<QString, QVariant>> items = {}, int default_index = 0);
+    knob_choice(QList<combo_box_item> items = {}, int default_index = 0);
     ~knob_choice();
 
     int get_index() const;

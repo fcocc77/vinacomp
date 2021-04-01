@@ -78,6 +78,7 @@ void viewer::update_render()
 
     rdata->root_node = name;
     rdata->frame = current_frame;
+    rdata->layer = current_layer;
 
     _renderer->render(rdata);
     _viewer_gl->update();

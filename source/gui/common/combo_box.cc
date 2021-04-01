@@ -1,6 +1,6 @@
 #include <combo_box.h>
 
-combo_box::combo_box(QList<pair<QString, QVariant>> _items, int default_index, QWidget *_parent)
+combo_box::combo_box(QList<combo_box_item> _items, int default_index, QWidget *_parent)
     : items(_items)
     , current_index(0)
     , parent(_parent)
@@ -79,14 +79,14 @@ void combo_box::set_index(int _index, bool emit_signal)
     label->setText(name);
 
     if (emit_signal)
-        changed(items[current_index].second, current_index); // Signal
+        changed(items[current_index].value, current_index); // Signal
 }
 
 void combo_box::set_value(QVariant value)
 {
     for (int i = 0; i < items.count(); i++)
     {
-        if (items[i].second == value)
+        if (items[i].value == value)
         {
             set_index(i);
             return;
@@ -94,13 +94,21 @@ void combo_box::set_value(QVariant value)
     }
 }
 
-void combo_box::add_item(pair<QString, QVariant> item)
+void combo_box::add_item(combo_box_item item)
 {
-    QString label = item.first;
+    QString label = item.label;
 
     action *_action = new action(label, "");
-    _action->set_icon("radio_button_unchecked_a");
-    _action->connect_to(this, [=]() { set_value(item.second); });
+
+    // por defecto no es un boton, es un checkbox
+    if (!item.button)
+    {
+        _action->set_icon("radio_button_unchecked_a");
+        _action->connect_to(this, [=]() { set_value(item.value); });
+    }
+    else
+    {
+    }
 
     actions.push_back(_action);
     menu->addAction(_action);
@@ -112,12 +120,3 @@ void combo_box::mousePressEvent(QMouseEvent *event)
     menu->show();
 }
 
-int combo_box::get_index() const
-{
-    return current_index;
-}
-
-QVariant combo_box::get_value() const
-{
-    return items.value(current_index).second;
-}

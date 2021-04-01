@@ -12,6 +12,13 @@
 #include <action.h>
 #include <util.h>
 
+struct combo_box_item
+{
+    QString label;
+    QVariant value;
+    bool button;
+};
+
 class combo_box : public QWidget
 {
     Q_OBJECT
@@ -24,13 +31,13 @@ private:
     QWidget *parent;
 
     QList<action *> actions;
-    QList<pair<QString, QVariant>> items;
+    QList<combo_box_item> items;
     int current_index;
 
-    void add_item(pair<QString, QVariant> item);
+    void add_item(combo_box_item item);
 
 public:
-    combo_box(QList<pair<QString, QVariant>> items = {}, int default_index = 0,
+    combo_box(QList<combo_box_item> items = {}, int default_index = 0,
               QWidget *_parent = nullptr);
     ~combo_box();
 
@@ -38,8 +45,9 @@ public:
     void set_value(QVariant value);
     void add_shortcut(int index, QString key);
 
-    int get_index() const;
-    QVariant get_value() const;
+    inline action *get_action(int index) const;
+    inline int get_index() const;
+    inline QVariant get_value() const;
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;
@@ -47,5 +55,20 @@ protected:
 signals:
     void changed(QVariant value, int index);
 };
+
+inline action *combo_box::get_action(int index) const
+{
+    return actions.value(index);
+}
+
+inline int combo_box::get_index() const
+{
+    return current_index;
+}
+
+inline QVariant combo_box::get_value() const
+{
+    return items.value(current_index).value;
+}
 
 #endif // COMBO_BOX_HPP

@@ -53,6 +53,7 @@ private:
     bool in_out;
     bool render_pause;
     int visible_channel;
+    QString current_layer;
 
     //
     void setup_ui();
@@ -113,6 +114,19 @@ private:
     void skip_backward();
     pair<int, int> get_current_range() const;
     //
+
+    // Controls
+    combo_box *display_channel;
+    void change_channel(int index);
+    void change_layer(QString layer);
+    void purge_ram();
+    void set_handler_snap(bool enable);
+    void set_outside_pixels(bool enable);
+    void set_render_area(bool enable);
+    void set_proxy(bool enable);
+    void set_multi_lines(bool enable);
+    void new_layer_widget(combo_box *cb);
+
 public:
     viewer(QString _name, project_struct *_project, renderer *_renderer, QWidget *_vinacomp);
     ~viewer();

@@ -1,6 +1,6 @@
 #include <knob_choice.h>
 
-knob_choice::knob_choice(QList<pair<QString, QVariant>> items, int default_index)
+knob_choice::knob_choice(QList<combo_box_item> items, int default_index)
 {
     this->setObjectName("knob_choice");
     QHBoxLayout *layout = new QHBoxLayout(this);

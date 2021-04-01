@@ -151,7 +151,7 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout, QList<QWidg
                 index = default_index;
 
             // convierte la lista de items
-            QList<pair<QString, QVariant>> _items;
+            QList<combo_box_item> _items;
             for (QJsonValue item : items)
             {
                 QJsonArray _item = item.toArray();

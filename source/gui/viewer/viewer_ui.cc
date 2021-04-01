@@ -46,66 +46,72 @@ QWidget *viewer::control_setup_ui()
     tools *bar = new tools();
     bar->setObjectName("controls");
 
-    combo_box *layers = new combo_box();
+    // Layers
+    combo_box *layers =
+        new combo_box({{"rgba:4", "rgba"}, {"New", "new", true}});
+
+    connect(layers, &combo_box::changed, this,
+            [=](QVariant value, int index) { change_layer(value.toString()); });
+
+    layers->get_action(1)->connect_to(this,
+                                      [=]() { new_layer_widget(layers); });
     bar->add_widget(layers);
+    //
 
-    combo_box *display_channel = new combo_box(
-        {{"RGB", "rgb"}, {"Red", "red"}, {"Green", "green"}, {"Blue", "blue"}, {"Alpha", "alpha"}},
-        0, this);
-    connect(display_channel, &combo_box::changed, this, [=](QVariant value, int index) {
-        if (visible_channel == (index - 1))
-        {
-            visible_channel = -1;
-            display_channel->set_index(0, false);
-        }
-        else
-        {
-            visible_channel = index - 1;
-            display_channel->set_index(index, false);
-        }
+    // Channels
+    display_channel = new combo_box({{"RGB", "rgb"},
+                                     {"Red", "red"},
+                                     {"Green", "green"},
+                                     {"Blue", "blue"},
+                                     {"Alpha", "alpha"}},
+                                    0, this);
 
-        _viewer_gl->isolate_channel(visible_channel);
-        update_render();
-    });
+    connect(display_channel, &combo_box::changed, this,
+            [=](QVariant value, int index) { change_channel(index); });
 
     display_channel->add_shortcut(1, "R");
     display_channel->add_shortcut(2, "G");
     display_channel->add_shortcut(3, "B");
     display_channel->add_shortcut(4, "A");
     bar->add_widget(display_channel);
+    //
+
     bar->add_stretch();
 
-    action *free_ram = new action("Free Ram", "free_ram", "free_ram");
-    free_ram->connect_to(this, []() {});
-    bar->add_action(free_ram);
+    action *purge_ram_action = new action("Free Ram", "free_ram", "free_ram");
+    purge_ram_action->connect_to(this, [this]() { purge_ram(); });
+    bar->add_action(purge_ram_action);
 
     bar->add_separator();
 
     handler_snap_action = new action("Handler Snap", "handler_snap", "magnet");
     handler_snap_action->set_checkable();
-    handler_snap_action->connect_to(this, []() {});
+    handler_snap_action->connect_to(this, [this]() { set_handler_snap(true); });
     bar->add_action(handler_snap_action);
 
-    out_frame_action = new action("Show pixels out of frame", "out_frame", "out_frame");
+    out_frame_action =
+        new action("Show pixels out of frame", "out_frame", "out_frame");
     out_frame_action->set_checkable();
-    out_frame_action->connect_to(this, []() {});
+    out_frame_action->connect_to(this, [this]() { set_outside_pixels(true); });
     bar->add_action(out_frame_action);
 
-    render_area_action = new action("Render Area", "render_area", "render_area");
+    render_area_action =
+        new action("Render Area", "render_area", "render_area");
     render_area_action->set_checkable();
-    render_area_action->connect_to(this, []() {});
+    render_area_action->connect_to(this, [this]() { set_render_area(true); });
     bar->add_action(render_area_action);
 
     bar->add_separator();
 
     proxy_action = new action("Proxy", "proxy", "proxy");
     proxy_action->set_checkable();
-    proxy_action->connect_to(this, []() {});
+    proxy_action->connect_to(this, [this]() { set_proxy(true); });
     bar->add_action(proxy_action);
 
-    multi_lines_action = new action("Render all lines", "multi_lines", "multi_lines");
+    multi_lines_action =
+        new action("Render all lines", "multi_lines", "multi_lines");
     multi_lines_action->set_checkable();
-    multi_lines_action->connect_to(this, []() {});
+    multi_lines_action->connect_to(this, [this]() { set_multi_lines(true); });
     bar->add_action(multi_lines_action);
 
     bar->add_separator();
