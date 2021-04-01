@@ -1,0 +1,40 @@
+#new_layer
+    background: None
+    QLineEdit
+        padding-top: 1px
+        padding-bottom: 1px
+
+    #red, #green, #blue, #alpha
+        @include knob_check_box
+
+    @mixin variant_color($color)
+        QCheckBox
+            background: mix($b15, $color, 90)
+            border-color: mix($b15, $color, 60)
+            &:checked
+                border-color: $color
+            &::indicator
+                border-radius: 2px
+                &:checked
+                    border: 8px solid transparent
+                    border-radius: 7px
+                    background: $color
+
+    #red
+        @include variant_color(red)
+    #green
+        @include variant_color(rgb(0, 170, 10))
+    #blue
+        @include variant_color(rgb(0, 150, 255))
+    #alpha
+        @include variant_color(rgb(200, 200, 200))
+    QPushButton
+        background: $b15
+        border: 1px solid $b13
+        padding: 1px
+        padding-left: 3px
+        padding-right: 3px
+        border-radius: 2px
+        &:hover
+            border-color: mix($base, $b15, 50)
+            color: $base

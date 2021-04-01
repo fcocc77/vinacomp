@@ -4,6 +4,7 @@ knob_check_box::knob_check_box(QString _label, bool default_value)
 
     : label(_label)
     , checked(default_value)
+    , label_widget(nullptr)
 {
     this->setObjectName("knob_check_box");
 
@@ -20,11 +21,13 @@ knob_check_box::knob_check_box(QString _label, bool default_value)
     set_check(checked);
     layout->addWidget(checkbox);
 
-    label_widget = new QLabel(this);
-    label_widget->setText(label);
-    layout->addWidget(label_widget);
-
-    layout->addStretch();
+    if (!label.isEmpty())
+    {
+        label_widget = new QLabel(this);
+        label_widget->setText(label);
+        layout->addWidget(label_widget);
+        layout->addStretch();
+    }
 }
 
 knob_check_box::~knob_check_box() {}

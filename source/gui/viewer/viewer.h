@@ -21,6 +21,8 @@
 #include <tools.h>
 #include <util.h>
 #include <viewer_gl.h>
+#include <new_layers.h>
+#include <global.h>
 
 // Engine
 #include <project_struct.h>
@@ -37,12 +39,14 @@ private:
 
     viewer_gl *_viewer_gl;
     time_line *_time_line;
+    new_layers *_new_layers;
     QString playing_option;
     QString name;
     QMenu *menu;
 
     QWidget *_vinacomp;
     renderer *_renderer;
+    global *glob;
 
     bool global_range;
     QString input_range_way;
@@ -128,7 +132,8 @@ private:
     void new_layer_widget(combo_box *cb);
 
 public:
-    viewer(QString _name, project_struct *_project, renderer *_renderer, QWidget *_vinacomp);
+    viewer(QString _name, project_struct *_project, renderer *_renderer,
+           global *glob, QWidget *_vinacomp);
     ~viewer();
 
     void set_frame_range(int _first_frame, int _last_frame);

@@ -58,6 +58,11 @@ QWidget *viewer::control_setup_ui()
     bar->add_widget(layers);
     //
 
+    // New Layer Widget
+    _new_layers = new new_layers(glob);
+    bar->add_widget(_new_layers);
+    //
+
     // Channels
     display_channel = new combo_box({{"RGB", "rgb"},
                                      {"Red", "red"},

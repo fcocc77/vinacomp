@@ -435,3 +435,78 @@ QSlider {
 #project_settings {
   background: #30343b; }
 
+#new_layer {
+  background: None; }
+  #new_layer QLineEdit {
+    padding-top: 1px;
+    padding-bottom: 1px; }
+  #new_layer #red, #new_layer #green, #new_layer #blue, #new_layer #alpha {
+    background: transparent; }
+    #new_layer #red QCheckBox, #new_layer #green QCheckBox, #new_layer #blue QCheckBox, #new_layer #alpha QCheckBox {
+      spacing: 0px;
+      background: #1e2024;
+      border-radius: 2px;
+      border: 1px solid #1e2024; }
+      #new_layer #red QCheckBox:checked, #new_layer #green QCheckBox:checked, #new_layer #blue QCheckBox:checked, #new_layer #alpha QCheckBox:checked {
+        border-color: #76808f; }
+      #new_layer #red QCheckBox::indicator, #new_layer #green QCheckBox::indicator, #new_layer #blue QCheckBox::indicator, #new_layer #alpha QCheckBox::indicator {
+        border-radius: 2px; }
+        #new_layer #red QCheckBox::indicator:checked, #new_layer #green QCheckBox::indicator:checked, #new_layer #blue QCheckBox::indicator:checked, #new_layer #alpha QCheckBox::indicator:checked {
+          border: 8px solid transparent;
+          border-radius: 7px;
+          background: #caced3; }
+  #new_layer #red QCheckBox {
+    background: #3b2429;
+    border-color: #7c181b; }
+    #new_layer #red QCheckBox:checked {
+      border-color: red; }
+    #new_layer #red QCheckBox::indicator {
+      border-radius: 2px; }
+      #new_layer #red QCheckBox::indicator:checked {
+        border: 8px solid transparent;
+        border-radius: 7px;
+        background: red; }
+  #new_layer #green QCheckBox {
+    background: #21352a;
+    border-color: #165c1f; }
+    #new_layer #green QCheckBox:checked {
+      border-color: #00aa0a; }
+    #new_layer #green QCheckBox::indicator {
+      border-radius: 2px; }
+      #new_layer #green QCheckBox::indicator:checked {
+        border: 8px solid transparent;
+        border-radius: 7px;
+        background: #00aa0a; }
+  #new_layer #blue QCheckBox {
+    background: #213342;
+    border-color: #165481; }
+    #new_layer #blue QCheckBox:checked {
+      border-color: #0096ff; }
+    #new_layer #blue QCheckBox::indicator {
+      border-radius: 2px; }
+      #new_layer #blue QCheckBox::indicator:checked {
+        border: 8px solid transparent;
+        border-radius: 7px;
+        background: #0096ff; }
+  #new_layer #alpha QCheckBox {
+    background: #35383d;
+    border-color: #66686b; }
+    #new_layer #alpha QCheckBox:checked {
+      border-color: #c8c8c8; }
+    #new_layer #alpha QCheckBox::indicator {
+      border-radius: 2px; }
+      #new_layer #alpha QCheckBox::indicator:checked {
+        border: 8px solid transparent;
+        border-radius: 7px;
+        background: #c8c8c8; }
+  #new_layer QPushButton {
+    background: #25282d;
+    border: 1px solid #202327;
+    padding: 1px;
+    padding-left: 3px;
+    padding-right: 3px;
+    border-radius: 2px; }
+    #new_layer QPushButton:hover {
+      border-color: #927a17;
+      color: #ffcc00; }
+

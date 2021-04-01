@@ -2,11 +2,13 @@
 #include <viewer.h>
 #include <vinacomp.h>
 
-viewer::viewer(QString _name, project_struct *_project, renderer *__renderer, QWidget *__vinacomp)
+viewer::viewer(QString _name, project_struct *_project, renderer *__renderer,
+               global *_glob, QWidget *__vinacomp)
     : name(_name)
     , project(_project)
     , _renderer(__renderer)
     , _vinacomp(__vinacomp)
+    , glob(_glob)
 
     , current_frame(0)
     , frame_rate(60)

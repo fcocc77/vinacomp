@@ -11,6 +11,7 @@
 // Gui
 #include <action.h>
 #include <curve_editor.h>
+#include <global.h>
 #include <node_graph.h>
 #include <panels_layout.h>
 #include <project_settings.h>
@@ -36,6 +37,9 @@ private:
     settings *_settings;
     project_settings *_project_settings;
     renderer *_renderer;
+
+    global *glob;
+
     QList<viewer *> *viewers;
     QList<QWidget *> *viewers_gl;
 
@@ -81,14 +85,65 @@ public:
     vinacomp();
     ~vinacomp();
 
-    panels_layout *get_panels_layout() const;
-    QList<viewer *> *get_viewers() const;
-    QList<QWidget *> *get_viewers_gl() const;
-    project_struct *get_project() const;
-    renderer *get_renderer() const;
-    void update_render_all_viewer() const;
-    project_settings *get_project_settings() const;
-    properties *get_properties() const;
+    inline panels_layout *get_panels_layout() const;
+    inline QList<viewer *> *get_viewers() const;
+    inline QList<QWidget *> *get_viewers_gl() const;
+    inline project_struct *get_project() const;
+    inline renderer *get_renderer() const;
+    inline void update_render_all_viewer() const;
+    inline project_settings *get_project_settings() const;
+    inline properties *get_properties() const;
+    inline global *get_global() const;
 };
+
+inline panels_layout *vinacomp::get_panels_layout() const
+{
+    return _panels_layout;
+}
+
+inline QList<viewer *> *vinacomp::get_viewers() const
+{
+    return viewers;
+}
+
+inline QList<QWidget *> *vinacomp::get_viewers_gl() const
+{
+    viewers_gl->clear();
+    for (viewer *_viewer : *viewers)
+        viewers_gl->push_back(_viewer->get_viewer_gl());
+
+    return viewers_gl;
+}
+
+inline project_struct *vinacomp::get_project() const
+{
+    return project;
+}
+
+inline renderer *vinacomp::get_renderer() const
+{
+    return _renderer;
+}
+
+inline project_settings *vinacomp::get_project_settings() const
+{
+    return _project_settings;
+}
+
+inline properties *vinacomp::get_properties() const
+{
+    return _properties;
+}
+
+inline void vinacomp::update_render_all_viewer() const
+{
+    for (viewer *_viewer : *viewers)
+        _viewer->update_render();
+}
+
+inline global *vinacomp::get_global() const
+{
+    return glob;
+}
 
 #endif // VINACOMP_H

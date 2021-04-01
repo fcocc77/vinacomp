@@ -1,3 +1,19 @@
+@mixin knob_check_box
+    background: transparent
+    QCheckBox
+        spacing: 0px
+        background: $b12
+        border-radius: 2px
+        border: 1px solid $b12
+        &:checked
+            border-color: $b50
+        &::indicator
+            border-radius: 2px
+            &:checked
+                border: 8px solid transparent
+                border-radius: 7px
+                background: $b80
+
 #trim_panel
     background: $b18
     @mixin small_button
@@ -29,20 +45,7 @@
         #knob_floating, #knob_integer, #knob_dimensions
             @include small_button
         #knob_check_box
-            background: transparent
-            QCheckBox
-                spacing: 0px
-                background: $b12
-                border-radius: 2px
-                border: 1px solid $b12
-                &:checked
-                    border-color: $b50
-                &::indicator
-                    border-radius: 2px
-                    &:checked
-                        border: 8px solid transparent
-                        border-radius: 7px
-                        background: $b80
+            @include knob_check_box
         #knob_choice
             background: transparent
         #knob_separator

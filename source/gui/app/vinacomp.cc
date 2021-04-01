@@ -25,6 +25,7 @@ void vinacomp::setup_ui()
     viewers_gl = new QList<QWidget *>;
     //
 
+    glob = new global();
     //
     _properties = new properties(this);
     _node_graph = new node_graph(this, project, _properties);
@@ -33,8 +34,9 @@ void vinacomp::setup_ui()
     _settings = new settings();
     _project_settings = new project_settings(this);
 
-    _panels_layout = new panels_layout(this, _node_graph, empty_viewer, _script_editor, _properties,
-                                       _curve_editor);
+    _panels_layout =
+        new panels_layout(this, _node_graph, empty_viewer, _script_editor,
+                          _properties, _curve_editor);
     _tool_bar = new tools(25, true);
 
     // settings panel
@@ -60,58 +62,14 @@ void vinacomp::setup_ui()
 
     update_sylesheet_action = new QAction("Update StyleSheet");
     update_sylesheet_action->setShortcut(QString("Ctrl+R"));
-    connect(update_sylesheet_action, &QAction::triggered, this, &vinacomp::setup_style);
+    connect(update_sylesheet_action, &QAction::triggered, this,
+            &vinacomp::setup_style);
     setup_style();
 
     main_menu();
     tool_bar();
 
     _renderer = new renderer(project);
-}
-
-panels_layout *vinacomp::get_panels_layout() const
-{
-    return _panels_layout;
-}
-
-QList<viewer *> *vinacomp::get_viewers() const
-{
-    return viewers;
-}
-
-QList<QWidget *> *vinacomp::get_viewers_gl() const
-{
-    viewers_gl->clear();
-    for (viewer *_viewer : *viewers)
-        viewers_gl->push_back(_viewer->get_viewer_gl());
-
-    return viewers_gl;
-}
-
-project_struct *vinacomp::get_project() const
-{
-    return project;
-}
-
-renderer *vinacomp::get_renderer() const
-{
-    return _renderer;
-}
-
-project_settings *vinacomp::get_project_settings() const
-{
-    return _project_settings;
-}
-
-properties *vinacomp::get_properties() const
-{
-    return _properties;
-}
-
-void vinacomp::update_render_all_viewer() const
-{
-    for (viewer *_viewer : *viewers)
-        _viewer->update_render();
 }
 
 void vinacomp::setup_style()
@@ -172,7 +130,8 @@ void vinacomp::main_menu()
         _settings->setVisible(settings_visible);
     });
 
-    project_settings_action = new action("Project Settings", "S", "project_settings");
+    project_settings_action =
+        new action("Project Settings", "S", "project_settings");
     project_settings_action->set_checkable(true);
     project_settings_action->connect_to(this, [this]() {
         project_settings_visible = !project_settings_visible; // Toggle
@@ -198,10 +157,12 @@ void vinacomp::main_menu()
     layout_menu->addSeparator();
 
     layout_menu->addAction(_panels_layout->restore_default_action);
-    _panels_layout->restore_default_action->setIcon(QIcon("resources/images/layout_a.png"));
+    _panels_layout->restore_default_action->setIcon(
+        QIcon("resources/images/layout_a.png"));
 
     layout_menu->addAction(_panels_layout->save_current_action);
-    _panels_layout->save_current_action->setIcon(QIcon("resources/images/save_a.png"));
+    _panels_layout->save_current_action->setIcon(
+        QIcon("resources/images/save_a.png"));
 
     //
     //
