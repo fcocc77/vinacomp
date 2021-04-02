@@ -5,6 +5,7 @@ knob_check_box::knob_check_box(QString _label, bool default_value)
     : label_widget(nullptr)
     , label(_label)
     , checked(default_value)
+    , emmit_signal(true)
 {
     this->setObjectName("knob_check_box");
 
@@ -17,7 +18,12 @@ knob_check_box::knob_check_box(QString _label, bool default_value)
     checkbox->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     connect(checkbox, &QCheckBox::stateChanged, this, [=](int state) {
         checked = state != 0;
-        changed(checked); // Signal
+
+        if (emmit_signal)
+            changed(checked);
+
+        // vulve al por defecto que es emitir señal
+        emmit_signal = true;
     });
     set_check(checked);
     layout->addWidget(checkbox);
@@ -33,8 +39,10 @@ knob_check_box::knob_check_box(QString _label, bool default_value)
 
 knob_check_box::~knob_check_box() {}
 
-void knob_check_box::set_check(bool value)
+void knob_check_box::set_check(bool value, bool _emmit_signal)
 {
+    emmit_signal = _emmit_signal;
+
     if (value == 0)
         checkbox->setCheckState(Qt::CheckState(0));
     else

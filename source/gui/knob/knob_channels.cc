@@ -15,7 +15,8 @@ knob_channels::knob_channels(global *_glob)
 
     accept_button = new button();
     accept_button->hide();
-    connect(accept_button, &QPushButton::clicked, this, &knob_channels::add_layer);
+    connect(accept_button, &QPushButton::clicked, this,
+            &knob_channels::add_layer);
 
     cancel_button = new button();
     cancel_button->hide();
@@ -36,6 +37,15 @@ knob_channels::knob_channels(global *_glob)
 
     alpha = new knob_check_box("", true);
     alpha->setObjectName("alpha");
+
+    connect(red, &knob_check_box::changed, this,
+            &knob_channels::set_all_channel);
+    connect(green, &knob_check_box::changed, this,
+            &knob_channels::set_all_channel);
+    connect(blue, &knob_check_box::changed, this,
+            &knob_channels::set_all_channel);
+    connect(alpha, &knob_check_box::changed, this,
+            &knob_channels::set_all_channel);
 
     // Layers
     layers = new combo_box();
@@ -62,6 +72,17 @@ knob_channels::knob_channels(global *_glob)
 }
 
 knob_channels::~knob_channels() {}
+
+void knob_channels::set_all_channel(bool value)
+{
+    if (qt::control())
+    {
+        red->set_check(value, false);
+        green->set_check(value, false);
+        blue->set_check(value, false);
+        alpha->set_check(value, false);
+    }
+}
 
 void knob_channels::visible_layer_edit(bool visible)
 {
@@ -113,7 +134,7 @@ void knob_channels::update_layers(bool from_add_layer)
     int current_index = layers->get_index();
 
     layers->clear();
-    layers->add_item({"main : rgba"});
+    layers->add_item({"main : rgba", "rgba"});
 
     // actualiza todas las capas que estan en 'layers' en global
     // y las agrega al combo_box de 'layers'

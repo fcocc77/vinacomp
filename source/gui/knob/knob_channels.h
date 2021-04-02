@@ -6,13 +6,12 @@
 #include <QLineEdit>
 #include <QMessageBox>
 
+#include <combo_box.h>
+#include <global.h>
 #include <knob.h>
 #include <knob_check_box.h>
-#include <global.h>
-#include <combo_box.h>
-#include <util.h>
-#include <global.h>
 #include <qt.h>
+#include <util.h>
 
 class knob_channels : public knob
 {
@@ -30,6 +29,8 @@ private:
     void add_layer();
     void visible_layer_edit(bool visible);
     void update_layers(bool from_add_layer = false);
+    void set_all_channel(bool value);
+
 public:
     knob_channels(global *glob);
     ~knob_channels();

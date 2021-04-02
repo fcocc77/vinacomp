@@ -18,12 +18,13 @@ private:
 
     QString label;
     bool checked;
+    bool emmit_signal;
 
 public:
     knob_check_box(QString _label, bool _default_value);
     ~knob_check_box();
 
-    void set_check(bool value);
+    void set_check(bool value, bool emmit_signal = true);
     bool is_checked() const;
 
 protected:
