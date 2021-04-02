@@ -1,7 +1,7 @@
 #ifndef NODE_BACKDROP_H
 #define NODE_BACKDROP_H
 
-#include "node.h"
+#include "../node_graph/node.h"
 
 class node_backdrop : public node
 {

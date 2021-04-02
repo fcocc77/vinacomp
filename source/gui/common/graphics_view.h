@@ -3,6 +3,7 @@
 
 #include <QGraphicsView>
 #include <QScrollBar>
+#include <QMouseEvent>
 
 #include <qt.h>
 #include <util.h>

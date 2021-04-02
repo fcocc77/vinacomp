@@ -2,7 +2,7 @@
 #include <python_api.h>
 
 #ifdef GUI
-    #include <node.h>
+    #include "../gui/node_graph/node.h"
     #include <node_graph.h>
 
     static node_graph *_node_graph;

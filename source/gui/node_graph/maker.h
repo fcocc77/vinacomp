@@ -5,7 +5,7 @@
 #include <QString>
 #include <QWidget>
 
-#include <node.h>
+#include "../node_graph/node.h"
 #include <node_finder.h>
 #include <node_view.h>
 #include <nodes_load.h>

@@ -2,6 +2,7 @@
 #define SHUFFLE_GUI_H
 
 #include <QPainter>
+#include <QMouseEvent>
 
 #include <combo_box.h>
 #include <curve_utils.h>

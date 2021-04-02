@@ -1,4 +1,4 @@
-#include <node.h>
+#include "../node_graph/node.h"
 #include <node_link.h>
 #include <vinacomp.h>
 
