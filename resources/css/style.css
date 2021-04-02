@@ -23,50 +23,6 @@ QPushButton {
 QMainWindow {
   qproperty-windowIcon: url("{{path}}/resources/images/vinacomp.png"); }
 
-QLineEdit {
-  color: #aeb4bc;
-  padding: 3px;
-  border-radius: 2px;
-  background: #1e2024;
-  border: 1px solid #1e2024; }
-  QLineEdit:focus {
-    border-color: #8f7612; }
-
-QComboBox {
-  margin-right: 10px;
-  background-color: #25282d;
-  border: 1px solid transparent;
-  padding: 3px;
-  border-radius: 2px; }
-  QComboBox:focus {
-    border-color: #8f7612; }
-  QComboBox::drop-down {
-    width: 20px;
-    background-color: #3c4149; }
-  QComboBox QAbstractItemView {
-    background-color: #202327; }
-  QComboBox:item {
-    font-size: 13px; }
-    QComboBox:item:selected {
-      background-color: #30343b;
-      color: #ffcc00;
-      padding-left: 0px; }
-
-QTreeWidget {
-  alternate-background-color: #2c2f35;
-  background-color: #25282d;
-  border: 1px solid #2c2f35; }
-  QTreeWidget * {
-    background: none; }
-  QTreeWidget::item {
-    border-bottom: 1px solid #30343b;
-    border-top: 1px solid transparent;
-    height: 25px; }
-    QTreeWidget::item:first {
-      padding-left: 15px; }
-    QTreeWidget::item QLabel {
-      padding: 5px; }
-
 QMenu {
   background-color: #292d32;
   color: #caced3;
@@ -178,9 +134,278 @@ QSlider {
     QSlider::handle::hover {
       background: #ffcc00; }
 
+#knob_floating QPushButton, #knob_integer QPushButton, #knob_dimensions QPushButton {
+  width: 25px;
+  height: 22px;
+  border-radius: 2px;
+  background: #3c4149; }
+  #knob_floating QPushButton:hover, #knob_integer QPushButton:hover, #knob_dimensions QPushButton:hover {
+    background: #434851; }
+  #knob_floating QPushButton[active=true], #knob_integer QPushButton[active=true], #knob_dimensions QPushButton[active=true] {
+    background: #25282d; }
+    #knob_floating QPushButton[active=true]:hover, #knob_integer QPushButton[active=true]:hover, #knob_dimensions QPushButton[active=true]:hover {
+      background: #1e2024; }
+  #knob_floating QPushButton[disable=true], #knob_integer QPushButton[disable=true], #knob_dimensions QPushButton[disable=true] {
+    color: #474d57; }
+
+#knob_choice {
+  background: transparent; }
+
+#knob_separator QWidget {
+  border-bottom: 1px solid #25282d; }
+
+#knob_label QWidget {
+  background: transparent;
+  border-bottom: 1px solid #3c4149; }
+
+#knob_label QLabel {
+  font-weight: bold;
+  color: #76808f;
+  border: none; }
+
+#knob_button {
+  background: none; }
+  #knob_button QPushButton {
+    height: 22px;
+    border-radius: 2px;
+    background: #40464f;
+    padding-right: 10px;
+    padding-left: 10px; }
+    #knob_button QPushButton:hover {
+      color: #ffcc00; }
+    #knob_button QPushButton:pressed {
+      background: #292d32;
+      color: #caced3; }
+
+#knob_check_box {
+  background: transparent; }
+  #knob_check_box QCheckBox {
+    spacing: 0px;
+    background: #1e2024;
+    border-radius: 2px;
+    border: 1px solid #1e2024; }
+    #knob_check_box QCheckBox:checked {
+      border-color: #76808f; }
+    #knob_check_box QCheckBox::indicator {
+      border-radius: 2px; }
+      #knob_check_box QCheckBox::indicator:checked {
+        border: 8px solid transparent;
+        border-radius: 7px;
+        background: #caced3; }
+
+#knob_channels #red, #knob_channels #green, #knob_channels #blue, #knob_channels #alpha {
+  background: transparent; }
+  #knob_channels #red QCheckBox, #knob_channels #green QCheckBox, #knob_channels #blue QCheckBox, #knob_channels #alpha QCheckBox {
+    spacing: 0px;
+    background: #1e2024;
+    border-radius: 2px;
+    border: 1px solid #1e2024; }
+    #knob_channels #red QCheckBox:checked, #knob_channels #green QCheckBox:checked, #knob_channels #blue QCheckBox:checked, #knob_channels #alpha QCheckBox:checked {
+      border-color: #76808f; }
+    #knob_channels #red QCheckBox::indicator, #knob_channels #green QCheckBox::indicator, #knob_channels #blue QCheckBox::indicator, #knob_channels #alpha QCheckBox::indicator {
+      border-radius: 2px; }
+      #knob_channels #red QCheckBox::indicator:checked, #knob_channels #green QCheckBox::indicator:checked, #knob_channels #blue QCheckBox::indicator:checked, #knob_channels #alpha QCheckBox::indicator:checked {
+        border: 8px solid transparent;
+        border-radius: 7px;
+        background: #caced3; }
+
+#knob_channels #red QCheckBox {
+  background: #3b2429;
+  border-color: #7c181b; }
+  #knob_channels #red QCheckBox:checked {
+    border-color: red; }
+  #knob_channels #red QCheckBox::indicator {
+    border-radius: 2px; }
+    #knob_channels #red QCheckBox::indicator:checked {
+      border: 8px solid transparent;
+      border-radius: 7px;
+      background: red; }
+
+#knob_channels #green QCheckBox {
+  background: #21352a;
+  border-color: #165c1f; }
+  #knob_channels #green QCheckBox:checked {
+    border-color: #00aa0a; }
+  #knob_channels #green QCheckBox::indicator {
+    border-radius: 2px; }
+    #knob_channels #green QCheckBox::indicator:checked {
+      border: 8px solid transparent;
+      border-radius: 7px;
+      background: #00aa0a; }
+
+#knob_channels #blue QCheckBox {
+  background: #213342;
+  border-color: #165481; }
+  #knob_channels #blue QCheckBox:checked {
+    border-color: #0096ff; }
+  #knob_channels #blue QCheckBox::indicator {
+    border-radius: 2px; }
+    #knob_channels #blue QCheckBox::indicator:checked {
+      border: 8px solid transparent;
+      border-radius: 7px;
+      background: #0096ff; }
+
+#knob_channels #alpha QCheckBox {
+  background: #35383d;
+  border-color: #66686b; }
+  #knob_channels #alpha QCheckBox:checked {
+    border-color: #c8c8c8; }
+  #knob_channels #alpha QCheckBox::indicator {
+    border-radius: 2px; }
+    #knob_channels #alpha QCheckBox::indicator:checked {
+      border: 8px solid transparent;
+      border-radius: 7px;
+      background: #c8c8c8; }
+
+#knob_channels QPushButton {
+  background: #25282d;
+  border: 1px solid #202327;
+  padding: 1px;
+  padding-left: 3px;
+  padding-right: 3px;
+  border-radius: 2px; }
+  #knob_channels QPushButton:hover {
+    border-color: #927a17;
+    color: #ffcc00; }
+
+#knob_check_box {
+  background: transparent; }
+  #knob_check_box QCheckBox {
+    spacing: 0px;
+    background: #1e2024;
+    border-radius: 2px;
+    border: 1px solid #1e2024; }
+    #knob_check_box QCheckBox:checked {
+      border-color: #76808f; }
+    #knob_check_box QCheckBox::indicator {
+      border-radius: 2px; }
+      #knob_check_box QCheckBox::indicator:checked {
+        border: 8px solid transparent;
+        border-radius: 7px;
+        background: #caced3; }
+
+#knob_color QWidget {
+  background: transparent; }
+
+#knob_color QLineEdit {
+  background: #202327; }
+
+#knob_color QPushButton {
+  width: 25px;
+  height: 22px;
+  border-radius: 2px;
+  background: #3c4149; }
+  #knob_color QPushButton:hover {
+    background: #434851; }
+  #knob_color QPushButton[active=true] {
+    background: #25282d; }
+    #knob_color QPushButton[active=true]:hover {
+      background: #1e2024; }
+  #knob_color QPushButton[disable=true] {
+    color: #474d57; }
+
+#knob_color #red_edit {
+  border-bottom-color: red; }
+  #knob_color #red_edit::focus {
+    border-color: red; }
+
+#knob_color #green_edit {
+  border-bottom-color: green; }
+  #knob_color #green_edit::focus {
+    border-color: green; }
+
+#knob_color #blue_edit {
+  border-bottom-color: blue; }
+  #knob_color #blue_edit::focus {
+    border-color: blue; }
+
+#knob_color #alpha_edit {
+  border-bottom-color: white; }
+  #knob_color #alpha_edit::focus {
+    border-color: white; }
+
+#knob_color #red_slider::groove {
+  border-bottom: 1px solid #8f1012; }
+
+#knob_color #red_slider::handle {
+  background: red; }
+
+#knob_color #green_slider::groove {
+  border-bottom: 1px solid #0f5012; }
+
+#knob_color #green_slider::handle {
+  background: green; }
+
+#knob_color #blue_slider::groove {
+  border-bottom: 1px solid #090abd; }
+
+#knob_color #blue_slider::handle {
+  background: blue; }
+
+#knob_color #alpha_slider::groove {
+  border-bottom: 1px solid #8f9092; }
+
+#knob_color #alpha_slider::handle {
+  background: white; }
+
+#knob_group QWidget {
+  padding: 0px;
+  background: #25282d;
+  border-top-left-radius: 3px; }
+  #knob_group QWidget[open=false] {
+    border-bottom-left-radius: 3px; }
+
+#knob_group QLabel {
+  border-top-left-radius: none;
+  border-top-right-radius: 3px;
+  color: #929aa5;
+  font-weight: bold;
+  padding-left: 3px; }
+  #knob_group QLabel[open=false] {
+    border-bottom-right-radius: 3px; }
+
+#shuffle_node > QWidget {
+  background: none; }
+  #shuffle_node > QWidget > QLabel {
+    padding: 6px;
+    border: 1px solid #25282d;
+    border-radius: 3px;
+    background: #2c2f35;
+    font-weight: bold; }
+
+#shuffle_node #input_channels, #shuffle_node #output_channels {
+  background: #292d32;
+  border-radius: 3px;
+  border: 1px solid #25282d; }
+  #shuffle_node #input_channels #inputs_menu, #shuffle_node #input_channels #input, #shuffle_node #output_channels #inputs_menu, #shuffle_node #output_channels #input {
+    background: none; }
+  #shuffle_node #input_channels #output, #shuffle_node #output_channels #output {
+    background: none; }
+    #shuffle_node #input_channels #output #cwhite, #shuffle_node #input_channels #output #cblack, #shuffle_node #output_channels #output #cwhite, #shuffle_node #output_channels #output #cblack {
+      width: 8px;
+      height: 8px;
+      border-radius: 6px;
+      border: 2px solid none; }
+    #shuffle_node #input_channels #output #cblack, #shuffle_node #output_channels #output #cblack {
+      border-color: black;
+      background: black; }
+    #shuffle_node #input_channels #output #cwhite, #shuffle_node #output_channels #output #cwhite {
+      border-color: white;
+      background: white; }
+    #shuffle_node #input_channels #output #cwhite[connected=false], #shuffle_node #input_channels #output #cblack[connected=false], #shuffle_node #output_channels #output #cwhite[connected=false], #shuffle_node #output_channels #output #cblack[connected=false] {
+      background: none; }
+
 #node_graph #nodes_bar {
   background: #2c2f35;
   border-bottom: 1px solid #25282d; }
+  #node_graph #nodes_bar QLineEdit {
+    color: #aeb4bc;
+    padding: 3px;
+    border-radius: 2px;
+    background: #1e2024;
+    border: 1px solid #1e2024; }
+    #node_graph #nodes_bar QLineEdit:focus {
+      border-color: #8f7612; }
 
 #node_graph #node_view {
   background: #30343b; }
@@ -188,8 +413,21 @@ QSlider {
 #curve_editor {
   background: #30343b; }
   #curve_editor #knobs_tree {
+    alternate-background-color: #2c2f35;
+    background-color: #25282d;
+    border: 1px solid #2c2f35;
     background: #30343b;
     border-right: 1px solid #25282d; }
+    #curve_editor #knobs_tree * {
+      background: none; }
+    #curve_editor #knobs_tree::item {
+      border-bottom: 1px solid #30343b;
+      border-top: 1px solid transparent;
+      height: 25px; }
+      #curve_editor #knobs_tree::item:first {
+        padding-left: 15px; }
+      #curve_editor #knobs_tree::item QLabel {
+        padding: 5px; }
   #curve_editor #graphics_view {
     background: #121416; }
 
@@ -212,6 +450,15 @@ QSlider {
 #tool_bar {
   background: #25282d;
   border-left: 1px solid #191b1f; }
+
+#viewer QLineEdit {
+  color: #aeb4bc;
+  padding: 3px;
+  border-radius: 2px;
+  background: #1e2024;
+  border: 1px solid #1e2024; }
+  #viewer QLineEdit:focus {
+    border-color: #8f7612; }
 
 #viewer #viewer_graphics {
   background: black; }
@@ -257,6 +504,14 @@ QSlider {
 
 #trim_panel {
   background: #2c2f35; }
+  #trim_panel QLineEdit {
+    color: #aeb4bc;
+    padding: 3px;
+    border-radius: 2px;
+    background: #1e2024;
+    border: 1px solid #1e2024; }
+    #trim_panel QLineEdit:focus {
+      border-color: #8f7612; }
   #trim_panel #butttons {
     background: #25282d; }
   #trim_panel #controls, #trim_panel #node_tab {
@@ -269,150 +524,6 @@ QSlider {
       background: #30343b; }
     #trim_panel #controls #init_space, #trim_panel #node_tab #init_space {
       background: transparent; }
-    #trim_panel #controls #knob_floating QPushButton, #trim_panel #controls #knob_integer QPushButton, #trim_panel #controls #knob_dimensions QPushButton, #trim_panel #node_tab #knob_floating QPushButton, #trim_panel #node_tab #knob_integer QPushButton, #trim_panel #node_tab #knob_dimensions QPushButton {
-      width: 25px;
-      height: 22px;
-      border-radius: 2px;
-      background: #3c4149; }
-      #trim_panel #controls #knob_floating QPushButton:hover, #trim_panel #controls #knob_integer QPushButton:hover, #trim_panel #controls #knob_dimensions QPushButton:hover, #trim_panel #node_tab #knob_floating QPushButton:hover, #trim_panel #node_tab #knob_integer QPushButton:hover, #trim_panel #node_tab #knob_dimensions QPushButton:hover {
-        background: #434851; }
-      #trim_panel #controls #knob_floating QPushButton[active=true], #trim_panel #controls #knob_integer QPushButton[active=true], #trim_panel #controls #knob_dimensions QPushButton[active=true], #trim_panel #node_tab #knob_floating QPushButton[active=true], #trim_panel #node_tab #knob_integer QPushButton[active=true], #trim_panel #node_tab #knob_dimensions QPushButton[active=true] {
-        background: #25282d; }
-        #trim_panel #controls #knob_floating QPushButton[active=true]:hover, #trim_panel #controls #knob_integer QPushButton[active=true]:hover, #trim_panel #controls #knob_dimensions QPushButton[active=true]:hover, #trim_panel #node_tab #knob_floating QPushButton[active=true]:hover, #trim_panel #node_tab #knob_integer QPushButton[active=true]:hover, #trim_panel #node_tab #knob_dimensions QPushButton[active=true]:hover {
-          background: #1e2024; }
-      #trim_panel #controls #knob_floating QPushButton[disable=true], #trim_panel #controls #knob_integer QPushButton[disable=true], #trim_panel #controls #knob_dimensions QPushButton[disable=true], #trim_panel #node_tab #knob_floating QPushButton[disable=true], #trim_panel #node_tab #knob_integer QPushButton[disable=true], #trim_panel #node_tab #knob_dimensions QPushButton[disable=true] {
-        color: #474d57; }
-    #trim_panel #controls #knob_check_box, #trim_panel #node_tab #knob_check_box {
-      background: transparent; }
-      #trim_panel #controls #knob_check_box QCheckBox, #trim_panel #node_tab #knob_check_box QCheckBox {
-        spacing: 0px;
-        background: #1e2024;
-        border-radius: 2px;
-        border: 1px solid #1e2024; }
-        #trim_panel #controls #knob_check_box QCheckBox:checked, #trim_panel #node_tab #knob_check_box QCheckBox:checked {
-          border-color: #76808f; }
-        #trim_panel #controls #knob_check_box QCheckBox::indicator, #trim_panel #node_tab #knob_check_box QCheckBox::indicator {
-          border-radius: 2px; }
-          #trim_panel #controls #knob_check_box QCheckBox::indicator:checked, #trim_panel #node_tab #knob_check_box QCheckBox::indicator:checked {
-            border: 8px solid transparent;
-            border-radius: 7px;
-            background: #caced3; }
-    #trim_panel #controls #knob_choice, #trim_panel #node_tab #knob_choice {
-      background: transparent; }
-    #trim_panel #controls #knob_separator QWidget, #trim_panel #node_tab #knob_separator QWidget {
-      border-bottom: 1px solid #25282d; }
-    #trim_panel #controls #knob_label QWidget, #trim_panel #node_tab #knob_label QWidget {
-      background: transparent;
-      border-bottom: 1px solid #3c4149; }
-    #trim_panel #controls #knob_label QLabel, #trim_panel #node_tab #knob_label QLabel {
-      font-weight: bold;
-      color: #76808f;
-      border: none; }
-    #trim_panel #controls #knob_group QWidget, #trim_panel #node_tab #knob_group QWidget {
-      padding: 0px;
-      background: #25282d;
-      border-top-left-radius: 3px; }
-      #trim_panel #controls #knob_group QWidget[open=false], #trim_panel #node_tab #knob_group QWidget[open=false] {
-        border-bottom-left-radius: 3px; }
-    #trim_panel #controls #knob_group QLabel, #trim_panel #node_tab #knob_group QLabel {
-      border-top-left-radius: none;
-      border-top-right-radius: 3px;
-      color: #929aa5;
-      font-weight: bold;
-      padding-left: 3px; }
-      #trim_panel #controls #knob_group QLabel[open=false], #trim_panel #node_tab #knob_group QLabel[open=false] {
-        border-bottom-right-radius: 3px; }
-    #trim_panel #controls #knob_color QWidget, #trim_panel #node_tab #knob_color QWidget {
-      background: transparent; }
-    #trim_panel #controls #knob_color QLineEdit, #trim_panel #node_tab #knob_color QLineEdit {
-      background: #202327; }
-    #trim_panel #controls #knob_color QPushButton, #trim_panel #node_tab #knob_color QPushButton {
-      width: 25px;
-      height: 22px;
-      border-radius: 2px;
-      background: #3c4149; }
-      #trim_panel #controls #knob_color QPushButton:hover, #trim_panel #node_tab #knob_color QPushButton:hover {
-        background: #434851; }
-      #trim_panel #controls #knob_color QPushButton[active=true], #trim_panel #node_tab #knob_color QPushButton[active=true] {
-        background: #25282d; }
-        #trim_panel #controls #knob_color QPushButton[active=true]:hover, #trim_panel #node_tab #knob_color QPushButton[active=true]:hover {
-          background: #1e2024; }
-      #trim_panel #controls #knob_color QPushButton[disable=true], #trim_panel #node_tab #knob_color QPushButton[disable=true] {
-        color: #474d57; }
-    #trim_panel #controls #knob_color #red_edit, #trim_panel #node_tab #knob_color #red_edit {
-      border-bottom-color: red; }
-      #trim_panel #controls #knob_color #red_edit::focus, #trim_panel #node_tab #knob_color #red_edit::focus {
-        border-color: red; }
-    #trim_panel #controls #knob_color #green_edit, #trim_panel #node_tab #knob_color #green_edit {
-      border-bottom-color: green; }
-      #trim_panel #controls #knob_color #green_edit::focus, #trim_panel #node_tab #knob_color #green_edit::focus {
-        border-color: green; }
-    #trim_panel #controls #knob_color #blue_edit, #trim_panel #node_tab #knob_color #blue_edit {
-      border-bottom-color: blue; }
-      #trim_panel #controls #knob_color #blue_edit::focus, #trim_panel #node_tab #knob_color #blue_edit::focus {
-        border-color: blue; }
-    #trim_panel #controls #knob_color #alpha_edit, #trim_panel #node_tab #knob_color #alpha_edit {
-      border-bottom-color: white; }
-      #trim_panel #controls #knob_color #alpha_edit::focus, #trim_panel #node_tab #knob_color #alpha_edit::focus {
-        border-color: white; }
-    #trim_panel #controls #knob_color #red_slider::groove, #trim_panel #node_tab #knob_color #red_slider::groove {
-      border-bottom: 1px solid #8f1012; }
-    #trim_panel #controls #knob_color #red_slider::handle, #trim_panel #node_tab #knob_color #red_slider::handle {
-      background: red; }
-    #trim_panel #controls #knob_color #green_slider::groove, #trim_panel #node_tab #knob_color #green_slider::groove {
-      border-bottom: 1px solid #0f5012; }
-    #trim_panel #controls #knob_color #green_slider::handle, #trim_panel #node_tab #knob_color #green_slider::handle {
-      background: green; }
-    #trim_panel #controls #knob_color #blue_slider::groove, #trim_panel #node_tab #knob_color #blue_slider::groove {
-      border-bottom: 1px solid #090abd; }
-    #trim_panel #controls #knob_color #blue_slider::handle, #trim_panel #node_tab #knob_color #blue_slider::handle {
-      background: blue; }
-    #trim_panel #controls #knob_color #alpha_slider::groove, #trim_panel #node_tab #knob_color #alpha_slider::groove {
-      border-bottom: 1px solid #8f9092; }
-    #trim_panel #controls #knob_color #alpha_slider::handle, #trim_panel #node_tab #knob_color #alpha_slider::handle {
-      background: white; }
-    #trim_panel #controls #knob_button, #trim_panel #node_tab #knob_button {
-      background: none; }
-      #trim_panel #controls #knob_button QPushButton, #trim_panel #node_tab #knob_button QPushButton {
-        height: 22px;
-        border-radius: 2px;
-        background: #40464f;
-        padding-right: 10px;
-        padding-left: 10px; }
-        #trim_panel #controls #knob_button QPushButton:hover, #trim_panel #node_tab #knob_button QPushButton:hover {
-          color: #ffcc00; }
-        #trim_panel #controls #knob_button QPushButton:pressed, #trim_panel #node_tab #knob_button QPushButton:pressed {
-          background: #292d32;
-          color: #caced3; }
-    #trim_panel #controls #shuffle_node > QWidget, #trim_panel #node_tab #shuffle_node > QWidget {
-      background: none; }
-      #trim_panel #controls #shuffle_node > QWidget > QLabel, #trim_panel #node_tab #shuffle_node > QWidget > QLabel {
-        padding: 6px;
-        border: 1px solid #25282d;
-        border-radius: 3px;
-        background: #2c2f35;
-        font-weight: bold; }
-    #trim_panel #controls #shuffle_node #input_channels, #trim_panel #controls #shuffle_node #output_channels, #trim_panel #node_tab #shuffle_node #input_channels, #trim_panel #node_tab #shuffle_node #output_channels {
-      background: #292d32;
-      border-radius: 3px;
-      border: 1px solid #25282d; }
-      #trim_panel #controls #shuffle_node #input_channels #inputs_menu, #trim_panel #controls #shuffle_node #input_channels #input, #trim_panel #controls #shuffle_node #output_channels #inputs_menu, #trim_panel #controls #shuffle_node #output_channels #input, #trim_panel #node_tab #shuffle_node #input_channels #inputs_menu, #trim_panel #node_tab #shuffle_node #input_channels #input, #trim_panel #node_tab #shuffle_node #output_channels #inputs_menu, #trim_panel #node_tab #shuffle_node #output_channels #input {
-        background: none; }
-      #trim_panel #controls #shuffle_node #input_channels #output, #trim_panel #controls #shuffle_node #output_channels #output, #trim_panel #node_tab #shuffle_node #input_channels #output, #trim_panel #node_tab #shuffle_node #output_channels #output {
-        background: none; }
-        #trim_panel #controls #shuffle_node #input_channels #output #cwhite, #trim_panel #controls #shuffle_node #input_channels #output #cblack, #trim_panel #controls #shuffle_node #output_channels #output #cwhite, #trim_panel #controls #shuffle_node #output_channels #output #cblack, #trim_panel #node_tab #shuffle_node #input_channels #output #cwhite, #trim_panel #node_tab #shuffle_node #input_channels #output #cblack, #trim_panel #node_tab #shuffle_node #output_channels #output #cwhite, #trim_panel #node_tab #shuffle_node #output_channels #output #cblack {
-          width: 8px;
-          height: 8px;
-          border-radius: 6px;
-          border: 2px solid none; }
-        #trim_panel #controls #shuffle_node #input_channels #output #cblack, #trim_panel #controls #shuffle_node #output_channels #output #cblack, #trim_panel #node_tab #shuffle_node #input_channels #output #cblack, #trim_panel #node_tab #shuffle_node #output_channels #output #cblack {
-          border-color: black;
-          background: black; }
-        #trim_panel #controls #shuffle_node #input_channels #output #cwhite, #trim_panel #controls #shuffle_node #output_channels #output #cwhite, #trim_panel #node_tab #shuffle_node #input_channels #output #cwhite, #trim_panel #node_tab #shuffle_node #output_channels #output #cwhite {
-          border-color: white;
-          background: white; }
-        #trim_panel #controls #shuffle_node #input_channels #output #cwhite[connected=false], #trim_panel #controls #shuffle_node #input_channels #output #cblack[connected=false], #trim_panel #controls #shuffle_node #output_channels #output #cwhite[connected=false], #trim_panel #controls #shuffle_node #output_channels #output #cblack[connected=false], #trim_panel #node_tab #shuffle_node #input_channels #output #cwhite[connected=false], #trim_panel #node_tab #shuffle_node #input_channels #output #cblack[connected=false], #trim_panel #node_tab #shuffle_node #output_channels #output #cwhite[connected=false], #trim_panel #node_tab #shuffle_node #output_channels #output #cblack[connected=false] {
-          background: none; }
 
 #tools {
   background: #2c2f35; }
@@ -434,79 +545,4 @@ QSlider {
 
 #project_settings {
   background: #30343b; }
-
-#new_layer {
-  background: None; }
-  #new_layer QLineEdit {
-    padding-top: 1px;
-    padding-bottom: 1px; }
-  #new_layer #red, #new_layer #green, #new_layer #blue, #new_layer #alpha {
-    background: transparent; }
-    #new_layer #red QCheckBox, #new_layer #green QCheckBox, #new_layer #blue QCheckBox, #new_layer #alpha QCheckBox {
-      spacing: 0px;
-      background: #1e2024;
-      border-radius: 2px;
-      border: 1px solid #1e2024; }
-      #new_layer #red QCheckBox:checked, #new_layer #green QCheckBox:checked, #new_layer #blue QCheckBox:checked, #new_layer #alpha QCheckBox:checked {
-        border-color: #76808f; }
-      #new_layer #red QCheckBox::indicator, #new_layer #green QCheckBox::indicator, #new_layer #blue QCheckBox::indicator, #new_layer #alpha QCheckBox::indicator {
-        border-radius: 2px; }
-        #new_layer #red QCheckBox::indicator:checked, #new_layer #green QCheckBox::indicator:checked, #new_layer #blue QCheckBox::indicator:checked, #new_layer #alpha QCheckBox::indicator:checked {
-          border: 8px solid transparent;
-          border-radius: 7px;
-          background: #caced3; }
-  #new_layer #red QCheckBox {
-    background: #3b2429;
-    border-color: #7c181b; }
-    #new_layer #red QCheckBox:checked {
-      border-color: red; }
-    #new_layer #red QCheckBox::indicator {
-      border-radius: 2px; }
-      #new_layer #red QCheckBox::indicator:checked {
-        border: 8px solid transparent;
-        border-radius: 7px;
-        background: red; }
-  #new_layer #green QCheckBox {
-    background: #21352a;
-    border-color: #165c1f; }
-    #new_layer #green QCheckBox:checked {
-      border-color: #00aa0a; }
-    #new_layer #green QCheckBox::indicator {
-      border-radius: 2px; }
-      #new_layer #green QCheckBox::indicator:checked {
-        border: 8px solid transparent;
-        border-radius: 7px;
-        background: #00aa0a; }
-  #new_layer #blue QCheckBox {
-    background: #213342;
-    border-color: #165481; }
-    #new_layer #blue QCheckBox:checked {
-      border-color: #0096ff; }
-    #new_layer #blue QCheckBox::indicator {
-      border-radius: 2px; }
-      #new_layer #blue QCheckBox::indicator:checked {
-        border: 8px solid transparent;
-        border-radius: 7px;
-        background: #0096ff; }
-  #new_layer #alpha QCheckBox {
-    background: #35383d;
-    border-color: #66686b; }
-    #new_layer #alpha QCheckBox:checked {
-      border-color: #c8c8c8; }
-    #new_layer #alpha QCheckBox::indicator {
-      border-radius: 2px; }
-      #new_layer #alpha QCheckBox::indicator:checked {
-        border: 8px solid transparent;
-        border-radius: 7px;
-        background: #c8c8c8; }
-  #new_layer QPushButton {
-    background: #25282d;
-    border: 1px solid #202327;
-    padding: 1px;
-    padding-left: 3px;
-    padding-right: 3px;
-    border-radius: 2px; }
-    #new_layer QPushButton:hover {
-      border-color: #927a17;
-      color: #ffcc00; }
 

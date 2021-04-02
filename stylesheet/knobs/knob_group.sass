@@ -1,0 +1,16 @@
+#knob_group
+    $radius: 3px
+    QWidget
+        padding: 0px
+        background: $b15
+        border-top-left-radius: $radius
+        &[ open = false ]
+            border-bottom-left-radius: $radius
+    QLabel
+        border-top-left-radius: none
+        border-top-right-radius: $radius
+        color: $b60
+        font-weight: bold
+        padding-left: 3px
+        &[ open = false ]
+            border-bottom-right-radius: $radius

@@ -1,12 +1,7 @@
-#new_layer
-    background: None
-    QLineEdit
-        padding-top: 1px
-        padding-bottom: 1px
+@import knob_check_box
+@import bases
 
-    #red, #green, #blue, #alpha
-        @include knob_check_box
-
+#knob_channels
     @mixin variant_color($color)
         QCheckBox
             background: mix($b15, $color, 90)
@@ -19,6 +14,9 @@
                     border: 8px solid transparent
                     border-radius: 7px
                     background: $color
+
+    #red, #green, #blue, #alpha
+        @include knob_check_box
 
     #red
         @include variant_color(red)

@@ -1,0 +1,81 @@
+
+@mixin q_line_edit
+    color: $b70
+    padding: 3px
+    border-radius: 2px
+    background: $b12
+    border: 1px solid $b12
+
+    &:focus
+        border-color: mix($base, $b12, 50)
+
+@mixin treecolor
+    &:selected
+        background-color: rgba($base,.1)
+        border-color: rgba($base,.5)
+        color: $b80
+    &:hover
+        background-color: rgba($base,.02)
+        border-color: rgba($base,.5)
+
+@mixin q_tree_widget
+    alternate-background-color: $b18
+    background-color: $b15
+    border: 1px solid $b18
+
+    *
+        background: none
+    &::item
+        border-bottom: 1px solid $b20
+        border-top: 1px solid transparent
+        height: 25px
+        &:first
+            padding-left: 15px
+
+        // @include treecolor
+
+        QLabel
+            padding: 5px
+        // &:has-children
+        //     min-height: 200px
+        //     background: $b14
+        //     @include treecolor
+    // &::branch
+    //     background: transparent
+    //     border-top: 1px solid transparent
+    //     border-bottom: 1px solid $b20
+    //     @include treecolor
+    //     &:selected
+    //         background: mix($base,$b15,10)
+    //     &:hover
+    //         background: mix($base,$b15,2)
+    //     &:has-children
+    //         background: $b14
+    //         &:selected
+    //             background: mix($base,$b14,11)
+    //         &:hover
+    //             background: mix($base,$b14,3)
+
+@mixin q_combo_box
+    margin-right: 10px
+    background-color: $b15
+    border: 1px solid transparent
+    padding: 3px
+    border-radius: 2px
+
+    &::down-arrow
+        // image: url(#{$images}/down_arrow.png)
+    &:focus
+        border-color: mix($base, $b12, 50)
+    &::drop-down
+        width: 20px
+        background-color: $b25
+
+    QAbstractItemView
+        background-color: $b13
+    &:item
+        font-size: 13px
+        &:selected
+            background-color: $b20
+            color: $base
+            padding-left: 0px

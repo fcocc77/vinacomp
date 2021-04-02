@@ -1,0 +1,30 @@
+@import small_button
+
+#knob_floating, #knob_integer, #knob_dimensions
+    @include small_button
+#knob_choice
+    background: transparent
+#knob_separator
+    QWidget
+        border-bottom: 1px solid $b15
+#knob_label
+    QWidget
+        background: transparent
+        border-bottom: 1px solid $b25
+    QLabel
+        font-weight: bold
+        color: $b50
+        border: none
+#knob_button
+    background: none
+    QPushButton
+        height: 22px
+        border-radius: 2px
+        background: $b27
+        padding-right: 10px
+        padding-left: 10px
+        &:hover
+            color: $base
+        &:pressed
+            background: $b17
+            color: $b80

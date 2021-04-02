@@ -4,6 +4,7 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QLineEdit>
+#include <QMessageBox>
 
 #include <knob.h>
 #include <knob_check_box.h>
@@ -11,6 +12,7 @@
 #include <combo_box.h>
 #include <util.h>
 #include <global.h>
+#include <qt.h>
 
 class knob_channels : public knob
 {
@@ -25,18 +27,15 @@ private:
     global *glob;
     combo_box *layers;
 
-    void accept();
-    void cancel();
-
-    void change_layer(QString layer);
+    void add_layer();
     void visible_layer_edit(bool visible);
-    void update_layers();
+    void update_layers(bool from_add_layer = false);
 public:
     knob_channels(global *glob);
     ~knob_channels();
 
 signals:
-    void changed(bool value);
+    void changed(QString layer, int index);
 };
 
 #endif // KNOB_CHANNELS_H

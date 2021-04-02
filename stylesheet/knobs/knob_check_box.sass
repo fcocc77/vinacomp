@@ -1,0 +1,19 @@
+
+@mixin knob_check_box
+    background: transparent
+    QCheckBox
+        spacing: 0px
+        background: $b12
+        border-radius: 2px
+        border: 1px solid $b12
+        &:checked
+            border-color: $b50
+        &::indicator
+            border-radius: 2px
+            &:checked
+                border: 8px solid transparent
+                border-radius: 7px
+                background: $b80
+
+#knob_check_box
+    @include knob_check_box

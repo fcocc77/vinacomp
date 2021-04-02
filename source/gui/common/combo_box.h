@@ -49,6 +49,7 @@ public:
     inline action *get_action(int index) const;
     inline int get_index() const;
     inline QVariant get_value() const;
+    inline int count() const;
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;
@@ -57,6 +58,11 @@ signals:
     void changed(QVariant value, int index);
     void pre_open();
 };
+
+inline int combo_box::count() const
+{
+    return items.count();
+}
 
 inline action *combo_box::get_action(int index) const
 {

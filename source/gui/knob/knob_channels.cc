@@ -3,24 +3,24 @@
 knob_channels::knob_channels(global *_glob)
     : glob(_glob)
 {
-    this->setObjectName("new_layer");
-    this->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+    this->setObjectName("knob_channels");
 
     layout = new QHBoxLayout(this);
+    layout->setAlignment(Qt::AlignLeft);
     layout->setMargin(0);
 
     edit = new QLineEdit;
-    // edit->hide();
+    edit->setMaximumHeight(20);
+    edit->hide();
 
     accept_button = new button();
-    // accept_button->hide();
-    connect(accept_button, &QPushButton::clicked, this,
-            &knob_channels::accept);
+    accept_button->hide();
+    connect(accept_button, &QPushButton::clicked, this, &knob_channels::add_layer);
 
     cancel_button = new button();
-    // cancel_button->hide();
+    cancel_button->hide();
     connect(cancel_button, &QPushButton::clicked, this,
-            &knob_channels::cancel);
+            [this]() { visible_layer_edit(false); });
 
     accept_button->setText("OK");
     cancel_button->setText("Cancel");
@@ -39,9 +39,10 @@ knob_channels::knob_channels(global *_glob)
 
     // Layers
     layers = new combo_box();
-    connect(layers, &combo_box::changed, this,
-            [=](QVariant value, int index) { change_layer(value.toString()); });
-    connect(layers, &combo_box::pre_open, this, &knob_channels::update_layers);
+    connect(layers, &combo_box::changed, this, [=](QVariant value, int index) {
+        changed(value.toString(), index);
+    });
+    connect(layers, &combo_box::pre_open, this, [=]() { update_layers(); });
     update_layers();
     //
 
@@ -56,29 +57,41 @@ knob_channels::knob_channels(global *_glob)
 
     layout->addWidget(edit);
 
-    // layout->addStretch();
-
     layout->addWidget(accept_button);
     layout->addWidget(cancel_button);
-
 }
 
 knob_channels::~knob_channels() {}
-
-void knob_channels::change_layer(QString layer)
-{
-}
 
 void knob_channels::visible_layer_edit(bool visible)
 {
     accept_button->setVisible(visible);
     cancel_button->setVisible(visible);
     edit->setVisible(visible);
+    edit->setFocus();
 }
 
-void knob_channels::accept()
+void knob_channels::add_layer()
 {
     QString name = edit->text().replace(" ", "_");
+
+    if (name.isEmpty())
+    {
+        QString msg = "No name";
+        QMessageBox::warning(this, "VinaComp Error", msg, QMessageBox::Ok);
+        return;
+    }
+
+    for (auto lay : glob->layers)
+    {
+        if (lay.name == name || name == "main")
+        {
+            QString msg = "Layer: '" + name + "' exist.";
+            QMessageBox::warning(this, "VinaComp Error", msg, QMessageBox::Ok);
+            return;
+        }
+    }
+
     layer_struct layer;
 
     layer.name = name;
@@ -89,16 +102,13 @@ void knob_channels::accept()
 
     glob->layers.push_back(layer);
 
-    update_layers();
+    update_layers(true);
     visible_layer_edit(false);
+
+    edit->clear();
 }
 
-void knob_channels::cancel()
-{
-    visible_layer_edit(false);
-}
-
-void knob_channels::update_layers()
+void knob_channels::update_layers(bool from_add_layer)
 {
     int current_index = layers->get_index();
 
@@ -132,5 +142,10 @@ void knob_channels::update_layers()
     layers->get_action(index)->connect_to(this,
                                           [=]() { visible_layer_edit(true); });
 
-    layers->set_index(current_index, false);
+    // si la actualizacion viene de 'add_layer' deja el index
+    // de la nueva capa, y envia la señal para renderizar
+    if (from_add_layer)
+        layers->set_index(layers->count() - 2, true);
+    else
+        layers->set_index(current_index, false);
 }

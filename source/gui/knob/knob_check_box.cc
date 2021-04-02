@@ -2,9 +2,9 @@
 
 knob_check_box::knob_check_box(QString _label, bool default_value)
 
-    : label(_label)
+    : label_widget(nullptr)
+    , label(_label)
     , checked(default_value)
-    , label_widget(nullptr)
 {
     this->setObjectName("knob_check_box");
 
@@ -14,6 +14,7 @@ knob_check_box::knob_check_box(QString _label, bool default_value)
     layout->addWidget(init_space);
 
     checkbox = new QCheckBox(this);
+    checkbox->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     connect(checkbox, &QCheckBox::stateChanged, this, [=](int state) {
         checked = state != 0;
         changed(checked); // Signal
