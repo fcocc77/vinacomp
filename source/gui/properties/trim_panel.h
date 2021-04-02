@@ -25,6 +25,7 @@
 #include <knob_label.h>
 #include <knob_separator.h>
 #include <knob_text.h>
+#include <knob_channels.h>
 #include <nodes_load.h>
 #include <properties.h>
 #include <qt.h>
@@ -76,7 +77,8 @@ private:
     void setup_gui_panels(QJsonArray _knobs);
     QWidget *top_buttons_setup_ui();
     tab_widget *tabs_ui();
-    void setup_knobs(QJsonArray _knobs, QVBoxLayout *layout, QList<QWidget *> *viewers);
+    void setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
+                     QList<QWidget *> *viewers, global *glob);
     void update_render();
 
 public:

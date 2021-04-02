@@ -5,6 +5,14 @@
     "icon": "grade",
     "knobs": [
         {
+            "name": "channels",
+            "type": "channels",
+            "label": "Channels",
+            "tooltip": "",
+            "visible": true,
+			"default": [true, true, true, true]
+        },
+        {
             "name": "blackpoint",
             "type": "color",
             "label": "Black Point",

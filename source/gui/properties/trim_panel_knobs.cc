@@ -1,6 +1,7 @@
 #include <trim_panel.h>
 
-void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout, QList<QWidget *> *viewers_gl)
+void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
+                             QList<QWidget *> *viewers_gl, global *glob)
 {
     // Obtiene el ancho maximo a partir de las 'label'
     // para usarlo en el espacio inicial de cada parametro.
@@ -339,6 +340,13 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout, QList<QWidg
                     });
 
             _knob = knob_integer_dimensions;
+        }
+
+        else if (type == "channels")
+        {
+            knob_channels *_knob_channels = new knob_channels(glob);
+
+            _knob = _knob_channels;
         }
 
         if (_knob)

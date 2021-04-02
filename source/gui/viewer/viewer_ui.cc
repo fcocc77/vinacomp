@@ -48,7 +48,7 @@ QWidget *viewer::control_setup_ui()
 
     // Layers
     combo_box *layers =
-        new combo_box({{"rgba:4", "rgba"}, {"New", "new", true}});
+        new combo_box({{"main : rgba", "rgba"}, {"New", "new", true}});
 
     connect(layers, &combo_box::changed, this,
             [=](QVariant value, int index) { change_layer(value.toString()); });
