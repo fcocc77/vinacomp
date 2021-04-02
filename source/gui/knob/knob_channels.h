@@ -35,6 +35,9 @@ private:
     void visible_layer_edit(bool visible);
     void update_layers(QString from = "");
     void set_all_channel(bool value);
+    void set_layer(QString layer);
+
+    layer_struct *get_layer(QString layer);
 
 public:
     knob_channels(global *glob);

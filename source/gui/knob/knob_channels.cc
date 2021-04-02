@@ -54,6 +54,7 @@ knob_channels::knob_channels(global *_glob)
     // Layers
     layers = new combo_box();
     connect(layers, &combo_box::changed, this, [=](QVariant value, int index) {
+        set_layer(value.toString());
         changed(value.toString(), index);
     });
     connect(layers, &combo_box::pre_open, this, [=]() { update_layers(); });
@@ -77,6 +78,39 @@ knob_channels::knob_channels(global *_glob)
 
 knob_channels::~knob_channels() {}
 
+void knob_channels::set_layer(QString layer_name)
+{
+    bool _red = true;
+    bool _green = true;
+    bool _blue = true;
+    bool _alpha = true;
+
+    auto *layer = get_layer(layer_name);
+    // si la capa no existe en las 'layers' puede ser
+    // que sea la 'layer' principal 'main'
+    if (layer)
+    {
+        _red = layer->red;
+        _green = layer->green;
+        _blue = layer->blue;
+        _alpha = layer->alpha;
+    }
+
+    red->setVisible(_red);
+    green->setVisible(_green);
+    blue->setVisible(_blue);
+    alpha->setVisible(_alpha);
+}
+
+layer_struct *knob_channels::get_layer(QString layer_name)
+{
+    for (auto &layer : glob->layers)
+        if (layer.name == layer_name)
+            return &layer;
+
+    return nullptr;
+}
+
 void knob_channels::set_all_channel(bool value)
 {
     if (qt::control())
@@ -90,6 +124,14 @@ void knob_channels::set_all_channel(bool value)
 
 void knob_channels::visible_layer_edit(bool visible)
 {
+    if (visible)
+    {
+        red->show();
+        green->show();
+        blue->show();
+        alpha->show();
+    }
+
     accept_button->setVisible(visible);
     cancel_button->setVisible(visible);
     edit->setVisible(visible);
@@ -159,19 +201,13 @@ void knob_channels::edit_layer()
     if (name.isEmpty())
         return;
 
-    for (auto &layer : glob->layers)
-    {
-        if (layer.name == layer_to_edit)
-        {
-            layer.name = name;
-            layer.red = red->is_checked();
-            layer.green = green->is_checked();
-            layer.blue = blue->is_checked();
-            layer.alpha = alpha->is_checked();
+    auto *layer = get_layer(layer_to_edit);
 
-            break;
-        }
-    }
+    layer->name = name;
+    layer->red = red->is_checked();
+    layer->green = green->is_checked();
+    layer->blue = blue->is_checked();
+    layer->alpha = alpha->is_checked();
 
     update_layers("edit");
     visible_layer_edit(false);
