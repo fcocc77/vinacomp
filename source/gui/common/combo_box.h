@@ -17,6 +17,7 @@ struct combo_box_item
     QString label;
     QVariant value;
     bool button;
+    QString icon_name;
 };
 
 class combo_box : public QWidget
@@ -42,7 +43,8 @@ public:
     void set_index(int _index, bool emit_signal = true);
     void set_value(QVariant value);
     void add_shortcut(int index, QString key);
-    void add_item(combo_box_item item);
+    int add_item(combo_box_item item);
+    void clear();
 
     inline action *get_action(int index) const;
     inline int get_index() const;
@@ -53,6 +55,7 @@ protected:
 
 signals:
     void changed(QVariant value, int index);
+    void pre_open();
 };
 
 inline action *combo_box::get_action(int index) const

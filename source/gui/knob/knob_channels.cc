@@ -38,13 +38,11 @@ knob_channels::knob_channels(global *_glob)
     alpha->setObjectName("alpha");
 
     // Layers
-    combo_box *layers =
-        new combo_box({{"main : rgba", "rgba"}, {"New", "new", true}});
-
+    layers = new combo_box();
     connect(layers, &combo_box::changed, this,
             [=](QVariant value, int index) { change_layer(value.toString()); });
-
-    layers->get_action(1)->connect_to(this, [=]() { visible_layer_edit(true); });
+    connect(layers, &combo_box::pre_open, this, &knob_channels::update_layers);
+    update_layers();
     //
 
     layout->addWidget(init_space);
@@ -67,8 +65,9 @@ knob_channels::knob_channels(global *_glob)
 
 knob_channels::~knob_channels() {}
 
-void knob_channels::change_layer(QString layer) {}
-
+void knob_channels::change_layer(QString layer)
+{
+}
 
 void knob_channels::visible_layer_edit(bool visible)
 {
@@ -83,10 +82,10 @@ void knob_channels::accept()
     layer_struct layer;
 
     layer.name = name;
-    layer.red = false;
-    layer.green = false;
-    layer.blue = true;
-    layer.alpha = true;
+    layer.red = red->is_checked();
+    layer.green = green->is_checked();
+    layer.blue = blue->is_checked();
+    layer.alpha = alpha->is_checked();
 
     glob->layers.push_back(layer);
 
@@ -101,16 +100,37 @@ void knob_channels::cancel()
 
 void knob_channels::update_layers()
 {
+    int current_index = layers->get_index();
+
+    layers->clear();
+    layers->add_item({"main : rgba"});
+
     // actualiza todas las capas que estan en 'layers' en global
     // y las agrega al combo_box de 'layers'
     for (auto layer : glob->layers)
     {
         combo_box_item item;
 
+        QString channels;
+        if (layer.red)
+            channels += "r";
+        if (layer.green)
+            channels += "g";
+        if (layer.blue)
+            channels += "b";
+        if (layer.alpha)
+            channels += "a";
+
         item.value = layer.name;
-        item.label = layer.name + " : rgba";
+        item.label = layer.name + " : " + channels;
         item.button = false;
 
         layers->add_item(item);
     }
+
+    int index = layers->add_item({"New", "new", true, "add"});
+    layers->get_action(index)->connect_to(this,
+                                          [=]() { visible_layer_edit(true); });
+
+    layers->set_index(current_index, false);
 }

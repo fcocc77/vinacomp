@@ -1,9 +1,8 @@
 #include <combo_box.h>
 
-combo_box::combo_box(QList<combo_box_item> _items, int default_index, QWidget *_parent)
-    : items(_items)
+combo_box::combo_box(QList<combo_box_item> input_items, int default_index, QWidget *_parent)
+    : parent(_parent)
     , current_index(0)
-    , parent(_parent)
 {
     this->setObjectName("combo_box");
     this->setMinimumHeight(20);
@@ -30,7 +29,7 @@ combo_box::combo_box(QList<combo_box_item> _items, int default_index, QWidget *_
 
     layout->addWidget(arrow);
 
-    for (auto item : items)
+    for (auto item : input_items)
         add_item(item);
 
     set_index(default_index, false);
@@ -38,13 +37,22 @@ combo_box::combo_box(QList<combo_box_item> _items, int default_index, QWidget *_
 
 combo_box::~combo_box()
 {
-    for (action *_action : actions)
-        delete _action;
+    clear();
 
     delete label;
     delete menu;
     delete layout;
     delete arrow;
+}
+
+void combo_box::clear()
+{
+    for (action *_action : actions)
+        delete _action;
+
+    actions.clear();
+    items.clear();
+    menu->clear();
 }
 
 void combo_box::add_shortcut(int _index, QString key)
@@ -94,7 +102,7 @@ void combo_box::set_value(QVariant value)
     }
 }
 
-void combo_box::add_item(combo_box_item item)
+int combo_box::add_item(combo_box_item item)
 {
     QString label = item.label;
 
@@ -106,13 +114,24 @@ void combo_box::add_item(combo_box_item item)
         _action->set_icon("radio_button_unchecked_a");
         _action->connect_to(this, [=]() { set_value(item.value); });
     }
+    else
+    {
+        if (!item.icon_name.isEmpty())
+            _action->set_icon(item.icon_name + "_a");
+    }
 
+    int index = items.count();
+
+    items.push_back(item);
     actions.push_back(_action);
     menu->addAction(_action);
+
+    return index;
 }
 
 void combo_box::mousePressEvent(QMouseEvent *event)
 {
+    pre_open();
     menu->popup(this->mapToGlobal({0, this->height()}));
     menu->show();
 }
