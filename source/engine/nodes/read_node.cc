@@ -25,7 +25,7 @@ void read_node::render(render_data *rdata, QJsonObject *params)
     // ! mejorar la velocidad de carga, ya que ahora tiene
     // dos iteraciones una para convertir a flotante y la otra para el flip
 
-    if (rdata->layer == "rgba")
+    if (rdata->layer == "main")
     {
         cv::Mat &image = rdata->channels["rgba"];
 
