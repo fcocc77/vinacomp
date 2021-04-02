@@ -23,11 +23,6 @@ void viewer::change_channel(int index)
     update_render();
 }
 
-void viewer::new_layer_widget(combo_box *cb)
-{
-    _new_layers->show();
-}
-
 void viewer::purge_ram(){}
 
 void viewer::set_handler_snap(bool enable){}

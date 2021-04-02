@@ -47,21 +47,14 @@ QWidget *viewer::control_setup_ui()
     bar->setObjectName("controls");
 
     // Layers
-    combo_box *layers =
-        new combo_box({{"main : rgba", "rgba"}, {"New", "new", true}});
+    knob_channels *layers = new knob_channels(glob);
+    connect(layers, &knob_channels::changed, this,
+            [=](QString layer) { change_layer(layer); });
 
-    connect(layers, &combo_box::changed, this,
-            [=](QVariant value, int index) { change_layer(value.toString()); });
-
-    layers->get_action(1)->connect_to(this,
-                                      [=]() { new_layer_widget(layers); });
     bar->add_widget(layers);
     //
 
-    // New Layer Widget
-    _new_layers = new new_layers(glob, layers);
-    bar->add_widget(_new_layers);
-    //
+    bar->add_separator();
 
     // Channels
     display_channel = new combo_box({{"RGB", "rgb"},

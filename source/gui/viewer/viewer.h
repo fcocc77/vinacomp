@@ -15,13 +15,13 @@
 #include <action.h>
 #include <combo_box.h>
 #include <knob_floating.h>
+#include <knob_channels.h>
 #include <qt.h>
 #include <slider.h>
 #include <time_line.h>
 #include <tools.h>
 #include <util.h>
 #include <viewer_gl.h>
-#include <new_layers.h>
 #include <global.h>
 
 // Engine
@@ -39,7 +39,6 @@ private:
 
     viewer_gl *_viewer_gl;
     time_line *_time_line;
-    new_layers *_new_layers;
     QString playing_option;
     QString name;
     QMenu *menu;
@@ -129,7 +128,6 @@ private:
     void set_render_area(bool enable);
     void set_proxy(bool enable);
     void set_multi_lines(bool enable);
-    void new_layer_widget(combo_box *cb);
 
 public:
     viewer(QString _name, project_struct *_project, renderer *_renderer,
