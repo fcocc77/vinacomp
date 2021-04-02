@@ -25,10 +25,15 @@ private:
 
     global *glob;
     combo_box *layers;
+    QString action;
+    QString layer_to_edit;
+    int layer_to_edit_index;
 
+    QString checking();
     void add_layer();
+    void edit_layer();
     void visible_layer_edit(bool visible);
-    void update_layers(bool from_add_layer = false);
+    void update_layers(QString from = "");
     void set_all_channel(bool value);
 
 public:

@@ -50,6 +50,7 @@ public:
     inline int get_index() const;
     inline QVariant get_value() const;
     inline int count() const;
+    inline void add_separator();
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;
@@ -58,6 +59,11 @@ signals:
     void changed(QVariant value, int index);
     void pre_open();
 };
+
+inline void combo_box::add_separator()
+{
+    menu->addSeparator();
+}
 
 inline int combo_box::count() const
 {

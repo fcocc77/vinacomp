@@ -15,8 +15,12 @@ knob_channels::knob_channels(global *_glob)
 
     accept_button = new button();
     accept_button->hide();
-    connect(accept_button, &QPushButton::clicked, this,
-            &knob_channels::add_layer);
+    connect(accept_button, &QPushButton::clicked, this, [this]() {
+        if (action == "edit")
+            edit_layer();
+        else
+            add_layer();
+    });
 
     cancel_button = new button();
     cancel_button->hide();
@@ -92,7 +96,7 @@ void knob_channels::visible_layer_edit(bool visible)
     edit->setFocus();
 }
 
-void knob_channels::add_layer()
+QString knob_channels::checking()
 {
     QString name = edit->text().replace(" ", "_");
 
@@ -100,18 +104,39 @@ void knob_channels::add_layer()
     {
         QString msg = "No name";
         QMessageBox::warning(this, "VinaComp Error", msg, QMessageBox::Ok);
-        return;
+        return "";
     }
 
     for (auto lay : glob->layers)
     {
         if (lay.name == name || name == "main")
         {
-            QString msg = "Layer: '" + name + "' exist.";
-            QMessageBox::warning(this, "VinaComp Error", msg, QMessageBox::Ok);
-            return;
+            if (name != layer_to_edit)
+            {
+                QString msg = "Layer: '" + name + "' exist.";
+                QMessageBox::warning(this, "VinaComp Error", msg,
+                                     QMessageBox::Ok);
+                return "";
+            }
         }
     }
+
+    if (!red->is_checked() && !green->is_checked() && !blue->is_checked() &&
+        !alpha->is_checked())
+    {
+        QString msg = "Must have at least 1 channel selected";
+        QMessageBox::warning(this, "VinaComp Error", msg, QMessageBox::Ok);
+        return "";
+    }
+
+    return name;
+}
+
+void knob_channels::add_layer()
+{
+    QString name = checking();
+    if (name.isEmpty())
+        return;
 
     layer_struct layer;
 
@@ -123,18 +148,43 @@ void knob_channels::add_layer()
 
     glob->layers.push_back(layer);
 
-    update_layers(true);
+    update_layers("add");
     visible_layer_edit(false);
-
     edit->clear();
 }
 
-void knob_channels::update_layers(bool from_add_layer)
+void knob_channels::edit_layer()
+{
+    QString name = checking();
+    if (name.isEmpty())
+        return;
+
+    for (auto &layer : glob->layers)
+    {
+        if (layer.name == layer_to_edit)
+        {
+            layer.name = name;
+            layer.red = red->is_checked();
+            layer.green = green->is_checked();
+            layer.blue = blue->is_checked();
+            layer.alpha = alpha->is_checked();
+
+            break;
+        }
+    }
+
+    update_layers("edit");
+    visible_layer_edit(false);
+    edit->clear();
+}
+
+void knob_channels::update_layers(QString from)
 {
     int current_index = layers->get_index();
+    QString current_layer = layers->get_value().toString();
 
     layers->clear();
-    layers->add_item({"main : rgba", "rgba"});
+    layers->add_item({"main : rgba", "main"});
 
     // actualiza todas las capas que estan en 'layers' en global
     // y las agrega al combo_box de 'layers'
@@ -159,14 +209,38 @@ void knob_channels::update_layers(bool from_add_layer)
         layers->add_item(item);
     }
 
-    int index = layers->add_item({"New", "new", true, "add"});
-    layers->get_action(index)->connect_to(this,
-                                          [=]() { visible_layer_edit(true); });
+    layers->add_separator();
+
+    int index_edit = layers->add_item({"Edit", "edit", true, "edit"});
+    layers->get_action(index_edit)->connect_to(this, [=]() {
+        if (current_layer == "main")
+        {
+            QString msg = "main layer cannot be edited.";
+            QMessageBox::warning(this, "VinaComp Error", msg, QMessageBox::Ok);
+            return;
+        }
+
+        action = "edit";
+        edit->setText(current_layer);
+        layer_to_edit = current_layer;
+        layer_to_edit_index = current_index;
+        visible_layer_edit(true);
+    });
+
+    int index_new = layers->add_item({"New", "new", true, "add"});
+    layers->get_action(index_new)->connect_to(this, [=]() {
+        action = "new";
+        layer_to_edit = "";
+        edit->clear();
+        visible_layer_edit(true);
+    });
 
     // si la actualizacion viene de 'add_layer' deja el index
-    // de la nueva capa, y envia la señal para renderizar
-    if (from_add_layer)
-        layers->set_index(layers->count() - 2, true);
+    // de la nueva capa, y envia la señal para renderizar, y "edit_layer"
+    if (from == "add")
+        layers->set_index(layers->count() - 3, true);
+    else if (from == "edit")
+        layers->set_index(layer_to_edit_index, true);
     else
         layers->set_index(current_index, false);
 }
