@@ -7,7 +7,7 @@
 #include <QMessageBox>
 
 #include <combo_box.h>
-#include <global.h>
+#include <project_struct.h>
 #include <knob.h>
 #include <knob_check_box.h>
 #include <qt.h>
@@ -25,7 +25,7 @@ private:
 
     QString current_layer;
 
-    global *glob;
+    project_struct *project;
     combo_box *layers;
     QString action;
     QString layer_to_edit;
@@ -43,7 +43,7 @@ private:
     layer_struct *get_layer(QString layer);
 
 public:
-    knob_channels(global *glob, QString layer = "main",
+    knob_channels(project_struct *project, QString layer = "main",
                   QList<bool> channels = {true, true, true, true});
     ~knob_channels();
 

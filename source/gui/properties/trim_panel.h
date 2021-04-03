@@ -56,6 +56,8 @@ private:
     QWidget *_vinacomp;
     QList<QWidget *> *viewers_gl;
 
+    project_struct *project;
+
     tab_widget *tabs;
     bool is_maximize;
     properties *_properties;
@@ -78,7 +80,7 @@ private:
     QWidget *top_buttons_setup_ui();
     tab_widget *tabs_ui();
     void setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
-                     QList<QWidget *> *viewers, global *glob);
+                     QList<QWidget *> *viewers);
     void update_render();
 
 public:

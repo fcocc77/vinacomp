@@ -11,7 +11,6 @@
 // Gui
 #include <action.h>
 #include <curve_editor.h>
-#include <global.h>
 #include <node_graph.h>
 #include <panels_layout.h>
 #include <project_settings.h>
@@ -37,8 +36,6 @@ private:
     settings *_settings;
     project_settings *_project_settings;
     renderer *_renderer;
-
-    global *glob;
 
     QList<viewer *> *viewers;
     QList<QWidget *> *viewers_gl;
@@ -93,7 +90,6 @@ public:
     inline void update_render_all_viewer() const;
     inline project_settings *get_project_settings() const;
     inline properties *get_properties() const;
-    inline global *get_global() const;
 };
 
 inline panels_layout *vinacomp::get_panels_layout() const
@@ -139,11 +135,6 @@ inline void vinacomp::update_render_all_viewer() const
 {
     for (viewer *_viewer : *viewers)
         _viewer->update_render();
-}
-
-inline global *vinacomp::get_global() const
-{
-    return glob;
 }
 
 #endif // VINACOMP_H

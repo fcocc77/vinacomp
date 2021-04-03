@@ -40,6 +40,7 @@ QJsonObject project_struct::get_project_json() const
 {
     QJsonObject project;
 
+    // Nodos a json
     QJsonObject _nodes;
     for (QString name : nodes.keys())
     {
@@ -54,7 +55,20 @@ QJsonObject project_struct::get_project_json() const
 
         _nodes.insert(name, _node);
     }
+    //
 
+    // Layers a json
+    QJsonObject _global;
+    QJsonArray layers;
+    for (auto layer : global.layers)
+    {
+        layers.push_back(
+            {{layer.name, layer.red, layer.green, layer.blue, layer.alpha}});
+    }
+    _global.insert("layers", layers);
+    //
+
+    project.insert("global", _global);
     project.insert("nodes", _nodes);
 
     return project;
@@ -64,6 +78,7 @@ void project_struct::load(QString project_path)
 {
     QJsonObject project = jread(project_path);
 
+    // Nodos
     QJsonObject _nodes = project.value("nodes").toObject();
     for (QString name : _nodes.keys())
     {
@@ -81,6 +96,26 @@ void project_struct::load(QString project_path)
 
         insert_node(name, _color, type, _position, params, inputs);
     }
+    //
+
+    // Layers
+    QJsonObject _global = project.value("global").toObject();
+    QJsonArray _layers = _global.value("layers").toArray();
+    for (QJsonValue value : _layers)
+    {
+        QJsonArray _layer = value.toArray();
+
+        layer_struct layer;
+
+        layer.name = _layer[0].toString();
+        layer.red = _layer[1].toBool();
+        layer.green = _layer[2].toBool();
+        layer.blue = _layer[3].toBool();
+        layer.alpha = _layer[4].toBool();
+
+        global.layers.push_back(layer);
+    }
+    //
 }
 
 void project_struct::save(QString project_path) const

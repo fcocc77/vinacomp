@@ -79,8 +79,7 @@ void node::make_panel()
         if (!_viewer)
         {
             _viewer =
-                new viewer(name, props.project, __vinacomp->get_renderer(),
-                           __vinacomp->get_global(), props.vinacomp);
+                new viewer(name, props.project, __vinacomp->get_renderer(), props.vinacomp);
 
             __vinacomp->get_viewers()->push_back(_viewer);
         }

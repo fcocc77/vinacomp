@@ -25,7 +25,6 @@ void vinacomp::setup_ui()
     viewers_gl = new QList<QWidget *>;
     //
 
-    glob = new global();
     //
     _properties = new properties(this);
     _node_graph = new node_graph(this, project, _properties);

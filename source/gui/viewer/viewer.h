@@ -22,7 +22,6 @@
 #include <tools.h>
 #include <util.h>
 #include <viewer_gl.h>
-#include <global.h>
 
 // Engine
 #include <project_struct.h>
@@ -45,7 +44,6 @@ private:
 
     QWidget *_vinacomp;
     renderer *_renderer;
-    global *glob;
 
     bool global_range;
     QString input_range_way;
@@ -131,7 +129,7 @@ private:
 
 public:
     viewer(QString _name, project_struct *_project, renderer *_renderer,
-           global *glob, QWidget *_vinacomp);
+           QWidget *_vinacomp);
     ~viewer();
 
     void set_frame_range(int _first_frame, int _last_frame);

@@ -18,6 +18,19 @@ struct node_struct
     QJsonObject inputs;
 };
 
+struct layer_struct {
+    QString name;
+    bool red;
+    bool green;
+    bool blue;
+    bool alpha;
+};
+
+struct global_struct
+{
+    QList<layer_struct> layers;
+};
+
 class project_struct
 {
 public:
@@ -25,6 +38,7 @@ public:
     ~project_struct();
 
     QMap<QString, node_struct> nodes;
+    global_struct global;
 
     void insert_node(QString _name, QColor _color, QString _type, QPointF _pos,
                      QJsonObject _params = {}, QJsonObject _inputs = {});

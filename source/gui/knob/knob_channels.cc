@@ -1,9 +1,9 @@
 #include <knob_channels.h>
 
-knob_channels::knob_channels(global *_glob, QString _layer,
+knob_channels::knob_channels(project_struct *_project, QString _layer,
                              QList<bool> _channels)
     : current_layer(_layer)
-    , glob(_glob)
+    , project(_project)
 {
     this->setObjectName("knob_channels");
 
@@ -113,7 +113,7 @@ void knob_channels::to_emmit_signal()
 
 layer_struct *knob_channels::get_layer(QString layer_name)
 {
-    for (auto &layer : glob->layers)
+    for (auto &layer : project->global.layers)
         if (layer.name == layer_name)
             return &layer;
 
@@ -160,7 +160,7 @@ QString knob_channels::checking()
         return "";
     }
 
-    for (auto lay : glob->layers)
+    for (auto lay : project->global.layers)
     {
         if (lay.name == name || name == "main")
         {
@@ -199,7 +199,7 @@ void knob_channels::add_layer()
     layer.blue = blue->is_checked();
     layer.alpha = alpha->is_checked();
 
-    glob->layers.push_back(layer);
+    project->global.layers.push_back(layer);
 
     update_layers("add");
     visible_layer_edit(false);
@@ -235,7 +235,7 @@ void knob_channels::update_layers(QString from)
 
     // actualiza todas las capas que estan en 'layers' en global
     // y las agrega al combo_box de 'layers'
-    for (auto layer : glob->layers)
+    for (auto layer : project->global.layers)
     {
         combo_box_item item;
 
