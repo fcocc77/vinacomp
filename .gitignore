@@ -18,6 +18,3 @@ session.vim
 resources/images/
 gdb.txt
 tags
-CMakeFiles/
-CMakeCache.txt
-cmake_install.cmake
