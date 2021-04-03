@@ -41,6 +41,7 @@ public:
     float get_value(int dimension = 0) const;
 signals:
     void changed(float value1, float value2 = 0);
+    void key_frame_changed(bool add) override;
 };
 
 #endif // KNOB_FLOATING_HPP

@@ -37,34 +37,6 @@ void knob::set_names(QString _node_name, QString _node_type, QString _param_name
     type = _param_type;
 }
 
-QString knob::get_node_type() const
-{
-    return node_type;
-}
-
-QString knob::get_type() const
-{
-    return type;
-}
-
-QString knob::get_name() const
-{
-    return name;
-}
-
-QString knob::get_node_name() const
-{
-    return node_name;
-}
-
-QString knob::get_full_name() const
-{
-    // Obtiene el nombre de la ruta completa del parametro
-    // 'node_name.param_name'
-
-    return node_name + "." + name;
-}
-
 void knob::update_handler()
 {
     if (!viewers_gl)
@@ -77,11 +49,6 @@ void knob::update_handler()
     }
 }
 
-void knob::set_viewers_gl(QList<QWidget *> *_viewers_gl)
-{
-    viewers_gl = _viewers_gl;
-}
-
 void knob::set_init_space(int space, QString label)
 {
     if (space == 0)
@@ -91,13 +58,6 @@ void knob::set_init_space(int space, QString label)
     init_space->setMaximumWidth(space);
     init_space->setMinimumWidth(space);
     label_widget->setText(label);
-}
-
-void knob::set_knob_layout(QHBoxLayout *layout)
-{
-    // es el layout del hijo que heredo esta clase, para poder agregarle
-    // el boton de animacion final.
-    knob_layout = layout;
 }
 
 void knob::set_animatable(bool _animatable)
@@ -148,8 +108,8 @@ void knob::set_animatable(bool _animatable)
     animation_button->setMenu(menu);
 
     // Conecciones
-    set_key_action->connect_to(this, [=]() { print("set key"); });
-    delete_key_action->connect_to(this, [=]() {});
+    set_key_action->connect_to(this, [=]() { key_frame_changed(true); });
+    delete_key_action->connect_to(this, [=]() { key_frame_changed(false); });
     no_animation_action->connect_to(this, [=]() {});
     curve_editor_action->connect_to(this, [=]() {});
     copy_values_action->connect_to(this, [=]() {});
@@ -162,7 +122,4 @@ void knob::set_animatable(bool _animatable)
     loop_action->connect_to(this, [=]() {});
 }
 
-void knob::set_visible(bool visible)
-{
-    this->setVisible(visible);
-}
+void knob::key_frame_changed(bool add) {}

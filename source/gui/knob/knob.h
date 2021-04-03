@@ -26,22 +26,23 @@ protected:
     QString type;
 
     void update_handler();
+    virtual void key_frame_changed(bool add);
 
 public:
     knob();
     ~knob();
 
     void set_init_space(int space, QString label = "");
-    void set_knob_layout(QHBoxLayout *layout);
     void set_animatable(bool _animatable = true);
-    void set_visible(bool visible);
-    void set_viewers_gl(QList<QWidget *> *viewers_gl);
     void set_names(QString node_name, QString _node_type, QString _param_name, QString _param_type);
-    QString get_full_name() const;
-    QString get_node_type() const;
-    QString get_node_name() const;
-    QString get_type() const;
-    QString get_name() const;
+    inline void set_knob_layout(QHBoxLayout *layout);
+    inline void set_visible(bool visible);
+    inline void set_viewers_gl(QList<QWidget *> *viewers_gl);
+    inline QString get_full_name() const;
+    inline QString get_node_type() const;
+    inline QString get_node_name() const;
+    inline QString get_type() const;
+    inline QString get_name() const;
 
     QLabel *label_widget;
     QWidget *init_space;
@@ -49,4 +50,48 @@ public:
     int icon_size;
 };
 
+inline void knob::set_knob_layout(QHBoxLayout *layout)
+{
+    // es el layout del hijo que heredo esta clase, para poder agregarle
+    // el boton de animacion final.
+    knob_layout = layout;
+}
+
+inline void knob::set_visible(bool visible)
+{
+    this->setVisible(visible);
+}
+
+inline void knob::set_viewers_gl(QList<QWidget *> *_viewers_gl)
+{
+    viewers_gl = _viewers_gl;
+}
+
+inline QString knob::get_node_type() const
+{
+    return node_type;
+}
+
+inline QString knob::get_type() const
+{
+    return type;
+}
+
+inline QString knob::get_name() const
+{
+    return name;
+}
+
+inline QString knob::get_node_name() const
+{
+    return node_name;
+}
+
+inline QString knob::get_full_name() const
+{
+    // Obtiene el nombre de la ruta completa del parametro
+    // 'node_name.param_name'
+
+    return node_name + "." + name;
+}
 #endif // KNOB_HPP
