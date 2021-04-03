@@ -9,17 +9,37 @@ constant_node::~constant_node() {}
 
 void constant_node::render(render_data *rdata, QJsonObject *params)
 {
-    rdata->first_frame = get(params, "frame_range").toArray()[0].toInt();
-    rdata->last_frame = get(params, "frame_range").toArray()[1].toInt();
+    auto layer = get_layer(params);
 
-    int x = get(params, "format").toArray()[1].toArray()[0].toInt();
-    int y = get(params, "format").toArray()[1].toArray()[1].toInt();
+    if (rdata->layer == layer.name)
+    {
+        rdata->first_frame = get(params, "frame_range").toArray()[0].toInt();
+        rdata->last_frame = get(params, "frame_range").toArray()[1].toInt();
 
-    QColor color = get_color(params);
+        int x = get(params, "format").toArray()[1].toArray()[0].toInt();
+        int y = get(params, "format").toArray()[1].toArray()[1].toInt();
 
-    cv::Mat3f solid(1080, 1920);
-    solid.setTo(cv::Scalar(color.red(), color.green(), color.blue()));
+        QColor color = get_color(params);
 
+        int red, green, blue, alpha;
 
-    rdata->channels["rgba"] = solid;
+        red = 0;
+        green = 0;
+        blue = 0;
+        alpha = 0;
+
+        if (layer.red)
+            red = color.red();
+        if (layer.green)
+            green = color.green();
+        if (layer.blue)
+            blue = color.blue();
+        if (layer.alpha)
+            alpha = color.alpha();
+
+        cv::Mat3f solid(1080, 1920);
+        solid.setTo(cv::Scalar(blue, green, red));
+
+        rdata->channels["rgba"] = solid;
+    }
 }

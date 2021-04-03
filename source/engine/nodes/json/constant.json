@@ -5,6 +5,14 @@
     "icon": "constant",
     "knobs": [
         {
+            "name": "channels",
+            "type": "channels",
+            "label": "Channels",
+            "tooltip": "",
+            "visible": true,
+			"default": ["main", [true, true, true, false]]
+        },
+        {
             "name": "color",
             "type": "color",
             "label": "Color",

@@ -381,7 +381,7 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
                         for (bool value : new_channels)
                             new_channels_json.push_back(value);
 
-                        if (new_channels != default_channels || new_layer != layer)
+                        if (new_channels != default_channels || new_layer != default_layer)
                             data->insert( name, QJsonArray{new_layer, new_channels_json});
                         else
                             data->remove(name);
