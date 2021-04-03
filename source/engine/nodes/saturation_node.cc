@@ -14,7 +14,7 @@ void saturation_node::render(render_data *rdata, QJsonObject *params)
     if (saturation == 1)
         return;
 
-    cv::Mat &image = rdata->channels["rgba"];
+    cv::Mat &image = rdata->image;
 
     for (int y = 0; y < image.rows; y++)
     {

@@ -33,5 +33,5 @@ void ramp_node::render(render_data *rdata, QJsonObject *params)
         ramp.row(y).setTo(cv::Vec3f(_blue, _green, _red));
     }
 
-    rdata->channels["rgba"] = ramp;
+    rdata->image = ramp;
 }

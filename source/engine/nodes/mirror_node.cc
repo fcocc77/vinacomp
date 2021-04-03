@@ -37,6 +37,6 @@ void mirror_node::render(render_data *rdata, QJsonObject *params)
     bool flip = get(params, "flip").toBool();
     bool flop = get(params, "flop").toBool();
 
-    cv::Mat &image = rdata->channels["rgba"];
+    cv::Mat &image = rdata->image;
     flip_flop(image, flip, flop);
 }

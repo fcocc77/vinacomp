@@ -15,7 +15,7 @@ void crop_node::render(render_data *rdata, QJsonObject *params)
     int w = box[2].toInt();
     int h = box[3].toInt();
 
-    cv::Mat &image = rdata->channels["rgba"];
+    cv::Mat &image = rdata->image;
 
     int width = image.cols;
     int height = image.rows;

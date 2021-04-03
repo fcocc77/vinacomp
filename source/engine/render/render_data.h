@@ -8,7 +8,7 @@
 
 struct render_data
 {
-    QMap<QString, cv::Mat> channels;
+    cv::Mat image;
     QString layer;
     int frame;
     int width;

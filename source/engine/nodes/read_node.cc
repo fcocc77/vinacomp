@@ -27,7 +27,7 @@ void read_node::render(render_data *rdata, QJsonObject *params)
 
     if (rdata->layer == "main")
     {
-        cv::Mat &image = rdata->channels["rgba"];
+        cv::Mat &image = rdata->image;
 
         image = cv::imread(file_path.toStdString(), cv::IMREAD_COLOR);
 

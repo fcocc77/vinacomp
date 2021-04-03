@@ -53,7 +53,7 @@ void grade_node::render(render_data *rdata, QJsonObject *params)
     float levels_alpha = ((max - min) / (high - low));
     //
 
-    cv::Mat &image = rdata->channels["rgba"];
+    cv::Mat &image = rdata->image;
 
     for (int y = 0; y < image.rows; y++)
     {

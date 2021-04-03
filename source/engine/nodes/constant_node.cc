@@ -40,6 +40,6 @@ void constant_node::render(render_data *rdata, QJsonObject *params)
         cv::Mat3f solid(1080, 1920);
         solid.setTo(cv::Scalar(blue, green, red));
 
-        rdata->channels["rgba"] = solid;
+        rdata->image = solid;
     }
 }

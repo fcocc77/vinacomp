@@ -114,7 +114,7 @@ void viewer_gl::draw_image()
     GLuint texture;
     glBindTexture(GL_TEXTURE_2D, texture);
 
-    cv::Mat &image = rdata->channels["rgba"];
+    cv::Mat &image = rdata->image;
 
     // genera la textura 2d a partir de los bits de la imagen
     image.convertTo(image, CV_8U);
