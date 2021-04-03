@@ -134,7 +134,7 @@ inline properties *vinacomp::get_properties() const
 inline void vinacomp::update_render_all_viewer() const
 {
     for (viewer *_viewer : *viewers)
-        _viewer->update_render();
+        _viewer->update_render(true);
 }
 
 #endif // VINACOMP_H

@@ -134,7 +134,7 @@ public:
 
     void set_frame_range(int _first_frame, int _last_frame);
     QString get_name() const;
-    void update_render();
+    void update_render(bool claer_init_image = false);
     void update_input_range();
     viewer_gl *get_viewer_gl() const;
 };

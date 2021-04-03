@@ -3,7 +3,7 @@
 void viewer::change_layer(QString layer)
 {
     current_layer = layer;
-    update_render();
+    update_render(true);
 }
 
 void viewer::change_channel(int index)

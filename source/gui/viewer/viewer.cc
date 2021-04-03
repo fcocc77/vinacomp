@@ -72,7 +72,7 @@ void viewer::set_frame(int frame)
     update_render();
 }
 
-void viewer::update_render()
+void viewer::update_render(bool clear_init_image)
 {
     if (render_pause)
         return;
@@ -80,6 +80,11 @@ void viewer::update_render()
     rdata->root_node = name;
     rdata->frame = current_frame;
     rdata->layer = current_layer;
+
+    // se limpia la imagen a negro, pero no en cada frame, sino cuando
+    // se pasa 'clear_init_image', y asi no gastar recursos en cada frame
+    if (clear_init_image)
+        rdata->image = cv::Mat::zeros(rdata->width, rdata->height, CV_8UC3);
 
     _renderer->render(rdata);
     _viewer_gl->update();
