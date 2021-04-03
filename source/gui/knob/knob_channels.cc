@@ -61,7 +61,7 @@ knob_channels::knob_channels(project_struct *_project, QString _layer,
         to_emmit_signal();
     });
     connect(layers, &combo_box::pre_open, this, [=]() { update_layers(); });
-    update_layers();
+    update_layers("", true);
     //
 
     layout->addWidget(init_space);
@@ -225,10 +225,10 @@ void knob_channels::edit_layer()
     edit->clear();
 }
 
-void knob_channels::update_layers(QString from)
+void knob_channels::update_layers(QString from, bool keep_current_layer)
 {
-    int current_index = layers->get_index();
-    QString current_layer = layers->get_value().toString();
+    int old_index = layers->get_index();
+    QString old_layer = layers->get_value().toString();
 
     layers->clear();
     layers->add_item({"main : rgba", "main"});
@@ -269,8 +269,8 @@ void knob_channels::update_layers(QString from)
 
         action = "edit";
         edit->setText(current_layer);
-        layer_to_edit = current_layer;
-        layer_to_edit_index = current_index;
+        layer_to_edit = old_layer;
+        layer_to_edit_index = old_index;
         visible_layer_edit(true);
     });
 
@@ -282,6 +282,12 @@ void knob_channels::update_layers(QString from)
         visible_layer_edit(true);
     });
 
+    if (keep_current_layer)
+    {
+        layers->set_value(current_layer, false);
+        return;
+    }
+
     // si la actualizacion viene de 'add_layer' deja el index
     // de la nueva capa, y envia la señal para renderizar, y "edit_layer"
     if (from == "add")
@@ -289,5 +295,5 @@ void knob_channels::update_layers(QString from)
     else if (from == "edit")
         layers->set_index(layer_to_edit_index, true);
     else
-        layers->set_index(current_index, false);
+        layers->set_index(old_index, false);
 }

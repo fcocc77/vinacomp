@@ -90,13 +90,13 @@ void combo_box::set_index(int _index, bool emit_signal)
         changed(items[current_index].value, current_index); // Signal
 }
 
-void combo_box::set_value(QVariant value)
+void combo_box::set_value(QVariant value, bool emit_signal)
 {
     for (int i = 0; i < items.count(); i++)
     {
         if (items[i].value == value)
         {
-            set_index(i);
+            set_index(i, emit_signal);
             return;
         }
     }

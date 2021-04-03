@@ -36,7 +36,7 @@ private:
     void add_layer();
     void edit_layer();
     void visible_layer_edit(bool visible);
-    void update_layers(QString from = "");
+    void update_layers(QString from = "", bool keep_currnet_layer = false);
     void set_all_channel(bool value);
     void set_layer(QString layer);
 

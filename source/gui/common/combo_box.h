@@ -41,7 +41,7 @@ public:
     ~combo_box();
 
     void set_index(int _index, bool emit_signal = true);
-    void set_value(QVariant value);
+    void set_value(QVariant value, bool emit_signal = true);
     void add_shortcut(int index, QString key);
     int add_item(combo_box_item item);
     void clear();
