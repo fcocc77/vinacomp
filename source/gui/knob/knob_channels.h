@@ -23,12 +23,15 @@ private:
     button *accept_button, *cancel_button;
     knob_check_box *red, *green, *blue, *alpha;
 
+    QString current_layer;
+
     global *glob;
     combo_box *layers;
     QString action;
     QString layer_to_edit;
     int layer_to_edit_index;
 
+    void to_emmit_signal();
     QString checking();
     void add_layer();
     void edit_layer();
@@ -40,11 +43,12 @@ private:
     layer_struct *get_layer(QString layer);
 
 public:
-    knob_channels(global *glob);
+    knob_channels(global *glob, QString layer = "main",
+                  QList<bool> channels = {true, true, true, true});
     ~knob_channels();
 
 signals:
-    void changed(QString layer, int index);
+    void changed(QString layer, QList<bool> channels);
 };
 
 #endif // KNOB_CHANNELS_H

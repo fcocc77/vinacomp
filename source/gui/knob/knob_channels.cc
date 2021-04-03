@@ -1,7 +1,9 @@
 #include <knob_channels.h>
 
-knob_channels::knob_channels(global *_glob)
-    : glob(_glob)
+knob_channels::knob_channels(global *_glob, QString _layer,
+                             QList<bool> _channels)
+    : current_layer(_layer)
+    , glob(_glob)
 {
     this->setObjectName("knob_channels");
 
@@ -30,16 +32,16 @@ knob_channels::knob_channels(global *_glob)
     accept_button->setText("OK");
     cancel_button->setText("Cancel");
 
-    red = new knob_check_box("", true);
+    red = new knob_check_box("", _channels[0]);
     red->setObjectName("red");
 
-    green = new knob_check_box("", true);
+    green = new knob_check_box("", _channels[1]);
     green->setObjectName("green");
 
-    blue = new knob_check_box("", true);
+    blue = new knob_check_box("", _channels[2]);
     blue->setObjectName("blue");
 
-    alpha = new knob_check_box("", true);
+    alpha = new knob_check_box("", _channels[3]);
     alpha->setObjectName("alpha");
 
     connect(red, &knob_check_box::changed, this,
@@ -53,9 +55,10 @@ knob_channels::knob_channels(global *_glob)
 
     // Layers
     layers = new combo_box();
-    connect(layers, &combo_box::changed, this, [=](QVariant value, int index) {
-        set_layer(value.toString());
-        changed(value.toString(), index);
+    connect(layers, &combo_box::changed, this, [=](QVariant value) {
+        current_layer = value.toString();
+        set_layer(current_layer);
+        to_emmit_signal();
     });
     connect(layers, &combo_box::pre_open, this, [=]() { update_layers(); });
     update_layers();
@@ -102,6 +105,12 @@ void knob_channels::set_layer(QString layer_name)
     alpha->setVisible(_alpha);
 }
 
+void knob_channels::to_emmit_signal()
+{
+    changed(current_layer, {red->is_checked(), green->is_checked(),
+                            blue->is_checked(), alpha->is_checked()});
+}
+
 layer_struct *knob_channels::get_layer(QString layer_name)
 {
     for (auto &layer : glob->layers)
@@ -120,6 +129,8 @@ void knob_channels::set_all_channel(bool value)
         blue->set_check(value, false);
         alpha->set_check(value, false);
     }
+
+    to_emmit_signal();
 }
 
 void knob_channels::visible_layer_edit(bool visible)

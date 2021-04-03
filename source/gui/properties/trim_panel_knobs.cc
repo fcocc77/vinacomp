@@ -344,7 +344,50 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
 
         else if (type == "channels")
         {
-            knob_channels *_knob_channels = new knob_channels(glob);
+            // extrae los valores por defecto del .json del efecto
+            QJsonArray _default = knob_object.value("default").toArray();
+
+            QString default_layer, layer;
+            QList<bool> default_channels, channels;
+
+            default_layer = _default[0].toString();
+
+            for (QJsonValue value : _default[1].toArray())
+                default_channels.push_back(value.toBool());
+            //
+
+            // si es que el parametro existe en el proyecto, usa esos datos
+            if (data->contains(name))
+            {
+                QJsonArray _data = data->value(name).toArray();
+                layer = _data[0].toString();
+                for (QJsonValue value : _data[1].toArray())
+                    channels.push_back(value.toBool());
+            }
+            else
+            {
+                channels = default_channels;
+                layer = default_layer;
+            }
+            //
+
+            knob_channels *_knob_channels =
+                new knob_channels(glob, layer, channels);
+
+            connect(_knob_channels, &knob_channels::changed, this,
+                    [=](QString new_layer, QList<bool> new_channels) {
+
+                        QJsonArray new_channels_json;
+                        for (bool value : new_channels)
+                            new_channels_json.push_back(value);
+
+                        if (new_channels != default_channels || new_layer != layer)
+                            data->insert( name, QJsonArray{new_layer, new_channels_json});
+                        else
+                            data->remove(name);
+
+                        update_render();
+                    });
 
             _knob = _knob_channels;
         }

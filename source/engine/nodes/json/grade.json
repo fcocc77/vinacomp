@@ -10,7 +10,7 @@
             "label": "Channels",
             "tooltip": "",
             "visible": true,
-			"default": [true, true, true, true]
+			"default": ["main", [true, true, true, true]]
         },
         {
             "name": "blackpoint",
