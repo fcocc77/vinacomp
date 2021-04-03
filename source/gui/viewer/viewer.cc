@@ -55,6 +55,10 @@ viewer::viewer(QString _name, project_struct *_project, renderer *__renderer,
         menu->move(QCursor::pos());
         menu->show();
     });
+
+    // renderiza el frame por primera vez
+    current_layer = "main";
+    update_render(true);
 }
 
 viewer::~viewer() {}
