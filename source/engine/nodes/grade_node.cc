@@ -13,6 +13,8 @@ void grade_node::render(render_data *rdata, QJsonObject *params)
     if (mix == 0)
         return;
 
+    auto layer = get_layer(params);
+
     QJsonArray blackpoint = get(params, "blackpoint").toArray();
     QJsonArray whitepoint = get(params, "whitepoint").toArray();
     QJsonArray gain = get(params, "gain").toArray();

@@ -57,6 +57,15 @@ QColor node_engine::get_color(QJsonObject *params, QString key) const
     return QColor(red, green, blue, alpha);
 }
 
+layer_s node_engine::get_layer(QJsonObject *params) const
+{
+    QJsonArray layers = get(params, "channels").toArray();
+    QJsonArray channels = layers[1].toArray();
+
+    return {layers[0].toString(), channels[0].toBool(), channels[1].toBool(),
+            channels[2].toBool(), channels[3].toBool()};
+}
+
 QRect node_engine::get_rect(QJsonObject *params, QString key) const
 {
     QJsonArray area = get(params, key).toArray();

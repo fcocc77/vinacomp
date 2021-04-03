@@ -7,6 +7,11 @@
 #include <render_data.h>
 #include <util.h>
 
+struct layer_s {
+    QString name;
+    bool red, green, blue, alpha;
+};
+
 class node_engine
 {
 private:
@@ -24,6 +29,8 @@ protected:
     void load_default_params(QString node_json_name);
     QColor get_color(QJsonObject *params, QString key = "color") const;
     QRect get_rect(QJsonObject *params, QString key) const;
+    layer_s get_layer(QJsonObject *params) const;
+
 };
 
 #endif // NODE_ENGINE_H
