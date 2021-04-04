@@ -32,6 +32,8 @@ private:
     void separate_dimensions(bool separate);
     void set_value_internal(float value, int dimension);
 
+    void set_animated(bool animated) override;
+
 public:
     knob_floating(float min, float max, float default_value = 1, bool two_dimensional = false);
     ~knob_floating();
@@ -41,7 +43,6 @@ public:
     float get_value(int dimension = 0) const;
 signals:
     void changed(float value1, float value2 = 0);
-    void key_frame_changed(bool add) override;
 };
 
 #endif // KNOB_FLOATING_HPP

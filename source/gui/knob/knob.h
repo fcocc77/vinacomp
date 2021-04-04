@@ -13,6 +13,7 @@
 
 class knob : public QWidget
 {
+    Q_OBJECT
 private:
     QHBoxLayout *knob_layout;
     button *animation_button;
@@ -25,8 +26,9 @@ protected:
     QString name;
     QString type;
 
+    bool animated;
+
     void update_handler();
-    virtual void key_frame_changed(bool add);
 
 public:
     knob();
@@ -43,12 +45,27 @@ public:
     inline QString get_node_name() const;
     inline QString get_type() const;
     inline QString get_name() const;
+    inline bool is_animated() const;
+    virtual inline void set_animated(bool _animated);
 
     QLabel *label_widget;
     QWidget *init_space;
 
     int icon_size;
+
+signals:
+    void key_frame_changed(bool add);
 };
+
+inline void knob::set_animated(bool _animated)
+{
+    animated = _animated;
+}
+
+inline bool knob::is_animated() const
+{
+    return animated;
+}
 
 inline void knob::set_knob_layout(QHBoxLayout *layout)
 {

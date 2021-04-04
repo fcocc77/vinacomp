@@ -86,6 +86,12 @@ knob_floating::~knob_floating()
     }
 }
 
+void knob_floating::set_animated(bool animated)
+{
+    qt::set_property(value_1_edit, "animated", animated);
+    knob::set_animated(animated);
+}
+
 void knob_floating::set_value_internal(float value, int dimension)
 {
     // este set value, ajusta el valor pero sin llamar al slider, ya que esta

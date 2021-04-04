@@ -2,9 +2,10 @@
 #include <viewer_gl.h>
 
 knob::knob()
-    : animation_button(nullptr)
-    , knob_layout(nullptr)
+    : knob_layout(nullptr)
+    , animation_button(nullptr)
     , viewers_gl(nullptr)
+    , animated(false)
 {
     // Espacio inicial
     init_space = new QWidget();
@@ -108,9 +109,14 @@ void knob::set_animatable(bool _animatable)
     animation_button->setMenu(menu);
 
     // Conecciones
-    set_key_action->connect_to(this, [=]() { key_frame_changed(true); });
+    set_key_action->connect_to(this, [=]() {
+        set_animated(true);
+        key_frame_changed(true);
+    });
     delete_key_action->connect_to(this, [=]() { key_frame_changed(false); });
-    no_animation_action->connect_to(this, [=]() {});
+    no_animation_action->connect_to(this, [=]() {
+        set_animated(false);
+    });
     curve_editor_action->connect_to(this, [=]() {});
     copy_values_action->connect_to(this, [=]() {});
     copy_animation_action->connect_to(this, [=]() {});
@@ -121,5 +127,3 @@ void knob::set_animatable(bool _animatable)
     smooth_curve_action->connect_to(this, [=]() {});
     loop_action->connect_to(this, [=]() {});
 }
-
-void knob::key_frame_changed(bool add) {}
