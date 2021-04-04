@@ -52,7 +52,7 @@ public:
     inline bool is_animated() const;
 
     virtual inline void set_animated(bool _animated);
-    virtual void update_animated(int frame);
+    virtual void update_animated();
 
     QLabel *label_widget;
     QWidget *init_space;
