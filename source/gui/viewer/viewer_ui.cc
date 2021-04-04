@@ -241,7 +241,7 @@ QWidget *viewer::player_setup_ui()
     input_action = new action("Input", "I", "input");
     input_action->set_object_name("input");
     input_action->set_checkable();
-    input_action->connect_to(this, [this]() { set_in_out(current_frame, output); });
+    input_action->connect_to(this, [this]() { set_in_out(project->frame, output); });
     //
     //
 
@@ -250,7 +250,7 @@ QWidget *viewer::player_setup_ui()
     output_action = new action("Output", "O", "output");
     output_action->set_object_name("output");
     output_action->set_checkable();
-    output_action->connect_to(this, [this]() { set_in_out(input, current_frame); });
+    output_action->connect_to(this, [this]() { set_in_out(input, project->frame); });
     //
     //
 

@@ -1,6 +1,9 @@
 #include <project_struct.h>
 
-project_struct::project_struct() {}
+project_struct::project_struct()
+    : frame(0)
+{
+}
 
 project_struct::~project_struct() {}
 
@@ -121,4 +124,14 @@ void project_struct::load(QString project_path)
 void project_struct::save(QString project_path) const
 {
     jwrite(project_path, get_project_json());
+}
+
+QJsonValue project_struct::get_value_frame(QJsonObject *params, QString param_name, int frame)
+{
+    return params->value(param_name)
+        .toObject()
+        .value("value")
+        .toObject()
+        .value("f" + QString::number(frame))
+        .toArray()[0];
 }

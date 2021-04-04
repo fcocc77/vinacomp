@@ -30,12 +30,12 @@ void viewer::play_finished()
     {
         if (qtime_line->direction() == QTimeLine::Forward)
         {
-            current_frame = get_current_range().first;
+            project->frame = get_current_range().first;
             play(QTimeLine::Forward);
         }
         else
         {
-            current_frame = get_current_range().second;
+            project->frame = get_current_range().second;
             play(QTimeLine::Backward);
         }
     }
@@ -51,10 +51,10 @@ void viewer::play(QTimeLine::Direction direction)
     auto frame_range = get_current_range();
 
     // si el cursor esta fuera del rango, inicia con el primer cuadro del rango actual
-    if (current_frame > frame_range.second || current_frame < frame_range.first)
+    if (project->frame > frame_range.second || project->frame < frame_range.first)
         start_frame = frame_range.first;
     else
-        start_frame = current_frame;
+        start_frame = project->frame;
     //
 
     if (direction == QTimeLine::Forward)

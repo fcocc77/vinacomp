@@ -5,6 +5,7 @@ knob::knob()
     : knob_layout(nullptr)
     , animation_button(nullptr)
     , viewers_gl(nullptr)
+    , project(nullptr)
     , animated(false)
 {
     // Espacio inicial
@@ -61,7 +62,7 @@ void knob::set_init_space(int space, QString label)
     label_widget->setText(label);
 }
 
-void knob::update_animated(int frame) {}
+void knob::update_animated() {}
 
 void knob::set_animatable(bool _animatable)
 {

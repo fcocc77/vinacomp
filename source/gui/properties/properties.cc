@@ -173,7 +173,7 @@ void properties::update_viewers_handlers()
         _viewer->get_viewer_gl()->handlers_update();
 }
 
-void properties::update_animated_knobs(int frame)
+void properties::update_animated_knobs()
 {
     // actualiza todos los 'knob' que estan animados o con expression
     // al frame correspondiente
@@ -182,6 +182,10 @@ void properties::update_animated_knobs(int frame)
         trim_panel *_trim_panel = static_cast<trim_panel *>(panel);
         auto *knobs = _trim_panel->get_knobs();
         for (QString key : knobs->keys())
-            knobs->value(key)->update_animated(frame);
+        {
+            knob *_knob = knobs->value(key);
+            if (_knob->is_animated())
+                _knob->update_animated();
+        }
     }
 }

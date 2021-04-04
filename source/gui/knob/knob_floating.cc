@@ -92,11 +92,9 @@ void knob_floating::set_animated(bool animated)
     knob::set_animated(animated);
 }
 
-void knob_floating::update_animated(int frame)
+void knob_floating::update_animated()
 {
-    if (!animated)
-        return;
-
+    int frame = project->frame;
     bool keyframe = frame == 30;
 
     qt::set_property(value_1_edit, "keyframe", keyframe);

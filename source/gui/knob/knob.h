@@ -3,13 +3,14 @@
 
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QMenu>
 #include <QPushButton>
 #include <QWidget>
-#include <QMenu>
 
-#include <qt.h>
-#include <button.h>
 #include <action.h>
+#include <button.h>
+#include <project_struct.h>
+#include <qt.h>
 
 class knob : public QWidget
 {
@@ -26,6 +27,7 @@ protected:
     QString name;
     QString type;
 
+    project_struct *project;
     bool animated;
 
     void update_handler();
@@ -36,7 +38,9 @@ public:
 
     void set_init_space(int space, QString label = "");
     void set_animatable(bool _animatable = true);
-    void set_names(QString node_name, QString _node_type, QString _param_name, QString _param_type);
+    void set_names(QString node_name, QString _node_type, QString _param_name,
+                   QString _param_type);
+    inline void set_project(project_struct *project);
     inline void set_knob_layout(QHBoxLayout *layout);
     inline void set_visible(bool visible);
     inline void set_viewers_gl(QList<QWidget *> *viewers_gl);
@@ -58,6 +62,11 @@ public:
 signals:
     void key_frame_changed(bool add);
 };
+
+inline void knob::set_project(project_struct *_project)
+{
+    project = _project;
+}
 
 inline void knob::set_animated(bool _animated)
 {

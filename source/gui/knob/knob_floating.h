@@ -33,10 +33,11 @@ private:
     void set_value_internal(float value, int dimension);
 
     void set_animated(bool animated) override;
-    void update_animated(int frame) override;
+    void update_animated() override;
 
 public:
-    knob_floating(float min, float max, float default_value = 1, bool two_dimensional = false);
+    knob_floating(float min, float max, float default_value = 1,
+                  bool two_dimensional = false);
     ~knob_floating();
 
     void set_value(float value, int dimension = 0, bool _emmit_signal = true);

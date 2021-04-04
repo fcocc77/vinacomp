@@ -39,6 +39,7 @@ public:
 
     QMap<QString, node_struct> nodes;
     global_struct global;
+    int frame;
 
     void insert_node(QString _name, QColor _color, QString _type, QPointF _pos,
                      QJsonObject _params = {}, QJsonObject _inputs = {});
@@ -51,6 +52,9 @@ public:
 
     void save(QString project_path) const;
     void load(QString project_path);
+
+    static QJsonValue get_value_frame(QJsonObject *params, QString param_name,
+                                      int frame);
 };
 
 #endif // PROJECT_STRUCT_H

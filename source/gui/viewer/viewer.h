@@ -49,7 +49,6 @@ private:
     QString input_range_way;
     int first_frame, last_frame;
     int input, output;
-    int current_frame;
     float frame_rate;
     bool in_out;
     bool render_pause;

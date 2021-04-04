@@ -9,7 +9,6 @@ viewer::viewer(QString _name, project_struct *_project, renderer *__renderer,
     , _renderer(__renderer)
     , _vinacomp(__vinacomp)
 
-    , current_frame(0)
     , frame_rate(60)
     , first_frame(1)
     , last_frame(100)
@@ -70,12 +69,12 @@ QString viewer::get_name() const
 
 void viewer::set_frame(int frame)
 {
-    current_frame = frame;
+    project->frame = frame;
     _time_line->go_to_frame(frame);
 
     static_cast<vinacomp *>(_vinacomp)
         ->get_properties()
-        ->update_animated_knobs(frame);
+        ->update_animated_knobs();
 
     update_render();
 }
@@ -86,7 +85,7 @@ void viewer::update_render(bool clear_init_image)
         return;
 
     rdata->root_node = name;
-    rdata->frame = current_frame;
+    rdata->frame = project->frame;
     rdata->layer = current_layer;
 
     // se limpia la imagen a negro, pero no en cada frame, sino cuando

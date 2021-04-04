@@ -94,7 +94,7 @@ void node::refresh()
         return;
 
     // Actualizacion de todos lo links conectados al nodo
-    auto refresh_links = [this](node *_node) {
+    auto refresh_links = [](node *_node) {
         for (node_link *_node_link : *_node->get_links())
             _node_link->refresh();
     };
