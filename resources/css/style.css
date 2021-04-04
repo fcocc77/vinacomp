@@ -134,6 +134,27 @@ QSlider {
     QSlider::handle::hover {
       background: #ffcc00; }
 
+#knob_floating QLineEdit[animated=true], #knob_integer QLineEdit[animated=true], #knob_dimensions QLineEdit[animated=true] {
+  background-color: #3a414b;
+  border-color: #5b758d;
+  color: #95cfff; }
+  #knob_floating QLineEdit[animated=true]:focus, #knob_integer QLineEdit[animated=true]:focus, #knob_dimensions QLineEdit[animated=true]:focus {
+    border-color: #95cfff; }
+
+#knob_floating QLineEdit[keyframe=true], #knob_integer QLineEdit[keyframe=true], #knob_dimensions QLineEdit[keyframe=true] {
+  background-color: #304154;
+  border-color: #0b7bd9;
+  color: #66baff; }
+  #knob_floating QLineEdit[keyframe=true]:focus, #knob_integer QLineEdit[keyframe=true]:focus, #knob_dimensions QLineEdit[keyframe=true]:focus {
+    border-color: #008cff; }
+
+#knob_floating QLineEdit[expression=true], #knob_integer QLineEdit[expression=true], #knob_dimensions QLineEdit[expression=true] {
+  background-color: #3b3e41;
+  border-color: #726741;
+  color: #ffd342; }
+  #knob_floating QLineEdit[expression=true]:focus, #knob_integer QLineEdit[expression=true]:focus, #knob_dimensions QLineEdit[expression=true]:focus {
+    border-color: #ffd342; }
+
 #knob_floating QPushButton, #knob_integer QPushButton, #knob_dimensions QPushButton {
   width: 25px;
   height: 22px;

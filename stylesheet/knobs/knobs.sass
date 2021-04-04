@@ -1,6 +1,35 @@
 @import small_button
+@import bases
+
+$expression_color: #ffd342
+$animated_color: #95cfff
+$keyframe_color: #008cff
+
+@mixin line_edit_states
+    &[ animated = true ]
+        background-color: mix($animated_color, $b22, 5%)
+        border-color: mix($animated_color, $b22, 40%)
+        color: $animated_color
+        &:focus
+            border-color: $animated_color
+
+    &[ keyframe = true ]
+        background-color: mix($keyframe_color, $b22, 10%)
+        border-color: mix($keyframe_color, $b22, 80%)
+        color: mix($keyframe_color, white, 60%)
+        &:focus
+            border-color: $keyframe_color
+
+    &[ expression = true ]
+        background-color: mix($expression_color, $b22, 3%)
+        border-color: mix($expression_color, $b22, 30%)
+        color: $expression_color
+        &:focus
+            border-color: $expression_color
 
 #knob_floating, #knob_integer, #knob_dimensions
+    QLineEdit
+        @include line_edit_states
     @include small_button
 #knob_choice
     background: transparent
