@@ -12,6 +12,7 @@
 // Gui
 #include <knob.h>
 #include <knob_button.h>
+#include <knob_channels.h>
 #include <knob_check_box.h>
 #include <knob_choice.h>
 #include <knob_color.h>
@@ -25,7 +26,6 @@
 #include <knob_label.h>
 #include <knob_separator.h>
 #include <knob_text.h>
-#include <knob_channels.h>
 #include <nodes_load.h>
 #include <properties.h>
 #include <qt.h>
@@ -84,16 +84,49 @@ private:
     void update_render();
 
 public:
-    trim_panel(properties *_properties, QString _name, QString _type, QString _icon_name,
-               nodes_load *nodes_loaded, project_struct *project, QWidget *_vinacomp);
+    trim_panel(properties *_properties, QString _name, QString _type,
+               QString _icon_name, nodes_load *nodes_loaded,
+               project_struct *project, QWidget *_vinacomp);
     ~trim_panel();
 
-    QString get_name() const;
-    QString get_type() const;
     void maximize(bool _maximize);
-    void set_name(QString _name);
-    knob *get_knob(QString name) const;
-    bool maximized() const;
+    inline QString get_name() const;
+    inline QString get_type() const;
+    inline void set_name(QString _name);
+    inline knob *get_knob(QString name) const;
+    inline bool maximized() const;
+    inline QMap<QString, knob *> *get_knobs() const;
 };
+
+inline knob *trim_panel::get_knob(QString name) const
+{
+    return knobs->value(name);
+}
+
+inline QMap<QString, knob *> *trim_panel::get_knobs() const
+{
+    return knobs;
+}
+
+inline QString trim_panel::get_name() const
+{
+    return name;
+}
+
+inline QString trim_panel::get_type() const
+{
+    return type;
+}
+
+inline void trim_panel::set_name(QString _name)
+{
+    name = _name;
+    name_edit->setText(name);
+}
+
+inline bool trim_panel::maximized() const
+{
+    return is_maximize;
+}
 
 #endif // TRIM_PANEL_HPP

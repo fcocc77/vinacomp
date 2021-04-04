@@ -195,27 +195,6 @@ void trim_panel::knob_editor_toggle()
         qt::set_icon(knob_editor_button, "edit_a", 20);
 }
 
-knob *trim_panel::get_knob(QString name) const
-{
-    return knobs->value(name);
-}
-
-QString trim_panel::get_name() const
-{
-    return name;
-}
-
-QString trim_panel::get_type() const
-{
-    return type;
-}
-
-void trim_panel::set_name(QString _name)
-{
-    name = _name;
-    name_edit->setText(name);
-}
-
 void trim_panel::maximize(bool _maximize)
 {
     tabs->setVisible(_maximize);
@@ -225,12 +204,8 @@ void trim_panel::maximize(bool _maximize)
         static_cast<viewer_gl *>(vgl)->handlers_update();
 }
 
-bool trim_panel::maximized() const
-{
-    return is_maximize;
-}
-
 void trim_panel::update_render()
 {
     static_cast<vinacomp *>(_vinacomp)->update_render_all_viewer();
 }
+

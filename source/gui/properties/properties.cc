@@ -1,6 +1,7 @@
 #include <properties.h>
 #include <trim_panel.h>
 #include <vinacomp.h>
+#include <knob.h>
 
 properties::properties(QWidget *__vinacomp)
     : _vinacomp(__vinacomp)
@@ -170,4 +171,17 @@ void properties::update_viewers_handlers()
     auto *viewers = static_cast<vinacomp *>(_vinacomp)->get_viewers();
     for (viewer *_viewer : *viewers)
         _viewer->get_viewer_gl()->handlers_update();
+}
+
+void properties::update_animated_knobs(int frame)
+{
+    // actualiza todos los 'knob' que estan animados o con expression
+    // al frame correspondiente
+    for (QWidget *panel : get_trim_panels())
+    {
+        trim_panel *_trim_panel = static_cast<trim_panel *>(panel);
+        auto *knobs = _trim_panel->get_knobs();
+        for (QString key : knobs->keys())
+            knobs->value(key)->update_animated(frame);
+    }
 }

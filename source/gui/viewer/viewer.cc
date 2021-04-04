@@ -73,6 +73,10 @@ void viewer::set_frame(int frame)
     current_frame = frame;
     _time_line->go_to_frame(frame);
 
+    static_cast<vinacomp *>(_vinacomp)
+        ->get_properties()
+        ->update_animated_knobs(frame);
+
     update_render();
 }
 

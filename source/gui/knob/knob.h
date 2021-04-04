@@ -46,7 +46,9 @@ public:
     inline QString get_type() const;
     inline QString get_name() const;
     inline bool is_animated() const;
+
     virtual inline void set_animated(bool _animated);
+    virtual void update_animated(int frame);
 
     QLabel *label_widget;
     QWidget *init_space;

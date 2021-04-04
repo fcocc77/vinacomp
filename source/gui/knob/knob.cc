@@ -61,6 +61,8 @@ void knob::set_init_space(int space, QString label)
     label_widget->setText(label);
 }
 
+void knob::update_animated(int frame) {}
+
 void knob::set_animatable(bool _animatable)
 {
     if (!_animatable)

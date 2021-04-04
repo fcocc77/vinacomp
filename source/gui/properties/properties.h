@@ -39,6 +39,8 @@ public:
     QWidget *get_trim_panel(QString panel_name);
 
     template <class T> void add_trim_panel(T *_trim_panel);
+
+    void update_animated_knobs(int frame);
 };
 //
 //
