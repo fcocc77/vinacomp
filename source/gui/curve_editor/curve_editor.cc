@@ -1,11 +1,11 @@
 #include <curve_editor.h>
+#include <animation.h>
 
 curve_editor ::curve_editor()
 {
     this->setObjectName("curve_editor");
     setup_ui();
 
-    add_curve();
     add_curve();
 }
 
@@ -97,12 +97,8 @@ void curve_editor::add_curve()
     QString param = "white";
     QString dimension = "r";
 
-    QJsonArray keys;
-    keys.insert(0, {{0.0, 1.0, 0, 0, false}});
-    keys.insert(1, {{1.0, 0.5, 0, 0, false}});
-    keys.insert(2, {{3.0, 1.5, 0, 0, false}});
-    keys.insert(3, {{4.0, 0.1, 0, 0, false}});
+    QString curve = "f0 20 l5 r7 f10 20.9 f30 5";
 
     this->add_item(name, param, dimension);
-    view->create_curve(name, Qt::cyan, keys);
+    view->create_curve(name, Qt::cyan, anim::convert_curve(curve));
 }

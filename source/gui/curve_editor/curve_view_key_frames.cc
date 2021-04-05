@@ -13,7 +13,8 @@ QLineF curve_view::get_handler_points(key_frame *key, bool infinite)
     if (next_key)
         right_separation = (next_key->x() - key->x()) * key->exaggeration();
 
-    // si es el primer o ultimo keyframe, le asigna la separacion del lado contrario
+    // si es el primer o ultimo keyframe, le asigna la separacion del lado
+    // contrario
     if (!previous_key)
         left_separation = right_separation;
     if (!next_key)
@@ -30,10 +31,10 @@ QLineF curve_view::get_handler_points(key_frame *key, bool infinite)
     // genera el punto vertical infinito donde apunta el manejador
     float left_tangent = tan(key->get_left_angle() * M_PI / 180);
     float right_tangent = tan(-key->get_right_angle() * M_PI / 180);
-    QPointF infinite_left_point = {left_point.x(),
-                                   left_point.y() + (left_tangent * left_separation)};
-    QPointF infinite_right_point = {right_point.x(),
-                                    right_point.y() - (right_tangent * right_separation)};
+    QPointF infinite_left_point = {
+        left_point.x(), left_point.y() + (left_tangent * left_separation)};
+    QPointF infinite_right_point = {
+        right_point.x(), right_point.y() - (right_tangent * right_separation)};
     //
 
     if (!infinite)
@@ -50,11 +51,15 @@ QLineF curve_view::get_handler_points(key_frame *key, bool infinite)
 
         QPointF view_anchor_point = get_position(key->pos());
 
-        float left_angle = get_angle_two_points(view_infinite_left, view_anchor_point) - 90;
-        float right_angle = get_angle_two_points(view_infinite_right, view_anchor_point) + 90;
+        float left_angle =
+            get_angle_two_points(view_infinite_left, view_anchor_point) - 90;
+        float right_angle =
+            get_angle_two_points(view_infinite_right, view_anchor_point) + 90;
 
-        viwport_left_point = rotate_point(viwport_left_point, view_anchor_point, left_angle - 180);
-        viwport_right_point = rotate_point(viwport_right_point, view_anchor_point, right_angle);
+        viwport_left_point = rotate_point(viwport_left_point, view_anchor_point,
+                                          left_angle - 180);
+        viwport_right_point =
+            rotate_point(viwport_right_point, view_anchor_point, right_angle);
 
         left_point = get_coordsf(viwport_left_point);
         right_point = get_coordsf(viwport_right_point);
@@ -66,26 +71,20 @@ QLineF curve_view::get_handler_points(key_frame *key, bool infinite)
         return {left_point, right_point};
 }
 
-void curve_view::create_curve(QString name, QColor color, QJsonArray keys)
+void curve_view::create_curve(QString name, QColor color,
+                              QList<anim::key_data> keys)
 {
     QList<key_frame *> _keys;
 
     for (int i = 0; i < keys.count(); i++)
     {
-        // convierte los valores de key frame de json para poder usarlos
-        QJsonArray key = keys[i].toArray();
-
-        QPointF position = {key[0].toDouble(), key[1].toDouble()};
-        float left_angle = key[2].toDouble();
-        float right_angle = key[3].toDouble();
-        bool broken = key[4].toBool();
-        //
-        //
+        auto kdata = keys[i];
+        QPointF position = {(float)kdata.frame, kdata.value};
 
         key_frame *_key = new key_frame(name, i, position, color);
 
-        _key->set_left_angle(left_angle);
-        _key->set_left_angle(right_angle);
+        _key->set_left_angle(kdata.left_angle);
+        _key->set_left_angle(kdata.right_angle);
         _key->set_interpolation(vina::custom, vina::custom);
 
         _keys.push_back(_key);
@@ -142,7 +141,8 @@ void curve_view::orient_linear_handler(key_frame *key)
         {
             QLineF previous_handler = get_handler_points(previous_key);
 
-            float angle = 90 - get_angle_two_points(key->pos(), previous_handler.p2());
+            float angle =
+                90 - get_angle_two_points(key->pos(), previous_handler.p2());
             key->set_left_angle(angle);
         }
     }
@@ -155,7 +155,8 @@ void curve_view::orient_linear_handler(key_frame *key)
         {
             QLineF next_handler = get_handler_points(next_key);
 
-            float angle = 270 - get_angle_two_points(key->pos(), next_handler.p1());
+            float angle =
+                270 - get_angle_two_points(key->pos(), next_handler.p1());
             key->set_right_angle(-angle);
         }
     }
@@ -164,7 +165,8 @@ void curve_view::orient_linear_handler(key_frame *key)
 void curve_view::key_press(QPoint cursor_position)
 {
     // si el click del mouse fue presionado en algun keyframe o en
-    // alguno de los 2 puntos del manejador, los asigna a las variables de 'drag'
+    // alguno de los 2 puntos del manejador, los asigna a las variables de
+    // 'drag'
 
     for (auto curve_name : curves.keys())
     {
@@ -224,7 +226,8 @@ void curve_view::key_move(QPoint cursor_position)
 
         if (drag_handler == 1)
         {
-            float angle = 90 - get_angle_two_points(get_coords(cursor_position), key->pos());
+            float angle = 90 - get_angle_two_points(get_coords(cursor_position),
+                                                    key->pos());
 
             // Limitacion de handler 1 a 90 grados
             if (angle >= 90 and angle < 180)
@@ -240,7 +243,8 @@ void curve_view::key_move(QPoint cursor_position)
         }
         else if (drag_handler == 2)
         {
-            float angle = 90 + get_angle_two_points(get_coords(cursor_position), key->pos());
+            float angle = 90 + get_angle_two_points(get_coords(cursor_position),
+                                                    key->pos());
 
             // Limitacion de handler 2 a 90 grados
             if (angle >= 90 and angle < 180)
@@ -254,8 +258,9 @@ void curve_view::key_move(QPoint cursor_position)
         }
         else
         {
-            QPointF coords = get_coords(cursor_position) -
-                             (get_coords(click_position) - key->get_last_position());
+            QPointF coords =
+                get_coords(cursor_position) -
+                (get_coords(click_position) - key->get_last_position());
 
             // limitar posicion al key_frame anterior y siguiente
             key_frame *previous_key = get_previous_key(key);

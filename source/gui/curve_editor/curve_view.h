@@ -4,6 +4,7 @@
 #include <QMenu>
 
 #include <action.h>
+#include <animation.h>
 #include <curve_key_frame.h>
 #include <curve_utils.h>
 #include <gl_view.h>
@@ -108,7 +109,7 @@ public:
     //
 
     // Key Frames
-    void create_curve(QString name, QColor color, QJsonArray keys);
+    void create_curve(QString name, QColor color, QList<anim::key_data> keys);
     //
 
 protected:
