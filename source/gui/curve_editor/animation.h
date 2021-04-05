@@ -16,13 +16,13 @@ struct key_data
     bool broken;
 };
 
-float get_valuef(QString curve, int frame);
-int get_value(QString curve, int frame);
+float get_value(QString curve, int frame);
+QString update_curve(QString curve, float value, int frame);
 
-QString update_curve(QString curve, int value, int frame);
-QString update_curvef(QString curve, int value, float frame);
-
+key_data get_keyframe(QString frame_string);
 QList<key_data> convert_curve(QString curve);
+
 }; // namespace anim
+
 
 #endif // ANIMATION_H

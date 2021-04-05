@@ -282,7 +282,7 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
                 animated = data->value(anim_name).toBool();
 
                 if (animated)
-                    value = anim::get_valuef(data->value(name).toString(),
+                    value = anim::get_value(data->value(name).toString(),
                                              project->frame);
                 else
                     value = data->value(name).toDouble();
@@ -313,7 +313,7 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
                         else
                         {
                             data->insert(anim_name, true);
-                            data->insert(name, anim::update_curvef(
+                            data->insert(name, anim::update_curve(
                                                    data->value(name).toString(),
                                                    _value, project->frame));
                         }
