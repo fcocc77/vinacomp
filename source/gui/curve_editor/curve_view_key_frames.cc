@@ -2,7 +2,6 @@
 
 QLineF curve_view::get_handler_points(key_frame *key, bool infinite)
 {
-
     key_frame *previous_key = get_previous_key(key);
     key_frame *next_key = get_next_key(key);
 
@@ -22,27 +21,31 @@ QLineF curve_view::get_handler_points(key_frame *key, bool infinite)
     //
     //
 
-    float left_point_x = key->x() - left_separation;
-    float right_point_x = key->x() + right_separation;
-
-    QPointF left_point = {left_point_x, key->y()};
-    QPointF right_point = {right_point_x, key->y()};
-
     // genera el punto vertical infinito donde apunta el manejador
-    float left_tangent = tan(key->get_left_angle() * M_PI / 180);
-    float right_tangent = tan(-key->get_right_angle() * M_PI / 180);
-    QPointF infinite_left_point = {
-        left_point.x(), left_point.y() + (left_tangent * left_separation)};
-    QPointF infinite_right_point = {
-        right_point.x(), right_point.y() - (right_tangent * right_separation)};
+    QLineF infinite_handlers = handler_points(
+        key->pos(), key->get_left_angle(), key->get_right_angle(),
+        left_separation, right_separation);
+
+    QPointF infinite_left_point = infinite_handlers.p1();
+    QPointF infinite_right_point = infinite_handlers.p2();
     //
 
-    if (!infinite)
+    if (infinite)
+    {
+        return {infinite_left_point, infinite_right_point};
+    }
+    else
     {
         // antes de rotar el manejador, transforma el punto de key y los
         // 2 puntos del manejador de cordenadas a puntos en la
         // position del visor, con esto logramos que el manejador
         // siempre quede del mismo tamaño.
+        float left_point_x = key->x() - left_separation;
+        float right_point_x = key->x() + right_separation;
+
+        QPointF left_point = {left_point_x, key->y()};
+        QPointF right_point = {right_point_x, key->y()};
+
         QPointF viwport_left_point = get_position(left_point);
         QPointF viwport_right_point = get_position(right_point);
 
@@ -63,12 +66,9 @@ QLineF curve_view::get_handler_points(key_frame *key, bool infinite)
 
         left_point = get_coordsf(viwport_left_point);
         right_point = get_coordsf(viwport_right_point);
-    }
 
-    if (infinite)
-        return {infinite_left_point, infinite_right_point};
-    else
         return {left_point, right_point};
+    }
 }
 
 void curve_view::create_curve(QString name, QColor color,

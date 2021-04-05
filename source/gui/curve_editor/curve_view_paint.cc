@@ -154,7 +154,7 @@ void curve_view::draw_curve()
             {
                 QLineF handler = get_handler_points(key);
 
-                // si el keyframe es 'broken', le una linea puenteada al handler
+                // si el keyframe es 'broken', le da una linea puenteada al handler
                 if (key->is_broken())
                     draw_dashed_line({handler.p1(), key->pos()}, Qt::red, 3);
                 else

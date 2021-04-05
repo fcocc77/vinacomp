@@ -1,5 +1,6 @@
 #include <animation.h>
 #include <util.h>
+#include <curve_utils.h>
 
 int anim::get_value(QString curve, int frame)
 {
