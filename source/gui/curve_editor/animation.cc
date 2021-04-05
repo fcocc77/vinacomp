@@ -70,11 +70,10 @@ float anim::get_value(QString curve, int frame)
     QPointF dst_handler = next_handler.p2();
     //
 
-    float value = 0.5;
+    float value = (frame - prev_key_pos.x()) / (next_key_pos.x() - prev_key_pos.x());
 
     QPointF bezier = cubic_bezier(prev_key_pos, src_handler, dst_handler,
                                   next_key_pos, value);
-
 
     return bezier.y();
 }
@@ -88,7 +87,7 @@ anim::key_data anim::get_keyframe(QString frame_string)
 
     if (fdata.count() > 1)
         key.value = fdata[1].toFloat();
-    else 
+    else
         key.value = 0;
 
     if (fdata.count() > 3)
@@ -121,4 +120,3 @@ QList<anim::key_data> anim::convert_curve(QString curve)
 }
 
 QString anim::update_curve(QString curve, float value, int frame) {}
-
