@@ -1,4 +1,21 @@
+#include <knob.h>
+#include <knob_button.h>
+#include <knob_channels.h>
+#include <knob_check_box.h>
+#include <knob_choice.h>
+#include <knob_color.h>
+#include <knob_file.h>
+#include <knob_floatd.h>
+#include <knob_floating.h>
+#include <knob_group.h>
+#include <knob_intd.h>
+#include <knob_integer.h>
+#include <knob_label.h>
+#include <knob_separator.h>
+#include <knob_text.h>
+
 #include <trim_panel.h>
+#include <animation.h>
 
 void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
                              QList<QWidget *> *viewers_gl)
@@ -34,6 +51,7 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
         QJsonObject knob_object = _knobs.at(i).toObject();
         QString type = knob_object.value("type").toString();
         QString name = knob_object.value("name").toString();
+        QString anim_name = name + "_anim";
         QString label = knob_object.value("label").toString();
         bool over_line = knob_object.value("over_line").toBool();
 
@@ -44,6 +62,8 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
         bool visible = true;
         if (knob_object.contains("visible"))
             visible = knob_object.value("visible").toBool();
+
+        bool animated = false;
 
         knob *_knob = nullptr;
         if (type == "color")
@@ -258,7 +278,15 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
             float value;
 
             if (data->contains(name))
-                value = data->value(name).toDouble();
+            {
+                animated = data->value(anim_name).toBool();
+
+                if (animated)
+                    value = anim::get_valuef(data->value(name).toString(),
+                                             project->frame);
+                else
+                    value = data->value(name).toDouble();
+            }
             else
                 value = default_value;
 
@@ -266,13 +294,36 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
                 new knob_floating(knob_object.value("minimum").toDouble(),
                                   knob_object.value("maximum").toDouble(), value, two_dimensional);
 
-            connect(_knob_floating, &knob_floating::changed, this, [=](float _value) {
-                if (default_value != _value)
-                    data->insert(name, _value);
-                else
-                    data->remove(name);
-                update_render();
-            });
+            connect(_knob_floating, &knob_floating::changed, this,
+                    [=](float _value) {
+
+                        if (!_knob_floating->is_animated())
+                        {
+                            if (default_value != _value)
+                            {
+                                data->insert(name, _value);
+                                data->insert(anim_name, false);
+                            }
+                            else
+                            {
+                                data->remove(name);
+                                data->remove(anim_name);
+                            }
+                        }
+                        else
+                        {
+                            data->insert(anim_name, true);
+                            data->insert(name, anim::update_curvef(
+                                                   data->value(name).toString(),
+                                                   _value, project->frame));
+                        }
+
+                        update_render();
+                    });
+
+            connect(_knob_floating, &knob_floating::key_frame_changed, this,
+                    [=](bool add) { // print(add);
+                    });
 
             _knob = _knob_floating;
         }
@@ -446,6 +497,8 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
             _knob->set_visible(visible);
             _knob->set_viewers_gl(viewers_gl);
             _knob->set_names(get_name(), get_type(), name, type);
+            _knob->set_animated(animated);
+            _knob->set_project(project);
         }
 
         knobs->insert(name, _knob);
