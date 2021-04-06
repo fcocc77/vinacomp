@@ -25,6 +25,8 @@ protected:
     QString name;
     QString type;
 
+    QMenu *menu;
+
     project_struct *project;
     bool animated;
 

@@ -3,7 +3,6 @@
 
 #include <QHBoxLayout>
 #include <QLabel>
-#include <QLineEdit>
 #include <QPushButton>
 #include <QWidget>
 
@@ -11,6 +10,7 @@
 #include <knob.h>
 #include <qt.h>
 #include <slider.h>
+#include <line_edit.h>
 
 class knob_floating : public knob
 {
@@ -19,8 +19,8 @@ private:
     QHBoxLayout *layout;
     QString label;
     slider *_slider;
-    QLineEdit *value_1_edit;
-    QLineEdit *value_2_edit;
+    line_edit *value_1_edit;
+    line_edit *value_2_edit;
     bool dimensions;
     bool two_dimensional;
     button *show_dimensions;

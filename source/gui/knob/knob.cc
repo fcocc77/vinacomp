@@ -24,6 +24,8 @@ knob::knob()
     //
     //
 
+    menu = new QMenu(this);
+
     icon_size = 15;
 }
 
@@ -78,8 +80,6 @@ void knob::set_animatable(bool _animatable)
     animation_button->setObjectName("small_button");
     animation_button->set_icon("key", icon_size);
     knob_layout->addWidget(animation_button);
-
-    QMenu *menu = new QMenu(this);
 
     action *set_key_action = new action("Set Key", "", "key");
     action *delete_key_action = new action("Delete Key", "");

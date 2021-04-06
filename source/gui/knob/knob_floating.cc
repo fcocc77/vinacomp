@@ -16,11 +16,13 @@ knob_floating::knob_floating(float min, float max, float default_value, bool _tw
     this->set_knob_layout(layout);
 
     // value 1
-    value_1_edit = new QLineEdit();
-    connect(value_1_edit, &QLineEdit::editingFinished, this, [=]() {
+    value_1_edit = new line_edit();
+    value_1_edit->set_menu(knob::menu);
+    connect(value_1_edit, &line_edit::editingFinished, this, [=]() {
         values.first = value_1_edit->text().toDouble();
         set_value_internal(values.first, 0);
     });
+
     value_1_edit->setMaximumWidth(50);
 
     // slider
@@ -44,10 +46,11 @@ knob_floating::knob_floating(float min, float max, float default_value, bool _tw
     if (two_dimensional)
     {
         // value 2
-        value_2_edit = new QLineEdit();
+        value_2_edit = new line_edit();
+        value_2_edit->set_menu(knob::menu);
         value_2_edit->hide();
 
-        connect(value_2_edit, &QLineEdit::editingFinished, this, [=]() {
+        connect(value_2_edit, &line_edit::editingFinished, this, [=]() {
             values.second = value_2_edit->text().toDouble();
             set_value_internal(values.second, 1);
         });
