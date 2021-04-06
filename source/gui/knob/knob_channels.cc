@@ -26,8 +26,10 @@ knob_channels::knob_channels(project_struct *_project, QString _layer,
 
     cancel_button = new button();
     cancel_button->hide();
-    connect(cancel_button, &QPushButton::clicked, this,
-            [this]() { visible_layer_edit(false); });
+    connect(cancel_button, &QPushButton::clicked, this, [this]() {
+        set_layer(current_layer);
+        visible_layer_edit(false);
+    });
 
     accept_button->setText("OK");
     cancel_button->setText("Cancel");
