@@ -18,6 +18,8 @@ private:
     curve_view *view;
     QTreeWidget *tree;
 
+    QMap<QString, trim_panel *> panels;
+
     void setup_ui();
     QTreeWidget *knobs_tree_setup_ui();
     void add_item(QString node, QString param, QString dimension);
@@ -26,6 +28,8 @@ private:
                                     QString param_name) const;
 
     void delete_node_item(QString node_name);
+    void show_curve(QString node_name, QString param_name, QString curve);
+
 public:
     curve_editor();
     ~curve_editor();

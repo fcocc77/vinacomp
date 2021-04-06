@@ -6,6 +6,7 @@
 #include <QMenu>
 #include <QPushButton>
 #include <QWidget>
+#include <QJsonObject>
 
 #include <button.h>
 #include <project_struct.h>
@@ -16,6 +17,7 @@ class knob : public QWidget
 private:
     QHBoxLayout *knob_layout;
     button *animation_button;
+    QJsonObject *params;
 
     QList<QWidget *> *viewers_gl;
 
@@ -50,6 +52,8 @@ public:
     inline QString get_type() const;
     inline QString get_name() const;
     inline bool is_animated() const;
+    inline void set_params(QJsonObject *params);
+    inline QJsonValue get_param_value() const;
 
     virtual inline void set_animated(bool _animated);
     virtual void update_animated();
@@ -62,6 +66,16 @@ public:
 signals:
     void key_frame_changed(bool add);
 };
+
+inline void knob::set_params(QJsonObject *_params)
+{
+    params = _params;
+}
+
+inline QJsonValue knob::get_param_value() const
+{
+    return params->value(name);
+}
 
 inline void knob::set_project(project_struct *_project)
 {

@@ -299,6 +299,7 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
 
             connect(_knob_floating, &knob_floating::changed, this,
                     [=](float _value) {
+                        return;
 
                         if (!_knob_floating->is_animated())
                         {
@@ -503,6 +504,7 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
             _knob->set_names(get_name(), get_type(), name, type);
             _knob->set_animated(animated);
             _knob->set_project(project);
+            _knob->set_params(data);
         }
 
         knobs->insert(name, _knob);

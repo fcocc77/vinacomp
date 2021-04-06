@@ -6,6 +6,7 @@
 knob::knob()
     : knob_layout(nullptr)
     , animation_button(nullptr)
+    , params(nullptr)
     , viewers_gl(nullptr)
     , project(nullptr)
     , animated(false)

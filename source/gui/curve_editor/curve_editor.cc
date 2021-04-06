@@ -67,6 +67,27 @@ QTreeWidget *curve_editor::knobs_tree_setup_ui()
     tree->setSelectionMode(QAbstractItemView::ExtendedSelection);
     tree->setAlternatingRowColors(true);
 
+    connect(tree, &QTreeWidget::itemClicked, this, [=](QTreeWidgetItem *item) {
+        auto parent = item->parent();
+        if (!parent)
+            return;
+
+        QString node_name = parent->text(0);
+        QString param_name = item->text(0);
+
+        trim_panel *panel = panels.value(node_name);
+
+        knob *_knob = nullptr;
+        if (panel)
+            _knob = panel->get_knob(param_name);
+
+        QString curve;
+        if (_knob)
+            curve = _knob->get_param_value().toString();
+
+        show_curve(node_name, param_name, curve);
+    });
+
     return tree;
 }
 
@@ -132,6 +153,8 @@ void curve_editor::delete_node_item(QString node_name)
         // al eliminar item 'delete', elimina todos los hijos (ya comprobado)
         delete node_item;
     }
+
+    panels.remove(node_name);
 }
 
 void curve_editor::update_from_trim_panel(trim_panel *panel)
@@ -140,20 +163,30 @@ void curve_editor::update_from_trim_panel(trim_panel *panel)
 
     delete_node_item(node_name);
 
+    bool animated = false;
     for (QString key : panel->get_knobs()->keys())
     {
         knob *_knob = panel->get_knobs()->value(key);
         if (!_knob->is_animated())
             continue;
 
+
         QString param_name = _knob->get_name();
 
         QString dimension = "r";
-        // QString curve = "f0 20 l5 r7 f10 20.9 f30 5";
 
         this->add_item(node_name, param_name, dimension);
-        // view->create_curve(name, Qt::cyan, anim::convert_curve(curve));
+        animated = true;
     }
+
+    if (animated)
+        panels.insert(node_name, panel);
+}
+
+void curve_editor::show_curve(QString node_name, QString param_name,
+                              QString curve)
+{
+    view->create_curve(node_name, Qt::cyan, anim::convert_curve(curve));
 }
 
 void curve_editor::delete_curve(QString node_name)
