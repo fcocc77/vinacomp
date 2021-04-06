@@ -28,9 +28,14 @@ trim_panel::trim_panel(properties *__properties, QString _name, QString _type, Q
 
     setup_ui();
 
+    vinacomp *vina = static_cast<vinacomp *>(_vinacomp);
+
+    // curve_editor para emitir señal al editor de curva
+    _curve_editor = vina->get_curve_editor();
+
     // obtiene la lista de viewers en una lista de viewers pero con 'QWidget'
     // para usarlos con static_cast y no tener que importar el viewer.h a cada knob
-    viewers_gl = static_cast<vinacomp *>(_vinacomp)->get_viewers_gl();
+    viewers_gl = vina->get_viewers_gl();
     //
 
     QJsonArray _knobs = nodes_loaded->get_effect(type).value("knobs").toArray();

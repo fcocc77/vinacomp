@@ -121,6 +121,7 @@ void knob::set_animatable(bool _animatable)
     delete_key_action->connect_to(this, [=]() { key_frame_changed(false); });
     no_animation_action->connect_to(this, [=]() {
         set_animated(false);
+        key_frame_changed(false);
     });
     curve_editor_action->connect_to(this, [=]() {});
     copy_values_action->connect_to(this, [=]() {});

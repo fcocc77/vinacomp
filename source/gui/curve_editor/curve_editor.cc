@@ -70,38 +70,94 @@ QTreeWidget *curve_editor::knobs_tree_setup_ui()
     return tree;
 }
 
+QTreeWidgetItem *curve_editor::get_node_item(QString item_name) const
+{
+    auto items = tree->findItems(item_name, Qt::MatchExactly);
+    for (QTreeWidgetItem *item : items)
+        if (item->text(0) == item_name)
+            return item;
+
+    return nullptr;
+}
+
+QTreeWidgetItem *curve_editor::get_param_item(QTreeWidgetItem *node_item,
+                                              QString param_name) const
+{
+    for (int i = 0; i < node_item->childCount(); i++)
+    {
+        auto item = node_item->child(i);
+        if (item->text(0) == param_name)
+            return item;
+    }
+
+    return nullptr;
+}
+
 void curve_editor::add_item(QString node_name, QString param_name,
                             QString dimension)
 {
-    QTreeWidgetItem *node_item = new QTreeWidgetItem();
-    node_item->setText(0, node_name);
+    QTreeWidgetItem *node_item = get_node_item(node_name);
+    if (!node_item)
+    {
+        node_item = new QTreeWidgetItem();
+        node_item->setText(0, node_name);
 
-    QTreeWidgetItem *param_item = new QTreeWidgetItem();
-    param_item->setText(0, param_name);
+        tree->addTopLevelItem(node_item);
+        node_item->setExpanded(true);
+    }
 
-    QTreeWidgetItem *dimension_item = new QTreeWidgetItem();
-    dimension_item->setText(0, "x");
+    QTreeWidgetItem *param_item = get_param_item(node_item, param_name);
+    if (!param_item)
+    {
+        param_item = new QTreeWidgetItem(node_item);
+        param_item->setText(0, param_name);
 
-    node_item->addChild(param_item);
-    param_item->addChild(dimension_item);
+        node_item->addChild(param_item);
+        param_item->setExpanded(true);
+    }
 
-    tree->addTopLevelItem(node_item);
+    // QTreeWidgetItem *dimension_item = new QTreeWidgetItem();
+    // dimension_item->setText(0, "x");
 
-    node_item->setExpanded(true);
-    param_item->setExpanded(true);
+    // param_item->addChild(dimension_item);
 }
 
-void curve_editor::add_curve(QString node_name, QString param_name)
+void curve_editor::delete_node_item(QString node_name)
 {
-    QString dimension = "r";
+    QTreeWidgetItem *node_item = get_node_item(node_name);
+    if (node_item)
+    {
+        tree->invisibleRootItem()->removeChild(node_item);
 
-    QString curve = "f0 20 l5 r7 f10 20.9 f30 5";
+        // al eliminar item 'delete', elimina todos los hijos (ya comprobado)
+        delete node_item;
+    }
+}
 
-    this->add_item(node_name, param_name, dimension);
-    view->create_curve(node_name, Qt::cyan, anim::convert_curve(curve));
+void curve_editor::update_from_trim_panel(trim_panel *panel)
+{
+    QString node_name = panel->get_name();
+
+    delete_node_item(node_name);
+
+    for (QString key : panel->get_knobs()->keys())
+    {
+        knob *_knob = panel->get_knobs()->value(key);
+        if (!_knob->is_animated())
+            continue;
+
+        QString param_name = _knob->get_name();
+
+        QString dimension = "r";
+        // QString curve = "f0 20 l5 r7 f10 20.9 f30 5";
+
+        this->add_item(node_name, param_name, dimension);
+        // view->create_curve(name, Qt::cyan, anim::convert_curve(curve));
+    }
 }
 
 void curve_editor::delete_curve(QString node_name)
 {
-    view->delete_curve(node_name);
+    delete_node_item(node_name);
+    // view->delete_curve(node_name);
 }

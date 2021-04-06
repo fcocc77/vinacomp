@@ -35,6 +35,7 @@ private:
     bool knob_editor_visible;
     QPushButton *knob_editor_button;
     QWidget *_vinacomp;
+    QWidget *_curve_editor;
     QList<QWidget *> *viewers_gl;
 
     project_struct *project;

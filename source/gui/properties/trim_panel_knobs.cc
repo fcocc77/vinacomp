@@ -16,10 +16,13 @@
 
 #include <trim_panel.h>
 #include <animation.h>
+#include <curve_editor.h>
 
 void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
                              QList<QWidget *> *viewers_gl)
 {
+    curve_editor *__curve_editor = static_cast<curve_editor *>(_curve_editor);
+
     // Obtiene el ancho maximo a partir de las 'label'
     // para usarlo en el espacio inicial de cada parametro.
     int init_space_width = 0;
@@ -322,7 +325,8 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
                     });
 
             connect(_knob_floating, &knob_floating::key_frame_changed, this,
-                    [=](bool add) { // print(add);
+                    [=](bool add) {
+                        __curve_editor->update_from_trim_panel(this);
                     });
 
             _knob = _knob_floating;

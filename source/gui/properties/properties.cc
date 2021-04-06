@@ -193,9 +193,10 @@ void properties::update_animated_knobs()
     }
 }
 
-void properties::update_curve(QString name)
+void properties::update_curve(QWidget *_trim_panel)
 {
     auto _curve_editor = static_cast<vinacomp *>(_vinacomp)->get_curve_editor();
+    trim_panel *panel = static_cast<trim_panel *>(_trim_panel);
 
-    _curve_editor->add_curve(name, "paramname");
+    _curve_editor->update_from_trim_panel(panel);
 }
