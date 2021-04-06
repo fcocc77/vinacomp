@@ -1,5 +1,7 @@
 #include <project_settings.h>
 #include <vinacomp.h>
+#include <knob_intd.h>
+#include <knob_floating.h>
 
 project_settings::project_settings(QWidget *__vinacomp)
     : _vinacomp(__vinacomp)

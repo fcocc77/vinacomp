@@ -9,8 +9,6 @@
 #include <QWidget>
 
 #include <nodes_load.h>
-#include <qt.h>
-#include <util.h>
 
 class node_finder : public QWidget
 {

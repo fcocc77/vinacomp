@@ -7,10 +7,8 @@
 #include <QPushButton>
 #include <QWidget>
 
-#include <action.h>
 #include <button.h>
 #include <project_struct.h>
-#include <qt.h>
 
 class knob : public QWidget
 {

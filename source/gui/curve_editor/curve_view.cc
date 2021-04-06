@@ -1,4 +1,5 @@
 #include <curve_view.h>
+#include <qt.h>
 
 curve_view::curve_view()
     : dragging(false)

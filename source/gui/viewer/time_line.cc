@@ -1,4 +1,6 @@
 #include <time_line.h>
+#include <action.h>
+#include <qt.h>
 
 time_line::time_line(QWidget *_parent, QLineEdit *_frame_edit, QLineEdit *_input_frame_edit,
                      QLineEdit *_output_frame_edit, QLineEdit *_skip_frame_edit)

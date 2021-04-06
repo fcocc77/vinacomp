@@ -1,4 +1,5 @@
 #include <frame_range_gui.h>
+#include <knob_intd.h>
 
 frame_range_gui::frame_range_gui() {}
 

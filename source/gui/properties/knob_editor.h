@@ -8,9 +8,6 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
-#include <action.h>
-#include <tools.h>
-
 class knob_editor : public QWidget
 {
 private:

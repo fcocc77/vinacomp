@@ -6,9 +6,7 @@
 #include <action.h>
 #include <animation.h>
 #include <curve_key_frame.h>
-#include <curve_utils.h>
 #include <gl_view.h>
-#include <vinacomp_namespace.h>
 
 class curve_view : public gl_view
 {

@@ -1,4 +1,6 @@
 #include <script_editor.h>
+#include <qt.h>
+#include <slider.h>
 
 void script_editor::setup_ui()
 {

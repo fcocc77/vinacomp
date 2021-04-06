@@ -1,4 +1,7 @@
 #include <viewer.h>
+#include <knob_floating.h>
+#include <knob_channels.h>
+#include <tools.h>
 
 void viewer::setup_ui()
 {

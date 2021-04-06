@@ -10,7 +10,6 @@
 #include <QWidget>
 
 #include <curve_view.h>
-#include <tools.h>
 
 class curve_editor : public QWidget
 {

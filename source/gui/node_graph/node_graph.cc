@@ -1,4 +1,5 @@
 #include <node_graph.h>
+#include <trim_panel.h>
 
 node_graph::node_graph(QWidget *_vinacomp, project_struct *_project, properties *_properties)
 

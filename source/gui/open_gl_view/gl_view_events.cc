@@ -1,4 +1,5 @@
 #include <gl_view.h>
+#include <qt.h>
 
 void gl_view::wheelEvent(QWheelEvent *event)
 {

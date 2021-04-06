@@ -1,4 +1,6 @@
 #include <tools.h>
+#include <qt.h>
+#include <util.h>
 
 tools::tools(int _icon_size, bool _vertical)
     : icon_size(_icon_size)

@@ -1,4 +1,5 @@
 #include <shuffle_gui.h>
+#include <combo_box.h>
 
 connector::connector(QString _layer, int _index, QColor _color)
     : layer(_layer)

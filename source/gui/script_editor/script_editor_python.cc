@@ -1,4 +1,6 @@
 #include <script_editor.h>
+#include <py_app.h>
+#include <py_nodes.h>
 
 void script_editor::python_initialize()
 {

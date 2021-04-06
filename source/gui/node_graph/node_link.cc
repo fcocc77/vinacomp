@@ -1,6 +1,8 @@
 #include "../node_graph/node.h"
 #include <node_link.h>
 #include <vinacomp.h>
+#include <util.h>
+#include <math.h>
 
 node_link::node_link(int _index, QGraphicsScene *_scene, QGraphicsItem *__node,
                      QJsonObject *_link_connecting, project_struct *_project, QWidget *__vinacomp)

@@ -11,7 +11,6 @@
 #include <nodes_bar.h>
 #include <nodes_load.h>
 #include <properties.h>
-#include <trim_panel.h>
 
 // Engine
 #include <project_struct.h>

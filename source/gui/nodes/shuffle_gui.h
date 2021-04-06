@@ -3,12 +3,9 @@
 
 #include <QPainter>
 #include <QMouseEvent>
+#include <QWidget>
 
-#include <combo_box.h>
-#include <curve_utils.h>
 #include <node_gui.h>
-#include <qt.h>
-#include <util.h>
 
 class connector : public QWidget
 {

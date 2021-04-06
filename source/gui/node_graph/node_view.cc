@@ -1,5 +1,14 @@
 #include <node_view.h>
 #include <vinacomp.h>
+#include <node_link.h>
+#include "node_rect.h"
+#include "node_dot.h"
+#include "node_backdrop.h"
+#include <qt.h>
+#include <util.h>
+
+// Engine
+#include <project_struct.h>
 
 node_view::node_view(QWidget *__vinacomp, properties *__properties, nodes_load *_nodes_loaded)
 

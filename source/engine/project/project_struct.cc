@@ -1,4 +1,5 @@
 #include <project_struct.h>
+#include <util.h>
 
 project_struct::project_struct()
     : frame(0)

@@ -15,14 +15,8 @@
 #include <knob_editor.h>
 #include <nodes_load.h>
 #include <properties.h>
-#include <qt.h>
 #include <tab_widget.h>
-#include <trim_panel.h>
-
-#include <frame_range_gui.h>
 #include <node_gui.h>
-#include <reformat_gui.h>
-#include <shuffle_gui.h>
 
 // Engine
 #include <project_struct.h>

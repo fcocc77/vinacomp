@@ -10,11 +10,6 @@
 #include <QPoint>
 #include <QString>
 
-#include <math.h>
-
-// Gui
-#include <util.h>
-
 // Engine
 #include <project_struct.h>
 

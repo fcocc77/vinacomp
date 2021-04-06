@@ -7,12 +7,9 @@
 #include <QPushButton>
 #include <QWidget>
 
-#include <action.h>
 #include <button.h>
 #include <maker.h>
 #include <nodes_load.h>
-#include <qt.h>
-#include <util.h>
 
 class menu : public QMenu
 {

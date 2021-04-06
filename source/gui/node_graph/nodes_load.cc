@@ -1,4 +1,5 @@
 #include <nodes_load.h>
+#include <os.h>
 
 nodes_load::nodes_load()
 {

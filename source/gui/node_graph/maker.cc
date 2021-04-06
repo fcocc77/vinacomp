@@ -1,6 +1,12 @@
 #include <maker.h>
 #include <panels_layout.h>
 #include <vinacomp.h>
+#include <os.h>
+#include <util.h>
+#include <qt.h>
+#include "../node_graph/node.h"
+#include <trim_panel.h>
+#include <viewer.h>
 
 maker::maker(QWidget *__vinacomp, properties *__properties, nodes_load *_nodes_loaded,
              node_view *__node_view)

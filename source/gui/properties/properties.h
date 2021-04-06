@@ -9,9 +9,6 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
-#include <qt.h>
-#include <viewer.h>
-
 class properties : public QWidget
 {
 private:

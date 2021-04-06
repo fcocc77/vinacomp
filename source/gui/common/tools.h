@@ -6,8 +6,6 @@
 #include <QWidget>
 
 #include <action.h>
-#include <qt.h>
-#include <util.h>
 
 class tools : public QWidget
 {

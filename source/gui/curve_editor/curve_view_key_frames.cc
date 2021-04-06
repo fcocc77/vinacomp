@@ -1,4 +1,6 @@
 #include <curve_view.h>
+#include <curve_utils.h>
+#include <vinacomp_namespace.h>
 
 QLineF curve_view::get_handler_points(key_frame *key, bool infinite)
 {

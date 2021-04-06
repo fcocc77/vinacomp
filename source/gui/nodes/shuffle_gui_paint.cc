@@ -1,4 +1,5 @@
 #include <shuffle_gui.h>
+#include <curve_utils.h>
 
 void shuffle_gui::draw_bezier(QPainter &painter, QPoint src, QPoint dst)
 {

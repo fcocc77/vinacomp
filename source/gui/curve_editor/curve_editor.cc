@@ -1,5 +1,6 @@
 #include <animation.h>
 #include <curve_editor.h>
+#include <tools.h>
 
 curve_editor ::curve_editor()
 {

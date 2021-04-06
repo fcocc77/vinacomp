@@ -7,7 +7,6 @@
 #include <gl_view.h>
 #include <knob.h>
 #include <render_data.h>
-#include <util.h>
 
 class viewer_gl : public gl_view
 {

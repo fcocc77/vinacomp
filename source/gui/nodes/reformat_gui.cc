@@ -1,4 +1,5 @@
 #include <reformat_gui.h>
+#include <knob_choice.h>
 
 reformat_gui::reformat_gui() {}
 

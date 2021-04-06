@@ -1,6 +1,7 @@
 #include <time_line.h>
+#include <qt.h>
 
-pair<bool, bool> time_line::over_in_out(int x) const
+std::pair<bool, bool> time_line::over_in_out(int x) const
 {
     int viewport_x = get_position({x, 0}).x();
 

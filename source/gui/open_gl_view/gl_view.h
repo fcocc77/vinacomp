@@ -6,9 +6,6 @@
 #include <QOpenGLWidget>
 #include <QPainter>
 
-#include <qt.h>
-#include <util.h>
-
 class gl_view : public QOpenGLWidget, public QOpenGLFunctions
 {
     Q_OBJECT

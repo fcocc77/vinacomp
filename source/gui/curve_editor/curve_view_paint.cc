@@ -1,4 +1,6 @@
 #include <curve_view.h>
+#include <curve_utils.h>
+#include <qt.h>
 
 void curve_view::initializeGL()
 {

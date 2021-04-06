@@ -12,15 +12,8 @@
 #include <QWidget>
 
 // Gui
-#include <action.h>
 #include <combo_box.h>
-#include <knob_floating.h>
-#include <knob_channels.h>
-#include <qt.h>
-#include <slider.h>
 #include <time_line.h>
-#include <tools.h>
-#include <util.h>
 #include <viewer_gl.h>
 
 // Engine

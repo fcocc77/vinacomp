@@ -1,4 +1,5 @@
 #include <shuffle_gui.h>
+#include <qt.h>
 
 shuffle_gui::shuffle_gui(QVBoxLayout *controls_layout, QJsonObject data)
     : dragging_input(nullptr)

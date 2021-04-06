@@ -1,6 +1,7 @@
 #include "./node.h"
 #include <panels_layout.h>
 #include <vinacomp.h>
+#include <util.h>
 
 node::node(node_props _props, QMap<QString, node *> *_selected_nodes)
 

@@ -1,4 +1,6 @@
 #include <node_finder.h>
+#include <qt.h>
+#include <util.h>
 
 node_finder::node_finder(QWidget *__node_graph, nodes_load *_nodes)
     : _node_graph(__node_graph)

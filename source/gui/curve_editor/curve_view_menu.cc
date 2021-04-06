@@ -1,4 +1,6 @@
 #include <curve_view.h>
+#include <qt.h>
+#include <vinacomp_namespace.h>
 
 void curve_view::popup_setup_ui()
 {

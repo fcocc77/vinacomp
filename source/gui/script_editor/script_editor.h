@@ -9,6 +9,8 @@
 #include "Python.h"
 //
 
+#include <stdio.h>
+
 // QT5
 #include <QHBoxLayout>
 #include <QJsonObject>
@@ -23,15 +25,6 @@
 // Libs
 #include <QCodeEditor.h>
 #include <QPythonHighlighter.h>
-
-// VinaComp
-#include <action.h>
-#include <qt.h>
-#include <slider.h>
-#include <util.h>
-
-#include <py_app.h>
-#include <py_nodes.h>
 
 class script_editor : public QWidget
 {
@@ -51,7 +44,7 @@ private:
     // python
     void python_initialize();
     QString python_run(QString command);
-    string std_out_err;
+    std::string std_out_err;
     PyObject *python_module;
     //
 

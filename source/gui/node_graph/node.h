@@ -17,7 +17,6 @@
 #include <nodes_load.h>
 #include <properties.h>
 #include <trim_panel.h>
-#include <util.h>
 #include <viewer.h>
 
 // Engine

@@ -3,8 +3,7 @@
 
 #include <QObject>
 #include <QPointF>
-
-#include <util.h>
+#include <QColor>
 
 class key_frame : public QObject
 {

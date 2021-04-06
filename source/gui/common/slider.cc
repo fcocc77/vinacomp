@@ -1,4 +1,5 @@
 #include <slider.h>
+#include <util.h>
 
 slider::slider(float min, float max, float default_value, bool _floating)
     : floating(_floating)

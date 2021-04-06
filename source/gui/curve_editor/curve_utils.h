@@ -1,8 +1,6 @@
 #ifndef CURVE_UTILS_H
 #define CURVE_UTILS_H
 
-#include <math.h>
-
 #include <QLineF>
 #include <QPointF>
 

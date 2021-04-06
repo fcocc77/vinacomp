@@ -1,6 +1,8 @@
 #include <panel.h>
 #include <panels_layout.h>
 #include <vinacomp.h>
+#include <qt.h>
+#include <util.h>
 
 panel::panel(QWidget *__panels_layout, QWidget *__vinacomp, QList<QSplitter *> *_splitters,
              node_graph *__node_graph, QLabel *_empty_viewer, script_editor *__script_editor,

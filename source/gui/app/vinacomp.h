@@ -17,8 +17,8 @@
 #include <properties.h>
 #include <script_editor.h>
 #include <settings.h>
-#include <util.h>
 #include <viewer.h>
+#include <tools.h>
 
 // Engine
 #include <project_struct.h>

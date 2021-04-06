@@ -2,11 +2,11 @@
 #define TIME_LINE_HPP
 
 #include <QLineEdit>
+#include <QJsonObject>
 
-#include <action.h>
+#include <stdio.h>
+
 #include <gl_view.h>
-#include <qt.h>
-#include <util.h>
 
 class time_line : public gl_view
 {
@@ -18,11 +18,11 @@ private:
 
     int click_x_coords;
     bool is_fit_to_selector;
-    pair<int, int> selector;
+    std::pair<int, int> selector;
 
     int first_frame, last_frame;
     int input, output, click_input, click_output;
-    pair<bool, bool> click_over_in_out;
+    std::pair<bool, bool> click_over_in_out;
 
     bool right_button, middle_button, left_button;
     bool dragging_input, dragging_output;
@@ -40,7 +40,7 @@ private:
     // Input Output
     void drag_in_out(int _frame);
     void set_frame(int _frame);
-    pair<bool, bool> over_in_out(int x) const;
+    std::pair<bool, bool> over_in_out(int x) const;
     void change_in_out_with_control();
     //
 

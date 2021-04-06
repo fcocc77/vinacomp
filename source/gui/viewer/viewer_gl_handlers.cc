@@ -2,6 +2,8 @@
 #include <trim_panel.h>
 #include <viewer_gl.h>
 #include <knob_floatd.h>
+#include <knob_intd.h>
+#include <knob_floating.h>
 
 void viewer_gl::handlers_update()
 {

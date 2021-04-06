@@ -4,8 +4,6 @@
 #include <QPushButton>
 #include <QString>
 
-#include <qt.h>
-
 class button : public QPushButton
 {
 private:

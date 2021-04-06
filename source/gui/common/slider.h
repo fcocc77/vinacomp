@@ -3,8 +3,6 @@
 
 #include <QSlider>
 
-#include <util.h>
-
 class slider : public QSlider
 {
     Q_OBJECT

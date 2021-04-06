@@ -1,4 +1,5 @@
 #include <combo_box.h>
+#include <util.h>
 
 combo_box::combo_box(QList<combo_box_item> input_items, int default_index, QWidget *_parent)
     : parent(_parent)

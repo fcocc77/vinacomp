@@ -1,4 +1,5 @@
 #include <script_editor.h>
+#include <action.h>
 
 script_editor::script_editor(QJsonObject *_project, QWidget *_node_graph)
     : project(_project)

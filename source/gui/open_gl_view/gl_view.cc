@@ -1,4 +1,7 @@
 #include <gl_view.h>
+#include <qt.h>
+
+#include <math.h>
 
 gl_view::gl_view(bool _lock_scale)
     : lock_scale(_lock_scale)

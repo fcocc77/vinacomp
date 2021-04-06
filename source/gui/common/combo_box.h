@@ -10,7 +10,6 @@
 #include <QWidget>
 
 #include <action.h>
-#include <util.h>
 
 struct combo_box_item
 {

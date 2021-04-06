@@ -4,8 +4,6 @@
 #include <QJsonObject>
 #include <QObject>
 
-#include <os.h>
-
 class nodes_load : public QObject
 {
 private:

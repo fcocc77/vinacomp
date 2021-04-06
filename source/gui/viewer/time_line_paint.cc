@@ -1,4 +1,5 @@
 #include <time_line.h>
+#include <qt.h>
 
 void time_line::initializeGL()
 {

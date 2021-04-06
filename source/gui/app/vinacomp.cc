@@ -1,4 +1,5 @@
 #include <vinacomp.h>
+#include <util.h>
 
 vinacomp::vinacomp()
     : fullscreen(false)

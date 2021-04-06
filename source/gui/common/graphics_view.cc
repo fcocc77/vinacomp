@@ -1,4 +1,6 @@
 #include <graphics_view.h>
+#include <qt.h>
+#include <util.h>
 
 graphics_view::graphics_view()
     : panning(false)

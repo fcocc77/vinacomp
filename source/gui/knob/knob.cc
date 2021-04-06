@@ -1,5 +1,7 @@
 #include <knob.h>
 #include <viewer_gl.h>
+#include <qt.h>
+#include <action.h>
 
 knob::knob()
     : knob_layout(nullptr)

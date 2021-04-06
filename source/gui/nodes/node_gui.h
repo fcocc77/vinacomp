@@ -7,8 +7,6 @@
 #include <project_struct.h>
 #include <renderer.h>
 
-#include <util.h>
-
 class node_gui : public QWidget
 {
 private:

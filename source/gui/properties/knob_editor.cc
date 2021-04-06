@@ -1,4 +1,7 @@
 #include <knob_editor.h>
+#include <action.h>
+#include <tools.h>
+#include <qt.h>
 
 knob_editor::knob_editor()
 {

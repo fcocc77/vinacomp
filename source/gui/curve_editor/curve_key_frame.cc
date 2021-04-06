@@ -1,4 +1,5 @@
 #include <curve_key_frame.h>
+#include <util.h>
 
 key_frame::key_frame(QString _curve_name, int _index, QPointF _position, QColor _color)
 

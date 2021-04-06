@@ -7,8 +7,6 @@
 #include <QMap>
 #include <QPointF>
 
-#include <util.h>
-
 struct node_struct
 {
     QColor color;

@@ -1,5 +1,8 @@
 #include <trim_panel.h>
 #include <vinacomp.h>
+#include <shuffle_gui.h>
+#include <reformat_gui.h>
+#include <frame_range_gui.h>
 
 trim_panel::trim_panel(properties *__properties, QString _name, QString _type, QString _icon_name,
                        nodes_load *_nodes_loaded, project_struct *_project, QWidget *__vinacomp)

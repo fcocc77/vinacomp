@@ -1,7 +1,6 @@
 #ifndef REFORMAT_GUI_H
 #define REFORMAT_GUI_H
 
-#include <knob_choice.h>
 #include <node_gui.h>
 
 class reformat_gui : public node_gui

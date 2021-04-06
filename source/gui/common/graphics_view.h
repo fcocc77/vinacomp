@@ -5,9 +5,6 @@
 #include <QScrollBar>
 #include <QMouseEvent>
 
-#include <qt.h>
-#include <util.h>
-
 class graphics_view : public QGraphicsView
 {
     Q_OBJECT

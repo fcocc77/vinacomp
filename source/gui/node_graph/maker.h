@@ -5,16 +5,10 @@
 #include <QString>
 #include <QWidget>
 
-#include "../node_graph/node.h"
 #include <node_finder.h>
 #include <node_view.h>
 #include <nodes_load.h>
-#include <os.h>
 #include <properties.h>
-#include <qt.h>
-#include <trim_panel.h>
-#include <util.h>
-#include <viewer.h>
 
 class maker : public QWidget
 {

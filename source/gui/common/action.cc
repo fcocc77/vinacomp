@@ -1,5 +1,7 @@
 #include <action.h>
 #include <tools.h>
+#include <qt.h>
+#include <util.h>
 
 action::action(QString _label, QString shortcut_key, QString _icon_name)
     : key(shortcut_key)

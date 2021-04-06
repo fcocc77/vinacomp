@@ -1,15 +1,11 @@
 #ifndef PROJECT_SETTINGS_H
 #define PROJECT_SETTINGS_H
 
-#include <QLabel>
-#include <QLineEdit>
 #include <QTextEdit>
 #include <QVBoxLayout>
 #include <QWidget>
 
-#include <knob_floating.h>
-#include <knob_intd.h>
-#include <viewer.h>
+#include <stdio.h>
 
 class project_settings : public QWidget
 {
@@ -25,7 +21,7 @@ public:
     project_settings(QWidget *_vinacomp);
     ~project_settings();
 
-    pair<int, int> get_frame_range() const;
+    std::pair<int, int> get_frame_range() const;
 };
 
 #endif // PROJECT_SETTINGS_H

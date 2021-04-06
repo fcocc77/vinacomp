@@ -16,20 +16,10 @@
 #include <QWidget>
 
 // Gui
+#include "node.h"
 #include <graphics_view.h>
-#include "node_rect.h"
-#include "node_dot.h"
-#include "node_backdrop.h"
-#include <node_link.h>
 #include <nodes_load.h>
 #include <properties.h>
-#include <qt.h>
-#include <trim_panel.h>
-#include <util.h>
-#include <viewer.h>
-
-// Engine
-#include <project_struct.h>
 
 class node_view : public graphics_view
 {

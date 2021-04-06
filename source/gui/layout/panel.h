@@ -12,10 +12,8 @@
 #include <curve_editor.h>
 #include <node_graph.h>
 #include <properties.h>
-#include <qt.h>
 #include <script_editor.h>
 #include <tab_widget.h>
-#include <util.h>
 #include <viewer.h>
 
 class panel : public QWidget

@@ -1,4 +1,5 @@
 #include <button.h>
+#include <qt.h>
 
 button::button(QWidget *parent, bool _hover)
     : QPushButton(parent)

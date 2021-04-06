@@ -4,9 +4,6 @@
 #include <QAction>
 #include <QPushButton>
 
-#include <qt.h>
-#include <util.h>
-
 class action : public QAction
 {
 private:
