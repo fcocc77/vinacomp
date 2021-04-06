@@ -1,8 +1,6 @@
 #include <panel.h>
 #include <panels_layout.h>
 #include <vinacomp.h>
-#include <qt.h>
-#include <util.h>
 
 panel::panel(QWidget *__panels_layout, QWidget *__vinacomp, QList<QSplitter *> *_splitters,
              node_graph *__node_graph, QLabel *_empty_viewer, script_editor *__script_editor,
@@ -21,8 +19,10 @@ panel::panel(QWidget *__panels_layout, QWidget *__vinacomp, QList<QSplitter *> *
     this->setObjectName("panel");
 
     _tab_widget = new tab_widget(true);
-    connect(_tab_widget, &tab_widget::closed_tab, this,
-            [=](QString tab_name) { tabs_list.removeOne(tab_name); });
+    connect(_tab_widget, &tab_widget::closed_tab, this, [=](QString tab_label) {
+        QString tab_name = tab_label.toLower().replace(' ', '_');
+        tabs_list.removeOne(tab_name);
+    });
     QPushButton *cornel_button = setup_cornel_buttons();
 
     QVBoxLayout *layout = new QVBoxLayout(this);
@@ -205,11 +205,11 @@ void panel::add_tab(QWidget *widget, QString name)
     auto panels = static_cast<panels_layout *>(_panels_layout)->get_all_panels();
 
     for (panel *_panel : panels)
-        _panel->tabs_list.removeOne(label);
+        _panel->tabs_list.removeOne(name);
     //
     //
 
-    tabs_list.push_back(label);
+    tabs_list.push_back(name);
 }
 
 void panel::add_viewer(viewer *_viewer)
@@ -258,16 +258,6 @@ QSplitter *panel::get_splitter() const
     }
 
     return splitter;
-}
-
-QStringList panel::get_tabs_list() const
-{
-    return tabs_list;
-}
-
-tab_widget *panel::get_tab_widget() const
-{
-    return _tab_widget;
 }
 
 panel *panel::split(Qt::Orientation orientation)

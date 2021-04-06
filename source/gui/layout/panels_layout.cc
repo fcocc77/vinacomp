@@ -5,8 +5,8 @@ panels_layout::panels_layout(QWidget *__vinacomp, node_graph *_node_graph, QLabe
                              script_editor *_script_editor, properties *_properties,
                              curve_editor *_curve_editor)
 
-    : _vinacomp(__vinacomp)
-    , isolate(false)
+    : isolate(false)
+    , _vinacomp(__vinacomp)
 {
 
     this->setObjectName("panels_layout");
@@ -16,7 +16,6 @@ panels_layout::panels_layout(QWidget *__vinacomp, node_graph *_node_graph, QLabe
     first_panel = new panel(this, _vinacomp, splitters, _node_graph, empty_viewer, _script_editor,
                             _properties, _curve_editor);
 
-    QWidget *central_widget = new QWidget();
     qt::add_widget(this, first_panel);
 
     restore_default_action = new QAction("Restore Default Layout");
@@ -171,86 +170,85 @@ void panels_layout::set_visible_panels(bool visible)
 void panels_layout::save_json_layout(QSplitter *splitter, int deep, QString letter,
                                      QStringList parents)
 {
+    if (!splitter)
+        return;
 
-    if (splitter != NULL)
+    if (!letter.isEmpty())
     {
-        if (!letter.isEmpty())
-        {
-            panel *child_panel = get_child_panel(splitter, letter);
+        panel *child_panel = get_child_panel(splitter, letter);
 
-            if (child_panel->objectName() == "panel")
-                return;
-            else
+        if (child_panel->objectName() == "panel")
+            return;
+        else
+        {
+            for (QSplitter *_splitter : *splitters)
             {
-                for (QSplitter *_splitter : *splitters)
+                if (_splitter->objectName() == child_panel->objectName())
                 {
-                    if (_splitter->objectName() == child_panel->objectName())
-                    {
-                        splitter = _splitter;
-                        break;
-                    }
+                    splitter = _splitter;
+                    break;
                 }
             }
         }
-
-        deep++;
-
-        QString parent_name;
-        if (deep == 1)
-            parent_name = "splitter";
-        else
-            parent_name = "splitter_" + letter;
-        parents.push_back(parent_name);
-
-        int orientation = splitter->orientation();
-        auto sizes = splitter->sizes();
-        //
-        //
-
-        QJsonObject value;
-
-        value["orientation"] = orientation;
-        value["distribution"] = QJsonArray{sizes[0], sizes[1]};
-
-        // Crea los objetos a y b de un splitter y si el hijo es un panel,
-        // guarda los datos de los 'tabs' del panel.
-        panel *child_panel_a = get_child_panel(splitter, "a");
-        panel *child_panel_b = get_child_panel(splitter, "b");
-
-        QJsonObject splitter_a;
-        QJsonObject splitter_b;
-        if (child_panel_a->objectName() == "panel")
-        {
-            QJsonObject panel_a_data;
-            panel_a_data["tabs"] = qt::list_to_array(child_panel_a->get_tabs_list());
-            panel_a_data["current_index"] = child_panel_a->get_tab_widget()->get_current_index();
-            value["panel_a"] = panel_a_data;
-        }
-        else
-            value["splitter_a"] = {};
-
-        if (child_panel_b->objectName() == "panel")
-        {
-            QJsonObject panel_b_data;
-            panel_b_data["tabs"] = qt::list_to_array(child_panel_b->get_tabs_list());
-            panel_b_data["current_index"] = child_panel_b->get_tab_widget()->get_current_index();
-            value["panel_b"] = panel_b_data;
-        }
-        else
-            value["splitter_b"] = {};
-        //
-        //
-
-        qt::insert_json_deep(&json_layout, parents, value);
-
-        save_json_layout(splitter, deep, "a", parents);
-        save_json_layout(splitter, deep, "b", parents);
     }
+
+    deep++;
+
+    QString parent_name;
+    if (deep == 1)
+        parent_name = "splitter";
+    else
+        parent_name = "splitter_" + letter;
+    parents.push_back(parent_name);
+
+    int orientation = splitter->orientation();
+    auto sizes = splitter->sizes();
+    //
+    //
+
+    QJsonObject value;
+
+    value["orientation"] = orientation;
+    value["distribution"] = QJsonArray{sizes[0], sizes[1]};
+
+    // Crea los objetos a y b de un splitter y si el hijo es un panel,
+    // guarda los datos de los 'tabs' del panel.
+    panel *child_panel_a = get_child_panel(splitter, "a");
+    panel *child_panel_b = get_child_panel(splitter, "b");
+
+    QJsonObject splitter_a;
+    QJsonObject splitter_b;
+    if (child_panel_a->objectName() == "panel")
+    {
+        QJsonObject panel_a_data;
+        panel_a_data["tabs"] = qt::list_to_array(child_panel_a->get_tabs_list());
+        panel_a_data["current_index"] = child_panel_a->get_tab_widget()->get_current_index();
+        value["panel_a"] = panel_a_data;
+    }
+    else
+        value["splitter_a"] = {};
+
+    if (child_panel_b->objectName() == "panel")
+    {
+        QJsonObject panel_b_data;
+        panel_b_data["tabs"] = qt::list_to_array(child_panel_b->get_tabs_list());
+        panel_b_data["current_index"] = child_panel_b->get_tab_widget()->get_current_index();
+        value["panel_b"] = panel_b_data;
+    }
+    else
+        value["splitter_b"] = {};
+    //
+    //
+
+    qt::insert_json_deep(&json_layout, parents, value);
+
+    save_json_layout(splitter, deep, "a", parents);
+    save_json_layout(splitter, deep, "b", parents);
 }
 
 void panels_layout::save_layout()
 {
-    QSplitter *main_splitter = this->findChild<QSplitter *>("splitter");
+    QSplitter *main_splitter = this->findChild<QSplitter *>();
 
     // vaciar layout json
     json_layout = {};

@@ -55,8 +55,18 @@ public:
     void remove_all_tab();
     void set_index(int index);
     QSplitter *get_splitter() const;
-    QStringList get_tabs_list() const;
-    tab_widget *get_tab_widget() const;
+    inline QStringList get_tabs_list() const;
+    inline tab_widget *get_tab_widget() const;
 };
+
+inline QStringList panel::get_tabs_list() const
+{
+    return tabs_list;
+}
+
+inline tab_widget *panel::get_tab_widget() const
+{
+    return _tab_widget;
+}
 
 #endif // PANEL_HPP
