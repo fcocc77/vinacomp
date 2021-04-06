@@ -1,12 +1,10 @@
-#include <curve_editor.h>
 #include <animation.h>
+#include <curve_editor.h>
 
 curve_editor ::curve_editor()
 {
     this->setObjectName("curve_editor");
     setup_ui();
-
-    add_curve();
 }
 
 curve_editor ::~curve_editor() {}
@@ -71,13 +69,14 @@ QTreeWidget *curve_editor::knobs_tree_setup_ui()
     return tree;
 }
 
-void curve_editor::add_item(QString node, QString param, QString dimension)
+void curve_editor::add_item(QString node_name, QString param_name,
+                            QString dimension)
 {
     QTreeWidgetItem *node_item = new QTreeWidgetItem();
-    node_item->setText(0, "Transform");
+    node_item->setText(0, node_name);
 
     QTreeWidgetItem *param_item = new QTreeWidgetItem();
-    param_item->setText(0, "translate");
+    param_item->setText(0, param_name);
 
     QTreeWidgetItem *dimension_item = new QTreeWidgetItem();
     dimension_item->setText(0, "x");
@@ -91,14 +90,17 @@ void curve_editor::add_item(QString node, QString param, QString dimension)
     param_item->setExpanded(true);
 }
 
-void curve_editor::add_curve()
+void curve_editor::add_curve(QString node_name, QString param_name)
 {
-    QString name = "Grade";
-    QString param = "white";
     QString dimension = "r";
 
     QString curve = "f0 20 l5 r7 f10 20.9 f30 5";
 
-    this->add_item(name, param, dimension);
-    view->create_curve(name, Qt::cyan, anim::convert_curve(curve));
+    this->add_item(node_name, param_name, dimension);
+    view->create_curve(node_name, Qt::cyan, anim::convert_curve(curve));
+}
+
+void curve_editor::delete_curve(QString node_name)
+{
+    view->delete_curve(node_name);
 }

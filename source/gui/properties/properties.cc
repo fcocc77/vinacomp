@@ -113,6 +113,9 @@ void properties::close_trim_panel(QString panel_name)
     _trim_panel->hide();
     _trim_panel->setParent(0);
 
+    auto _curve_editor = static_cast<vinacomp *>(_vinacomp)->get_curve_editor();
+    _curve_editor->delete_curve(panel_name);
+
     update_viewers_handlers();
 }
 
@@ -188,4 +191,11 @@ void properties::update_animated_knobs()
                 _knob->update_animated();
         }
     }
+}
+
+void properties::update_curve(QString name)
+{
+    auto _curve_editor = static_cast<vinacomp *>(_vinacomp)->get_curve_editor();
+
+    _curve_editor->add_curve(name, "paramname");
 }

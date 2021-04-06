@@ -29,6 +29,7 @@ private:
     void close_all();
     void limit_panels(int amount);
     void update_viewers_handlers();
+    void update_curve(QString name);
 
 public:
     properties(QWidget *_vinacomp);
@@ -54,6 +55,7 @@ template <class T> void properties::add_trim_panel(T *_trim_panel)
     _trim_panel->maximize(true);
     _trim_panel->show();
 
+    update_curve(_trim_panel->get_name());
     update_viewers_handlers();
 }
 

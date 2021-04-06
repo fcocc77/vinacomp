@@ -90,7 +90,13 @@ public:
     inline void update_render_all_viewer() const;
     inline project_settings *get_project_settings() const;
     inline properties *get_properties() const;
+    inline curve_editor *get_curve_editor() const;
 };
+
+inline curve_editor *vinacomp::get_curve_editor() const
+{
+    return _curve_editor;
+}
 
 inline panels_layout *vinacomp::get_panels_layout() const
 {

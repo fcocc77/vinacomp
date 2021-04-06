@@ -26,7 +26,8 @@ public:
     curve_editor(/* args */);
     ~curve_editor();
 
-    void add_curve();
+    void add_curve(QString node_name, QString param_name);
+    void delete_curve(QString node_name);
 };
 
 #endif // CURVE_EDITOR_HPP

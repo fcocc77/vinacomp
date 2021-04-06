@@ -96,6 +96,20 @@ void curve_view::create_curve(QString name, QColor color,
     update();
 }
 
+void curve_view::delete_curve(QString node_name)
+{
+    if (!curves.contains(node_name))
+        return;
+
+    auto curve = curves.value(node_name);
+    for (key_frame *key : curve)
+        delete key;
+
+    curves.remove(node_name);
+
+    update();
+}
+
 key_frame *curve_view::get_previous_key(key_frame *key)
 {
     QString curve_name = key->get_curve();
