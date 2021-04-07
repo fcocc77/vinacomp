@@ -65,7 +65,7 @@ public:
               QLineEdit *output_frame_edit, QLineEdit *skip_frame_edit);
     ~time_line();
 
-    void go_to_frame(int _frame);
+    void go_to_frame(int _frame, bool emit_signal = false);
     void next_frame();
     void previous_frame();
     void next_frame_each(int frames);

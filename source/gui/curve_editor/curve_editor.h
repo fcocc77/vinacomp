@@ -11,13 +11,13 @@
 
 #include <curve_view.h>
 #include <trim_panel.h>
-#include <project_struct.h>
 
 class curve_editor : public QWidget
 {
 private:
     curve_view *view;
     QTreeWidget *tree;
+    QWidget *_vinacomp;
 
     QMap<QString, trim_panel *> panels;
 
@@ -31,9 +31,10 @@ private:
     void delete_node_item(QString node_name);
     void show_curve(QString node_name, QString param_name, QString curve);
     knob *get_knob(QString node_name, QString param_name);
+    void update_viewers(int frame);
 
 public:
-    curve_editor(project_struct *project);
+    curve_editor(QWidget *_vinacomp);
     ~curve_editor();
 
     void update_from_trim_panel(trim_panel *_trim_panel);

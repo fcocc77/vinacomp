@@ -63,11 +63,6 @@ viewer::viewer(QString _name, project_struct *_project, renderer *__renderer,
 
 viewer::~viewer() {}
 
-QString viewer::get_name() const
-{
-    return name;
-}
-
 void viewer::set_frame(int frame)
 {
     project->frame = frame;
@@ -138,11 +133,6 @@ void viewer::set_frame_range(int _first_frame, int _last_frame)
     _time_line->set_frame_range(_first_frame, _last_frame);
 }
 
-void viewer::set_frame_rate(float rate)
-{
-    frame_rate = rate;
-}
-
 void viewer::enable_in_out(bool enable)
 {
     in_out = enable;
@@ -162,7 +152,3 @@ void viewer::set_in_out(int _input, int _output)
     _time_line->update_in_out(input, output);
 }
 
-viewer_gl *viewer::get_viewer_gl() const
-{
-    return _viewer_gl;
-}

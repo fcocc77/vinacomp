@@ -1,8 +1,12 @@
 #include <animation.h>
 #include <curve_editor.h>
 #include <tools.h>
+#include <project_struct.h>
+#include <vinacomp.h>
+#include <viewer.h>
 
-curve_editor ::curve_editor(project_struct *project)
+curve_editor ::curve_editor(QWidget *__vinacomp)
+    : _vinacomp(__vinacomp)
 {
     this->setObjectName("curve_editor");
     QHBoxLayout *layout = new QHBoxLayout(this);
@@ -13,9 +17,12 @@ curve_editor ::curve_editor(project_struct *project)
 
     layout->addWidget(knobs_tree);
 
+    project_struct *project = static_cast<vinacomp *>(_vinacomp)->get_project();
     view = new curve_view(project);
     connect(view, &curve_view::change_curve, this,
             [=](curve *_curve) { update_param(_curve); });
+    connect(view, &curve_view::change_frame, this,
+            [=](int frame) { update_viewers(frame); });
     view->setObjectName("graphics_view");
 
     QLineEdit *expression_curve = new QLineEdit();
@@ -210,4 +217,11 @@ void curve_editor::delete_curve(QString node_name)
 {
     delete_node_item(node_name);
     // view->delete_curve(node_name);
+}
+
+void curve_editor::update_viewers(int frame)
+{
+    auto viewers = static_cast<vinacomp*>(_vinacomp)->get_viewers();
+    for (viewer *_viewer : *viewers)
+        _viewer->get_time_line()->go_to_frame(frame, true);
 }

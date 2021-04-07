@@ -137,6 +137,7 @@ protected:
 
 signals:
     void change_curve(curve *_curve);
+    void change_frame(int frame);
 };
 
 #endif // CURVE_VIEW_HPP

@@ -125,11 +125,32 @@ public:
            QWidget *_vinacomp);
     ~viewer();
 
-    void set_frame_range(int _first_frame, int _last_frame);
-    QString get_name() const;
+    inline void set_frame_range(int _first_frame, int _last_frame);
+    inline QString get_name() const;
+    inline viewer_gl *get_viewer_gl() const;
+    inline time_line *get_time_line() const;
     void update_render(bool claer_init_image = false);
     void update_input_range();
-    viewer_gl *get_viewer_gl() const;
 };
+
+inline time_line *viewer::get_time_line() const
+{
+    return _time_line;
+}
+
+inline QString viewer::get_name() const
+{
+    return name;
+}
+
+inline void viewer::set_frame_rate(float rate)
+{
+    frame_rate = rate;
+}
+
+inline viewer_gl *viewer::get_viewer_gl() const
+{
+    return _viewer_gl;
+}
 
 #endif // VIEWER_H

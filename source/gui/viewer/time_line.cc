@@ -63,8 +63,7 @@ time_line::time_line(QWidget *_parent, QLineEdit *_frame_edit, QLineEdit *_input
         else
             _last_frame = last_frame;
 
-        go_to_frame(_last_frame);
-        frame_changed(_last_frame); // Signal
+        go_to_frame(_last_frame, true);
     });
 
     action *go_to_first_frame_action = new action("Go to First Frame", "Alt+left");
@@ -75,8 +74,7 @@ time_line::time_line(QWidget *_parent, QLineEdit *_frame_edit, QLineEdit *_input
         else
             _first_frame = first_frame;
 
-        go_to_frame(_first_frame);
-        frame_changed(_first_frame); // Signal
+        go_to_frame(_first_frame, true);
     });
 }
 
@@ -92,29 +90,25 @@ void time_line::set_frame_range(int _first_frame, int _last_frame)
 void time_line::next_frame()
 {
     int new_frame = frame + 1;
-    go_to_frame(new_frame);
-    frame_changed(new_frame); // Signal
+    go_to_frame(new_frame, true);
 }
 
 void time_line::previous_frame()
 {
     int new_frame = frame - 1;
-    go_to_frame(new_frame);
-    frame_changed(new_frame); // Signal
+    go_to_frame(new_frame, true);
 }
 
 void time_line::next_frame_each(int frames)
 {
     int new_frame = frame + frames;
-    go_to_frame(new_frame);
-    frame_changed(new_frame); // Signal
+    go_to_frame(new_frame, true);
 }
 
 void time_line::previous_frame_each(int frames)
 {
     int new_frame = frame - frames;
-    go_to_frame(new_frame);
-    frame_changed(new_frame); // Signal
+    go_to_frame(new_frame, true);
 }
 
 void time_line::fit_switch()
@@ -150,13 +144,17 @@ void time_line::fit_to_selector()
     set_ortho(selector.first, selector.second, 0, 1);
 }
 
-void time_line::go_to_frame(int _frame)
+void time_line::go_to_frame(int _frame, bool emit_signal)
 {
     frame = _frame;
     ghost_frame = _frame;
 
     frame_edit->setText(QString::number(frame));
+
     update();
+
+    if (emit_signal)
+        frame_changed(_frame);
 }
 
 void time_line::set_frame(int _frame)
@@ -172,10 +170,7 @@ void time_line::set_frame(int _frame)
     }
     if (_frame != frame)
         if (dragging && (!dragging_input && !dragging_output))
-        {
-            go_to_frame(_frame);
-            frame_changed(_frame); // Signal
-        }
+            go_to_frame(_frame, true);
 }
 
 void time_line::set_in_out_visible(bool visible)
@@ -208,10 +203,7 @@ void time_line::mousePressEvent(QMouseEvent *event)
     if (!qt::alt() && !qt::control() && !dragging_input && !dragging_output)
     {
         if (left_button)
-        {
-            go_to_frame(click_x_coords);
-            frame_changed(click_x_coords); // Signal
-        }
+            go_to_frame(click_x_coords, true);
     }
     else
         panning(); // Signal
