@@ -28,7 +28,10 @@ $keyframe_color: #008cff
             border-color: $expression_color
 
 #knob_floating, #knob_integer, #knob_dimensions
+    #init_space
+        background: None
     QLineEdit
+        @include q_line_edit
         @include line_edit_states
     @include small_button
 #knob_choice

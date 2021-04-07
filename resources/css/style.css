@@ -134,26 +134,35 @@ QSlider {
     QSlider::handle::hover {
       background: #ffcc00; }
 
-#knob_floating QLineEdit[animated=true], #knob_integer QLineEdit[animated=true], #knob_dimensions QLineEdit[animated=true] {
-  background-color: #3a414b;
-  border-color: #5b758d;
-  color: #95cfff; }
-  #knob_floating QLineEdit[animated=true]:focus, #knob_integer QLineEdit[animated=true]:focus, #knob_dimensions QLineEdit[animated=true]:focus {
-    border-color: #95cfff; }
+#knob_floating #init_space, #knob_integer #init_space, #knob_dimensions #init_space {
+  background: None; }
 
-#knob_floating QLineEdit[keyframe=true], #knob_integer QLineEdit[keyframe=true], #knob_dimensions QLineEdit[keyframe=true] {
-  background-color: #304154;
-  border-color: #0b7bd9;
-  color: #66baff; }
-  #knob_floating QLineEdit[keyframe=true]:focus, #knob_integer QLineEdit[keyframe=true]:focus, #knob_dimensions QLineEdit[keyframe=true]:focus {
-    border-color: #008cff; }
-
-#knob_floating QLineEdit[expression=true], #knob_integer QLineEdit[expression=true], #knob_dimensions QLineEdit[expression=true] {
-  background-color: #3b3e41;
-  border-color: #726741;
-  color: #ffd342; }
-  #knob_floating QLineEdit[expression=true]:focus, #knob_integer QLineEdit[expression=true]:focus, #knob_dimensions QLineEdit[expression=true]:focus {
-    border-color: #ffd342; }
+#knob_floating QLineEdit, #knob_integer QLineEdit, #knob_dimensions QLineEdit {
+  color: #aeb4bc;
+  padding: 3px;
+  border-radius: 2px;
+  background: #1e2024;
+  border: 1px solid #1e2024; }
+  #knob_floating QLineEdit:focus, #knob_integer QLineEdit:focus, #knob_dimensions QLineEdit:focus {
+    border-color: #8f7612; }
+  #knob_floating QLineEdit[animated=true], #knob_integer QLineEdit[animated=true], #knob_dimensions QLineEdit[animated=true] {
+    background-color: #3a414b;
+    border-color: #5b758d;
+    color: #95cfff; }
+    #knob_floating QLineEdit[animated=true]:focus, #knob_integer QLineEdit[animated=true]:focus, #knob_dimensions QLineEdit[animated=true]:focus {
+      border-color: #95cfff; }
+  #knob_floating QLineEdit[keyframe=true], #knob_integer QLineEdit[keyframe=true], #knob_dimensions QLineEdit[keyframe=true] {
+    background-color: #304154;
+    border-color: #0b7bd9;
+    color: #66baff; }
+    #knob_floating QLineEdit[keyframe=true]:focus, #knob_integer QLineEdit[keyframe=true]:focus, #knob_dimensions QLineEdit[keyframe=true]:focus {
+      border-color: #008cff; }
+  #knob_floating QLineEdit[expression=true], #knob_integer QLineEdit[expression=true], #knob_dimensions QLineEdit[expression=true] {
+    background-color: #3b3e41;
+    border-color: #726741;
+    color: #ffd342; }
+    #knob_floating QLineEdit[expression=true]:focus, #knob_integer QLineEdit[expression=true]:focus, #knob_dimensions QLineEdit[expression=true]:focus {
+      border-color: #ffd342; }
 
 #knob_floating QPushButton, #knob_integer QPushButton, #knob_dimensions QPushButton {
   width: 25px;
@@ -433,6 +442,14 @@ QSlider {
 
 #curve_editor {
   background: #30343b; }
+  #curve_editor #tools QLineEdit {
+    color: #aeb4bc;
+    padding: 3px;
+    border-radius: 2px;
+    background: #1e2024;
+    border: 1px solid #1e2024; }
+    #curve_editor #tools QLineEdit:focus {
+      border-color: #8f7612; }
   #curve_editor #knobs_tree {
     alternate-background-color: #2c2f35;
     background-color: #25282d;
@@ -454,6 +471,14 @@ QSlider {
 
 #properties {
   background: #30343b; }
+  #properties QLineEdit {
+    color: #aeb4bc;
+    padding: 3px;
+    border-radius: 2px;
+    background: #1e2024;
+    border: 1px solid #1e2024; }
+    #properties QLineEdit:focus {
+      border-color: #8f7612; }
   #properties #butttons {
     background: #30343b; }
   #properties #trim_panels {
@@ -461,12 +486,13 @@ QSlider {
 
 #script_editor {
   background: #30343b; }
-  #script_editor * {
-    font-size: 15px; }
   #script_editor #tools {
     background: #30343b; }
+  #script_editor #code_editor {
+    font-size: 14px; }
   #script_editor #output {
-    background: #25282d; }
+    background: #25282d;
+    font-size: 14px; }
 
 #tool_bar {
   background: #25282d;
@@ -525,14 +551,6 @@ QSlider {
 
 #trim_panel {
   background: #2c2f35; }
-  #trim_panel QLineEdit {
-    color: #aeb4bc;
-    padding: 3px;
-    border-radius: 2px;
-    background: #1e2024;
-    border: 1px solid #1e2024; }
-    #trim_panel QLineEdit:focus {
-      border-color: #8f7612; }
   #trim_panel #butttons {
     background: #25282d; }
   #trim_panel #controls, #trim_panel #node_tab {

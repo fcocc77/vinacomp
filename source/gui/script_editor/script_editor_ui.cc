@@ -1,20 +1,22 @@
-#include <script_editor.h>
+#include <knob_integer.h>
 #include <qt.h>
+#include <script_editor.h>
 #include <slider.h>
+#include <tools.h>
 
 void script_editor::setup_ui()
 {
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->setMargin(0);
 
-    QWidget *tools = tools_setup_ui();
+    QWidget *_tools = tools_setup_ui();
 
     output = new QTextEdit();
     output->setReadOnly(true);
     output->setObjectName("output");
     QCodeEditor *input = code_editor();
 
-    layout->addWidget(tools);
+    layout->addWidget(_tools);
 
     QSplitter *splitter = new QSplitter();
     splitter->setOrientation(Qt::Vertical);
@@ -29,36 +31,37 @@ void script_editor::setup_ui()
 
 QWidget *script_editor::tools_setup_ui()
 {
-    QWidget *widget = new QWidget();
-    widget->setObjectName("tools");
-    QHBoxLayout *layout = new QHBoxLayout();
-    widget->setLayout(layout);
+    tools *_tools = new tools();
 
-    int icon_size = 20;
+    action *clear_action = new action("Clear", "", "clear_script");
+    action *run_script_action = new action("Run Script", "", "run_script");
 
-    QPushButton *clear = new QPushButton();
-    connect(clear, &QPushButton::clicked, this, [this]() { output->clear(); });
-    qt::set_icon(clear, "clear_script_a", icon_size);
-    layout->addWidget(clear);
+    clear_action->connect_to(this, [=]() { output->clear(); });
+    run_script_action->connect_to(this, [=]() { run_script(); });
 
-    QPushButton *run = new QPushButton();
-    qt::set_icon(run, "run_script_a", icon_size);
-    connect(run, &QPushButton::clicked, this, [this]() { run_script(); });
-    layout->addWidget(run);
+    knob_integer *font_size_slider = new knob_integer(1, 100, 14);
+    connect(font_size_slider, &knob_integer::changed, this, [=](int value) {
+        QString style = "font-size: " + QString::number(value) + "px;";
+        output->setStyleSheet(style);
+        editor->setStyleSheet(style);
+    });
+    font_size_slider->set_animatable(false);
+    font_size_slider->set_init_space(100, "Font Size");
 
-    layout->addStretch();
+    _tools->add_action(clear_action);
+    _tools->add_action(run_script_action);
 
-    QLabel *font_size_label = new QLabel("Font Size:");
-    layout->addWidget(font_size_label);
-    slider *font_size = new slider();
-    layout->addWidget(font_size);
+    _tools->add_stretch();
 
-    return widget;
+    _tools->add_widget(font_size_slider);
+
+    return _tools;
 }
 
 QCodeEditor *script_editor::code_editor()
 {
     editor = new QCodeEditor();
+    editor->setObjectName("code_editor");
 
     QPythonHighlighter *python_highlighter = new QPythonHighlighter();
     editor->setHighlighter(python_highlighter);

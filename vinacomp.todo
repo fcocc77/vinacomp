@@ -19,8 +19,8 @@ gui__curve_view:
 	☐ el transform_box esta repetido, integrar el que esta en gl_view
 gui__script_editor:
 	☐ boton de arrastre para poder arrastrar el script como acceso directo a una barra de herramienta en la parte inferior del node graph
-	☐ cambiar la barra por la propia 'tools'
-	☐ que funcione el font-size
+	✔ cambiar la barra por la propia 'tools' @done(2021-04-06 22:15) @project(gui__script_editor)
+	✔ que funcione el font-size @done(2021-04-06 22:15) @project(gui__script_editor)
 	☐ cambiar el color del qtextedit a los colores de la interface
 gui__viewer_controls:
 	✔ cambiar la barra por la propia 'tools' @done(2021-02-17 16:43) @project(gui__viewer_controls)
