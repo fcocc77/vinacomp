@@ -62,6 +62,7 @@ private:
 
     // Cursor
     bool dragging_cursor;
+    bool player_cursor_visible;
     bool is_over_cursor(QPoint cursor_position);
     void cursor_press(QPoint cursor_position);
     void cursor_move(QPoint cursor_position);
@@ -123,6 +124,7 @@ public:
     void create_curve(QString name, QColor color, QList<anim::key_data> keys);
     void delete_curve(QString node_name);
     void clear();
+    void set_cursor_visibility(bool visible);
     //
 
 protected:

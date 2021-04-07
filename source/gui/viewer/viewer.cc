@@ -18,6 +18,7 @@ viewer::viewer(QString _name, project_struct *_project, renderer *__renderer,
     , global_range(true)
     , render_pause(false)
     , visible_channel(-1)
+    , playing(false)
 {
     rdata = new render_data;
     rdata->width = 1920;
@@ -72,9 +73,11 @@ void viewer::set_frame(int frame)
     project->frame = frame;
     _time_line->go_to_frame(frame);
 
-    static_cast<vinacomp *>(_vinacomp)
-        ->get_properties()
-        ->update_animated_knobs();
+    vinacomp *vina = static_cast<vinacomp*>(_vinacomp);
+    vina->get_properties()->update_animated_knobs();
+
+    if (!playing)
+        vina->get_curve_editor()->get_curve_view()->update();
 
     update_render();
 }

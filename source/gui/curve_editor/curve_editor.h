@@ -38,6 +38,12 @@ public:
 
     void update_from_trim_panel(trim_panel *_trim_panel);
     void delete_curve(QString node_name);
+    inline curve_view *get_curve_view() const;
 };
+
+inline curve_view *curve_editor::get_curve_view() const
+{
+    return view;
+}
 
 #endif // CURVE_EDITOR_HPP

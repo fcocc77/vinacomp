@@ -47,6 +47,7 @@ private:
     bool render_pause;
     int visible_channel;
     QString current_layer;
+    bool playing;
 
     //
     void setup_ui();

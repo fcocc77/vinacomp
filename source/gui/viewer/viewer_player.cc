@@ -1,4 +1,5 @@
 #include <viewer.h>
+#include <vinacomp.h>
 
 void viewer::player_init()
 {
@@ -46,6 +47,12 @@ void viewer::play_finished()
 void viewer::play(QTimeLine::Direction direction)
 {
     stop();
+    playing = true;
+
+    static_cast<vinacomp *>(_vinacomp)
+        ->get_curve_editor()
+        ->get_curve_view()
+        ->set_cursor_visibility(false);
 
     int end_frame, total_frames, start_frame;
     auto frame_range = get_current_range();
@@ -85,6 +92,13 @@ void viewer::play(QTimeLine::Direction direction)
 
 void viewer::stop()
 {
+    playing = false;
+
+    static_cast<vinacomp *>(_vinacomp)
+        ->get_curve_editor()
+        ->get_curve_view()
+        ->set_cursor_visibility(true);
+
     play_forward_action->set_visible(true);
     play_backward_action->set_visible(true);
     stop_forward_action->set_visible(false);

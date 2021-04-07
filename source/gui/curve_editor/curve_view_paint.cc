@@ -277,6 +277,9 @@ void curve_view::draw_transform_box()
 
 void curve_view::draw_cursor()
 {
+    if (!player_cursor_visible)
+        return;
+
     int frame = project->frame;
 
     float x = float(frame);
