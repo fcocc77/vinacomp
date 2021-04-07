@@ -92,7 +92,7 @@ void curve_view::create_curve(QString name, QColor color,
         key_frame *_key = _curve->add_key(i, position, color);
 
         _key->set_left_angle(kdata.left_angle);
-        _key->set_left_angle(kdata.right_angle);
+        _key->set_right_angle(kdata.right_angle);
         _key->set_interpolation(vina::custom, vina::custom);
     }
 
