@@ -6,11 +6,12 @@
 #include <action.h>
 #include <animation.h>
 #include <curve_key_frame.h>
+#include <curve_curve.h>
 #include <gl_view.h>
 
 class curve_view : public gl_view
 {
-
+    Q_OBJECT
 private:
     QPoint click_position;
 
@@ -22,7 +23,7 @@ private:
     //
 
     // Key Frames
-    QMap<QString, QList<key_frame *>> curves;
+    QMap<QString, curve *> curves;
     bool text_visible;
 
     bool is_point_in_rectangle(QPointF point, QLineF rectangle);
@@ -118,6 +119,9 @@ protected:
     void mousePressEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
     void cursor_move_event(QPoint position) override;
+
+signals:
+    void change_curve(curve *_curve);
 };
 
 #endif // CURVE_VIEW_HPP

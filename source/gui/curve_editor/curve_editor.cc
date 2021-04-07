@@ -5,13 +5,6 @@
 curve_editor ::curve_editor()
 {
     this->setObjectName("curve_editor");
-    setup_ui();
-}
-
-curve_editor ::~curve_editor() {}
-
-void curve_editor::setup_ui()
-{
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->setMargin(0);
     layout->setSpacing(0);
@@ -21,6 +14,8 @@ void curve_editor::setup_ui()
     layout->addWidget(knobs_tree);
 
     view = new curve_view();
+    connect(view, &curve_view::change_curve, this,
+            [=](curve *_curve) { update_param(_curve); });
     view->setObjectName("graphics_view");
 
     QLineEdit *expression_curve = new QLineEdit();
@@ -52,7 +47,21 @@ void curve_editor::setup_ui()
 
     layout->addWidget(view_widget);
     //
-    //
+}
+
+curve_editor ::~curve_editor() {}
+
+void curve_editor::update_param(curve *_curve)
+{
+    QStringList fullname = _curve->get_name().split('.');
+    QString node_name = fullname[0];
+    QString param_name = fullname[1];
+
+    knob *_knob = get_knob(node_name, param_name);
+    if (!_knob)
+        return;
+
+    _knob->set_param_value(anim::curve_to_string(_curve));
 }
 
 QTreeWidget *curve_editor::knobs_tree_setup_ui()
@@ -75,13 +84,8 @@ QTreeWidget *curve_editor::knobs_tree_setup_ui()
         QString node_name = parent->text(0);
         QString param_name = item->text(0);
 
-        trim_panel *panel = panels.value(node_name);
-
-        knob *_knob = nullptr;
-        if (panel)
-            _knob = panel->get_knob(param_name);
-
         QString curve;
+        knob *_knob = get_knob(node_name, param_name);
         if (_knob)
             curve = _knob->get_param_value().toString();
 
@@ -89,6 +93,17 @@ QTreeWidget *curve_editor::knobs_tree_setup_ui()
     });
 
     return tree;
+}
+
+knob *curve_editor::get_knob(QString node_name, QString param_name)
+{
+    trim_panel *panel = panels.value(node_name);
+
+    knob *_knob = nullptr;
+    if (panel)
+        _knob = panel->get_knob(param_name);
+
+    return _knob;
 }
 
 QTreeWidgetItem *curve_editor::get_node_item(QString item_name) const
@@ -170,7 +185,6 @@ void curve_editor::update_from_trim_panel(trim_panel *panel)
         if (!_knob->is_animated())
             continue;
 
-
         QString param_name = _knob->get_name();
 
         QString dimension = "r";
@@ -186,7 +200,8 @@ void curve_editor::update_from_trim_panel(trim_panel *panel)
 void curve_editor::show_curve(QString node_name, QString param_name,
                               QString curve)
 {
-    view->create_curve(node_name, Qt::cyan, anim::convert_curve(curve));
+    QString curve_name = node_name + '.' + param_name;
+    view->create_curve(curve_name, Qt::cyan, anim::convert_curve(curve));
 }
 
 void curve_editor::delete_curve(QString node_name)

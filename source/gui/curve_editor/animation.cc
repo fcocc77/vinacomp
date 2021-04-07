@@ -120,3 +120,23 @@ QList<anim::key_data> anim::convert_curve(QString curve)
 }
 
 QString anim::update_curve(QString curve, float value, int frame) {}
+
+QString anim::curve_to_string(curve *_curve)
+{
+    QString str_curve;
+    for (key_frame *key : _curve->get_keys())
+    {
+        float left_angle = key->get_left_angle();
+        float right_angle = key->get_right_angle();
+
+        QString handler;
+        if (left_angle != 0 && right_angle != 0)
+            handler = " l" + QString::number(left_angle) + " r" +
+                      QString::number(right_angle);
+
+        str_curve += 'f' + QString::number((int)key->x()) + ' ' +
+                     QString::number(key->y()) + handler + ' ';
+    }
+
+    return str_curve;
+}

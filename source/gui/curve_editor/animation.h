@@ -5,6 +5,8 @@
 #include <QList>
 #include <QString>
 
+#include <curve_curve.h>
+
 namespace anim
 {
 struct key_data
@@ -21,6 +23,8 @@ QString update_curve(QString curve, float value, int frame);
 
 key_data get_keyframe(QString frame_string);
 QList<key_data> convert_curve(QString curve);
+
+QString curve_to_string(curve *_curve);
 
 }; // namespace anim
 

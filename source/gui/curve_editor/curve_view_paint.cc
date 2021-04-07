@@ -113,8 +113,9 @@ void curve_view::draw_bezier(key_frame *src_key, key_frame *dst_key)
 
 void curve_view::draw_curve()
 {
-    for (auto keys : curves)
+    for (curve *_curve : curves)
     {
+        auto keys = _curve->get_keys();
         aa_enable(true);
 
         // Infinite Lines

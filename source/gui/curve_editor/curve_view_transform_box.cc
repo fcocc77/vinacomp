@@ -4,8 +4,8 @@ QList<key_frame *> curve_view::get_selected_keys()
 {
     QList<key_frame *> selected;
 
-    for (auto keys : curves)
-        for (key_frame *key : keys)
+    for (curve *_curve : curves)
+        for (key_frame *key : _curve->get_keys())
             if (key->selected())
                 selected.push_back(key);
 
@@ -39,9 +39,9 @@ void curve_view::selector_move(QPoint cursor_position)
         return;
 
     selector.setP2(get_coords(cursor_position));
-    for (auto keys : curves)
+    for (curve *_curve : curves)
     {
-        for (key_frame *key : keys)
+        for (key_frame *key : _curve->get_keys())
         {
             if (is_point_in_rectangle(key->pos(), selector))
                 key->select(true);
@@ -86,19 +86,6 @@ QLineF curve_view::get_rectangle_of_keyframes(QList<key_frame *> keys)
 
 QString curve_view::get_transform_action(QPoint cursor_position)
 {
-    // Obtiene la accion del 'transform_box' a partir del cursor del mouse
-    bool is_above = false;
-    auto above = [&](QPointF point, Qt::CursorShape cursor, QPointF point2 = {}) {
-        if (cursor_above_rect(cursor_position, point, point2))
-        {
-            this->setCursor(cursor);
-            is_above = true;
-            return true;
-        }
-
-        return false;
-    };
-
     QPointF bottom_left = transform_box.p1();
     QPointF top_right = transform_box.p2();
     QPointF bottom_right = {top_right.x(), bottom_left.y()};
@@ -250,7 +237,6 @@ QLineF curve_view::get_limit_coord(QString orientation)
     };
 
     auto last_key_position = [=](float multiply_section) {
-        bool overlap = false;
         float multiply = 1;
 
         // encuentra la ultima posicion de cada key frames antes

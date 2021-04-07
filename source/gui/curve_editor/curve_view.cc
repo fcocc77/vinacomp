@@ -2,7 +2,8 @@
 #include <qt.h>
 
 curve_view::curve_view()
-    : dragging(false)
+    : drag_key_frame(nullptr)
+    , dragging(false)
     , text_visible(false)
     , transform_box_visible(false)
     , unselected_keys(false)
@@ -36,8 +37,8 @@ curve_view::~curve_view() {}
 
 void curve_view::select_all_key_frames()
 {
-    for (auto keys : curves)
-        for (key_frame *key : keys)
+    for (curve *_curve : curves)
+        for (key_frame *key : _curve->get_keys())
             key->select(true);
 
     show_transform_box();
@@ -49,8 +50,8 @@ void curve_view::fit_viewport_to_keyframes()
     int padding_percent = 20;
 
     QList<key_frame *> all_key_frames;
-    for (auto keys : curves)
-        for (key_frame *key : keys)
+    for (curve *_curve : curves)
+        for (key_frame *key : _curve->get_keys())
             all_key_frames.push_back(key);
 
     auto selected = get_selected_keys();
@@ -108,6 +109,9 @@ void curve_view::mousePressEvent(QMouseEvent *event)
 
 void curve_view::mouseReleaseEvent(QMouseEvent *event)
 {
+    if (!transforming && drag_key_frame)
+        change_curve(curves.value(drag_key_frame->get_curve()));
+
     if (selecting)
         show_transform_box();
 
@@ -116,6 +120,7 @@ void curve_view::mouseReleaseEvent(QMouseEvent *event)
     dragging = false;
     selecting = false;
     transforming = false;
+    drag_key_frame = nullptr;
 
     update();
 

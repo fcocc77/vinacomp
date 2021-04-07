@@ -76,24 +76,27 @@ QLineF curve_view::get_handler_points(key_frame *key, bool infinite)
 void curve_view::create_curve(QString name, QColor color,
                               QList<anim::key_data> keys)
 {
-    QList<key_frame *> _keys;
+    if (keys.empty())
+        return;
+
+    if (curves.contains(name))
+        return;
+
+    curve *_curve = new curve(name);
 
     for (int i = 0; i < keys.count(); i++)
     {
         auto kdata = keys[i];
         QPointF position = {(float)kdata.frame, kdata.value};
 
-        key_frame *_key = new key_frame(name, i, position, color);
+        key_frame *_key = _curve->add_key(i, position, color);
 
         _key->set_left_angle(kdata.left_angle);
         _key->set_left_angle(kdata.right_angle);
         _key->set_interpolation(vina::custom, vina::custom);
-
-        _keys.push_back(_key);
     }
 
-    if (!_keys.empty())
-        curves.insert(name, _keys);
+    curves.insert(name, _curve);
 
     update();
 }
@@ -103,10 +106,7 @@ void curve_view::delete_curve(QString node_name)
     if (!curves.contains(node_name))
         return;
 
-    auto curve = curves.value(node_name);
-    for (key_frame *key : curve)
-        delete key;
-
+    delete curves.value(node_name);
     curves.remove(node_name);
 
     update();
@@ -116,20 +116,18 @@ key_frame *curve_view::get_previous_key(key_frame *key)
 {
     QString curve_name = key->get_curve();
     if (!curves.contains(curve_name))
-        return NULL;
+        return nullptr;
 
-    auto keys = curves.value(curve_name);
-    return keys.value(key->get_index() - 1);
+    return curves.value(curve_name)->get_previous_key(key);
 }
 
 key_frame *curve_view::get_next_key(key_frame *key)
 {
     QString curve_name = key->get_curve();
     if (!curves.contains(curve_name))
-        return NULL;
+        return nullptr;
 
-    auto keys = curves.value(curve_name);
-    return keys.value(key->get_index() + 1);
+    return curves.value(curve_name)->get_next_key(key);
 }
 
 void curve_view::set_interpolation_to_selected(int number)
@@ -184,10 +182,10 @@ void curve_view::key_press(QPoint cursor_position)
     // alguno de los 2 puntos del manejador, los asigna a las variables de
     // 'drag'
 
-    for (auto curve_name : curves.keys())
+    for (QString curve_name : curves.keys())
     {
-        auto keys = curves[curve_name];
-        for (key_frame *key : keys)
+        curve *_curve = curves[curve_name];
+        for (key_frame *key : _curve->get_keys())
         {
             QLineF handler = get_handler_points(key);
 
@@ -229,8 +227,8 @@ void curve_view::key_move(QPoint cursor_position)
 
     // cambia el cursor si esta sobre algun key frame
     if (!transform_box_visible)
-        for (auto keys : curves)
-            for (key_frame *key : keys)
+        for (curve *_curve : curves)
+            for (key_frame *key : _curve->get_keys())
                 if (cursor_above_point(cursor_position, key->pos()))
                     this->setCursor(Qt::CrossCursor);
     //
