@@ -110,6 +110,7 @@ public:
     // Key Frames
     void create_curve(QString name, QColor color, QList<anim::key_data> keys);
     void delete_curve(QString node_name);
+    void clear();
     //
 
 protected:

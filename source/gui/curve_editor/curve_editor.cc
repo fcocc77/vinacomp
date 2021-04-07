@@ -201,6 +201,8 @@ void curve_editor::show_curve(QString node_name, QString param_name,
                               QString curve)
 {
     QString curve_name = node_name + '.' + param_name;
+
+    view->clear();
     view->create_curve(curve_name, Qt::cyan, anim::convert_curve(curve));
 }
 

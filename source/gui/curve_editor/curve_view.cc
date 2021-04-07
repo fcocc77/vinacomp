@@ -1,6 +1,5 @@
 #include <curve_view.h>
 #include <qt.h>
-
 curve_view::curve_view()
     : drag_key_frame(nullptr)
     , dragging(false)
@@ -142,4 +141,15 @@ void curve_view::cursor_move_event(QPoint position)
     }
 
     gl_view::cursor_move_event(position);
+}
+
+void curve_view::clear()
+{
+    for (curve *_curve : curves)
+        delete _curve;
+
+    curves.clear();
+    transform_box_visible = false;
+
+    update();
 }
