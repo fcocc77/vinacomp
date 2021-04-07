@@ -2,7 +2,7 @@
 #include <curve_editor.h>
 #include <tools.h>
 
-curve_editor ::curve_editor()
+curve_editor ::curve_editor(project_struct *project)
 {
     this->setObjectName("curve_editor");
     QHBoxLayout *layout = new QHBoxLayout(this);
@@ -13,7 +13,7 @@ curve_editor ::curve_editor()
 
     layout->addWidget(knobs_tree);
 
-    view = new curve_view();
+    view = new curve_view(project);
     connect(view, &curve_view::change_curve, this,
             [=](curve *_curve) { update_param(_curve); });
     view->setObjectName("graphics_view");

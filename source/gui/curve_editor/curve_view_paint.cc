@@ -17,6 +17,7 @@ void curve_view::paintGL()
     draw_curve();
     draw_selector();
     draw_transform_box();
+    draw_cursor();
 }
 
 void curve_view::draw_grid()
@@ -272,4 +273,28 @@ void curve_view::draw_transform_box()
 
     //
     //
+}
+
+void curve_view::draw_cursor()
+{
+    int frame = project->frame;
+
+    float x = float(frame);
+
+    QColor color = palette["base"].toString();
+    float top_y = get_coordsf({0, 0}).y();
+    float mid_3 = get_coordsf({0, (float)height() - 30}).y();
+    float mid_2 = get_coordsf({0, (float)height() - 20}).y();
+    float mid_1 = get_coordsf({0, (float)height() - 12}).y();
+    float bottom_y = get_coordsf({0, (float)height()}).y();
+
+    QPointF top = {x, top_y};
+    QPointF bottom = {x, bottom_y};
+
+    draw_triangle(top, 7, color);
+    draw_triangle(bottom, 7, color, false, 180);
+
+    draw_line(top, {x, mid_3}, color);
+    draw_line(bottom, {x, mid_1}, color);
+    draw_text(QString::number(frame), color, {x, mid_2});
 }

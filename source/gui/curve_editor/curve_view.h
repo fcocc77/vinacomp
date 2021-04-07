@@ -8,12 +8,14 @@
 #include <curve_key_frame.h>
 #include <curve_curve.h>
 #include <gl_view.h>
+#include <project_struct.h>
 
 class curve_view : public gl_view
 {
     Q_OBJECT
 private:
     QPoint click_position;
+    project_struct *project;
 
     // Drag KeyFrame
     int drag_handler;
@@ -53,6 +55,16 @@ private:
     void draw_bezier(key_frame *src_key, key_frame *dst_key);
     void draw_selector();
     void draw_transform_box();
+    void draw_cursor();
+    //
+    //
+    //
+
+    // Cursor
+    bool dragging_cursor;
+    bool is_over_cursor(QPoint cursor_position);
+    void cursor_press(QPoint cursor_position);
+    void cursor_move(QPoint cursor_position);
     //
     //
     //
@@ -93,7 +105,7 @@ private:
     //
 
 public:
-    curve_view(/* args */);
+    curve_view(project_struct *project);
     ~curve_view();
 
     // Acciones

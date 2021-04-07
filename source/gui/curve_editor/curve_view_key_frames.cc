@@ -1,5 +1,5 @@
-#include <curve_view.h>
 #include <curve_utils.h>
+#include <curve_view.h>
 #include <vinacomp_namespace.h>
 
 QLineF curve_view::get_handler_points(key_frame *key, bool infinite)
@@ -234,69 +234,71 @@ void curve_view::key_move(QPoint cursor_position)
     //
     //
 
-    if (dragging)
+    if (!dragging)
+        return;
+
+    this->setCursor(Qt::CrossCursor);
+
+    key_frame *key = drag_key_frame;
+
+    if (drag_handler == 1)
     {
-        key_frame *key = drag_key_frame;
+        float angle =
+            90 - get_angle_two_points(get_coords(cursor_position), key->pos());
 
-        if (drag_handler == 1)
-        {
-            float angle = 90 - get_angle_two_points(get_coords(cursor_position),
-                                                    key->pos());
+        // Limitacion de handler 1 a 90 grados
+        if (angle >= 90 and angle < 180)
+            angle = 89.9;
+        else if (angle > 180)
+            angle = -89.9;
+        //
+        //
 
-            // Limitacion de handler 1 a 90 grados
-            if (angle >= 90 and angle < 180)
-                angle = 89.9;
-            else if (angle > 180)
-                angle = -89.9;
-            //
-            //
-
-            key->set_left_angle(angle);
-            if (!key->is_broken())
-                key->set_right_angle(-angle);
-        }
-        else if (drag_handler == 2)
-        {
-            float angle = 90 + get_angle_two_points(get_coords(cursor_position),
-                                                    key->pos());
-
-            // Limitacion de handler 2 a 90 grados
-            if (angle >= 90 and angle < 180)
-                angle = 89.9;
-            else if (angle > 180)
-                angle = -89.9;
-
-            key->set_right_angle(angle);
-            if (!key->is_broken())
-                key->set_left_angle(-angle);
-        }
-        else
-        {
-            QPointF coords =
-                get_coords(cursor_position) -
-                (get_coords(click_position) - key->get_last_position());
-
-            // limitar posicion al key_frame anterior y siguiente
-            key_frame *previous_key = get_previous_key(key);
-            if (previous_key)
-            {
-                if (coords.x() < previous_key->x())
-                    coords.setX(previous_key->x());
-            }
-
-            key_frame *next_key = get_next_key(key);
-            if (next_key)
-            {
-                if (coords.x() > next_key->x())
-                    coords.setX(next_key->x());
-            }
-            //
-            //
-
-            key->set_pos(coords);
-            orient_linear_handler(key);
-        }
-
-        update();
+        key->set_left_angle(angle);
+        if (!key->is_broken())
+            key->set_right_angle(-angle);
     }
+    else if (drag_handler == 2)
+    {
+        float angle =
+            90 + get_angle_two_points(get_coords(cursor_position), key->pos());
+
+        // Limitacion de handler 2 a 90 grados
+        if (angle >= 90 and angle < 180)
+            angle = 89.9;
+        else if (angle > 180)
+            angle = -89.9;
+
+        key->set_right_angle(angle);
+        if (!key->is_broken())
+            key->set_left_angle(-angle);
+    }
+    else
+    {
+        QPointF coords =
+            get_coords(cursor_position) -
+            (get_coords(click_position) - key->get_last_position());
+
+        // limitar posicion al key_frame anterior y siguiente
+        key_frame *previous_key = get_previous_key(key);
+        if (previous_key)
+        {
+            if (coords.x() < previous_key->x())
+                coords.setX(previous_key->x());
+        }
+
+        key_frame *next_key = get_next_key(key);
+        if (next_key)
+        {
+            if (coords.x() > next_key->x())
+                coords.setX(next_key->x());
+        }
+        //
+        //
+
+        key->set_pos(coords);
+        orient_linear_handler(key);
+    }
+
+    update();
 }

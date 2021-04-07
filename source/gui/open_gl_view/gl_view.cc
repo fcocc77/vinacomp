@@ -1,5 +1,6 @@
 #include <gl_view.h>
 #include <qt.h>
+#include <util.h>
 
 #include <math.h>
 
@@ -13,6 +14,8 @@ gl_view::gl_view(bool _lock_scale)
 {
     this->setMouseTracking(true);
     this->setTabletTracking(true);
+
+    palette = jread("stylesheet/palette.json");
 
     set_default();
 }

@@ -32,8 +32,6 @@ time_line::time_line(QWidget *_parent, QLineEdit *_frame_edit, QLineEdit *_input
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     this->setMinimumHeight(50);
 
-    palette = jread("stylesheet/palette.json");
-
     fit_to_range(first_frame, last_frame);
 
     action *fit_to_range_action = new action("Fit to Range", "F");

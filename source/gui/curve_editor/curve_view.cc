@@ -1,9 +1,12 @@
 #include <curve_view.h>
 #include <qt.h>
-curve_view::curve_view()
-    : drag_key_frame(nullptr)
+
+curve_view::curve_view(project_struct *_project)
+    : project(_project)
+    , drag_key_frame(nullptr)
     , dragging(false)
     , text_visible(false)
+    , dragging_cursor(false)
     , transform_box_visible(false)
     , unselected_keys(false)
     , selecting(false)
@@ -84,13 +87,16 @@ void curve_view::mousePressEvent(QMouseEvent *event)
     if (!qt::alt() && event->button() == Qt::LeftButton)
     {
         text_visible = false;
+
         transform_box_press(event->pos());
+        cursor_press(event->pos());
+
         if (!transforming)
         {
             transform_box_visible = false;
             key_press(event->pos());
 
-            if (!dragging)
+            if (!dragging && !dragging_cursor)
             {
                 selecting = true;
                 QPointF coords = get_coords(event->pos());
@@ -120,6 +126,9 @@ void curve_view::mouseReleaseEvent(QMouseEvent *event)
     selecting = false;
     transforming = false;
     drag_key_frame = nullptr;
+    dragging_cursor = false;
+
+    this->setCursor(Qt::ArrowCursor);
 
     update();
 
@@ -133,6 +142,7 @@ void curve_view::cursor_move_event(QPoint position)
     if (!qt::alt())
     {
         transform_box_move(position);
+        cursor_move(position);
         if (!transforming)
         {
             key_move(position);

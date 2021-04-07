@@ -30,7 +30,6 @@ private:
 
     float top_y, mid_y1, mid_y2, number_y;
 
-    QJsonObject palette;
     QWidget *parent;
 
     void fit_switch();

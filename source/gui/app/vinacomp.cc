@@ -30,7 +30,7 @@ void vinacomp::setup_ui()
     _properties = new properties(this);
     _node_graph = new node_graph(this, project, _properties);
     _script_editor = new script_editor(project_old, _node_graph);
-    _curve_editor = new curve_editor();
+    _curve_editor = new curve_editor(project);
     _settings = new settings();
     _project_settings = new project_settings(this);
 

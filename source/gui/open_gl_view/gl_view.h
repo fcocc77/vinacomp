@@ -5,6 +5,7 @@
 #include <QOpenGLFunctions>
 #include <QOpenGLWidget>
 #include <QPainter>
+#include <QJsonObject>
 
 class gl_view : public QOpenGLWidget, public QOpenGLFunctions
 {
@@ -73,6 +74,8 @@ public:
     float get_angle_two_points(QPointF a, QPointF b) const;
 
 protected:
+    QJsonObject palette;
+
     void paintGL() override;
     void resizeGL(int w, int h) override;
 

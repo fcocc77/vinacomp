@@ -11,6 +11,7 @@
 
 #include <curve_view.h>
 #include <trim_panel.h>
+#include <project_struct.h>
 
 class curve_editor : public QWidget
 {
@@ -32,7 +33,7 @@ private:
     knob *get_knob(QString node_name, QString param_name);
 
 public:
-    curve_editor();
+    curve_editor(project_struct *project);
     ~curve_editor();
 
     void update_from_trim_panel(trim_panel *_trim_panel);
