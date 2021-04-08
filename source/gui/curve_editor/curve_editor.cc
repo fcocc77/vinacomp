@@ -143,10 +143,20 @@ void curve_editor::delete_node_item(QString node_name)
     panels.remove(node_name);
 }
 
-void curve_editor::delete_curve(QString node_name)
+void curve_editor::delete_panel(trim_panel *panel)
 {
+    QString node_name = panel->get_name();
     delete_node_item(node_name);
-    // view->delete_curve(node_name);
+
+    for (QString key : panel->get_knobs()->keys())
+    {
+        knob *_knob = panel->get_knobs()->value(key);
+        if (!_knob->is_animated())
+            continue;
+
+        QString curve_name = node_name + '.' + _knob->get_name();
+        view->delete_curve(curve_name);
+    }
 }
 
 void curve_editor::update_viewers(int frame)

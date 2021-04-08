@@ -114,7 +114,7 @@ void properties::close_trim_panel(QString panel_name)
     _trim_panel->setParent(0);
 
     auto _curve_editor = static_cast<vinacomp *>(_vinacomp)->get_curve_editor();
-    _curve_editor->delete_curve(panel_name);
+    _curve_editor->delete_panel(_trim_panel);
 
     update_viewers_handlers();
 }

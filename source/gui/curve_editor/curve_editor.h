@@ -32,7 +32,7 @@ public:
     ~curve_editor();
 
     void update_from_trim_panel(trim_panel *_trim_panel);
-    void delete_curve(QString node_name);
+    void delete_panel(trim_panel *panel);
     inline curve_view *get_curve_view() const;
 };
 
