@@ -1,9 +1,9 @@
 #include <animation.h>
 #include <curve_editor.h>
-#include <tools.h>
 #include <project_struct.h>
-#include <vinacomp.h>
+#include <tools.h>
 #include <viewer.h>
+#include <vinacomp.h>
 
 curve_editor ::curve_editor(QWidget *__vinacomp)
     : _vinacomp(__vinacomp)
@@ -13,17 +13,38 @@ curve_editor ::curve_editor(QWidget *__vinacomp)
     layout->setMargin(0);
     layout->setSpacing(0);
 
-    QTreeWidget *knobs_tree = knobs_tree_setup_ui();
+    // Curve Tree
+    knobs_tree = new curve_tree();
+
+    connect(knobs_tree, &curve_tree::outside_clicked, this,
+            [=]() { view->clear(); });
+
+    connect(knobs_tree, &curve_tree::clicked, this,
+            [=](QString node_name, QString param_name) {
+                QString curve;
+                knob *_knob = get_knob(node_name, param_name);
+                if (_knob)
+                    curve = _knob->get_param_value().toString();
+
+                show_curve(node_name, param_name, curve);
+            });
 
     layout->addWidget(knobs_tree);
+    // Curve Tree
 
+    // Curve View
     project_struct *project = static_cast<vinacomp *>(_vinacomp)->get_project();
+
     view = new curve_view(project);
+
     connect(view, &curve_view::change_curve, this,
             [=](curve *_curve) { update_param(_curve); });
+
     connect(view, &curve_view::change_frame, this,
             [=](int frame) { update_viewers(frame); });
+
     view->setObjectName("graphics_view");
+    // Curve View
 
     QLineEdit *expression_curve = new QLineEdit();
     QLabel *expression_result = new QLabel(" = 20");
@@ -71,37 +92,6 @@ void curve_editor::update_param(curve *_curve)
     _knob->set_param_value(anim::curve_to_string(_curve));
 }
 
-QTreeWidget *curve_editor::knobs_tree_setup_ui()
-{
-    tree = new QTreeWidget();
-    tree->setObjectName("knobs_tree");
-    tree->setMaximumWidth(300);
-    tree->setMinimumWidth(300);
-
-    tree->setHeaderHidden(true);
-
-    tree->setSelectionMode(QAbstractItemView::ExtendedSelection);
-    tree->setAlternatingRowColors(true);
-
-    connect(tree, &QTreeWidget::itemClicked, this, [=](QTreeWidgetItem *item) {
-        auto parent = item->parent();
-        if (!parent)
-            return;
-
-        QString node_name = parent->text(0);
-        QString param_name = item->text(0);
-
-        QString curve;
-        knob *_knob = get_knob(node_name, param_name);
-        if (_knob)
-            curve = _knob->get_param_value().toString();
-
-        show_curve(node_name, param_name, curve);
-    });
-
-    return tree;
-}
-
 knob *curve_editor::get_knob(QString node_name, QString param_name)
 {
     trim_panel *panel = panels.value(node_name);
@@ -111,72 +101,6 @@ knob *curve_editor::get_knob(QString node_name, QString param_name)
         _knob = panel->get_knob(param_name);
 
     return _knob;
-}
-
-QTreeWidgetItem *curve_editor::get_node_item(QString item_name) const
-{
-    auto items = tree->findItems(item_name, Qt::MatchExactly);
-    for (QTreeWidgetItem *item : items)
-        if (item->text(0) == item_name)
-            return item;
-
-    return nullptr;
-}
-
-QTreeWidgetItem *curve_editor::get_param_item(QTreeWidgetItem *node_item,
-                                              QString param_name) const
-{
-    for (int i = 0; i < node_item->childCount(); i++)
-    {
-        auto item = node_item->child(i);
-        if (item->text(0) == param_name)
-            return item;
-    }
-
-    return nullptr;
-}
-
-void curve_editor::add_item(QString node_name, QString param_name,
-                            QString dimension)
-{
-    QTreeWidgetItem *node_item = get_node_item(node_name);
-    if (!node_item)
-    {
-        node_item = new QTreeWidgetItem();
-        node_item->setText(0, node_name);
-
-        tree->addTopLevelItem(node_item);
-        node_item->setExpanded(true);
-    }
-
-    QTreeWidgetItem *param_item = get_param_item(node_item, param_name);
-    if (!param_item)
-    {
-        param_item = new QTreeWidgetItem(node_item);
-        param_item->setText(0, param_name);
-
-        node_item->addChild(param_item);
-        param_item->setExpanded(true);
-    }
-
-    // QTreeWidgetItem *dimension_item = new QTreeWidgetItem();
-    // dimension_item->setText(0, "x");
-
-    // param_item->addChild(dimension_item);
-}
-
-void curve_editor::delete_node_item(QString node_name)
-{
-    QTreeWidgetItem *node_item = get_node_item(node_name);
-    if (node_item)
-    {
-        tree->invisibleRootItem()->removeChild(node_item);
-
-        // al eliminar item 'delete', elimina todos los hijos (ya comprobado)
-        delete node_item;
-    }
-
-    panels.remove(node_name);
 }
 
 void curve_editor::update_from_trim_panel(trim_panel *panel)
@@ -196,7 +120,7 @@ void curve_editor::update_from_trim_panel(trim_panel *panel)
 
         QString dimension = "r";
 
-        this->add_item(node_name, param_name, dimension);
+        knobs_tree->add_item(node_name, param_name, dimension);
         animated = true;
     }
 
@@ -213,6 +137,12 @@ void curve_editor::show_curve(QString node_name, QString param_name,
     view->create_curve(curve_name, Qt::cyan, anim::convert_curve(curve));
 }
 
+void curve_editor::delete_node_item(QString node_name)
+{
+    knobs_tree->delete_item(node_name);
+    panels.remove(node_name);
+}
+
 void curve_editor::delete_curve(QString node_name)
 {
     delete_node_item(node_name);
@@ -221,7 +151,7 @@ void curve_editor::delete_curve(QString node_name)
 
 void curve_editor::update_viewers(int frame)
 {
-    auto viewers = static_cast<vinacomp*>(_vinacomp)->get_viewers();
+    auto viewers = static_cast<vinacomp *>(_vinacomp)->get_viewers();
     for (viewer *_viewer : *viewers)
         _viewer->get_time_line()->go_to_frame(frame, true);
 }
