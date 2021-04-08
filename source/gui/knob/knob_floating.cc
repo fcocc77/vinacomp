@@ -1,4 +1,5 @@
 #include <knob_floating.h>
+#include <animation.h>
 
 knob_floating::knob_floating(float min, float max, float default_value, bool _two_dimensional)
     : emmit_signal(true)
@@ -98,9 +99,13 @@ void knob_floating::set_animated(bool animated)
 void knob_floating::update_animated()
 {
     int frame = project->frame;
-    bool keyframe = frame == 30;
+
+    QString curve = get_param_value().toString();
+    bool keyframe = false;
+    float value = anim::get_value(curve, frame, &keyframe);
 
     qt::set_property(value_1_edit, "keyframe", keyframe);
+    set_value(value, 0, false);
 }
 
 void knob_floating::set_value_internal(float value, int dimension)

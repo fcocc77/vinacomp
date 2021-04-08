@@ -2,12 +2,15 @@
 #include <curve_utils.h>
 #include <util.h>
 
-float anim::get_value(QString curve, int frame)
+float anim::get_value(QString curve, int frame, bool *is_keyframe)
 {
     // Extraer el valor del frame, de la curva
     curve.remove(0, 1);
 
     QStringList frames = curve.split('f');
+
+    if (is_keyframe)
+        (*is_keyframe) = false;
 
     int next_index = -1;
     for (int i = 0; i < frames.count(); i++)
@@ -18,7 +21,11 @@ float anim::get_value(QString curve, int frame)
         // si el frame a buscar existe en un keyframe, retorna
         // inmediatamente el valor.
         if (frame == _frame)
-            return fdata[1].toInt();
+        {
+            if (is_keyframe)
+                (*is_keyframe) = true;
+            return fdata[1].toFloat();
+        }
         //
 
         // obtiene el index del siguiente keyframe

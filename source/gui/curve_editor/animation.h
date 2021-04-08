@@ -18,7 +18,7 @@ struct key_data
     bool broken;
 };
 
-float get_value(QString curve, int frame);
+float get_value(QString curve, int frame, bool *is_keyframe = nullptr);
 QString update_curve(QString curve, float value, int frame);
 
 key_data get_keyframe(QString frame_string);
