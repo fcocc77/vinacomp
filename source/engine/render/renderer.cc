@@ -179,8 +179,7 @@ void renderer::render(render_data _rdata)
     // para asegurarnos que el ultimo render que llego
     // se renderice, crea un id de render y guarda los datos
     // de render, y si el id del 'call back' del render no es
-    // igual, vuelve a renderizar hasta que el id sea el mismo y
-    // ahi retorna el resultado 'finished_render'
+    // igual, vuelve a renderizar hasta que el id sea el mismo
     render_id++;
     last_rdata = _rdata;
     //
@@ -197,11 +196,8 @@ void renderer::render(render_data _rdata)
 void renderer::thread_finished_render(int _render_id)
 {
     rendering = false;
-    if (render_id != _render_id)
-    {
-        render(last_rdata);
-        return;
-    }
-
     finished_render(*rdata_thread);
+
+    if (render_id != _render_id)
+        render(last_rdata);
 }
