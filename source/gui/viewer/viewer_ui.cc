@@ -176,7 +176,7 @@ QWidget *viewer::player_setup_ui()
     //
     //
     play_forward_action = new action("Play Forward", "", "play_arrow");
-    play_forward_action->connect_to(this, [this]() { play(QTimeLine::Forward); });
+    play_forward_action->connect_to(this, [this]() { play(vina::right); });
     //
     //
 
@@ -191,7 +191,7 @@ QWidget *viewer::player_setup_ui()
     //
     //
     play_backward_action = new action("Play Backward", "", "play_back");
-    play_backward_action->connect_to(this, [this]() { play(QTimeLine::Backward); });
+    play_backward_action->connect_to(this, [this]() { play(vina::left); });
     //
     //
 

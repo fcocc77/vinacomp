@@ -13,6 +13,9 @@ static const int custom = 4;
 //
 //
 
+static const int left = 0;
+static const int right = 1;
+
 } // namespace vina
 
 #endif // VINACOMP_NAMESPACE_HPP

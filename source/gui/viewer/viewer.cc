@@ -19,6 +19,7 @@ viewer::viewer(QString _name, project_struct *_project, renderer *__renderer,
     , render_pause(false)
     , visible_channel(-1)
     , playing(false)
+    , play_direction(vina::right)
 {
     rdata = new render_data;
     rdata->width = 1920;
@@ -34,11 +35,6 @@ viewer::viewer(QString _name, project_struct *_project, renderer *__renderer,
 
     setup_ui();
     player_init();
-
-    connect(qtime_line, &QTimeLine::frameChanged, this,
-            [=](int frame) { set_frame(frame); });
-
-    connect(qtime_line, &QTimeLine::finished, this, [=]() { play_finished(); });
 
     connect(_time_line, &time_line::frame_changed, this,
             [=](int frame) { set_frame(frame); });
@@ -102,11 +98,12 @@ void viewer::update_render(bool clear_init_image)
 void viewer::finished_render(render_data _rdata)
 {
     *rdata = _rdata;
-
     _viewer_gl->update();
 
     if (input_range_way == "input")
         set_frame_range(rdata->first_frame, rdata->last_frame);
+
+    playing_now();
 }
 
 void viewer::update_input_range()

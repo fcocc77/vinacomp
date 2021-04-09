@@ -8,13 +8,13 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include <QString>
-#include <QTimeLine>
 #include <QWidget>
 
 // Gui
 #include <combo_box.h>
 #include <time_line.h>
 #include <viewer_gl.h>
+#include <vinacomp_namespace.h>
 
 // Engine
 #include <project_struct.h>
@@ -92,10 +92,10 @@ private:
     combo_box *frame_rate_menu;
     combo_box *play_back_options;
     combo_box *range_way_menu;
-    QTimeLine *qtime_line;
+    int play_direction;
     void player_init();
-    void play(QTimeLine::Direction direction);
-    void play_finished();
+    void play(int direction);
+    void playing_now();
     void set_playing_option(QString option);
     void stop();
     void go_to_first_frame();

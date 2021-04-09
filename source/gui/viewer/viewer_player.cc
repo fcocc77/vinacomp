@@ -3,12 +3,6 @@
 
 void viewer::player_init()
 {
-    int interval = 1;
-
-    qtime_line = new QTimeLine(1000, this);
-    qtime_line->setUpdateInterval(interval);
-    qtime_line->setEasingCurve(QEasingCurve::Linear);
-
     frame_rate_menu->set_value(QString::number(frame_rate));
     play_back_options->set_value("repeat");
 }
@@ -18,76 +12,23 @@ void viewer::set_playing_option(QString option)
     playing_option = option;
 }
 
-void viewer::play_finished()
-{
-    if (playing_option == "bounce")
-    {
-        if (qtime_line->direction() == QTimeLine::Forward)
-            play(QTimeLine::Backward);
-        else
-            play(QTimeLine::Forward);
-    }
-    else if (playing_option == "repeat")
-    {
-        if (qtime_line->direction() == QTimeLine::Forward)
-        {
-            project->frame = get_current_range().first;
-            play(QTimeLine::Forward);
-        }
-        else
-        {
-            project->frame = get_current_range().second;
-            play(QTimeLine::Backward);
-        }
-    }
-    else
-        stop();
-}
-
-void viewer::play(QTimeLine::Direction direction)
+void viewer::play(int direction)
 {
     stop();
+
     playing = true;
+    play_direction = direction;
+    set_frame(project->frame);
 
     static_cast<vinacomp *>(_vinacomp)
         ->get_curve_editor()
         ->get_curve_view()
         ->set_cursor_visibility(false);
 
-    int end_frame, total_frames, start_frame;
-    auto frame_range = get_current_range();
-
-    // si el cursor esta fuera del rango, inicia con el primer cuadro del rango actual
-    if (project->frame > frame_range.second || project->frame < frame_range.first)
-        start_frame = frame_range.first;
-    else
-        start_frame = project->frame;
-    //
-
-    if (direction == QTimeLine::Forward)
-    {
-        end_frame = frame_range.second;
-        total_frames = end_frame - start_frame + 1;
-        qtime_line->setFrameRange(start_frame, end_frame);
-    }
-    else
-    {
-        end_frame = frame_range.first;
-        total_frames = start_frame - end_frame + 1;
-        qtime_line->setFrameRange(end_frame, start_frame);
-    }
-
     play_forward_action->set_visible(false);
     stop_forward_action->set_visible(true);
     play_backward_action->set_visible(false);
     stop_backward_action->set_visible(true);
-
-    int duration_ms = (total_frames * 1000) / frame_rate;
-
-    qtime_line->setDuration(duration_ms);
-    qtime_line->setDirection(direction);
-
-    qtime_line->start();
 }
 
 void viewer::stop()
@@ -103,7 +44,54 @@ void viewer::stop()
     play_backward_action->set_visible(true);
     stop_forward_action->set_visible(false);
     stop_backward_action->set_visible(false);
-    qtime_line->stop();
+}
+
+void viewer::playing_now()
+{
+    // acciones a seguir si es que esta en play
+
+    if (!playing)
+        return;
+
+    int frame = project->frame;
+
+    auto frame_range = get_current_range();
+    int _first_frame = frame_range.first;
+    int _last_frame = frame_range.second;
+
+    if (playing_option == "bounce")
+    {
+        if (frame >= _last_frame)
+            play_direction = vina::left;
+
+        if (frame <= _first_frame)
+            play_direction = vina::right;
+    }
+    else if (playing_option == "repeat")
+    {
+        if (frame >= _last_frame)
+            frame = _first_frame;
+        else if (frame <= _first_frame)
+            frame = _last_frame;
+    }
+    else if (playing_option == "stop")
+    {
+        if (frame >= _last_frame && play_direction == vina::right)
+        {
+            stop();
+            return;
+        }
+        else if (frame <= _first_frame && play_direction == vina::left)
+        {
+            stop();
+            return;
+        }
+    }
+
+    if (play_direction == vina::right)
+        set_frame(frame + 1);
+    else
+        set_frame(frame - 1);
 }
 
 pair<int, int> viewer::get_current_range() const
@@ -119,15 +107,11 @@ pair<int, int> viewer::get_current_range() const
 
 void viewer::go_to_first_frame()
 {
-    bool playing = qtime_line->state();
     stop();
 
     int start_frame = get_current_range().first;
     set_frame(start_frame);
     _time_line->go_to_frame(start_frame);
-
-    if (playing)
-        play(qtime_line->direction());
 }
 
 void viewer::go_to_last_frame()
