@@ -34,10 +34,10 @@ public:
     pair<int, int> get_frame_range(QString node_name) const;
     QString get_input_node(QString node_name, int input = 0) const;
 
-    void run_render(render_data *rdata);
+    void run_render(render_data *rdata, int render_id);
 
 signals:
-    void post_render();
+    void finished_render(int render_id);
 };
 
 class renderer : public QObject
@@ -48,17 +48,19 @@ class renderer : public QObject
 private:
     renderer_thread *_renderer_thread;
     bool rendering;
+    int render_id;
 
-    render_data *rdata;
+    render_data last_rdata;
+    render_data *rdata_thread;
 
 public:
     renderer(project_struct *project);
-    void render(render_data rdata);
 
-    void post_render();
+    void render(render_data rdata);
+    void thread_finished_render(int render_id);
 
 signals:
-    void run_render(render_data *rdata);
+    void thread_run_render(render_data *rdata, int render_id);
     void finished_render(render_data rdata);
 };
 

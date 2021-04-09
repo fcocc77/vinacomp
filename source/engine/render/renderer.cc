@@ -151,37 +151,57 @@ void renderer_thread::recursive_render(render_data *rdata)
     //
 }
 
-void renderer_thread::run_render(render_data *rdata)
+void renderer_thread::run_render(render_data *rdata, int render_id)
 {
     recursive_render(rdata);
-    post_render();
+    finished_render(render_id);
 }
 
 renderer::renderer(project_struct *project)
     : rendering(false)
+    , render_id(0)
+    , rdata_thread(new render_data)
 {
-    rdata = new render_data;
 
     _renderer_thread = new renderer_thread(project);
     _renderer_thread->moveToThread(&thread);
     thread.start();
 
-    connect(_renderer_thread, &renderer_thread::post_render, this, [=]() {
-        rendering = false;
-        finished_render(*rdata);
-    });
+    connect(_renderer_thread, &renderer_thread::finished_render, this,
+            &renderer::thread_finished_render);
 
-    connect(this, &renderer::run_render, _renderer_thread,
+    connect(this, &renderer::thread_run_render, _renderer_thread,
             &renderer_thread::run_render);
 }
 
 void renderer::render(render_data _rdata)
 {
+    // para asegurarnos que el ultimo render que llego
+    // se renderice, crea un id de render y guarda los datos
+    // de render, y si el id del 'call back' del render no es
+    // igual, vuelve a renderizar hasta que el id sea el mismo y
+    // ahi retorna el resultado 'finished_render'
+    render_id++;
+    last_rdata = _rdata;
+    //
+
     if (rendering)
         return;
 
     rendering = true;
-    *rdata = _rdata;
 
-    run_render(rdata);
+    *rdata_thread = last_rdata;
+    thread_run_render(rdata_thread, render_id);
+}
+
+void renderer::thread_finished_render(int _render_id)
+{
+    rendering = false;
+    if (render_id != _render_id)
+    {
+        render(last_rdata);
+        return;
+    }
+
+    finished_render(*rdata_thread);
 }
