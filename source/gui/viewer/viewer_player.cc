@@ -1,5 +1,6 @@
 #include <viewer.h>
 #include <vinacomp.h>
+#include <QTime>
 
 void viewer::player_init()
 {
@@ -46,12 +47,28 @@ void viewer::stop()
     stop_backward_action->set_visible(false);
 }
 
+void viewer::calculate_frame_rate()
+{
+    int current_time = QTime::currentTime().msecsSinceStartOfDay();
+
+    float elapsed = current_time - last_time;
+    int rate = round(1000.0 / elapsed);
+
+    last_time = current_time;
+
+    // !!!! hacer un promedio cada 5 frame y luego actualizar
+    // el 'frame_rate_menu'
+    frame_rate_menu->change_label(QString::number(rate) + " ftp");
+}
+
 void viewer::playing_now()
 {
     // acciones a seguir si es que esta en play
 
     if (!playing)
         return;
+
+    calculate_frame_rate();
 
     int frame = project->frame;
 

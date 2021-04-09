@@ -50,6 +50,7 @@ public:
     inline QVariant get_value() const;
     inline int count() const;
     inline void add_separator();
+    inline void change_label(QString label);
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;
@@ -58,6 +59,11 @@ signals:
     void changed(QVariant value, int index);
     void pre_open();
 };
+
+inline void combo_box::change_label(QString _label)
+{
+    label->setText(_label);
+}
 
 inline void combo_box::add_separator()
 {

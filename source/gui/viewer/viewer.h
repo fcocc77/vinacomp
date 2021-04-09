@@ -93,6 +93,8 @@ private:
     combo_box *play_back_options;
     combo_box *range_way_menu;
     int play_direction;
+    int last_time;
+    void calculate_frame_rate();
     void player_init();
     void play(int direction);
     void playing_now();
