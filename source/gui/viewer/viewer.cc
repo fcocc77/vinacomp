@@ -35,11 +35,13 @@ viewer::viewer(QString _name, project_struct *_project, renderer *__renderer,
     setup_ui();
     player_init();
 
-    connect(qtime_line, &QTimeLine::frameChanged, this, [=](int frame) { set_frame(frame); });
+    connect(qtime_line, &QTimeLine::frameChanged, this,
+            [=](int frame) { set_frame(frame); });
 
     connect(qtime_line, &QTimeLine::finished, this, [=]() { play_finished(); });
 
-    connect(_time_line, &time_line::frame_changed, this, [=](int frame) { set_frame(frame); });
+    connect(_time_line, &time_line::frame_changed, this,
+            [=](int frame) { set_frame(frame); });
 
     connect(_time_line, &time_line::in_out_changed, this,
             [=](int _input, int _output) { set_in_out(_input, _output); });
@@ -56,6 +58,9 @@ viewer::viewer(QString _name, project_struct *_project, renderer *__renderer,
         menu->show();
     });
 
+    connect(_renderer, &renderer::finished_render, this,
+            &viewer::finished_render);
+
     // renderiza el frame por primera vez
     current_layer = "main";
     update_render(true);
@@ -68,7 +73,7 @@ void viewer::set_frame(int frame)
     project->frame = frame;
     _time_line->go_to_frame(frame);
 
-    vinacomp *vina = static_cast<vinacomp*>(_vinacomp);
+    vinacomp *vina = static_cast<vinacomp *>(_vinacomp);
     vina->get_properties()->update_animated_knobs();
 
     if (!playing)
@@ -91,7 +96,13 @@ void viewer::update_render(bool clear_init_image)
     if (clear_init_image)
         rdata->image = cv::Mat::zeros(rdata->width, rdata->height, CV_8UC3);
 
-    _renderer->render(rdata);
+    _renderer->render(*rdata);
+}
+
+void viewer::finished_render(render_data _rdata)
+{
+    *rdata = _rdata;
+
     _viewer_gl->update();
 
     if (input_range_way == "input")
@@ -102,8 +113,9 @@ void viewer::update_input_range()
 {
     if (input_range_way == "global")
     {
-        auto frame_range =
-            static_cast<vinacomp *>(_vinacomp)->get_project_settings()->get_frame_range();
+        auto frame_range = static_cast<vinacomp *>(_vinacomp)
+                               ->get_project_settings()
+                               ->get_frame_range();
         set_frame_range(frame_range.first, frame_range.second);
         global_range = true;
     }
@@ -151,4 +163,3 @@ void viewer::set_in_out(int _input, int _output)
 
     _time_line->update_in_out(input, output);
 }
-

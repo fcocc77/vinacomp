@@ -130,6 +130,7 @@ public:
     inline viewer_gl *get_viewer_gl() const;
     inline time_line *get_time_line() const;
     void update_render(bool claer_init_image = false);
+    void finished_render(render_data rdata);
     void update_input_range();
 };
 

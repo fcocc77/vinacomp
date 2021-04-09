@@ -37,11 +37,11 @@
 #include <unpremult_node.h>
 #include <viewer_node.h>
 
-renderer::renderer(project_struct *_project)
+renderer_thread::renderer_thread(project_struct *_project)
     : project(_project)
 {
-    // los nodos que se definen globalmente aparte de insertarlos a la lista 'nodes'
-    // es porque tienen funciones aparte de 'render'
+    // los nodos que se definen globalmente aparte de insertarlos a la lista
+    // 'nodes' es porque tienen funciones aparte de 'render'
     time_offset = new time_offset_node();
     read = new read_node();
     _frame_range = new frame_range_node();
@@ -88,9 +88,9 @@ renderer::renderer(project_struct *_project)
     nodes.insert("transform", new transform_node());
 }
 
-renderer::~renderer() {}
+renderer_thread::~renderer_thread() {}
 
-QString renderer::get_input_node(QString node_name, int input) const
+QString renderer_thread::get_input_node(QString node_name, int input) const
 {
     node_struct *node = &project->nodes[node_name];
     QString input_node = node->inputs.value("in0").toString();
@@ -98,7 +98,7 @@ QString renderer::get_input_node(QString node_name, int input) const
     return input_node;
 }
 
-pair<int, int> renderer::get_frame_range(QString node_name) const
+pair<int, int> renderer_thread::get_frame_range(QString node_name) const
 {
     // calcula el 'frame range' de un nodo, sin renderizar el nodo,
     // el 'frame range' se encuentra solo en algunos nodos como
@@ -117,7 +117,7 @@ pair<int, int> renderer::get_frame_range(QString node_name) const
     return {};
 }
 
-void renderer::render(render_data *rdata)
+void renderer_thread::recursive_render(render_data *rdata)
 {
     if (!project->nodes.contains(rdata->root_node))
         return;
@@ -132,7 +132,8 @@ void renderer::render(render_data *rdata)
     // los nodos de tiempo tienen que modificar todos los nodos entrantes
     // por eso estos nodos tienen que ir antes de renderizar las entradas
     if (node->type == "time_offset" && !disable)
-        time_offset->set_offset(node->params, rdata->frame, rdata->root_node, this);
+        time_offset->set_offset(node->params, rdata->frame, rdata->root_node,
+                                this);
     //
 
     // renderiza las entradas del nodo antes que el nodo
@@ -140,7 +141,7 @@ void renderer::render(render_data *rdata)
     if (!input_node.isEmpty())
     {
         rdata->root_node = input_node;
-        render(rdata);
+        recursive_render(rdata);
     }
     //
 
@@ -148,4 +149,39 @@ void renderer::render(render_data *rdata)
     if (_node_engine && !disable)
         _node_engine->render(rdata, node->params);
     //
+}
+
+void renderer_thread::run_render(render_data *rdata)
+{
+    recursive_render(rdata);
+    post_render();
+}
+
+renderer::renderer(project_struct *project)
+    : rendering(false)
+{
+    rdata = new render_data;
+
+    _renderer_thread = new renderer_thread(project);
+    _renderer_thread->moveToThread(&thread);
+    thread.start();
+
+    connect(_renderer_thread, &renderer_thread::post_render, this, [=]() {
+        rendering = false;
+        finished_render(*rdata);
+    });
+
+    connect(this, &renderer::run_render, _renderer_thread,
+            &renderer_thread::run_render);
+}
+
+void renderer::render(render_data _rdata)
+{
+    if (rendering)
+        return;
+
+    rendering = true;
+    *rdata = _rdata;
+
+    run_render(rdata);
 }
