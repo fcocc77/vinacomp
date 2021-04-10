@@ -30,6 +30,7 @@ private:
 protected:
     QString name;
     QString type;
+    QString anim_name;
 
     QMenu *menu;
 
@@ -40,6 +41,7 @@ protected:
     void update_value(QJsonValue value);
     inline QJsonValue get_default() const;
     inline QString get_label() const;
+    virtual void set_animated(bool _animated);
 
 public:
     knob();
@@ -58,20 +60,16 @@ public:
     inline QString get_name() const;
     inline bool is_animated() const;
     inline void set_visible(bool visible);
-    void set_param_value(QString curve);
+    void set_param_value(QJsonValue value);
     void set_animatable(bool _animatable = true);
 
-    virtual void restore_param();
-    virtual inline void set_animated(bool _animated);
     virtual void update_animated();
+    virtual void restore_param();
 
     QLabel *label_widget;
     QWidget *init_space;
 
     int icon_size;
-
-signals:
-    void key_frame_changed(bool add);
 };
 
 inline void knob::set_visible(bool visible)
@@ -89,14 +87,9 @@ inline QString knob::get_label() const
     return knob_data.value("label").toString();
 }
 
-inline void knob::set_param_value(QString curve)
+inline void knob::set_param_value(QJsonValue value)
 {
-    (*params)[name] = curve;
-}
-
-inline void knob::set_animated(bool _animated)
-{
-    animated = _animated;
+    (*params)[name] = value;
 }
 
 inline bool knob::is_animated() const

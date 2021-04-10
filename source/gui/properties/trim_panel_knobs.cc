@@ -21,8 +21,6 @@
 void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
                              QList<QWidget *> *viewers_gl)
 {
-    curve_editor *__curve_editor = static_cast<curve_editor *>(_curve_editor);
-
     // Obtiene el ancho maximo a partir de las 'label'
     // para usarlo en el espacio inicial de cada parametro.
     int init_space_width = 0;

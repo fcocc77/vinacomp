@@ -82,6 +82,7 @@ void knob::set_data(QJsonObject _knob_data, QJsonObject *_params)
     // name and type
     name = knob_data.value("name").toString();
     type = knob_data.value("type").toString();
+    anim_name = name + "_anim";
     //
 }
 
@@ -159,14 +160,9 @@ void knob::set_animatable(bool _animatable)
     // Conecciones
     set_key_action->connect_to(this, [=]() {
         set_animated(true);
-        key_frame_changed(true);
-        set_keyframe();
     });
-    delete_key_action->connect_to(this, [=]() { key_frame_changed(false); });
-    no_animation_action->connect_to(this, [=]() {
-        set_animated(false);
-        key_frame_changed(false);
-    });
+    delete_key_action->connect_to(this, [=]() {});
+    no_animation_action->connect_to(this, [=]() { set_animated(false); });
     curve_editor_action->connect_to(this, [=]() {});
     copy_values_action->connect_to(this, [=]() {});
     copy_animation_action->connect_to(this, [=]() {});
@@ -188,8 +184,6 @@ QJsonValue knob::get_param_value() const
 
 void knob::restore_param()
 {
-    QString anim_name = name + "_anim";
-
     bool _animated = false;
 
     if (params->contains(anim_name))
@@ -202,8 +196,6 @@ void knob::update_value(QJsonValue value)
 {
     if (!params || !_vinacomp)
         return;
-
-    QString anim_name = name + "_anim";
 
     if (!animated)
     {
@@ -229,10 +221,24 @@ void knob::update_value(QJsonValue value)
     static_cast<vinacomp *>(_vinacomp)->update_render_all_viewer();
 }
 
+void knob::set_animated(bool _animated)
+{
+    animated = _animated;
+    if (animated)
+    {
+        set_keyframe();
+    }
+    else
+    {
+        QString curve = get_param_value().toString();
+        float value = anim::get_value(curve, project->frame);
+        set_param_value(value);
+        (*params)[anim_name] = false;
+    }
+}
+
 void knob::set_keyframe()
 {
-    QString anim_name = name + "_anim";
-
     QString curve = get_param_value().toString();
     QString new_curve;
 
