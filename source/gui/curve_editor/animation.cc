@@ -77,12 +77,42 @@ float anim::get_value(QString curve, int frame, bool *is_keyframe)
     QPointF dst_handler = next_handler.p2();
     //
 
-    float value = (frame - prev_key_pos.x()) / (next_key_pos.x() - prev_key_pos.x());
+    float value =
+        (frame - prev_key_pos.x()) / (next_key_pos.x() - prev_key_pos.x());
 
     QPointF bezier = cubic_bezier(prev_key_pos, src_handler, dst_handler,
                                   next_key_pos, value);
 
     return bezier.y();
+}
+
+QString anim::set_keyframe(QString curve, int frame)
+{
+    bool keyframe_exist = false;
+    float value = get_value(curve, frame, &keyframe_exist);
+
+    if (keyframe_exist)
+        return curve;
+
+    key_data new_key;
+    new_key.frame = frame;
+    new_key.value = value;
+
+    auto keys = convert_curve(curve);
+
+    // encuentra el index donde corresponda insertar el nuevo keyframe
+    int index_to_insert = 0;
+    for (key_data key : keys)
+    {
+        if (key.frame > frame)
+            break;
+        index_to_insert++;
+    }
+    //
+
+    keys.insert(index_to_insert, new_key);
+
+    return curve_data_to_string(keys);
 }
 
 anim::key_data anim::get_keyframe(QString frame_string)
@@ -127,6 +157,26 @@ QList<anim::key_data> anim::convert_curve(QString curve)
 }
 
 QString anim::update_curve(QString curve, float value, int frame) {}
+
+QString anim::curve_data_to_string(QList<anim::key_data> keys)
+{
+    QString str_curve;
+    for (key_data key : keys)
+    {
+        float left_angle = key.left_angle;
+        float right_angle = key.right_angle;
+
+        QString handler;
+        if (left_angle != 0 && right_angle != 0)
+            handler = " l" + QString::number(left_angle) + " r" +
+                      QString::number(right_angle);
+
+        str_curve += 'f' + QString::number((int)key.frame) + ' ' +
+                     QString::number(key.value) + handler + ' ';
+    }
+
+    return str_curve;
+}
 
 QString anim::curve_to_string(curve *_curve)
 {
