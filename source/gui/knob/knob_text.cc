@@ -6,10 +6,18 @@ knob_text::knob_text(QString default_text)
     layout->setMargin(0);
     layout->addWidget(init_space);
 
-    QLineEdit *text = new QLineEdit(default_text);
-    connect(text, &QLineEdit::editingFinished, this, [=]() { changed(text->text()); });
+    text = new QLineEdit(default_text);
+    connect(text, &QLineEdit::editingFinished, this, [=]() {
+        changed(text->text());
+        update_value(text->text());
+    });
 
     layout->addWidget(text);
 }
 
 knob_text::~knob_text() {}
+
+void knob_text::restore_param()
+{
+    text->setText(get_param_value().toString());
+}

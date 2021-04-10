@@ -12,7 +12,9 @@ class knob_text : public knob
 {
     Q_OBJECT
 private:
-    /* data */
+    QLineEdit *text;
+
+    void restore_param() override;
 public:
     knob_text(QString default_text = "");
     ~knob_text();

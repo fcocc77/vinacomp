@@ -165,25 +165,7 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
 
         else if (type == "text")
         {
-            QString default_text = knob_object.value("default").toString();
-            QString text;
-
-            if (data->contains(name))
-                text = data->value(name).toString();
-            else
-                text = default_text;
-
-            knob_text *_knob_text = new knob_text(text);
-
-            connect(_knob_text, &knob_text::changed, this, [=](QString _text) {
-                if (default_text != _text)
-                    data->insert(name, _text);
-                else
-                    data->remove(name);
-                update_render();
-            });
-
-            _knob = _knob_text;
+            _knob = new knob_text();
         }
 
         else if (type == "label")
