@@ -28,8 +28,6 @@ private:
     void set_keyframe();
 
 protected:
-    QString node_name;
-    QString node_type;
     QString name;
     QString type;
 
@@ -48,25 +46,20 @@ public:
     ~knob();
 
     void set_init_space(int space, QString label = "");
-    void set_animatable(bool _animatable = true);
-    void set_names(QString node_name, QString _node_type, QString _param_name,
-                   QString _param_type);
     QJsonValue get_param_value() const;
-    inline void set_project(project_struct *project);
-    inline void set_vinacomp(QWidget *_vinacomp);
-    inline void set_parent(QWidget *parent);
+    void set_env(QWidget *parent, project_struct *project, QWidget *_vinacomp,
+                 QList<QWidget *> *viewers_gl);
+    void set_data(QJsonObject _knob_data, QJsonObject *_params);
+    QString get_node_type() const;
+    QString get_node_name() const;
     inline void set_knob_layout(QHBoxLayout *layout);
-    inline void set_knob_data(QJsonObject knob_data);
-    inline void set_visible(bool visible);
-    inline void set_viewers_gl(QList<QWidget *> *viewers_gl);
     inline QString get_full_name() const;
-    inline QString get_node_type() const;
-    inline QString get_node_name() const;
     inline QString get_type() const;
     inline QString get_name() const;
     inline bool is_animated() const;
-    inline void set_params(QJsonObject *params);
+    inline void set_visible(bool visible);
     void set_param_value(QString curve);
+    void set_animatable(bool _animatable = true);
 
     virtual void restore_param();
     virtual inline void set_animated(bool _animated);
@@ -81,14 +74,9 @@ signals:
     void key_frame_changed(bool add);
 };
 
-inline void knob::set_parent(QWidget *__parent)
+inline void knob::set_visible(bool visible)
 {
-    _parent = __parent;
-}
-
-inline void knob::set_vinacomp(QWidget *__vinacomp)
-{
-    _vinacomp = __vinacomp;
+    this->setVisible(visible);
 }
 
 inline QJsonValue knob::get_default() const
@@ -101,24 +89,9 @@ inline QString knob::get_label() const
     return knob_data.value("label").toString();
 }
 
-inline void knob::set_knob_data(QJsonObject _knob_data)
-{
-    knob_data = _knob_data;
-}
-
-inline void knob::set_params(QJsonObject *_params)
-{
-    params = _params;
-}
-
 inline void knob::set_param_value(QString curve)
 {
     (*params)[name] = curve;
-}
-
-inline void knob::set_project(project_struct *_project)
-{
-    project = _project;
 }
 
 inline void knob::set_animated(bool _animated)
@@ -138,21 +111,6 @@ inline void knob::set_knob_layout(QHBoxLayout *layout)
     knob_layout = layout;
 }
 
-inline void knob::set_visible(bool visible)
-{
-    this->setVisible(visible);
-}
-
-inline void knob::set_viewers_gl(QList<QWidget *> *_viewers_gl)
-{
-    viewers_gl = _viewers_gl;
-}
-
-inline QString knob::get_node_type() const
-{
-    return node_type;
-}
-
 inline QString knob::get_type() const
 {
     return type;
@@ -163,16 +121,12 @@ inline QString knob::get_name() const
     return name;
 }
 
-inline QString knob::get_node_name() const
-{
-    return node_name;
-}
-
 inline QString knob::get_full_name() const
 {
     // Obtiene el nombre de la ruta completa del parametro
     // 'node_name.param_name'
 
-    return node_name + "." + name;
+    return get_node_name() + "." + name;
 }
+
 #endif // KNOB_HPP

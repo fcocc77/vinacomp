@@ -39,13 +39,50 @@ knob::~knob()
     delete animation_button;
 }
 
-void knob::set_names(QString _node_name, QString _node_type,
-                     QString _param_name, QString _param_type)
+void knob::set_env(QWidget *__parent, project_struct *_project,
+                   QWidget *__vinacomp, QList<QWidget *> *_viewers_gl)
 {
-    node_name = _node_name;
-    node_type = _node_type;
-    name = _param_name;
-    type = _param_type;
+    _parent = __parent;
+    project = _project;
+    _vinacomp = __vinacomp;
+    viewers_gl = _viewers_gl;
+}
+
+QString knob::get_node_name() const
+{
+    return static_cast<trim_panel *>(_parent)->get_name();
+}
+
+QString knob::get_node_type() const
+{
+    return static_cast<trim_panel *>(_parent)->get_type();
+}
+
+void knob::set_data(QJsonObject _knob_data, QJsonObject *_params)
+{
+    knob_data = _knob_data;
+    params = _params;
+
+    // animatable
+    bool animatable = true;
+    if (knob_data.contains("animatable"))
+        animatable = knob_data.value("animatable").toBool();
+
+    set_animatable(animatable);
+    //
+
+    // visible
+    bool visible = true;
+    if (knob_data.contains("visible"))
+        visible = knob_data.value("visible").toBool();
+
+    set_visible(visible);
+    //
+
+    // name and type
+    name = knob_data.value("name").toString();
+    type = knob_data.value("type").toString();
+    //
 }
 
 void knob::update_handler()
@@ -144,14 +181,22 @@ void knob::set_animatable(bool _animatable)
 QJsonValue knob::get_param_value() const
 {
     if (params->contains(name))
-    {
         return params->value(name);
-    }
     else
         return get_default();
 }
 
-void knob::restore_param() {}
+void knob::restore_param()
+{
+    QString anim_name = name + "_anim";
+
+    bool _animated = false;
+
+    if (params->contains(anim_name))
+        _animated = params->value(anim_name).toBool();
+
+    set_animated(_animated);
+}
 
 void knob::update_value(QJsonValue value)
 {

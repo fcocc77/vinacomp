@@ -16,6 +16,8 @@ knob_floating::knob_floating(float min, float max, float default_value,
 
 void knob_floating::restore_param()
 {
+    knob::restore_param();
+
     QJsonValue param_value = get_param_value();
     float value;
 

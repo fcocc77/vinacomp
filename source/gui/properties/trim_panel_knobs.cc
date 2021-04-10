@@ -58,16 +58,6 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
         QString label = knob_object.value("label").toString();
         bool over_line = knob_object.value("over_line").toBool();
 
-        bool animatable = true;
-        if (knob_object.contains("animatable"))
-            animatable = knob_object.value("animatable").toBool();
-
-        bool visible = true;
-        if (knob_object.contains("visible"))
-            visible = knob_object.value("visible").toBool();
-
-        bool animated = false;
-
         knob *_knob = nullptr;
         if (type == "color")
         {
@@ -388,16 +378,8 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
             }
             _knob->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-            _knob->set_animatable(animatable);
-            _knob->set_visible(visible);
-            _knob->set_viewers_gl(viewers_gl);
-            _knob->set_names(get_name(), get_type(), name, type);
-            _knob->set_animated(animated);
-            _knob->set_project(project);
-            _knob->set_params(data);
-            _knob->set_knob_data(knob_object);
-            _knob->set_vinacomp(_vinacomp);
-            _knob->set_parent(this);
+            _knob->set_env(this, project, _vinacomp, viewers_gl);
+            _knob->set_data(knob_object, data);
 
             _knob->restore_param();
         }
