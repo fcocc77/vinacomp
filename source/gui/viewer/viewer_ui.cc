@@ -313,6 +313,7 @@ QWidget *viewer::player_setup_ui()
                                      {"48 fps", 48},
                                      {"50 fps", 50},
                                      {"60 fps", 60}});
+    frame_rate_menu->setObjectName("frame_rate_menu");
     connect(frame_rate_menu, &combo_box::changed, this,
             [=](QVariant value) { set_frame_rate(value.toInt()); });
     //

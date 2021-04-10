@@ -517,6 +517,17 @@ QSlider {
     border-radius: 2px; }
   #viewer #player #in_out, #viewer #player #input, #viewer #player #output {
     background: none; }
+  #viewer #player #frame_rate_menu {
+    background: #25282d;
+    border-radius: 2px;
+    border: 1px solid;
+    border-color: #22252a; }
+    #viewer #player #frame_rate_menu[rate=low] {
+      background: #34252a;
+      border-color: #921417; }
+    #viewer #player #frame_rate_menu[rate=good] {
+      background: #213129;
+      border-color: #0b660e; }
 
 #viewer #timeline {
   background: #1e2024; }

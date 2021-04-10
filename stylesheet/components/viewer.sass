@@ -12,6 +12,18 @@
             border-radius: 2px
         #in_out, #input, #output
             background: none
+        #frame_rate_menu
+            background: $b15
+            border-radius: 2px
+            border: 1px solid
+            border-color: $b14
+
+            &[rate = low]
+                background: mix(red, $b15, 7)
+                border-color: mix(red, $b15, 50)
+            &[rate = good]
+                background: mix(green, $b15, 10)
+                border-color: mix(green, $b15, 70)
     #timeline
         background: $b12
     #info

@@ -1,7 +1,7 @@
 #include <viewer.h>
 #include <vinacomp.h>
 #include <QTime>
-#include <QTimer>
+#include <qt.h>
 
 void viewer::player_init()
 {
@@ -20,6 +20,9 @@ void viewer::play(int direction)
 
     playing = true;
     play_direction = direction;
+    frame_rate_sum = 0;
+    frame_rate_count = 0;
+
     set_frame(project->frame);
 
     static_cast<vinacomp *>(_vinacomp)
@@ -46,20 +49,41 @@ void viewer::stop()
     play_backward_action->set_visible(true);
     stop_forward_action->set_visible(false);
     stop_backward_action->set_visible(false);
+
+    frame_rate_menu->change_label(QString::number((int)frame_rate) + " fps");
+    qt::set_property(frame_rate_menu, "rate", "normal");
 }
 
 void viewer::calculate_frame_rate()
 {
+    int average_count = 5;
+
     int current_time = QTime::currentTime().msecsSinceStartOfDay();
 
     float elapsed = current_time - last_time;
-    int rate = round(1000.0 / elapsed);
+    float rate = round(1000.0 / elapsed);
 
     last_time = current_time;
 
-    // !!!! hacer un promedio cada 5 frame y luego actualizar
-    // el 'frame_rate_menu'
-    frame_rate_menu->change_label(QString::number(rate) + " ftp");
+    frame_rate_sum += rate;
+    frame_rate_count ++;
+
+    if (frame_rate_count <= average_count)
+        return;
+
+    float final_rate = frame_rate_sum / (float)frame_rate_count;
+    float diff = frame_rate - final_rate;
+
+    // cambia el color si hay una diferencia de frame rate de 5 fps
+    if (diff >= 5)
+        qt::set_property(frame_rate_menu, "rate", "low");
+    else
+        qt::set_property(frame_rate_menu, "rate", "good");
+
+    frame_rate_menu->change_label(QString::number(round(final_rate)) + " fps");
+
+    frame_rate_sum = 0;
+    frame_rate_count = 0;
 }
 
 void viewer::playing_now()
