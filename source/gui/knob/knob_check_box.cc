@@ -1,15 +1,14 @@
 #include <knob_check_box.h>
 
-knob_check_box::knob_check_box(QString _label, bool default_value)
+knob_check_box::knob_check_box(QString label, bool default_value)
 
     : label_widget(nullptr)
-    , label(_label)
     , checked(default_value)
     , emmit_signal(true)
 {
     this->setObjectName("knob_check_box");
 
-    QHBoxLayout *layout = new QHBoxLayout(this);
+    layout = new QHBoxLayout(this);
     layout->setMargin(0);
 
     layout->addWidget(init_space);
@@ -20,7 +19,10 @@ knob_check_box::knob_check_box(QString _label, bool default_value)
         checked = state != 0;
 
         if (emmit_signal)
+        {
             changed(checked);
+            update_value(checked);
+        }
 
         // vulve al por defecto que es emitir señal
         emmit_signal = true;
@@ -29,15 +31,36 @@ knob_check_box::knob_check_box(QString _label, bool default_value)
     layout->addWidget(checkbox);
 
     if (!label.isEmpty())
-    {
-        label_widget = new QLabel(this);
-        label_widget->setText(label);
-        layout->addWidget(label_widget);
-        layout->addStretch();
-    }
+        set_label(label);
 }
 
 knob_check_box::~knob_check_box() {}
+
+void knob_check_box::restore_param()
+{
+    QJsonValue param_value = get_param_value();
+    bool value;
+
+    // if (animated)
+        // value = anim::get_value(param_value.toString(), project->frame);
+    // else
+    value = param_value.toBool();
+
+    set_check(value);
+    set_label(get_label());
+}
+
+void knob_check_box::set_label(QString label)
+{
+    if (!label_widget)
+    {
+        label_widget = new QLabel(this);
+        layout->addWidget(label_widget);
+        layout->addStretch();
+    }
+
+    label_widget->setText(label);
+}
 
 void knob_check_box::set_check(bool value, bool _emmit_signal)
 {

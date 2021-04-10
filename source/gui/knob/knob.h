@@ -39,8 +39,9 @@ protected:
     bool animated;
 
     void update_handler();
-    inline QJsonValue get_default() const;
     void update_value(QJsonValue value);
+    inline QJsonValue get_default() const;
+    inline QString get_label() const;
 
 public:
     knob();
@@ -93,6 +94,11 @@ inline void knob::set_vinacomp(QWidget *__vinacomp)
 inline QJsonValue knob::get_default() const
 {
     return knob_data.value("default");
+}
+
+inline QString knob::get_label() const
+{
+    return knob_data.value("label").toString();
 }
 
 inline void knob::set_knob_data(QJsonObject _knob_data)

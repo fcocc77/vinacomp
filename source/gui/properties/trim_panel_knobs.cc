@@ -116,27 +116,7 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
 
         else if (type == "check_box")
         {
-            bool default_value = knob_object.value("default").toBool();
-            bool value;
-
-            if (data->contains(name))
-                value = data->value(name).toBool();
-            else
-                value = default_value;
-
-            knob_check_box *_knob_check_box = new knob_check_box(label, value);
-
-            connect(_knob_check_box, &knob_check_box::changed, this, [=](bool _value) {
-                if (default_value != _value)
-                    data->insert(name, _value);
-                else
-                    data->remove(name);
-
-                update_render();
-            });
-
-            label = "";
-            _knob = _knob_check_box;
+            _knob = new knob_check_box();
         }
 
         else if (type == "file")

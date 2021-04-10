@@ -13,15 +13,18 @@ class knob_check_box : public knob
 {
     Q_OBJECT
 private:
+    QHBoxLayout *layout;
     QLabel *label_widget;
     QCheckBox *checkbox;
 
-    QString label;
     bool checked;
     bool emmit_signal;
 
+    void restore_param() override;
+    void set_label(QString label);
+
 public:
-    knob_check_box(QString _label, bool _default_value);
+    knob_check_box(QString _label = "", bool _default_value = 0);
     ~knob_check_box();
 
     void set_check(bool value, bool emmit_signal = true);
