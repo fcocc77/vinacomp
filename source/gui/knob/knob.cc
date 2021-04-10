@@ -1,11 +1,15 @@
-#include <knob.h>
-#include <viewer_gl.h>
-#include <qt.h>
 #include <action.h>
+#include <animation.h>
+#include <knob.h>
+#include <qt.h>
+#include <trim_panel.h>
+#include <viewer_gl.h>
+#include <vinacomp.h>
 
 knob::knob()
     : knob_layout(nullptr)
     , animation_button(nullptr)
+    , _vinacomp(nullptr)
     , params(nullptr)
     , viewers_gl(nullptr)
     , project(nullptr)
@@ -35,8 +39,8 @@ knob::~knob()
     delete animation_button;
 }
 
-void knob::set_names(QString _node_name, QString _node_type, QString _param_name,
-                     QString _param_type)
+void knob::set_names(QString _node_name, QString _node_type,
+                     QString _param_name, QString _param_type)
 {
     node_name = _node_name;
     node_type = _node_type;
@@ -85,7 +89,8 @@ void knob::set_animatable(bool _animatable)
     action *set_key_action = new action("Set Key", "", "key");
     action *delete_key_action = new action("Delete Key", "");
     action *no_animation_action = new action("No Animation", "");
-    action *curve_editor_action = new action("Curve Editor...", "", "curve_editor");
+    action *curve_editor_action =
+        new action("Curve Editor...", "", "curve_editor");
     action *copy_values_action = new action("Copy Values", "");
     action *copy_animation_action = new action("Copy Animation", "");
     action *copy_links_action = new action("Copy Links", "");
@@ -118,6 +123,7 @@ void knob::set_animatable(bool _animatable)
     set_key_action->connect_to(this, [=]() {
         set_animated(true);
         key_frame_changed(true);
+        set_keyframe();
     });
     delete_key_action->connect_to(this, [=]() { key_frame_changed(false); });
     no_animation_action->connect_to(this, [=]() {
@@ -133,4 +139,71 @@ void knob::set_animatable(bool _animatable)
     generate_keys_action->connect_to(this, [=]() {});
     smooth_curve_action->connect_to(this, [=]() {});
     loop_action->connect_to(this, [=]() {});
+}
+
+QJsonValue knob::get_param_value() const
+{
+    if (params->contains(name))
+    {
+        return params->value(name);
+    }
+    else
+        return get_default();
+}
+
+void knob::restore_param() {}
+
+void knob::update_value(QJsonValue value)
+{
+    if (!params || !_vinacomp)
+        return;
+
+    QString anim_name = name + "_anim";
+
+    if (!animated)
+    {
+        if (get_default() != value)
+        {
+            params->insert(name, value);
+            params->insert(anim_name, false);
+        }
+        else
+        {
+            params->remove(name);
+            params->remove(anim_name);
+        }
+    }
+    else
+    {
+        params->insert(anim_name, true);
+        // params->insert(name,
+        // anim::update_curve(params->value(name).toString(), _value,
+        // project->frame));
+    }
+
+    static_cast<vinacomp *>(_vinacomp)->update_render_all_viewer();
+}
+
+void knob::set_keyframe()
+{
+    QString anim_name = name + "_anim";
+
+    QString curve = get_param_value().toString();
+    QString new_curve;
+
+    if (curve.isEmpty())
+        new_curve = anim::set_keyframe(curve, project->frame, false,
+                                       get_param_value().toDouble());
+    else
+        new_curve = anim::set_keyframe(curve, project->frame);
+
+    params->insert(name, new_curve);
+    params->insert(anim_name, true);
+
+    curve_editor *_curve_editor =
+        static_cast<vinacomp *>(_vinacomp)->get_curve_editor();
+
+    trim_panel *panel = static_cast<trim_panel *>(_parent);
+
+    _curve_editor->update_from_trim_panel(panel);
 }

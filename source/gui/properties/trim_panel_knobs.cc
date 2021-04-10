@@ -276,72 +276,7 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
 
         else if (type == "floating")
         {
-            bool two_dimensional = knob_object.value("two_dimensional").toBool();
-            float default_value = knob_object.value("default").toDouble();
-            float value;
-
-            if (data->contains(name))
-            {
-                animated = data->value(anim_name).toBool();
-
-                if (animated)
-                    value = anim::get_value(data->value(name).toString(),
-                                             project->frame);
-                else
-                    value = data->value(name).toDouble();
-            }
-            else
-                value = default_value;
-
-            knob_floating *_knob_floating =
-                new knob_floating(knob_object.value("minimum").toDouble(),
-                                  knob_object.value("maximum").toDouble(), value, two_dimensional);
-
-            connect(_knob_floating, &knob_floating::changed, this,
-                    [=](float _value) {
-                        if (!_knob_floating->is_animated())
-                        {
-                            if (default_value != _value)
-                            {
-                                data->insert(name, _value);
-                                data->insert(anim_name, false);
-                            }
-                            else
-                            {
-                                data->remove(name);
-                                data->remove(anim_name);
-                            }
-                        }
-                        else
-                        {
-                            data->insert(anim_name, true);
-                            data->insert(name, anim::update_curve(
-                                                   data->value(name).toString(),
-                                                   _value, project->frame));
-                        }
-
-                        update_render();
-                    });
-
-            connect(_knob_floating, &knob_floating::key_frame_changed, this,
-                    [=](bool add) {
-                        QString curve = data->value(name).toString();
-                        QString new_curve;
-
-                        if (curve.isEmpty())
-                            new_curve =
-                                anim::set_keyframe(curve, project->frame, false,
-                                                   data->value(name).toDouble());
-                        else
-                            new_curve = anim::set_keyframe(curve, project->frame);
-
-                        data->insert(name, new_curve);
-                        data->insert(anim_name, true);
-
-                        __curve_editor->update_from_trim_panel(this);
-                    });
-
-            _knob = _knob_floating;
+            _knob = new knob_floating();
         }
 
         else if (type == "separator")
@@ -516,6 +451,11 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
             _knob->set_animated(animated);
             _knob->set_project(project);
             _knob->set_params(data);
+            _knob->set_knob_data(knob_object);
+            _knob->set_vinacomp(_vinacomp);
+            _knob->set_parent(this);
+
+            _knob->restore_param();
         }
 
         knobs->insert(name, _knob);

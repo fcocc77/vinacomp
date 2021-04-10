@@ -2,11 +2,11 @@
 #define KNOB_HPP
 
 #include <QHBoxLayout>
+#include <QJsonObject>
 #include <QLabel>
 #include <QMenu>
 #include <QPushButton>
 #include <QWidget>
-#include <QJsonObject>
 
 #include <button.h>
 #include <project_struct.h>
@@ -17,9 +17,15 @@ class knob : public QWidget
 private:
     QHBoxLayout *knob_layout;
     button *animation_button;
+    QWidget *_vinacomp;
+    QWidget *_parent;
+
+    QJsonObject knob_data;
     QJsonObject *params;
 
     QList<QWidget *> *viewers_gl;
+
+    void set_keyframe();
 
 protected:
     QString node_name;
@@ -33,6 +39,8 @@ protected:
     bool animated;
 
     void update_handler();
+    inline QJsonValue get_default() const;
+    void update_value(QJsonValue value);
 
 public:
     knob();
@@ -42,8 +50,12 @@ public:
     void set_animatable(bool _animatable = true);
     void set_names(QString node_name, QString _node_type, QString _param_name,
                    QString _param_type);
+    QJsonValue get_param_value() const;
     inline void set_project(project_struct *project);
+    inline void set_vinacomp(QWidget *_vinacomp);
+    inline void set_parent(QWidget *parent);
     inline void set_knob_layout(QHBoxLayout *layout);
+    inline void set_knob_data(QJsonObject knob_data);
     inline void set_visible(bool visible);
     inline void set_viewers_gl(QList<QWidget *> *viewers_gl);
     inline QString get_full_name() const;
@@ -53,9 +65,9 @@ public:
     inline QString get_name() const;
     inline bool is_animated() const;
     inline void set_params(QJsonObject *params);
-    inline QJsonValue get_param_value() const;
     void set_param_value(QString curve);
 
+    virtual void restore_param();
     virtual inline void set_animated(bool _animated);
     virtual void update_animated();
 
@@ -68,14 +80,29 @@ signals:
     void key_frame_changed(bool add);
 };
 
+inline void knob::set_parent(QWidget *__parent)
+{
+    _parent = __parent;
+}
+
+inline void knob::set_vinacomp(QWidget *__vinacomp)
+{
+    _vinacomp = __vinacomp;
+}
+
+inline QJsonValue knob::get_default() const
+{
+    return knob_data.value("default");
+}
+
+inline void knob::set_knob_data(QJsonObject _knob_data)
+{
+    knob_data = _knob_data;
+}
+
 inline void knob::set_params(QJsonObject *_params)
 {
     params = _params;
-}
-
-inline QJsonValue knob::get_param_value() const
-{
-    return params->value(name);
 }
 
 inline void knob::set_param_value(QString curve)

@@ -1,7 +1,8 @@
-#include <knob_floating.h>
 #include <animation.h>
+#include <knob_floating.h>
 
-knob_floating::knob_floating(float min, float max, float default_value, bool _two_dimensional)
+knob_floating::knob_floating(float min, float max, float default_value,
+                             bool _two_dimensional)
     : emmit_signal(true)
     , dimensions(false)
     , two_dimensional(_two_dimensional)
@@ -9,6 +10,24 @@ knob_floating::knob_floating(float min, float max, float default_value, bool _tw
     , value_2_edit(nullptr)
     , empty_widget(nullptr)
 
+{
+    setup_ui(min, max, default_value);
+}
+
+void knob_floating::restore_param()
+{
+    QJsonValue param_value = get_param_value();
+    float value;
+
+    if (animated)
+        value = anim::get_value(param_value.toString(), project->frame);
+    else
+        value = param_value.toDouble();
+
+    set_value(value);
+}
+
+void knob_floating::setup_ui(float min, float max, float default_value)
 {
     this->setObjectName("knob_floating");
     layout = new QHBoxLayout(this);
@@ -39,6 +58,7 @@ knob_floating::knob_floating(float min, float max, float default_value, bool _tw
         {
             update_handler();
             changed(value); // Signal
+            update_value(value);
         }
     });
 
@@ -121,6 +141,7 @@ void knob_floating::set_value_internal(float value, int dimension)
 
         update_handler();
         changed(values.first); // Signal
+        update_value(values.first);
     }
     else
         set_value(value, dimension);
@@ -139,7 +160,8 @@ void knob_floating::separate_dimensions(bool separate)
 
     dimensions = separate;
 
-    // si las dimensiones no son separadas, calcula el promedio de las 2 dimensiones
+    // si las dimensiones no son separadas, calcula el promedio de las 2
+    // dimensiones
     if (!separate)
     {
         float average = (values.first + values.second) / 2;

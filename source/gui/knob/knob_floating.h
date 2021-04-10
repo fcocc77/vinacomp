@@ -8,9 +8,9 @@
 
 #include <button.h>
 #include <knob.h>
+#include <line_edit.h>
 #include <qt.h>
 #include <slider.h>
-#include <line_edit.h>
 
 class knob_floating : public knob
 {
@@ -29,14 +29,17 @@ private:
 
     pair<float, float> values;
 
+    void setup_ui(float min, float max, float default_value);
+
     void separate_dimensions(bool separate);
     void set_value_internal(float value, int dimension);
 
+    void restore_param() override;
     void set_animated(bool animated) override;
     void update_animated() override;
 
 public:
-    knob_floating(float min, float max, float default_value = 1,
+    knob_floating(float min = 0, float max = 100, float default_value = 1,
                   bool two_dimensional = false);
     ~knob_floating();
 
