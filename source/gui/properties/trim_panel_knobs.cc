@@ -299,8 +299,6 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
 
             connect(_knob_floating, &knob_floating::changed, this,
                     [=](float _value) {
-                        return;
-
                         if (!_knob_floating->is_animated())
                         {
                             if (default_value != _value)
@@ -327,6 +325,19 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
 
             connect(_knob_floating, &knob_floating::key_frame_changed, this,
                     [=](bool add) {
+                        QString curve = data->value(name).toString();
+                        QString new_curve;
+
+                        if (curve.isEmpty())
+                            new_curve =
+                                anim::set_keyframe(curve, project->frame, false,
+                                                   data->value(name).toDouble());
+                        else
+                            new_curve = anim::set_keyframe(curve, project->frame);
+
+                        data->insert(name, new_curve);
+                        data->insert(anim_name, true);
+
                         __curve_editor->update_from_trim_panel(this);
                     });
 

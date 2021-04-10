@@ -4,13 +4,16 @@
 
 float anim::get_value(QString curve, int frame, bool *is_keyframe)
 {
+    if (is_keyframe)
+        (*is_keyframe) = false;
+
+    if (curve.isEmpty())
+        return 0;
+
     // Extraer el valor del frame, de la curva
     curve.remove(0, 1);
 
     QStringList frames = curve.split('f');
-
-    if (is_keyframe)
-        (*is_keyframe) = false;
 
     int next_index = -1;
     for (int i = 0; i < frames.count(); i++)
@@ -86,13 +89,16 @@ float anim::get_value(QString curve, int frame, bool *is_keyframe)
     return bezier.y();
 }
 
-QString anim::set_keyframe(QString curve, int frame)
+QString anim::set_keyframe(QString curve, int frame, bool calc_value, float value)
 {
     bool keyframe_exist = false;
-    float value = get_value(curve, frame, &keyframe_exist);
+    float _value = get_value(curve, frame, &keyframe_exist);
 
     if (keyframe_exist)
         return curve;
+
+    if (calc_value)
+        value = _value;
 
     key_data new_key;
     new_key.frame = frame;
