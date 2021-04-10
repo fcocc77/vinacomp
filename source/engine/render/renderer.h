@@ -34,7 +34,7 @@ public:
     pair<int, int> get_frame_range(QString node_name) const;
     QString get_input_node(QString node_name, int input = 0) const;
 
-    void run_render(render_data *rdata, int render_id);
+    void run_render(render_data *rdata, int render_id, float frame_rate);
 
 signals:
     void finished_render(int render_id);
@@ -56,11 +56,11 @@ private:
 public:
     renderer(project_struct *project);
 
-    void render(render_data rdata);
+    void render(render_data rdata, float frame_rate = 120.0);
     void thread_finished_render(int render_id);
 
 signals:
-    void thread_run_render(render_data *rdata, int render_id);
+    void thread_run_render(render_data *rdata, int render_id, int frame_rate);
     void finished_render(render_data rdata);
 };
 

@@ -92,7 +92,10 @@ void viewer::update_render(bool clear_init_image)
     if (clear_init_image)
         rdata->image = cv::Mat::zeros(rdata->width, rdata->height, CV_8UC3);
 
-    _renderer->render(*rdata);
+    if (playing)
+        _renderer->render(*rdata, frame_rate);
+    else
+        _renderer->render(*rdata);
 }
 
 void viewer::finished_render(render_data _rdata)

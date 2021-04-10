@@ -1,6 +1,7 @@
 #include <viewer.h>
 #include <vinacomp.h>
 #include <QTime>
+#include <QTimer>
 
 void viewer::player_init()
 {
@@ -106,9 +107,11 @@ void viewer::playing_now()
     }
 
     if (play_direction == vina::right)
-        set_frame(frame + 1);
+        frame++;
     else
-        set_frame(frame - 1);
+        frame--;
+
+    set_frame(frame);
 }
 
 pair<int, int> viewer::get_current_range() const

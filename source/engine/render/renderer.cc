@@ -1,3 +1,6 @@
+#include <QTime>
+#include <unistd.h>
+
 #include <renderer.h>
 
 #include <bbox_adjust_node.h>
@@ -151,9 +154,20 @@ void renderer_thread::recursive_render(render_data *rdata)
     //
 }
 
-void renderer_thread::run_render(render_data *rdata, int render_id)
+void renderer_thread::run_render(render_data *rdata, int render_id,
+                                 float frame_rate)
 {
+    int start = QTime::currentTime().msecsSinceStartOfDay();
     recursive_render(rdata);
+    int end = QTime::currentTime().msecsSinceStartOfDay();
+
+    // calcula el tiempo adicional a esperar si es que el render demora menos
+    // que el necesario para cumplir el 'frame rate'
+    int elapsed = end - start;
+    int added_time = (1000.0 / frame_rate) - elapsed;
+    if (added_time > 0)
+        usleep(added_time * 1000);
+
     finished_render(render_id);
 }
 
@@ -174,7 +188,7 @@ renderer::renderer(project_struct *project)
             &renderer_thread::run_render);
 }
 
-void renderer::render(render_data _rdata)
+void renderer::render(render_data _rdata, float frame_rate)
 {
     // para asegurarnos que el ultimo render que llego
     // se renderice, crea un id de render y guarda los datos
@@ -190,7 +204,7 @@ void renderer::render(render_data _rdata)
     rendering = true;
 
     *rdata_thread = last_rdata;
-    thread_run_render(rdata_thread, render_id);
+    thread_run_render(rdata_thread, render_id, frame_rate);
 }
 
 void renderer::thread_finished_render(int _render_id)
