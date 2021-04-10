@@ -87,7 +87,7 @@ public:
     inline QList<QWidget *> *get_viewers_gl() const;
     inline project_struct *get_project() const;
     inline renderer *get_renderer() const;
-    inline void update_render_all_viewer() const;
+    void update_render_all_viewer(bool clear_init_image = false) const;
     inline project_settings *get_project_settings() const;
     inline properties *get_properties() const;
     inline curve_editor *get_curve_editor() const;
@@ -135,12 +135,6 @@ inline project_settings *vinacomp::get_project_settings() const
 inline properties *vinacomp::get_properties() const
 {
     return _properties;
-}
-
-inline void vinacomp::update_render_all_viewer() const
-{
-    for (viewer *_viewer : *viewers)
-        _viewer->update_render(true);
 }
 
 #endif // VINACOMP_H

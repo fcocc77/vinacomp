@@ -202,3 +202,10 @@ void vinacomp::tool_bar()
     _tool_bar->add_action(script_layout_action);
     _tool_bar->add_action(comp_layout_action);
 }
+
+void vinacomp::update_render_all_viewer(bool clear_init_image) const
+{
+    for (viewer *_viewer : *viewers)
+        _viewer->update_render(clear_init_image);
+}
+

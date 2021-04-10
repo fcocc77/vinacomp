@@ -279,7 +279,7 @@ void node_link::connect_node(QGraphicsItem *to_node)
 
     // añade la entrada al proyecto y actualiza el render
     project->insert_input(_this_node->get_name(), _to_node->get_name(), index);
-    static_cast<vinacomp *>(_vinacomp)->update_render_all_viewer();
+    static_cast<vinacomp *>(_vinacomp)->update_render_all_viewer(true);
     //
 }
 
@@ -300,7 +300,7 @@ void node_link::disconnect_node()
 
         // borra la entrada del proyecto y actualiza el render
         project->delete_input(_this_node->get_name(), index);
-        static_cast<vinacomp *>(_vinacomp)->update_render_all_viewer();
+        static_cast<vinacomp *>(_vinacomp)->update_render_all_viewer(true);
         //
     }
 
