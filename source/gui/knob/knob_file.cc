@@ -9,7 +9,11 @@ knob_file::knob_file(QString file_path)
     layout->addWidget(init_space);
 
     filename = new QLineEdit(file_path);
-    connect(filename, &QLineEdit::editingFinished, this, [=]() { changed(filename->text()); });
+    connect(filename, &QLineEdit::editingFinished, this, [=]() {
+        QString value = filename->text();
+        changed(value);
+        update_value(value);
+    });
     layout->addWidget(filename);
 
     file_open = new QPushButton();
@@ -21,6 +25,12 @@ knob_file::knob_file(QString file_path)
 knob_file::~knob_file()
 {
     delete file_open;
+}
+
+void knob_file::restore_param()
+{
+    QJsonValue value = get_param_value();
+    filename->setText(value.toString());
 }
 
 void knob_file::open_file()
@@ -35,5 +45,6 @@ void knob_file::open_file()
         QString file = dialog.selectedFiles().value(0);
         filename->setText(file);
         changed(file);
+        update_value(file);
     }
 }

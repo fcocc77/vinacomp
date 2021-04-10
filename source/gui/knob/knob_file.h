@@ -19,6 +19,7 @@ private:
     QLineEdit *filename;
 
     void open_file();
+    void restore_param() override;
 
 public:
     knob_file(QString file_path = "");
