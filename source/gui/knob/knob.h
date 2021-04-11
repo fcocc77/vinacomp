@@ -25,7 +25,7 @@ private:
 
     QList<QWidget *> *viewers_gl;
 
-    void set_keyframe();
+    void set_keyframe(bool auto_value = true);
 
 protected:
     QString name;

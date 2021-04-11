@@ -4,22 +4,26 @@
 #include <reformat_gui.h>
 #include <frame_range_gui.h>
 
-trim_panel::trim_panel(properties *__properties, QString _name, QString _type, QString _icon_name,
-                       nodes_load *_nodes_loaded, project_struct *_project, QWidget *__vinacomp)
+trim_panel::trim_panel(properties *__properties, QString _name, QString _type,
+                       QColor _color, QString _icon_name,
+                       nodes_load *_nodes_loaded, project_struct *_project,
+                       QWidget *__vinacomp)
 
-    : _properties(__properties)
+    : _knob_editor(nullptr)
+    , nodes_loaded(_nodes_loaded)
+    , knob_editor_visible(false)
+    , _vinacomp(__vinacomp)
+    , project(_project)
+
+    , is_maximize(true)
+    , _properties(__properties)
+    , _node_gui(nullptr)
     , name(_name)
     , type(_type)
-    , nodes_loaded(_nodes_loaded)
     , icon_name(_icon_name)
-    , project(_project)
+    , color(_color)
     , data(project->nodes[_name].params)
-    , _vinacomp(__vinacomp)
 
-    , knob_editor_visible(false)
-    , _knob_editor(nullptr)
-    , _node_gui(nullptr)
-    , is_maximize(true)
 {
     knobs = new QMap<QString, knob *>;
 

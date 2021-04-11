@@ -451,47 +451,12 @@ QSlider {
     #curve_editor #tools QLineEdit:focus {
       border-color: #8f7612; }
   #curve_editor #knobs_tree {
-    alternate-background-color: #2c2f35;
-    background-color: #25282d;
-    border: 1px solid #2c2f35;
     background: #30343b;
-    border-right: 1px solid #25282d; }
-    #curve_editor #knobs_tree * {
-      background: none; }
+    alternate-background-color: #2c2f35; }
     #curve_editor #knobs_tree::item {
-      border-bottom: 1px solid #30343b;
-      border-top: 1px solid transparent;
       height: 20px; }
-      #curve_editor #knobs_tree::item:first {
-        padding-left: 15px; }
-      #curve_editor #knobs_tree::item:selected {
-        background-color: rgba(255, 204, 0, 0.03);
-        border-color: rgba(255, 204, 0, 0.5);
-        color: #caced3; }
-      #curve_editor #knobs_tree::item:hover {
-        background-color: rgba(255, 204, 0, 0.02);
-        border-color: rgba(255, 204, 0, 0.5); }
-    #curve_editor #knobs_tree::branch {
-      background: transparent;
-      border-top: 1px solid transparent;
-      border-bottom: 1px solid #30343b; }
-      #curve_editor #knobs_tree::branch:selected {
-        background-color: rgba(255, 204, 0, 0.03);
-        border-color: rgba(255, 204, 0, 0.5);
-        color: #caced3; }
-      #curve_editor #knobs_tree::branch:hover {
-        background-color: rgba(255, 204, 0, 0.02);
-        border-color: rgba(255, 204, 0, 0.5); }
-      #curve_editor #knobs_tree::branch:selected {
-        background: #3b3829; }
-      #curve_editor #knobs_tree::branch:hover {
-        background: #292b2c; }
-      #curve_editor #knobs_tree::branch:has-children {
-        background: #22252a; }
-        #curve_editor #knobs_tree::branch:has-children:selected {
-          background: #3a3725; }
-        #curve_editor #knobs_tree::branch:has-children:hover {
-          background: #292a29; }
+      #curve_editor #knobs_tree::item:has-children {
+        color: #25282d; }
   #curve_editor #graphics_view {
     background: #121416; }
 

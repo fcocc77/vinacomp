@@ -53,6 +53,7 @@ private:
     QString name;
     QString type;
     QString icon_name;
+    QColor color;
 
     QJsonObject *data;
 
@@ -67,13 +68,14 @@ private:
 
 public:
     trim_panel(properties *_properties, QString _name, QString _type,
-               QString _icon_name, nodes_load *nodes_loaded,
+               QColor color, QString _icon_name, nodes_load *nodes_loaded,
                project_struct *project, QWidget *_vinacomp);
     ~trim_panel();
 
     void maximize(bool _maximize);
     inline QString get_name() const;
     inline QString get_type() const;
+    inline QColor get_color() const;
     inline void set_name(QString _name);
     inline knob *get_knob(QString name) const;
     inline bool maximized() const;
@@ -98,6 +100,11 @@ inline QString trim_panel::get_name() const
 inline QString trim_panel::get_type() const
 {
     return type;
+}
+
+inline QColor trim_panel::get_color() const
+{
+    return color;
 }
 
 inline void trim_panel::set_name(QString _name)

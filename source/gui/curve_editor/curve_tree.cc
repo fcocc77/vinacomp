@@ -68,7 +68,7 @@ QTreeWidgetItem *curve_tree::get_param_item(QTreeWidgetItem *node_item,
 }
 
 void curve_tree::add_item(QString node_name, QString param_name,
-                          QString dimension)
+                          QString dimension, QColor color)
 {
     QTreeWidgetItem *node_item = get_node_item(node_name);
     if (!node_item)
@@ -79,6 +79,7 @@ void curve_tree::add_item(QString node_name, QString param_name,
         this->addTopLevelItem(node_item);
         node_item->setExpanded(true);
     }
+    node_item->setBackgroundColor(0, color);
 
     QTreeWidgetItem *param_item = get_param_item(node_item, param_name);
     if (!param_item)

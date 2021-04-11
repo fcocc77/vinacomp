@@ -101,13 +101,13 @@ void curve_view::create_curve(QString name, QColor color,
     update();
 }
 
-void curve_view::delete_curve(QString node_name)
+void curve_view::delete_curve(QString name)
 {
-    if (!curves.contains(node_name))
+    if (!curves.contains(name))
         return;
 
-    delete curves.value(node_name);
-    curves.remove(node_name);
+    delete curves.value(name);
+    curves.remove(name);
 
     update();
 }

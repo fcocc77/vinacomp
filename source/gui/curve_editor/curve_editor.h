@@ -22,7 +22,6 @@ private:
     QMap<QString, trim_panel *> panels;
 
     void update_param(curve *_curve);
-    void show_curve(QString node_name, QString param_name, QString curve);
     knob *get_knob(QString node_name, QString param_name);
     void update_viewers(int frame);
     void delete_node_item(QString node_name);
@@ -32,6 +31,7 @@ public:
     ~curve_editor();
 
     void update_from_trim_panel(trim_panel *_trim_panel);
+    void update_curve(knob *_knob);
     void delete_panel(trim_panel *panel);
     inline curve_view *get_curve_view() const;
 };

@@ -18,7 +18,8 @@ private:
 public:
     curve_tree();
 
-    void add_item(QString node_name, QString param_name, QString dimension);
+    void add_item(QString node_name, QString param_name, QString dimension,
+                  QColor color);
     void delete_item(QString node_name);
 
 signals:
