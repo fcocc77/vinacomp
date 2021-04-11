@@ -11,8 +11,8 @@
 
 @mixin treecolor
     &:selected
-        background-color: rgba($base,.1)
-        border-color: rgba($base,.5)
+        background-color: rgba($base, .03)
+        border-color: rgba($base, .5)
         color: $b80
     &:hover
         background-color: rgba($base,.02)
@@ -28,33 +28,33 @@
     &::item
         border-bottom: 1px solid $b20
         border-top: 1px solid transparent
-        height: 25px
+        height: 20px
         &:first
             padding-left: 15px
 
-        // @include treecolor
+        @include treecolor
 
-        QLabel
-            padding: 5px
-        // &:has-children
-        //     min-height: 200px
-        //     background: $b14
-        //     @include treecolor
-    // &::branch
-    //     background: transparent
-    //     border-top: 1px solid transparent
-    //     border-bottom: 1px solid $b20
-    //     @include treecolor
-    //     &:selected
-    //         background: mix($base,$b15,10)
-    //     &:hover
-    //         background: mix($base,$b15,2)
-    //     &:has-children
-    //         background: $b14
-    //         &:selected
-    //             background: mix($base,$b14,11)
-    //         &:hover
-    //             background: mix($base,$b14,3)
+        // QLabel
+            // padding: 5px
+        &:has-children
+            // background: $b14
+            // min-height: 20px
+            // @include treecolor
+    &::branch
+        background: transparent
+        border-top: 1px solid transparent
+        border-bottom: 1px solid $b20
+        @include treecolor
+        &:selected
+            background: mix($base, $b15, 10)
+        &:hover
+            background: mix($base,$b15,2)
+        &:has-children
+            background: $b14
+            &:selected
+                background: mix($base,$b14,11)
+            &:hover
+                background: mix($base,$b14,3)
 
 @mixin q_combo_box
     margin-right: 10px

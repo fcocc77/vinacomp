@@ -20,13 +20,18 @@ curve_editor ::curve_editor(QWidget *__vinacomp)
             [=]() { view->clear(); });
 
     connect(knobs_tree, &curve_tree::clicked, this,
-            [=](QString node_name, QString param_name) {
-                QString curve;
-                knob *_knob = get_knob(node_name, param_name);
-                if (_knob)
-                    curve = _knob->get_param_value().toString();
+            [=](QString node_name, QList<QString> params_name) {
+                view->clear();
 
-                show_curve(node_name, param_name, curve);
+                for (QString param_name : params_name)
+                {
+                    QString curve;
+                    knob *_knob = get_knob(node_name, param_name);
+                    if (_knob)
+                        curve = _knob->get_param_value().toString();
+
+                    show_curve(node_name, param_name, curve);
+                }
             });
 
     layout->addWidget(knobs_tree);
@@ -107,7 +112,7 @@ void curve_editor::update_from_trim_panel(trim_panel *panel)
 {
     QString node_name = panel->get_name();
 
-    delete_node_item(node_name);
+    delete_panel(panel);
 
     bool animated = false;
     for (QString key : panel->get_knobs()->keys())
@@ -132,8 +137,6 @@ void curve_editor::show_curve(QString node_name, QString param_name,
                               QString curve)
 {
     QString curve_name = node_name + '.' + param_name;
-
-    view->clear();
     view->create_curve(curve_name, Qt::cyan, anim::convert_curve(curve));
 }
 

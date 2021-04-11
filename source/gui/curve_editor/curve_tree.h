@@ -1,9 +1,8 @@
 #ifndef CURVE_TREE_H
 #define CURVE_TREE_H
 
-#include <QTreeWidget>
 #include <QMouseEvent>
-
+#include <QTreeWidget>
 
 class curve_tree : public QTreeWidget
 {
@@ -13,6 +12,7 @@ private:
     QTreeWidgetItem *get_param_item(QTreeWidgetItem *node_item,
                                     QString param_name) const;
 
+    QList<QTreeWidgetItem *> get_children(QTreeWidgetItem *item) const;
     void mousePressEvent(QMouseEvent *event) override;
 
 public:
@@ -22,7 +22,7 @@ public:
     void delete_item(QString node_name);
 
 signals:
-    void clicked(QString node_name, QString param_name);
+    void clicked(QString node_name, QList<QString> params_name);
     void outside_clicked();
 };
 

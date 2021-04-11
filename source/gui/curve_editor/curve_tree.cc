@@ -14,18 +14,41 @@ curve_tree::curve_tree()
 
     connect(this, &QTreeWidget::itemClicked, this, [=](QTreeWidgetItem *item) {
         auto parent = item->parent();
+
+        // si se selecciono el padre, envia una lista con todos
+        // los parametros y retorna
         if (!parent)
+        {
+            QList<QString> params_name;
+            for (auto child : get_children(item))
+            {
+                params_name.push_back(child->text(0));
+                child->setSelected(true);
+            }
+            clicked(item->text(0), params_name);
             return;
+        }
 
         QString node_name = parent->text(0);
         QString param_name = item->text(0);
-
-        clicked(node_name, param_name);
+        clicked(node_name, {param_name});
     });
+}
+
+QList<QTreeWidgetItem *> curve_tree::get_children(QTreeWidgetItem *item) const
+{
+    QList<QTreeWidgetItem *> children;
+    for (int i = 0; i < item->childCount(); i++)
+        children.push_back(item->child(i));
+
+    return children;
 }
 
 QTreeWidgetItem *curve_tree::get_node_item(QString item_name) const
 {
+    // obtiene los hijos de un item, 'QTreeWidgetItem' tiene una
+    // opcion oficial 'takeChildren()' pero tiene un error al eliminar los
+    // items.
     auto items = this->findItems(item_name, Qt::MatchExactly);
     for (QTreeWidgetItem *item : items)
         if (item->text(0) == item_name)
@@ -37,12 +60,9 @@ QTreeWidgetItem *curve_tree::get_node_item(QString item_name) const
 QTreeWidgetItem *curve_tree::get_param_item(QTreeWidgetItem *node_item,
                                             QString param_name) const
 {
-    for (int i = 0; i < node_item->childCount(); i++)
-    {
-        auto item = node_item->child(i);
-        if (item->text(0) == param_name)
-            return item;
-    }
+    for (auto child : get_children(node_item))
+        if (child->text(0) == param_name)
+            return child;
 
     return nullptr;
 }
