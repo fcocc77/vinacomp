@@ -26,6 +26,8 @@ private:
     QList<QWidget *> *viewers_gl;
 
     void set_keyframe(bool auto_value = true);
+    void enable_animation();
+    void disable_animation();
 
 protected:
     QString name;

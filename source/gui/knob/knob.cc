@@ -159,10 +159,14 @@ void knob::set_animatable(bool _animatable)
 
     // Conecciones
     set_key_action->connect_to(this, [=]() {
+        enable_animation();
         set_animated(true);
     });
     delete_key_action->connect_to(this, [=]() {});
-    no_animation_action->connect_to(this, [=]() { set_animated(false); });
+    no_animation_action->connect_to(this, [=]() {
+        disable_animation();
+        set_animated(false);
+    });
     curve_editor_action->connect_to(this, [=]() {});
     copy_values_action->connect_to(this, [=]() {});
     copy_animation_action->connect_to(this, [=]() {});
@@ -189,7 +193,11 @@ void knob::restore_param()
     if (params->contains(anim_name))
         _animated = params->value(anim_name).toBool();
 
-    set_animated(_animated);
+    if (_animated)
+    {
+        enable_animation();
+        set_animated(true);
+    }
 }
 
 void knob::update_value(QJsonValue value)
@@ -222,21 +230,27 @@ void knob::update_value(QJsonValue value)
     static_cast<vinacomp *>(_vinacomp)->update_render_all_viewer();
 }
 
-void knob::set_animated(bool _animated)
+void knob::enable_animation()
 {
-    animated = _animated;
-    if (animated)
-    {
-        set_keyframe();
-    }
-    else
-    {
-        QString curve = get_param_value().toString();
-        float value = anim::get_value(curve, project->frame);
-        set_param_value(value);
-        (*params)[anim_name] = false;
-    }
+    animated = true;
+    set_keyframe();
 }
+
+void knob::disable_animation()
+{
+    // el 'set_animated' solo funciona como virtual para las subclases,
+    // y 'enable_animation' y 'disable_animation' se usan aqui ya que estas
+    // intervienen el 'params' del proyecto, y cuando se usa el 'restore_param'
+    // da conflicto ya que guarda el proyecto antes de lo necesario.
+    // ! no unir estas 2'
+    animated = false;
+
+    QString curve = get_param_value().toString();
+    float value = anim::get_value(curve, project->frame);
+    update_value(value);
+}
+
+void knob::set_animated(bool _animated) {}
 
 void knob::set_keyframe(bool auto_value)
 {
