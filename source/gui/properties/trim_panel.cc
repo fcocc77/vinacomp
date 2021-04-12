@@ -83,7 +83,7 @@ void trim_panel::setup_gui_panels(QJsonArray _knobs)
     else if (type == "reformat")
         _node_gui = new reformat_gui();
     else if (type == "write")
-        _node_gui = new write_gui();
+        _node_gui = new write_gui(project);
     else if (type == "shuffle")
     {
         knob_data = _knobs[0].toObject();
