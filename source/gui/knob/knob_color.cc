@@ -52,21 +52,7 @@ knob_color::knob_color(float min, float max, float r, float g, float b, float a)
 
     connections();
     setup_ui();
-
-    // si los colores son todos iguale activa el 'knob' mono cromatico
-    if (red == green && red == blue && red == alpha)
-    {
-        mono_color = false;
-        set_visible_mono_color(true);
-    }
-    else
-    {
-        mono_color = true;
-        set_visible_mono_color(false);
-    }
-    //
-    //
-    set_color(red, green, blue, alpha);
+    init_colors();
 }
 
 knob_color::~knob_color()
@@ -110,35 +96,45 @@ knob_color::~knob_color()
     delete layout;
 }
 
+void knob_color::init_colors()
+{
+    // si los colores son todos iguale activa el 'knob' mono cromatico
+    if (red == green && red == blue && red == alpha)
+    {
+        mono_color = false;
+        set_visible_mono_color(true);
+    }
+    else
+    {
+        mono_color = true;
+        set_visible_mono_color(false);
+    }
+    //
+    //
+    set_color(red, green, blue, alpha);
+}
+
 void knob_color::restore_param()
 {
     QJsonValue param_value = get_param_value();
 
-    // float value;
-    // QJsonArray _default = knob_object.value("default").toArray();
+    float min = get_min();
+    float max = get_max();
 
-    // float dred = _default.at(0).toDouble();
-    // float dgreen = _default.at(1).toDouble();
-    // float dblue = _default.at(2).toDouble();
-    // float dalpha = _default.at(3).toDouble();
+    mono_slider->set_min_max(min, max);
+    red_slider->set_min_max(min, max);
+    green_slider->set_min_max(min, max);
+    blue_slider->set_min_max(min, max);
+    alpha_slider->set_min_max(min, max);
 
-    // float red, green, blue, alpha;
+    QJsonArray _default = get_param_value().toArray();
 
-    // if (data->contains(name))
-    // {
-        // QJsonArray value = data->value(name).toArray();
-        // red = value.at(0).toDouble();
-        // green = value.at(1).toDouble();
-        // blue = value.at(2).toDouble();
-        // alpha = value.at(3).toDouble();
-    // }
-    // else
-    // {
-        // red = dred;
-        // green = dgreen;
-        // blue = dblue;
-        // alpha = dalpha;
-    // }
+    red = _default.at(0).toDouble();
+    green = _default.at(1).toDouble();
+    blue = _default.at(2).toDouble();
+    alpha = _default.at(3).toDouble();
+
+    init_colors();
 }
 
 void knob_color::update()
@@ -232,6 +228,7 @@ void knob_color::set_color(float _red, float _green, float _blue, float _alpha)
     alpha_slider->set_value(alpha);
 
     changed(red, green, blue, alpha); // Signal
+    update_value(QJsonArray{red, green, blue, alpha});
 
     if (_red < 0)
         _red = 0;
