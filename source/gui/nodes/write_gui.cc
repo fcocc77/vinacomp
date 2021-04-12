@@ -1,8 +1,8 @@
 #include <knob_file.h>
+#include <knob_intd.h>
 #include <util.h>
 #include <write_gui.h>
 #include <write_node.h>
-#include <knob_intd.h>
 
 write_gui::write_gui(project_struct *_project)
     : first_frame(1)
@@ -41,15 +41,29 @@ void write_gui::finished_render(render_data _rdata)
 
     cv::imwrite(output.toStdString(), _rdata.image);
 
+    progress_knob->set_value(get_progress());
+
     frame++;
     start_render();
 }
 
+int write_gui::get_progress() const
+{
+    int count = last_frame - first_frame;
+    int current_count = count - (last_frame - frame);
+
+    return (current_count * 100) / count;
+}
+
 void write_gui::changed(QString param_name)
 {
+    if (param_name != "render")
+        return;
+
     knob_file *file_knob = static_cast<knob_file *>(get_knob("filename"));
     knob_intd *frame_range_knob =
         static_cast<knob_intd *>(get_knob("frame_range"));
+    progress_knob = static_cast<knob_progress *>(get_knob("progress"));
 
     filename = file_knob->get_param_value().toString();
 

@@ -13,6 +13,7 @@
 #include <knob_label.h>
 #include <knob_separator.h>
 #include <knob_text.h>
+#include <knob_progress.h>
 
 #include <trim_panel.h>
 #include <animation.h>
@@ -316,6 +317,10 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
                     });
 
             _knob = _knob_channels;
+        }
+        else if (type == "progress")
+        {
+            _knob = new knob_progress();
         }
 
         if (_knob)

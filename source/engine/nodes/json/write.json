@@ -31,6 +31,12 @@
 			"type": "button",
 			"label": "Render",
 			"tooltip": "render"
+		},
+		{
+			"name": "progress",
+			"type": "progress",
+			"label": "Progress Render",
+			"tooltip": "Progress Render"
 		}
     ]
 }
