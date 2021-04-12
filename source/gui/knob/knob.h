@@ -41,6 +41,8 @@ protected:
     void update_value(QJsonValue value);
     inline QJsonValue get_default() const;
     inline QString get_label() const;
+    inline float get_min() const;
+    inline float get_max() const;
     virtual void set_animated(bool _animated);
 
 public:
@@ -83,6 +85,16 @@ inline void knob::set_visible(bool visible)
 inline QJsonValue knob::get_default() const
 {
     return knob_data.value("default");
+}
+
+inline float knob::get_min() const
+{
+    return knob_data.value("minimum").toDouble();
+}
+
+inline float knob::get_max() const
+{
+    return knob_data.value("maximum").toDouble();
 }
 
 inline QString knob::get_label() const

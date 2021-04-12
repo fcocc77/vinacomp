@@ -12,9 +12,11 @@ private:
     bool emmit_signal;
 
 public:
-    slider(float _min = 0, float _max = 100, float default_value = 0, bool _floating = true);
+    slider(float _min = 0, float _max = 100, float default_value = 0,
+           bool _floating = true);
     ~slider();
 
+    void set_min_max(float min, float max);
     void set_value(float value, bool emmit_signal = true);
 
 protected:

@@ -11,26 +11,6 @@ knob_floating::knob_floating(float min, float max, float default_value,
     , empty_widget(nullptr)
 
 {
-    setup_ui(min, max, default_value);
-}
-
-void knob_floating::restore_param()
-{
-    knob::restore_param();
-
-    QJsonValue param_value = get_param_value();
-    float value;
-
-    if (animated)
-        value = anim::get_value(param_value.toString(), project->frame);
-    else
-        value = param_value.toDouble();
-
-    set_value(value);
-}
-
-void knob_floating::setup_ui(float min, float max, float default_value)
-{
     this->setObjectName("knob_floating");
     layout = new QHBoxLayout(this);
     layout->setMargin(0);
@@ -110,6 +90,22 @@ knob_floating::~knob_floating()
         delete value_2_edit;
         delete empty_widget;
     }
+}
+
+void knob_floating::restore_param()
+{
+    knob::restore_param();
+
+    QJsonValue param_value = get_param_value();
+    float value;
+
+    if (animated)
+        value = anim::get_value(param_value.toString(), project->frame);
+    else
+        value = param_value.toDouble();
+
+    _slider->set_min_max(get_min(), get_max());
+    set_value(value);
 }
 
 void knob_floating::set_animated(bool animated)

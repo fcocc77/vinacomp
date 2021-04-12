@@ -29,8 +29,6 @@ private:
 
     pair<float, float> values;
 
-    void setup_ui(float min, float max, float default_value);
-
     void separate_dimensions(bool separate);
     void set_value_internal(float value, int dimension);
 
