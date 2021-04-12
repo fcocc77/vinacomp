@@ -1,7 +1,7 @@
 #include <shuffle_gui.h>
 #include <qt.h>
 
-shuffle_gui::shuffle_gui(QVBoxLayout *controls_layout, QJsonObject data)
+shuffle_gui::shuffle_gui(QVBoxLayout *controls_layout)
     : dragging_input(nullptr)
     , dragging(false)
 {
@@ -47,11 +47,15 @@ shuffle_gui::shuffle_gui(QVBoxLayout *controls_layout, QJsonObject data)
     main_layout->addWidget(output_layer);
 
     controls_layout->addWidget(this);
-
-    restore_connections(data);
 }
 
 shuffle_gui::~shuffle_gui() {}
+
+void shuffle_gui::restore_param()
+{
+    QJsonValue value = get_param_value();
+    restore_connections(value.toObject());
+}
 
 void shuffle_gui::restore_connections(QJsonObject data)
 {
@@ -115,7 +119,7 @@ void shuffle_gui::emmit_signal()
     if (data == last_data)
         return;
 
-    changed(data);
+    update_value(data);
     last_data = data;
 }
 void shuffle_gui::to_connect(in_connector *in_conn, out_connector *out_conn)

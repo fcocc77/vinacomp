@@ -5,6 +5,13 @@
     "icon": "save",
     "knobs": [
         {
+            "name": "filename",
+            "type": "file",
+            "label": "File",
+            "tooltip": "",
+            "default": ""
+        },
+        {
             "name": "mix",
             "type": "floating",
             "label": "Mix",

@@ -115,6 +115,8 @@ void curve_editor::update_from_trim_panel(trim_panel *panel)
     for (QString key : panel->get_knobs()->keys())
     {
         knob *_knob = panel->get_knobs()->value(key);
+        if (!_knob)
+            continue;
         if (!_knob->is_animated())
             continue;
 
@@ -157,6 +159,8 @@ void curve_editor::delete_panel(trim_panel *panel)
     for (QString key : panel->get_knobs()->keys())
     {
         knob *_knob = panel->get_knobs()->value(key);
+        if (!_knob)
+            continue;
         if (!_knob->is_animated())
             continue;
 

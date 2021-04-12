@@ -76,35 +76,23 @@ void trim_panel::setup_gui_panels(QJsonArray _knobs)
     // todos estos nodo gui son solo si el nodo efecto tiene algun boton
     // u otra interface adicional a las que se generan en 'setup_knobs'
     // por eso solo son algunos nodos y no todos
+    QJsonObject knob_data;
+
     if (type == "frame_range")
         _node_gui = new frame_range_gui();
     else if (type == "reformat")
         _node_gui = new reformat_gui();
     else if (type == "shuffle")
     {
-        QString name = "shuffle";
-        QJsonObject default_value = _knobs[0].toObject().value("default").toObject();
-        QJsonObject value;
-
-        if (data->contains(name))
-            value = data->value(name).toObject();
-        else
-            value = default_value;
-
-        shuffle_gui *shuffle = new shuffle_gui(controls_layout, value);
-
-        connect(shuffle, &shuffle_gui::changed, this, [=](QJsonObject _data) {
-            if (default_value != _data)
-                data->insert(name, _data);
-            else
-                data->remove(name);
-            update_render();
-        });
-        _node_gui = shuffle;
+        knob_data = _knobs[0].toObject();
+        _node_gui = new shuffle_gui(controls_layout);
     }
 
     if (_node_gui)
-        _node_gui->setup(this, _vinacomp, name);
+    {
+        _node_gui->setup(this, _vinacomp, data, knob_data, name);
+        _node_gui->restore_param();
+    }
 }
 
 QWidget *trim_panel::top_buttons_setup_ui()

@@ -122,9 +122,10 @@ private:
     in_connector *get_in_connector(QPoint position) const;
     out_connector *get_out_connector(QPoint position) const;
     void to_connect(in_connector *in_conn, out_connector *out_conn);
+    void restore_param() override;
 
 public:
-    shuffle_gui(QVBoxLayout *controls_layout, QJsonObject data);
+    shuffle_gui(QVBoxLayout *controls_layout);
     ~shuffle_gui();
 
     void emmit_signal();
@@ -135,8 +136,6 @@ protected:
     void mouseMoveEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
-signals:
-    void changed(QJsonObject connections);
 };
 
 #endif // SHUFFLE_GUI_H
