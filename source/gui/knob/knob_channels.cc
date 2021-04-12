@@ -2,8 +2,6 @@
 
 knob_channels::knob_channels(project_struct *_project, QString _layer,
                              QList<bool> _channels)
-    : current_layer(_layer)
-    , project(_project)
 {
     this->setObjectName("knob_channels");
 
@@ -63,7 +61,6 @@ knob_channels::knob_channels(project_struct *_project, QString _layer,
         to_emmit_signal();
     });
     connect(layers, &combo_box::pre_open, this, [=]() { update_layers(); });
-    update_layers("", true);
     //
 
     layout->addWidget(init_space);
@@ -86,35 +83,19 @@ knob_channels::~knob_channels() {}
 void knob_channels::restore_param()
 {
     knob::restore_param();
-    // // extrae los valores por defecto del .json del efecto
-    // QJsonArray _default = knob_object.value("default").toArray();
+    project = knob::project;
 
-    // QString default_layer, layer;
-    // QList<bool> default_channels, channels;
+    QJsonArray _default = get_param_value().toArray();
 
-    // default_layer = _default[0].toString();
+    current_layer = _default[0].toString();
+    QJsonArray channels = _default[1].toArray();
 
-    // for (QJsonValue value : _default[1].toArray())
-    // default_channels.push_back(value.toBool());
-    // //
+    red->set_check(channels[0].toBool());
+    green->set_check(channels[1].toBool());
+    blue->set_check(channels[2].toBool());
+    alpha->set_check(channels[3].toBool());
 
-    // // si es que el parametro existe en el proyecto, usa esos datos
-    // if (data->contains(name))
-    // {
-    // QJsonArray _data = data->value(name).toArray();
-    // layer = _data[0].toString();
-    // for (QJsonValue value : _data[1].toArray())
-    // channels.push_back(value.toBool());
-    // }
-    // else
-    // {
-    // channels = default_channels;
-    // layer = default_layer;
-    // }
-    // //
-
-    // knob_channels *_knob_channels =
-    // new knob_channels(project, layer, channels);
+    update_layers("", true);
 }
 
 void knob_channels::set_layer(QString layer_name)
@@ -143,8 +124,13 @@ void knob_channels::set_layer(QString layer_name)
 
 void knob_channels::to_emmit_signal()
 {
-    changed(current_layer, {red->is_checked(), green->is_checked(),
-                            blue->is_checked(), alpha->is_checked()});
+    bool r = red->is_checked();
+    bool g = green->is_checked();
+    bool b = blue->is_checked();
+    bool a = alpha->is_checked();
+
+    changed(current_layer, {r, g, b, a});
+    update_value(QJsonArray{current_layer, QJsonArray{r, g, b, a}});
 }
 
 layer_struct *knob_channels::get_layer(QString layer_name)
