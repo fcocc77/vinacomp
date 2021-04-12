@@ -24,6 +24,14 @@ knob_group::knob_group(QString label, int _knobs_included, bool open_group)
 
 knob_group::~knob_group() {}
 
+void knob_group::restore_param()
+{
+    knob::restore_param();
+
+    // int knobs_included = knob_object.value("knobs").toInt();
+    // bool open_group = knob_object.value("open").toBool();
+}
+
 void knob_group::update()
 {
     set_open(open);

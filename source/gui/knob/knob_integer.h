@@ -19,7 +19,7 @@ private:
     slider *_slider;
 
 public:
-    knob_integer(int min, int max, int default_value = 0);
+    knob_integer(int min = 0, int max = 100, int default_value = 0);
     ~knob_integer();
 
     void set_value(int value);

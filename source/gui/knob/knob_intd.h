@@ -18,6 +18,8 @@ private:
     QList<QLineEdit *> dimensions_edits;
     QList<int> values;
 
+    void restore_param() override;
+
 public:
     knob_intd(QList<int> default_values = {0, 1});
     ~knob_intd();

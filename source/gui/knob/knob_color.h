@@ -68,8 +68,11 @@ private:
     void set_visible_mono_color(bool visible);
     void set_visible_sliders_colors(bool visible);
 
+    void restore_param() override;
+
 public:
-    knob_color(float min, float max, float r, float g, float b, float a = 1);
+    knob_color(float min = 0, float max = 100, float r = 1, float g = 1,
+               float b = 1, float a = 1);
     ~knob_color();
 
     void set_color(float red, float green, float blue, float alpha = 1);

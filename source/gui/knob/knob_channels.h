@@ -40,10 +40,12 @@ private:
     void set_all_channel(bool value);
     void set_layer(QString layer);
 
+    void restore_param() override;
+
     layer_struct *get_layer(QString layer);
 
 public:
-    knob_channels(project_struct *project, QString layer = "main",
+    knob_channels(project_struct *project = nullptr, QString layer = "main",
                   QList<bool> channels = {true, true, true, true});
     ~knob_channels();
 

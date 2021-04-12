@@ -10,9 +10,10 @@
 class knob_label : public knob
 {
 private:
-    /* data */
+    QLabel *label_widget;
+    void restore_param() override;
 public:
-    knob_label(QString label);
+    knob_label();
     ~knob_label();
 };
 

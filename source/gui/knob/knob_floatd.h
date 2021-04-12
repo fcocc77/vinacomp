@@ -18,6 +18,8 @@ private:
     QList<QLineEdit *> dimensions_edits;
     bool emmit_signal;
 
+    void restore_param() override;
+
 public:
     knob_floatd(QList<float> default_values = {0, 1});
     ~knob_floatd();

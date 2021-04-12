@@ -110,6 +110,37 @@ knob_color::~knob_color()
     delete layout;
 }
 
+void knob_color::restore_param()
+{
+    QJsonValue param_value = get_param_value();
+
+    // float value;
+    // QJsonArray _default = knob_object.value("default").toArray();
+
+    // float dred = _default.at(0).toDouble();
+    // float dgreen = _default.at(1).toDouble();
+    // float dblue = _default.at(2).toDouble();
+    // float dalpha = _default.at(3).toDouble();
+
+    // float red, green, blue, alpha;
+
+    // if (data->contains(name))
+    // {
+        // QJsonArray value = data->value(name).toArray();
+        // red = value.at(0).toDouble();
+        // green = value.at(1).toDouble();
+        // blue = value.at(2).toDouble();
+        // alpha = value.at(3).toDouble();
+    // }
+    // else
+    // {
+        // red = dred;
+        // green = dgreen;
+        // blue = dblue;
+        // alpha = dalpha;
+    // }
+}
+
 void knob_color::update()
 {
     set_color(red, green, blue, alpha);

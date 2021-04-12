@@ -40,6 +40,23 @@ knob_floatd::~knob_floatd()
         delete edit;
 }
 
+void knob_floatd::restore_param()
+{
+    knob::restore_param();
+
+    // QList<float> default_dimensions, dimensions;
+    // for (QJsonValue value : knob_object.value("default").toArray())
+        // default_dimensions.push_back(value.toDouble());
+
+    // if (data->contains(name))
+        // for (QJsonValue value : data->value(name).toArray())
+            // dimensions.push_back(value.toDouble());
+    // else
+        // dimensions = default_dimensions;
+
+    // knob_floatd *knob_floating_dimensions = new knob_floatd(dimensions);
+}
+
 float knob_floatd::get_value(int dimension) const
 {
     if (dimension >= dimensions_edits.count())

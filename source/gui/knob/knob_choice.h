@@ -13,6 +13,7 @@ class knob_choice : public knob
     Q_OBJECT
 private:
     combo_box *choice;
+    void restore_param() override;
 
 public:
     knob_choice(QList<combo_box_item> items = {}, int default_index = 0);

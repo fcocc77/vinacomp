@@ -19,9 +19,11 @@ private:
 
     void set_open(bool _open);
     QList<QWidget *> get_knobs_included();
+    void restore_param() override;
 
 public:
-    knob_group(QString label, int knobs_included, bool open_group);
+    knob_group(QString label = "", int knobs_included = 0,
+               bool open_group = true);
     ~knob_group();
 
     void update();

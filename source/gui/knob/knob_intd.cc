@@ -38,6 +38,23 @@ knob_intd::~knob_intd()
         delete edit;
 }
 
+void knob_intd::restore_param()
+{
+    knob::restore_param();
+
+    // QList<int> default_dimensions, dimensions;
+    // for (QJsonValue value : knob_object.value("default").toArray())
+    // default_dimensions.push_back(value.toInt());
+
+    // if (data->contains(name))
+    // for (QJsonValue value : data->value(name).toArray())
+    // dimensions.push_back(value.toInt());
+    // else
+    // dimensions = default_dimensions;
+
+    // knob_intd *knob_integer_dimensions = new knob_intd(dimensions);
+}
+
 void knob_intd::emmit_signal()
 {
     changed(values); // Signal

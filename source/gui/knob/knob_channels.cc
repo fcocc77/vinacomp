@@ -83,6 +83,40 @@ knob_channels::knob_channels(project_struct *_project, QString _layer,
 
 knob_channels::~knob_channels() {}
 
+void knob_channels::restore_param()
+{
+    knob::restore_param();
+    // // extrae los valores por defecto del .json del efecto
+    // QJsonArray _default = knob_object.value("default").toArray();
+
+    // QString default_layer, layer;
+    // QList<bool> default_channels, channels;
+
+    // default_layer = _default[0].toString();
+
+    // for (QJsonValue value : _default[1].toArray())
+    // default_channels.push_back(value.toBool());
+    // //
+
+    // // si es que el parametro existe en el proyecto, usa esos datos
+    // if (data->contains(name))
+    // {
+    // QJsonArray _data = data->value(name).toArray();
+    // layer = _data[0].toString();
+    // for (QJsonValue value : _data[1].toArray())
+    // channels.push_back(value.toBool());
+    // }
+    // else
+    // {
+    // channels = default_channels;
+    // layer = default_layer;
+    // }
+    // //
+
+    // knob_channels *_knob_channels =
+    // new knob_channels(project, layer, channels);
+}
+
 void knob_channels::set_layer(QString layer_name)
 {
     bool _red = true;
