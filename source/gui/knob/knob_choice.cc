@@ -1,4 +1,5 @@
 #include <knob_choice.h>
+#include <util.h>
 
 knob_choice::knob_choice(QList<combo_box_item> items, int default_index)
 {
@@ -9,7 +10,10 @@ knob_choice::knob_choice(QList<combo_box_item> items, int default_index)
     layout->addWidget(init_space);
 
     choice = new combo_box(items, default_index);
-    connect(choice, &combo_box::changed, this, &knob_choice::changed);
+    connect(choice, &combo_box::changed, this, [=](QVariant value, int index) {
+        changed(value, index);
+        update_value(QJsonArray{index, value.toString()});
+    });
 
     layout->addWidget(choice);
     layout->addStretch();
@@ -21,26 +25,20 @@ void knob_choice::restore_param()
 {
     knob::restore_param();
 
-    // QJsonArray items = knob_object.value("items").toArray();
-    // QJsonArray default_value = knob_object.value("default").toArray();
-    // int default_index = default_value[0].toInt();
-    // int index;
+    QJsonArray items = knob_data.value("items").toArray();
+    QJsonArray value = get_param_value().toArray();
+    int index = value[0].toInt();
 
-    // if (data->contains(name))
-        // index = data->value(name).toInt();
-    // else
-        // index = default_index;
+    for (QJsonValue item : items)
+    {
+        QJsonArray _item = item.toArray();
+        QString label = _item[0].toString();
+        QJsonValue value = _item[1];
 
-    // // convierte la lista de items
-    // QList<combo_box_item> _items;
-    // for (QJsonValue item : items)
-    // {
-        // QJsonArray _item = item.toArray();
-        // QString label = _item[0].toString();
-        // QJsonValue value = _item[1];
-        // _items.push_back({label, value});
-    // }
-    // //
+        choice->add_item({label, value});
+    }
+
+    choice->set_index(index, false);
 }
 
 int knob_choice::get_index() const

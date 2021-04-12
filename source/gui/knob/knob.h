@@ -20,9 +20,6 @@ private:
     QWidget *_vinacomp;
     QWidget *_parent;
 
-    QJsonObject knob_data;
-    QJsonObject *params;
-
     QList<QWidget *> *viewers_gl;
 
     void set_keyframe(bool auto_value = true);
@@ -35,6 +32,9 @@ protected:
     QString anim_name;
 
     QMenu *menu;
+
+    QJsonObject knob_data;
+    QJsonObject *params;
 
     project_struct *project;
     bool animated;
