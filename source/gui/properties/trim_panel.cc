@@ -3,6 +3,7 @@
 #include <shuffle_gui.h>
 #include <reformat_gui.h>
 #include <frame_range_gui.h>
+#include <write_gui.h>
 
 trim_panel::trim_panel(properties *__properties, QString _name, QString _type,
                        QColor _color, QString _icon_name,
@@ -43,13 +44,12 @@ trim_panel::trim_panel(properties *__properties, QString _name, QString _type,
     //
 
     QJsonArray _knobs = nodes_loaded->get_effect(type).value("knobs").toArray();
+    setup_gui_panels(_knobs);
     setup_knobs(_knobs, controls_layout, viewers_gl);
 
     QJsonArray shared_knobs =
         jread("source/engine/nodes/json/shared_params.json").value("knobs").toArray();
     setup_knobs(shared_knobs, node_tab_layout, viewers_gl);
-
-    setup_gui_panels(_knobs);
 }
 
 trim_panel::~trim_panel() {}
@@ -82,6 +82,8 @@ void trim_panel::setup_gui_panels(QJsonArray _knobs)
         _node_gui = new frame_range_gui();
     else if (type == "reformat")
         _node_gui = new reformat_gui();
+    else if (type == "write")
+        _node_gui = new write_gui();
     else if (type == "shuffle")
     {
         knob_data = _knobs[0].toObject();

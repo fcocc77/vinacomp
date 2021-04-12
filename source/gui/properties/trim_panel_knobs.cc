@@ -163,15 +163,7 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
 
         else if (type == "button")
         {
-            knob_button *_knob_button = new knob_button(label);
-            label = "";
-
-            connect(_knob_button, &knob_button::clicked, this, [=]() {
-                if (_node_gui)
-                    _node_gui->changed(name);
-            });
-
-            _knob = _knob_button;
+            _knob = new knob_button();
         }
 
         else if (type == "group")
@@ -380,6 +372,8 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
             _knob->set_data(knob_object, data);
 
             _knob->restore_param();
+
+            connect(_knob, &knob::changed, _node_gui, &node_gui::changed);
         }
 
         knobs->insert(name, _knob);

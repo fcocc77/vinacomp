@@ -11,12 +11,12 @@ class knob_button : public knob
 {
     Q_OBJECT
 private:
-    /* data */
+    QPushButton *button;
+    void restore_param() override;
+
 public:
-    knob_button(QString label);
+    knob_button();
     ~knob_button();
-signals:
-    void clicked();
 };
 
 #endif // KNOB_BUTTON_HPP

@@ -70,6 +70,9 @@ public:
     QWidget *init_space;
 
     int icon_size;
+
+signals:
+    void changed(QString param_name);
 };
 
 inline void knob::set_visible(bool visible)
