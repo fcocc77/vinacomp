@@ -159,12 +159,14 @@ tab_widget *trim_panel::tabs_ui()
 
     controls_tab = new QWidget(this);
     controls_layout = new QVBoxLayout(controls_tab);
+    controls_layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
     controls_layout->setSpacing(5);
     controls_tab->setObjectName("controls");
 
     QWidget *node_tab = new QWidget(this);
     node_tab->setObjectName("node_tab");
     node_tab_layout = new QVBoxLayout(node_tab);
+    node_tab_layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
     node_tab_layout->setSpacing(5);
 
     tabs->add_tab(controls_tab, "Controls");
