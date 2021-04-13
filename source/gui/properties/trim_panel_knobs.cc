@@ -52,13 +52,16 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
     {
         QJsonObject knob_object = _knobs.at(i).toObject();
         QString type = knob_object.value("type").toString();
+        float min = knob_object.value("minimum").toDouble();
+        float max = knob_object.value("maximum").toDouble();
+        bool two_dimensional = knob_object.value("two_dimensional").toBool();
         QString name = knob_object.value("name").toString();
         QString label = knob_object.value("label").toString();
         bool over_line = knob_object.value("over_line").toBool();
 
         knob *_knob = nullptr;
         if (type == "color")
-            _knob = new knob_color();
+            _knob = new knob_color(min, max);
 
         else if (type == "check_box")
             _knob = new knob_check_box();
@@ -82,10 +85,10 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
             _knob = new knob_group();
 
         else if (type == "integer")
-            _knob = new knob_integer();
+            _knob = new knob_integer(min, max, 0, two_dimensional);
 
         else if (type == "floating")
-            _knob = new knob_floating();
+            _knob = new knob_floating(min, max, 0, two_dimensional);
 
         else if (type == "separator")
             _knob = new knob_separator();

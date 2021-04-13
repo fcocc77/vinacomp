@@ -16,7 +16,7 @@
             "type": "integer_dimensions",
             "label": "Frame Range",
             "tooltip": "frame_range",
-            "default": [0, 100],
+            "default": [1, 100],
 			"animatable": false
 		},
 		{

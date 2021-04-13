@@ -117,16 +117,6 @@ void knob_color::init_colors()
 void knob_color::restore_param()
 {
     QJsonValue param_value = get_param_value();
-
-    float min = get_min();
-    float max = get_max();
-
-    mono_slider->set_min_max(min, max);
-    red_slider->set_min_max(min, max);
-    green_slider->set_min_max(min, max);
-    blue_slider->set_min_max(min, max);
-    alpha_slider->set_min_max(min, max);
-
     QJsonArray _default = get_param_value().toArray();
 
     red = _default.at(0).toDouble();
