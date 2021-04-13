@@ -12,6 +12,7 @@ knob_choice::knob_choice(QList<combo_box_item> items, int default_index)
     choice = new combo_box(items, default_index);
     connect(choice, &combo_box::changed, this, [=](QVariant value, int index) {
         changed(value, index);
+        to_node_gui(this);
         update_value(QJsonArray{index, value.toString()});
     });
 

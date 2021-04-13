@@ -12,6 +12,31 @@
             "default": ""
         },
         {
+            "name": "file_type",
+            "type": "choice",
+            "label": "File Type",
+            "tooltip": "file_type",
+            "items": [
+				["dpx", "dpx"],
+				["exr", "exr"],
+				["jpeg", "jpeg"],
+				["png", "png"],
+				["mov", "mov"],
+				["mp4", "mp4"]
+            ],
+            "default": [2, "jpeg"]
+        },
+        {
+            "name": "jpeg_quality",
+            "type": "floating",
+            "label": "JPEG Quality",
+            "tooltip": "jpeg_quality",
+            "minimum": 0,
+            "maximum": 1,
+            "default": 0.7,
+            "visible": true
+        },
+        {
             "name": "frame_range",
             "type": "integer_dimensions",
             "label": "Frame Range",

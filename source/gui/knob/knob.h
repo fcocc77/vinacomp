@@ -74,7 +74,7 @@ public:
     int icon_size;
 
 signals:
-    void changed(QString param_name);
+    void to_node_gui(knob *_knob);
 };
 
 inline void knob::set_visible(bool visible)

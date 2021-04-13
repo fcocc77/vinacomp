@@ -9,7 +9,7 @@
 class write_gui : public node_gui
 {
 private:
-    void changed(QString param_name) override;
+    void changed(knob *_knob) override;
     renderer *_renderer;
 
     knob_progress *progress_knob;
@@ -22,6 +22,7 @@ private:
 
     void render();
     void reset_range();
+    void change_format(knob *_file_type);
 
 public:
     write_gui(project_struct *project);

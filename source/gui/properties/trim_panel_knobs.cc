@@ -162,7 +162,7 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
             _knob->restore_param();
 
             if (_node_gui)
-                connect(_knob, &knob::changed, _node_gui, &node_gui::changed);
+                connect(_knob, &knob::to_node_gui, _node_gui, &node_gui::changed);
         }
 
         knobs->insert(name, _knob);

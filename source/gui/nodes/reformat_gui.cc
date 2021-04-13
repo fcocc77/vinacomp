@@ -5,11 +5,13 @@ reformat_gui::reformat_gui() {}
 
 reformat_gui::~reformat_gui() {}
 
-void reformat_gui::changed(QString param_name)
+void reformat_gui::changed(knob *_knob)
 {
+    QString param_name = _knob->get_name();
+
     if (param_name == "type")
     {
-        knob_choice *type = static_cast<knob_choice *>(get_knob("type"));
+        knob_choice *type = static_cast<knob_choice *>(_knob);
         int index = type->get_index();
 
         knob *format_knob = get_knob("format");

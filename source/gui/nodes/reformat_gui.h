@@ -9,7 +9,7 @@ public:
     reformat_gui();
     ~reformat_gui();
 
-    void changed(QString param_name) override;
+    void changed(knob *_knob) override;
 };
 
 #endif // REFORMAT_GUI_H

@@ -25,7 +25,7 @@ public:
                QJsonObject knob_data, QString name);
 
     virtual void restore_param();
-    virtual void changed(QString param_name);
+    virtual void changed(knob *_knob);
 
 protected:
     renderer *_renderer;

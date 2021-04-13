@@ -12,7 +12,7 @@ knob_button::knob_button()
     button = new QPushButton();
     connect(button, &QPushButton::clicked, this, [=]() {
         // el boton solo funciona en gui
-        changed(get_name());
+        to_node_gui(this);
     });
     layout->addWidget(button);
 }

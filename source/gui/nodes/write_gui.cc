@@ -3,6 +3,7 @@
 #include <util.h>
 #include <write_gui.h>
 #include <write_node.h>
+#include <knob_choice.h>
 
 write_gui::write_gui(project_struct *_project)
     : first_frame(1)
@@ -17,6 +18,26 @@ write_gui::write_gui(project_struct *_project)
 write_gui::~write_gui()
 {
     delete _renderer;
+}
+
+void write_gui::changed(knob *_knob)
+{
+    QString param_name = _knob->get_name();
+
+    if (param_name == "render")
+        render();
+    else if (param_name == "reset")
+        reset_range();
+    else if (param_name == "file_type")
+        change_format(_knob);
+}
+
+void write_gui::change_format(knob *_file_type)
+{
+    knob_choice *type_knob = static_cast<knob_choice *>(_file_type);
+    QString type = type_knob->get_value().toString();
+
+    get_knob("jpeg_quality")->set_visible(type == "jpeg");
 }
 
 void write_gui::start_render()
@@ -77,12 +98,4 @@ void write_gui::reset_range()
 
     range_knob->set_values({_project_settings->get_first_frame(),
                             _project_settings->get_last_frame()});
-}
-
-void write_gui::changed(QString param_name)
-{
-    if (param_name == "render")
-        render();
-    else if (param_name == "reset")
-        reset_range();
 }
