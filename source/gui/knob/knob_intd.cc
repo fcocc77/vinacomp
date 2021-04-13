@@ -1,11 +1,8 @@
 #include <knob_intd.h>
 
 knob_intd::knob_intd(QList<int> default_values)
-// : knob_dimensional(int_to_float(default_values))
+    : knob_dimensional(int_to_float(default_values))
 {
-
-    // connect(changed, &knob_dimensional::changed, this,
-    // [=](QList<float> values) {});
 }
 
 knob_intd::~knob_intd() {}
