@@ -20,3 +20,10 @@ UI_DIR = release/.ui
 INCLUDEPATH += /usr/include/python3.6m
 LIBS += -lpython3.6m
 #
+
+# Open CV
+LIBS += -lopencv_core
+LIBS += -lopencv_features2d
+LIBS += -lopencv_imgproc
+LIBS += -lopencv_highgui
+#

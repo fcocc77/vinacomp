@@ -55,11 +55,7 @@ void write_gui::finished_render(render_data _rdata)
     if (_rdata.frame > opt.last_frame)
         return;
 
-    QString output = opt.filename;
-    output.replace("###", QString::number(_rdata.frame));
-
-    cv::imwrite(output.toStdString(), _rdata.image,
-                {cv::IMWRITE_JPEG_QUALITY, opt.jpeg_quality});
+    rd::write_file(_rdata.image, opt);
 
     progress_knob->set_value(get_progress());
 

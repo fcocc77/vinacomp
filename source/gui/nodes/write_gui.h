@@ -6,13 +6,8 @@
 #include <render_data.h>
 #include <renderer.h>
 
-struct render_options {
-    int jpeg_quality;
-    int first_frame;
-    int last_frame;
-    QString filename;
-    int frame;
-};
+// Engine
+#include <run_render.h>
 
 class write_gui : public node_gui
 {
