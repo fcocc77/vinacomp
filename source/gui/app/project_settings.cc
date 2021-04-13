@@ -20,7 +20,7 @@ project_settings::project_settings(QWidget *__vinacomp)
     int init_space = 140;
 
     // Frame Range
-    knob_intd *frame_range_knob = new knob_intd({first_frame, last_frame});
+    knob_intd *frame_range_knob = new knob_intd(2, {first_frame, last_frame});
 
     connect(frame_range_knob, &knob_intd::changed, this, [=](QList<int> values) {
         first_frame = values[0];

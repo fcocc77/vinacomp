@@ -1,6 +1,7 @@
 #include <knob_dimensional.h>
 
-knob_dimensional::knob_dimensional(QList<float> default_values)
+knob_dimensional::knob_dimensional(int dimensions_count,
+                                   QList<float> default_values)
 {
     this->setObjectName("knob_dimensions");
     QHBoxLayout *layout = new QHBoxLayout(this);
@@ -9,15 +10,14 @@ knob_dimensional::knob_dimensional(QList<float> default_values)
 
     layout->addWidget(init_space);
 
-    int dimensions = default_values.count();
-    for (int i = 0; i < dimensions; i++)
+    for (int i = 0; i < dimensions_count; i++)
     {
         float value = default_values.value(i);
         QLineEdit *dimension_edit = new QLineEdit(QString::number(value));
 
         connect(dimension_edit, &QLineEdit::editingFinished, this, [=]() {
             values.clear();
-            for (int i = 0; i < dimensions; i++)
+            for (int i = 0; i < dimensions_count; i++)
                 values.push_back(get_value(i));
 
             emmit_signal();
@@ -42,17 +42,13 @@ void knob_dimensional::restore_param()
 {
     knob::restore_param();
 
-    // QList<int> default_dimensions, dimensions;
-    // for (QJsonValue value : knob_object.value("default").toArray())
-    // default_dimensions.push_back(value.toInt());
+    QJsonArray values = get_param_value().toArray();
 
-    // if (data->contains(name))
-    // for (QJsonValue value : data->value(name).toArray())
-    // dimensions.push_back(value.toInt());
-    // else
-    // dimensions = default_dimensions;
+    QList<float> default_dimensions, dimensions;
+    for (QJsonValue value : values)
+        default_dimensions.push_back(value.toDouble());
 
-    // knob_dimensional *knob_integer_dimensions = new knob_dimensional(dimensions);
+    set_values(default_dimensions, false);
 }
 
 void knob_dimensional::emmit_signal()

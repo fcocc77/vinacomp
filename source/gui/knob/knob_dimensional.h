@@ -23,7 +23,8 @@ private:
     virtual void changed_values(QList<float> values);
 
 public:
-    knob_dimensional(QList<float> default_values = {0, 1});
+    knob_dimensional(int dimensions_count = 2,
+                     QList<float> default_values = {0, 1});
     ~knob_dimensional();
 
     float get_value(int dimension) const;

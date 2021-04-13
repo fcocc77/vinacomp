@@ -9,7 +9,11 @@
             "type": "floating_dimensions",
             "label": "Translate",
             "tooltip": "Translate",
-            "default": [0, 0]
+            "dimensions": 2,
+            "default": [
+                0,
+                0
+            ]
         },
         {
             "name": "rotate",
@@ -53,8 +57,7 @@
             "type": "floating_dimensions",
             "label": "Center",
             "tooltip": "Center",
-            "minimum": null,
-            "maximum": null,
+            "dimensions": 2,
             "default": [
                 0,
                 0

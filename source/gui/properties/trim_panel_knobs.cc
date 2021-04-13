@@ -54,6 +54,7 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
         QString type = knob_object.value("type").toString();
         float min = knob_object.value("minimum").toDouble();
         float max = knob_object.value("maximum").toDouble();
+        int dimensions_count = knob_object.value("dimensions").toDouble();
         bool two_dimensional = knob_object.value("two_dimensional").toBool();
         QString name = knob_object.value("name").toString();
         QString label = knob_object.value("label").toString();
@@ -94,10 +95,10 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
             _knob = new knob_separator();
 
         else if (type == "floating_dimensions")
-            _knob = new knob_floatd();
+            _knob = new knob_floatd(dimensions_count);
 
         else if (type == "integer_dimensions")
-            _knob = new knob_intd();
+            _knob = new knob_intd(dimensions_count);
 
         else if (type == "channels")
             _knob = new knob_channels();
