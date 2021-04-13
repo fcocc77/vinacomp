@@ -1,97 +1,30 @@
 #include <knob_intd.h>
 
 knob_intd::knob_intd(QList<int> default_values)
+// : knob_dimensional(int_to_float(default_values))
 {
-    this->setObjectName("knob_dimensions");
-    QHBoxLayout *layout = new QHBoxLayout(this);
-    this->set_knob_layout(layout);
-    layout->setMargin(0);
 
-    layout->addWidget(init_space);
-
-    int dimensions = default_values.count();
-    for (int i = 0; i < dimensions; i++)
-    {
-        int value = default_values.value(i);
-        QLineEdit *dimension_edit = new QLineEdit(QString::number(value));
-
-        connect(dimension_edit, &QLineEdit::editingFinished, this, [=]() {
-            values.clear();
-            for (int i = 0; i < dimensions; i++)
-                values.push_back(get_value(i));
-
-            emmit_signal();
-            update_handler();
-        });
-
-        dimension_edit->setMaximumWidth(50);
-        layout->addWidget(dimension_edit);
-        dimensions_edits.push_back(dimension_edit);
-    }
-
-    layout->addStretch();
+    // connect(changed, &knob_dimensional::changed, this,
+    // [=](QList<float> values) {});
 }
 
-knob_intd::~knob_intd()
+knob_intd::~knob_intd() {}
+
+QList<float> knob_intd::int_to_float(QList<int> defaults)
 {
-    for (QLineEdit *edit : dimensions_edits)
-        delete edit;
+    QList<float> float_defaults;
+
+    for (int item : defaults)
+        float_defaults.push_back(item);
+
+    return float_defaults;
 }
 
-void knob_intd::restore_param()
+void knob_intd::changed_values(QList<float> values)
 {
-    knob::restore_param();
+    QList<int> int_values;
+    for (float value : values)
+        int_values.push_back(value);
 
-    // QList<int> default_dimensions, dimensions;
-    // for (QJsonValue value : knob_object.value("default").toArray())
-    // default_dimensions.push_back(value.toInt());
-
-    // if (data->contains(name))
-    // for (QJsonValue value : data->value(name).toArray())
-    // dimensions.push_back(value.toInt());
-    // else
-    // dimensions = default_dimensions;
-
-    // knob_intd *knob_integer_dimensions = new knob_intd(dimensions);
-}
-
-void knob_intd::emmit_signal()
-{
-    changed(values); // Signal
-}
-
-int knob_intd::get_value(int dimension) const
-{
-    if (dimension >= dimensions_edits.count())
-        return 0;
-
-    return dimensions_edits.value(dimension)->text().toInt();
-}
-
-QList<int> knob_intd::get_values() const
-{
-    QList<int> values;
-    for (int i = 0; i < dimensions_edits.count(); i++)
-        values.push_back(dimensions_edits.value(i)->text().toInt());
-
-    return values;
-}
-
-void knob_intd::set_value(int value, int dimension)
-{
-    if (dimension >= dimensions_edits.count())
-        return;
-
-    dimensions_edits.value(dimension)->setText(QString::number(value));
-}
-
-void knob_intd::set_values(QList<int> _values, bool _emmit_signal)
-{
-    values = _values;
-
-    for (int i = 0; i < dimensions_edits.count(); i++)
-        set_value(values.value(i), i);
-
-    if (_emmit_signal)
-        emmit_signal();
+    changed(int_values);
 }
