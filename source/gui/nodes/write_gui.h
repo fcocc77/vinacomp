@@ -6,6 +6,14 @@
 #include <render_data.h>
 #include <renderer.h>
 
+struct render_options {
+    int jpeg_quality;
+    int first_frame;
+    int last_frame;
+    QString filename;
+    int frame;
+};
+
 class write_gui : public node_gui
 {
 private:
@@ -13,8 +21,7 @@ private:
     renderer *_renderer;
 
     knob_progress *progress_knob;
-    int first_frame, last_frame, frame;
-    QString filename;
+    render_options opt;
 
     void start_render();
     void finished_render(render_data _rdata);

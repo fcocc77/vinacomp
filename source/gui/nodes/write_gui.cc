@@ -1,14 +1,12 @@
 #include <knob_file.h>
 #include <knob_intd.h>
+#include <knob_floating.h>
 #include <util.h>
 #include <write_gui.h>
 #include <write_node.h>
 #include <knob_choice.h>
 
 write_gui::write_gui(project_struct *_project)
-    : first_frame(1)
-    , last_frame(100)
-    , frame(1)
 {
     _renderer = new renderer(_project);
     connect(_renderer, &renderer::finished_render, this,
@@ -46,7 +44,7 @@ void write_gui::start_render()
     rdata.width = 1920;
     rdata.height = 1080;
     rdata.root_node = name;
-    rdata.frame = frame;
+    rdata.frame = opt.frame;
     rdata.layer = "main";
 
     _renderer->render(rdata);
@@ -54,24 +52,25 @@ void write_gui::start_render()
 
 void write_gui::finished_render(render_data _rdata)
 {
-    if (_rdata.frame > last_frame)
+    if (_rdata.frame > opt.last_frame)
         return;
 
-    QString output = filename;
+    QString output = opt.filename;
     output.replace("###", QString::number(_rdata.frame));
 
-    cv::imwrite(output.toStdString(), _rdata.image);
+    cv::imwrite(output.toStdString(), _rdata.image,
+                {cv::IMWRITE_JPEG_QUALITY, opt.jpeg_quality});
 
     progress_knob->set_value(get_progress());
 
-    frame++;
+    opt.frame++;
     start_render();
 }
 
 int write_gui::get_progress() const
 {
-    int count = last_frame - first_frame;
-    int current_count = count - (last_frame - frame);
+    int count = opt.last_frame - opt.first_frame;
+    int current_count = count - (opt.last_frame - opt.frame);
 
     return (current_count * 100) / count;
 }
@@ -83,11 +82,16 @@ void write_gui::render()
         static_cast<knob_intd *>(get_knob("frame_range"));
     progress_knob = static_cast<knob_progress *>(get_knob("progress"));
 
-    filename = file_knob->get_param_value().toString();
+    opt.filename = file_knob->get_param_value().toString();
 
-    first_frame = frame_range_knob->get_value(0);
-    last_frame = frame_range_knob->get_value(1);
-    frame = first_frame;
+    opt.first_frame = frame_range_knob->get_value(0);
+    opt.last_frame = frame_range_knob->get_value(1);
+    opt.frame = opt.first_frame;
+
+    // JPEG Quality
+    knob_floating *jq = static_cast<knob_floating *>(get_knob("jpeg_quality"));
+    opt.jpeg_quality = jq->get_value() * 100;
+    //
 
     start_render();
 }
