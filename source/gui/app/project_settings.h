@@ -21,7 +21,24 @@ public:
     project_settings(QWidget *_vinacomp);
     ~project_settings();
 
-    std::pair<int, int> get_frame_range() const;
+    inline std::pair<int, int> get_frame_range() const;
+    inline int get_first_frame() const;
+    inline int get_last_frame() const;
 };
+
+inline std::pair<int, int> project_settings::get_frame_range() const
+{
+    return {first_frame, last_frame};
+}
+
+inline int project_settings::get_first_frame() const
+{
+    return first_frame;
+}
+
+inline int project_settings::get_last_frame() const
+{
+    return last_frame;
+}
 
 #endif // PROJECT_SETTINGS_H

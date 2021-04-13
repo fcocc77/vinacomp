@@ -49,8 +49,3 @@ project_settings::project_settings(QWidget *__vinacomp)
 }
 
 project_settings::~project_settings() {}
-
-pair<int, int> project_settings::get_frame_range() const
-{
-    return {first_frame, last_frame};
-}

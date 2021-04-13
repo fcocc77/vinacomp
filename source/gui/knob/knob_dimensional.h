@@ -18,13 +18,16 @@ private:
     QList<QLineEdit *> dimensions_edits;
     QList<float> values;
 
+    bool floating;
+
     void restore_param() override;
 
     virtual void changed_values(QList<float> values);
 
 public:
     knob_dimensional(int dimensions_count = 2,
-                     QList<float> default_values = {0, 1});
+                     QList<float> default_values = {0, 1},
+                     bool floating = true);
     ~knob_dimensional();
 
     float get_value(int dimension) const;

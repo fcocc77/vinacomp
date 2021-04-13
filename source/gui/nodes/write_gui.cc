@@ -55,11 +55,8 @@ int write_gui::get_progress() const
     return (current_count * 100) / count;
 }
 
-void write_gui::changed(QString param_name)
+void write_gui::render()
 {
-    if (param_name != "render")
-        return;
-
     knob_file *file_knob = static_cast<knob_file *>(get_knob("filename"));
     knob_intd *frame_range_knob =
         static_cast<knob_intd *>(get_knob("frame_range"));
@@ -72,4 +69,20 @@ void write_gui::changed(QString param_name)
     frame = first_frame;
 
     start_render();
+}
+
+void write_gui::reset_range()
+{
+    knob_intd *range_knob = static_cast<knob_intd *>(get_knob("frame_range"));
+
+    range_knob->set_values({_project_settings->get_first_frame(),
+                            _project_settings->get_last_frame()});
+}
+
+void write_gui::changed(QString param_name)
+{
+    if (param_name == "render")
+        render();
+    else if (param_name == "reset")
+        reset_range();
 }

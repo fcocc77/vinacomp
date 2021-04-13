@@ -25,6 +25,7 @@ void node_gui::setup(QWidget *__trim_panel, QWidget *_vinacomp,
 
     _renderer = __vinacomp->get_renderer();
     project = __vinacomp->get_project();
+    _project_settings = __vinacomp->get_project_settings();
 }
 
 knob *node_gui::get_knob(QString name) const

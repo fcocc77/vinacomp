@@ -7,6 +7,7 @@
 #include <knob.h>
 #include <project_struct.h>
 #include <renderer.h>
+#include <project_settings.h>
 
 class node_gui : public QWidget
 {
@@ -29,6 +30,7 @@ public:
 protected:
     renderer *_renderer;
     project_struct *project;
+    project_settings *_project_settings;
     QString name;
 
     knob *get_knob(QString name) const;

@@ -1,7 +1,8 @@
 #include <knob_dimensional.h>
 
 knob_dimensional::knob_dimensional(int dimensions_count,
-                                   QList<float> default_values)
+                                   QList<float> default_values, bool _floating)
+    : floating(_floating)
 {
     this->setObjectName("knob_dimensions");
     QHBoxLayout *layout = new QHBoxLayout(this);
@@ -54,6 +55,17 @@ void knob_dimensional::restore_param()
 void knob_dimensional::emmit_signal()
 {
     changed_values(values); // Signal
+
+    QJsonArray output_values;
+    for (float value : values)
+    {
+        if (floating)
+            output_values.push_back(value);
+        else
+            output_values.push_back(int(value));
+    }
+
+    update_value(output_values);
 }
 
 void knob_dimensional::changed_values(QList<float> values) {}
