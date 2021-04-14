@@ -139,18 +139,21 @@ node *node_view::create_node(QString name, QColor color, QString type, QPointF p
 
     project_struct *project = static_cast<vinacomp *>(_vinacomp)->get_project();
 
-    node_props props = { scene,
-                         current_z_value,
-                         link_connecting,
-                         1,
-                         color,
-                         type,
-                         name,
-                         tips,
-                         _properties,
-                         _vinacomp,
-                         nodes_loaded,
-                         project };
+    node_props props;
+
+    props.scene = scene;
+    props.current_z_value = current_z_value;
+    props.link_connecting = link_connecting;
+    props.inputs = 3;
+    props.color = color;
+    props.type = type;
+    props.name = name;
+    props.tips = tips;
+    props._properties = _properties;
+    props.vinacomp = _vinacomp;
+    props.nodes_loaded = nodes_loaded;
+    props.project = project;
+    props.mask = true;
 
     node *_node;
     if (type == "dot")
@@ -161,7 +164,9 @@ node *node_view::create_node(QString name, QColor color, QString type, QPointF p
         _node = new node_rect(props, selected_nodes);
 
     auto size = _node->get_size();
-    QPointF new_position = {position.x() - (size.width() / 2), position.y() - (size.height() / 2)};
+    QPointF new_position = {position.x() - (size.width() / 2),
+                            position.y() - (size.height() / 2)};
+
     _node->set_position(new_position.x(), new_position.y());
 
     nodes->insert(name, _node);

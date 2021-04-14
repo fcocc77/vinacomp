@@ -29,6 +29,9 @@ node::node(node_props _props, QMap<QString, node *> *_selected_nodes)
         this->setZValue(-100);
     else
     {
+        // sumamos el link de la mascara que es index 0
+        props.inputs++;
+
         // Crea los links para el nodo
         links = new QList<node_link *>;
         for (int i = 0; i < props.inputs; i++)
@@ -94,7 +97,7 @@ void node::refresh()
     if (!links)
         return;
 
-    // Actualizacion de todos lo links conectados al nodo
+    // Actualizacion de todos los links conectados al nodo
     auto refresh_links = [](node *_node) {
         for (node_link *_node_link : *_node->get_links())
             _node_link->refresh();

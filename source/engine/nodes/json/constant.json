@@ -37,6 +37,7 @@
             "type": "integer_dimensions",
             "label": "Frame Range",
             "tooltip": "frame_range",
+            "dimensions": 2,
             "default": [1, 1],
 			"animatable": false
 		}

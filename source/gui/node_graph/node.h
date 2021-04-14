@@ -36,6 +36,7 @@ struct node_props
     QWidget *vinacomp;
     nodes_load *nodes_loaded;
     project_struct *project;
+    bool mask;
 };
 
 class node : public QGraphicsPathItem
@@ -75,10 +76,9 @@ protected:
 
     void set_size(int minimum_width, int minimum_height);
 
-    // eventos
-    void mousePressEvent(QGraphicsSceneMouseEvent *event);
-    void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 
 public:
     node(node_props _props, QMap<QString, node *> *_selected_nodes);
@@ -102,7 +102,7 @@ public:
     inline QList<node_link *> *get_links() const;
     inline trim_panel *get_trim_panel() const;
     QString get_type() const;
-    QSize get_size() const;
+    inline QSize get_size() const;
     void make_panel();
     QPointF get_center_position() const;
     inline void freeze_position();

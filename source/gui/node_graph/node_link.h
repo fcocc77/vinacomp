@@ -26,6 +26,7 @@ private:
     int link_size;
     int index;
     bool dragging = false;
+    bool visible;
 
     QGraphicsLineItem *link;
     QGraphicsPolygonItem *arrow;
@@ -40,11 +41,11 @@ private:
     float get_rotation(QPointF point_a, QPointF point_b);
     float get_long(QPointF point_a, QPointF point_b);
     QPointF get_center(QPointF point_a, QPointF point_b);
+    inline void set_visible(bool visible);
 
-    // Event
-    void mousePressEvent(QGraphicsSceneMouseEvent *event);
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-    void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
 
 public:
     node_link(int _index, QGraphicsScene *_scene, QGraphicsItem *_node,
@@ -56,7 +57,21 @@ public:
     void connect_node(QGraphicsItem *_node);
     void disconnect_node();
     void set_selected(bool enable);
-    QGraphicsItem *get_connected_node();
+    inline QGraphicsItem *get_connected_node() const;
 };
+
+inline QGraphicsItem *node_link::get_connected_node() const
+{
+    return connected_node;
+}
+
+inline void node_link::set_visible(bool _visible)
+{
+    visible = _visible;
+    this->setVisible(visible);
+    link->setVisible(visible);
+    arrow->setVisible(visible);
+    text->setVisible(visible);
+}
 
 #endif // NODE_LINK_H

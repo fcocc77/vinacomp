@@ -15,11 +15,11 @@ node_link::node_link(int _index, QGraphicsScene *_scene, QGraphicsItem *__node,
     , _vinacomp(__vinacomp)
 
     , connected_node(nullptr)
-
+    , link_size(70)
+    , visible(true)
 {
 
     // Link
-    link_size = 70;
     link = new QGraphicsLineItem();
     QPen pen(Qt::black);
     pen.setWidth(4);
@@ -30,8 +30,8 @@ node_link::node_link(int _index, QGraphicsScene *_scene, QGraphicsItem *__node,
     //
 
     // Ajuste del rectangulo, el rectangulo es esta misma clase
-    // y es transparente, por que es solo
-    // para que el agarre de la flecha funcione mejor.
+    // y es transparente, por que es solo para que el agarre
+    // de la flecha funcione mejor.
     QPen rectangle_pen(Qt::transparent);
     rectangle_pen.setWidth(1);
     this->setPen(rectangle_pen);
@@ -52,7 +52,10 @@ node_link::node_link(int _index, QGraphicsScene *_scene, QGraphicsItem *__node,
     QFont font;
     font.setPointSize(10);
     text->setFont(font);
-    text->setPlainText("Input");
+    if (index == 0)
+        text->setPlainText("mask");
+    else
+        text->setPlainText("Input-" + QString::number(index));
     text->setDefaultTextColor(QColor(200, 200, 200));
     scene->addItem(text);
     //
@@ -76,13 +79,22 @@ void node_link::refresh()
     QPointF src_pos, dst_pos;
 
     src_pos = _this_node->get_center_position();
-    if (connected_node != NULL)
+    if (connected_node)
     {
         node *_connected_node = static_cast<node *>(connected_node);
         dst_pos = _connected_node->get_center_position();
     }
     else
-        dst_pos = {src_pos.x(), src_pos.y() - link_size};
+    {
+        int width = _this_node->get_size().width() / 2;
+
+        if (index == 0) // index 0 es 'mask'
+            dst_pos = {src_pos.x() + width - 20 + link_size, src_pos.y()};
+        else if (index == 1)
+            dst_pos = {src_pos.x(), src_pos.y() - link_size};
+        else
+            dst_pos = {src_pos.x() - width + 20 - link_size, src_pos.y()};
+    }
 
     link_refresh(src_pos, dst_pos);
 }
@@ -283,11 +295,6 @@ void node_link::connect_node(QGraphicsItem *to_node)
     //
 }
 
-QGraphicsItem *node_link::get_connected_node()
-{
-    return connected_node;
-}
-
 void node_link::disconnect_node()
 {
     if (connected_node)
@@ -308,7 +315,6 @@ void node_link::disconnect_node()
     refresh();
 }
 
-// Events:
 void node_link::mousePressEvent(QGraphicsSceneMouseEvent *event) {}
 
 void node_link::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
