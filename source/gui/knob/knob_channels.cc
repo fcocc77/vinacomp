@@ -2,7 +2,10 @@
 
 knob_channels::knob_channels(project_struct *_project, QString _layer,
                              QList<bool> _channels)
+    : current_layer("main")
 {
+    project = _project;
+
     this->setObjectName("knob_channels");
 
     layout = new QHBoxLayout(this);
@@ -61,6 +64,7 @@ knob_channels::knob_channels(project_struct *_project, QString _layer,
         to_emmit_signal();
     });
     connect(layers, &combo_box::pre_open, this, [=]() { update_layers(); });
+    update_layers("", true);
     //
 
     layout->addWidget(init_space);
@@ -249,6 +253,9 @@ void knob_channels::edit_layer()
 
 void knob_channels::update_layers(QString from, bool keep_current_layer)
 {
+    if (!project)
+        return;
+
     int old_index = layers->get_index();
     QString old_layer = layers->get_value().toString();
 

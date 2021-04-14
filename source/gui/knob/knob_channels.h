@@ -25,7 +25,6 @@ private:
 
     QString current_layer;
 
-    project_struct *project;
     combo_box *layers;
     QString action;
     QString layer_to_edit;
