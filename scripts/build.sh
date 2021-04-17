@@ -25,7 +25,7 @@ function run_gui() {
     rm $vinacomp
 
     qmake-qt5
-    make -j 4
+    make -j 8
 
     if [ -f $vinacomp ]; then
         if [ $1 == 'debug' ]; then
@@ -52,7 +52,7 @@ function run_engine() {
     rm $vinaengine
 
     qmake-qt5
-    make -j 4
+    make -j 8
 
     if [ -f $vinaengine ]; then
         $vinaengine modules/engine_test.py
