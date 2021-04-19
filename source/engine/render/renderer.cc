@@ -142,7 +142,7 @@ void renderer_thread::recursive_render(render_data *rdata)
     //
 
     // renderiza las entradas del nodo antes que el nodo
-    QString input_node = node->inputs.value("in0").toString();
+    QString input_node = node->inputs.value("in1").toString();
     if (!input_node.isEmpty())
     {
         rdata->root_node = input_node;
