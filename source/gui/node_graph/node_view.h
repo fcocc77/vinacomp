@@ -57,8 +57,9 @@ public:
     node_view(QWidget *_vinacomp, properties *_properties, nodes_load *nodes_loaded);
     ~node_view();
 
-    node *create_node(QString name, QColor color, QString type, QPointF position = QPointF(),
-                      QString tips = "");
+    node *create_node(QString name, QColor color, QString type,
+                      QPointF position = QPointF(), QString tips = "");
+
     void rename_node(node *_node, QString name, QString new_name);
     void change_node_name_dialog();
     void change_node_name();

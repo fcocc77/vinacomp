@@ -127,8 +127,8 @@ void node_view::change_node_name()
     node_rename_edit->hide();
 }
 
-node *node_view::create_node(QString name, QColor color, QString type, QPointF position,
-                             QString tips)
+node *node_view::create_node(QString name, QColor color, QString type,
+                             QPointF position, QString tips)
 {
     if (position.isNull())
     {
@@ -144,7 +144,6 @@ node *node_view::create_node(QString name, QColor color, QString type, QPointF p
     props.scene = scene;
     props.current_z_value = current_z_value;
     props.link_connecting = link_connecting;
-    props.inputs = 5;
     props.color = color;
     props.type = type;
     props.name = name;
@@ -153,7 +152,6 @@ node *node_view::create_node(QString name, QColor color, QString type, QPointF p
     props.vinacomp = _vinacomp;
     props.nodes_loaded = nodes_loaded;
     props.project = project;
-    props.mask = true;
 
     node *_node;
     if (type == "dot")

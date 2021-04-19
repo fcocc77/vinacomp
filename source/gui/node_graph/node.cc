@@ -29,16 +29,27 @@ node::node(node_props _props, QMap<QString, node *> *_selected_nodes)
         this->setZValue(-100);
     else
     {
-        // sumamos el link de la mascara que es index 0
-        props.inputs++;
+        QJsonObject node_fx = nodes_loaded->get_effect(props.type);
+        // carga las entradas del efecto
+        QJsonArray inputs = node_fx.value("inputs").toArray();
+
+        // si esta vacia o no exite, crea una entrada
+        if (inputs.isEmpty())
+            inputs.push_back("Input-1");
+
+        // sumamos la mascara, que index 0
+        inputs.push_front("mask");
+        bool has_mask = node_fx.value("mask").toBool();
 
         // Crea los links para el nodo
         links = new QList<node_link *>;
-        for (int i = 0; i < props.inputs; i++)
+        for (int i = 0; i < inputs.count(); i++)
         {
-            node_link *link =
-                new node_link(i, props.scene, this, props.link_connecting,
-                              props.project, props.vinacomp);
+            QString label = inputs[i].toString();
+
+            node_link *link = new node_link(label, has_mask, i, props.scene, this,
+                                            props.link_connecting,
+                                            props.project, props.vinacomp);
             links->push_back(link);
             connected_indexs.push_back(false);
         }

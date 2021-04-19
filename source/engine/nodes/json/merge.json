@@ -3,6 +3,10 @@
     "id": "merge",
     "label": "Merge",
     "icon": "merge",
+    "inputs": [
+        "B",
+        "A"
+    ],
     "knobs": [
         {
             "name": "mix",

@@ -3,6 +3,7 @@
     "id": "grade",
     "label": "Grade",
     "icon": "grade",
+    "mask": true,
     "knobs": [
         {
             "name": "channels",

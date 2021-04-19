@@ -27,6 +27,8 @@ private:
     int index;
     bool dragging;
     bool visible;
+    QString label;
+    bool has_mask;
 
     QGraphicsLineItem *link;
     QGraphicsPolygonItem *arrow;
@@ -50,8 +52,10 @@ private:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
 
 public:
-    node_link(int _index, QGraphicsScene *_scene, QGraphicsItem *_node,
-              QJsonObject *_link_connecting, project_struct *_project, QWidget *_vinacomp);
+    node_link(QString input_label, bool has_mask, int _index,
+              QGraphicsScene *_scene, QGraphicsItem *_node,
+              QJsonObject *_link_connecting, project_struct *_project,
+              QWidget *_vinacomp);
     ~node_link();
 
     void refresh();

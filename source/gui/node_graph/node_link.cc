@@ -4,7 +4,8 @@
 #include <util.h>
 #include <vinacomp.h>
 
-node_link::node_link(int _index, QGraphicsScene *_scene, QGraphicsItem *__node,
+node_link::node_link(QString input_label, bool _has_mask, int _index,
+                     QGraphicsScene *_scene, QGraphicsItem *__node,
                      QJsonObject *_link_connecting, project_struct *_project,
                      QWidget *__vinacomp)
 
@@ -18,6 +19,8 @@ node_link::node_link(int _index, QGraphicsScene *_scene, QGraphicsItem *__node,
     , index(_index)
     , dragging(false)
     , visible(true)
+    , label(input_label)
+    , has_mask(_has_mask)
 {
 
     // Link
@@ -55,10 +58,7 @@ node_link::node_link(int _index, QGraphicsScene *_scene, QGraphicsItem *__node,
     QFont font;
     font.setPointSize(10);
     text->setFont(font);
-    if (index == 0)
-        text->setPlainText("mask");
-    else
-        text->setPlainText("Input-" + QString::number(index));
+    text->setPlainText(label);
     text->setDefaultTextColor(QColor(200, 200, 200));
     scene->addItem(text);
     //
@@ -79,6 +79,15 @@ void node_link::update_visibility()
 {
     // establece visibilidad tomando en cuenta
     // cada link conectado y la cantidad de indexs
+
+    // si el link es el 0 que mascara, y el nodo no tiene mascara, no sera
+    // visible
+    if (index == 0 && !has_mask)
+    {
+        set_visible(false);
+        return;
+    }
+
     node *_this_node = static_cast<node *>(this_node);
     auto connected = _this_node->get_connected_indexs();
 

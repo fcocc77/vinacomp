@@ -3,6 +3,7 @@
     "id": "blur",
     "label": "Blur",
     "icon": "noise",
+    "mask": true,
     "knobs": [
         {
             "name": "size",

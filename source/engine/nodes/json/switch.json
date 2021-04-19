@@ -3,6 +3,14 @@
     "id": "switch",
     "label": "Switch",
     "icon": "switch",
+    "inputs": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+    ],
     "knobs": [
         {
             "name": "which",

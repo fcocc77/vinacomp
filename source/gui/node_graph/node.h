@@ -27,7 +27,6 @@ struct node_props
     QGraphicsScene *scene;
     int *current_z_value;
     QJsonObject *link_connecting;
-    int inputs;
     QColor color;
     QString type;
     QString name;
@@ -36,7 +35,6 @@ struct node_props
     QWidget *vinacomp;
     nodes_load *nodes_loaded;
     project_struct *project;
-    bool mask;
 };
 
 class node : public QGraphicsPathItem
