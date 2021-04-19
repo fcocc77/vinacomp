@@ -40,6 +40,7 @@ node::node(node_props _props, QMap<QString, node *> *_selected_nodes)
                 new node_link(i, props.scene, this, props.link_connecting,
                               props.project, props.vinacomp);
             links->push_back(link);
+            connected_indexs.push_back(false);
         }
         //
 
@@ -90,6 +91,12 @@ void node::make_panel()
         __vinacomp->get_panels_layout()->add_viewer(_viewer);
     }
     //
+}
+
+void node::refresh_links()
+{
+    for (node_link *_node_link : *this->get_links())
+        _node_link->refresh();
 }
 
 void node::refresh()

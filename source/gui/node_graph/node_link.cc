@@ -1,11 +1,12 @@
 #include "../node_graph/node.h"
-#include <node_link.h>
-#include <vinacomp.h>
-#include <util.h>
 #include <math.h>
+#include <node_link.h>
+#include <util.h>
+#include <vinacomp.h>
 
 node_link::node_link(int _index, QGraphicsScene *_scene, QGraphicsItem *__node,
-                     QJsonObject *_link_connecting, project_struct *_project, QWidget *__vinacomp)
+                     QJsonObject *_link_connecting, project_struct *_project,
+                     QWidget *__vinacomp)
 
     : index(_index)
     , scene(_scene)
@@ -22,7 +23,7 @@ node_link::node_link(int _index, QGraphicsScene *_scene, QGraphicsItem *__node,
     // Link
     link = new QGraphicsLineItem();
     QPen pen(Qt::black);
-    pen.setWidth(4);
+    pen.setWidth(2);
     link->setPen(pen);
     link->setLine(0, 0, 0, link_size);
     scene->addItem(link);
@@ -72,6 +73,37 @@ node_link::node_link(int _index, QGraphicsScene *_scene, QGraphicsItem *__node,
 
 node_link::~node_link() {}
 
+bool node_link::set_visibility()
+{
+    // establece visibilidad tomando en cuenta
+    // cada link conectado y la cantidad de indexs
+    auto connected = static_cast<node *>(this_node)->get_connected_indexs();
+
+    // si el link es el 1 o 2 o si este link esta conectado, sera visible
+    if (connected[index] || index == 1 || index == 2)
+    {
+        set_visible(true);
+        return true;
+    }
+
+    // verifica si todos los links superiores a 2 e inferiores al index actual
+    // esten conectados, si estan todos conectados, el link actual sera visible
+    bool visible = true;
+    for (int i = 2; i < index; i++)
+    {
+        if (!connected[i])
+        {
+            visible = false;
+            break;
+        }
+    }
+
+    set_visible(visible);
+    update();
+
+    return visible;
+}
+
 void node_link::refresh()
 {
     node *_this_node = static_cast<node *>(this_node);
@@ -97,6 +129,7 @@ void node_link::refresh()
     }
 
     link_refresh(src_pos, dst_pos);
+    set_visibility();
 }
 
 float node_link::get_rotation(QPointF point_a, QPointF point_b)
@@ -159,7 +192,8 @@ void node_link::text_refresh(QPointF point_a, QPointF point_b)
 
     if (dragging || connected_node)
     {
-        text->setPos(center.x() - (text_width / 2), center.y() - (text_height / 2));
+        text->setPos(center.x() - (text_width / 2),
+                     center.y() - (text_height / 2));
 
         if (dragging)
         {
@@ -208,8 +242,8 @@ float node_link::arrow_refresh(QPointF point_a, QPointF point_b)
     float diagonal;
 
     int bottom_box = max_angle + (90 - max_angle) * 2;
-    if (rotation < max_angle && rotation > -max_angle || rotation > bottom_box ||
-        rotation < -bottom_box)
+    if (rotation < max_angle && rotation > -max_angle ||
+        rotation > bottom_box || rotation < -bottom_box)
     {
         float _width = (tan(rotation * M_PI / 180)) * node_width_y;
         diagonal = sqrt(pow(_width, 2) + pow(node_width_y, 2));
@@ -246,7 +280,8 @@ void node_link::link_refresh(QPointF point_a, QPointF point_b)
 {
     float diagonal = arrow_refresh(point_a, point_b);
 
-    QLineF line = subtract_distance_line(QLineF(point_a, point_b), diagonal + 20);
+    QLineF line =
+        subtract_distance_line(QLineF(point_a, point_b), diagonal + 20);
     link->setLine(line);
 
     bbox_refresh(point_a, point_b);
@@ -258,7 +293,8 @@ QLineF node_link::subtract_distance_line(QLineF line, float distance)
     // le resta una distancia al una linea
     int distance_total = abs((line.x2() - line.x1()) + (line.y2() - line.y1()));
 
-    float mag = sqrt(pow((line.x1() - line.x2()), 2) + pow((line.y1() - line.y2()), 2));
+    float mag =
+        sqrt(pow((line.x1() - line.x2()), 2) + pow((line.y1() - line.y2()), 2));
     float px = line.x1() - distance * (line.x1() - line.x2()) / mag;
     float py = line.y1() - distance * (line.y1() - line.y2()) / mag;
 
@@ -284,35 +320,41 @@ void node_link::connect_node(QGraphicsItem *to_node)
     }
 
     _to_node->add_output_node(_this_node);
+
     _this_node->add_input_node(_to_node);
+    _this_node->set_connected_index(index, true);
 
     connected_node = _to_node;
-    refresh();
 
     // añade la entrada al proyecto y actualiza el render
     project->insert_input(_this_node->get_name(), _to_node->get_name(), index);
     static_cast<vinacomp *>(_vinacomp)->update_render_all_viewer(true);
     //
+
+    _this_node->refresh_links();
 }
 
 void node_link::disconnect_node()
 {
-    if (connected_node)
-    {
-        node *_connected_node = static_cast<node *>(connected_node);
-        node *_this_node = static_cast<node *>(this_node);
+    if (!connected_node)
+        return;
 
-        _connected_node->remove_output_node(_this_node);
-        _this_node->remove_input_node(_connected_node);
+    node *_connected_node = static_cast<node *>(connected_node);
+    node *_this_node = static_cast<node *>(this_node);
 
-        // borra la entrada del proyecto y actualiza el render
-        project->delete_input(_this_node->get_name(), index);
-        static_cast<vinacomp *>(_vinacomp)->update_render_all_viewer(true);
-        //
-    }
+    _connected_node->remove_output_node(_this_node);
+
+    _this_node->remove_input_node(_connected_node);
+    _this_node->set_connected_index(index, false);
+
+    // borra la entrada del proyecto y actualiza el render
+    project->delete_input(_this_node->get_name(), index);
+    static_cast<vinacomp *>(_vinacomp)->update_render_all_viewer(true);
+    //
 
     connected_node = nullptr;
-    refresh();
+
+    _this_node->refresh_links();
 }
 
 void node_link::mousePressEvent(QGraphicsSceneMouseEvent *event) {}

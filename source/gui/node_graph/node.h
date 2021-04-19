@@ -51,6 +51,7 @@ private:
     QMap<QString, node *> *nodes_connected_to_the_output;
     QMap<QString, node *> *selected_nodes;
     QList<node_link *> *links;
+    QList<bool> connected_indexs;
 
     QMap<QString, QPointF> selected_nodes_start_position;
 
@@ -107,7 +108,20 @@ public:
     QPointF get_center_position() const;
     inline void freeze_position();
     inline QPointF get_freeze_position() const;
+    inline void set_connected_index(int index, bool connected);
+    inline QList<bool> get_connected_indexs();
+    void refresh_links();
 };
+
+inline void node::set_connected_index(int index, bool connected)
+{
+    connected_indexs[index] = connected;
+}
+
+inline QList<bool> node::get_connected_indexs()
+{
+    return connected_indexs;
+}
 
 inline void node::freeze_position()
 {

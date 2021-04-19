@@ -144,7 +144,7 @@ node *node_view::create_node(QString name, QColor color, QString type, QPointF p
     props.scene = scene;
     props.current_z_value = current_z_value;
     props.link_connecting = link_connecting;
-    props.inputs = 3;
+    props.inputs = 5;
     props.color = color;
     props.type = type;
     props.name = name;
@@ -183,27 +183,27 @@ void node_view::connect_node(QPoint position_node)
     // si un enlace input de un nodo esta siendo arrastrado para conectarlo a otro nodo,
     // 'link_connecting' no estara vacio y se determinara
     // si se conecta o no al nodo de destino.
-    if (!link_connecting->empty())
+    if (link_connecting->empty())
+        return;
+
+    QString node_name = link_connecting->value("name").toString();
+    int link_index = link_connecting->value("index").toInt();
+
+    node *from_node = get_node(node_name);
+    node_link *link = get_node_link(from_node, link_index);
+
+    node *to_node = get_node_from_position(position_node);
+    if (!to_node)
+        link->disconnect_node();
+    else
     {
-        QString node_name = link_connecting->value("name").toString();
-        int link_index = link_connecting->value("index").toInt();
-
-        node *from_node = get_node(node_name);
-        node_link *link = get_node_link(from_node, link_index);
-
-        node *to_node = get_node_from_position(position_node);
-        if (!to_node)
-            link->disconnect_node();
+        // evita que se conecte asi mismo
+        if (from_node != to_node)
+            link->connect_node(to_node);
         else
-        {
-            // evita que se conecte asi mismo
-            if (from_node != to_node)
-                link->connect_node(to_node);
-            else
-                link->disconnect_node();
-        }
-        *link_connecting = {};
+            link->disconnect_node();
     }
+    *link_connecting = {};
     //
     //
 }

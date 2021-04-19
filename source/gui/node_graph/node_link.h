@@ -41,6 +41,8 @@ private:
     float get_rotation(QPointF point_a, QPointF point_b);
     float get_long(QPointF point_a, QPointF point_b);
     QPointF get_center(QPointF point_a, QPointF point_b);
+    bool set_visibility();
+
     inline void set_visible(bool visible);
 
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
