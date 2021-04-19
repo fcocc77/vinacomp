@@ -8,15 +8,15 @@ node_link::node_link(int _index, QGraphicsScene *_scene, QGraphicsItem *__node,
                      QJsonObject *_link_connecting, project_struct *_project,
                      QWidget *__vinacomp)
 
-    : index(_index)
-    , scene(_scene)
+    : scene(_scene)
     , this_node(__node)
+    , connected_node(nullptr)
     , link_connecting(_link_connecting)
     , project(_project)
     , _vinacomp(__vinacomp)
-
-    , connected_node(nullptr)
     , link_size(70)
+    , index(_index)
+    , dragging(false)
     , visible(true)
 {
 
@@ -73,17 +73,24 @@ node_link::node_link(int _index, QGraphicsScene *_scene, QGraphicsItem *__node,
 
 node_link::~node_link() {}
 
-bool node_link::set_visibility()
+void node_link::update_visibility()
 {
     // establece visibilidad tomando en cuenta
     // cada link conectado y la cantidad de indexs
-    auto connected = static_cast<node *>(this_node)->get_connected_indexs();
+    node *_this_node = static_cast<node *>(this_node);
+    auto connected = _this_node->get_connected_indexs();
 
-    // si el link es el 1 o 2 o si este link esta conectado, sera visible
     if (connected[index] || index == 1 || index == 2)
     {
+        // si el link es el 1 o 2 o si este link esta conectado, sera visible
         set_visible(true);
-        return true;
+        return;
+    }
+    else if (index == 0) // mask
+    {
+        bool visible = _this_node->is_selected();
+        set_visible(visible);
+        return;
     }
 
     // verifica si todos los links superiores a 2 e inferiores al index actual
@@ -99,9 +106,6 @@ bool node_link::set_visibility()
     }
 
     set_visible(visible);
-    update();
-
-    return visible;
 }
 
 void node_link::refresh()
@@ -128,8 +132,8 @@ void node_link::refresh()
             dst_pos = {src_pos.x() - width + 20 - link_size, src_pos.y()};
     }
 
+    update_visibility();
     link_refresh(src_pos, dst_pos);
-    set_visibility();
 }
 
 float node_link::get_rotation(QPointF point_a, QPointF point_b)
@@ -181,10 +185,18 @@ void node_link::set_selected(bool enable)
         arrow->setBrush(arrow_brush);
         arrow->setPen(arrow_pen);
     }
+
+    refresh();
 }
 
 void node_link::text_refresh(QPointF point_a, QPointF point_b)
 {
+    if (!visible)
+    {
+        text->hide();
+        return;
+    }
+
     QPointF center = get_center(point_a, point_b);
 
     int text_width = text->boundingRect().width();
@@ -331,6 +343,7 @@ void node_link::connect_node(QGraphicsItem *to_node)
     static_cast<vinacomp *>(_vinacomp)->update_render_all_viewer(true);
     //
 
+    dragging = false;
     _this_node->refresh_links();
 }
 
@@ -353,6 +366,7 @@ void node_link::disconnect_node()
     //
 
     connected_node = nullptr;
+    dragging = false;
 
     _this_node->refresh_links();
 }

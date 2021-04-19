@@ -25,7 +25,7 @@ private:
 
     int link_size;
     int index;
-    bool dragging = false;
+    bool dragging;
     bool visible;
 
     QGraphicsLineItem *link;
@@ -41,7 +41,7 @@ private:
     float get_rotation(QPointF point_a, QPointF point_b);
     float get_long(QPointF point_a, QPointF point_b);
     QPointF get_center(QPointF point_a, QPointF point_b);
-    bool set_visibility();
+    void update_visibility();
 
     inline void set_visible(bool visible);
 
@@ -73,7 +73,6 @@ inline void node_link::set_visible(bool _visible)
     this->setVisible(visible);
     link->setVisible(visible);
     arrow->setVisible(visible);
-    text->setVisible(visible);
 }
 
 #endif // NODE_LINK_H
