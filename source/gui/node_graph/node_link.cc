@@ -24,6 +24,8 @@ node_link::node_link(int _index, QGraphicsScene *_scene, QGraphicsItem *__node,
     link = new QGraphicsLineItem();
     QPen pen(Qt::black);
     pen.setWidth(2);
+    if (index == 0) // mask
+        pen.setStyle(Qt::DashLine);
     link->setPen(pen);
     link->setLine(0, 0, 0, link_size);
     scene->addItem(link);
@@ -166,6 +168,9 @@ void node_link::set_selected(bool enable)
     if (enable)
     {
         QPen link_pen(Qt::white);
+        if (index == 0) // mask
+            link_pen.setStyle(Qt::DashLine);
+
         link_pen.setWidth(5);
         link->setPen(link_pen);
 
@@ -177,6 +182,8 @@ void node_link::set_selected(bool enable)
     else
     {
         QPen link_pen(Qt::black);
+        if (index == 0) // mask
+            link_pen.setStyle(Qt::DashLine);
         link_pen.setWidth(2);
         link->setPen(link_pen);
 
