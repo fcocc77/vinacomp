@@ -55,3 +55,19 @@ void node_view::mouseMoveEvent(QMouseEvent *event)
 
     graphics_view::mouseMoveEvent(event);
 }
+
+void node_view::keyPressEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Control)
+        set_visible_ghost_dots(true);
+
+    graphics_view::keyPressEvent(event);
+}
+
+void node_view::keyReleaseEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Control)
+        set_visible_ghost_dots(false);
+
+    graphics_view::keyReleaseEvent(event);
+}

@@ -21,6 +21,8 @@ node_link::node_link(QString input_label, bool _has_mask, int _index,
     , visible(true)
     , label(input_label)
     , has_mask(_has_mask)
+    , ghost_dot_visible(false)
+    , ghost_dot_size(20)
 {
 
     // Link
@@ -53,6 +55,7 @@ node_link::node_link(QString input_label, bool _has_mask, int _index,
     //
     //
 
+
     //  Texto
     text = new QGraphicsTextItem();
     QFont font;
@@ -64,10 +67,18 @@ node_link::node_link(QString input_label, bool _has_mask, int _index,
     //
     //
 
+    // Ghost Dot
+    ghost_dot = new QGraphicsEllipseItem(0, 0, ghost_dot_size, ghost_dot_size);
+    ghost_dot->setBrush(Qt::green);
+
+    scene->addItem(ghost_dot);
+    //
+
     // nombre para identificar que es un link
     this->setData(0, "link");
     link->setData(0, "link");
     arrow->setData(0, "link");
+    text->setData(0, "link");
     //
 
     refresh();
@@ -314,6 +325,21 @@ void node_link::link_refresh(QPointF point_a, QPointF point_b)
 
     bbox_refresh(point_a, point_b);
     text_refresh(point_a, point_b);
+
+    // Ghost Dot
+    if (!ghost_dot_visible || !connected_node)
+    {
+        ghost_dot->setVisible(false);
+        return;
+    }
+
+    text->setVisible(false);
+
+    int mid_diameter = ghost_dot_size / 2;
+    QPointF center = get_center(point_a, point_b);
+    ghost_dot->setPos({center.x() - mid_diameter, center.y() - mid_diameter});
+
+    ghost_dot->setVisible(true);
 }
 
 QLineF node_link::subtract_distance_line(QLineF line, float distance)

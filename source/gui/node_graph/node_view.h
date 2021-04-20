@@ -47,11 +47,14 @@ private:
     void connect_node(QPoint position_node);
     void select_nodes_by_area(QPointF selection_end_point);
     void align_selected_nodes();
+    void set_visible_ghost_dots(bool visible);
 
     // Events
-    void mouseReleaseEvent(QMouseEvent *event);
-    void mouseMoveEvent(QMouseEvent *event);
-    void mousePressEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void keyPressEvent(QKeyEvent *event) override;
+    void keyReleaseEvent(QKeyEvent *event) override;
 
 public:
     node_view(QWidget *_vinacomp, properties *_properties, nodes_load *nodes_loaded);

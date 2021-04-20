@@ -19,6 +19,7 @@ private:
     QGraphicsScene *scene;
     QGraphicsItem *this_node;
     QGraphicsItem *connected_node;
+    QGraphicsEllipseItem *ghost_dot;
     QJsonObject *link_connecting;
     project_struct *project;
     QWidget *_vinacomp;
@@ -29,6 +30,8 @@ private:
     bool visible;
     QString label;
     bool has_mask;
+    bool ghost_dot_visible;
+    int ghost_dot_size;
 
     QGraphicsLineItem *link;
     QGraphicsPolygonItem *arrow;
@@ -64,7 +67,14 @@ public:
     void disconnect_node();
     void set_selected(bool enable);
     inline QGraphicsItem *get_connected_node() const;
+    inline void set_visible_ghost_dot(bool visible);
 };
+
+inline void node_link::set_visible_ghost_dot(bool visible)
+{
+    ghost_dot_visible = visible;
+    refresh();
+}
 
 inline QGraphicsItem *node_link::get_connected_node() const
 {
