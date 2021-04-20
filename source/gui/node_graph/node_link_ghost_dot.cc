@@ -24,16 +24,11 @@ void ghost_dot::mousePressEvent(QGraphicsSceneMouseEvent *event)
     maker *_maker = graph->get_maker();
     node_link *_link = static_cast<node_link *>(link);
 
-    node *_connected_node = static_cast<node *>(_link->get_connected_node());
-
     __node_view->set_visible_ghost_dots(false);
     QString dot_name = _maker->create_fx("dot");
 
     node *dot = __node_view->get_node(dot_name);
+    _link->insert_node_in_between(dot);
 
-    _link->disconnect_node();
-    _link->connect_node(dot);
-
-    dot->get_link(1)->connect_node(_connected_node);
     dot->grabMouse();
 }

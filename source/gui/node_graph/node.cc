@@ -191,19 +191,14 @@ QPointF node::get_center_position() const
     return *center_position;
 }
 
-void node::insert_in_between()
+node_link *node::get_close_link() const
 {
-    // encuentra el link mas cercano al nodo, para luego insertar el nodo entre
-    // medio de ese link.
-    if (!qt::control() || !_node_view)
-        return;
-
     node_view *__node_view = static_cast<node_view *>(_node_view);
 
-    int grip_distance = 70;
-    node_link *link_to_insert = nullptr;
+    int grip_distance = 150;
+    node_link *close_link = nullptr;
 
-    bool to_break = false;
+    bool finded = false;
     for (node *_node : *__node_view->get_nodes())
     {
         for (node_link *link : *_node->get_links())
@@ -211,23 +206,55 @@ void node::insert_in_between()
             if (!link->is_connected())
                 continue;
 
+            link->set_ghost_link(false);
+
+            // si ya encontro el link cercano, no hace lo siguiente, asi
+            // ahorramos recursos ya que no se puede hacer 'break' al for, ya
+            // que tiene que ir apagando los link fantasmas que quedaron
+            // prendidos
+            if (finded)
+                continue;
+
             QPointF center_link = link->get_center_position();
             float distance = qt::distance_points(*center_position, center_link);
 
             if (distance < grip_distance)
             {
-                link_to_insert = link;
-                to_break = true;
+                close_link = link;
+                finded = true;
                 break;
             }
         }
-
-        if (to_break)
-            break;
     }
 
+    return close_link;
+}
+
+void node::insert_in_between()
+{
+    // tiene que ser antes que el qt::control para que se oculte el 'ghost link'
+    node_link *close_link = get_close_link();
+    if (!close_link)
+        return;
+
+    if (!qt::control() || !_node_view)
+        return;
+
+    close_link->set_ghost_link(false);
+    close_link->insert_node_in_between(this);
+}
+
+void node::show_close_link()
+{
+    node_link *link_to_insert = get_close_link();
     if (!link_to_insert)
         return;
+
+    if (!qt::control() || !_node_view)
+        return;
+
+
+    link_to_insert->set_ghost_link(true, *center_position);
 }
 
 void node::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
@@ -255,6 +282,8 @@ void node::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void node::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
+    insert_in_between();
+
     // desabilita el 'grabMouse' que se inicio en 'node_link_ghost_dot'
     this->ungrabMouse();
 }
@@ -315,7 +344,7 @@ void node::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         position_with_snap = {this_node_x, this_node_y};
 
     this->set_position(position_with_snap.x(), position_with_snap.y());
-    insert_in_between();
+    show_close_link();
     //
     //
 

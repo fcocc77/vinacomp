@@ -35,7 +35,7 @@ private:
     bool ghost_dot_visible;
     int ghost_dot_size;
 
-    QGraphicsLineItem *link;
+    QGraphicsLineItem *link, *ghost_link_a, *ghost_link_b;
     QGraphicsPolygonItem *arrow;
     QGraphicsTextItem *text;
 
@@ -69,10 +69,12 @@ public:
     void connect_node(QGraphicsItem *_node);
     void disconnect_node();
     void set_selected(bool enable);
+    void set_ghost_link(bool visible, QPointF break_point = {});
     inline QGraphicsItem *get_connected_node() const;
     inline void set_visible_ghost_dot(bool visible);
     inline bool is_connected() const;
     inline QPointF get_center_position() const;
+    void insert_node_in_between(QGraphicsItem *_node);
 };
 
 inline QPointF node_link::get_center_position() const

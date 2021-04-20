@@ -59,7 +59,9 @@ private:
 
     QPointF *center_position;
 
+    node_link *get_close_link() const;
     void insert_in_between();
+    void show_close_link();
 
 protected:
     nodes_load *nodes_loaded;

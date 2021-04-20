@@ -37,6 +37,21 @@ node_link::node_link(QString input_label, bool _has_mask, int _index,
     //
     //
 
+    // Links fantasmas, para la insercion de nodos
+    ghost_link_a = new QGraphicsLineItem();
+    ghost_link_b = new QGraphicsLineItem();
+    QPen ghost_link_pen(Qt::green);
+    ghost_link_pen.setStyle(Qt::DashLine);
+    ghost_link_a->setPen(ghost_link_pen);
+    ghost_link_b->setPen(ghost_link_pen);
+    ghost_link_a->setLine(0, 0, 0, link_size);
+    ghost_link_b->setLine(0, 0, 0, link_size);
+    scene->addItem(ghost_link_a);
+    scene->addItem(ghost_link_b);
+    set_ghost_link(false);
+    //
+    //
+
     // Ajuste del rectangulo, el rectangulo es esta misma clase
     // y es transparente, por que es solo para que el agarre
     // de la flecha funcione mejor.
@@ -83,6 +98,24 @@ node_link::node_link(QString input_label, bool _has_mask, int _index,
 }
 
 node_link::~node_link() {}
+
+void node_link::set_ghost_link(bool visible, QPointF break_point)
+{
+    ghost_link_a->setVisible(visible);
+    ghost_link_b->setVisible(visible);
+
+    if (!connected_node || !visible)
+        return;
+
+    node *_this_node = static_cast<node *>(this_node);
+    node *_connected_node = static_cast<node *>(connected_node);
+
+    QPointF src_pos = _this_node->get_center_position();
+    QPointF dst_pos = _connected_node->get_center_position();
+
+    ghost_link_a->setLine({src_pos, break_point});
+    ghost_link_b->setLine({dst_pos, break_point});
+}
 
 void node_link::update_visibility()
 {
@@ -159,6 +192,20 @@ void node_link::refresh()
     QLineF line = get_line_from_node();
     update_visibility();
     link_refresh(line.p1(), line.p2());
+}
+
+void node_link::insert_node_in_between(QGraphicsItem *_node)
+{
+    if (!connected_node)
+        return;
+
+    QGraphicsItem *_connected_node = connected_node;
+    node *between_node = static_cast<node *>(_node);
+
+    this->disconnect_node();
+    this->connect_node(between_node);
+
+    between_node->get_link(1)->connect_node(_connected_node);
 }
 
 float node_link::get_rotation(QPointF point_a, QPointF point_b)
@@ -347,7 +394,7 @@ void node_link::link_refresh(QPointF point_a, QPointF point_b)
 
 QLineF node_link::subtract_distance_line(QLineF line, float distance)
 {
-    // le resta una distancia al una linea
+    // le resta una distancia a una linea
     int distance_total = abs((line.x2() - line.x1()) + (line.y2() - line.y1()));
 
     float mag =
