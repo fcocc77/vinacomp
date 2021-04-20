@@ -208,6 +208,12 @@ void node::mousePressEvent(QGraphicsSceneMouseEvent *event)
             selected_node->pos();
 }
 
+void node::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    // desabilita el 'grabMouse' que se inicio en 'node_link_ghost_dot'
+    this->ungrabMouse();
+}
+
 void node::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     int snap = 20;

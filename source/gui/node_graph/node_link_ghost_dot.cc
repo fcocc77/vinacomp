@@ -1,9 +1,9 @@
+#include <link.h>
 #include <maker.h>
+#include <node.h>
 #include <node_graph.h>
 #include <node_link_ghost_dot.h>
 #include <node_view.h>
-#include <node.h>
-#include <link.h>
 #include <util.h>
 
 ghost_dot::ghost_dot(int size, QWidget *__node_graph, QGraphicsItem *_link)
@@ -26,7 +26,6 @@ void ghost_dot::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
     node *_connected_node = static_cast<node *>(_link->get_connected_node());
 
-
     __node_view->set_visible_ghost_dots(false);
     QString dot_name = _maker->create_fx("dot");
 
@@ -36,4 +35,5 @@ void ghost_dot::mousePressEvent(QGraphicsSceneMouseEvent *event)
     _link->connect_node(dot);
 
     dot->get_link(1)->connect_node(_connected_node);
+    dot->grabMouse();
 }
