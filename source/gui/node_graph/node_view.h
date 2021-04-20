@@ -29,6 +29,7 @@ private:
     properties *_properties;
     QWidget *_vinacomp;
     nodes_load *nodes_loaded;
+    QWidget *_node_graph;
 
     QMap<QString, node *> *nodes;
     QMap<QString, node *> *selected_nodes;
@@ -47,7 +48,6 @@ private:
     void connect_node(QPoint position_node);
     void select_nodes_by_area(QPointF selection_end_point);
     void align_selected_nodes();
-    void set_visible_ghost_dots(bool visible);
 
     // Events
     void mouseReleaseEvent(QMouseEvent *event) override;
@@ -55,9 +55,11 @@ private:
     void mousePressEvent(QMouseEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
     void keyReleaseEvent(QKeyEvent *event) override;
+    void focusOutEvent(QFocusEvent *event) override;
 
 public:
-    node_view(QWidget *_vinacomp, properties *_properties, nodes_load *nodes_loaded);
+    node_view(QWidget *_vinacomp, properties *_properties,
+              nodes_load *nodes_loaded, QWidget *_node_graph);
     ~node_view();
 
     node *create_node(QString name, QColor color, QString type,
@@ -70,6 +72,7 @@ public:
     node *get_node(QString name);
     QMap<QString, node *> *get_nodes();
     node_link *get_node_link(node *_node, int link_index);
+    void set_visible_ghost_dots(bool visible);
 };
 
 #endif // NODE_GRAPH_VIEW_H

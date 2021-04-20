@@ -10,11 +10,13 @@
 // Engine
 #include <project_struct.h>
 
-node_view::node_view(QWidget *__vinacomp, properties *__properties, nodes_load *_nodes_loaded)
+node_view::node_view(QWidget *__vinacomp, properties *__properties,
+                     nodes_load *_nodes_loaded, QWidget *__node_graph)
 
     : _vinacomp(__vinacomp)
     , _properties(__properties)
     , nodes_loaded(_nodes_loaded)
+    , _node_graph(__node_graph)
 {
 
     scene = new QGraphicsScene();
@@ -159,7 +161,7 @@ node *node_view::create_node(QString name, QColor color, QString type,
     else if (type == "backdrop")
         _node = new node_backdrop(props, selected_nodes, this);
     else
-        _node = new node_rect(props, selected_nodes);
+        _node = new node_rect(props, selected_nodes, _node_graph);
 
     auto size = _node->get_size();
     QPointF new_position = {position.x() - (size.width() / 2),

@@ -1,8 +1,9 @@
 #include "node_rect.h"
 
-node_rect::node_rect(node_props _props, QMap<QString, node *> *_selected_nodes)
+node_rect::node_rect(node_props _props, QMap<QString, node *> *_selected_nodes,
+                     QWidget *_node_graph)
 
-    : node(_props, _selected_nodes)
+    : node(_props, _selected_nodes, _node_graph)
     , icon_area_width(45)
 {
     this->setFlags(QGraphicsItem::ItemIsMovable);

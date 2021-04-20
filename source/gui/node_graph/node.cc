@@ -3,7 +3,8 @@
 #include <vinacomp.h>
 #include <util.h>
 
-node::node(node_props _props, QMap<QString, node *> *_selected_nodes)
+node::node(node_props _props, QMap<QString, node *> *_selected_nodes,
+           QWidget *_node_graph)
 
     : props(_props)
     , selected_nodes(_selected_nodes)
@@ -47,9 +48,10 @@ node::node(node_props _props, QMap<QString, node *> *_selected_nodes)
         {
             QString label = inputs[i].toString();
 
-            node_link *link = new node_link(label, has_mask, i, props.scene, this,
-                                            props.link_connecting,
-                                            props.project, props.vinacomp);
+            node_link *link = new node_link(
+                label, has_mask, i, props.scene, this, props.link_connecting,
+                props.project, props.vinacomp, _node_graph);
+
             links->push_back(link);
             connected_indexs.push_back(false);
         }

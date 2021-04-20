@@ -7,7 +7,7 @@
 node_link::node_link(QString input_label, bool _has_mask, int _index,
                      QGraphicsScene *_scene, QGraphicsItem *__node,
                      QJsonObject *_link_connecting, project_struct *_project,
-                     QWidget *__vinacomp)
+                     QWidget *__vinacomp, QWidget *_node_graph)
 
     : scene(_scene)
     , this_node(__node)
@@ -68,10 +68,8 @@ node_link::node_link(QString input_label, bool _has_mask, int _index,
     //
 
     // Ghost Dot
-    ghost_dot = new QGraphicsEllipseItem(0, 0, ghost_dot_size, ghost_dot_size);
-    ghost_dot->setBrush(Qt::green);
-
-    scene->addItem(ghost_dot);
+    _ghost_dot = new ghost_dot(ghost_dot_size, _node_graph);
+    scene->addItem(_ghost_dot);
     //
 
     // nombre para identificar que es un link
@@ -329,7 +327,7 @@ void node_link::link_refresh(QPointF point_a, QPointF point_b)
     // Ghost Dot
     if (!ghost_dot_visible || !connected_node)
     {
-        ghost_dot->setVisible(false);
+        _ghost_dot->setVisible(false);
         return;
     }
 
@@ -337,9 +335,9 @@ void node_link::link_refresh(QPointF point_a, QPointF point_b)
 
     int mid_diameter = ghost_dot_size / 2;
     QPointF center = get_center(point_a, point_b);
-    ghost_dot->setPos({center.x() - mid_diameter, center.y() - mid_diameter});
+    _ghost_dot->setPos({center.x() - mid_diameter, center.y() - mid_diameter});
 
-    ghost_dot->setVisible(true);
+    _ghost_dot->setVisible(true);
 }
 
 QLineF node_link::subtract_distance_line(QLineF line, float distance)

@@ -71,3 +71,8 @@ void node_view::keyReleaseEvent(QKeyEvent *event)
 
     graphics_view::keyReleaseEvent(event);
 }
+
+void node_view::focusOutEvent(QFocusEvent *event)
+{
+    set_visible_ghost_dots(false);
+}

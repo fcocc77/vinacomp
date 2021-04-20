@@ -10,6 +10,8 @@
 #include <QPoint>
 #include <QString>
 
+#include <node_link_ghost_dot.h>
+
 // Engine
 #include <project_struct.h>
 
@@ -19,7 +21,7 @@ private:
     QGraphicsScene *scene;
     QGraphicsItem *this_node;
     QGraphicsItem *connected_node;
-    QGraphicsEllipseItem *ghost_dot;
+    ghost_dot *_ghost_dot;
     QJsonObject *link_connecting;
     project_struct *project;
     QWidget *_vinacomp;
@@ -58,7 +60,7 @@ public:
     node_link(QString input_label, bool has_mask, int _index,
               QGraphicsScene *_scene, QGraphicsItem *_node,
               QJsonObject *_link_connecting, project_struct *_project,
-              QWidget *_vinacomp);
+              QWidget *_vinacomp, QWidget *_node_graph);
     ~node_link();
 
     void refresh();
