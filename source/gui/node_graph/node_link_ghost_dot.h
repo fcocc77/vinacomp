@@ -8,11 +8,12 @@ class ghost_dot : public QGraphicsEllipseItem
 {
 private:
     QWidget *_node_graph;
+    QGraphicsItem *link;
 
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 
 public:
-    ghost_dot(int size, QWidget *_node_graph);
+    ghost_dot(int size, QWidget *_node_graph, QGraphicsItem *link);
     ~ghost_dot();
 };
 

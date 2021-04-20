@@ -68,7 +68,7 @@ node_link::node_link(QString input_label, bool _has_mask, int _index,
     //
 
     // Ghost Dot
-    _ghost_dot = new ghost_dot(ghost_dot_size, _node_graph);
+    _ghost_dot = new ghost_dot(ghost_dot_size, _node_graph, this);
     scene->addItem(_ghost_dot);
     //
 

@@ -1,8 +1,9 @@
 #include "node_dot.h"
 
-node_dot::node_dot(node_props _props, QMap<QString, node *> *_selected_nodes)
+node_dot::node_dot(node_props _props, QMap<QString, node *> *_selected_nodes,
+                   QWidget *_node_graph)
 
-    : node(_props, _selected_nodes)
+    : node(_props, _selected_nodes, _node_graph)
 {
     this->setFlags(QGraphicsItem::ItemIsMovable);
     set_size(20, 20);

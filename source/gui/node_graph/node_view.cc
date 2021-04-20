@@ -157,7 +157,7 @@ node *node_view::create_node(QString name, QColor color, QString type,
 
     node *_node;
     if (type == "dot")
-        _node = new node_dot(props, selected_nodes);
+        _node = new node_dot(props, selected_nodes, _node_graph);
     else if (type == "backdrop")
         _node = new node_backdrop(props, selected_nodes, this);
     else
