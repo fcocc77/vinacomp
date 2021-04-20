@@ -14,6 +14,7 @@
 
 // Gui
 #include <node_link.h>
+#include <node_output_link.h>
 #include <nodes_load.h>
 #include <properties.h>
 #include <trim_panel.h>
@@ -56,6 +57,7 @@ private:
 
     bool selected = false;
     QPointF _freeze_position;
+    output_link *_output_link;
 
     QPointF *center_position;
 

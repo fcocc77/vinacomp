@@ -47,8 +47,8 @@ gui__node_graph:
 	☐ el paneo y zoom van lento cuando hay un widget openGL visible, y si no hay un widget openGL visible, al arrastrar un nodo deja una estela
 gui__node:
 	☐ crear flecha de salida, y que se pueda arrastrar para conectar al input de algun node
-	☐ crear entrada de 'mask'
-	☐ crear dot y que se pueda insertar presionado control
+	✔ crear entrada de 'mask' @done(2021-04-20 17:37) @project(gui__node)
+	✔ crear dot y que se pueda insertar presionado control @done(2021-04-20 17:37) @project(gui__node)
 gui__knobs:
 	☐ slider: rehacer el slider con QPainter para tener mas control de todo @today
 	☐ slider: mover el manejador en la posicion del click

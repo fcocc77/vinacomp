@@ -64,6 +64,8 @@ node::node(node_props _props, QMap<QString, node *> *_selected_nodes,
         //
 
         this->setZValue((*props.current_z_value) + 1);
+
+        _output_link = new output_link(props.scene);
     }
 }
 
@@ -120,6 +122,8 @@ void node::refresh_links()
 
 void node::refresh()
 {
+    _output_link->refresh();
+
     if (!links)
         return;
 
