@@ -398,10 +398,9 @@ void node_link::link_refresh(QPointF point_a, QPointF point_b)
 QLineF node_link::subtract_distance_line(QLineF line, float distance)
 {
     // le resta una distancia a una linea
-    int distance_total = abs((line.x2() - line.x1()) + (line.y2() - line.y1()));
-
     float mag =
         sqrt(pow((line.x1() - line.x2()), 2) + pow((line.y1() - line.y2()), 2));
+
     float px = line.x1() - distance * (line.x1() - line.x2()) / mag;
     float py = line.y1() - distance * (line.y1() - line.y2()) / mag;
 
@@ -477,14 +476,10 @@ void node_link::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 void node_link::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     node *_this_node = static_cast<node *>(this_node);
-
     dragging = true;
 
     QPointF pos = mapToScene(event->pos());
     QPointF node_position = _this_node->get_center_position();
-
-    float x = node_position.x();
-    float y = node_position.y();
 
     link_refresh(node_position, pos);
 
