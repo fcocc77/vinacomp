@@ -202,6 +202,9 @@ void node_link::insert_node_in_between(QGraphicsItem *_node)
     QGraphicsItem *_connected_node = connected_node;
     node *between_node = static_cast<node *>(_node);
 
+    if (_node == _connected_node || _node == this_node)
+        return;
+
     this->disconnect_node();
     this->connect_node(between_node);
 
