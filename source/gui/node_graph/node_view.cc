@@ -292,11 +292,6 @@ void node_view::select_nodes_by_area(QPointF selection_end_point)
     }
 }
 
-QMap<QString, node *> *node_view::get_nodes()
-{
-    return nodes;
-}
-
 void node_view::set_visible_ghost_dots(bool visible)
 {
     // visibilidad para los ghost dots

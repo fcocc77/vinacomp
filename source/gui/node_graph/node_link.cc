@@ -128,10 +128,9 @@ void node_link::update_visibility()
     set_visible(visible);
 }
 
-void node_link::refresh()
+QLineF node_link::get_line_from_node() const
 {
     node *_this_node = static_cast<node *>(this_node);
-
     QPointF src_pos, dst_pos;
 
     src_pos = _this_node->get_center_position();
@@ -152,8 +151,14 @@ void node_link::refresh()
             dst_pos = {src_pos.x() - width + 20 - link_size, src_pos.y()};
     }
 
+    return {src_pos, dst_pos};
+}
+
+void node_link::refresh()
+{
+    QLineF line = get_line_from_node();
     update_visibility();
-    link_refresh(src_pos, dst_pos);
+    link_refresh(line.p1(), line.p2());
 }
 
 float node_link::get_rotation(QPointF point_a, QPointF point_b)
@@ -173,7 +178,7 @@ float node_link::get_long(QPointF point_a, QPointF point_b)
     return sqrt(x + y);
 }
 
-QPointF node_link::get_center(QPointF point_a, QPointF point_b)
+QPointF node_link::get_center(QPointF point_a, QPointF point_b) const
 {
     float x = (point_a.x() + point_b.x()) / 2;
     float y = (point_a.y() + point_b.y()) / 2;

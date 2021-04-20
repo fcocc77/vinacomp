@@ -2,19 +2,25 @@
 #include <panels_layout.h>
 #include <vinacomp.h>
 #include <util.h>
+#include <node_graph.h>
+#include <node_view.h>
+#include <link.h>
 
 node::node(node_props _props, QMap<QString, node *> *_selected_nodes,
            QWidget *_node_graph)
 
-    : props(_props)
+    : _trim_panel(nullptr)
+    , _viewer(nullptr)
+    , _node_view(nullptr)
+    , props(_props)
     , selected_nodes(_selected_nodes)
+    , links(nullptr)
     , nodes_loaded(_props.nodes_loaded)
 
-    , _trim_panel(nullptr)
-    , _viewer(nullptr)
-    , links(nullptr)
-
 {
+    if (_node_graph)
+        _node_view = static_cast<node_graph *>(_node_graph)->get_node_view();
+
     nodes_connected_to_the_output = new QMap<QString, node *>;
     nodes_connected_to_the_inputs = new QMap<QString, node *>;
     center_position = new QPointF;
@@ -185,6 +191,45 @@ QPointF node::get_center_position() const
     return *center_position;
 }
 
+void node::insert_in_between()
+{
+    // encuentra el link mas cercano al nodo, para luego insertar el nodo entre
+    // medio de ese link.
+    if (!qt::control() || !_node_view)
+        return;
+
+    node_view *__node_view = static_cast<node_view *>(_node_view);
+
+    int grip_distance = 70;
+    node_link *link_to_insert = nullptr;
+
+    bool to_break = false;
+    for (node *_node : *__node_view->get_nodes())
+    {
+        for (node_link *link : *_node->get_links())
+        {
+            if (!link->is_connected())
+                continue;
+
+            QPointF center_link = link->get_center_position();
+            float distance = qt::distance_points(*center_position, center_link);
+
+            if (distance < grip_distance)
+            {
+                link_to_insert = link;
+                to_break = true;
+                break;
+            }
+        }
+
+        if (to_break)
+            break;
+    }
+
+    if (!link_to_insert)
+        return;
+}
+
 void node::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
     make_panel();
@@ -224,8 +269,8 @@ void node::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     float this_node_x = position.x() - click_position_on_node.x();
     float this_node_y = position.y() - click_position_on_node.y();
 
-    float x_snap = NULL;
-    float y_snap = NULL;
+    float x_snap = 0;
+    float y_snap = 0;
 
     auto to_snap = [&](node *connected_node) {
         if (selected_nodes->contains(connected_node->get_name()))
@@ -270,6 +315,7 @@ void node::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         position_with_snap = {this_node_x, this_node_y};
 
     this->set_position(position_with_snap.x(), position_with_snap.y());
+    insert_in_between();
     //
     //
 

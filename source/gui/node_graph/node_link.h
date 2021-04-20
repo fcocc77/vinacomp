@@ -47,8 +47,9 @@ private:
     QLineF subtract_distance_line(QLineF line, float distance);
     float get_rotation(QPointF point_a, QPointF point_b);
     float get_long(QPointF point_a, QPointF point_b);
-    QPointF get_center(QPointF point_a, QPointF point_b);
+    QPointF get_center(QPointF point_a, QPointF point_b) const;
     void update_visibility();
+    QLineF get_line_from_node() const;
 
     inline void set_visible(bool visible);
 
@@ -70,7 +71,20 @@ public:
     void set_selected(bool enable);
     inline QGraphicsItem *get_connected_node() const;
     inline void set_visible_ghost_dot(bool visible);
+    inline bool is_connected() const;
+    inline QPointF get_center_position() const;
 };
+
+inline QPointF node_link::get_center_position() const
+{
+    QLineF line = get_line_from_node();
+    return get_center(line.p1(), line.p2());
+}
+
+inline bool node_link::is_connected() const
+{
+    return connected_node;
+}
 
 inline void node_link::set_visible_ghost_dot(bool visible)
 {

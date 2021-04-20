@@ -70,9 +70,14 @@ public:
     void change_node_name();
     void select_node(QString name, bool select);
     node *get_node(QString name);
-    QMap<QString, node *> *get_nodes();
+    inline QMap<QString, node *> *get_nodes();
     node_link *get_node_link(node *_node, int link_index);
     void set_visible_ghost_dots(bool visible);
 };
+
+inline QMap<QString, node *> *node_view::get_nodes()
+{
+    return nodes;
+}
 
 #endif // NODE_GRAPH_VIEW_H

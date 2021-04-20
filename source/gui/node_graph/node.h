@@ -42,6 +42,7 @@ class node : public QGraphicsPathItem
 private:
     trim_panel *_trim_panel;
     viewer *_viewer;
+    QWidget *_node_view;
 
     node_props props;
 
@@ -57,6 +58,8 @@ private:
     QPointF _freeze_position;
 
     QPointF *center_position;
+
+    void insert_in_between();
 
 protected:
     nodes_load *nodes_loaded;
