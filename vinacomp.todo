@@ -45,6 +45,7 @@ gui__node_graph:
 	☐ crear grilla que switchee con el boton de 'grid'
 	☐ crear backdrop
 	☐ el paneo y zoom van lento cuando hay un widget openGL visible, y si no hay un widget openGL visible, al arrastrar un nodo deja una estela
+    ☐ no permitir crear nombres de nodos cono punto '.' ya que estos se usan para la profundidad de donde esta el nodo en un grupo
 gui__node:
 	☐ crear flecha de salida, y que se pueda arrastrar para conectar al input de algun node
 	✔ crear entrada de 'mask' @done(2021-04-20 17:37) @project(gui__node)

@@ -1,9 +1,11 @@
 #include <node_graph.h>
 #include <trim_panel.h>
 
-node_graph::node_graph(QWidget *_vinacomp, project_struct *_project, properties *_properties)
+node_graph::node_graph(QWidget *_vinacomp, project_struct *_project,
+                       properties *_properties, QString _group_name)
 
     : project(_project)
+    , group_name(_group_name)
 {
 
     this->setObjectName("node_graph");
@@ -14,7 +16,7 @@ node_graph::node_graph(QWidget *_vinacomp, project_struct *_project, properties 
     nodes_loaded = new nodes_load();
 
     _node_view = new node_view(_vinacomp, _properties, nodes_loaded, this);
-    _maker = new maker(_vinacomp, _properties, nodes_loaded, _node_view);
+    _maker = new maker(_vinacomp, _properties, nodes_loaded, _node_view, this);
     _nodes_bar = new nodes_bar(this, _maker, nodes_loaded);
 
     layout->addWidget(_nodes_bar);
@@ -24,16 +26,6 @@ node_graph::node_graph(QWidget *_vinacomp, project_struct *_project, properties 
 }
 
 node_graph::~node_graph() {}
-
-node_view *node_graph::get_node_view() const
-{
-    return _node_view;
-}
-
-maker *node_graph::get_maker() const
-{
-    return _maker;
-}
 
 void node_graph::update_node_position_from_project()
 {

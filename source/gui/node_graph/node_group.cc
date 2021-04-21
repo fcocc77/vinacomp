@@ -34,8 +34,8 @@ void node_group::open_group()
     // economizar memoria
     if (!group_node_graph)
     {
-        node_graph *_group_node_graph =
-            new node_graph(props.vinacomp, props.project, props._properties);
+        node_graph *_group_node_graph = new node_graph(
+            props.vinacomp, props.project, props._properties, get_name());
 
         // inserta el grupo a la lista global
         _vinacomp->get_groups_node_graph()->insert(get_name(),

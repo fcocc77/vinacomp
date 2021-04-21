@@ -8,13 +8,15 @@
 #include <trim_panel.h>
 #include <viewer.h>
 
-maker::maker(QWidget *__vinacomp, properties *__properties, nodes_load *_nodes_loaded,
-             node_view *__node_view)
+maker::maker(QWidget *__vinacomp, properties *__properties,
+             nodes_load *_nodes_loaded, node_view *__node_view,
+             QWidget *__node_graph)
 
-    : _vinacomp(__vinacomp)
+    : _node_view(__node_view)
+    , _node_graph(__node_graph)
     , _properties(__properties)
     , nodes_loaded(_nodes_loaded)
-    , _node_view(__node_view)
+    , _vinacomp(__vinacomp)
 {
 
     finder = new node_finder(_node_view, nodes_loaded);
@@ -57,6 +59,12 @@ QString maker::create_fx(QString id)
         node_number++;
     }
     //
+    //
+
+    // si el node_graph es un grupo, le antepone al nombre el nombre del grupo
+    node_graph *__node_graph = static_cast<node_graph *>(_node_graph);
+    if (__node_graph->is_group())
+        name = __node_graph->get_group_name() + '.' + name;
     //
 
     // Creación del nodo, con un nombre que no se ha utilizado.
