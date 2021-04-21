@@ -28,6 +28,9 @@ private:
     void load_splitter(QJsonObject splitter_obj, panel *panel_a);
     QJsonObject json_layout;
 
+    panel *get_some_empty_panel() const;
+    panel *get_panel(QString name) const;
+
     bool isolate;
     panel *first_panel;
     QWidget *_vinacomp;
@@ -43,10 +46,9 @@ public:
     QAction *restore_default_action;
     QAction *save_current_action;
 
-    panel *get_viewer_panel() const;
-    panel *get_some_empty_panel() const;
     QList<panel *> get_all_panels() const;
     void add_viewer(viewer *_viewer);
+    void add_node_graph_group(node_graph *group, QString name);
 };
 
 #endif // PANELS_LAYOUT_HPP

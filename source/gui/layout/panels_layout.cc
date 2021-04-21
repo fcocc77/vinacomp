@@ -73,17 +73,6 @@ QList<panel *> panels_layout::get_all_panels() const
     return this->findChildren<panel *>("panel");
 }
 
-panel *panels_layout::get_viewer_panel() const
-{
-    // Encuentra el panel donde se ubican todos los viewer
-    for (panel *_panel : get_all_panels())
-        for (QString tab_name : _panel->get_tabs_list())
-            if (tab_name.toLower().contains("viewer"))
-                return _panel;
-
-    return nullptr;
-}
-
 void panels_layout::add_viewer(viewer *_viewer)
 {
     auto panels = get_all_panels();
@@ -101,7 +90,7 @@ void panels_layout::add_viewer(viewer *_viewer)
     //
 
     panel *empty_panel = get_some_empty_panel();
-    panel *viewer_panel = get_viewer_panel();
+    panel *viewer_panel = get_panel("viewer");
 
     // panel a insertar el nuevo 'viewer'
     // primero busca donde hay algun panel con algun 'viewer' si no, busca un panel vacio,
@@ -112,6 +101,23 @@ void panels_layout::add_viewer(viewer *_viewer)
         empty_panel->add_viewer(_viewer);
     else
         panels.value(0)->add_viewer(_viewer);
+}
+
+panel *panels_layout::get_panel(QString name) const
+{
+    // encuentra el panel por nombre
+    for (panel *_panel : get_all_panels())
+        for (QString tab_name : _panel->get_tabs_list())
+            if (tab_name.contains(name))
+                return _panel;
+
+    return nullptr;
+}
+
+void panels_layout::add_node_graph_group(node_graph *group, QString name)
+{
+    panel *node_graph_panel = get_panel("node_graph");
+    node_graph_panel->add_tab(group, name);
 }
 
 panel *panels_layout::get_some_empty_panel() const
