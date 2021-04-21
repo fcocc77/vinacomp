@@ -4,6 +4,7 @@
 #include "node_rect.h"
 #include "node_dot.h"
 #include "node_backdrop.h"
+#include "node_group.h"
 #include <qt.h>
 #include <util.h>
 
@@ -160,6 +161,8 @@ node *node_view::create_node(QString name, QColor color, QString type,
         _node = new node_dot(props, selected_nodes, _node_graph);
     else if (type == "backdrop")
         _node = new node_backdrop(props, selected_nodes, this);
+    else if (type == "group")
+        _node = new node_group(props, selected_nodes, _node_graph);
     else
         _node = new node_rect(props, selected_nodes, _node_graph);
 

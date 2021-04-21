@@ -76,3 +76,8 @@ void node_view::focusOutEvent(QFocusEvent *event)
 {
     set_visible_ghost_dots(false);
 }
+
+void node_view::contextMenuEvent(QContextMenuEvent *event)
+{
+    right_click();
+}

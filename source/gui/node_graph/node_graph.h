@@ -2,10 +2,12 @@
 #define NODE_GRAPH_H
 
 #include <QJsonObject>
+#include <QMenu>
 #include <QVBoxLayout>
 #include <QWidget>
 
 // Gui
+#include <action.h>
 #include <maker.h>
 #include <node_view.h>
 #include <nodes_bar.h>
@@ -25,8 +27,12 @@ private:
     maker *_maker;
     project_struct *project;
 
+    QMenu *menu;
+    void init_menu();
+
 public:
-    node_graph(QWidget *_vinacomp, project_struct *_project, properties *_properties);
+    node_graph(QWidget *_vinacomp, project_struct *_project,
+               properties *_properties);
     ~node_graph();
 
     void update_node_position_from_project();

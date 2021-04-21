@@ -19,6 +19,8 @@ node_graph::node_graph(QWidget *_vinacomp, project_struct *_project, properties 
 
     layout->addWidget(_nodes_bar);
     layout->addWidget(_node_view);
+
+    init_menu();
 }
 
 node_graph::~node_graph() {}

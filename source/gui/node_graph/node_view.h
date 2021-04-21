@@ -53,6 +53,7 @@ private:
     void mouseReleaseEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
+    void contextMenuEvent(QContextMenuEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
     void keyReleaseEvent(QKeyEvent *event) override;
     void focusOutEvent(QFocusEvent *event) override;
@@ -73,6 +74,8 @@ public:
     inline QMap<QString, node *> *get_nodes();
     node_link *get_node_link(node *_node, int link_index);
     void set_visible_ghost_dots(bool visible);
+signals:
+    void right_click();
 };
 
 inline QMap<QString, node *> *node_view::get_nodes()
