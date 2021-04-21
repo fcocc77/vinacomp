@@ -39,6 +39,7 @@ private:
 
     QList<viewer *> *viewers;
     QList<QWidget *> *viewers_gl;
+    QMap<QString, node_graph*> *groups_node_graph;
 
     panels_layout *_panels_layout;
     bool fullscreen;
@@ -91,6 +92,7 @@ public:
     inline project_settings *get_project_settings() const;
     inline properties *get_properties() const;
     inline curve_editor *get_curve_editor() const;
+    inline QMap<QString, node_graph*> *get_groups_node_graph() const;
 };
 
 inline curve_editor *vinacomp::get_curve_editor() const
@@ -101,6 +103,11 @@ inline curve_editor *vinacomp::get_curve_editor() const
 inline panels_layout *vinacomp::get_panels_layout() const
 {
     return _panels_layout;
+}
+
+inline QMap<QString, node_graph *> *vinacomp::get_groups_node_graph() const
+{
+    return groups_node_graph;
 }
 
 inline QList<viewer *> *vinacomp::get_viewers() const

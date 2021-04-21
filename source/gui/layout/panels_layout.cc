@@ -116,8 +116,32 @@ panel *panels_layout::get_panel(QString name) const
 
 void panels_layout::add_node_graph_group(node_graph *group, QString name)
 {
+    auto groups = static_cast<vinacomp*>(_vinacomp)->get_groups_node_graph();
+
+    // encuentra el panel que contenga algun grupo
+    panel *group_panel = nullptr;
+    for (QString group_graph : groups->keys())
+    {
+        group_panel = get_panel(group_graph);
+        if (group_panel)
+            break;
+    }
+    //
+
     panel *node_graph_panel = get_panel("node_graph");
-    node_graph_panel->add_tab(group, name);
+
+    // inserta el grupo en el panel donde contenga un grupo, sino donde este el
+    // node_graph principal y si no lo inserta en el primer panel de la lista
+
+    panel *_panel;
+    if (group_panel)
+        _panel = group_panel;
+    else if (node_graph_panel)
+        _panel = node_graph_panel;
+    else
+        _panel = get_all_panels().value(0);
+
+    _panel->add_tab(group, name);
 }
 
 panel *panels_layout::get_some_empty_panel() const

@@ -26,6 +26,12 @@ void vinacomp::setup_ui()
     viewers_gl = new QList<QWidget *>;
     //
 
+
+    // node_graph de gurpos
+    groups_node_graph = new QMap<QString, node_graph *>;
+    //
+    //
+
     //
     _properties = new properties(this);
     _node_graph = new node_graph(this, project, _properties);
