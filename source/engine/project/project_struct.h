@@ -9,6 +9,7 @@
 
 struct node_struct
 {
+    QString name;
     QColor color;
     QString type;
     QPointF pos;

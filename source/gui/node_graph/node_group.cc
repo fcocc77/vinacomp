@@ -10,9 +10,6 @@ node_group::node_group(node_props _props,
     , props(_props)
     , group_node_graph(nullptr)
 {
-
-    // temporalmente
-    open_group();
 }
 
 node_group::~node_group()
@@ -28,7 +25,7 @@ node_group::~node_group()
 
 void node_group::open_group()
 {
-    vinacomp *_vinacomp = static_cast<vinacomp*>(props.vinacomp);
+    vinacomp *_vinacomp = static_cast<vinacomp *>(props.vinacomp);
 
     // crea el node_graph de grupo solo cuando se necesite abrir el grupo, para
     // economizar memoria
@@ -36,6 +33,9 @@ void node_group::open_group()
     {
         node_graph *_group_node_graph = new node_graph(
             props.vinacomp, props.project, props._properties, get_name());
+
+        // restaura los datos del proyecto, si es que los tiene
+        _group_node_graph->restore_tree();
 
         // inserta el grupo a la lista global
         _vinacomp->get_groups_node_graph()->insert(get_name(),
@@ -47,4 +47,10 @@ void node_group::open_group()
     node_graph *graph = static_cast<node_graph *>(group_node_graph);
 
     _vinacomp->get_panels_layout()->add_node_graph_group(graph, get_name());
+}
+
+void node_group::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+{
+    open_group();
+    node_rect::mouseDoubleClickEvent(event);
 }

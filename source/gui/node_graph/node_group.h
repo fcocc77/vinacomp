@@ -13,6 +13,8 @@ private:
 
     QWidget *group_node_graph;
 
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
+
 public:
     node_group(node_props _props, QMap<QString, node *> *_selected_nodes,
                QWidget *_node_graph);

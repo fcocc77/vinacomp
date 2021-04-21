@@ -15,7 +15,7 @@ void project_struct::insert_node(QString _name, QColor _color, QString _type, QP
         return;
 
     QJsonObject *params = new QJsonObject(_params);
-    node_struct node({_color, _type, _pos, params, _inputs});
+    node_struct node({_name, _color, _type, _pos, params, _inputs});
     nodes.insert(_name, node);
 }
 
@@ -89,7 +89,7 @@ void project_struct::load(QString project_path)
         QJsonObject node = _nodes.value(name).toObject();
 
         QJsonArray color = node.value("color").toArray();
-        QColor _color = {color[0].toDouble(), color[1].toDouble(), color[2].toDouble()};
+        QColor _color = {color[0].toInt(), color[1].toInt(), color[2].toInt()};
 
         QJsonArray position = node.value("pos").toArray();
         QPointF _position = {position[0].toDouble(), position[1].toDouble()};

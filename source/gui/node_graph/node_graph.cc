@@ -29,31 +29,63 @@ node_graph::~node_graph() {}
 
 void node_graph::update_node_position_from_project()
 {
-    // ya que la posicion no es importante para en renderizado,
-    // la posicion de lo nodos del proyecto no se actualiza, dinamicamente
+    // ya que la posicion no es importante para el renderizado,
+    // la posicion de los nodos del proyecto no se actualiza, dinamicamente
     // asi que solo se actualiza cuando se guarda el proyecto.
     for (node *_node : *_node_view->get_nodes())
         project->nodes[_node->get_name()].pos = {_node->x(), _node->y()};
 }
 
-void node_graph::restore_tree()
+QList<node_struct> node_graph::get_nodes_from_group() const
 {
-    for (QString name : project->nodes.keys())
-    {
-        auto node = project->nodes.value(name);
+    QString group_name = get_group_name();
 
-        _node_view->create_node(name, node.color, node.type, node.pos);
+    if (group_name.isEmpty())
+    {
+        // crea lista con los nodos principales ya que no son grupos al no tener
+        // punto
+        QList<node_struct> main_nodes;
+        for (QString name : project->nodes.keys())
+        {
+            auto node = project->nodes.value(name);
+            if (!name.contains('.'))
+                main_nodes.push_back(node);
+        }
+
+        return main_nodes;
     }
 
-    // conecta todos los nodos
+    // obtiene todos los nodos que pertenecen a un grupo especifico
+    group_name += ".";
+    QList<node_struct> nodes_from_group;
     for (QString name : project->nodes.keys())
     {
-        auto node_data = project->nodes.value(name);
-        node *_node = _node_view->get_nodes()->value(name);
+        QString group_of_node = name.left(name.lastIndexOf('.') + 1);
+        if (group_of_node == group_name)
+            nodes_from_group.push_back(project->nodes.value(name));
+    }
+
+    return nodes_from_group;
+}
+
+void node_graph::restore_tree()
+{
+    auto nodes = get_nodes_from_group();
+
+    // crea los nodos
+    for (node_struct node : nodes)
+        _node_view->create_node(node.name, node.color, node.type, node.pos);
+    //
+
+    // conecta todos los nodos
+    for (node_struct node_data : nodes)
+    {
+        node *_node = _node_view->get_nodes()->value(node_data.name);
 
         for (QString index_name : node_data.inputs.keys())
         {
-            QString connected_node = node_data.inputs.value(index_name).toString();
+            QString connected_node =
+                node_data.inputs.value(index_name).toString();
             node *node_to_connect = _node_view->get_node(connected_node);
 
             int index = index_name.replace("in", "").toInt();
