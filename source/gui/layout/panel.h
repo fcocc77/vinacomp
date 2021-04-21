@@ -34,6 +34,7 @@ private:
     tab_widget *_tab_widget;
 
     QMenu *viewers_menu;
+    QMenu *groups_menu;
 
     QPushButton *setup_cornel_buttons();
     QString get_tab_label(QString name);
@@ -50,6 +51,7 @@ public:
     panel *split(Qt::Orientation orientation);
     void add_tab(QWidget *widget, QString name);
     void add_viewer(viewer *_viewer);
+    void add_group(node_graph *_group);
     void add_tabs(QStringList tabs_list);
     void close_panel();
     void remove_all_tab();
@@ -57,6 +59,7 @@ public:
     QSplitter *get_splitter() const;
     inline QStringList get_tabs_list() const;
     inline tab_widget *get_tab_widget() const;
+    void update_groups_menu();
 };
 
 inline QStringList panel::get_tabs_list() const

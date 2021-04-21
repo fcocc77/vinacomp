@@ -23,7 +23,7 @@ node_group::~node_group()
     }
 }
 
-void node_group::open_group()
+void node_group::open_group(bool add_to_panel)
 {
     vinacomp *_vinacomp = static_cast<vinacomp *>(props.vinacomp);
 
@@ -32,7 +32,7 @@ void node_group::open_group()
     if (!group_node_graph)
     {
         node_graph *_group_node_graph = new node_graph(
-            props.vinacomp, props.project, props._properties, get_name());
+            props.vinacomp, props.project, props._properties, get_name(), this);
 
         // restaura los datos del proyecto, si es que los tiene
         _group_node_graph->restore_tree();
@@ -46,7 +46,8 @@ void node_group::open_group()
 
     node_graph *graph = static_cast<node_graph *>(group_node_graph);
 
-    _vinacomp->get_panels_layout()->add_node_graph_group(graph, get_name());
+    if (add_to_panel)
+        _vinacomp->get_panels_layout()->add_node_graph_group(graph, get_name());
 }
 
 void node_group::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)

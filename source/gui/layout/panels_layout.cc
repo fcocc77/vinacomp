@@ -141,7 +141,7 @@ void panels_layout::add_node_graph_group(node_graph *group, QString name)
     else
         _panel = get_all_panels().value(0);
 
-    _panel->add_tab(group, name);
+    _panel->add_group(group);
 }
 
 panel *panels_layout::get_some_empty_panel() const

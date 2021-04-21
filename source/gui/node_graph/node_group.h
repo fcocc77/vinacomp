@@ -21,7 +21,7 @@ public:
     ~node_group();
 
     inline QWidget *get_node_graph() const;
-    void open_group();
+    void open_group(bool add_to_panel = true);
 };
 
 inline QWidget *node_group::get_node_graph() const

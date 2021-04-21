@@ -2,9 +2,11 @@
 #include <trim_panel.h>
 
 node_graph::node_graph(QWidget *_vinacomp, project_struct *_project,
-                       properties *_properties, QString _group_name)
+                       properties *_properties, QString _group_name,
+                       node_group *__node_group)
 
     : project(_project)
+    , _node_group(__node_group)
     , group_name(_group_name)
 {
 

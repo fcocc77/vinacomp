@@ -104,6 +104,11 @@ QPushButton *panel::setup_cornel_buttons()
     update_viewers_menu();
     //
 
+    // Groups Menu
+    groups_menu = new QMenu("Groups", this);
+    update_groups_menu();
+    //
+
     QMenu *menu = new QMenu(this);
 
     menu->addAction(split_vertical);
@@ -117,6 +122,8 @@ QPushButton *panel::setup_cornel_buttons()
     menu->addAction(add_viewer_action);
     menu->addAction(new_viewer_action);
     menu->addMenu(viewers_menu);
+    menu->addSeparator();
+    menu->addMenu(groups_menu);
     menu->addSeparator();
     menu->addAction(close_panel_action);
     //
@@ -225,16 +232,61 @@ void panel::add_viewer(viewer *_viewer)
     //
 }
 
+void panel::add_group(node_graph *group)
+{
+    add_tab(group, group->get_group_name());
+
+    // actualiza el munu de grupos de todos los paneles
+    auto panels =
+        static_cast<panels_layout *>(_panels_layout)->get_all_panels();
+
+    for (panel *_panel : panels)
+        _panel->update_groups_menu();
+    //
+}
+
 void panel::update_viewers_menu()
 {
+    for (QAction *action : viewers_menu->actions())
+        delete action;
     viewers_menu->clear();
-    for (viewer *_viewer : *get_viewers())
+
+    auto viewers = get_viewers();
+    for (viewer *_viewer : *viewers)
     {
         QAction *viewer_action = new QAction(_viewer->get_name());
         connect(viewer_action, &QAction::triggered, this, [=]() { add_viewer(_viewer); });
         viewer_action->setIcon(QIcon("resources/images/viewer_a.png"));
         viewers_menu->addAction(viewer_action);
     }
+
+    viewers_menu->menuAction()->setVisible(!viewers->isEmpty());
+}
+
+void panel::update_groups_menu()
+{
+    for (QAction *action : groups_menu->actions())
+        delete action;
+    groups_menu->clear();
+
+    auto groups = static_cast<vinacomp *>(_vinacomp)->get_groups_node_graph();
+
+    for (QString group_name : groups->keys())
+    {
+        node_graph *_graph_group = groups->value(group_name);
+        node_group *_node_group = _graph_group->get_node_group();
+
+        QAction *group_action = new QAction(group_name);
+        connect(group_action, &QAction::triggered, this, [=]() {
+            _node_group->open_group(false);
+            add_group(_graph_group);
+        });
+
+        group_action->setIcon(QIcon("resources/images/group_a.png"));
+        groups_menu->addAction(group_action);
+    }
+
+    groups_menu->menuAction()->setVisible(!groups->keys().isEmpty());
 }
 
 QList<viewer *> *panel::get_viewers() const
