@@ -7,6 +7,7 @@
 #include <qt.h>
 #include <util.h>
 #include <vinacomp.h>
+#include <maker.h>
 
 // Engine
 #include <project_struct.h>
@@ -65,6 +66,40 @@ void node_view::setup_shortcut()
     qt::shortcut("N", this, [this]() { this->change_node_name_dialog(); });
 
     qt::shortcut("L", this, [this]() { this->align_selected_nodes(); });
+}
+
+void node_view::connect_to_viewer()
+{
+    // conecta el nodo seleccionado al 'viewer', si no existe ningun 'viewer' en
+    // el 'node_view', crea un nuevo 'viewer'
+    if (selected_nodes->count() != 1)
+        return;
+
+    node *_node = selected_nodes->first();
+    node *_viewer = get_main_viewer();
+
+    if (!_viewer)
+    {
+        maker *_maker = static_cast<node_graph *>(_node_graph)->get_maker();
+        QString viewer_name = _maker->create_fx("viewer");
+        _viewer = get_node(viewer_name);
+    }
+
+    // evita que se conecte asi mismo
+    if (_viewer == _node)
+        return;
+
+    _viewer->get_link(1)->connect_node(_node);
+}
+
+node *node_view::get_main_viewer() const
+{
+    // obtiene el primer 'viewer' que encuentre
+    for (node *_node : *nodes)
+        if (_node->get_type() == "viewer")
+            return _node;
+
+    return nullptr;
 }
 
 void node_view::fit_view_to_nodes()

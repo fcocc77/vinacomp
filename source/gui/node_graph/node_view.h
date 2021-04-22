@@ -49,6 +49,8 @@ private:
     void select_nodes_by_area(QPointF selection_end_point);
     void align_selected_nodes();
     void fit_view_to_nodes();
+    void connect_to_viewer();
+    node *get_main_viewer() const;
 
     // Events
     void mouseReleaseEvent(QMouseEvent *event) override;
