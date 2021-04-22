@@ -61,6 +61,8 @@ void node_view::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Control)
         set_visible_ghost_dots(true);
+    if (event->key() == Qt::Key_F)
+        fit_view_to_nodes();
 
     graphics_view::keyPressEvent(event);
 }

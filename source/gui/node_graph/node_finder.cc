@@ -172,7 +172,7 @@ void node_finder::create_node()
 
 void node_finder::keyPressEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_Down)
+    if (event->key() == Qt::Key_Down || event->key() == Qt::Key_Up)
         tree->setFocus();
     else if (event->key() == Qt::Key_Return)
         create_node();

@@ -110,14 +110,6 @@ void graphics_view::wheelEvent(QWheelEvent *event)
     zoom(event->delta(), event->pos());
 }
 
-void graphics_view::keyPressEvent(QKeyEvent *event)
-{
-    int key = event->key();
-
-    if (key == Qt::Key_F)
-        this->setTransform(QTransform()); // fit
-}
-
 void graphics_view::keyReleaseEvent(QKeyEvent *event)
 {
     panning = false;

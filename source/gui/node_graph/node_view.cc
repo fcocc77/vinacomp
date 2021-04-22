@@ -1,12 +1,12 @@
-#include <node_view.h>
-#include <vinacomp.h>
-#include <node_link.h>
-#include "node_rect.h"
-#include "node_dot.h"
 #include "node_backdrop.h"
+#include "node_dot.h"
 #include "node_group.h"
+#include "node_rect.h"
+#include <node_link.h>
+#include <node_view.h>
 #include <qt.h>
 #include <util.h>
+#include <vinacomp.h>
 
 // Engine
 #include <project_struct.h>
@@ -24,7 +24,8 @@ node_view::node_view(QWidget *__vinacomp, properties *__properties,
 
     // cuadro de cambio de nombre de nodo
     node_rename_edit = new QLineEdit(this);
-    connect(node_rename_edit, &QLineEdit::returnPressed, this, [this] { change_node_name(); });
+    connect(node_rename_edit, &QLineEdit::returnPressed, this,
+            [this] { change_node_name(); });
     node_rename_edit->hide();
     //
     //
@@ -64,6 +65,92 @@ void node_view::setup_shortcut()
     qt::shortcut("N", this, [this]() { this->change_node_name_dialog(); });
 
     qt::shortcut("L", this, [this]() { this->align_selected_nodes(); });
+}
+
+void node_view::fit_view_to_nodes()
+{
+    float nodes_width = 0;
+    float nodes_height = 0;
+
+    auto get_pos = [&](QMap<QString, node *> *nodes) {
+        if (nodes->empty())
+            return QPointF{0, 0};
+
+        // promedia la position de muchos nodos
+        QPointF first_node_pos = nodes->first()->get_center_position();
+
+        float top = first_node_pos.y();
+        float bottom = first_node_pos.y();
+        float left = first_node_pos.x();
+        float right = first_node_pos.x();
+
+        for (node *_node : *nodes)
+        {
+            QPointF position = _node->get_center_position();
+
+            // calcula el ancho y alto maximo de todos los nodos
+            if (position.y() > top)
+                top = position.y();
+            if (position.y() < bottom)
+                bottom = position.y();
+            if (position.x() > right)
+                right = position.x();
+            if (position.x() < left)
+                left = position.x();
+            //
+        }
+
+        nodes_width = abs(left - right);
+        nodes_height = abs(bottom - top);
+
+        float x = (left + right) / 2;
+        float y = (bottom + top) / 2;
+
+        x -= float(width()) / 2.0;
+        y -= float(height()) / 2.0;
+
+        return QPointF(x, y);
+    };
+
+    QPointF pos;
+    if (selected_nodes->empty())
+        pos = get_pos(nodes);
+    else
+        pos = get_pos(selected_nodes);
+
+    float padding = 300;
+
+    nodes_width += padding;
+    nodes_height += padding;
+
+    float _width = width();
+    float _height = height();
+
+    float aspect_x = 1;
+    float aspect_y = 1;
+
+    // si el ancho o el alto del conjunto de los nodos es mas grande que el
+    // ancho o el alto del actual tamaño del viewer, crea un aspecto para luego
+    // multiplicarlo por el ancho y alto.
+    if (nodes_width > _width)
+        aspect_x = nodes_width / _width;
+    if (nodes_height > _height)
+        aspect_y = nodes_height / _height;
+
+    // deja el aspecto mas grande
+    float aspect = aspect_x;
+    if (aspect_y > aspect_x)
+        aspect = aspect_y;
+
+    _width *= aspect;
+    _height *= aspect;
+
+    // ajuste de position x e y, despues del cambio de escala ,
+    // si la escala no cambia es 0
+    float append_x = float(_width - width()) / 2.0;
+    float append_y = float(_height - height()) / 2.0;
+
+    this->fitInView(pos.x() - append_x, pos.y() - append_y, _width, _height);
 }
 
 void node_view::align_selected_nodes()
@@ -183,9 +270,9 @@ node *node_view::create_node(QString name, QColor color, QString type,
 
 void node_view::connect_node(QPoint position_node)
 {
-    // si un enlace input de un nodo esta siendo arrastrado para conectarlo a otro nodo,
-    // 'link_connecting' no estara vacio y se determinara
-    // si se conecta o no al nodo de destino.
+    // si un enlace input de un nodo esta siendo arrastrado para conectarlo a
+    // otro nodo, 'link_connecting' no estara vacio y se determinara si se
+    // conecta o no al nodo de destino.
     if (link_connecting->empty())
         return;
 
@@ -232,8 +319,9 @@ void node_view::select_node(QString name, bool select)
 
 node *node_view::get_node_from_position(QPoint position)
 {
-    // ya que el nodo esta compuesto por muchos hijos, al dar click puede ser un hijo,
-    // y si es un hijo obtiene el nodo padre para poder extraer el nombre del nodo.
+    // ya que el nodo esta compuesto por muchos hijos, al dar click puede ser un
+    // hijo, y si es un hijo obtiene el nodo padre para poder extraer el nombre
+    // del nodo.
     QGraphicsItem *item = scene->itemAt(mapToScene(position), QTransform());
     if (!item)
         return NULL;
