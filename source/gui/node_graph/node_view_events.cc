@@ -3,6 +3,7 @@
 void node_view::mousePressEvent(QMouseEvent *event)
 {
     click_position = event->pos();
+    clicked();
 
     if (!qt::alt() && event->button() == Qt::LeftButton)
     {

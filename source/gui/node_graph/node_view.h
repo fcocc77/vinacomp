@@ -76,6 +76,7 @@ public:
     void set_visible_ghost_dots(bool visible);
 signals:
     void right_click();
+    void clicked();
 };
 
 inline QMap<QString, node *> *node_view::get_nodes()

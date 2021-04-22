@@ -20,23 +20,10 @@ maker::maker(QWidget *__vinacomp, properties *__properties,
 {
 
     finder = new node_finder(_node_view, nodes_loaded);
-    connect(finder->tree, &QTreeWidget::itemPressed, this, [this](QTreeWidgetItem *item) {
-        QString node_id = item->text(1);
-        create_fx(node_id);
-        finder->hide();
-    });
-
-    setup_shortcut();
+    connect(finder, &node_finder::created, this, &maker::create_fx);
 }
 
 maker::~maker() {}
-
-void maker::setup_shortcut()
-{
-    qt::shortcut("Tab", _node_view, [this]() { finder->show_finder(); });
-
-    qt::shortcut("Escape", _node_view, [this]() { finder->hide(); });
-}
 
 QString maker::create_fx(QString id)
 {

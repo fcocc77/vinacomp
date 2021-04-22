@@ -20,7 +20,6 @@ private:
     nodes_load *nodes_loaded;
     QWidget *_vinacomp;
 
-    void setup_shortcut();
     QColor default_color(QString effect_group);
 
 public:
@@ -30,6 +29,12 @@ public:
     ~maker();
 
     QString create_fx(QString id);
+    inline node_finder *get_finder() const;
 };
+
+inline node_finder *maker::get_finder() const
+{
+    return finder;
+}
 
 #endif // MAKER_HPP

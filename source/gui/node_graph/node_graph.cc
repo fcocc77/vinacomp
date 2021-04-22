@@ -21,6 +21,9 @@ node_graph::node_graph(QWidget *_vinacomp, project_struct *_project,
     _maker = new maker(_vinacomp, _properties, nodes_loaded, _node_view, this);
     _nodes_bar = new nodes_bar(this, _maker, nodes_loaded);
 
+    connect(_node_view, &node_view::clicked, this,
+            [=]() { _maker->get_finder()->hide(); });
+
     layout->addWidget(_nodes_bar);
     layout->addWidget(_node_view);
 

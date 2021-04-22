@@ -2,16 +2,22 @@
 #include <qt.h>
 #include <util.h>
 
-node_finder::node_finder(QWidget *__node_graph, nodes_load *_nodes)
-    : _node_graph(__node_graph)
+node_finder::node_finder(QWidget *__node_view, nodes_load *_nodes)
+    : QWidget(__node_view)
     , nodes(_nodes)
+    , _node_view(__node_view)
 {
-
-    this->setParent(_node_graph);
     search_field = new QLineEdit(this);
-    connect(search_field, &QLineEdit::textChanged, this, &node_finder::update_tree);
+    connect(search_field, &QLineEdit::textChanged, this, [=]() {
+        if (search_field->hasFocus())
+            update_tree();
+    });
 
     tree = new QTreeWidget(this);
+    connect(tree, &QTreeWidget::itemDoubleClicked, [=]() { create_node(); });
+    connect(
+        tree, &QTreeWidget::currentItemChanged, this,
+        [=](QTreeWidgetItem *item) { search_field->setText(item->text(0)); });
 
     QVBoxLayout *layout = new QVBoxLayout();
     this->setLayout(layout);
@@ -25,20 +31,65 @@ node_finder::node_finder(QWidget *__node_graph, nodes_load *_nodes)
         QString node_id = value.toObject()["id"].toString();
         QTreeWidgetItem *item = new QTreeWidgetItem();
 
-        item->setText(1, node_id);
+        if (node_name.isEmpty())
+            continue;
+
         item->setText(0, node_name);
+        item->setText(1, node_id);
         tree->addTopLevelItem(item);
     }
+
+    qt::shortcut("Tab", _node_view, [this]() { this->show_finder(); });
+    qt::shortcut("Escape", _node_view, [this]() { this->hide(); });
 
     this->hide();
 }
 
-node_finder::~node_finder() {}
+node_finder::~node_finder()
+{
+    for (int i = 0; i < tree->topLevelItemCount(); i++)
+    {
+        QTreeWidgetItem *item = tree->topLevelItem(i);
+        delete item;
+    }
+
+    delete tree;
+    delete search_field;
+}
+
+void node_finder::select_first_item()
+{
+    // selecciona el primer item visible
+    for (int i = 0; i < tree->topLevelItemCount(); i++)
+    {
+        QTreeWidgetItem *item = tree->topLevelItem(i);
+        if (!item->isHidden())
+        {
+            item->setSelected(true);
+            return;
+        }
+    }
+}
+
+QTreeWidgetItem *node_finder::get_item(QString key) const
+{
+    key = key.toUpper();
+
+    for (int i = 0; i < tree->topLevelItemCount(); i++)
+    {
+        QTreeWidgetItem *item = tree->topLevelItem(i);
+        if (item->text(0).toUpper().contains(key))
+            return item;
+    }
+
+    return nullptr;
+}
 
 void node_finder::update_tree()
 {
-
     QString text = search_field->text().toUpper();
+
+    tree->clearSelection();
 
     for (int i = 0; i < tree->topLevelItemCount(); i++)
     {
@@ -52,26 +103,60 @@ void node_finder::update_tree()
         if (text.isEmpty())
             item->setHidden(false);
     }
-}
 
-void node_finder::set_focus()
-{
-    search_field->setFocus();
-}
-
-void node_finder::clear()
-{
-    search_field->setText("");
+    select_first_item();
 }
 
 void node_finder::show_finder()
 {
-    this->clear();
+    if (isVisible())
+    {
+        if (search_field->hasFocus())
+            create_node();
+        else
+            this->set_focus();
+        return;
+    }
+
+    search_field->setText(last_node_created);
+    search_field->selectAll();
+    update_tree();
+
     this->set_focus();
-    QPoint position = _node_graph->mapFromGlobal(QCursor::pos());
+    QPoint position = _node_view->mapFromGlobal(QCursor::pos());
 
     int mid_width = 130;
 
     this->move(position.x() - mid_width, position.y());
     this->show();
+}
+
+void node_finder::create_node()
+{
+    auto item = get_item(search_field->text());
+    if (!item)
+        return;
+
+    QString node_id = item->text(1);
+    QString node_name = item->text(0);
+
+    if (node_id.isEmpty())
+        return;
+
+    created(node_id);
+    last_node_created = node_name;
+    hide();
+}
+
+void node_finder::keyPressEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Down)
+        tree->setFocus();
+    else if (event->key() == Qt::Key_Return)
+        create_node();
+    else if (event->modifiers() == Qt::ControlModifier &&
+             event->key() == Qt::Key_M)
+        create_node();
+
+    QWidget::keyPressEvent(event);
 }
