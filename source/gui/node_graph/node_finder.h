@@ -19,6 +19,10 @@ private:
     nodes_load *nodes;
     QWidget *_node_view;
     QString last_node_created;
+    QSize size;
+    QVBoxLayout *layout;
+
+    QTreeWidget *tree;
 
     void update_tree();
     void create_node();
@@ -30,8 +34,6 @@ private:
 public:
     node_finder(QWidget *_node_view, nodes_load *_nodes);
     ~node_finder();
-
-    QTreeWidget *tree;
 
     inline void set_focus();
     void show_finder();

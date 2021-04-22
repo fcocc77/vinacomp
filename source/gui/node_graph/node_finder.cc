@@ -1,3 +1,4 @@
+#include <QHeaderView>
 #include <node_finder.h>
 #include <qt.h>
 #include <util.h>
@@ -6,7 +7,11 @@ node_finder::node_finder(QWidget *__node_view, nodes_load *_nodes)
     : QWidget(__node_view)
     , nodes(_nodes)
     , _node_view(__node_view)
+    , size(QSize(200, 200))
 {
+    this->setObjectName("node_finder");
+    this->setMinimumSize(size);
+
     search_field = new QLineEdit(this);
     connect(search_field, &QLineEdit::textChanged, this, [=]() {
         if (search_field->hasFocus())
@@ -14,12 +19,14 @@ node_finder::node_finder(QWidget *__node_view, nodes_load *_nodes)
     });
 
     tree = new QTreeWidget(this);
+    tree->setHeaderHidden(true);
+    tree->setAlternatingRowColors(true);
     connect(tree, &QTreeWidget::itemDoubleClicked, [=]() { create_node(); });
     connect(
         tree, &QTreeWidget::currentItemChanged, this,
         [=](QTreeWidgetItem *item) { search_field->setText(item->text(0)); });
 
-    QVBoxLayout *layout = new QVBoxLayout();
+    layout = new QVBoxLayout();
     this->setLayout(layout);
 
     layout->addWidget(search_field);
@@ -29,6 +36,7 @@ node_finder::node_finder(QWidget *__node_view, nodes_load *_nodes)
     {
         QString node_name = value.toObject()["label"].toString();
         QString node_id = value.toObject()["id"].toString();
+        QString icon_name = value.toObject()["icon"].toString();
         QTreeWidgetItem *item = new QTreeWidgetItem();
 
         if (node_name.isEmpty())
@@ -36,6 +44,7 @@ node_finder::node_finder(QWidget *__node_view, nodes_load *_nodes)
 
         item->setText(0, node_name);
         item->setText(1, node_id);
+        item->setIcon(0, QIcon("resources/images/" + icon_name + "_a.png"));
         tree->addTopLevelItem(item);
     }
 
@@ -125,14 +134,27 @@ void node_finder::show_finder()
     this->set_focus();
     QPoint position = _node_view->mapFromGlobal(QCursor::pos());
 
+    bool reverse = position.y() + 200 > _node_view->height();
     int mid_width = 130;
 
-    this->move(position.x() - mid_width, position.y());
+    if (reverse)
+    {
+        layout->setDirection(QBoxLayout::BottomToTop);
+        this->move(position.x() - mid_width, position.y() - 240);
+    }
+    else
+    {
+        layout->setDirection(QBoxLayout::TopToBottom);
+        this->move(position.x() - mid_width, position.y());
+    }
     this->show();
 }
 
 void node_finder::create_node()
 {
+    if (search_field->text().isEmpty())
+        return;
+
     auto item = get_item(search_field->text());
     if (!item)
         return;
