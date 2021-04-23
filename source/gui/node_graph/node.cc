@@ -264,12 +264,12 @@ node_link *node::get_link(int index) const
         // si no tiene index como argumento, obtiene el primer index no
         // conectado, y si no hay ninguno no conectado, obtiene el index 1 que
         // el por defecto
-        int _index = 0;
+        int _index = -1;
         for (bool connected : connected_indexs)
         {
+            _index++;
             if (!connected && _index != 0)
                 break;
-            _index++;
         }
 
         if (_index == 0) // mask
