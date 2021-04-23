@@ -48,6 +48,7 @@ gui__node_graph:
     ☐ no permitir crear nombres de nodos cono punto '.' ya que estos se usan para la profundidad de donde esta el nodo en un grupo
     ☐ la creacion de dot con control se queda pegado, al dejar presionado control cuando creamos un nodo con el 'node_finder'
     ☐ el lo grupos al crear 2 nodos del mismo tipo quedan con el mismo nombre
+    ☐ al crear el nodo: que el nodo se conecte a los nodos de salida del nodo seleccionado
 gui__node:
 	✔ crear flecha de salida, y que se pueda arrastrar para conectar al input de algun node @done(2021-04-23 17:13) @project(gui__node)
 	✔ crear entrada de 'mask' @done(2021-04-20 17:37) @project(gui__node)
