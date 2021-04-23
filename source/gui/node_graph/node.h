@@ -108,7 +108,7 @@ public:
     inline QColor get_color() const;
     void refresh();
     inline QList<node_link *> *get_links() const;
-    inline node_link *get_link(int index) const;
+    node_link *get_link(int index = -1) const;
     inline trim_panel *get_trim_panel() const;
     QString get_type() const;
     inline QSize get_size() const;
@@ -209,11 +209,6 @@ inline void node::remove_input_node(node *_node)
 inline QList<node_link *> *node::get_links() const
 {
     return links;
-}
-
-inline node_link *node::get_link(int index) const
-{
-    return links->value(index);
 }
 
 inline QString node::get_type() const

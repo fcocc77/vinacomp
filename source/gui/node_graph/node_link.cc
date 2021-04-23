@@ -208,7 +208,7 @@ void node_link::insert_node_in_between(QGraphicsItem *_node)
     this->disconnect_node();
     this->connect_node(between_node);
 
-    between_node->get_link(1)->connect_node(_connected_node);
+    between_node->get_link()->connect_node(_connected_node);
 }
 
 float node_link::get_rotation(QPointF point_a, QPointF point_b)

@@ -257,6 +257,29 @@ void node::show_close_link()
     link_to_insert->set_ghost_link(true, *center_position);
 }
 
+node_link *node::get_link(int index) const
+{
+    if (index == -1)
+    {
+        // si no tiene index como argumento, obtiene el primer index no
+        // conectado, y si no hay ninguno no conectado, obtiene el index 1 que
+        // el por defecto
+        int _index = 0;
+        for (bool connected : connected_indexs)
+        {
+            if (!connected && _index != 0)
+                break;
+            _index++;
+        }
+
+        if (_index == 0) // mask
+            _index = 1;
+
+        return links->value(_index);
+    }
+    return links->value(index);
+}
+
 void node::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
     make_panel();

@@ -396,7 +396,7 @@ void node_view::connect_output_link(QPoint position_node)
     if (!node_to_connect)
         return;
 
-    node_to_connect->get_link(1)->connect_node(node_output);
+    node_to_connect->get_link()->connect_node(node_output);
 }
 
 node *node_view::get_node(QString name)
