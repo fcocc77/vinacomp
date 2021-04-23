@@ -244,7 +244,7 @@ void node_link::set_selected(bool enable)
         if (index == 0) // mask
             link_pen.setStyle(Qt::DashLine);
 
-        link_pen.setWidth(5);
+        link_pen.setWidth(4);
         link->setPen(link_pen);
 
         QBrush arrow_brush(Qt::white);

@@ -47,11 +47,13 @@ void output_link::set_selected(bool enable)
     {
         arrow->setPen(QPen(Qt::white));
         arrow->setBrush(QBrush(Qt::white));
+        link->setPen(QPen(Qt::white, 4));
     }
     else
     {
         arrow->setPen(QPen(Qt::black));
         arrow->setBrush(QBrush(Qt::black));
+        link->setPen(QPen(Qt::black, 2));
     }
 }
 
