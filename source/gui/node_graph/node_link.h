@@ -45,7 +45,6 @@ private:
     void text_refresh(QPointF point_a, QPointF point_b);
 
     QLineF subtract_distance_line(QLineF line, float distance);
-    float get_rotation(QPointF point_a, QPointF point_b);
     float get_long(QPointF point_a, QPointF point_b);
     QPointF get_center(QPointF point_a, QPointF point_b) const;
     void update_visibility();
@@ -63,6 +62,8 @@ public:
               QJsonObject *_link_connecting, project_struct *_project,
               QWidget *_vinacomp, QWidget *_node_graph);
     ~node_link();
+
+    static float get_rotation(QPointF point_a, QPointF point_b);
 
     void refresh();
     void update_connection();

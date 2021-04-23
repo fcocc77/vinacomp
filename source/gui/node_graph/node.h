@@ -118,8 +118,13 @@ public:
     inline QPointF get_freeze_position() const;
     inline void set_connected_index(int index, bool connected);
     inline QList<bool> get_connected_indexs();
-    void refresh_links();
+    inline bool output_is_connected() const;
 };
+
+inline bool node::output_is_connected() const
+{
+    return !nodes_connected_to_the_output->keys().empty();
+}
 
 inline void node::set_connected_index(int index, bool connected)
 {

@@ -15,10 +15,11 @@
 node_view::node_view(QWidget *__vinacomp, properties *__properties,
                      nodes_load *_nodes_loaded, QWidget *__node_graph)
 
-    : _vinacomp(__vinacomp)
-    , _properties(__properties)
+    : _properties(__properties)
+    , _vinacomp(__vinacomp)
     , nodes_loaded(_nodes_loaded)
     , _node_graph(__node_graph)
+    , output_link_node(nullptr)
 {
 
     scene = new QGraphicsScene();
@@ -383,6 +384,21 @@ void node_view::connect_node(QPoint position_node)
     //
 }
 
+void node_view::connect_output_link(QPoint position_node)
+{
+    if (!output_link_node)
+        return;
+
+    node *node_output = output_link_node;
+    output_link_node = nullptr;
+
+    node *node_to_connect = get_node_from_position(position_node);
+    if (!node_to_connect)
+        return;
+
+    node_to_connect->get_link(1)->connect_node(node_output);
+}
+
 node *node_view::get_node(QString name)
 {
     return nodes->value(name);
@@ -409,7 +425,7 @@ node *node_view::get_node_from_position(QPoint position)
     // del nodo.
     QGraphicsItem *item = scene->itemAt(mapToScene(position), QTransform());
     if (!item)
-        return NULL;
+        return nullptr;
 
     QGraphicsItem *parent_item = item->parentItem();
     if (parent_item)

@@ -44,6 +44,7 @@ void node_view::mouseReleaseEvent(QMouseEvent *event)
     selecting = false;
 
     connect_node(event->pos());
+    connect_output_link(event->pos());
 
     graphics_view::mouseReleaseEvent(event);
 }

@@ -419,10 +419,15 @@ void node_link::connect_node(QGraphicsItem *to_node)
 
     node *_this_node = static_cast<node *>(this_node);
 
+    // evita que se conecte asi mismo
+    if (to_node == _this_node)
+        return;
+
     if (connected_node)
     {
         node *_connected_node = static_cast<node *>(connected_node);
         _connected_node->remove_output_node(_this_node);
+        _connected_node->refresh();
     }
 
     _to_node->add_output_node(_this_node);
@@ -438,7 +443,8 @@ void node_link::connect_node(QGraphicsItem *to_node)
     //
 
     dragging = false;
-    _this_node->refresh_links();
+    _to_node->refresh();
+    _this_node->refresh();
 }
 
 void node_link::disconnect_node()
@@ -462,10 +468,15 @@ void node_link::disconnect_node()
     connected_node = nullptr;
     dragging = false;
 
-    _this_node->refresh_links();
+    _connected_node->refresh();
+    _this_node->refresh();
 }
 
-void node_link::mousePressEvent(QGraphicsSceneMouseEvent *event) {}
+void node_link::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    // tiene que existir el 'mousePressEvent' para que funcione el
+    // 'mouseMoveEvent'
+}
 
 void node_link::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {

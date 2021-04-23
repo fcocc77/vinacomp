@@ -35,6 +35,7 @@ private:
     QMap<QString, node *> *selected_nodes;
 
     QJsonObject *link_connecting;
+    node *output_link_node;
     bool selecting = false;
     QPoint click_position;
 
@@ -44,7 +45,6 @@ private:
 
     void select_all(bool select);
     void setup_shortcut();
-    node *get_node_from_position(QPoint position);
     void connect_node(QPoint position_node);
     void select_nodes_by_area(QPointF selection_end_point);
     void align_selected_nodes();
@@ -52,6 +52,7 @@ private:
     void connect_to_viewer();
     node *get_main_viewer() const;
     node *get_selected_node() const;
+    void connect_output_link(QPoint position_node);
 
     // Events
     void mouseReleaseEvent(QMouseEvent *event) override;
@@ -70,6 +71,7 @@ public:
     node *create_node(QString name, QColor color, QString type,
                       QPointF position = QPointF(), QString tips = "");
 
+    node *get_node_from_position(QPoint position);
     void rename_node(node *_node, QString name, QString new_name);
     void change_node_name_dialog();
     void change_node_name();
@@ -79,10 +81,16 @@ public:
     node_link *get_node_link(node *_node, int link_index);
     void set_visible_ghost_dots(bool visible);
     void find_nodes(QString key);
+    inline void set_output_link_node(node *_node);
 signals:
     void right_click();
     void clicked();
 };
+
+inline void node_view::set_output_link_node(node *_node)
+{
+    output_link_node = _node;
+}
 
 inline QMap<QString, node *> *node_view::get_nodes()
 {

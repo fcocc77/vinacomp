@@ -65,7 +65,7 @@ node::node(node_props _props, QMap<QString, node *> *_selected_nodes,
 
         this->setZValue((*props.current_z_value) + 1);
 
-        _output_link = new output_link(props.scene);
+        _output_link = new output_link(props.scene, _node_view, this);
     }
 }
 
@@ -114,16 +114,8 @@ void node::make_panel()
     //
 }
 
-void node::refresh_links()
-{
-    for (node_link *_node_link : *this->get_links())
-        _node_link->refresh();
-}
-
 void node::refresh()
 {
-    _output_link->refresh();
-
     if (!links)
         return;
 
@@ -140,6 +132,8 @@ void node::refresh()
         refresh_links(output_node);
     //
     //
+
+    _output_link->refresh();
 }
 
 void node::set_selected(bool enable)
@@ -161,6 +155,8 @@ void node::set_selected(bool enable)
     if (links)
         for (node_link *link : *links)
             link->set_selected(enable);
+
+    _output_link->set_selected(enable);
 }
 
 void node::set_name(QString _name)
