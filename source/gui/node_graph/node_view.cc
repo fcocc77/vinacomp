@@ -68,14 +68,25 @@ void node_view::setup_shortcut()
     qt::shortcut("L", this, [this]() { this->align_selected_nodes(); });
 }
 
+node *node_view::get_selected_node() const
+{
+    // obtiene 1 solo nodo seleccionado, si hay mas de 1 nodo seleccionado
+    // retorna nulo y si no hay nodos seleccionado retorna nulo tambien
+    if (selected_nodes->count() != 1)
+        return nullptr;
+
+    node *_node = selected_nodes->first();
+    return _node;
+}
+
 void node_view::connect_to_viewer()
 {
     // conecta el nodo seleccionado al 'viewer', si no existe ningun 'viewer' en
     // el 'node_view', crea un nuevo 'viewer'
-    if (selected_nodes->count() != 1)
+    node *_node = get_selected_node();
+    if (!_node)
         return;
 
-    node *_node = selected_nodes->first();
     node *_viewer = get_main_viewer();
 
     if (!_viewer)
@@ -255,11 +266,21 @@ void node_view::change_node_name()
 node *node_view::create_node(QString name, QColor color, QString type,
                              QPointF position, QString tips)
 {
+    node *selected_node = get_selected_node();
+
     if (position.isNull())
     {
-        // crea el nodo en la posicion del puntero del mouse
-        QPoint origin = this->mapFromGlobal(QCursor::pos());
-        position = this->mapToScene(origin);
+        if (selected_node)
+        {
+            QPointF center_position = selected_node->get_center_position();
+            position = {center_position.x(), center_position.y() + 90};
+        }
+        else
+        {
+            // crea el nodo en la posicion del puntero del mouse
+            QPoint origin = this->mapFromGlobal(QCursor::pos());
+            position = this->mapToScene(origin);
+        }
     }
 
     project_struct *project = static_cast<vinacomp *>(_vinacomp)->get_project();
@@ -293,12 +314,19 @@ node *node_view::create_node(QString name, QColor color, QString type,
                             position.y() - (size.height() / 2)};
 
     _node->set_position(new_position.x(), new_position.y());
-
     nodes->insert(name, _node);
 
     // inserta un item de nodo en el proyecto
     project->insert_node(name, color, type, new_position);
     //
+
+    if (selected_node)
+    {
+        _node->get_link(1)->connect_node(selected_node);
+        select_node(selected_node->get_name(), false);
+    }
+
+    select_node(name, true);
 
     return _node;
 }
@@ -341,7 +369,7 @@ node *node_view::get_node(QString name)
 void node_view::select_node(QString name, bool select)
 {
     node *_node = get_node(name);
-    if (_node == NULL)
+    if (!_node)
         return;
 
     _node->set_selected(select);

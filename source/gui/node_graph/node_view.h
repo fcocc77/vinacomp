@@ -51,6 +51,7 @@ private:
     void fit_view_to_nodes();
     void connect_to_viewer();
     node *get_main_viewer() const;
+    node *get_selected_node() const;
 
     // Events
     void mouseReleaseEvent(QMouseEvent *event) override;
