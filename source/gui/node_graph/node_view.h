@@ -78,6 +78,7 @@ public:
     inline QMap<QString, node *> *get_nodes();
     node_link *get_node_link(node *_node, int link_index);
     void set_visible_ghost_dots(bool visible);
+    void find_nodes(QString key);
 signals:
     void right_click();
     void clicked();

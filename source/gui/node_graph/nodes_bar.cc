@@ -32,11 +32,13 @@ void nodes_bar::setup_ui()
 
     layout->addStretch();
 
-    QLineEdit *find_node = new QLineEdit();
+    find_node_edit = new QLineEdit();
+    connect(find_node_edit, &QLineEdit::textChanged, this,
+            &nodes_bar::search_changed);
     QLabel *find_node_label = new QLabel("Search Node");
 
     layout->addWidget(find_node_label);
-    layout->addWidget(find_node);
+    layout->addWidget(find_node_edit);
 
     layout->addStretch();
 

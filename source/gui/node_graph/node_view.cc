@@ -79,6 +79,28 @@ node *node_view::get_selected_node() const
     return _node;
 }
 
+void node_view::find_nodes(QString key)
+{
+    // encuentra los nodos a partir de una key los selecciona
+    // y los ajusta al 'node_view'
+    select_all(false);
+    if (key.isEmpty())
+    {
+        fit_view_to_nodes();
+        return;
+    }
+
+    key = key.toUpper();
+    QList<node*> finded_nodes;
+    for (node *_node : *nodes)
+    {
+        if (_node->get_name().toUpper().contains(key))
+            select_node(_node->get_name(), true);
+    }
+
+    fit_view_to_nodes();
+}
+
 void node_view::connect_to_viewer()
 {
     // conecta el nodo seleccionado al 'viewer', si no existe ningun 'viewer' en

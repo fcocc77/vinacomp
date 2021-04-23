@@ -24,6 +24,16 @@ node_graph::node_graph(QWidget *_vinacomp, project_struct *_project,
     connect(_node_view, &node_view::clicked, this,
             [=]() { _maker->get_finder()->hide(); });
 
+    connect(_nodes_bar, &nodes_bar::search_changed, _node_view,
+            &node_view::find_nodes);
+
+    // shortcut de busqueda de nodos
+    qt::shortcut("Ctrl+F", this,
+                 [this]() { _nodes_bar->focus_to_find_edit(); });
+    qt::shortcut("Ctrl+P", this,
+                 [this]() { _nodes_bar->focus_to_find_edit(); });
+    //
+
     layout->addWidget(_nodes_bar);
     layout->addWidget(_node_view);
 
