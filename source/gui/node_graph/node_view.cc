@@ -488,6 +488,12 @@ void node_view::set_visible_ghost_dots(bool visible)
 {
     // visibilidad para los ghost dots
     for (node *_node : *nodes)
-        for (node_link *link : *_node->get_links())
+    {
+        auto *links = _node->get_links();
+        if (!links)
+            continue;
+
+        for (node_link *link : *links)
             link->set_visible_ghost_dot(visible);
+    }
 }

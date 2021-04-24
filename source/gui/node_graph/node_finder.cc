@@ -134,7 +134,7 @@ void node_finder::show_finder()
     this->set_focus();
     QPoint position = _node_view->mapFromGlobal(QCursor::pos());
 
-    bool reverse = position.y() + 200 > _node_view->height();
+    bool reverse = position.y() + 100 > _node_view->height();
     int mid_width = 130;
 
     if (reverse)

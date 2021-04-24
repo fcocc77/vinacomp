@@ -15,6 +15,7 @@ node::node(node_props _props, QMap<QString, node *> *_selected_nodes,
     , props(_props)
     , selected_nodes(_selected_nodes)
     , links(nullptr)
+    , _output_link(nullptr)
     , nodes_loaded(_props.nodes_loaded)
 
 {
@@ -156,7 +157,8 @@ void node::set_selected(bool enable)
         for (node_link *link : *links)
             link->set_selected(enable);
 
-    _output_link->set_selected(enable);
+    if (_output_link)
+        _output_link->set_selected(enable);
 }
 
 void node::set_name(QString _name)
@@ -193,6 +195,9 @@ QPointF node::get_center_position() const
 
 node_link *node::get_close_link() const
 {
+    if (!_node_view)
+        return nullptr;
+
     node_view *__node_view = static_cast<node_view *>(_node_view);
 
     int grip_distance = 150;
@@ -201,7 +206,11 @@ node_link *node::get_close_link() const
     bool finded = false;
     for (node *_node : *__node_view->get_nodes())
     {
-        for (node_link *link : *_node->get_links())
+        auto *links = _node->get_links();
+        if (!links)
+            continue;
+
+        for (node_link *link : *links)
         {
             if (!link->is_connected())
                 continue;
@@ -259,6 +268,9 @@ void node::show_close_link()
 
 node_link *node::get_link(int index) const
 {
+    if (links->count() < 2)
+        return nullptr;
+
     if (index == -1)
     {
         // si no tiene index como argumento, obtiene el primer index no
