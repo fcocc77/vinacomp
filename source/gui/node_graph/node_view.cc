@@ -41,8 +41,13 @@ node_view::node_view(QWidget *__vinacomp, properties *__properties,
     //
     //
 
-    // activacion de area de seleccion
-    this->setDragMode(QGraphicsView::RubberBandDrag);
+    // selection box
+    selection_box = new QGraphicsRectItem();
+    selection_box->setVisible(false);
+    selection_box->setPen(QPen(QColor(0, 0, 0, 100), 0));
+    selection_box->setBrush(QBrush(QColor(0, 0, 0, 30)));
+    selection_box->setZValue(100000); // siempre por encima
+    scene->addItem(selection_box);
     //
     //
 
@@ -472,6 +477,24 @@ void node_view::select_nodes_by_area(QPointF selection_end_point)
 
     QRectF rect(start_x, start_y, width, height);
     rectangle.addRect(rect);
+
+    // el 'QGraphicsRectItem' que se usa para el 'selection_box' da conflicto si
+    // es negativo el ancho y alto, si es negativo lo invierte y se lo resta a
+    // la position.
+    if (width < 0)
+    {
+        width = -width;
+        start_x -= width;
+    }
+    if (height < 0)
+    {
+        height = -height;
+        start_y -= height;
+    }
+    QRectF rect_box(start_x, start_y, width, height);
+    selection_box->setRect(rect_box);
+    selection_box->setVisible(true);
+    //
 
     if (!qt::shift())
         select_all(false);

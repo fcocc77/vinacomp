@@ -38,6 +38,7 @@ private:
     node *output_link_node;
     bool selecting = false;
     QPoint click_position;
+    QGraphicsRectItem *selection_box;
 
     int *current_z_value;
 

@@ -29,9 +29,17 @@ void node_view::mousePressEvent(QMouseEvent *event)
             }
         }
 
-        // si el click no fue en un nodo, comienza el area de seleccion
-        if (!item)
+        // si el click no fue en un nodo o es un backdrop, comienza el area de seleccion
+        if (item)
+        {
+            node *clicked_node = dynamic_cast<node *>(item);
+            if (clicked_node)
+                if (clicked_node->get_type() == "backdrop")
+                    selecting = true;
+        }
+        else
             selecting = true;
+        //
     }
 
     node_rename_edit->hide();
@@ -42,6 +50,7 @@ void node_view::mousePressEvent(QMouseEvent *event)
 void node_view::mouseReleaseEvent(QMouseEvent *event)
 {
     selecting = false;
+    selection_box->setVisible(false);
 
     connect_node(event->pos());
     connect_output_link(event->pos());
