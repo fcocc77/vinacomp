@@ -107,7 +107,7 @@ void node_graph::restore_tree()
 
             node_link *link = _node_view->get_node_link(_node, index);
             if (link)
-                link->connect_node(node_to_connect);
+                link->connect_node(node_to_connect, false);
         }
     }
 }

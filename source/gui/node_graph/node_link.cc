@@ -407,7 +407,27 @@ QLineF node_link::subtract_distance_line(QLineF line, float distance)
     return {line.p2(), {px, py}};
 }
 
-void node_link::connect_node(QGraphicsItem *to_node)
+bool node_link::safe_connection(QGraphicsItem *node_to_connect) const
+{
+    // previene que el link a conectar vuelva al mismo nodo
+    // y provoque un bucle infinito
+    node *_this_node = static_cast<node *>(this_node);
+    node *_to_node = static_cast<node *>(node_to_connect);
+
+    // evita que se conecte asi mismo
+    if (_this_node == _to_node)
+        return false;
+
+    for (node *_node : *_to_node->get_input_nodes())
+    {
+        if (!safe_connection(_node))
+            return false;
+    }
+
+    return true;
+}
+
+void node_link::connect_node(QGraphicsItem *to_node, bool prevent_loop)
 {
     if (!to_node)
         return;
@@ -419,9 +439,10 @@ void node_link::connect_node(QGraphicsItem *to_node)
 
     node *_this_node = static_cast<node *>(this_node);
 
-    // evita que se conecte asi mismo
-    if (to_node == _this_node)
-        return;
+    // evita que se provoque un bucle infinito
+    if (prevent_loop)
+        if (!safe_connection(_to_node))
+            return;
 
     if (connected_node)
     {

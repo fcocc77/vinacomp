@@ -12,12 +12,19 @@ private:
     QGraphicsTextItem *tips_text;
     QWidget *_node_view;
 
+    int title_area_height;
+    bool clicked_title_area;
+
     QList<node *> nodes_to_drag;
     QList<QPointF> nodes_click_position;
 
     void change_size_rectangle(int _width, int _height);
+    QColor get_random_color() const;
+
+    void set_selected(bool enable) override;
 
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
 
 public:

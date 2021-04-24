@@ -268,6 +268,8 @@ void node::show_close_link()
 
 node_link *node::get_link(int index) const
 {
+    if (!links)
+        return nullptr;
     if (links->count() < 2)
         return nullptr;
 

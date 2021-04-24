@@ -1,5 +1,6 @@
 #include "node_backdrop.h"
 #include "node_view.h"
+// #include <cstdlib>
 
 node_backdrop::node_backdrop(node_props _props,
                              QMap<QString, node *> *_selected_nodes,
@@ -8,6 +9,8 @@ node_backdrop::node_backdrop(node_props _props,
     : node(_props, _selected_nodes)
     , props(_props)
     , _node_view(__node_view)
+    , title_area_height(50)
+    , clicked_title_area(false)
 {
     this->setFlags(QGraphicsItem::ItemIsMovable);
     set_size(500, 300);
@@ -21,14 +24,23 @@ node_backdrop::node_backdrop(node_props _props,
     //
     //
 
-    // Forma de Dot
+    // Forma de Backdrop
     change_size_rectangle(minimum_width, minimum_height);
 
     QPen pen(Qt::black);
 
-    QLinearGradient ramp(0, 40, 0, 0);
-    ramp.setColorAt(0.5000, get_color());
-    ramp.setColorAt(0.5001, QColor(200, 200, 200));
+    QColor color = get_random_color();
+    QColor color2 = color;
+
+    // baja la intensidad al color 2
+    int h, s, l;
+    color2.getHsl(&h, &s, &l);
+    color2.setHsl(h, s, l * 0.9);
+    //
+
+    QLinearGradient ramp(0, title_area_height, 0, 0);
+    ramp.setColorAt(0.5000, color);
+    ramp.setColorAt(0.5001, color2);
 
     QBrush brush(ramp);
     pen.setWidth(0);
@@ -64,10 +76,19 @@ void node_backdrop::change_size_rectangle(int _width, int _height)
     this->setPath(rectangle);
 }
 
+void node_backdrop::set_selected(bool enable)
+{
+    // if (clicked_title_area)
+        // node::set_selected(enable);
+}
 void node_backdrop::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     // encuentra todos los nodos que estan dentro del 'backdrop' para
     // luego arrastrarlos junto con el 'backdrop'
+
+    clicked_title_area = event->pos().y() < (title_area_height / 2);
+    if (!clicked_title_area)
+        return;
 
     QPainterPath rectangle;
 
@@ -95,8 +116,17 @@ void node_backdrop::mousePressEvent(QGraphicsSceneMouseEvent *event)
     node::mousePressEvent(event);
 }
 
+void node_backdrop::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) 
+{
+    clicked_title_area = false;
+    node::mouseReleaseEvent(event);
+}
+
 void node_backdrop::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
+    if (!clicked_title_area)
+        return;
+
     // calcula el movimiento del backdrop, restandolo con la posicion,
     // para que el movimiento inicie en 0, y asi sumarlo a los nodos
     QPointF position = mapToScene(event->pos());
@@ -111,4 +141,20 @@ void node_backdrop::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         _node->set_position(_node->get_freeze_position() + add_position);
 
     node::mouseMoveEvent(event);
+}
+
+QColor node_backdrop::get_random_color() const
+{
+    float gain = 0.55;
+    int saturation = 80; // 0 - 255
+
+    int red = std::rand() % saturation + (255 - saturation);
+    int green = std::rand() % saturation + (255 - saturation);
+    int blue = std::rand() % saturation + (255 - saturation);
+
+    red *= gain;
+    green *= gain;
+    blue *= gain;
+
+    return QColor(red, green, blue);
 }

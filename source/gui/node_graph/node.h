@@ -98,7 +98,7 @@ public:
     inline QString get_name() const;
     void set_position(float x, float y);
     void set_position(QPointF position);
-    void set_selected(bool enable);
+    virtual void set_selected(bool enable);
     QMap<QString, node *> *get_output_nodes() const;
     inline void add_output_node(node *_node);
     inline void remove_output_node(node *_node);
@@ -118,6 +118,7 @@ public:
     inline QPointF get_freeze_position() const;
     inline void set_connected_index(int index, bool connected);
     inline QList<bool> get_connected_indexs();
+    inline QMap<QString, node *> *get_input_nodes() const;
     inline bool output_is_connected() const;
 };
 
@@ -194,6 +195,11 @@ inline void node::remove_output_node(node *_node)
 inline QMap<QString, node *> *node::get_output_nodes() const
 {
     return nodes_connected_to_the_output;
+}
+
+inline QMap<QString, node *> *node::get_input_nodes() const
+{
+    return nodes_connected_to_the_inputs;
 }
 
 inline void node::add_input_node(node *_node)

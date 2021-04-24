@@ -49,6 +49,7 @@ private:
     QPointF get_center(QPointF point_a, QPointF point_b) const;
     void update_visibility();
     QLineF get_line_from_node() const;
+    bool safe_connection(QGraphicsItem *node_to_connect) const;
 
     inline void set_visible(bool visible);
 
@@ -67,7 +68,7 @@ public:
 
     void refresh();
     void update_connection();
-    void connect_node(QGraphicsItem *_node);
+    void connect_node(QGraphicsItem *_node, bool prevent_loop = true);
     void disconnect_node();
     void set_selected(bool enable);
     void set_ghost_link(bool visible, QPointF break_point = {});
