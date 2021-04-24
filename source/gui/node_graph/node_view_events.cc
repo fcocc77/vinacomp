@@ -1,13 +1,19 @@
 #include <node_view.h>
+#include <node_backdrop.h>
 
 void node_view::mousePressEvent(QMouseEvent *event)
 {
     click_position = event->pos();
     clicked();
 
+    // 'mousePressEvent' tiene que ir antes que el 'backdrop->is_clicked_title_area' para poder
+    // usar el click del backdrop primero o si no no funciona el metodo
+    graphics_view::mousePressEvent(event);
+
     if (!qt::alt() && event->button() == Qt::LeftButton)
     {
-        QGraphicsItem *item = scene->itemAt(mapToScene(event->pos()), QTransform());
+        QGraphicsItem *item =
+            scene->itemAt(mapToScene(event->pos()), QTransform());
         QString item_name = item->data(0).toString();
 
         // impide la seleccion de nodos si se hizo el click en un link
@@ -32,9 +38,9 @@ void node_view::mousePressEvent(QMouseEvent *event)
         // si el click no fue en un nodo o es un backdrop, comienza el area de seleccion
         if (item)
         {
-            node *clicked_node = dynamic_cast<node *>(item);
-            if (clicked_node)
-                if (clicked_node->get_type() == "backdrop")
+            node_backdrop *backdrop = dynamic_cast<node_backdrop *>(item);
+            if (backdrop)
+                if (!backdrop->is_clicked_title_area())
                     selecting = true;
         }
         else
@@ -44,7 +50,6 @@ void node_view::mousePressEvent(QMouseEvent *event)
 
     node_rename_edit->hide();
 
-    graphics_view::mousePressEvent(event);
 }
 
 void node_view::mouseReleaseEvent(QMouseEvent *event)

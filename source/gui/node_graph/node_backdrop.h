@@ -13,7 +13,7 @@ private:
     QWidget *_node_view;
 
     int title_area_height;
-    bool clicked_title_area;
+    bool clicked_body_area;
 
     QList<node *> nodes_to_drag;
     QList<QPointF> nodes_click_position;
@@ -33,6 +33,13 @@ public:
     ~node_backdrop();
 
     void set_tips(QString _tips);
+    bool is_under_selector(QRectF selector);
+    inline bool is_clicked_title_area() const;
 };
+
+inline bool node_backdrop::is_clicked_title_area() const
+{
+    return !clicked_body_area;
+}
 
 #endif // NODE_BACKDROP_H

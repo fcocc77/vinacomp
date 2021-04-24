@@ -1,6 +1,5 @@
 #include "node_backdrop.h"
 #include "node_view.h"
-// #include <cstdlib>
 
 node_backdrop::node_backdrop(node_props _props,
                              QMap<QString, node *> *_selected_nodes,
@@ -10,7 +9,7 @@ node_backdrop::node_backdrop(node_props _props,
     , props(_props)
     , _node_view(__node_view)
     , title_area_height(50)
-    , clicked_title_area(false)
+    , clicked_body_area(false)
 {
     this->setFlags(QGraphicsItem::ItemIsMovable);
     set_size(500, 300);
@@ -78,16 +77,36 @@ void node_backdrop::change_size_rectangle(int _width, int _height)
 
 void node_backdrop::set_selected(bool enable)
 {
-    // if (clicked_title_area)
-        // node::set_selected(enable);
+    if (clicked_body_area && enable)
+        return;
+    node::set_selected(enable);
 }
+
+bool node_backdrop::is_under_selector(QRectF selector)
+{
+    // verifica si el backdrop esta dentro de un rectangulo, se usa para la
+    // seleccion
+
+    int x1 = this->x();
+    int x2 = x1 + this->get_size().width();
+    int y1 = this->y();
+    int y2 = y1 + this->get_size().height();
+
+    int sel_x1 = selector.x();
+    int sel_x2 = sel_x1 + selector.width();
+    int sel_y1 = selector.y();
+    int sel_y2 = sel_y1 + selector.height();
+
+    return sel_x1 < x1 && sel_x2 > x2 && sel_y1 < y1 && sel_y2 > y2;
+}
+
 void node_backdrop::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     // encuentra todos los nodos que estan dentro del 'backdrop' para
     // luego arrastrarlos junto con el 'backdrop'
 
-    clicked_title_area = event->pos().y() < (title_area_height / 2);
-    if (!clicked_title_area)
+    clicked_body_area = event->pos().y() > (title_area_height / 2);
+    if (clicked_body_area)
         return;
 
     QPainterPath rectangle;
@@ -116,15 +135,15 @@ void node_backdrop::mousePressEvent(QGraphicsSceneMouseEvent *event)
     node::mousePressEvent(event);
 }
 
-void node_backdrop::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) 
+void node_backdrop::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    clicked_title_area = false;
+    clicked_body_area = false;
     node::mouseReleaseEvent(event);
 }
 
 void node_backdrop::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (!clicked_title_area)
+    if (clicked_body_area)
         return;
 
     // calcula el movimiento del backdrop, restandolo con la posicion,

@@ -502,6 +502,11 @@ void node_view::select_nodes_by_area(QPointF selection_end_point)
     QList<QGraphicsItem *> selected_items = scene->items(rectangle);
     for (QGraphicsItem *item : selected_items)
     {
+        node_backdrop *backdrop = dynamic_cast<node_backdrop *>(item);
+        if (backdrop)
+            if (!backdrop->is_under_selector(rect_box))
+                continue;
+
         QString node_name = item->data(0).toString();
         select_node(node_name, true);
     }
