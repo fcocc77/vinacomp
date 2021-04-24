@@ -11,17 +11,24 @@ private:
     QString icon_name;
     QGraphicsTextItem *tips_text;
     QWidget *_node_view;
+    QGraphicsRectItem *corner;
+    QSize corner_size;
 
     int title_area_height;
     bool clicked_body_area;
+    bool resizing;
 
     QList<node *> nodes_to_drag;
     QList<QPointF> nodes_click_position;
+    QSize corner_click_diff;
 
     void change_size_rectangle(int _width, int _height);
     QColor get_random_color() const;
+    void resize(QSize size);
+    void refresh_corner();
 
     void set_selected(bool enable) override;
+    void set_position(float x, float y) override;
 
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;

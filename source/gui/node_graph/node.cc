@@ -177,12 +177,6 @@ void node::set_position(float x, float y)
     this->refresh();
 }
 
-void node::set_position(QPointF position)
-{
-    this->setPos(position);
-    this->refresh();
-}
-
 QPointF node::get_center_position() const
 {
     float x = this->x() + current_width / 2;

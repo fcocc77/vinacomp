@@ -96,8 +96,7 @@ public:
     void set_icon_name(QString name);
     inline void set_tips(QString tips);
     inline QString get_name() const;
-    void set_position(float x, float y);
-    void set_position(QPointF position);
+    virtual void set_position(float x, float y);
     virtual void set_selected(bool enable);
     QMap<QString, node *> *get_output_nodes() const;
     inline void add_output_node(node *_node);

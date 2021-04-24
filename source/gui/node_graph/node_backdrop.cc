@@ -10,6 +10,7 @@ node_backdrop::node_backdrop(node_props _props,
     , _node_view(__node_view)
     , title_area_height(50)
     , clicked_body_area(false)
+    , resizing(false)
 {
     this->setFlags(QGraphicsItem::ItemIsMovable);
     set_size(500, 300);
@@ -48,6 +49,15 @@ node_backdrop::node_backdrop(node_props _props,
     //
     //
 
+    // esquina de reescalado
+    corner = new QGraphicsRectItem;
+    corner_size = {30, 30};
+    corner->setRect(0, 0, corner_size.width(), corner_size.height());
+    corner->setBrush(QBrush(Qt::green));
+    corner->setPen(QPen(Qt::black, 0));
+    props.scene->addItem(corner);
+    //
+
     node::set_name(_props.name);
     set_tips("hola a todos");
 }
@@ -82,6 +92,19 @@ void node_backdrop::set_selected(bool enable)
     node::set_selected(enable);
 }
 
+void node_backdrop::set_position(float x, float y)
+{
+    node::set_position(x, y);
+    refresh_corner();
+}
+
+void node_backdrop::refresh_corner()
+{
+    float cor_x = x() + get_size().width() - corner_size.width();
+    float cor_y = y() + get_size().height() - corner_size.height();
+    corner->setPos(cor_x, cor_y);
+}
+
 bool node_backdrop::is_under_selector(QRectF selector)
 {
     // verifica si el backdrop esta dentro de un rectangulo, se usa para la
@@ -100,15 +123,65 @@ bool node_backdrop::is_under_selector(QRectF selector)
     return sel_x1 < x1 && sel_x2 > x2 && sel_y1 < y1 && sel_y2 > y2;
 }
 
+QColor node_backdrop::get_random_color() const
+{
+    float gain = 0.55;
+    int saturation = 80; // 0 - 255
+
+    int red = std::rand() % saturation + (255 - saturation);
+    int green = std::rand() % saturation + (255 - saturation);
+    int blue = std::rand() % saturation + (255 - saturation);
+
+    red *= gain;
+    green *= gain;
+    blue *= gain;
+
+    return QColor(red, green, blue);
+}
+
+void node_backdrop::resize(QSize size)
+{
+    if (!resizing)
+        return;
+
+    int min = 150;
+
+    float width = size.width();
+    float height = size.height();
+
+    if (width < min)
+        width = min;
+    if (height < min)
+        height = min;
+
+    set_size(width, height);
+    change_size_rectangle(minimum_width, minimum_height);
+    refresh_corner();
+}
+
 void node_backdrop::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    // encuentra todos los nodos que estan dentro del 'backdrop' para
-    // luego arrastrarlos junto con el 'backdrop'
+    // detecta si el click se hizo en la esquina de reescalado
+    int width = get_size().width();
+    int height = get_size().height();
+
+    int width_less = width - corner_size.width();
+    int height_less = height - corner_size.height();
+
+    if (event->pos().x() > width_less && event->pos().y() > height_less)
+    {
+        corner_click_diff.setWidth(width - event->pos().x());
+        corner_click_diff.setHeight(height - event->pos().y());
+        resizing = true;
+    }
+    //
 
     clicked_body_area = event->pos().y() > (title_area_height / 2);
     if (clicked_body_area)
         return;
 
+    // encuentra todos los nodos que estan dentro del 'backdrop' para
+    // luego arrastrarlos junto con el 'backdrop'
     QPainterPath rectangle;
 
     QRectF rect(this->x(), this->y(), current_width, current_height);
@@ -138,11 +211,17 @@ void node_backdrop::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void node_backdrop::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     clicked_body_area = false;
+    resizing = false;
     node::mouseReleaseEvent(event);
 }
 
 void node_backdrop::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
+    // re escalado
+    resize({(int)event->pos().x() + corner_click_diff.width(),
+            (int)event->pos().y() + corner_click_diff.height()});
+    //
+
     if (clicked_body_area)
         return;
 
@@ -157,23 +236,10 @@ void node_backdrop::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     //
 
     for (node *_node : nodes_to_drag)
-        _node->set_position(_node->get_freeze_position() + add_position);
+    {
+        QPointF pos = _node->get_freeze_position() + add_position;
+        _node->set_position(pos.x(), pos.y());
+    }
 
     node::mouseMoveEvent(event);
-}
-
-QColor node_backdrop::get_random_color() const
-{
-    float gain = 0.55;
-    int saturation = 80; // 0 - 255
-
-    int red = std::rand() % saturation + (255 - saturation);
-    int green = std::rand() % saturation + (255 - saturation);
-    int blue = std::rand() % saturation + (255 - saturation);
-
-    red *= gain;
-    green *= gain;
-    blue *= gain;
-
-    return QColor(red, green, blue);
 }
