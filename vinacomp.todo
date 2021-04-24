@@ -19,29 +19,19 @@ gui__curve_view:
 	☐ el transform_box esta repetido, integrar el que esta en gl_view
 gui__script_editor:
 	☐ boton de arrastre para poder arrastrar el script como acceso directo a una barra de herramienta en la parte inferior del node graph
-	✔ cambiar la barra por la propia 'tools' @done(2021-04-06 22:15) @project(gui__script_editor)
-	✔ que funcione el font-size @done(2021-04-06 22:15) @project(gui__script_editor)
 	☐ cambiar el color del qtextedit a los colores de la interface
 gui__viewer_controls:
-	✔ cambiar la barra por la propia 'tools' @done(2021-02-17 16:43) @project(gui__viewer_controls)
-	✔ agregar separadores entre botone @done(2021-02-17 16:43) @project(gui__viewer_controls)
 	☐ agregar combobox con los distintos porcentajes de zoom
 gui__viewer_image_correcction:
-	✔ que los slide modifiquen el qlineedit @done(2021-01-14 18:01) @project(gui__viewer_image_correcction)
 	☐ que los botones permuten entre la gamma y la exposicion habilitada y desabilitada
 gui__viewer_info:
 	☐ ubicar el viewer info a la derecha del viewer gl
 gui__viewer_gl:
 	☐ poner un texto de la resolucion en la parte inferior izquierda del cuadro
-	✔ opcion de 'overlay' con la letra 'q' que funcione como palanca y deje visible y ocultar las lineas del cuadro de resolucion. @done(2021-02-17 18:54) @project(gui__viewer_gl)
 gui__time_line:
 	☐ Cambiarle el color a la seleccion
 gui__viewer_players:
-	✔ que los qlineedit de entrada y salida, modifiquen la entrada de la linea de tiempo con el 'Enter' @done(2021-01-13 21:22) @project(gui__viewer_players)
-	✔ que el qlineedit del frame modifiquen el frame de la linea de tiempo @done(2021-01-13 21:22) @project(gui__viewer_players)
-	✔ crear combobox con 3 opciones: repeat, bounce y stop @done(2021-01-13 20:56) @project(gui__viewer_players)
 gui__node_graph:
-	✔ que el buscador funcione @done(2021-04-23 11:50) @project(gui__node_graph)
 	☐ crear grilla que switchee con el boton de 'grid'
 	☐ crear backdrop
 	☐ el paneo y zoom van lento cuando hay un widget openGL visible, y si no hay un widget openGL visible, al arrastrar un nodo deja una estela
@@ -50,9 +40,6 @@ gui__node_graph:
     ☐ el lo grupos al crear 2 nodos del mismo tipo quedan con el mismo nombre
     ☐ al crear el nodo: que el nodo se conecte a los nodos de salida del nodo seleccionado
 gui__node:
-	✔ crear flecha de salida, y que se pueda arrastrar para conectar al input de algun node @done(2021-04-23 17:13) @project(gui__node)
-	✔ crear entrada de 'mask' @done(2021-04-20 17:37) @project(gui__node)
-	✔ crear dot y que se pueda insertar presionado control @done(2021-04-20 17:37) @project(gui__node)
 gui__knobs:
 	☐ slider: rehacer el slider con QPainter para tener mas control de todo @today
 	☐ slider: mover el manejador en la posicion del click
@@ -60,7 +47,6 @@ gui__knobs:
 	☐ slider: opcion para mantener el 'handler' siempre al centro independiente del valor minimo y maximo
 	☐ que los qlineedit con boton derecho despliegue el menu de animacion
 	☐ terminar button knob'
-	✔ que el boton de keyframe despliegue un menu con las opciones de animacion @done(2021-03-17 17:30) @project(gui__knobs)
 	☐ terminar button knob'
 	☐ terminar choice knob'
 	☐ terminar file knob'
@@ -75,6 +61,20 @@ engine__grade:
 	☐ hacer que todos los nodos de color solo iteren lo pixel una sola vez, para no gastar recursos inecesasios
 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
 Archive:
+    ✔ cambiar la barra por la propia 'tools' @done(2021-04-06 22:15) @project(gui__script_editor)
+    ✔ que funcione el font-size @done(2021-04-06 22:15) @project(gui__script_editor)
+    ✔ cambiar la barra por la propia 'tools' @done(2021-02-17 16:43) @project(gui__viewer_controls)
+    ✔ agregar separadores entre botone @done(2021-02-17 16:43) @project(gui__viewer_controls)
+    ✔ que los slide modifiquen el qlineedit @done(2021-01-14 18:01) @project(gui__viewer_image_correcction)
+    ✔ opcion de 'overlay' con la letra 'q' que funcione como palanca y deje visible y ocultar las lineas del cuadro de resolucion. @done(2021-02-17 18:54) @project(gui__viewer_gl)
+    ✔ que los qlineedit de entrada y salida, modifiquen la entrada de la linea de tiempo con el 'Enter' @done(2021-01-13 21:22) @project(gui__viewer_players)
+    ✔ que el qlineedit del frame modifiquen el frame de la linea de tiempo @done(2021-01-13 21:22) @project(gui__viewer_players)
+    ✔ crear combobox con 3 opciones: repeat, bounce y stop @done(2021-01-13 20:56) @project(gui__viewer_players)
+    ✔ que el buscador funcione @done(2021-04-23 11:50) @project(gui__node_graph)
+    ✔ crear flecha de salida, y que se pueda arrastrar para conectar al input de algun node @done(2021-04-23 17:13) @project(gui__node)
+    ✔ crear entrada de 'mask' @done(2021-04-20 17:37) @project(gui__node)
+    ✔ crear dot y que se pueda insertar presionado control @done(2021-04-20 17:37) @project(gui__node)
+    ✔ que el boton de keyframe despliegue un menu con las opciones de animacion @done(2021-03-17 17:30) @project(gui__knobs)
 	✔ que los botones tengan hover @done(2021-01-08 15:18) @project(gui__knobs)
 	✔ knob_color: que el icono de paleta cuando este activado tenga otro color @done(2021-01-08 15:03) @project(gui__knobs)
 	✔ knob_color: que el boton de '4' con color de actvado y desabilitado cuando la paleta este activa @done(2021-01-08 15:03) @project(gui__knobs)

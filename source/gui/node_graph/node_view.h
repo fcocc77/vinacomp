@@ -82,10 +82,16 @@ public:
     void set_visible_ghost_dots(bool visible);
     void find_nodes(QString key);
     inline void set_output_link_node(node *_node);
+    inline QMap<QString, node *> *get_selected_nodes() const;
 signals:
     void right_click();
     void clicked();
 };
+
+inline QMap<QString, node *> *node_view::get_selected_nodes() const
+{
+    return selected_nodes;
+}
 
 inline void node_view::set_output_link_node(node *_node)
 {
