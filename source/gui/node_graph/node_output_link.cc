@@ -87,7 +87,6 @@ void output_link::link_refresh(QPointF dst_pos)
 void output_link::refresh()
 {
     node *_this_node = static_cast<node *>(this_node);
-    link->setVisible(false);
 
     if (_this_node->output_is_connected())
     {
@@ -95,13 +94,13 @@ void output_link::refresh()
         return;
     }
 
-    set_visible(true);
-
     int link_size = 25;
     QPointF src_pos = _this_node->get_center_position();
     QPointF dst_pos = {src_pos.x(), src_pos.y() + link_size};
 
     refresh_arrow(dst_pos);
+    link_refresh(dst_pos);
+    set_visible(true);
 
     // bounding box
     int width = 40;
@@ -117,6 +116,7 @@ void output_link::set_visible(bool visible)
 {
     this->setVisible(visible);
     arrow->setVisible(visible);
+    link->setVisible(visible);
 }
 
 void output_link::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -126,7 +126,6 @@ void output_link::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
     QPointF pos = mapToScene(event->pos());
     link_refresh(pos);
-    link->setVisible(true);
 
     node *_this_node = static_cast<node *>(this_node);
     static_cast<node_view *>(_node_view)->set_output_link_node(_this_node);
@@ -134,7 +133,6 @@ void output_link::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void output_link::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    link->setVisible(false);
     refresh();
 }
 
