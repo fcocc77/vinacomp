@@ -16,6 +16,8 @@ void node_view::mousePressEvent(QMouseEvent *event)
             scene->itemAt(mapToScene(event->pos()), QTransform());
         QString item_name = item->data(0).toString();
 
+        node_backdrop *backdrop = dynamic_cast<node_backdrop *>(item);
+
         // impide la seleccion de nodos si se hizo el click en un link
         if (item_name != "link")
         {
@@ -26,7 +28,14 @@ void node_view::mousePressEvent(QMouseEvent *event)
                     if (!_node->is_selected())
                         select_all(false);
 
-                select_node(_node->get_name(), true);
+                if (backdrop)
+                {
+                    // selectiona el backdrop si se clickeo en la barra de titulos
+                    if (backdrop->is_clicked_title_area())
+                        select_node(_node->get_name(), true);
+                }
+                else
+                    select_node(_node->get_name(), true);
             }
             else
             {
@@ -38,7 +47,6 @@ void node_view::mousePressEvent(QMouseEvent *event)
         // si el click no fue en un nodo o es un backdrop, comienza el area de seleccion
         if (item)
         {
-            node_backdrop *backdrop = dynamic_cast<node_backdrop *>(item);
             if (backdrop)
                 if (!backdrop->is_clicked_title_area())
                     selecting = true;
