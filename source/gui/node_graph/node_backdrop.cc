@@ -13,10 +13,7 @@ node_backdrop::node_backdrop(node_props _props,
     , clicked_body_area(false)
     , resizing(false)
 {
-    int z_value = -100;
-
     this->setFlags(QGraphicsItem::ItemIsMovable);
-    this->setZValue(z_value);
 
     // Tips
     tips_text = new QGraphicsTextItem;
@@ -53,7 +50,6 @@ node_backdrop::node_backdrop(node_props _props,
     // esquina de reescalado
     corner = new QGraphicsLineItem;
     corner_size = {30, 30};
-    corner->setZValue(z_value);
     corner->setPen(QPen(Qt::black, 0));
     corner->setLine(
         {{(float)corner_size.width(), 0}, {0, (float)corner_size.height()}});
@@ -64,6 +60,7 @@ node_backdrop::node_backdrop(node_props _props,
     set_tips("hola a todos");
 
     calculate_size();
+    increase_z_value();
 }
 
 node_backdrop::~node_backdrop() {}
@@ -74,6 +71,24 @@ void node_backdrop::set_tips(QString _tips)
     tips_text->setPos(20, 0);
 
     node::set_tips(_tips);
+}
+
+void node_backdrop::set_z_value(int value)
+{
+    this->setZValue(value);
+    corner->setZValue(value);
+}
+
+void node_backdrop::increase_z_value()
+{
+    int value = -1000000000;
+
+    (*props.current_z_value)++;
+    this->setZValue(*props.current_z_value);
+
+    value += *props.current_z_value;
+
+    set_z_value(value);
 }
 
 bool node_backdrop::is_selected_nodes() const
@@ -243,7 +258,25 @@ void node_backdrop::mousePressEvent(QGraphicsSceneMouseEvent *event)
         node *_node = __node_view->get_node(node_name);
         if (_node)
         {
-            if (_node->get_type() != "backdrop")
+            bool drag_node = false;
+            node_backdrop *backdrop = dynamic_cast<node_backdrop *>(_node);
+            if (backdrop)
+            {
+                // solo mueve los backdrop que sean mas chicos y que esten por enzima
+                if (backdrop->get_size().width() < get_size().width() &&
+                    backdrop->get_size().height() < get_size().height())
+                {
+                    if (backdrop->zValue() > zValue())
+                    {
+                        drag_node = true;
+                        backdrop->set_z_value(backdrop->zValue() + 10);
+                    }
+                }
+            }
+            else 
+                drag_node = true;
+
+            if (drag_node)
             {
                 _node->freeze_position();
                 nodes_to_drag.push_back(_node);
@@ -251,6 +284,7 @@ void node_backdrop::mousePressEvent(QGraphicsSceneMouseEvent *event)
         }
     }
 
+    increase_z_value();
     node::mousePressEvent(event);
 }
 

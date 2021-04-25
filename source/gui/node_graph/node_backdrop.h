@@ -29,6 +29,8 @@ private:
     void resize(QSize size);
     void refresh_corner();
     void calculate_size();
+    void increase_z_value();
+    void set_z_value(int value);
 
     void set_selected(bool enable) override;
     void set_position(float x, float y) override;
