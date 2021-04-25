@@ -40,6 +40,7 @@ gui__node_graph:
     ☐ el lo grupos al crear 2 nodos del mismo tipo quedan con el mismo nombre
     ☐ al crear el nodo: que el nodo se conecte a los nodos de salida del nodo seleccionado
     ☐ snap a nodo superior e inferior
+    ☐ guardad el 'zValue' de los backdrop al proyecto
 gui__node:
 gui__knobs:
 	☐ slider: rehacer el slider con QPainter para tener mas control de todo @today

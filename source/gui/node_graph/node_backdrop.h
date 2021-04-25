@@ -19,6 +19,7 @@ private:
     int title_area_height;
     bool clicked_body_area;
     bool resizing;
+    node_backdrop *parent;
 
     QList<node *> nodes_to_drag;
     QList<QPointF> nodes_click_position;
@@ -31,6 +32,7 @@ private:
     void calculate_size();
     void increase_z_value();
     void set_z_value(int value);
+    bool is_inside_backdrop(node_backdrop *backdrop);
 
     void set_selected(bool enable) override;
     void set_position(float x, float y) override;

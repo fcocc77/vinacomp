@@ -12,6 +12,7 @@ node_backdrop::node_backdrop(node_props _props,
     , title_area_height(50)
     , clicked_body_area(false)
     , resizing(false)
+    , parent(nullptr)
 {
     this->setFlags(QGraphicsItem::ItemIsMovable);
 
@@ -101,6 +102,21 @@ bool node_backdrop::is_selected_nodes() const
     //
 
     return _selected_nodes;
+}
+
+bool node_backdrop::is_inside_backdrop(node_backdrop *backdrop)
+{
+    int x1 = x();
+    int x2 = x1 + get_size().width();
+    int y1 = y();
+    int y2 = y1 + get_size().height();
+
+    int _x1 = backdrop->x();
+    int _x2 = _x1 + backdrop->get_size().width();
+    int _y1 = backdrop->y();
+    int _y2 = _y1 + backdrop->get_size().height();
+
+    return x1 > _x1 && x2 < _x2 && y1 > _y1 && y2 < _y2;
 }
 
 void node_backdrop::calculate_size()
@@ -241,6 +257,8 @@ void node_backdrop::mousePressEvent(QGraphicsSceneMouseEvent *event)
     if (clicked_body_area)
         return;
 
+    increase_z_value();
+
     // encuentra todos los nodos que estan dentro del 'backdrop' para
     // luego arrastrarlos junto con el 'backdrop'
     QPainterPath rectangle;
@@ -252,39 +270,57 @@ void node_backdrop::mousePressEvent(QGraphicsSceneMouseEvent *event)
     nodes_to_drag.clear();
 
     QList<QGraphicsItem *> selected_items = props.scene->items(rectangle);
+
+    // crea una lista solo con los item que son nodos
+    QList<node*> nodes;
     for (QGraphicsItem *item : selected_items)
     {
         QString node_name = item->data(0).toString();
         node *_node = __node_view->get_node(node_name);
         if (_node)
-        {
-            bool drag_node = false;
-            node_backdrop *backdrop = dynamic_cast<node_backdrop *>(_node);
-            if (backdrop)
-            {
-                // solo mueve los backdrop que sean mas chicos y que esten por enzima
-                if (backdrop->get_size().width() < get_size().width() &&
-                    backdrop->get_size().height() < get_size().height())
-                {
-                    if (backdrop->zValue() > zValue())
-                    {
-                        drag_node = true;
-                        backdrop->set_z_value(backdrop->zValue() + 10);
-                    }
-                }
-            }
-            else 
-                drag_node = true;
+            nodes.push_back(_node);
+    }
+    //
 
-            if (drag_node)
-            {
-                _node->freeze_position();
-                nodes_to_drag.push_back(_node);
-            }
+    // agrega solo los nodos que no son backdrop a la lista de 'nodes_to_drag'
+    for (node *_node : nodes)
+    {
+        if (!dynamic_cast<node_backdrop *>(_node))
+        {
+            _node->freeze_position();
+            nodes_to_drag.push_back(_node);
         }
     }
+    //
 
-    increase_z_value();
+    // crea un a lista con los backdrop que estan dentro de este
+    QList<node_backdrop *> backdrops;
+    for (node *_node : nodes)
+    {
+        node_backdrop *backdrop = dynamic_cast<node_backdrop *>(_node);
+        if (backdrop)
+            if (backdrop->is_inside_backdrop(this))
+                backdrops.push_back(backdrop);
+    }
+    //
+
+    // ordena los backdrop segun profundidad
+    std::sort(backdrops.begin(), backdrops.end(),
+         [](node_backdrop *a, node_backdrop *b) {
+             return a->zValue() < b->zValue();
+         });
+    //
+
+    // agrega los backdrops ordenados a la lista de 'nodes_to_drag' e incremeta
+    // la profundidad
+    for (node_backdrop *backdrop : backdrops)
+    {
+        backdrop->increase_z_value();
+        backdrop->freeze_position();
+        nodes_to_drag.push_back(backdrop);
+    }
+    //
+
     node::mousePressEvent(event);
 }
 
