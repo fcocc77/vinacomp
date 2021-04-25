@@ -11,7 +11,7 @@ private:
     QString icon_name;
     QGraphicsTextItem *tips_text;
     QWidget *_node_view;
-    QGraphicsRectItem *corner;
+    QGraphicsLineItem *corner;
     QSize corner_size;
 
     int title_area_height;
@@ -46,7 +46,7 @@ public:
 
 inline bool node_backdrop::is_clicked_title_area() const
 {
-    return !clicked_body_area;
+    return !clicked_body_area || resizing;
 }
 
 #endif // NODE_BACKDROP_H

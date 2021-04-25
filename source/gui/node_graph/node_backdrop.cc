@@ -12,7 +12,10 @@ node_backdrop::node_backdrop(node_props _props,
     , clicked_body_area(false)
     , resizing(false)
 {
+    int z_value = -100;
+
     this->setFlags(QGraphicsItem::ItemIsMovable);
+    this->setZValue(z_value);
     set_size(500, 300);
 
     // Tips
@@ -50,11 +53,12 @@ node_backdrop::node_backdrop(node_props _props,
     //
 
     // esquina de reescalado
-    corner = new QGraphicsRectItem;
+    corner = new QGraphicsLineItem;
     corner_size = {30, 30};
-    corner->setRect(0, 0, corner_size.width(), corner_size.height());
-    corner->setBrush(QBrush(Qt::green));
+    corner->setZValue(z_value);
     corner->setPen(QPen(Qt::black, 0));
+    corner->setLine(
+        {{(float)corner_size.width(), 0}, {0, (float)corner_size.height()}});
     props.scene->addItem(corner);
     //
 
@@ -89,6 +93,12 @@ void node_backdrop::set_selected(bool enable)
 {
     if (clicked_body_area && enable)
         return;
+
+    if (enable)
+        corner->setPen(QPen(Qt::white, 2));
+    else
+        corner->setPen(QPen(Qt::black, 0));
+
     node::set_selected(enable);
 }
 

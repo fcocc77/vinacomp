@@ -33,9 +33,7 @@ node::node(node_props _props, QMap<QString, node *> *_selected_nodes,
 
     props.scene->addItem(this);
 
-    if (type == "backdrop")
-        this->setZValue(-100);
-    else
+    if (type != "backdrop")
     {
         QJsonObject node_fx = nodes_loaded->get_effect(props.type);
         // carga las entradas del efecto
