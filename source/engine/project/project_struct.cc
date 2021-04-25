@@ -72,6 +72,12 @@ QJsonObject project_struct::get_project_json() const
     _global.insert("layers", layers);
     //
 
+    // NodeView Rect
+    QRectF rect = global.node_view_rect;
+    QJsonArray _rect = {rect.x(), rect.y(), rect.width(), rect.height()};
+    _global.insert("node_view_rect", _rect);
+    //
+
     project.insert("global", _global);
     project.insert("nodes", _nodes);
 
@@ -119,6 +125,13 @@ void project_struct::load(QString project_path)
 
         global.layers.push_back(layer);
     }
+    //
+    
+
+    // NodeView Rect
+    QJsonArray _rect = _global.value("node_view_rect").toArray();
+    global.node_view_rect.setRect(_rect[0].toDouble(), _rect[1].toDouble(),
+                                  _rect[2].toDouble(), _rect[3].toDouble());
     //
 }
 

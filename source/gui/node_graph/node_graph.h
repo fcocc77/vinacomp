@@ -43,8 +43,8 @@ public:
 
     void update_node_position_from_project();
     void restore_tree();
-    QJsonObject get_scene_data() const;
-    void restore_scene_data(QJsonObject scene_data);
+    void save_scene_data();
+    void restore_scene_data();
     inline node_view *get_node_view() const;
     inline maker *get_maker() const;
     inline bool is_group() const;

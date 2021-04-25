@@ -25,9 +25,9 @@ public:
     ~graphics_view();
 
     void restore_rect(QRectF rect);
+    inline QRectF get_last_rect() const;
 
 protected:
-    inline QRectF get_last_rect() const;
     inline void freeze_current_rect();
 
     // Events

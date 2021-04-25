@@ -112,30 +112,13 @@ void node_graph::restore_tree()
     }
 }
 
-QJsonObject node_graph::get_scene_data() const
+void node_graph::save_scene_data()
 {
-    QJsonObject matrix = {
-        {"m11", _node_view->transform().m11()}, {"m12", _node_view->transform().m12()},
-        {"m13", _node_view->transform().m13()}, {"m21", _node_view->transform().m21()},
-        {"m22", _node_view->transform().m22()}, {"m23", _node_view->transform().m23()},
-        {"m31", _node_view->transform().m31()}, {"m32", _node_view->transform().m32()},
-        {"m33", _node_view->transform().m33()}};
-
-    QJsonObject scene_data = {};
-
-    scene_data["matrix"] = matrix;
-
-    return scene_data;
+    // guarda el rectangulo del viewport
+    project->global.node_view_rect = _node_view->get_last_rect();
 }
 
-void node_graph::restore_scene_data(QJsonObject scene_data)
+void node_graph::restore_scene_data()
 {
-    QJsonObject matrix = scene_data["matrix"].toObject();
-
-    QTransform _transform(
-        matrix["m11"].toDouble(), matrix["m12"].toDouble(), matrix["m13"].toDouble(),
-        matrix["m21"].toDouble(), matrix["m22"].toDouble(), matrix["m23"].toDouble(),
-        matrix["m31"].toDouble(), matrix["m32"].toDouble(), matrix["m33"].toDouble());
-
-    _node_view->setTransform(_transform);
+    _node_view->restore_rect(project->global.node_view_rect);
 }

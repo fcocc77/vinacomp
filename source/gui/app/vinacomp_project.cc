@@ -84,7 +84,7 @@ void vinacomp::open_project(QString project_path)
 
     // actualiza componentes con el proyecto cargado
     _node_graph->restore_tree();
-    // _node_graph->restore_scene_data(project_old->value("scene").toObject());
+    _node_graph->restore_scene_data();
     // _script_editor->open_script_from_project();
 
     this->setWindowTitle(os::basename(project_path) + " - VinaComp");
@@ -119,9 +119,8 @@ void vinacomp::save_as()
 
 void vinacomp::save_project(QString project_path)
 {
-    // project_old->insert("scene", _node_graph->get_scene_data());
-
     _node_graph->update_node_position_from_project();
+    _node_graph->save_scene_data();
 
     recorder_recent_projects(project_path);
     project->save(project_path);

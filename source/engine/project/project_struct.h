@@ -6,6 +6,7 @@
 #include <QList>
 #include <QMap>
 #include <QPointF>
+#include <QRectF>
 
 struct node_struct
 {
@@ -28,6 +29,7 @@ struct layer_struct {
 struct global_struct
 {
     QList<layer_struct> layers;
+    QRectF node_view_rect;
 };
 
 class project_struct
