@@ -151,24 +151,28 @@ void node_view::fit_view_to_nodes()
             return QPointF{0, 0};
 
         // promedia la position de muchos nodos
-        QPointF first_node_pos = nodes->first()->get_center_position();
+        QPointF first_node_pos = nodes->first()->pos();
+        QSize first_node_size = nodes->first()->get_size();
 
-        float top = first_node_pos.y();
+        float top = first_node_pos.y() + first_node_size.height();
         float bottom = first_node_pos.y();
         float left = first_node_pos.x();
-        float right = first_node_pos.x();
+        float right = first_node_pos.x() - first_node_size.width();
 
         for (node *_node : *nodes)
         {
-            QPointF position = _node->get_center_position();
+            QPointF position = _node->pos();
+            QSize size = _node->get_size();
+            int x2 = position.x() + size.width();
+            int y2 = position.y() + size.height();
 
             // calcula el ancho y alto maximo de todos los nodos
-            if (position.y() > top)
-                top = position.y();
+            if (y2 > top)
+                top = y2;
             if (position.y() < bottom)
                 bottom = position.y();
-            if (position.x() > right)
-                right = position.x();
+            if (x2 > right)
+                right = x2;
             if (position.x() < left)
                 left = position.x();
             //
