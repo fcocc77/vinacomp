@@ -14,6 +14,8 @@ private:
     QGraphicsLineItem *corner;
     QSize corner_size;
 
+    QMap<QString, node *> *selected_nodes;
+
     int title_area_height;
     bool clicked_body_area;
     bool resizing;
@@ -26,6 +28,7 @@ private:
     QColor get_random_color() const;
     void resize(QSize size);
     void refresh_corner();
+    void calculate_size();
 
     void set_selected(bool enable) override;
     void set_position(float x, float y) override;
@@ -41,6 +44,7 @@ public:
 
     void set_tips(QString _tips);
     bool is_under_selector(QRectF selector);
+    bool is_selected_nodes() const;
     inline bool is_clicked_title_area() const;
 };
 

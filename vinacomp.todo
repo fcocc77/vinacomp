@@ -39,6 +39,7 @@ gui__node_graph:
     ☐ la creacion de dot con control se queda pegado, al dejar presionado control cuando creamos un nodo con el 'node_finder'
     ☐ el lo grupos al crear 2 nodos del mismo tipo quedan con el mismo nombre
     ☐ al crear el nodo: que el nodo se conecte a los nodos de salida del nodo seleccionado
+    ☐ snap a nodo superior e inferior
 gui__node:
 gui__knobs:
 	☐ slider: rehacer el slider con QPainter para tener mas control de todo @today

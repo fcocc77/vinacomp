@@ -141,6 +141,42 @@ node *node_view::get_main_viewer() const
     return nullptr;
 }
 
+QRectF node_view::bbox_nodes(QMap<QString, node *> *_nodes) const
+{
+    if (_nodes->empty())
+        return {0, 0, 0, 0};
+
+    // promedia la position de muchos nodos
+    QPointF first_node_pos = _nodes->first()->pos();
+    QSize first_node_size = _nodes->first()->get_size();
+
+    float top = first_node_pos.y() + first_node_size.height();
+    float bottom = first_node_pos.y();
+    float left = first_node_pos.x();
+    float right = first_node_pos.x() - first_node_size.width();
+
+    for (node *_node : *_nodes)
+    {
+        QPointF position = _node->pos();
+        QSize size = _node->get_size();
+        int x2 = position.x() + size.width();
+        int y2 = position.y() + size.height();
+
+        // calcula el ancho y alto maximo de todos los nodos
+        if (y2 > top)
+            top = y2;
+        if (position.y() < bottom)
+            bottom = position.y();
+        if (x2 > right)
+            right = x2;
+        if (position.x() < left)
+            left = position.x();
+        //
+    }
+
+    return {left, bottom, right - left, top - bottom};
+}
+
 void node_view::fit_view_to_nodes()
 {
     float nodes_width = 0;
@@ -150,33 +186,11 @@ void node_view::fit_view_to_nodes()
         if (nodes->empty())
             return QPointF{0, 0};
 
-        // promedia la position de muchos nodos
-        QPointF first_node_pos = nodes->first()->pos();
-        QSize first_node_size = nodes->first()->get_size();
-
-        float top = first_node_pos.y() + first_node_size.height();
-        float bottom = first_node_pos.y();
-        float left = first_node_pos.x();
-        float right = first_node_pos.x() - first_node_size.width();
-
-        for (node *_node : *nodes)
-        {
-            QPointF position = _node->pos();
-            QSize size = _node->get_size();
-            int x2 = position.x() + size.width();
-            int y2 = position.y() + size.height();
-
-            // calcula el ancho y alto maximo de todos los nodos
-            if (y2 > top)
-                top = y2;
-            if (position.y() < bottom)
-                bottom = position.y();
-            if (x2 > right)
-                right = x2;
-            if (position.x() < left)
-                left = position.x();
-            //
-        }
+        QRectF bbox = bbox_nodes(nodes);
+        float bottom = bbox.y();
+        float top = bbox.y() + bbox.height();
+        float left = bbox.x();
+        float right = bbox.x() + bbox.width();
 
         nodes_width = abs(left - right);
         nodes_height = abs(bottom - top);
@@ -332,10 +346,14 @@ node *node_view::create_node(QString name, QColor color, QString type,
     props.project = project;
 
     node *_node;
+    node_backdrop *backdrop = nullptr;
     if (type == "dot")
         _node = new node_dot(props, selected_nodes, _node_graph);
     else if (type == "backdrop")
-        _node = new node_backdrop(props, selected_nodes, this);
+    {
+        backdrop = new node_backdrop(props, selected_nodes, this);
+        _node = backdrop;
+    }
     else if (type == "group")
         _node = new node_group(props, selected_nodes, _node_graph);
     else
@@ -345,7 +363,16 @@ node *node_view::create_node(QString name, QColor color, QString type,
     QPointF new_position = {position.x() - (size.width() / 2),
                             position.y() - (size.height() / 2)};
 
-    _node->set_position(new_position.x(), new_position.y());
+    if (backdrop)
+    {
+        if (!backdrop->is_selected_nodes())
+            _node->set_position(new_position.x(), new_position.y());
+    }
+    else
+    {
+        _node->set_position(new_position.x(), new_position.y());
+    }
+
     nodes->insert(name, _node);
 
     // inserta un item de nodo en el proyecto
@@ -354,7 +381,8 @@ node *node_view::create_node(QString name, QColor color, QString type,
 
     if (selected_node)
     {
-        _node->get_link(1)->connect_node(selected_node);
+        if (!backdrop)
+            _node->get_link(1)->connect_node(selected_node);
         select_node(selected_node->get_name(), false);
     }
 

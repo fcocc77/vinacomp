@@ -8,6 +8,7 @@ node_backdrop::node_backdrop(node_props _props,
     : node(_props, _selected_nodes)
     , props(_props)
     , _node_view(__node_view)
+    , selected_nodes(_selected_nodes)
     , title_area_height(50)
     , clicked_body_area(false)
     , resizing(false)
@@ -16,7 +17,6 @@ node_backdrop::node_backdrop(node_props _props,
 
     this->setFlags(QGraphicsItem::ItemIsMovable);
     this->setZValue(z_value);
-    set_size(500, 300);
 
     // Tips
     tips_text = new QGraphicsTextItem;
@@ -28,8 +28,6 @@ node_backdrop::node_backdrop(node_props _props,
     //
 
     // Forma de Backdrop
-    change_size_rectangle(minimum_width, minimum_height);
-
     QPen pen(Qt::black);
 
     QColor color = get_random_color();
@@ -64,6 +62,8 @@ node_backdrop::node_backdrop(node_props _props,
 
     node::set_name(_props.name);
     set_tips("hola a todos");
+
+    calculate_size();
 }
 
 node_backdrop::~node_backdrop() {}
@@ -74,6 +74,42 @@ void node_backdrop::set_tips(QString _tips)
     tips_text->setPos(20, 0);
 
     node::set_tips(_tips);
+}
+
+bool node_backdrop::is_selected_nodes() const
+{
+    // encuentra algun nodo seleccionado que no se un backdrop
+    bool _selected_nodes = false;
+    for (node *_node : *selected_nodes)
+        if (_node->get_type() != "backdrop")
+            _selected_nodes = true;
+    //
+
+    return _selected_nodes;
+}
+
+void node_backdrop::calculate_size()
+{
+    // calcula el tamaño del backdrop si hay nodos seleccionados, lo encaja a
+    // los nodos
+
+    int width = 500;
+    int height = 300;
+
+    if (is_selected_nodes())
+    {
+        node_view *__node_view = static_cast<node_view *>(_node_view);
+        QRectF bbox = __node_view->bbox_nodes(selected_nodes);
+        int padding = 70;
+
+        width = bbox.width() + padding * 2;
+        height = bbox.height() + padding * 2;
+        set_position(bbox.x() - padding, bbox.y() - padding);
+    }
+
+    set_size(width, height);
+    change_size_rectangle(minimum_width, minimum_height);
+    refresh_corner();
 }
 
 void node_backdrop::change_size_rectangle(int _width, int _height)
