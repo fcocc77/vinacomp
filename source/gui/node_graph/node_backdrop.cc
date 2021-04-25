@@ -245,11 +245,15 @@ void node_backdrop::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     QPointF add_position = new_position_backdrop - node::get_freeze_position();
     //
 
+    node::mouseMoveEvent(event);
+
+    // si el control esta presionado no arrastra los nodos
+    if (qt::control())
+        return;
+
     for (node *_node : nodes_to_drag)
     {
         QPointF pos = _node->get_freeze_position() + add_position;
         _node->set_position(pos.x(), pos.y());
     }
-
-    node::mouseMoveEvent(event);
 }
