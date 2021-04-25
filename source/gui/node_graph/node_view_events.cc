@@ -109,3 +109,9 @@ void node_view::contextMenuEvent(QContextMenuEvent *event)
 {
     right_click();
 }
+
+void node_view::resizeEvent(QResizeEvent *event)
+{
+    restore_rect(get_last_rect());
+}
+

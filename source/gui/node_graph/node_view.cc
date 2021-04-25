@@ -243,6 +243,7 @@ void node_view::fit_view_to_nodes()
     float append_y = float(_height - height()) / 2.0;
 
     this->fitInView(pos.x() - append_x, pos.y() - append_y, _width, _height);
+    freeze_current_rect();
 }
 
 void node_view::align_selected_nodes()

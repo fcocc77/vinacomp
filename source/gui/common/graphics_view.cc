@@ -11,6 +11,21 @@ graphics_view::graphics_view()
 
 graphics_view::~graphics_view() {}
 
+QRectF graphics_view::get_view_rect() const
+{
+    // obtiene el rectangulo del viewport actual, ajustando un poco para que sea
+    // mas exacto, como el aspecto entre el alto y ancho
+    QRectF rect = mapToScene(viewport()->geometry()).boundingRect();
+    float aspect = (float)height() / float(width());
+
+    int x = rect.x() + 1;
+    int y = rect.y() + 1;
+    int width = rect.width();
+    int height = width * aspect;
+
+    return QRectF(x, y, width, height);
+}
+
 void graphics_view::mousePressEvent(QMouseEvent *event)
 {
     click_position = event->pos();
@@ -50,6 +65,7 @@ void graphics_view::mouseReleaseEvent(QMouseEvent *event)
 {
     panning = false;
     zooming = false;
+    freeze_current_rect();
 
     QGraphicsView::mouseReleaseEvent(event);
 }
@@ -108,6 +124,7 @@ void graphics_view::zoom(int delta, QPoint position)
 void graphics_view::wheelEvent(QWheelEvent *event)
 {
     zoom(event->delta(), event->pos());
+    freeze_current_rect();
 }
 
 void graphics_view::keyReleaseEvent(QKeyEvent *event)
@@ -120,4 +137,22 @@ void graphics_view::focusOutEvent(QFocusEvent *event)
 {
     panning = false;
     zooming = false;
+}
+
+void graphics_view::restore_rect(QRectF rect)
+{
+    // ajusta el viewport al rect, respetando el actual aspecto
+    float aspect = (float)height() / float(width());
+
+    float width = rect.width();
+    float height = width * aspect;
+
+    float height_diff = (rect.height() - height) / 2;
+
+    float x = rect.x();
+    float y = rect.y() + height_diff;
+
+    rect = QRectF(x, y, width, height);
+
+    fitInView(rect);
 }
