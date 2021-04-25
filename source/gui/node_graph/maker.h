@@ -28,7 +28,7 @@ public:
           QWidget *_node_graph);
     ~maker();
 
-    QString create_fx(QString id);
+    QString create_fx(QString id, bool basic_creation = false);
     inline node_finder *get_finder() const;
 };
 

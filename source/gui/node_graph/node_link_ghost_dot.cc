@@ -25,7 +25,7 @@ void ghost_dot::mousePressEvent(QGraphicsSceneMouseEvent *event)
     node_link *_link = static_cast<node_link *>(link);
 
     __node_view->set_visible_ghost_dots(false);
-    QString dot_name = _maker->create_fx("dot");
+    QString dot_name = _maker->create_fx("dot", true);
 
     node *dot = __node_view->get_node(dot_name);
     _link->insert_node_in_between(dot);

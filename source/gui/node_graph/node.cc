@@ -312,9 +312,6 @@ void node::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void node::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     insert_in_between();
-
-    // desabilita el 'grabMouse' que se inicio en 'node_link_ghost_dot'
-    this->ungrabMouse();
 }
 
 void node::mouseMoveEvent(QGraphicsSceneMouseEvent *event)

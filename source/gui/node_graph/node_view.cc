@@ -311,13 +311,17 @@ void node_view::change_node_name()
 }
 
 node *node_view::create_node(QString name, QColor color, QString type,
-                             QPointF position, QString tips)
+                             QPointF position, QString tips,
+                             bool basic_creation)
 {
     node *selected_node = get_selected_node();
 
+    // la 'basic_creation' : crea position bajo el cursor, no conecta el nodo y no
+    // lo selecciona
+
     if (position.isNull())
     {
-        if (selected_node)
+        if (selected_node && !basic_creation)
         {
             QPointF center_position = selected_node->get_center_position();
             position = {center_position.x(), center_position.y() + 90};
@@ -380,14 +384,15 @@ node *node_view::create_node(QString name, QColor color, QString type,
     project->insert_node(name, color, type, new_position);
     //
 
-    if (selected_node)
+    if (selected_node && !basic_creation)
     {
         if (!backdrop)
             _node->get_link(1)->connect_node(selected_node);
         select_node(selected_node->get_name(), false);
     }
 
-    select_node(name, true);
+    if (!basic_creation)
+        select_node(name, true);
 
     return _node;
 }

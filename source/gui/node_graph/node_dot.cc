@@ -55,3 +55,11 @@ void node_dot::change_size_rectangle(int _width, int _height)
     rectangle.addRoundedRect(QRectF(0, 0, _width, _height), radius, radius);
     this->setPath(rectangle);
 }
+
+void node_dot::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    // desabilita el 'grabMouse' que se inicio en 'node_link_ghost_dot'
+    this->ungrabMouse();
+
+    node::mouseReleaseEvent(event);
+}

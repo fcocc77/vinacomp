@@ -20,12 +20,13 @@ maker::maker(QWidget *__vinacomp, properties *__properties,
 {
 
     finder = new node_finder(_node_view, nodes_loaded);
-    connect(finder, &node_finder::created, this, &maker::create_fx);
+    connect(finder, &node_finder::created, this,
+            [this](QString id) { create_fx(id); });
 }
 
 maker::~maker() {}
 
-QString maker::create_fx(QString id)
+QString maker::create_fx(QString id, bool basic_creation)
 {
     QJsonObject effect = nodes_loaded->get_effect(id);
     if (effect.empty())
@@ -55,7 +56,8 @@ QString maker::create_fx(QString id)
     //
 
     // Creación del nodo, con un nombre que no se ha utilizado.
-    node *_node = _node_view->create_node(name, color, id);
+    node *_node =
+        _node_view->create_node(name, color, id, QPointF{}, "", basic_creation);
     _node->make_panel();
     //
     //
