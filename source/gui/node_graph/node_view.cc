@@ -363,17 +363,18 @@ node *node_view::create_node(node_struct node_data, bool basic_creation,
     {
         if (selected_node && !basic_creation)
         {
-            position = {selected_node->x(), selected_node->y() + 90};
+            QPointF center = selected_node->get_center_position();
+            position = {center.x(), center.y() + 90};
         }
         else
         {
             // crea el nodo en la posicion del puntero del mouse
             QPoint origin = this->mapFromGlobal(QCursor::pos());
             position = this->mapToScene(origin);
-            auto size = _node->get_size();
-            position = {position.x() - (size.width() / 2),
-                        position.y() - (size.height() / 2)};
         }
+        auto size = _node->get_size();
+        position = {position.x() - (size.width() / 2),
+                    position.y() - (size.height() / 2)};
     }
     //
     //
