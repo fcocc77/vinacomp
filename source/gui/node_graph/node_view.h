@@ -39,6 +39,7 @@ private:
     bool selecting = false;
     QPoint click_position;
     QGraphicsRectItem *selection_box;
+    bool insertion_between_nodes;
 
     int *current_z_value;
 
@@ -87,10 +88,22 @@ public:
     void find_nodes(QString key);
     inline void set_output_link_node(node *_node);
     inline QMap<QString, node *> *get_selected_nodes() const;
+    inline void allow_insertion_between_nodes(bool allow);
+    inline bool has_insertion_between_nodes() const;
 signals:
     void right_click();
     void clicked();
 };
+
+inline bool node_view::has_insertion_between_nodes() const
+{
+    return insertion_between_nodes;
+}
+
+inline void node_view::allow_insertion_between_nodes(bool allow)
+{
+    insertion_between_nodes = allow;
+}
 
 inline QMap<QString, node *> *node_view::get_selected_nodes() const
 {

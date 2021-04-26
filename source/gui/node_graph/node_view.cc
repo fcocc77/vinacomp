@@ -20,6 +20,7 @@ node_view::node_view(QWidget *__vinacomp, properties *__properties,
     , nodes_loaded(_nodes_loaded)
     , _node_graph(__node_graph)
     , output_link_node(nullptr)
+    , insertion_between_nodes(true)
 {
 
     scene = new QGraphicsScene();
