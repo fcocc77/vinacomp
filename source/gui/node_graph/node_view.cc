@@ -320,20 +320,6 @@ node *node_view::create_node(QString name, QColor color, QString type,
     // la 'basic_creation' : crea position bajo el cursor, no conecta el nodo y no
     // lo selecciona
 
-    if (!from_project)
-    {
-        if (selected_node && !basic_creation)
-        {
-            QPointF center_position = selected_node->get_center_position();
-            position = {center_position.x(), center_position.y() + 90};
-        }
-        else
-        {
-            // crea el nodo en la posicion del puntero del mouse
-            QPoint origin = this->mapFromGlobal(QCursor::pos());
-            position = this->mapToScene(origin);
-        }
-    }
 
     project_struct *project = static_cast<vinacomp *>(_vinacomp)->get_project();
 
@@ -352,6 +338,7 @@ node *node_view::create_node(QString name, QColor color, QString type,
     props.project = project;
     props.from_project = from_project;
 
+    // creacion de nodo segun clase
     node *_node;
     node_backdrop *backdrop = nullptr;
     if (type == "dot")
@@ -365,25 +352,43 @@ node *node_view::create_node(QString name, QColor color, QString type,
         _node = new node_group(props, selected_nodes, _node_graph);
     else
         _node = new node_rect(props, selected_nodes, _node_graph);
+    //
+    //
 
-    auto size = _node->get_size();
-    QPointF new_position = {position.x() - (size.width() / 2),
-                            position.y() - (size.height() / 2)};
+    // si al posicion no viene del un proyecto
+    if (!from_project)
+    {
+        if (selected_node && !basic_creation)
+        {
+            position = {selected_node->x(), selected_node->y() + 90};
+        }
+        else
+        {
+            // crea el nodo en la posicion del puntero del mouse
+            QPoint origin = this->mapFromGlobal(QCursor::pos());
+            position = this->mapToScene(origin);
+            auto size = _node->get_size();
+            position = {position.x() - (size.width() / 2),
+                        position.y() - (size.height() / 2)};
+        }
+    }
+    //
+    //
 
     if (backdrop)
     {
         if (!backdrop->is_selected_nodes())
-            _node->set_position(new_position.x(), new_position.y());
+            _node->set_position(position.x(), position.y());
     }
     else
     {
-        _node->set_position(new_position.x(), new_position.y());
+        _node->set_position(position.x(), position.y());
     }
 
     nodes->insert(name, _node);
 
     // inserta un item de nodo en el proyecto
-    project->insert_node(name, color, type, new_position);
+    project->insert_node(name, color, type, position);
     //
 
     if (selected_node && !basic_creation)
