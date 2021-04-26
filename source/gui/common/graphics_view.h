@@ -25,11 +25,10 @@ public:
     ~graphics_view();
 
     void restore_rect(QRectF rect);
+    inline void freeze_current_rect();
     inline QRectF get_last_rect() const;
 
 protected:
-    inline void freeze_current_rect();
-
     // Events
     void mousePressEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;

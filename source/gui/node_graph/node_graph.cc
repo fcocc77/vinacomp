@@ -128,4 +128,5 @@ void node_graph::save_scene_data()
 void node_graph::restore_scene_data()
 {
     _node_view->restore_rect(project->global.node_view_rect);
+    _node_view->freeze_current_rect();
 }
