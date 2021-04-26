@@ -399,7 +399,12 @@ node *node_view::create_node(node_struct node_data, bool basic_creation,
     if (selected_node && !basic_creation)
     {
         if (!backdrop)
+        {
             _node->get_link(1)->connect_node(selected_node);
+            // conecta los nodos conectado al nodo seleccionado, al nuevo nodo
+            for (node_link *link : selected_node->get_output_links())
+                link->connect_node(_node);
+        }
         select_node(selected_node->get_name(), false);
     }
 

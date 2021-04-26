@@ -298,6 +298,24 @@ node_link *node::get_link(int index) const
     return links->value(index);
 }
 
+QList<node_link *> node::get_output_links() const
+{
+    // obtiene todos los links conectados a este nodo
+    QList<node_link *> links;
+
+    for (node *out_node : *nodes_connected_to_the_output)
+    {
+        for (node_link *link : *out_node->get_links())
+        {
+            QGraphicsItem *connected_node = link->get_connected_node();
+            if (connected_node == this)
+                links.push_back(link);
+        }
+    }
+
+    return links;
+}
+
 void node::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
     make_panel();

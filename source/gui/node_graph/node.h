@@ -123,6 +123,7 @@ public:
     inline QList<bool> get_connected_indexs();
     inline QMap<QString, node *> *get_input_nodes() const;
     inline bool output_is_connected() const;
+    QList<node_link*> get_output_links() const;
 };
 
 inline void node::set_color(QColor _color)
