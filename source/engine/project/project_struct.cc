@@ -8,14 +8,16 @@ project_struct::project_struct()
 
 project_struct::~project_struct() {}
 
-void project_struct::insert_node(QString _name, QColor _color, QString _type, QPointF _pos,
-                                 QJsonObject _params, QJsonObject _inputs)
+void project_struct::insert_node(QString _name, QString _type, QColor _color,
+                                 QPointF _pos, QJsonObject _params,
+                                 QJsonObject _inputs, QSize size, int z_value)
 {
     if (nodes.contains(_name))
         return;
 
     QJsonObject *params = new QJsonObject(_params);
-    node_struct node({_name, _color, _type, _pos, params, _inputs});
+    node_struct node(
+        {_name, _color, _type, "", _pos, params, _inputs, size, z_value});
     nodes.insert(_name, node);
 }
 
@@ -56,6 +58,11 @@ QJsonObject project_struct::get_project_json() const
         _node["params"] = *node.params;
         _node["inputs"] = node.inputs;
         _node["pos"] = QJsonArray({node.pos.x(), node.pos.y()});
+        if (node.type == "backdrop")
+        {
+            _node["size"] = QJsonArray({node.size.width(), node.size.height()});
+            _node["z_value"] = node.z_value;
+        }
 
         _nodes.insert(name, _node);
     }
@@ -104,7 +111,13 @@ void project_struct::load(QString project_path)
         QJsonObject params = node.value("params").toObject();
         QJsonObject inputs = node.value("inputs").toObject();
 
-        insert_node(name, _color, type, _position, params, inputs);
+        QJsonArray size = node.value("size").toArray();
+        QSize _size = {size[0].toInt(), size[1].toInt()};
+
+        int z_value = node.value("z_value").toInt();
+
+        insert_node(name, type, _color, _position, params, inputs, _size,
+                    z_value);
     }
     //
 

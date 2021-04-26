@@ -71,9 +71,8 @@ public:
               nodes_load *nodes_loaded, QWidget *_node_graph);
     ~node_view();
 
-    node *create_node(QString name, QColor color, QString type,
-                      QPointF position = QPointF(), QString tips = "",
-                      bool basic_creation = false, bool from_project = false);
+    node *create_node(node_struct node_data, bool basic_creation = false,
+                      bool from_project = false);
 
     node *get_node_from_position(QPoint position);
     QRectF bbox_nodes(QMap<QString, node *> *_nodes) const;

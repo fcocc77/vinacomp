@@ -32,6 +32,8 @@ struct node_props
     QString type;
     QString name;
     QString tips;
+    QSize size;
+    int z_value;
     properties *_properties;
     QWidget *vinacomp;
     nodes_load *nodes_loaded;

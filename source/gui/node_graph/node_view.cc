@@ -311,15 +311,13 @@ void node_view::change_node_name()
     node_rename_edit->hide();
 }
 
-node *node_view::create_node(QString name, QColor color, QString type,
-                             QPointF position, QString tips,
-                             bool basic_creation, bool from_project)
+node *node_view::create_node(node_struct node_data, bool basic_creation,
+                             bool from_project)
 {
     node *selected_node = get_selected_node();
 
     // la 'basic_creation' : crea position bajo el cursor, no conecta el nodo y no
     // lo selecciona
-
 
     project_struct *project = static_cast<vinacomp *>(_vinacomp)->get_project();
 
@@ -328,15 +326,20 @@ node *node_view::create_node(QString name, QColor color, QString type,
     props.scene = scene;
     props.current_z_value = current_z_value;
     props.link_connecting = link_connecting;
-    props.color = color;
-    props.type = type;
-    props.name = name;
-    props.tips = tips;
+    props.color = node_data.color;
+    props.type = node_data.type;
+    props.name = node_data.name;
+    props.tips = node_data.tips;
+    props.z_value = node_data.z_value;
+    props.size = node_data.size;
     props._properties = _properties;
     props.vinacomp = _vinacomp;
     props.nodes_loaded = nodes_loaded;
     props.project = project;
     props.from_project = from_project;
+
+    QPointF position = node_data.pos;
+    QString type = node_data.type;
 
     // creacion de nodo segun clase
     node *_node;
@@ -385,10 +388,11 @@ node *node_view::create_node(QString name, QColor color, QString type,
         _node->set_position(position.x(), position.y());
     }
 
-    nodes->insert(name, _node);
+    nodes->insert(node_data.name, _node);
 
-    // inserta un item de nodo en el proyecto
-    project->insert_node(name, color, type, position);
+    // inserta un item de nodo en el proyecto, con los atributos necesarios para
+    // renderizar el resto de atributos se generan al guardar el proyecto
+    project->insert_node(node_data.name, node_data.type);
     //
 
     if (selected_node && !basic_creation)
@@ -399,7 +403,7 @@ node *node_view::create_node(QString name, QColor color, QString type,
     }
 
     if (!basic_creation)
-        select_node(name, true);
+        select_node(node_data.name, true);
 
     return _node;
 }

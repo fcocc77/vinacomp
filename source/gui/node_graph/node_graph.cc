@@ -53,6 +53,8 @@ void node_graph::save_nodes_attributes_to_project()
 
         __node.pos = {_node->x(), _node->y()};
         __node.color = _node->get_color();
+        __node.size = _node->get_size();
+        __node.z_value = _node->zValue();
     }
 }
 
@@ -94,8 +96,7 @@ void node_graph::restore_tree()
 
     // crea los nodos
     for (node_struct node : nodes)
-        _node_view->create_node(node.name, node.color, node.type, node.pos, "",
-                                true, true);
+        _node_view->create_node(node, true, true);
     //
 
     // conecta todos los nodos

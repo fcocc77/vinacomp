@@ -7,6 +7,7 @@
 #include "../node_graph/node.h"
 #include <trim_panel.h>
 #include <viewer.h>
+#include <project_struct.h>
 
 maker::maker(QWidget *__vinacomp, properties *__properties,
              nodes_load *_nodes_loaded, node_view *__node_view,
@@ -56,8 +57,12 @@ QString maker::create_fx(QString id, bool basic_creation)
     //
 
     // Creación del nodo, con un nombre que no se ha utilizado.
-    node *_node =
-        _node_view->create_node(name, color, id, QPointF{}, "", basic_creation);
+    node_struct node_data;
+    node_data.name = name;
+    node_data.color = color;
+    node_data.type = id;
+
+    node *_node = _node_view->create_node(node_data, basic_creation);
     _node->make_panel();
     //
     //

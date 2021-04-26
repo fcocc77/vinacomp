@@ -64,8 +64,16 @@ node_backdrop::node_backdrop(node_props _props,
     node::set_name(_props.name);
     set_tips("hola a todos");
 
-    calculate_size();
-    increase_z_value();
+    if (props.from_project)
+    {
+        set_size(props.size.width(), props.size.height());
+        set_z_value(props.z_value);
+    }
+    else
+    {
+        calculate_size();
+        increase_z_value();
+    }
 }
 
 node_backdrop::~node_backdrop() {}
@@ -123,6 +131,13 @@ bool node_backdrop::is_inside_backdrop(node_backdrop *backdrop)
     return x1 > _x1 && x2 < _x2 && y1 > _y1 && y2 < _y2;
 }
 
+void node_backdrop::set_size(int width, int height)
+{
+    node::set_size(width, height);
+    change_size_rectangle(minimum_width, minimum_height);
+    refresh_corner();
+}
+
 void node_backdrop::calculate_size()
 {
     // calcula el tamaño del backdrop si hay nodos seleccionados, lo encaja a
@@ -143,8 +158,6 @@ void node_backdrop::calculate_size()
     }
 
     set_size(width, height);
-    change_size_rectangle(minimum_width, minimum_height);
-    refresh_corner();
 }
 
 void node_backdrop::change_size_rectangle(int _width, int _height)

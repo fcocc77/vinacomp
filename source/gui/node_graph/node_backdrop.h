@@ -33,6 +33,7 @@ private:
     void increase_z_value();
     void set_z_value(int value);
     bool is_inside_backdrop(node_backdrop *backdrop);
+    void set_size(int width, int height);
 
     void set_selected(bool enable) override;
     void set_position(float x, float y) override;

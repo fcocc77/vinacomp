@@ -13,9 +13,14 @@ struct node_struct
     QString name;
     QColor color;
     QString type;
+    QString tips;
     QPointF pos;
     QJsonObject *params;
     QJsonObject inputs;
+
+    // estos 2 atributos son solo para el backdrop
+    QSize size;
+    int z_value;
 };
 
 struct layer_struct {
@@ -42,8 +47,11 @@ public:
     global_struct global;
     int frame;
 
-    void insert_node(QString _name, QColor _color, QString _type, QPointF _pos,
-                     QJsonObject _params = {}, QJsonObject _inputs = {});
+    void insert_node(QString _name, QString _type, QColor _color = QColor(),
+                     QPointF _pos = {0, 0}, QJsonObject _params = {},
+                     QJsonObject _inputs = {}, QSize size = {0, 0},
+                     int z_value = 0);
+
     void delete_node(QString name);
 
     void insert_input(QString src, QString dst, int index);
