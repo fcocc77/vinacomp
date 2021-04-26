@@ -15,6 +15,7 @@ node_backdrop::node_backdrop(node_props _props,
     , parent(nullptr)
 {
     this->setFlags(QGraphicsItem::ItemIsMovable);
+    set_minimum_size(150, 150);
 
     // Tips
     tips_text = new QGraphicsTextItem;
@@ -133,8 +134,18 @@ bool node_backdrop::is_inside_backdrop(node_backdrop *backdrop)
 
 void node_backdrop::set_size(int width, int height)
 {
+    if (width < minimum_width)
+        width = minimum_width;
+    if (height < minimum_height)
+        height = minimum_height;
+
     node::set_size(width, height);
-    change_size_rectangle(minimum_width, minimum_height);
+
+    int radius = 3;
+    QPainterPath rectangle;
+    rectangle.addRoundedRect(QRectF(0, 0, width, height), radius, radius);
+    this->setPath(rectangle);
+
     refresh_corner();
 }
 
@@ -158,19 +169,6 @@ void node_backdrop::calculate_size()
     }
 
     set_size(width, height);
-}
-
-void node_backdrop::change_size_rectangle(int _width, int _height)
-{
-    if (_width < minimum_width)
-        _width = minimum_width;
-
-    current_width = _width;
-
-    int radius = 3;
-    QPainterPath rectangle;
-    rectangle.addRoundedRect(QRectF(0, 0, _width, _height), radius, radius);
-    this->setPath(rectangle);
 }
 
 void node_backdrop::set_selected(bool enable)
@@ -238,19 +236,7 @@ void node_backdrop::resize(QSize size)
     if (!resizing)
         return;
 
-    int min = 150;
-
-    float width = size.width();
-    float height = size.height();
-
-    if (width < min)
-        width = min;
-    if (height < min)
-        height = min;
-
-    set_size(width, height);
-    change_size_rectangle(minimum_width, minimum_height);
-    refresh_corner();
+    set_size(size.width(), size.height());
 }
 
 void node_backdrop::mousePressEvent(QGraphicsSceneMouseEvent *event)

@@ -15,7 +15,7 @@ node_link::node_link(QString input_label, bool _has_mask, int _index,
     , link_connecting(_link_connecting)
     , project(_project)
     , _vinacomp(__vinacomp)
-    , link_size(70)
+    , link_size(50)
     , index(_index)
     , dragging(false)
     , visible(true)
@@ -175,13 +175,14 @@ QLineF node_link::get_line_from_node() const
     else
     {
         int width = _this_node->get_size().width() / 2;
+        int height = _this_node->get_size().height() / 2;
 
         if (index == 0) // index 0 es 'mask'
-            dst_pos = {src_pos.x() + width - 20 + link_size, src_pos.y()};
+            dst_pos = {src_pos.x() + width + link_size, src_pos.y()};
         else if (index == 1)
-            dst_pos = {src_pos.x(), src_pos.y() - link_size};
+            dst_pos = {src_pos.x(), src_pos.y() - height - link_size};
         else
-            dst_pos = {src_pos.x() - width + 20 - link_size, src_pos.y()};
+            dst_pos = {src_pos.x() - width - link_size, src_pos.y()};
     }
 
     return {src_pos, dst_pos};

@@ -27,7 +27,7 @@ node::node(node_props _props, QMap<QString, node *> *_selected_nodes,
     center_position = new QPointF;
 
     name = props.name;
-    tips = props.name;
+    tips = props.tips;
     type = props.type;
     set_color(props.color);
 
@@ -69,15 +69,6 @@ node::node(node_props _props, QMap<QString, node *> *_selected_nodes,
 }
 
 node::~node() {}
-
-void node::set_size(int _minimum_width, int _minimum_height)
-{
-    minimum_width = _minimum_width;
-    minimum_height = _minimum_height;
-
-    current_width = minimum_width;
-    current_height = minimum_height;
-}
 
 void node::make_panel()
 {

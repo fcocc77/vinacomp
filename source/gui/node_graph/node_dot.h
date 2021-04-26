@@ -9,7 +9,7 @@ private:
     QString icon_name;
     QGraphicsTextItem *tips_text;
 
-    void change_size_rectangle(int _width, int _height);
+    void set_size(int width, int height);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 
 public:

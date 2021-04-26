@@ -6,7 +6,6 @@ node_dot::node_dot(node_props _props, QMap<QString, node *> *_selected_nodes,
     : node(_props, _selected_nodes, _node_graph)
 {
     this->setFlags(QGraphicsItem::ItemIsMovable);
-    set_size(20, 20);
 
     // Tips
     tips_text = new QGraphicsTextItem;
@@ -18,7 +17,8 @@ node_dot::node_dot(node_props _props, QMap<QString, node *> *_selected_nodes,
     //
 
     // Forma de Dot
-    change_size_rectangle(minimum_width, minimum_height);
+    set_minimum_size(20, 20);
+    set_size(20, 20);
 
     QPen pen(Qt::black);
 
@@ -43,17 +43,17 @@ void node_dot::set_tips(QString _tips)
     node::set_tips(_tips);
 }
 
-void node_dot::change_size_rectangle(int _width, int _height)
+void node_dot::set_size(int _width, int _height)
 {
     if (_width < minimum_width)
         _width = minimum_width;
-
-    current_width = _width;
 
     int radius = 10;
     QPainterPath rectangle;
     rectangle.addRoundedRect(QRectF(0, 0, _width, _height), radius, radius);
     this->setPath(rectangle);
+
+    node::set_size(_width, _height);
 }
 
 void node_dot::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)

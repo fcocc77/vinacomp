@@ -13,7 +13,8 @@ private:
     QGraphicsTextItem *name_text;
     QGraphicsTextItem *tips_text;
 
-    void change_size_rectangle(int _width, int _height);
+    void set_size(int width, int height);
+    void update_text(QString name, QString tips);
 
 public:
     node_rect(node_props _props, QMap<QString, node *> *_selected_nodes,
@@ -21,8 +22,19 @@ public:
     ~node_rect();
 
     void set_icon(QString icon_name);
-    void set_name(QString name);
-    void set_tips(QString _tips);
+    inline void set_name(QString name);
+    inline void set_tips(QString _tips);
 };
+
+inline void node_rect::set_name(QString _name)
+{
+    update_text(name, get_tips());
+}
+
+inline void node_rect::set_tips(QString _tips)
+{
+    update_text(_tips, get_name());
+}
+
 
 #endif // NODE_RECT_H

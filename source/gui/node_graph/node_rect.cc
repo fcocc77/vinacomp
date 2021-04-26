@@ -7,20 +7,21 @@ node_rect::node_rect(node_props _props, QMap<QString, node *> *_selected_nodes,
     , icon_area_width(45)
 {
     this->setFlags(QGraphicsItem::ItemIsMovable);
-    node::set_size(150, 50);
+    set_minimum_size(150, 50);
+    set_size(150, 50);
 
     // Texto
     {
         name_text = new QGraphicsTextItem;
         QFont font;
-        font.setPointSize(15);
+        font.setPixelSize(23);
         name_text->setFont(font);
         name_text->setParentItem(this);
         name_text->setDefaultTextColor(Qt::black);
 
         tips_text = new QGraphicsTextItem;
         QFont font_tips;
-        font_tips.setPointSize(10);
+        font_tips.setPixelSize(14);
         tips_text->setFont(font_tips);
         tips_text->setParentItem(this);
     }
@@ -29,8 +30,6 @@ node_rect::node_rect(node_props _props, QMap<QString, node *> *_selected_nodes,
 
     // Rectangulo Forma
     {
-        change_size_rectangle(minimum_width, minimum_height);
-
         QPen pen(Qt::black);
         QLinearGradient ramp(0, 0, icon_area_width * 2, 0);
         ramp.setColorAt(0.5000, QColor(50, 50, 50));
@@ -44,42 +43,85 @@ node_rect::node_rect(node_props _props, QMap<QString, node *> *_selected_nodes,
     //
     //
 
-    set_name(name);
-    set_tips(tips);
+    update_text(name, tips);
     set_icon(nodes_loaded->get_effect(type).value("icon").toString());
 }
 
 node_rect::~node_rect() {}
 
-void node_rect::set_name(QString _name)
+void node_rect::update_text(QString _name, QString _tips)
 {
-    name_text->setPlainText(_name);
+    // !! tips temporale para probar
+    _tips = "este es el tip mas tiping del mundo de los tips, ahora tiene que "
+            "ser mas largo";
+    if (type == "grade")
+        _tips = "";
+    else if (type == "transform")
+        _tips = "ansformin";
+    // !! tips temporale para probar
 
-    int text_width = name_text->boundingRect().width();
-    int new_width = text_width + icon_area_width;
+    name_text->setPlainText(_name);
+    tips_text->setPlainText(_tips);
+
+    // Name Ajuste
+    int name_width = name_text->boundingRect().width();
+    int name_height = name_text->boundingRect().height();
+
+    int new_width = name_width + icon_area_width;
 
     if (new_width < minimum_width)
         new_width = minimum_width;
 
     // centra texto al area de texto
     int text_area = new_width - icon_area_width;
-    int text_pos_x = (text_area - text_width) / 2;
+    int text_pos_x = (text_area - name_width) / 2;
 
-    name_text->setPos(icon_area_width + text_pos_x, 0);
+    // el el tips esta vacio, centra el texto
+    int text_pos_y = 0;
+    if (_tips.isEmpty())
+        text_pos_y = (current_height - name_height) / 2;
+    //
+
+    name_text->setPos(icon_area_width + text_pos_x, text_pos_y);
     //
     //
 
-    change_size_rectangle(new_width, current_height);
+    if (!_tips.isEmpty())
+    {
+        tips_text->setPos(name_text->x(), name_height);
 
-    node::set_name(_name);
-}
+        // default 'tips_text'
+        tips_text->setTextWidth(-1);
+        int tips_width = tips_text->boundingRect().width();
+        int tips_height = tips_text->boundingRect().height();
+        //
 
-void node_rect::set_tips(QString _tips)
-{
-    tips_text->setPlainText(_tips);
-    tips_text->setPos(60, 20);
+        if (tips_width > name_width)
+        {
+            // el ancho del 'tips' puede ser 1.5 mas grande que el nombre
+            tips_text->setTextWidth(name_width * 1.5);
+
+            tips_width = tips_text->boundingRect().width();
+            tips_height = tips_text->boundingRect().height();
+
+            new_width = tips_text->x() + tips_width;
+        }
+        else
+        {
+            // si el tips es mas chico que el nombre, los acerca en eje 'y' para
+            // que no esten tan separados y centra el tips al nombre
+            name_text->setPos(name_text->x(), name_text->y() + 5);
+            int tips_y = tips_text->x() + (name_width / 2) - (tips_width / 2);
+            tips_text->setPos(tips_y, tips_text->y() - 5);
+        }
+
+        set_size(new_width, tips_height + name_height);
+    }
+    else
+        set_size(new_width, 0);
 
     node::set_tips(_tips);
+    node::set_name(_name);
 }
 
 void node_rect::set_icon(QString _icon_name)
@@ -95,15 +137,18 @@ void node_rect::set_icon(QString _icon_name)
     node::set_icon_name(_icon_name);
 }
 
-void node_rect::change_size_rectangle(int _width, int _height)
+void node_rect::set_size(int width, int height)
 {
-    if (_width < minimum_width)
-        _width = minimum_width;
+    if (height < minimum_height)
+        height = minimum_height;
 
-    current_width = _width;
+    if (width < minimum_width)
+        width = minimum_width;
+
+    node::set_size(width, height);
 
     int radius = 3;
     QPainterPath rectangle;
-    rectangle.addRoundedRect(QRectF(0, 0, _width, _height), radius, radius);
+    rectangle.addRoundedRect(QRectF(0, 0, width, height), radius, radius);
     this->setPath(rectangle);
 }

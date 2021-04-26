@@ -94,9 +94,12 @@ void output_link::refresh()
         return;
     }
 
-    int link_size = 25;
+    int link_size = 0;
+    if (_this_node->get_type() == "dot")
+        link_size = 10;
+    int height_node = _this_node->get_size().height() / 2;
     QPointF src_pos = _this_node->get_center_position();
-    QPointF dst_pos = {src_pos.x(), src_pos.y() + link_size};
+    QPointF dst_pos = {src_pos.x(), src_pos.y() + height_node + link_size};
 
     refresh_arrow(dst_pos);
     link_refresh(dst_pos);

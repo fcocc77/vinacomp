@@ -25,7 +25,6 @@ private:
     QList<QPointF> nodes_click_position;
     QSize corner_click_diff;
 
-    void change_size_rectangle(int _width, int _height);
     QColor get_random_color() const;
     void resize(QSize size);
     void refresh_corner();

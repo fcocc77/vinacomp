@@ -83,7 +83,8 @@ protected:
     QString icon_name;
     QColor color;
 
-    void set_size(int minimum_width, int minimum_height);
+    inline void set_size(int width, int height);
+    inline void set_minimum_size(int minimum_width, int minimum_height);
 
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
@@ -124,7 +125,25 @@ public:
     inline QMap<QString, node *> *get_input_nodes() const;
     inline bool output_is_connected() const;
     QList<node_link*> get_output_links() const;
+    inline QString get_tips() const;
 };
+
+inline QString node::get_tips() const
+{
+    return tips;
+}
+
+inline void node::set_size(int width, int height)
+{
+    current_width = width;
+    current_height = height;
+}
+
+inline void node::set_minimum_size(int _minimum_width, int _minimum_height)
+{
+    minimum_width = _minimum_width;
+    minimum_height = _minimum_height;
+}
 
 inline void node::set_color(QColor _color)
 {
