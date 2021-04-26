@@ -73,7 +73,7 @@ public:
 
     node *create_node(QString name, QColor color, QString type,
                       QPointF position = QPointF(), QString tips = "",
-                      bool basic_creation = false);
+                      bool basic_creation = false, bool from_project = false);
 
     node *get_node_from_position(QPoint position);
     QRectF bbox_nodes(QMap<QString, node *> *_nodes) const;

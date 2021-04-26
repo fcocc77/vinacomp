@@ -119,7 +119,7 @@ void vinacomp::save_as()
 
 void vinacomp::save_project(QString project_path)
 {
-    _node_graph->update_node_position_from_project();
+    _node_graph->save_nodes_attributes_to_project();
     _node_graph->save_scene_data();
 
     recorder_recent_projects(project_path);

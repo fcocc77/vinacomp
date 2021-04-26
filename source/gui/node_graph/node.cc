@@ -29,7 +29,7 @@ node::node(node_props _props, QMap<QString, node *> *_selected_nodes,
     name = props.name;
     tips = props.name;
     type = props.type;
-    color = props.color;
+    set_color(props.color);
 
     props.scene->addItem(this);
 

@@ -313,14 +313,14 @@ void node_view::change_node_name()
 
 node *node_view::create_node(QString name, QColor color, QString type,
                              QPointF position, QString tips,
-                             bool basic_creation)
+                             bool basic_creation, bool from_project)
 {
     node *selected_node = get_selected_node();
 
     // la 'basic_creation' : crea position bajo el cursor, no conecta el nodo y no
     // lo selecciona
 
-    if (position.isNull())
+    if (!from_project)
     {
         if (selected_node && !basic_creation)
         {
@@ -350,6 +350,7 @@ node *node_view::create_node(QString name, QColor color, QString type,
     props.vinacomp = _vinacomp;
     props.nodes_loaded = nodes_loaded;
     props.project = project;
+    props.from_project = from_project;
 
     node *_node;
     node_backdrop *backdrop = nullptr;

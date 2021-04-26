@@ -29,6 +29,10 @@ node_backdrop::node_backdrop(node_props _props,
     QPen pen(Qt::black);
 
     QColor color = get_random_color();
+    if (props.from_project)
+        color = props.color;
+
+    set_color(color);
     QColor color2 = color;
 
     // baja la intensidad al color 2

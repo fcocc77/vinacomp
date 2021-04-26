@@ -41,7 +41,7 @@ public:
                node_group *_node_group = nullptr);
     ~node_graph();
 
-    void update_node_position_from_project();
+    void save_nodes_attributes_to_project();
     void restore_tree();
     void save_scene_data();
     void restore_scene_data();

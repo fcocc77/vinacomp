@@ -36,6 +36,7 @@ struct node_props
     QWidget *vinacomp;
     nodes_load *nodes_loaded;
     project_struct *project;
+    bool from_project;
 };
 
 class node : public QGraphicsPathItem
@@ -105,6 +106,7 @@ public:
     inline void remove_input_node(node *_node);
     inline bool is_selected() const;
     inline QColor get_color() const;
+    inline void set_color(QColor color);
     void refresh();
     inline QList<node_link *> *get_links() const;
     node_link *get_link(int index = -1) const;
@@ -120,6 +122,11 @@ public:
     inline QMap<QString, node *> *get_input_nodes() const;
     inline bool output_is_connected() const;
 };
+
+inline void node::set_color(QColor _color)
+{
+    color = _color;
+}
 
 inline bool node::output_is_connected() const
 {

@@ -42,13 +42,18 @@ node_graph::node_graph(QWidget *_vinacomp, project_struct *_project,
 
 node_graph::~node_graph() {}
 
-void node_graph::update_node_position_from_project()
+void node_graph::save_nodes_attributes_to_project()
 {
-    // ya que la posicion no es importante para el renderizado,
-    // la posicion de los nodos del proyecto no se actualiza, dinamicamente
+    // ya que algunos atributos no es importante para el renderizado,
+    // estos atributos del proyecto no se actualiza, dinamicamente
     // asi que solo se actualiza cuando se guarda el proyecto.
     for (node *_node : *_node_view->get_nodes())
-        project->nodes[_node->get_name()].pos = {_node->x(), _node->y()};
+    {
+        node_struct &__node = project->nodes[_node->get_name()];
+
+        __node.pos = {_node->x(), _node->y()};
+        __node.color = _node->get_color();
+    }
 }
 
 QList<node_struct> node_graph::get_nodes_from_group() const
@@ -89,7 +94,8 @@ void node_graph::restore_tree()
 
     // crea los nodos
     for (node_struct node : nodes)
-        _node_view->create_node(node.name, node.color, node.type, node.pos);
+        _node_view->create_node(node.name, node.color, node.type, node.pos, "",
+                                true, true);
     //
 
     // conecta todos los nodos
