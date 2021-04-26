@@ -364,7 +364,13 @@ node *node_view::create_node(node_struct node_data, bool basic_creation,
         if (selected_node && !basic_creation)
         {
             QPointF center = selected_node->get_center_position();
-            position = {center.x(), center.y() + 90};
+            int selected_mid_height = selected_node->get_size().height() / 2;
+            int new_mid_height = _node->get_size().height() / 2;
+
+            int node_separation = 40;
+
+            position = {center.x(), center.y() + selected_mid_height +
+                                        new_mid_height + node_separation};
         }
         else
         {
