@@ -17,39 +17,35 @@ node_backdrop::node_backdrop(node_props _props,
     this->setFlags(QGraphicsItem::ItemIsMovable);
     set_minimum_size(150, 150);
 
+    // Name
+    name_text = new QGraphicsTextItem;
+    QFont name_font;
+    name_font.setPixelSize(20);
+    name_text->setFont(name_font);
+    name_text->setParentItem(this);
+    //
+    //
+
     // Tips
     tips_text = new QGraphicsTextItem;
     QFont font_tips;
-    font_tips.setPointSize(10);
+    font_tips.setPixelSize(14);
     tips_text->setFont(font_tips);
     tips_text->setParentItem(this);
     //
     //
 
-    // Forma de Backdrop
-    QPen pen(Qt::black);
-
+    // Backdrop
     QColor color = get_random_color();
     if (props.from_project)
         color = props.color;
 
     set_color(color);
-    QColor color2 = color;
 
-    // baja la intensidad al color 2
-    int h, s, l;
-    color2.getHsl(&h, &s, &l);
-    color2.setHsl(h, s, l * 0.9);
-    //
-
-    QLinearGradient ramp(0, title_area_height, 0, 0);
-    ramp.setColorAt(0.5000, color);
-    ramp.setColorAt(0.5001, color2);
-
-    QBrush brush(ramp);
+    QPen pen(Qt::black);
     pen.setWidth(0);
-    this->setBrush(brush);
     this->setPen(pen);
+    set_title_area_height(title_area_height);
     //
     //
 
@@ -62,9 +58,6 @@ node_backdrop::node_backdrop(node_props _props,
     props.scene->addItem(corner);
     //
 
-    node::set_name(_props.name);
-    set_tips("hola a todos");
-
     if (props.from_project)
     {
         set_size(props.size.width(), props.size.height());
@@ -75,16 +68,89 @@ node_backdrop::node_backdrop(node_props _props,
         calculate_size();
         increase_z_value();
     }
+
+    update_text(_props.name, "esta es una prueva del tip para los backdtop "
+                             "esto tiene que ser muy largo para probar bien");
 }
 
 node_backdrop::~node_backdrop() {}
 
-void node_backdrop::set_tips(QString _tips)
+void node_backdrop::set_title_area_height(int height)
+{
+    height *= 2;
+
+    title_area_height = height;
+
+    QColor color2 = get_color();
+
+    // baja la intensidad al color 2
+    int h, s, l;
+    color2.getHsl(&h, &s, &l);
+    color2.setHsl(h, s, l * 0.9);
+    //
+
+    QLinearGradient ramp(0, height, 0, 0);
+    ramp.setColorAt(0.5000, color);
+    ramp.setColorAt(0.5001, color2);
+
+    QBrush brush(ramp);
+    this->setBrush(brush);
+}
+
+void node_backdrop::update_text(QString _name, QString _tips)
 {
     tips_text->setPlainText(_tips);
-    tips_text->setPos(20, 0);
+    bool has_tips = !_tips.isEmpty();
+
+    int padding = 10;
+
+    if (has_tips)
+    {
+        name_text->setPlainText(_name + ":");
+        name_text->setX(padding);
+    }
+    else
+    {
+        name_text->setPlainText(_name);
+        // si no tiene tips, centra el nombre
+        name_text->setX((get_size().width() / 2) -
+                        (name_text->boundingRect().width() / 2));
+    }
+
+    int name_width = name_text->boundingRect().width();
+    int name_height = name_text->boundingRect().height();
+
+    tips_text->setTextWidth(get_size().width() - name_width - (padding * 2));
+    int tips_height = tips_text->boundingRect().height();
+
+    // si el alto del tips es mas chico que el nombre, centra el tips
+    int tips_x = name_width + padding;
+    if (tips_height < name_height)
+        tips_text->setPos(tips_x, ((name_height / 2) - (tips_height / 2)));
+    else
+        tips_text->setPos(tips_x, 0);
+    //
 
     node::set_tips(_tips);
+    node::set_name(_name);
+
+    int title_area = name_height;
+    if (tips_height > name_height)
+        title_area = tips_text->y() + tips_height;
+
+    int max_title_area_height = get_size().height() / 2;
+    if (title_area > max_title_area_height)
+    {
+        title_area = name_height;
+        tips_text->setPlainText("...");
+    }
+
+    set_title_area_height(title_area);
+}
+
+void node_backdrop::set_tips(QString _tips)
+{
+    update_text(get_name(), _tips);
 }
 
 void node_backdrop::set_z_value(int value)
@@ -237,6 +303,7 @@ void node_backdrop::resize(QSize size)
         return;
 
     set_size(size.width(), size.height());
+    update_text(get_name(), get_tips());
 }
 
 void node_backdrop::mousePressEvent(QGraphicsSceneMouseEvent *event)

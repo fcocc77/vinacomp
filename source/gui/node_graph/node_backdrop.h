@@ -9,6 +9,7 @@ private:
     node_props props;
 
     QString icon_name;
+    QGraphicsTextItem *name_text;
     QGraphicsTextItem *tips_text;
     QWidget *_node_view;
     QGraphicsLineItem *corner;
@@ -25,6 +26,8 @@ private:
     QList<QPointF> nodes_click_position;
     QSize corner_click_diff;
 
+    void update_text(QString name, QString tips);
+    void set_title_area_height(int height);
     QColor get_random_color() const;
     void resize(QSize size);
     void refresh_corner();
