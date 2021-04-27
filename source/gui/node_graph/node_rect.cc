@@ -5,48 +5,62 @@ node_rect::node_rect(node_props _props, QMap<QString, node *> *_selected_nodes,
 
     : node(_props, _selected_nodes, _node_graph)
     , icon_area_width(45)
+    , disable(false)
 {
     this->setFlags(QGraphicsItem::ItemIsMovable);
-    set_minimum_size(150, 50);
-    set_size(150, 50);
 
     // Texto
-    {
-        name_text = new QGraphicsTextItem;
-        QFont font;
-        font.setPixelSize(23);
-        name_text->setFont(font);
-        name_text->setParentItem(this);
-        name_text->setDefaultTextColor(Qt::black);
+    name_text = new QGraphicsTextItem;
+    QFont font;
+    font.setPixelSize(23);
+    name_text->setFont(font);
+    name_text->setParentItem(this);
+    name_text->setDefaultTextColor(Qt::black);
 
-        tips_text = new QGraphicsTextItem;
-        QFont font_tips;
-        font_tips.setPixelSize(14);
-        tips_text->setFont(font_tips);
-        tips_text->setParentItem(this);
-    }
+    tips_text = new QGraphicsTextItem;
+    QFont font_tips;
+    font_tips.setPixelSize(14);
+    tips_text->setFont(font_tips);
+    tips_text->setParentItem(this);
     //
+    //
+
+    set_icon(nodes_loaded->get_effect(type).value("icon").toString());
+
+    // lineas de 'disable'
+    disable_line_a = new QGraphicsLineItem;
+    disable_line_b = new QGraphicsLineItem;
+
+    disable_line_a->setPen(QPen(Qt::black, 0));
+    disable_line_b->setPen(QPen(Qt::black, 0));
+
+    disable_line_a->setParentItem(this);
+    disable_line_b->setParentItem(this);
+    if (_props.from_project)
+        disable = _props.project->nodes.value(_props.name)
+                      .params->value("disable_node")
+                      .toBool();
+    set_disable(disable);
     //
 
     // Rectangulo Forma
-    {
-        QPen pen(Qt::black);
-        QLinearGradient ramp(0, 0, icon_area_width * 2, 0);
-        ramp.setColorAt(0.5000, QColor(50, 50, 50));
-        ramp.setColorAt(0.5001, get_color());
+    QPen pen(Qt::black);
+    QLinearGradient ramp(0, 0, icon_area_width * 2, 0);
+    ramp.setColorAt(0.5000, QColor(50, 50, 50));
+    ramp.setColorAt(0.5001, get_color());
 
-        QBrush brush(ramp);
-        pen.setWidth(0);
-        this->setBrush(brush);
-        this->setPen(pen);
-    }
+    QBrush brush(ramp);
+    pen.setWidth(0);
+    this->setBrush(brush);
+    this->setPen(pen);
     //
     //
+
+    set_minimum_size(150, 50);
+    set_size(150, 50);
 
     set_name(name);
     set_tips(tips);
-
-    set_icon(nodes_loaded->get_effect(type).value("icon").toString());
 }
 
 node_rect::~node_rect() {}
@@ -127,6 +141,42 @@ void node_rect::set_icon(QString _icon_name)
     node::set_icon_name(_icon_name);
 }
 
+void node_rect::set_selected(bool selected)
+{
+    if (selected)
+    {
+        disable_line_a->setPen(QPen(Qt::white, 2));
+        disable_line_b->setPen(QPen(Qt::white, 2));
+    }
+    else
+    {
+        disable_line_a->setPen(QPen(Qt::black, 0));
+        disable_line_b->setPen(QPen(Qt::black, 0));
+    }
+    node::set_selected(selected);
+}
+
+void node_rect::refresh()
+{
+    int width = current_width;
+    int height = current_height;
+
+    float radius = 3;
+    QPainterPath rectangle;
+    rectangle.addRoundedRect(QRectF(0, 0, width, height), radius, radius);
+    this->setPath(rectangle);
+
+    // disable lines
+    if (!disable)
+        return;
+
+    disable_line_a->setLine(
+        {{0, radius}, {(float)width, (float)height - radius}});
+    disable_line_b->setLine(
+        {{0, (float)height - radius}, {(float)width, radius}});
+    //
+}
+
 void node_rect::set_size(int width, int height)
 {
     if (height < minimum_height)
@@ -136,17 +186,21 @@ void node_rect::set_size(int width, int height)
         width = minimum_width;
 
     node::set_size(width, height);
-
-    int radius = 3;
-    QPainterPath rectangle;
-    rectangle.addRoundedRect(QRectF(0, 0, width, height), radius, radius);
-    this->setPath(rectangle);
+    refresh();
 }
 
 void node_rect::set_name(QString _name)
 {
     update_text(name, get_tips());
     node::set_name(_name);
+}
+
+void node_rect::set_disable(bool _disable)
+{
+    disable = _disable;
+    disable_line_a->setVisible(disable);
+    disable_line_b->setVisible(disable);
+    refresh();
 }
 
 void node_rect::set_tips(QString _tips)

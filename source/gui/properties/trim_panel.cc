@@ -5,6 +5,7 @@
 #include <frame_range_gui.h>
 #include <write_gui.h>
 #include <knob_text.h>
+#include <knob_check_box.h>
 #include "node.h"
 #include <node_backdrop.h>
 
@@ -76,6 +77,11 @@ void trim_panel::setup_shared_params()
         _this_node->set_tips(text);
         _this_node->refresh();
     });
+
+    knob_check_box *disable_node_knob =
+        static_cast<knob_check_box *>(get_knob("disable_node"));
+    connect(disable_node_knob, &knob_check_box::changed, this,
+            [=](bool changed) { _this_node->set_disable(changed); });
 
     if (type == "backdrop")
         get_knob("disable_node")->set_visible(false);

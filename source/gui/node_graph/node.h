@@ -128,7 +128,10 @@ public:
     inline bool output_is_connected() const;
     QList<node_link*> get_output_links() const;
     inline QString get_tips() const;
+    virtual inline void set_disable(bool disable);
 };
+
+inline void node::set_disable(bool disable) {}
 
 inline QString node::get_tips() const
 {
