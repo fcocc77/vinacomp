@@ -307,6 +307,79 @@ QList<node_link *> node::get_output_links() const
     return links;
 }
 
+void node::snap_to_node(node *_node, QPointF this_node_pos, float &x_snap,
+                        float &y_snap)
+{
+    if (selected_nodes->contains(_node->get_name()))
+        return;
+
+    int snap = 20;
+
+    float size_x_difference =
+        (_node->get_size().width() - this->get_size().width()) / 2;
+    float size_y_difference =
+        (_node->get_size().height() - this->get_size().height()) / 2;
+
+    float _this_node_x = this_node_pos.x() - size_x_difference;
+    float _this_node_y = this_node_pos.y() - size_y_difference;
+
+    float x_difference = abs(_node->x() - _this_node_x);
+    float y_difference = abs(_node->y() - _this_node_y);
+
+    if (x_difference < snap)
+        x_snap = _node->x() + size_x_difference;
+
+    else if (y_difference < snap)
+        y_snap = _node->y() + size_y_difference;
+
+    // snap al nodo verticalmente
+    int node_separation = 40;
+    if (!y_snap)
+    {
+        float min_separation_y = (get_size().height() / 2) +
+                                 (_node->get_size().height() / 2) +
+                                 node_separation;
+
+        y_difference = abs(min_separation_y - y_difference);
+
+        if (y_difference < snap &&
+            _node->get_center_position().x() == get_center_position().x())
+        {
+            if (this->y() > _node->y())
+                y_snap =
+                    _node->y() + _node->get_size().height() + node_separation;
+            else
+                y_snap =
+                    _node->y() - this->get_size().height() - node_separation;
+        }
+    }
+    //
+    //
+
+    // snap al nodo horizontalmente
+    if (!x_snap)
+    {
+        float min_separation_x = (get_size().width() / 2) +
+                                 (_node->get_size().width() / 2) +
+                                 node_separation;
+
+        x_difference = abs(min_separation_x - x_difference);
+
+        if (x_difference < snap &&
+            _node->get_center_position().y() == get_center_position().y())
+        {
+            if (this->x() > _node->x())
+                x_snap =
+                    _node->x() + _node->get_size().width() + node_separation;
+            else
+                x_snap =
+                    _node->x() - this->get_size().width() - node_separation;
+        }
+    }
+    //
+    //
+}
+
 void node::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
     make_panel();
@@ -340,8 +413,6 @@ void node::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void node::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    int snap = 20;
-
     QPointF position = mapToScene(event->pos());
     QPointF click_position_on_node = click_position - _freeze_position;
 
@@ -351,34 +422,13 @@ void node::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     float x_snap = 0;
     float y_snap = 0;
 
-    auto to_snap = [&](node *connected_node) {
-        if (selected_nodes->contains(connected_node->get_name()))
-            return;
-
-        float size_x_difference =
-            (connected_node->get_size().width() - this->get_size().width()) / 2;
-        float size_y_difference =
-            (connected_node->get_size().height() - this->get_size().height()) /
-            2;
-
-        float _this_node_x = this_node_x - size_x_difference;
-        float _this_node_y = this_node_y - size_y_difference;
-
-        float x_difference = abs(connected_node->x() - _this_node_x);
-        float y_difference = abs(connected_node->y() - _this_node_y);
-
-        if (x_difference < snap)
-            x_snap = connected_node->x() + size_x_difference;
-
-        else if (y_difference < snap)
-            y_snap = connected_node->y() + size_y_difference;
-    };
-
     // busca el snap en cada nodo conectado
     for (node *connected_node : *nodes_connected_to_the_inputs)
-        to_snap(connected_node);
+        snap_to_node(connected_node, {this_node_x, this_node_y}, x_snap,
+                     y_snap);
     for (node *connected_node : *nodes_connected_to_the_output)
-        to_snap(connected_node);
+        snap_to_node(connected_node, {this_node_x, this_node_y}, x_snap,
+                     y_snap);
     //
     //
 

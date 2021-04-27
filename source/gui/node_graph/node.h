@@ -67,6 +67,8 @@ private:
     node_link *get_close_link() const;
     void insert_in_between();
     void show_close_link();
+    void snap_to_node(node *_node, QPointF this_node_pos, float &x_snap,
+                      float &y_snap);
 
 protected:
     nodes_load *nodes_loaded;

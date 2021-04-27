@@ -39,7 +39,8 @@ gui__node_graph:
     ☐ la creacion de dot con control se queda pegado, al dejar presionado control cuando creamos un nodo con el 'node_finder'
     ☐ en los grupos al crear 2 nodos del mismo tipo quedan con el mismo nombre
     ✔ al crear el nodo: que el nodo se conecte a los nodos de salida del nodo seleccionado @done(2021-04-26 12:32) @project(gui__node_graph)
-    ☐ snap a nodo superior e inferior
+    ✔ snap a nodo superior e inferior @done(2021-04-27 11:57) @project(gui__node_graph)
+    ☐ snap de todos los nodos que esten dentro de un backdrop con los que esten fuera, al mover el backdrop
     ✔ guardad el 'zValue' de los backdrop al proyecto @done(2021-04-26 12:32) @project(gui__node_graph)
     ☐ al usar 'fit_view_to_nodes' y el nodo esta presionado, el nodo se mueve con el puntero del mouse
 gui__node:
