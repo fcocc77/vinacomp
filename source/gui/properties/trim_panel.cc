@@ -81,7 +81,9 @@ void trim_panel::setup_shared_params()
     knob_check_box *disable_node_knob =
         static_cast<knob_check_box *>(get_knob("disable_node"));
     connect(disable_node_knob, &knob_check_box::changed, this,
-            [=](bool changed) { _this_node->set_disable(changed); });
+            [=](bool changed) {
+                static_cast<node_rect *>(_this_node)->set_disable(changed);
+            });
 
     if (type == "backdrop")
         get_knob("disable_node")->set_visible(false);

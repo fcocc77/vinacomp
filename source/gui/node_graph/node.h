@@ -129,12 +129,7 @@ public:
     inline bool output_is_connected() const;
     QList<node_link*> get_output_links() const;
     inline QString get_tips() const;
-    virtual inline void set_disable(bool disable);
-    virtual inline bool is_disable() const;
 };
-
-inline void node::set_disable(bool disable) {}
-inline bool node::is_disable() const {}
 
 inline QJsonObject *node::get_params() const
 {

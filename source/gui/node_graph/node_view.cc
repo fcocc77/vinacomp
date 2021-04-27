@@ -490,14 +490,25 @@ void node_view::disable_selected_nodes()
     if (selected_nodes->empty())
         return;
 
-    bool disable = selected_nodes->first()->is_disable();
+    bool disable = false;
+    bool keep_disable = false;
     for (node *_node : *selected_nodes)
     {
-        _node->set_disable(!disable);
+        node_rect *_node_rect = dynamic_cast<node_rect *>(_node);
+        if (!_node_rect)
+            continue;
+
+        if (!keep_disable)
+        {
+            disable = _node_rect->is_disable();
+            keep_disable = true;
+        }
+
+        _node_rect->set_disable(!disable);
 
         // desabilita el nodo en el proyecto
         auto *params = _node->get_params();
-        if(!disable)
+        if (!disable)
             params->insert("disable_node", true);
         else
         {
