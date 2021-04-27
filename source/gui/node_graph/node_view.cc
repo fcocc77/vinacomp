@@ -312,6 +312,14 @@ void node_view::change_node_name()
     node_rename_edit->hide();
 }
 
+void node_view::select_connected_nodes(node *root_node)
+{
+    select_node(root_node->get_name(), true);
+
+    for (node *_node : *root_node->get_input_nodes())
+        select_connected_nodes(_node);
+}
+
 QPointF node_view::get_min_node_separation(node *node_a, node *node_b) const
 {
     QPointF center = node_b->get_center_position();

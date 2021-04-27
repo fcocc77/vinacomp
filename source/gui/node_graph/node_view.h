@@ -57,6 +57,7 @@ private:
     node *get_main_viewer() const;
     node *get_selected_node() const;
     void connect_output_link(QPoint position_node);
+    void select_connected_nodes(node *root_node);
 
     // Events
     void mouseReleaseEvent(QMouseEvent *event) override;

@@ -38,7 +38,11 @@ void node_view::mousePressEvent(QMouseEvent *event)
                         select_all(false);
                 }
                 else
+                {
                     select_node(_node->get_name(), true);
+                    if (qt::control())
+                        select_connected_nodes(_node);
+                }
             }
             else
             {
