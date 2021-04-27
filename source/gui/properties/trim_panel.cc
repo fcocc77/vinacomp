@@ -4,13 +4,16 @@
 #include <reformat_gui.h>
 #include <frame_range_gui.h>
 #include <write_gui.h>
+#include <knob_text.h>
+#include "node.h"
 
 trim_panel::trim_panel(properties *__properties, QString _name, QString _type,
                        QColor _color, QString _icon_name,
                        nodes_load *_nodes_loaded, project_struct *_project,
-                       QWidget *__vinacomp)
+                       QWidget *__vinacomp, QGraphicsItem *_node)
 
     : _knob_editor(nullptr)
+    , this_node(_node)
     , nodes_loaded(_nodes_loaded)
     , knob_editor_visible(false)
     , _vinacomp(__vinacomp)
@@ -50,9 +53,22 @@ trim_panel::trim_panel(properties *__properties, QString _name, QString _type,
     QJsonArray shared_knobs =
         jread("source/engine/nodes/json/shared_params.json").value("knobs").toArray();
     setup_knobs(shared_knobs, node_tab_layout, viewers_gl);
+    setup_shared_params();
 }
 
 trim_panel::~trim_panel() {}
+
+void trim_panel::setup_shared_params()
+{
+    // crea las conecciones a los parametros que estan en el tab de 'node'
+    node *_this_node = static_cast<node *>(this_node);
+
+    knob_text *_knob_text = static_cast<knob_text *>(get_knob("label"));
+    connect(_knob_text, &knob_text::text_changed, this, [=](QString text) {
+        _this_node->set_tips(text);
+        _this_node->refresh();
+    });
+}
 
 void trim_panel::setup_ui()
 {

@@ -96,9 +96,9 @@ public:
          QWidget *_node_graph = nullptr);
     ~node();
 
-    void set_name(QString name);
+    virtual void set_name(QString name);
     void set_icon_name(QString name);
-    inline void set_tips(QString tips);
+    virtual inline void set_tips(QString tips);
     inline QString get_name() const;
     virtual void set_position(float x, float y);
     virtual void set_selected(bool enable);

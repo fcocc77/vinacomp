@@ -18,8 +18,16 @@ private:
 public:
     knob_text(QString default_text = "");
     ~knob_text();
+
+    inline void set_text(QString text);
 signals:
     void changed(QString text);
+    void text_changed(QString text);
 };
+
+inline void knob_text::set_text(QString _text)
+{
+    text->setText(_text);
+}
 
 #endif // KNOB_TEXT_HPP

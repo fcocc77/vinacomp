@@ -22,19 +22,8 @@ public:
     ~node_rect();
 
     void set_icon(QString icon_name);
-    inline void set_name(QString name);
-    inline void set_tips(QString _tips);
+    void set_name(QString name) override;
+    void set_tips(QString _tips) override;
 };
-
-inline void node_rect::set_name(QString _name)
-{
-    update_text(name, get_tips());
-}
-
-inline void node_rect::set_tips(QString _tips)
-{
-    update_text(_tips, get_name());
-}
-
 
 #endif // NODE_RECT_H

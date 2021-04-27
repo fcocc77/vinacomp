@@ -82,7 +82,7 @@ void node::make_panel()
         if (!_trim_panel)
             _trim_panel =
                 new trim_panel(props._properties, name, type, color, icon_name,
-                               nodes_loaded, props.project, props.vinacomp);
+                               nodes_loaded, props.project, props.vinacomp, this);
         props._properties->add_trim_panel(_trim_panel);
     }
     //

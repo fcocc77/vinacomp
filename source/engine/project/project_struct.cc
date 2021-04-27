@@ -10,14 +10,15 @@ project_struct::~project_struct() {}
 
 void project_struct::insert_node(QString _name, QString _type, QColor _color,
                                  QPointF _pos, QJsonObject _params,
-                                 QJsonObject _inputs, QSize size, int z_value)
+                                 QJsonObject _inputs, QSize size, int z_value,
+                                 QString tips)
 {
     if (nodes.contains(_name))
         return;
 
     QJsonObject *params = new QJsonObject(_params);
     node_struct node(
-        {_name, _color, _type, "", _pos, params, _inputs, size, z_value});
+        {_name, _color, _type, tips, _pos, params, _inputs, size, z_value});
     nodes.insert(_name, node);
 }
 
@@ -116,8 +117,11 @@ void project_struct::load(QString project_path)
 
         int z_value = node.value("z_value").toInt();
 
+        // extrae el tips del parametro de label
+        QString tips = params.value("label").toString();
+
         insert_node(name, type, _color, _position, params, inputs, _size,
-                    z_value);
+                    z_value, tips);
     }
     //
 

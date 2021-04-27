@@ -12,6 +12,8 @@ knob_text::knob_text(QString default_text)
         update_value(text->text());
     });
 
+    connect(text, &QLineEdit::textChanged, this, &knob_text::text_changed);
+
     layout->addWidget(text);
 }
 
@@ -21,3 +23,4 @@ void knob_text::restore_param()
 {
     text->setText(get_param_value().toString());
 }
+

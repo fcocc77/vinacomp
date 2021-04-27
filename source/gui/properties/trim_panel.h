@@ -8,6 +8,7 @@
 #include <QTabWidget>
 #include <QVBoxLayout>
 #include <QWidget>
+#include <QGraphicsItem>
 
 // Gui
 #include <knob.h>
@@ -30,6 +31,7 @@ private:
     QMap<QString, knob_button *> connected_buttons;
 
     knob_editor *_knob_editor;
+    QGraphicsItem *this_node;
     nodes_load *nodes_loaded;
     QWidget *knob_editor_container;
     bool knob_editor_visible;
@@ -64,12 +66,14 @@ private:
     tab_widget *tabs_ui();
     void setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
                      QList<QWidget *> *viewers);
+    void setup_shared_params();
     void update_render();
 
 public:
     trim_panel(properties *_properties, QString _name, QString _type,
                QColor color, QString _icon_name, nodes_load *nodes_loaded,
-               project_struct *project, QWidget *_vinacomp);
+               project_struct *project, QWidget *_vinacomp,
+               QGraphicsItem *_node);
     ~trim_panel();
 
     void maximize(bool _maximize);
