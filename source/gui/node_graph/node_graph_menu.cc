@@ -46,6 +46,8 @@ void node_graph::init_menu()
         new action("Duplicate Nodes", "Ctrl+D", "copy");
     action *clone_nodes_action = new action("Clone Nodes", "Ctrl+K", "clone");
     action *disable_nodes_action = new action("Disable Nodes", "D", "disable");
+    disable_nodes_action->connect_to(
+        this, [this]() { _node_view->disable_selected_nodes(); });
 
     action *group_from_selection =
         new action("Group from Selection", "Ctrl+G", "group");

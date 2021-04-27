@@ -31,6 +31,12 @@ public:
     void set_name(QString name) override;
     void set_tips(QString _tips) override;
     void set_disable(bool disable) override;
+    inline bool is_disable() const override;
 };
+
+inline bool node_rect::is_disable() const
+{
+    return disable;
+}
 
 #endif // NODE_RECT_H

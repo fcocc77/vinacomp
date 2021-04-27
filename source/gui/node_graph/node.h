@@ -98,6 +98,7 @@ public:
          QWidget *_node_graph = nullptr);
     ~node();
 
+    inline QJsonObject *get_params() const;
     virtual void set_name(QString name);
     void set_icon_name(QString name);
     virtual inline void set_tips(QString tips);
@@ -129,9 +130,16 @@ public:
     QList<node_link*> get_output_links() const;
     inline QString get_tips() const;
     virtual inline void set_disable(bool disable);
+    virtual inline bool is_disable() const;
 };
 
 inline void node::set_disable(bool disable) {}
+inline bool node::is_disable() const {}
+
+inline QJsonObject *node::get_params() const
+{
+    return props.project->nodes.value(get_name()).params;
+}
 
 inline QString node::get_tips() const
 {

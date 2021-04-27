@@ -79,6 +79,7 @@ public:
     void rename_node(node *_node, QString name, QString new_name);
     void change_node_name_dialog();
     void change_node_name();
+    void disable_selected_nodes();
     void select_node(QString name, bool select);
     node *get_node(QString name);
     inline QMap<QString, node *> *get_nodes();

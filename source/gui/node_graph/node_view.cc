@@ -8,6 +8,7 @@
 #include <util.h>
 #include <vinacomp.h>
 #include <maker.h>
+#include <knob_check_box.h>
 
 // Engine
 #include <project_struct.h>
@@ -482,6 +483,37 @@ void node_view::select_node(QString name, bool select)
         selected_nodes->insert(name, _node);
     else
         selected_nodes->remove(name);
+}
+
+void node_view::disable_selected_nodes()
+{
+    if (selected_nodes->empty())
+        return;
+
+    bool disable = selected_nodes->first()->is_disable();
+    for (node *_node : *selected_nodes)
+    {
+        _node->set_disable(!disable);
+
+        // desabilita el nodo en el proyecto
+        auto *params = _node->get_params();
+        if(!disable)
+            params->insert("disable_node", true);
+        else
+        {
+            params->remove("disable_node");
+            params->remove("disable_node_anim");
+        }
+        //
+
+        trim_panel *panel = _node->get_trim_panel();
+        if (panel)
+        {
+            knob_check_box *disable_node_knob =
+                static_cast<knob_check_box *>(panel->get_knob("disable_node"));
+            disable_node_knob->set_check(!disable, false);
+        }
+    }
 }
 
 node *node_view::get_node_from_position(QPoint position)
