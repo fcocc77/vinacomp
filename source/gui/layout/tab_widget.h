@@ -43,8 +43,14 @@ public:
     QPushButton *add_cornel_button(QString icon);
     int get_current_index() const;
     void clear();
+    inline tab *get_tab(int index) const;
 signals:
     void closed_tab(QString name);
 };
+
+inline tab *tab_widget::get_tab(int index) const
+{
+    return tabs.value(index);
+}
 
 #endif // TAB_WIDGET_H

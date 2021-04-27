@@ -49,7 +49,8 @@ public:
                   QWidget *node_view);
     ~node_backdrop();
 
-    void set_tips(QString _tips);
+    void set_tips(QString _tips) override;
+    void set_name(QString _name) override;
     bool is_under_selector(QRectF selector);
     bool is_selected_nodes() const;
     inline bool is_clicked_title_area() const;

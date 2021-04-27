@@ -6,6 +6,7 @@
 #include <write_gui.h>
 #include <knob_text.h>
 #include "node.h"
+#include <node_backdrop.h>
 
 trim_panel::trim_panel(properties *__properties, QString _name, QString _type,
                        QColor _color, QString _icon_name,
@@ -54,6 +55,13 @@ trim_panel::trim_panel(properties *__properties, QString _name, QString _type,
         jread("source/engine/nodes/json/shared_params.json").value("knobs").toArray();
     setup_knobs(shared_knobs, node_tab_layout, viewers_gl);
     setup_shared_params();
+
+    // si no existen 'knobs' oculta el tab de 'control'
+    if (_knobs.empty())
+    {
+        tabs->set_index(1);
+        tabs->get_tab(0)->setVisible(false);
+    }
 }
 
 trim_panel::~trim_panel() {}
@@ -68,6 +76,9 @@ void trim_panel::setup_shared_params()
         _this_node->set_tips(text);
         _this_node->refresh();
     });
+
+    if (type == "backdrop")
+        get_knob("disable_node")->set_visible(false);
 }
 
 void trim_panel::setup_ui()

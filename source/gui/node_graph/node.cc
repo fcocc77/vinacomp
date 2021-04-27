@@ -75,7 +75,7 @@ void node::make_panel()
     QString name = get_name();
 
     // Crear panel de 'knobs'
-    QStringList nodes_without_panel = {"viewer", "dot", "backdrop"};
+    QStringList nodes_without_panel = {"viewer", "dot"};
 
     if (!nodes_without_panel.contains(type))
     {

@@ -63,7 +63,8 @@ QString maker::create_fx(QString id, bool basic_creation)
     node_data.type = id;
 
     node *_node = _node_view->create_node(node_data, basic_creation);
-    _node->make_panel();
+    if (id != "backdrop")
+        _node->make_panel();
     //
     //
 

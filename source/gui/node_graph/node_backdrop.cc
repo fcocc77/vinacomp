@@ -20,7 +20,7 @@ node_backdrop::node_backdrop(node_props _props,
     // Name
     name_text = new QGraphicsTextItem;
     QFont name_font;
-    name_font.setPixelSize(20);
+    name_font.setPixelSize(23);
     name_text->setFont(name_font);
     name_text->setParentItem(this);
     //
@@ -69,8 +69,8 @@ node_backdrop::node_backdrop(node_props _props,
         increase_z_value();
     }
 
-    update_text(_props.name, "esta es una prueva del tip para los backdtop "
-                             "esto tiene que ser muy largo para probar bien");
+    set_name(_props.name);
+    set_tips(_props.tips);
 }
 
 node_backdrop::~node_backdrop() {}
@@ -131,9 +131,6 @@ void node_backdrop::update_text(QString _name, QString _tips)
         tips_text->setPos(tips_x, 0);
     //
 
-    node::set_tips(_tips);
-    node::set_name(_name);
-
     int title_area = name_height;
     if (tips_height > name_height)
         title_area = tips_text->y() + tips_height;
@@ -151,6 +148,13 @@ void node_backdrop::update_text(QString _name, QString _tips)
 void node_backdrop::set_tips(QString _tips)
 {
     update_text(get_name(), _tips);
+    node::set_tips(_tips);
+}
+
+void node_backdrop::set_name(QString _name)
+{
+    update_text(_name, get_tips());
+    node::set_name(name);
 }
 
 void node_backdrop::set_z_value(int value)
