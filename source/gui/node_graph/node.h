@@ -121,6 +121,7 @@ public:
     inline QSize get_size() const;
     void make_panel();
     QPointF get_center_position() const;
+    void set_center_position(float x, float y);
     inline void freeze_position();
     inline QPointF get_freeze_position() const;
     inline void set_connected_index(int index, bool connected);

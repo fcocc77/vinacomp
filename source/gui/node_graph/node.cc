@@ -379,6 +379,10 @@ void node::snap_to_node(node *_node, QPointF this_node_pos, float &x_snap,
     //
     //
 }
+void node::set_center_position(float x, float y)
+{
+    set_position(x - (get_size().width() / 2), y - (get_size().height() / 2));
+}
 
 void node::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {

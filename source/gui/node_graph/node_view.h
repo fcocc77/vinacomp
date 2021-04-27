@@ -48,6 +48,8 @@ private:
     void select_all(bool select);
     void setup_shortcut();
     void connect_node(QPoint position_node);
+    void connect_node_to_selected_nodes(node *_node);
+    QPointF get_min_node_separation(node *node_a, node *node_b) const;
     void select_nodes_by_area(QPointF selection_end_point);
     void align_selected_nodes();
     void fit_view_to_nodes();

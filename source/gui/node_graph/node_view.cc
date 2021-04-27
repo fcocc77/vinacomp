@@ -312,11 +312,101 @@ void node_view::change_node_name()
     node_rename_edit->hide();
 }
 
+QPointF node_view::get_min_node_separation(node *node_a, node *node_b) const
+{
+    QPointF center = node_b->get_center_position();
+    int node_b_mid_height = node_b->get_size().height() / 2;
+    int node_a_mid_height = node_a->get_size().height() / 2;
+
+    int node_separation = 40;
+
+    QPointF position = {center.x(), center.y() + node_a_mid_height +
+                                        node_b_mid_height + node_separation};
+
+    auto size = node_a->get_size();
+    position = {position.x() - (size.width() / 2),
+                position.y() - (size.height() / 2)};
+
+    return position;
+}
+
+void node_view::connect_node_to_selected_nodes(node *_node)
+{
+    if (selected_nodes->empty())
+        return;
+
+    auto *links = _node->get_links();
+
+    // crea una lista con los link y nodos seleccionados que se van a conectar
+    QList<std::pair<node_link *, node *>> items_to_connect;
+    for (int i = 1; i < links->count(); i++)
+    {
+        node_link *link = links->value(i);
+
+        node *selected_node = selected_nodes->values().value(i - 1);
+        if (!selected_node)
+            break;
+
+        items_to_connect.push_back({link, selected_node});
+    }
+    //
+    //
+
+    auto connect_link = [=](node_link *link, node *to_node) {
+        link->connect_node(to_node);
+
+        // conecta los nodos conectado al nodo seleccionado, al nuevo nodo
+        for (node_link *sel_link : to_node->get_output_links())
+            sel_link->connect_node(_node);
+    };
+
+    int count = items_to_connect.count();
+
+    if (count != 2)
+        // conecta los nodos de la lista
+        for (auto item : items_to_connect)
+            connect_link(item.first, item.second);
+
+    //
+
+    // si solo se puede conectar 1 solo nodo, deja el nodo bajo el otro
+    if (count == 1)
+    {
+        node *first_node = items_to_connect.first().second;
+        QPointF position = get_min_node_separation(_node, first_node);
+        _node->set_position(position.x(), position.y());
+    }
+
+    // si hay 2 nodos que se pueden conectar, deja el nodo esquinado entre los 2
+    // y conecta el nodo de mas arriba al link 1
+    else if (count == 2)
+    {
+        node *node_a = items_to_connect.first().second;
+        node *node_b = items_to_connect.last().second;
+
+        QPointF position;
+        if (node_a->y() < node_b->y())
+        {
+            connect_link(links->value(1), node_a);
+            connect_link(links->value(2), node_b);
+            position = {node_a->get_center_position().x(),
+                        node_b->get_center_position().y()};
+        }
+        else
+        {
+            connect_link(links->value(1), node_b);
+            connect_link(links->value(2), node_a);
+            position = {node_b->get_center_position().x(),
+                        node_a->get_center_position().y()};
+        }
+
+        _node->set_center_position(position.x(), position.y());
+    }
+}
+
 node *node_view::create_node(node_struct node_data, bool basic_creation,
                              bool from_project)
 {
-    node *selected_node = get_selected_node();
-
     // la 'basic_creation' : crea position bajo el cursor, no conecta el nodo y no
     // lo selecciona
 
@@ -359,29 +449,25 @@ node *node_view::create_node(node_struct node_data, bool basic_creation,
     //
     //
 
+    node *selected_node = get_selected_node();
+
     // si al posicion no viene del un proyecto
     if (!from_project)
     {
         if (selected_node && !basic_creation)
         {
-            QPointF center = selected_node->get_center_position();
-            int selected_mid_height = selected_node->get_size().height() / 2;
-            int new_mid_height = _node->get_size().height() / 2;
-
-            int node_separation = 40;
-
-            position = {center.x(), center.y() + selected_mid_height +
-                                        new_mid_height + node_separation};
+            position = get_min_node_separation(_node, selected_node);
         }
         else
         {
             // crea el nodo en la posicion del puntero del mouse
             QPoint origin = this->mapFromGlobal(QCursor::pos());
             position = this->mapToScene(origin);
+
+            auto size = _node->get_size();
+            position = {position.x() - (size.width() / 2),
+                        position.y() - (size.height() / 2)};
         }
-        auto size = _node->get_size();
-        position = {position.x() - (size.width() / 2),
-                    position.y() - (size.height() / 2)};
     }
     //
     //
@@ -403,20 +489,15 @@ node *node_view::create_node(node_struct node_data, bool basic_creation,
     project->insert_node(node_data.name, node_data.type);
     //
 
-    if (selected_node && !basic_creation)
-    {
-        if (!backdrop)
-        {
-            _node->get_link(1)->connect_node(selected_node);
-            // conecta los nodos conectado al nodo seleccionado, al nuevo nodo
-            for (node_link *link : selected_node->get_output_links())
-                link->connect_node(_node);
-        }
-        select_node(selected_node->get_name(), false);
-    }
+    if (!basic_creation && !backdrop)
+        // conecta los nodos conectado al nodo seleccionado, al nuevo nodo
+        connect_node_to_selected_nodes(_node);
 
     if (!basic_creation)
+    {
+        select_all(false);
         select_node(node_data.name, true);
+    }
 
     return _node;
 }
