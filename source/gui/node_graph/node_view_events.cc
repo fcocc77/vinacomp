@@ -30,9 +30,12 @@ void node_view::mousePressEvent(QMouseEvent *event)
 
                 if (backdrop)
                 {
-                    // selectiona el backdrop si se clickeo en la barra de titulos
+                    // selectiona el backdrop si se clickeo en la barra de
+                    // titulos, si es en el cuerpo deselecciona todo
                     if (backdrop->is_clicked_title_area())
                         select_node(_node->get_name(), true);
+                    else if (!qt::shift())
+                        select_all(false);
                 }
                 else
                     select_node(_node->get_name(), true);
