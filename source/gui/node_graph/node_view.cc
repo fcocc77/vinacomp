@@ -498,6 +498,9 @@ void node_view::disable_selected_nodes()
         if (!_node_rect)
             continue;
 
+        if (_node_rect->get_type() == "viewer")
+            continue;
+
         if (!keep_disable)
         {
             disable = _node_rect->is_disable();
@@ -525,6 +528,7 @@ void node_view::disable_selected_nodes()
             disable_node_knob->set_check(!disable, false);
         }
     }
+    static_cast<vinacomp *>(_vinacomp)->update_render_all_viewer(true);
 }
 
 node *node_view::get_node_from_position(QPoint position)
