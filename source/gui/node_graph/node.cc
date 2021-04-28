@@ -70,10 +70,13 @@ node::node(node_props _props, QMap<QString, node *> *_selected_nodes,
 
 node::~node()
 {
-    for (node_link *link : *links)
-        delete link;
+    if (links)
+    {
+        for (node_link *link : *links)
+            delete link;
 
-    delete links;
+        delete links;
+    }
     delete _output_link;
     delete nodes_connected_to_the_inputs;
     delete nodes_connected_to_the_output;

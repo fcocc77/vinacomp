@@ -116,17 +116,46 @@ void node_view::delete_node(QString name)
     if (!_node)
         return;
 
-    for (node_link *link : *_node->get_links())
-        link->disconnect_node();
-
-    for (node_link *output_link : _node->get_output_links())
-        output_link->disconnect_node();
+    if (_node->get_type() != "backdrop")
+        extract_node(_node);
 
     selected_nodes->remove(name);
     nodes->remove(name);
     project->delete_node(name);
 
     delete _node;
+}
+
+void node_view::extract_selected_nodes()
+{
+    for (node *selected_node : *selected_nodes)
+        extract_node(selected_node);
+}
+
+void node_view::extract_node(node *_node)
+{
+    // extrae los nodos de sus conecciones, y los nodos que estaban conectados,
+    // los conecta a los nodos anterior y siguiente, esto sirve para el
+    // 'delete_node' y 'cut_node'
+
+    QGraphicsItem *node_from_input_1 = nullptr;
+    node_link *link_1 = _node->get_link(1);
+    if (link_1)
+        node_from_input_1 = link_1->get_connected_node();
+
+    for (node_link *link : *_node->get_links())
+        link->disconnect_node();
+
+    for (node_link *output_link : _node->get_output_links())
+    {
+        if (node_from_input_1)
+            output_link->connect_node(node_from_input_1);
+        else
+            output_link->disconnect_node();
+    }
+
+    _node->set_position(_node->x() + _node->get_size().width() + 40,
+                        _node->y());
 }
 
 node *node_view::get_node(QString name)

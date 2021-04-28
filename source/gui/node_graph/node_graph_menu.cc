@@ -48,6 +48,13 @@ void node_graph::init_menu()
 
     action *rename_node_action = new action("Rename Node", "N", "edit");
 
+    // extract node
+    action *extract_node_action =
+        new action("Extract Node", "Ctrl+Shift+x", "");
+    extract_node_action->connect_to(
+        this, [this]() { _node_view->extract_selected_nodes(); });
+    //
+
     action *switch_inputs_a_b =
         new action("Switch Inputs A and B", "Shift+X", "switch_inputs_a_b");
     switch_inputs_a_b->connect_to(
@@ -75,6 +82,7 @@ void node_graph::init_menu()
 
     node_menu->addAction(remove_nodes_action);
     node_menu->addAction(rename_node_action);
+    node_menu->addAction(extract_node_action);
     node_menu->addAction(switch_inputs_a_b);
 
     node_menu->addSeparator();

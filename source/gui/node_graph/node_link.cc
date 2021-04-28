@@ -462,12 +462,7 @@ void node_link::connect_node(QGraphicsItem *to_node, bool prevent_loop)
         if (!safe_connection(_to_node))
             return;
 
-    if (connected_node)
-    {
-        node *_connected_node = static_cast<node *>(connected_node);
-        _connected_node->remove_output_node(_this_node);
-        _connected_node->refresh();
-    }
+    disconnect_node();
 
     _to_node->add_output_node(_this_node);
 

@@ -49,6 +49,7 @@ private:
     void select_all(bool select);
     void setup_shortcut();
     void connect_node(QPoint position_node);
+    void extract_node(node *_node);
     void connect_node_to_selected_nodes(node *_node);
     QPointF get_min_node_separation(node *node_a, node *node_b) const;
     void select_nodes_by_area(QPointF selection_end_point);
@@ -86,6 +87,7 @@ public:
     void change_node_name();
     void disable_selected_nodes();
     void switch_inputs_a_and_b();
+    void extract_selected_nodes();
     void select_node(QString name, bool select);
     void delete_selected_nodes();
     void delete_node(QString name);
