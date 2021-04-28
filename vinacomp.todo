@@ -45,6 +45,7 @@ gui__node_graph:
     ☐ al usar 'fit_view_to_nodes' y el nodo esta presionado, el nodo se mueve con el puntero del mouse
     ✔ permutar entradas a y b de nodos con mas de un link con shft-x @done(2021-04-27 21:38) @project(gui__node_graph)
     ✔ arrastrar todos los nodos conectados a un nodo, cuando esta presionado el control @done(2021-04-27 21:29) @project(gui__node_graph)
+    ☐ calcular el backdrop con la profundidad mas cercana, al restaurar el proyecto y ponerla en 'current_z_value'
 gui__node:
 gui__knobs:
 	☐ slider: rehacer el slider con QPainter para tener mas control de todo @today
