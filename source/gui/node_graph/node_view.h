@@ -83,6 +83,7 @@ public:
     void change_node_name_dialog();
     void change_node_name();
     void disable_selected_nodes();
+    void switch_inputs_a_and_b();
     void select_node(QString name, bool select);
     node *get_node(QString name);
     inline QMap<QString, node *> *get_nodes();

@@ -41,6 +41,10 @@ void node_graph::init_menu()
 
     action *remove_nodes_action = new action("Remove Nodes", "Backspace", "close");
     action *rename_node_action = new action("Rename Node", "N", "edit");
+    action *switch_inputs_a_b =
+        new action("Switch Inputs A and B", "Shift+X", "switch_inputs_a_b");
+    switch_inputs_a_b->connect_to(
+        this, [this]() { _node_view->switch_inputs_a_and_b(); });
 
     action *duplicate_nodes_action =
         new action("Duplicate Nodes", "Ctrl+D", "copy");
@@ -61,6 +65,7 @@ void node_graph::init_menu()
 
     node_menu->addAction(remove_nodes_action);
     node_menu->addAction(rename_node_action);
+    node_menu->addAction(switch_inputs_a_b);
 
     node_menu->addSeparator();
 

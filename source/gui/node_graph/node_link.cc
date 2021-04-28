@@ -438,6 +438,14 @@ void node_link::connect_node(QGraphicsItem *to_node, bool prevent_loop)
     if (_to_node->get_type() == "backdrop")
         return;
 
+    // verifica si los nodos de salida del nodo a conectar, no esta conectado a
+    // este nodo, ya que en los nodos de salida solo puede tener 1 nodo
+    // conectado, si existe este nodo retorna
+    for (node *_output_node : *_to_node->get_output_nodes())
+        if (_output_node == this_node)
+            return;
+    //
+
     node *_this_node = static_cast<node *>(this_node);
 
     // evita que se provoque un bucle infinito

@@ -320,6 +320,29 @@ void node_view::select_connected_nodes(node *root_node)
         select_connected_nodes(_node);
 }
 
+void node_view::switch_inputs_a_and_b()
+{
+    node *selected_node = get_selected_node();
+    if (!selected_node)
+        return;
+
+    auto *links = selected_node->get_links();
+    if (links->count() < 2)
+        return;
+
+    node_link *link_1 = links->value(1);
+    node_link *link_2 = links->value(2);
+
+    auto *node_1 = link_1->get_connected_node();
+    auto *node_2 = link_2->get_connected_node();
+
+    link_1->disconnect_node();
+    link_2->disconnect_node();
+
+    link_1->connect_node(node_2);
+    link_2->connect_node(node_1);
+}
+
 QPointF node_view::get_min_node_separation(node *node_a, node *node_b) const
 {
     QPointF center = node_b->get_center_position();
