@@ -267,12 +267,12 @@ void node_view::change_node_name()
 
 void node_view::switch_inputs_a_and_b()
 {
-    node *selected_node = get_selected_node();
+    node_rect *selected_node = dynamic_cast<node_rect *>(get_selected_node());
     if (!selected_node)
         return;
 
     auto *links = selected_node->get_links();
-    if (links->count() < 2)
+    if (links->count() < 3)
         return;
 
     node_link *link_1 = links->value(1);

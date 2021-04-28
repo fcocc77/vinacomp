@@ -11,8 +11,16 @@ void node_graph::init_menu()
         new action("Show Expressions Links", "Shift+E", "link");
     action *show_grid_action = new action("Show Grid", "", "grid");
 
+    // paste nodes
+    action *paste_nodes_action = new action("Paste Nodes", "Ctrl+V", "paste");
+    paste_nodes_action->connect_to(this,
+                                   [this]() { _node_view->paste_nodes(); });
+    //
+
     show_expressions_links->set_checkable();
 
+    general_menu->addAction(paste_nodes_action);
+    general_menu->addSeparator();
     general_menu->addAction(search_action);
     general_menu->addSeparator();
     general_menu->addAction(show_expressions_links);
@@ -42,12 +50,6 @@ void node_graph::init_menu()
 
     action *cut_nodes_action = new action("Cut Nodes", "Ctrl+X", "cut");
 
-    // paste nodes
-    action *paste_nodes_action = new action("Paste Nodes", "Ctrl+V", "paste");
-    paste_nodes_action->connect_to(this,
-                                   [this]() { _node_view->paste_nodes(); });
-    //
-
     // delete node
     action *remove_nodes_action =
         new action("Remove Nodes", "Backspace", "close");
@@ -69,8 +71,15 @@ void node_graph::init_menu()
     switch_inputs_a_b->connect_to(
         this, [this]() { _node_view->switch_inputs_a_and_b(); });
 
+    // duplicate nodes
     action *duplicate_nodes_action =
         new action("Duplicate Nodes", "Ctrl+D", "copy");
+    duplicate_nodes_action->connect_to(this, [this]() {
+        _node_view->copy_nodes();
+        _node_view->paste_nodes();
+    });
+    //
+
     action *clone_nodes_action = new action("Clone Nodes", "Ctrl+K", "clone");
 
     // disable nodes
