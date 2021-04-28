@@ -90,6 +90,7 @@ public:
     void switch_inputs_a_and_b();
     void extract_selected_nodes();
     void select_node(QString name, bool select);
+    void select_node(node *node, bool select);
     void delete_selected_nodes();
     void delete_node(QString name);
     void copy_nodes();

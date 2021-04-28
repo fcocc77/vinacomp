@@ -321,14 +321,6 @@ void node_view::connect_output_link(QPoint position_node)
     node_to_connect->get_link()->connect_node(node_output);
 }
 
-void node_view::select_all(bool select)
-{
-    selected_nodes->clear();
-
-    for (node *_node : *nodes)
-        select_node(_node->get_name(), select);
-}
-
 void node_view::set_visible_ghost_dots(bool visible)
 {
     // visibilidad para los ghost dots

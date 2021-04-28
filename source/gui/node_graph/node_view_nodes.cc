@@ -195,12 +195,15 @@ void node_view::paste_nodes()
     float center_bbox_x = (bbox.x() + (bbox.x() + bbox.width())) / 2;
     float center_bbox_y = (bbox.y() + (bbox.y() + bbox.height())) / 2;
 
+    QMap<node*, node*> map_copies_nodes;
+
     for (node *copied_node : copied_nodes)
     {
         node_struct params;
         params.color = copied_node->get_color();
         params.pos = copied_node->pos();
         params.type = copied_node->get_type();
+        params.inputs = {};
 
         params.params = new QJsonObject;
         *params.params = *copied_node->get_params();
@@ -209,10 +212,39 @@ void node_view::paste_nodes()
         params.size = copied_node->get_size();
         params.name = get_available_name(copied_node->get_name());
 
-        node *pasted_node = create_node(params);
+        node *pasted_node = create_node(params, true);
         float x = cursor_pos.x() + (copied_node->x() - center_bbox_x);
         float y = cursor_pos.y() + (copied_node->y() - center_bbox_y);
         pasted_node->set_position(x, y);
+
+        map_copies_nodes.insert(copied_node, pasted_node);
+    }
+
+    select_all(false);
+
+    // conecta los nodos pegados, a partir de los nodos copiados
+    for (node *copied_node : map_copies_nodes.keys())
+    {
+        node *pasted_node = map_copies_nodes.value(copied_node);
+
+        for (int i = 0; i < copied_node->get_links()->count(); i++)
+        {
+            node_link *copied_link = copied_node->get_link(i);
+            node_link *pasted_link = pasted_node->get_link(i);
+
+            node *connected_node_from_copied =
+                static_cast<node *>(copied_link->get_connected_node());
+
+            if (connected_node_from_copied)
+            {
+                node *connected_node_from_pasted =
+                    map_copies_nodes.value(connected_node_from_copied);
+
+                pasted_link->connect_node(connected_node_from_pasted);
+            }
+        }
+
+        select_node(pasted_node, true);
     }
 }
 
@@ -245,18 +277,30 @@ node *node_view::get_selected_node() const
     return _node;
 }
 
-void node_view::select_node(QString name, bool select)
+void node_view::select_node(node *_node, bool select)
 {
-    node *_node = get_node(name);
     if (!_node)
         return;
 
     _node->set_selected(select);
 
     if (select)
-        selected_nodes->insert(name, _node);
+        selected_nodes->insert(_node->get_name(), _node);
     else
-        selected_nodes->remove(name);
+        selected_nodes->remove(_node->get_name());
+}
+
+void node_view::select_node(QString name, bool select)
+{
+    select_node(get_node(name), select);
+}
+
+void node_view::select_all(bool select)
+{
+    selected_nodes->clear();
+
+    for (node *_node : *nodes)
+        select_node(_node, select);
 }
 
 void node_view::connect_node_to_selected_nodes(node *_node)
@@ -344,7 +388,7 @@ void node_view::find_nodes(QString key)
     for (node *_node : *nodes)
     {
         if (_node->get_name().toUpper().contains(key))
-            select_node(_node->get_name(), true);
+            select_node(_node, true);
     }
 
     fit_view_to_nodes();
@@ -352,7 +396,7 @@ void node_view::find_nodes(QString key)
 
 void node_view::select_connected_nodes(node *root_node)
 {
-    select_node(root_node->get_name(), true);
+    select_node(root_node, true);
 
     for (node *_node : *root_node->get_input_nodes())
         select_connected_nodes(_node);
