@@ -121,6 +121,7 @@ void node_view::delete_node(QString name)
 
     selected_nodes->remove(name);
     nodes->remove(name);
+    copied_nodes.remove(name);
     project->delete_node(name);
 
     delete _node;
@@ -156,6 +157,63 @@ void node_view::extract_node(node *_node)
 
     _node->set_position(_node->x() + _node->get_size().width() + 40,
                         _node->y());
+}
+
+void node_view::copy_nodes()
+{
+    copied_nodes = *selected_nodes;
+}
+
+void node_view::paste_nodes()
+{
+    auto get_basename = [](QString name) {
+        QString str;
+        for (QChar letter : name)
+            if (!letter.isDigit())
+                str += letter;
+        return str;
+    };
+
+    auto get_available_name = [=](QString copied_name) {
+        QString basename = get_basename(copied_name);
+        QString available_name;
+
+        int number = 1;
+        while (true)
+        {
+            available_name = basename + QString::number(number);
+            if (!get_node(available_name))
+                break;
+            number++;
+        }
+        return available_name;
+    };
+
+    QPointF cursor_pos = this->mapToScene(this->mapFromGlobal(QCursor::pos()));
+
+    QRectF bbox = bbox_nodes(&copied_nodes);
+    float center_bbox_x = (bbox.x() + (bbox.x() + bbox.width())) / 2;
+    float center_bbox_y = (bbox.y() + (bbox.y() + bbox.height())) / 2;
+
+    for (node *copied_node : copied_nodes)
+    {
+        node_struct params;
+        params.color = copied_node->get_color();
+        params.pos = copied_node->pos();
+        params.type = copied_node->get_type();
+
+        params.params = new QJsonObject;
+        *params.params = *copied_node->get_params();
+
+        params.tips = copied_node->get_tips();
+        params.size = copied_node->get_size();
+        params.name = get_available_name(copied_node->get_name());
+
+        node *pasted_node = create_node(params);
+        float x = cursor_pos.x() + (copied_node->x() - center_bbox_x);
+        float y = cursor_pos.y() + (copied_node->y() - center_bbox_y);
+        pasted_node->set_position(x, y);
+    }
 }
 
 node *node_view::get_node(QString name)

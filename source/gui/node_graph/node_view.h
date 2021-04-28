@@ -34,6 +34,7 @@ private:
 
     QMap<QString, node *> *nodes;
     QMap<QString, node *> *selected_nodes;
+    QMap<QString, node *> copied_nodes;
 
     QJsonObject *link_connecting;
     node *output_link_node;
@@ -91,6 +92,8 @@ public:
     void select_node(QString name, bool select);
     void delete_selected_nodes();
     void delete_node(QString name);
+    void copy_nodes();
+    void paste_nodes();
     node *get_node(QString name);
     inline QMap<QString, node *> *get_nodes();
     node_link *get_node_link(node *_node, int link_index);

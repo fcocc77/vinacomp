@@ -35,9 +35,18 @@ void node_graph::init_menu()
         }
     });
 
+    // copy nodes
     action *copy_nodes_action = new action("Copy Nodes", "Ctrl+C", "copy");
+    copy_nodes_action->connect_to(this, [this]() { _node_view->copy_nodes(); });
+    //
+
     action *cut_nodes_action = new action("Cut Nodes", "Ctrl+X", "cut");
-    action *paste_nodes_action = new action("Paste Nodes", "Ctrl+P", "paste");
+
+    // paste nodes
+    action *paste_nodes_action = new action("Paste Nodes", "Ctrl+V", "paste");
+    paste_nodes_action->connect_to(this,
+                                   [this]() { _node_view->paste_nodes(); });
+    //
 
     // delete node
     action *remove_nodes_action =
