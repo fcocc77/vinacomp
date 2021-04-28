@@ -226,6 +226,23 @@ void node_view::paste_nodes()
     for (node *copied_node : map_copies_nodes.keys())
     {
         node *pasted_node = map_copies_nodes.value(copied_node);
+        select_node(pasted_node, true);
+
+        node_backdrop *pasted_backdrop =
+            dynamic_cast<node_backdrop *>(pasted_node);
+
+        if (pasted_backdrop)
+        {
+            node_backdrop *copied_backdrop =
+                dynamic_cast<node_backdrop *>(copied_node);
+
+            pasted_backdrop->set_size(copied_node->get_size().width(),
+                                      copied_node->get_size().height());
+
+            pasted_backdrop->set_z_value(copied_backdrop->get_z_value());
+            pasted_backdrop->refresh();
+            continue;
+        }
 
         for (int i = 0; i < copied_node->get_links()->count(); i++)
         {
@@ -243,8 +260,6 @@ void node_view::paste_nodes()
                 pasted_link->connect_node(connected_node_from_pasted);
             }
         }
-
-        select_node(pasted_node, true);
     }
 }
 

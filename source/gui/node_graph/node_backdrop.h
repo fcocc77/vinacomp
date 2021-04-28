@@ -22,6 +22,7 @@ private:
     bool resizing;
     node_backdrop *parent;
 
+    int base_z_value;
     QList<node *> nodes_to_drag;
     QList<QPointF> nodes_click_position;
     QSize corner_click_diff;
@@ -33,9 +34,7 @@ private:
     void refresh_corner();
     void calculate_size();
     void increase_z_value();
-    void set_z_value(int value);
     bool is_inside_backdrop(node_backdrop *backdrop);
-    void set_size(int width, int height);
 
     void set_selected(bool enable) override;
     void set_position(float x, float y) override;
@@ -49,6 +48,10 @@ public:
                   QWidget *node_view);
     ~node_backdrop();
 
+    void refresh();
+    void set_size(int width, int height);
+    void set_z_value(int value);
+    int get_z_value() const;
     void set_tips(QString _tips) override;
     void set_name(QString _name) override;
     bool is_under_selector(QRectF selector);

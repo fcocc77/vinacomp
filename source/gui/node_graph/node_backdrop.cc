@@ -13,6 +13,7 @@ node_backdrop::node_backdrop(node_props _props,
     , clicked_body_area(false)
     , resizing(false)
     , parent(nullptr)
+    , base_z_value(-1000000000)
 {
     this->setFlags(QGraphicsItem::ItemIsMovable);
     set_minimum_size(150, 150);
@@ -168,9 +169,14 @@ void node_backdrop::set_z_value(int value)
     corner->setZValue(value);
 }
 
+int node_backdrop::get_z_value() const
+{
+    return base_z_value + zValue();
+}
+
 void node_backdrop::increase_z_value()
 {
-    int value = -1000000000;
+    int value = base_z_value;
 
     (*props.current_z_value)++;
     this->setZValue(*props.current_z_value);
@@ -265,6 +271,11 @@ void node_backdrop::set_position(float x, float y)
     refresh_corner();
 }
 
+void node_backdrop::refresh()
+{
+    update_text(get_name(), get_tips());
+}
+
 void node_backdrop::refresh_corner()
 {
     float cor_x = x() + get_size().width() - corner_size.width();
@@ -312,7 +323,7 @@ void node_backdrop::resize(QSize size)
         return;
 
     set_size(size.width(), size.height());
-    update_text(get_name(), get_tips());
+    refresh();
 }
 
 void node_backdrop::mousePressEvent(QGraphicsSceneMouseEvent *event)
