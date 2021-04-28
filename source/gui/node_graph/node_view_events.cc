@@ -6,9 +6,6 @@ void node_view::mousePressEvent(QMouseEvent *event)
     click_position = event->pos();
     clicked();
 
-    // 'mousePressEvent' tiene que ir antes que el 'backdrop->is_clicked_title_area' para poder
-    // usar el click del backdrop primero o si no no funciona el metodo
-    graphics_view::mousePressEvent(event);
 
     if (!qt::alt() && event->button() == Qt::LeftButton)
     {
@@ -17,6 +14,13 @@ void node_view::mousePressEvent(QMouseEvent *event)
         QString item_name = item->data(0).toString();
 
         node_backdrop *backdrop = dynamic_cast<node_backdrop *>(item);
+
+        // 'mousePressEvent' tiene que ir antes que el
+        // 'backdrop->is_clicked_title_area' para poder usar el click del
+        // backdrop primero o si no no funciona el metodo
+        if (backdrop)
+            graphics_view::mousePressEvent(event);
+        //
 
         // impide la seleccion de nodos si se hizo el click en un link
         if (item_name != "link")
@@ -41,7 +45,11 @@ void node_view::mousePressEvent(QMouseEvent *event)
                 {
                     select_node(_node->get_name(), true);
                     if (qt::control())
+                    {
+                        allow_insertion_between_nodes(false);
+                        select_all(false);
                         select_connected_nodes(_node);
+                    }
                 }
             }
             else
@@ -63,6 +71,7 @@ void node_view::mousePressEvent(QMouseEvent *event)
         //
     }
 
+    graphics_view::mousePressEvent(event);
     node_rename_edit->hide();
 
 }
