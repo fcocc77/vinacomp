@@ -17,7 +17,7 @@ node_graph::node_graph(QWidget *_vinacomp, project_struct *_project,
 
     nodes_loaded = new nodes_load();
 
-    _node_view = new node_view(_vinacomp, _properties, nodes_loaded, this);
+    _node_view = new node_view(_vinacomp, _properties, nodes_loaded, project, this);
     _maker = new maker(_vinacomp, _properties, nodes_loaded, _node_view, this);
     _nodes_bar = new nodes_bar(this, _maker, nodes_loaded);
 

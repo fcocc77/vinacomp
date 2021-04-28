@@ -39,7 +39,11 @@ output_link::output_link(QGraphicsScene *_scene, QWidget *__node_view,
     refresh();
 }
 
-output_link::~output_link() {}
+output_link::~output_link()
+{
+    delete link;
+    delete arrow;
+}
 
 void output_link::set_selected(bool enable)
 {

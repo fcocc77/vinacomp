@@ -7,15 +7,6 @@ node_dot::node_dot(node_props _props, QMap<QString, node *> *_selected_nodes,
 {
     this->setFlags(QGraphicsItem::ItemIsMovable);
 
-    // Tips
-    tips_text = new QGraphicsTextItem;
-    QFont font_tips;
-    font_tips.setPointSize(10);
-    tips_text->setFont(font_tips);
-    tips_text->setParentItem(this);
-    //
-    //
-
     // Forma de Dot
     set_minimum_size(20, 20);
     set_size(20, 20);
@@ -34,14 +25,6 @@ node_dot::node_dot(node_props _props, QMap<QString, node *> *_selected_nodes,
 }
 
 node_dot::~node_dot() {}
-
-void node_dot::set_tips(QString _tips)
-{
-    tips_text->setPlainText(_tips);
-    tips_text->setPos(20, 0);
-
-    node::set_tips(_tips);
-}
 
 void node_dot::set_size(int _width, int _height)
 {

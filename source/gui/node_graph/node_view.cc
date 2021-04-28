@@ -11,12 +11,14 @@
 #include <project_struct.h>
 
 node_view::node_view(QWidget *__vinacomp, properties *__properties,
-                     nodes_load *_nodes_loaded, QWidget *__node_graph)
+                     nodes_load *_nodes_loaded, project_struct *_project,
+                     QWidget *__node_graph)
 
     : _properties(__properties)
     , _vinacomp(__vinacomp)
     , nodes_loaded(_nodes_loaded)
     , _node_graph(__node_graph)
+    , project(_project)
     , output_link_node(nullptr)
     , insertion_between_nodes(true)
 {

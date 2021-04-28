@@ -10,8 +10,6 @@ node *node_view::create_node(node_struct node_data, bool basic_creation,
     // la 'basic_creation' : crea position bajo el cursor, no conecta el nodo y
     // no lo selecciona
 
-    project_struct *project = static_cast<vinacomp *>(_vinacomp)->get_project();
-
     node_props props;
 
     props.scene = scene;
@@ -104,12 +102,31 @@ node *node_view::create_node(node_struct node_data, bool basic_creation,
 
 void node_view::delete_selected_nodes()
 {
-    print("delete_selected_nodes");
+    // crea una copia para que no de conflicto ya que en selected_nodes se
+    // borraran items
+    auto delete_nodes = *selected_nodes;
+
+    for (node *node_to_delete : delete_nodes)
+        delete_node(node_to_delete->get_name());
 }
 
 void node_view::delete_node(QString name)
 {
-    print("delete node");
+    node *_node = get_node(name);
+    if (!_node)
+        return;
+
+    for (node_link *link : *_node->get_links())
+        link->disconnect_node();
+
+    for (node_link *output_link : _node->get_output_links())
+        output_link->disconnect_node();
+
+    selected_nodes->remove(name);
+    nodes->remove(name);
+    project->delete_node(name);
+
+    delete _node;
 }
 
 node *node_view::get_node(QString name)

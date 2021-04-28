@@ -73,7 +73,12 @@ node_backdrop::node_backdrop(node_props _props,
     set_tips(_props.tips);
 }
 
-node_backdrop::~node_backdrop() {}
+node_backdrop::~node_backdrop()
+{
+    delete name_text;
+    delete tips_text;
+    delete corner;
+}
 
 void node_backdrop::set_title_area_height(int height)
 {

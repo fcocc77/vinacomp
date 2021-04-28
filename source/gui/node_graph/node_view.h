@@ -30,6 +30,7 @@ private:
     QWidget *_vinacomp;
     nodes_load *nodes_loaded;
     QWidget *_node_graph;
+    project_struct *project;
 
     QMap<QString, node *> *nodes;
     QMap<QString, node *> *selected_nodes;
@@ -71,7 +72,8 @@ private:
 
 public:
     node_view(QWidget *_vinacomp, properties *_properties,
-              nodes_load *nodes_loaded, QWidget *_node_graph);
+              nodes_load *nodes_loaded, project_struct *project,
+              QWidget *_node_graph);
     ~node_view();
 
     node *create_node(node_struct node_data, bool basic_creation = false,

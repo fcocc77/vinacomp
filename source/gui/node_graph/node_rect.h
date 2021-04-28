@@ -17,6 +17,8 @@ private:
     QGraphicsLineItem *disable_line_a;
     QGraphicsLineItem *disable_line_b;
 
+    QGraphicsPixmapItem *icon_item;
+
     void refresh();
     void set_size(int width, int height);
     void update_text(QString name, QString tips);

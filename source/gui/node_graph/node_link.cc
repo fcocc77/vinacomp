@@ -97,7 +97,16 @@ node_link::node_link(QString input_label, bool _has_mask, int _index,
     refresh();
 }
 
-node_link::~node_link() {}
+node_link::~node_link()
+{
+    delete link;
+    delete ghost_link_a;
+    delete ghost_link_b;
+
+    delete arrow;
+    delete text;
+    delete _ghost_dot;
+}
 
 void node_link::set_ghost_link(bool visible, QPointF break_point)
 {

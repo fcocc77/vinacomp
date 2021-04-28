@@ -39,8 +39,15 @@ void node_graph::init_menu()
     action *cut_nodes_action = new action("Cut Nodes", "Ctrl+X", "cut");
     action *paste_nodes_action = new action("Paste Nodes", "Ctrl+P", "paste");
 
-    action *remove_nodes_action = new action("Remove Nodes", "Backspace", "close");
+    // delete node
+    action *remove_nodes_action =
+        new action("Remove Nodes", "Backspace", "close");
+    remove_nodes_action->connect_to(
+        this, [this]() { _node_view->delete_selected_nodes(); });
+    //
+
     action *rename_node_action = new action("Rename Node", "N", "edit");
+
     action *switch_inputs_a_b =
         new action("Switch Inputs A and B", "Shift+X", "switch_inputs_a_b");
     switch_inputs_a_b->connect_to(
@@ -49,9 +56,12 @@ void node_graph::init_menu()
     action *duplicate_nodes_action =
         new action("Duplicate Nodes", "Ctrl+D", "copy");
     action *clone_nodes_action = new action("Clone Nodes", "Ctrl+K", "clone");
+
+    // disable nodes
     action *disable_nodes_action = new action("Disable Nodes", "D", "disable");
     disable_nodes_action->connect_to(
         this, [this]() { _node_view->disable_selected_nodes(); });
+    //
 
     action *group_from_selection =
         new action("Group from Selection", "Ctrl+G", "group");

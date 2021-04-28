@@ -16,8 +16,6 @@ public:
     node_dot(node_props _props, QMap<QString, node *> *_selected_nodes,
              QWidget *_node_graph);
     ~node_dot();
-
-    void set_tips(QString _tips);
 };
 
 #endif // NODE_RECT_H

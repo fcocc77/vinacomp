@@ -63,7 +63,14 @@ node_rect::node_rect(node_props _props, QMap<QString, node *> *_selected_nodes,
     set_tips(tips);
 }
 
-node_rect::~node_rect() {}
+node_rect::~node_rect()
+{
+    delete name_text;
+    delete tips_text;
+    delete disable_line_a;
+    delete disable_line_b;
+    delete icon_item;
+}
 
 void node_rect::update_text(QString _name, QString _tips)
 {
@@ -134,9 +141,9 @@ void node_rect::set_icon(QString _icon_name)
     QImage image("resources/images/" + icon_name + "_a.png");
     QPixmap icon = QPixmap::fromImage(image);
     icon = icon.scaledToHeight(40, Qt::SmoothTransformation);
-    QGraphicsPixmapItem *item = new QGraphicsPixmapItem(icon);
-    item->setPos(2, 5);
-    item->setParentItem(this);
+    icon_item = new QGraphicsPixmapItem(icon);
+    icon_item->setPos(2, 5);
+    icon_item->setParentItem(this);
 
     node::set_icon_name(_icon_name);
 }

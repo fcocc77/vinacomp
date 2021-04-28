@@ -68,7 +68,27 @@ node::node(node_props _props, QMap<QString, node *> *_selected_nodes,
     }
 }
 
-node::~node() {}
+node::~node()
+{
+    for (node_link *link : *links)
+        delete link;
+
+    delete links;
+    delete _output_link;
+    delete nodes_connected_to_the_inputs;
+    delete nodes_connected_to_the_output;
+    delete center_position;
+
+    if (_trim_panel)
+        delete _trim_panel;
+
+    if (_viewer)
+        delete _viewer;
+
+    // falta borrar el panel de properties si es que esta
+    // falta borrar del viewer de la lista de viewer de vinacomp
+    // borrar viewer del panels_layout y de la lista del panel
+}
 
 void node::make_panel()
 {

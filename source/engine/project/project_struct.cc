@@ -24,7 +24,7 @@ void project_struct::insert_node(QString _name, QString _type, QColor _color,
 
 void project_struct::delete_node(QString name)
 {
-    if (nodes.contains(name))
+    if (!nodes.contains(name))
         return;
 
     delete nodes[name].params;
