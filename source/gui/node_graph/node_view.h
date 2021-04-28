@@ -85,6 +85,8 @@ public:
     void disable_selected_nodes();
     void switch_inputs_a_and_b();
     void select_node(QString name, bool select);
+    void delete_selected_nodes();
+    void delete_node(QString name);
     node *get_node(QString name);
     inline QMap<QString, node *> *get_nodes();
     node_link *get_node_link(node *_node, int link_index);
