@@ -370,24 +370,9 @@ void node_view::connect_node_to_selected_nodes(node *_node)
 
     int count = items_to_connect.count();
 
-    if (count != 2)
-        // conecta los nodos de la lista
-        for (auto item : items_to_connect)
-            connect_link(item.first, item.second);
-
-    //
-
-    // si solo se puede conectar 1 solo nodo, deja el nodo bajo el otro
-    if (count == 1)
-    {
-        node *first_node = items_to_connect.first().second;
-        QPointF position = get_min_node_separation(_node, first_node);
-        _node->set_position(position.x(), position.y());
-    }
-
     // si hay 2 nodos que se pueden conectar, deja el nodo esquinado entre los 2
     // y conecta el nodo de mas arriba al link 1
-    else if (count == 2)
+    if (count == 2)
     {
         node *node_a = items_to_connect.first().second;
         node *node_b = items_to_connect.last().second;
@@ -409,6 +394,16 @@ void node_view::connect_node_to_selected_nodes(node *_node)
         }
 
         _node->set_center_position(position.x(), position.y());
+    }
+    else
+    {
+        for (auto item : items_to_connect)
+            connect_link(item.first, item.second);
+
+        // si los nodos seleccionados no son 2, deja el primer nodo bajo el otro
+        node *first_node = items_to_connect.first().second;
+        QPointF position = get_min_node_separation(_node, first_node);
+        _node->set_position(position.x(), position.y());
     }
 }
 
