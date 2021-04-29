@@ -266,9 +266,10 @@ void node_view::paste_nodes()
         params.params = copied_node->get_params();
 
         node *pasted_node = create_node(params, true, true);
-        float x = cursor_pos.x() + (copied_node->x() - center_bbox_x);
-        float y = cursor_pos.y() + (copied_node->y() - center_bbox_y);
-        pasted_node->set_position(x, y);
+        QPointF copied_center = copied_node->get_center_position();
+        float x = cursor_pos.x() + (copied_center.x() - center_bbox_x);
+        float y = cursor_pos.y() + (copied_center.y() - center_bbox_y);
+        pasted_node->set_center_position(x, y);
 
         map_copies_nodes.insert(copied_node, pasted_node);
     }
