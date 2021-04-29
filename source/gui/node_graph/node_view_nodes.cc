@@ -331,6 +331,9 @@ bool node_view::rename_node(node *_node, QString new_name)
         QMessageBox::warning(this, "VinaComp Rename", msg, QMessageBox::Ok);
         return false;
     }
+    // no permite espacios vacios
+    else if (new_name.replace(" ", "").isEmpty())
+        return false;
 
     QString name = _node->get_name();
     _node->set_name(new_name);
