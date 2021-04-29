@@ -73,11 +73,17 @@ public:
     void set_selected(bool enable);
     void set_ghost_link(bool visible, QPointF break_point = {});
     inline QGraphicsItem *get_connected_node() const;
+    inline QGraphicsItem *get_this_node() const;
     inline void set_visible_ghost_dot(bool visible);
     inline bool is_connected() const;
     inline QPointF get_center_position() const;
     void insert_node_in_between(QGraphicsItem *_node);
 };
+
+inline QGraphicsItem *node_link::get_this_node() const
+{
+    return this_node;
+}
 
 inline QPointF node_link::get_center_position() const
 {

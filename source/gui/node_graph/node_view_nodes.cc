@@ -129,8 +129,47 @@ void node_view::delete_node(QString name)
 
 void node_view::extract_selected_nodes()
 {
+    QMap<node *, QList<node *>> extracted_nodes;
+
+    // crea una lista con los nodos conectados, de cada nodo seleccionado
     for (node *selected_node : *selected_nodes)
-        extract_node(selected_node);
+    {
+        if (selected_node->get_type() == "backdrop")
+            continue;
+
+        QList<node *> connecteds;
+        for (node_link *link : *selected_node->get_links())
+            connecteds.push_back(
+                static_cast<node *>(link->get_connected_node()));
+
+        extracted_nodes.insert(selected_node, connecteds);
+    }
+
+    // extrae todo los nodos seleccionados y los mueve hacia la derecha respecto
+    // al bbox del conjunto
+    QRectF bbox = bbox_nodes(selected_nodes);
+    for (node *extracted_node : extracted_nodes.keys())
+    {
+        extract_node(extracted_node);
+        extracted_node->set_position(extracted_node->x() + bbox.width(),
+                                     extracted_node->y());
+    }
+
+    // conecta todos los nodos que se desconectaron al usar 'extract_node'
+    for (auto *extracted_node : extracted_nodes.keys())
+    {
+        auto connected_nodes = extracted_nodes.value(extracted_node);
+
+        for (int i = 0; i < extracted_node->get_links()->count(); i++)
+        {
+            node *connected_node = connected_nodes.value(i);
+            if (!connected_node)
+                continue;
+            if (!selected_nodes->contains(connected_node->get_name()))
+                continue;
+            extracted_node->get_link(i)->connect_node(connected_node);
+        }
+    }
 }
 
 void node_view::extract_node(node *_node)
@@ -138,6 +177,8 @@ void node_view::extract_node(node *_node)
     // extrae los nodos de sus conecciones, y los nodos que estaban conectados,
     // los conecta a los nodos anterior y siguiente, esto sirve para el
     // 'delete_node' y 'cut_node'
+    if (_node->get_type() == "backdrop")
+        return;
 
     QGraphicsItem *node_from_input_1 = nullptr;
     node_link *link_1 = _node->get_link(1);
@@ -154,9 +195,6 @@ void node_view::extract_node(node *_node)
         else
             output_link->disconnect_node();
     }
-
-    _node->set_position(_node->x() + _node->get_size().width() + 40,
-                        _node->y());
 }
 
 void node_view::copy_nodes()
