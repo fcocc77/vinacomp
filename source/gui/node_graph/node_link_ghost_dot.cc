@@ -29,7 +29,6 @@ void ghost_dot::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
     node *dot = __node_view->get_node(dot_name);
     _link->insert_node_in_between(dot);
-    __node_view->allow_insertion_between_nodes(false);
 
     dot->grabMouse();
 }

@@ -46,7 +46,6 @@ void node_view::mousePressEvent(QMouseEvent *event)
                     select_node(_node->get_name(), true);
                     if (qt::control())
                     {
-                        allow_insertion_between_nodes(false);
                         select_all(false);
                         select_connected_nodes(_node);
                     }
@@ -99,7 +98,10 @@ void node_view::mouseMoveEvent(QMouseEvent *event)
 void node_view::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Control)
-        set_visible_ghost_dots(true);
+        if (!qt::shift())
+            set_visible_ghost_dots(true);
+    if (event->key() == Qt::Key_Shift)
+            set_visible_ghost_dots(false);
     if (event->key() == Qt::Key_F)
         fit_view_to_nodes();
     if (event->key() == Qt::Key_1)

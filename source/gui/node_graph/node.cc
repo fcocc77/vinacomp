@@ -250,15 +250,12 @@ void node::insert_in_between()
     if (!_node_view)
         return;
 
-    if (!static_cast<node_view*>(_node_view)->has_insertion_between_nodes())
-        return;
-
     // tiene que ser antes que el qt::control para que se oculte el 'ghost link'
     node_link *close_link = get_close_link();
     if (!close_link)
         return;
 
-    if (!qt::control() || !_node_view)
+    if (!qt::control() || !qt::shift() || !_node_view)
         return;
 
     close_link->set_ghost_link(false);
@@ -270,16 +267,12 @@ void node::show_close_link()
     if (!_node_view)
         return;
 
-    if (!static_cast<node_view*>(_node_view)->has_insertion_between_nodes())
-        return;
-
     node_link *link_to_insert = get_close_link();
     if (!link_to_insert)
         return;
 
-    if (!qt::control() || !_node_view)
+    if (!qt::control() || !qt::shift() || !_node_view)
         return;
-
 
     link_to_insert->set_ghost_link(true, *center_position);
 }
@@ -433,9 +426,6 @@ void node::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void node::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     insert_in_between();
-
-    if (_node_view)
-        static_cast<node_view*>(_node_view)->allow_insertion_between_nodes(true);
 }
 
 void node::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
