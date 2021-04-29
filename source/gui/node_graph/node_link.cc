@@ -40,7 +40,7 @@ node_link::node_link(QString input_label, bool _has_mask, int _index,
     // Links fantasmas, para la insercion de nodos
     ghost_link_a = new QGraphicsLineItem();
     ghost_link_b = new QGraphicsLineItem();
-    QPen ghost_link_pen(Qt::green);
+    QPen ghost_link_pen(Qt::green, 3);
     ghost_link_pen.setStyle(Qt::DashLine);
     ghost_link_a->setPen(ghost_link_pen);
     ghost_link_b->setPen(ghost_link_pen);
