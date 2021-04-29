@@ -8,11 +8,13 @@
 #include <knob_check_box.h>
 #include "node.h"
 #include <node_backdrop.h>
+#include <node_view.h>
 
 trim_panel::trim_panel(properties *__properties, QString _name, QString _type,
                        QColor _color, QString _icon_name,
                        nodes_load *_nodes_loaded, project_struct *_project,
-                       QWidget *__vinacomp, QGraphicsItem *_node)
+                       QWidget *__vinacomp, QGraphicsItem *_node,
+                       QWidget *__node_view)
 
     : _knob_editor(nullptr)
     , this_node(_node)
@@ -20,6 +22,7 @@ trim_panel::trim_panel(properties *__properties, QString _name, QString _type,
     , knob_editor_visible(false)
     , _vinacomp(__vinacomp)
     , project(_project)
+    , _node_view(__node_view)
 
     , is_maximize(true)
     , _properties(__properties)
@@ -181,6 +184,16 @@ QWidget *trim_panel::top_buttons_setup_ui()
     layout->addWidget(icon_node);
 
     name_edit = new QLineEdit(widget);
+    connect(name_edit, &QLineEdit::editingFinished, [=]() {
+        if (name_edit->text() == name)
+            return;
+
+        node *_node = static_cast<node *>(this_node);
+        bool renamed = static_cast<node_view *>(_node_view)
+                           ->rename_node(_node, name_edit->text());
+        if (!renamed)
+            name_edit->setText(name);
+    });
     name_edit->setText(name);
     layout->addWidget(name_edit);
 

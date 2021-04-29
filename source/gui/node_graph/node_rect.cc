@@ -198,7 +198,7 @@ void node_rect::set_size(int width, int height)
 
 void node_rect::set_name(QString _name)
 {
-    update_text(name, get_tips());
+    update_text(_name, get_tips());
     node::set_name(_name);
 }
 

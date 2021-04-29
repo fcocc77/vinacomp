@@ -253,13 +253,12 @@ void node_view::change_node_name()
 {
     // cambia el nombre al ultimo nodo seleccionado
     node *selected_node = selected_nodes->last();
-    if (selected_node == NULL)
+    if (!selected_node)
         return;
 
-    QString old_name = selected_node->get_name();
     QString new_name = node_rename_edit->text();
 
-    rename_node(selected_node, old_name, new_name);
+    rename_node(selected_node, new_name);
 
     node_rename_edit->hide();
 }

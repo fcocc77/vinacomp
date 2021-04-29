@@ -53,6 +53,7 @@ public:
                      int z_value = 0, QString tips = "");
 
     void delete_node(QString name);
+    void rename_node(QString name, QString new_name);
 
     void insert_input(QString src, QString dst, int index);
     void delete_input(QString node, int index);

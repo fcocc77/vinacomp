@@ -41,6 +41,7 @@ private:
     QList<QWidget *> *viewers_gl;
 
     project_struct *project;
+    QWidget *_node_view;
 
     tab_widget *tabs;
     bool is_maximize;
@@ -74,7 +75,7 @@ public:
     trim_panel(properties *_properties, QString _name, QString _type,
                QColor color, QString _icon_name, nodes_load *nodes_loaded,
                project_struct *project, QWidget *_vinacomp,
-               QGraphicsItem *_node);
+               QGraphicsItem *_node, QWidget *_node_view);
     ~trim_panel();
 
     void maximize(bool _maximize);

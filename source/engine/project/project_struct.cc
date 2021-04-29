@@ -31,6 +31,19 @@ void project_struct::delete_node(QString name)
     nodes.remove(name);
 }
 
+void project_struct::rename_node(QString name, QString new_name)
+{
+    if (!nodes.contains(name))
+        return;
+
+    node_struct aux = nodes[name];
+
+    // no se usa el 'delete_node' porque elimina el puntero de 'params'
+    // y solo queremos mover el nodo
+    nodes.remove(name);
+    nodes.insert(new_name, aux);
+}
+
 void project_struct::insert_input(QString src_node, QString dst_node, int index)
 {
     QString key = "in" + QString::number(index);

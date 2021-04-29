@@ -322,9 +322,20 @@ node *node_view::get_node(QString name)
     return nodes->value(name);
 }
 
-void node_view::rename_node(node *_node, QString name, QString new_name)
+bool node_view::rename_node(node *_node, QString new_name)
 {
+    if (get_node(new_name))
+    {
+        QString msg =
+            "The name: '" + new_name + "' already exists in another node";
+        QMessageBox::warning(this, "VinaComp Rename", msg, QMessageBox::Ok);
+        return false;
+    }
+
+    QString name = _node->get_name();
     _node->set_name(new_name);
+
+    project->rename_node(name, new_name);
 
     nodes->remove(name);
     nodes->insert(new_name, _node);
@@ -333,6 +344,8 @@ void node_view::rename_node(node *_node, QString name, QString new_name)
     selected_nodes->insert(new_name, _node);
 
     _node->refresh();
+
+    return true;
 }
 
 node *node_view::get_selected_node() const

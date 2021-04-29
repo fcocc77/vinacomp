@@ -97,7 +97,7 @@ PyObject *py_nodes::rename(PyObject *self, PyObject *args)
         node *_node = _node_graph->get_node_view()->get_node(name);
         if (_node)
         {
-            _node_graph->get_node_view()->rename_node(_node, name, to_name);
+            _node_graph->get_node_view()->rename_node(_node, to_name);
             return py_bool(true);
         }
     #endif

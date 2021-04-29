@@ -108,9 +108,9 @@ void node::make_panel()
     if (!nodes_without_panel.contains(type))
     {
         if (!_trim_panel)
-            _trim_panel =
-                new trim_panel(props._properties, name, type, color, icon_name,
-                               nodes_loaded, props.project, props.vinacomp, this);
+            _trim_panel = new trim_panel(props._properties, name, type, color,
+                                         icon_name, nodes_loaded, props.project,
+                                         props.vinacomp, this, _node_view);
         props._properties->add_trim_panel(_trim_panel);
     }
     //

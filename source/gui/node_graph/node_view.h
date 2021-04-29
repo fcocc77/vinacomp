@@ -83,7 +83,7 @@ public:
 
     node *get_node_from_position(QPoint position);
     QRectF bbox_nodes(QMap<QString, node *> *_nodes) const;
-    void rename_node(node *_node, QString name, QString new_name);
+    bool rename_node(node *_node, QString new_name);
     void change_node_name_dialog();
     void change_node_name();
     void disable_selected_nodes();
