@@ -100,6 +100,8 @@ node *node_view::create_node(node_struct node_data, bool basic_creation,
         select_node(node_data.name, true);
     }
 
+    static_cast<vinacomp *>(_vinacomp)->add_history();
+
     return _node;
 }
 
@@ -110,7 +112,7 @@ void node_view::delete_selected_nodes()
     auto delete_nodes = *selected_nodes;
 
     for (node *node_to_delete : delete_nodes)
-        delete_node(node_to_delete->get_name());
+        delete_node(node_to_delete);
 }
 
 void node_view::delete_node(QString name)
@@ -119,8 +121,17 @@ void node_view::delete_node(QString name)
     if (!_node)
         return;
 
+    delete_node(_node);
+
+    static_cast<vinacomp *>(_vinacomp)->add_history();
+}
+
+void node_view::delete_node(node *_node)
+{
     if (_node->get_type() != "backdrop")
         extract_node(_node);
+
+    QString name = _node->get_name();
 
     selected_nodes->remove(name);
     nodes->remove(name);

@@ -144,9 +144,17 @@ void vinacomp::main_menu()
         _project_settings->setVisible(project_settings_visible);
     });
 
+    action *undo_action = new action("Undo", "Ctrl+Z", "");
+    undo_action->connect_to(this, [this]() { undo(); });
+    action *redo_action = new action("Redo", "Ctrl+Shift+Z", "");
+    redo_action->connect_to(this, [this]() { redo(); });
+
     edit_menu->addAction(settings_action);
     edit_menu->addAction(project_settings_action);
     edit_menu->addAction(update_sylesheet_action);
+    edit_menu->addSeparator();
+    edit_menu->addAction(undo_action);
+    edit_menu->addAction(redo_action);
     //
     //
 

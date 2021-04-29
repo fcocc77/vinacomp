@@ -43,6 +43,7 @@ public:
 
     void save_nodes_attributes_to_project();
     void restore_tree();
+    void clear_tree();
     void save_scene_data();
     void restore_scene_data();
     inline node_view *get_node_view() const;

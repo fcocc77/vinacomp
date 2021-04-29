@@ -61,6 +61,7 @@ public:
 
     void save(QString project_path) const;
     void load(QString project_path);
+    void load_from_json(QJsonObject project);
 
     static QJsonValue get_value_frame(QJsonObject *params, QString param_name,
                                       int frame);

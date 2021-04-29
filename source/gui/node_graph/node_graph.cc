@@ -130,3 +130,11 @@ void node_graph::restore_scene_data()
     _node_view->restore_rect(project->global.node_view_rect);
     _node_view->freeze_current_rect();
 }
+
+void node_graph::clear_tree()
+{
+    auto nodes = *_node_view->get_nodes();
+
+    for (node *_node : nodes)
+        _node_view->delete_node(_node);
+}

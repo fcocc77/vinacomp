@@ -92,6 +92,7 @@ public:
     void select_node(QString name, bool select);
     void select_node(node *node, bool select);
     void delete_selected_nodes();
+    void delete_node(node *_node);
     void delete_node(QString name);
     void copy_nodes();
     void paste_nodes();

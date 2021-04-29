@@ -95,7 +95,10 @@ QJsonObject project_struct::get_project_json() const
 void project_struct::load(QString project_path)
 {
     QJsonObject project = jread(project_path);
+}
 
+void project_struct::load_from_json(QJsonObject project)
+{
     // Nodos
     QJsonObject _nodes = project.value("nodes").toObject();
     for (QString name : _nodes.keys())

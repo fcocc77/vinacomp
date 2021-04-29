@@ -79,9 +79,22 @@ private:
     void to_save_project();
     void save_project(QString project_path);
 
+    // undo & redo
+    QList<QJsonObject> history;
+    int current_history;
+
+    void restore_history(QJsonObject record);
+    void undo();
+    void redo();
+    //
+
 public:
     vinacomp();
     ~vinacomp();
+
+    // undo & redo
+    void add_history();
+    //
 
     inline panels_layout *get_panels_layout() const;
     inline QMap<QString, viewer *> *get_viewers() const;
