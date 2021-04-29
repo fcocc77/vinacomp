@@ -324,6 +324,7 @@ node *node_view::get_node(QString name)
 
 bool node_view::rename_node(node *_node, QString new_name)
 {
+    QString aux = new_name;
     if (get_node(new_name))
     {
         QString msg =
@@ -332,7 +333,7 @@ bool node_view::rename_node(node *_node, QString new_name)
         return false;
     }
     // no permite espacios vacios
-    else if (new_name.replace(" ", "").isEmpty())
+    else if (aux.replace(" ", "").isEmpty())
         return false;
 
     QString name = _node->get_name();
