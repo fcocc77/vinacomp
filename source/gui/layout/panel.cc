@@ -90,8 +90,10 @@ QPushButton *panel::setup_cornel_buttons()
 
     // New Viewer
     QAction *new_viewer_action = new QAction("New Viewer");
-    connect(new_viewer_action, &QAction::triggered, this,
-            [this]() { _node_graph->get_maker()->create_fx("viewer"); });
+    connect(new_viewer_action, &QAction::triggered, this, [this]() {
+        node *viewer_node = _node_graph->get_maker()->create_fx("viewer");
+        add_viewer(viewer_node->get_viewer());
+    });
     new_viewer_action->setIcon(QIcon("resources/images/viewer_a.png"));
     //
 

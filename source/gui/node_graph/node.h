@@ -130,7 +130,13 @@ public:
     inline bool output_is_connected() const;
     QList<node_link*> get_output_links() const;
     inline QString get_tips() const;
+    inline viewer *get_viewer() const;
 };
+
+inline viewer *node::get_viewer() const
+{
+    return _viewer;
+}
 
 inline QJsonObject *node::get_params() const
 {

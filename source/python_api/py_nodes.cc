@@ -45,7 +45,7 @@ PyObject *py_nodes::create_node(PyObject *self, PyObject *args)
 
     QString name;
     #ifdef GUI
-        name = _node_graph->get_maker()->create_fx(node_id);
+        name = _node_graph->get_maker()->create_fx(node_id)->get_name();
     #elif ENGINE
         name = node_id;
         _nodes->create_node(node_id);

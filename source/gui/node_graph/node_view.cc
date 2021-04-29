@@ -88,8 +88,7 @@ void node_view::connect_to_viewer()
     if (!_viewer)
     {
         maker *_maker = static_cast<node_graph *>(_node_graph)->get_maker();
-        QString viewer_name = _maker->create_fx("viewer");
-        _viewer = get_node(viewer_name);
+        _viewer = _maker->create_fx("viewer");
     }
 
     // evita que se conecte asi mismo

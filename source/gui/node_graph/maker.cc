@@ -27,7 +27,7 @@ maker::maker(QWidget *__vinacomp, properties *__properties,
 
 maker::~maker() {}
 
-QString maker::create_fx(QString id, bool basic_creation)
+node *maker::create_fx(QString id, bool basic_creation)
 {
     QJsonObject effect = nodes_loaded->get_effect(id);
     if (effect.empty())
@@ -69,7 +69,7 @@ QString maker::create_fx(QString id, bool basic_creation)
     //
     //
 
-    return name;
+    return _node;;
 }
 
 QColor maker::default_color(QString effect_group)
