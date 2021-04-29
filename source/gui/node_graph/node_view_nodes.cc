@@ -46,7 +46,7 @@ node *node_view::create_node(node_struct node_data, bool basic_creation,
         _node = new node_dot(props, selected_nodes, _node_graph);
     else if (type == "backdrop")
     {
-        backdrop = new node_backdrop(props, selected_nodes, this);
+        backdrop = new node_backdrop(props, selected_nodes, _node_graph, this);
         _node = backdrop;
     }
     else if (type == "group")

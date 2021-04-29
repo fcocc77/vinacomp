@@ -45,7 +45,7 @@ private:
 
 public:
     node_backdrop(node_props _props, QMap<QString, node *> *_selected_nodes,
-                  QWidget *node_view);
+                  QWidget *_node_graph, QWidget *_node_view);
     ~node_backdrop();
 
     void refresh();

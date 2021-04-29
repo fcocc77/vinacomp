@@ -3,9 +3,9 @@
 
 node_backdrop::node_backdrop(node_props _props,
                              QMap<QString, node *> *_selected_nodes,
-                             QWidget *__node_view)
+                             QWidget *__node_graph, QWidget *__node_view)
 
-    : node(_props, _selected_nodes)
+    : node(_props, _selected_nodes, __node_graph)
     , props(_props)
     , _node_view(__node_view)
     , selected_nodes(_selected_nodes)
@@ -160,7 +160,7 @@ void node_backdrop::set_tips(QString _tips)
 void node_backdrop::set_name(QString _name)
 {
     update_text(_name, get_tips());
-    node::set_name(name);
+    node::set_name(_name);
 }
 
 void node_backdrop::set_z_value(int value)
