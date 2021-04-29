@@ -147,7 +147,8 @@ void node::refresh()
     // refresca los link de cada nodo seleccionado y los
     // link de los nodos que estan conectados a la salida.
     for (node *output_node : *this->get_output_nodes())
-        refresh_links(output_node);
+        if (output_node)
+            refresh_links(output_node);
     //
     //
 
