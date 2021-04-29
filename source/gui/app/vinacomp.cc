@@ -22,7 +22,7 @@ void vinacomp::setup_ui()
     QLabel *empty_viewer = new QLabel("( Viewer1 )");
     empty_viewer->setAlignment(Qt::AlignCenter);
     empty_viewer->setObjectName("empty_viewer");
-    viewers = new QList<viewer *>;
+    viewers = new QMap<QString, viewer *>;
     viewers_gl = new QList<QWidget *>;
     //
 

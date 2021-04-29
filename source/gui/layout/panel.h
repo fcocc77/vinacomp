@@ -30,17 +30,16 @@ private:
     QWidget *_vinacomp;
 
     QWidget *_panels_layout;
-    QStringList tabs_list;
     tab_widget *_tab_widget;
 
     QMenu *viewers_menu;
     QMenu *groups_menu;
 
     QPushButton *setup_cornel_buttons();
-    QString get_tab_label(QString name);
     void add_fixed_panel(QString name);
+    void update_all_viewers_menu();
     void update_viewers_menu();
-    QList<viewer *> *get_viewers() const;
+    QMap<QString, viewer *> *get_viewers() const;
 
 public:
     panel(QWidget *_panels_layout, QWidget *_vinacomp, QList<QSplitter *> *_splitters,
@@ -49,27 +48,29 @@ public:
     ~panel();
 
     panel *split(Qt::Orientation orientation);
-    void add_tab(QWidget *widget, QString name);
+    inline void add_tab(QWidget *widget, QString name);
     void add_viewer(viewer *_viewer);
+    void remove_viewer(viewer *_viewer);
     void add_group(node_graph *_group);
     void add_tabs(QStringList tabs_list);
+    void remove_tab(QString name);
     void close_panel();
     void remove_all_tab();
     void set_index(int index);
     QSplitter *get_splitter() const;
-    inline QStringList get_tabs_list() const;
+    QStringList get_tabs_list() const;
     inline tab_widget *get_tab_widget() const;
     void update_groups_menu();
 };
 
-inline QStringList panel::get_tabs_list() const
-{
-    return tabs_list;
-}
-
 inline tab_widget *panel::get_tab_widget() const
 {
     return _tab_widget;
+}
+
+inline void panel::add_tab(QWidget *widget, QString name)
+{
+    _tab_widget->add_tab(widget, name);
 }
 
 #endif // PANEL_HPP

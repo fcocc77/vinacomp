@@ -44,9 +44,27 @@ public:
     int get_current_index() const;
     void clear();
     inline tab *get_tab(int index) const;
+    inline QList<tab*> get_tabs() const;
+    inline int count() const;
+    inline bool empty() const;
 signals:
     void closed_tab(QString name);
 };
+
+inline QList<tab*> tab_widget::get_tabs() const
+{
+    return tabs;
+}
+
+inline bool tab_widget::empty() const
+{
+    return tabs.empty();
+}
+
+inline int tab_widget::count() const
+{
+    return tabs.count();
+}
 
 inline tab *tab_widget::get_tab(int index) const
 {

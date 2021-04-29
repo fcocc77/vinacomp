@@ -1,47 +1,47 @@
 {
     "splitter": {
         "distribution": [
-            488,
-            430
+            1731,
+            777
         ],
-        "orientation": 2,
+        "orientation": 1,
+        "panel_b": {
+            "current_index": 0,
+            "tabs": [
+                "Properties"
+            ]
+        },
         "splitter_a": {
             "distribution": [
-                495,
-                1424
+                414,
+                394
             ],
-            "orientation": 1,
-            "panel_a": {
-                "current_index": 0,
-                "tabs": [
-                    "properties"
-                ]
-            },
+            "orientation": 2,
             "panel_b": {
                 "current_index": 0,
                 "tabs": [
-                    "viewer"
-                ]
-            }
-        },
-        "splitter_b": {
-            "distribution": [
-                1389,
-                530
-            ],
-            "orientation": 1,
-            "panel_a": {
-                "current_index": 0,
-                "tabs": [
-                    "node_graph",
-                    "curve_editor"
+                    "Node Graph",
+                    "Curve Editor"
                 ]
             },
-            "panel_b": {
-                "current_index": 0,
-                "tabs": [
-                    "script_editor"
-                ]
+            "splitter_a": {
+                "distribution": [
+                    907,
+                    823
+                ],
+                "orientation": 1,
+                "panel_a": {
+                    "current_index": 0,
+                    "tabs": [
+                        "Viewer"
+                    ]
+                },
+                "panel_b": {
+                    "current_index": 0,
+                    "tabs": [
+                        "Script Editor"
+                    ]
+                }
             }
         }
     }

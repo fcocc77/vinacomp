@@ -82,11 +82,16 @@ node::~node()
     delete nodes_connected_to_the_output;
     delete center_position;
 
+    vinacomp *__vinacomp = static_cast<vinacomp *>(props.vinacomp);
     if (_trim_panel)
         delete _trim_panel;
 
     if (_viewer)
+    {
+        __vinacomp->get_viewers()->remove(_viewer->get_name());
+        __vinacomp->get_panels_layout()->delete_viewer(_viewer);
         delete _viewer;
+    }
 
     // falta borrar el panel de properties si es que esta
     // falta borrar del viewer de la lista de viewer de vinacomp
@@ -120,7 +125,7 @@ void node::make_panel()
             _viewer =
                 new viewer(name, props.project, __vinacomp->get_renderer(), props.vinacomp);
 
-            __vinacomp->get_viewers()->push_back(_viewer);
+            __vinacomp->get_viewers()->insert(name, _viewer);
         }
         __vinacomp->get_panels_layout()->add_viewer(_viewer);
     }

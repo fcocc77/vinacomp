@@ -19,11 +19,7 @@ panel::panel(QWidget *__panels_layout, QWidget *__vinacomp, QList<QSplitter *> *
     this->setObjectName("panel");
 
     _tab_widget = new tab_widget(true);
-    connect(_tab_widget, &tab_widget::closed_tab, this, [=](QString tab_label) {
-        QString tab_name = tab_label.toLower().replace(' ', '_');
-        tabs_list.removeOne(tab_name);
-    });
-    QPushButton *cornel_button = setup_cornel_buttons();
+    setup_cornel_buttons();
 
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->setMargin(0);
@@ -54,28 +50,28 @@ QPushButton *panel::setup_cornel_buttons()
     // Add NodeGraph
     QAction *add_node_graph_action = new QAction("Node Graph");
     connect(add_node_graph_action, &QAction::triggered, this,
-            [this]() { add_fixed_panel("node_graph"); });
+            [this]() { add_fixed_panel("Node Graph"); });
     add_node_graph_action->setIcon(QIcon("resources/images/node_graph_a.png"));
     //
 
     // Add Script Editor
     QAction *add_script_editor_action = new QAction("Script Editor");
     connect(add_script_editor_action, &QAction::triggered, this,
-            [this]() { add_fixed_panel("script_editor"); });
+            [this]() { add_fixed_panel("Script Editor"); });
     add_script_editor_action->setIcon(QIcon("resources/images/script_editor_a.png"));
     //
 
     // Add Curve Editor
     QAction *add_curve_editor_action = new QAction("Curve Editor");
     connect(add_curve_editor_action, &QAction::triggered, this,
-            [this]() { add_fixed_panel("curve_editor"); });
+            [this]() { add_fixed_panel("Curve Editor"); });
     add_curve_editor_action->setIcon(QIcon("resources/images/curve_editor_a.png"));
     //
 
     // Add Properties
     QAction *add_properties_action = new QAction("Properties");
     connect(add_properties_action, &QAction::triggered, this,
-            [this]() { add_fixed_panel("properties"); });
+            [this]() { add_fixed_panel("Properties"); });
     add_properties_action->setIcon(QIcon("resources/images/properties_a.png"));
     //
 
@@ -85,9 +81,9 @@ QPushButton *panel::setup_cornel_buttons()
         // si no existe ningun viewer creado, abre el 'empty_viewer'
         auto *viewers = get_viewers();
         if (viewers->empty())
-            add_fixed_panel("viewer");
+            add_fixed_panel("Viewer");
         else
-            add_viewer(viewers->value(0));
+            add_viewer(viewers->first());
     });
     add_viewer_action->setIcon(QIcon("resources/images/viewer_a.png"));
     //
@@ -145,28 +141,11 @@ void panel::add_tabs(QStringList tabs_list)
 void panel::remove_all_tab()
 {
     _tab_widget->clear();
-    tabs_list.clear();
 }
 
-QString panel::get_tab_label(QString name)
+void panel::remove_tab(QString name)
 {
-    if (name == "node_graph")
-        return "Node Graph";
-
-    else if (name == "viewer")
-        return "Viewer";
-
-    else if (name == "curve_editor")
-        return "Curve Editor";
-
-    else if (name == "script_editor")
-        return "Script Editor";
-
-    else if (name == "properties")
-        return "Properties";
-
-    else
-        return "";
+    _tab_widget->remove_tab(name);
 }
 
 void panel::set_index(int index)
@@ -178,19 +157,19 @@ void panel::add_fixed_panel(QString name)
 {
     // añade un tab de algun panel fijo
     QWidget *tab;
-    if (name == "node_graph")
+    if (name == "Node Graph")
         tab = _node_graph;
 
-    else if (name == "viewer")
+    else if (name == "Viewer")
         tab = empty_viewer;
 
-    else if (name == "curve_editor")
+    else if (name == "Curve Editor")
         tab = _curve_editor;
 
-    else if (name == "script_editor")
+    else if (name == "Script Editor")
         tab = _script_editor;
 
-    else if (name == "properties")
+    else if (name == "Properties")
         tab = _properties;
 
     else
@@ -199,32 +178,27 @@ void panel::add_fixed_panel(QString name)
     add_tab(tab, name);
 }
 
-void panel::add_tab(QWidget *widget, QString name)
-{
-    QString label = get_tab_label(name);
-    if (label.isEmpty())
-        label = name;
-
-    _tab_widget->add_tab(widget, label);
-
-    // el tab que se va a agregar en este panel se borra en
-    // todos los paneles, si es que esta en alguno.
-    auto panels = static_cast<panels_layout *>(_panels_layout)->get_all_panels();
-
-    for (panel *_panel : panels)
-        _panel->tabs_list.removeOne(name);
-    //
-    //
-
-    tabs_list.push_back(name);
-}
-
 void panel::add_viewer(viewer *_viewer)
 {
-    _tab_widget->remove_tab("Viewer");
-    tabs_list.removeOne("viewer");
-    add_tab(_viewer, _viewer->get_name());
+    if (!_viewer)
+        return;
 
+    remove_tab("Viewer");
+    add_tab(_viewer, _viewer->get_name());
+    update_all_viewers_menu();
+}
+
+void panel::remove_viewer(viewer *_viewer)
+{
+    remove_tab(_viewer->get_name());
+    update_all_viewers_menu();
+
+    if (_tab_widget->empty())
+        add_fixed_panel("Viewer");
+}
+
+void panel::update_all_viewers_menu()
+{
     // actualiza el munu de visores de todos los paneles
     auto panels = static_cast<panels_layout *>(_panels_layout)->get_all_panels();
     for (panel *_panel : panels)
@@ -289,9 +263,18 @@ void panel::update_groups_menu()
     groups_menu->menuAction()->setVisible(!groups->keys().isEmpty());
 }
 
-QList<viewer *> *panel::get_viewers() const
+QMap<QString, viewer *> *panel::get_viewers() const
 {
     return static_cast<vinacomp *>(_vinacomp)->get_viewers();
+}
+
+QStringList panel::get_tabs_list() const
+{
+    QStringList tabs_list;
+    for (tab *_tab : _tab_widget->get_tabs())
+        tabs_list.push_back(_tab->get_name());
+
+    return tabs_list;
 }
 
 QSplitter *panel::get_splitter() const

@@ -48,6 +48,7 @@ public:
 
     QList<panel *> get_all_panels() const;
     void add_viewer(viewer *_viewer);
+    void delete_viewer(viewer *_viewer);
     void add_node_graph_group(node_graph *group, QString name);
 };
 

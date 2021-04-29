@@ -90,7 +90,7 @@ void panels_layout::add_viewer(viewer *_viewer)
     //
 
     panel *empty_panel = get_some_empty_panel();
-    panel *viewer_panel = get_panel("viewer");
+    panel *viewer_panel = get_panel("Viewer");
 
     // panel a insertar el nuevo 'viewer'
     // primero busca donde hay algun panel con algun 'viewer' si no, busca un panel vacio,
@@ -101,6 +101,15 @@ void panels_layout::add_viewer(viewer *_viewer)
         empty_panel->add_viewer(_viewer);
     else
         panels.value(0)->add_viewer(_viewer);
+}
+
+void panels_layout::delete_viewer(viewer *_viewer)
+{
+    panel *viewer_panel = get_panel(_viewer->get_name());
+    if (!viewer_panel)
+        return;
+
+    viewer_panel->remove_viewer(_viewer);
 }
 
 panel *panels_layout::get_panel(QString name) const
@@ -128,7 +137,7 @@ void panels_layout::add_node_graph_group(node_graph *group, QString name)
     }
     //
 
-    panel *node_graph_panel = get_panel("node_graph");
+    panel *node_graph_panel = get_panel("Node Graph");
 
     // inserta el grupo en el panel donde contenga un grupo, sino donde este el
     // node_graph principal y si no lo inserta en el primer panel de la lista

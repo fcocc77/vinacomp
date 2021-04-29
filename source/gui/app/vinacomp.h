@@ -37,7 +37,7 @@ private:
     project_settings *_project_settings;
     renderer *_renderer;
 
-    QList<viewer *> *viewers;
+    QMap<QString, viewer *> *viewers;
     QList<QWidget *> *viewers_gl;
     QMap<QString, node_graph*> *groups_node_graph;
 
@@ -84,7 +84,7 @@ public:
     ~vinacomp();
 
     inline panels_layout *get_panels_layout() const;
-    inline QList<viewer *> *get_viewers() const;
+    inline QMap<QString, viewer *> *get_viewers() const;
     inline QList<QWidget *> *get_viewers_gl() const;
     inline project_struct *get_project() const;
     inline renderer *get_renderer() const;
@@ -110,7 +110,7 @@ inline QMap<QString, node_graph *> *vinacomp::get_groups_node_graph() const
     return groups_node_graph;
 }
 
-inline QList<viewer *> *vinacomp::get_viewers() const
+inline QMap<QString, viewer *> *vinacomp::get_viewers() const
 {
     return viewers;
 }

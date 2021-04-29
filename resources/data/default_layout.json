@@ -8,7 +8,7 @@
         "panel_b": {
             "current_index": 0,
             "tabs": [
-                "properties"
+                "Properties"
             ]
         },
         "splitter_a": {
@@ -20,8 +20,8 @@
             "panel_b": {
                 "current_index": 0,
                 "tabs": [
-                    "node_graph",
-                    "curve_editor"
+                    "Node Graph",
+                    "Curve Editor"
                 ]
             },
             "splitter_a": {
@@ -33,13 +33,13 @@
                 "panel_a": {
                     "current_index": 0,
                     "tabs": [
-                        "viewer"
+                        "Viewer"
                     ]
                 },
                 "panel_b": {
                     "current_index": 0,
                     "tabs": [
-                        "script_editor"
+                        "Script Editor"
                     ]
                 }
             }
