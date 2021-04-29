@@ -48,9 +48,11 @@ private:
 
     QWidget *controls_tab;
     QVBoxLayout *controls_layout;
+    QWidget *node_tab;
     QVBoxLayout *node_tab_layout;
     QLineEdit *name_edit;
     node_gui *_node_gui;
+    QWidget *buttons;
 
     QString name;
     QString type;
@@ -60,7 +62,6 @@ private:
     QJsonObject *data;
 
     void knob_editor_toggle();
-    void setup_ui();
     void setup_gui_panels(QJsonArray _knobs);
     QWidget *top_buttons_setup_ui();
     tab_widget *tabs_ui();

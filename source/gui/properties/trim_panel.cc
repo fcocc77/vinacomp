@@ -36,7 +36,19 @@ trim_panel::trim_panel(properties *__properties, QString _name, QString _type,
     this->setObjectName("trim_panel");
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-    setup_ui();
+    layout = new QVBoxLayout(this);
+    layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
+    layout->setSpacing(0);
+    layout->setMargin(0);
+
+    buttons = top_buttons_setup_ui();
+    layout->addWidget(buttons);
+
+    knob_editor_container = new QWidget(this);
+    layout->addWidget(knob_editor_container);
+
+    tabs = tabs_ui();
+    layout->addWidget(tabs);
 
     vinacomp *vina = static_cast<vinacomp *>(_vinacomp);
 
@@ -65,7 +77,32 @@ trim_panel::trim_panel(properties *__properties, QString _name, QString _type,
     }
 }
 
-trim_panel::~trim_panel() {}
+trim_panel::~trim_panel()
+{
+    delete layout;
+    delete knob_editor_container;
+
+    if (_node_gui)
+        delete _node_gui;
+
+    // knobs
+    for (knob *_knob : *knobs)
+        delete _knob;
+    delete knobs;
+    //
+
+    delete buttons;
+
+    // tabs
+    delete node_tab_layout;
+    delete node_tab;
+
+    delete controls_layout;
+    delete controls_tab;
+
+    delete tabs;
+    //
+}
 
 void trim_panel::setup_shared_params()
 {
@@ -87,23 +124,6 @@ void trim_panel::setup_shared_params()
 
     if (type == "backdrop")
         get_knob("disable_node")->set_visible(false);
-}
-
-void trim_panel::setup_ui()
-{
-    layout = new QVBoxLayout(this);
-    layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
-    layout->setSpacing(0);
-    layout->setMargin(0);
-
-    QWidget *butttons = top_buttons_setup_ui();
-    layout->addWidget(butttons);
-
-    knob_editor_container = new QWidget(this);
-    layout->addWidget(knob_editor_container);
-
-    tabs = tabs_ui();
-    layout->addWidget(tabs);
 }
 
 void trim_panel::setup_gui_panels(QJsonArray _knobs)
@@ -198,7 +218,7 @@ tab_widget *trim_panel::tabs_ui()
     controls_layout->setSpacing(5);
     controls_tab->setObjectName("controls");
 
-    QWidget *node_tab = new QWidget(this);
+    node_tab = new QWidget(this);
     node_tab->setObjectName("node_tab");
     node_tab_layout = new QVBoxLayout(node_tab);
     node_tab_layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
