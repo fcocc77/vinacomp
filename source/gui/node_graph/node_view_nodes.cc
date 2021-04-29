@@ -10,6 +10,15 @@ node *node_view::create_node(node_struct node_data, bool basic_creation,
     // la 'basic_creation' : crea position bajo el cursor, no conecta el nodo y
     // no lo selecciona
 
+    // inserta un item de nodo en el proyecto, con los atributos necesarios para
+    // renderizar el resto de atributos se generan al guardar el proyecto
+    QJsonObject params;
+    if (node_data.params)
+        params = *node_data.params;
+
+    project->insert_node(node_data.name, node_data.type, params);
+    //
+
     node_props props;
 
     props.scene = scene;
@@ -47,11 +56,10 @@ node *node_view::create_node(node_struct node_data, bool basic_creation,
     //
     //
 
-    node *selected_node = get_selected_node();
-
     // si al posicion no viene del un proyecto
     if (!from_project)
     {
+        node *selected_node = get_selected_node();
         if (selected_node && !basic_creation)
         {
             position = get_min_node_separation(_node, selected_node);
@@ -81,11 +89,6 @@ node *node_view::create_node(node_struct node_data, bool basic_creation,
     }
 
     nodes->insert(node_data.name, _node);
-
-    // inserta un item de nodo en el proyecto, con los atributos necesarios para
-    // renderizar el resto de atributos se generan al guardar el proyecto
-    project->insert_node(node_data.name, node_data.type);
-    //
 
     if (!basic_creation && !backdrop)
         // conecta los nodos conectado al nodo seleccionado, al nuevo nodo
@@ -242,15 +245,16 @@ void node_view::paste_nodes()
         params.pos = copied_node->pos();
         params.type = copied_node->get_type();
         params.inputs = {};
-
-        params.params = new QJsonObject;
-        *params.params = *copied_node->get_params();
-
         params.tips = copied_node->get_tips();
         params.size = copied_node->get_size();
         params.name = get_available_name(copied_node->get_name());
 
-        node *pasted_node = create_node(params, true);
+        // aqui no se esta clonando el espacio de memoria 'params'
+        // ya que cuando se cree el nodo en el proyecto 'insert_node' creara un
+        // 'params' nuevo y copiara los datos
+        params.params = copied_node->get_params();
+
+        node *pasted_node = create_node(params, true, true);
         float x = cursor_pos.x() + (copied_node->x() - center_bbox_x);
         float y = cursor_pos.y() + (copied_node->y() - center_bbox_y);
         pasted_node->set_position(x, y);

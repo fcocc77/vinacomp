@@ -8,10 +8,10 @@ project_struct::project_struct()
 
 project_struct::~project_struct() {}
 
-void project_struct::insert_node(QString _name, QString _type, QColor _color,
-                                 QPointF _pos, QJsonObject _params,
-                                 QJsonObject _inputs, QSize size, int z_value,
-                                 QString tips)
+void project_struct::insert_node(QString _name, QString _type,
+                                 QJsonObject _params, QColor _color,
+                                 QPointF _pos, QJsonObject _inputs, QSize size,
+                                 int z_value, QString tips)
 {
     if (nodes.contains(_name))
         return;
@@ -120,7 +120,7 @@ void project_struct::load(QString project_path)
         // extrae el tips del parametro de label
         QString tips = params.value("label").toString();
 
-        insert_node(name, type, _color, _position, params, inputs, _size,
+        insert_node(name, type, params, _color, _position, inputs, _size,
                     z_value, tips);
     }
     //
@@ -143,7 +143,7 @@ void project_struct::load(QString project_path)
         global.layers.push_back(layer);
     }
     //
-    
+
 
     // NodeView Rect
     QJsonArray _rect = _global.value("node_view_rect").toArray();

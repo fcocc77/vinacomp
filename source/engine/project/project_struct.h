@@ -47,8 +47,8 @@ public:
     global_struct global;
     int frame;
 
-    void insert_node(QString _name, QString _type, QColor _color = QColor(),
-                     QPointF _pos = {0, 0}, QJsonObject _params = {},
+    void insert_node(QString _name, QString _type, QJsonObject _params = {},
+                     QColor _color = QColor(), QPointF _pos = {0, 0},
                      QJsonObject _inputs = {}, QSize size = {0, 0},
                      int z_value = 0, QString tips = "");
 
