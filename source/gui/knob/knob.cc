@@ -5,6 +5,7 @@
 #include <trim_panel.h>
 #include <viewer_gl.h>
 #include <vinacomp.h>
+#include <node_rect.h>
 
 knob::knob()
     : knob_layout(nullptr)
@@ -40,12 +41,14 @@ knob::~knob()
 }
 
 void knob::set_env(QWidget *__parent, project_struct *_project,
-                   QWidget *__vinacomp, QList<QWidget *> *_viewers_gl)
+                   QWidget *__vinacomp, QList<QWidget *> *_viewers_gl,
+                   QGraphicsItem *_this_node)
 {
     _parent = __parent;
     project = _project;
     _vinacomp = __vinacomp;
     viewers_gl = _viewers_gl;
+    this_node = _this_node;
 }
 
 QString knob::get_node_name() const
@@ -234,6 +237,7 @@ void knob::enable_animation()
 {
     animated = true;
     set_keyframe();
+    static_cast<node_rect *>(this_node)->set_animated(true);
 }
 
 void knob::disable_animation()
@@ -248,6 +252,8 @@ void knob::disable_animation()
     QString curve = get_param_value().toString();
     float value = anim::get_value(curve, project->frame);
     update_value(value);
+
+    static_cast<node_rect *>(this_node)->set_animated(false);
 }
 
 void knob::set_animated(bool _animated) {}

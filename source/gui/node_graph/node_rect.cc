@@ -7,8 +7,8 @@ node_rect::node_rect(node_props _props, QMap<QString, node *> *_selected_nodes,
     , icon_area_width(45)
     , disable(false)
     , attributes(false)
-    , animated(true)
-    , cloned(true)
+    , animated(false)
+    , cloned(false)
     , expression(false)
     , with_link(false)
 
@@ -35,16 +35,21 @@ node_rect::node_rect(node_props _props, QMap<QString, node *> *_selected_nodes,
     attribute_box = new QGraphicsPathItem;
     attribute_box->setVisible(attributes);
     QLinearGradient attr_ramp(0, 100, 0, 0);
-    attr_ramp.setColorAt(0.5, QColor(30, 30, 30));
-    attr_ramp.setColorAt(0.45, QColor(45, 45, 45));
+    attr_ramp.setColorAt(0.5, QColor(40, 40, 40));
+    attr_ramp.setColorAt(0.45, QColor(55, 55, 55));
     attribute_box->setBrush(attr_ramp);
     attribute_box->setPen(QPen(Qt::black, 0));
     _props.scene->addItem(attribute_box);
 
-    anim_item = add_attribute_item("A", Qt::red);
-    clone_item = add_attribute_item("C", Qt::magenta);
-    expression_item = add_attribute_item("E", Qt::green);
-    link_item = add_attribute_item("L", Qt::blue);
+    anim_text = new QGraphicsTextItem;
+    clone_text = new QGraphicsTextItem;
+    expression_text = new QGraphicsTextItem;
+    link_text = new QGraphicsTextItem;
+
+    anim_item = add_attribute_item("A", anim_text);
+    clone_item = add_attribute_item("C", clone_text);
+    expression_item = add_attribute_item("E", expression_text);
+    link_item = add_attribute_item("L", link_text);
 
     anim_item->setParentItem(attribute_box);
     clone_item->setParentItem(attribute_box);
@@ -88,6 +93,8 @@ node_rect::node_rect(node_props _props, QMap<QString, node *> *_selected_nodes,
 
     set_name(name);
     set_tips(tips);
+
+    refresh_attribute_items();
 }
 
 node_rect::~node_rect()
@@ -97,7 +104,71 @@ node_rect::~node_rect()
     delete disable_line_a;
     delete disable_line_b;
     delete icon_item;
+
+    delete anim_text;
+    delete clone_text;
+    delete expression_text;
+    delete link_text;
+
+    delete anim_item;
+    delete clone_item;
+    delete expression_item;
+    delete link_item;
+
     delete attribute_box;
+}
+
+void node_rect::refresh_attribute_items()
+{
+    QColor disable_color = {45, 45, 45};
+    if (animated)
+    {
+        anim_item->setBrush(QBrush(Qt::cyan));
+        anim_text->setVisible(true);
+    }
+    else
+    {
+        anim_item->setBrush(QBrush(disable_color));
+        anim_text->setVisible(false);
+    }
+
+    if (cloned)
+    {
+        clone_text->setVisible(true);
+        clone_item->setBrush(QBrush(Qt::magenta));
+    }
+    else
+    {
+        clone_text->setVisible(false);
+        clone_item->setBrush(QBrush(disable_color));
+    }
+
+    if (expression)
+    {
+        expression_text->setVisible(true);
+        expression_item->setBrush(QBrush(Qt::green));
+    }
+    else
+    {
+        expression_text->setVisible(false);
+        expression_item->setBrush(QBrush(disable_color));
+    }
+
+    if (with_link)
+    {
+        link_text->setVisible(true);
+        link_item->setBrush(QBrush(Qt::cyan));
+    }
+    else
+    {
+        link_text->setVisible(false);
+        link_item->setBrush(QBrush(disable_color));
+    }
+
+    attributes = animated || cloned || expression || with_link;
+    attribute_box->setVisible(attributes);
+
+    refresh_attribute_box();
 }
 
 void node_rect::refresh_attribute_box()
@@ -111,61 +182,39 @@ void node_rect::refresh_attribute_box()
     // caja
     int radius = 3;
     QPainterPath attr_box_rect;
-    int attr_width = 100;
-    int attr_height = 32;
+    int attr_width = 70;
+    int attr_height = 25;
     float attr_pos_x = (width - attr_width) / 2;
     attr_box_rect.addRoundedRect(
-        QRectF(attr_pos_x, height - 10, 100, attr_height), radius, radius);
+        QRectF(attr_pos_x, height - 10, attr_width, attr_height), radius, radius);
     attribute_box->setPath(attr_box_rect);
     //
 
-    float space = 5;
+    float space = 8;
     for (QGraphicsItem *item :
          {anim_item, clone_item, expression_item, link_item})
     {
-        item->setPos({space + attr_pos_x, height + 4.0});
-        space += 25;
+        item->setPos({space + attr_pos_x, height + 3.0});
+        space += 15;
     }
-
-    QColor disable_color = {40, 40, 40};
-    if (animated)
-        anim_item->setBrush(QBrush(Qt::red));
-    else
-        anim_item->setBrush(QBrush(disable_color));
-
-    if (cloned)
-        clone_item->setBrush(QBrush(Qt::magenta));
-    else
-        clone_item->setBrush(QBrush(disable_color));
-
-    if (expression)
-        expression_item->setBrush(QBrush(Qt::green));
-    else
-        expression_item->setBrush(QBrush(disable_color));
-
-    if (with_link)
-        link_item->setBrush(QBrush(Qt::blue));
-    else
-        link_item->setBrush(QBrush(disable_color));
 }
 
-QGraphicsPathItem *node_rect::add_attribute_item(QString letter, QColor color)
+QGraphicsPathItem *node_rect::add_attribute_item(QString letter,
+                                                 QGraphicsTextItem *text_item)
 {
     QGraphicsPathItem *item = new QGraphicsPathItem;
-    item->setBrush(QBrush(color));
     item->setPen(QPen(Qt::black, 0));
 
-    QGraphicsTextItem *letter_item = new QGraphicsTextItem;
     QFont font;
-    font.setPixelSize(10);
+    font.setPixelSize(7);
     font.setBold(true);
-    letter_item->setFont(font);
-    letter_item->setParentItem(item);
-    letter_item->setDefaultTextColor(Qt::black);
-    letter_item->setPlainText(letter);
-    letter_item->setPos(-0.5, -3);
+    text_item->setFont(font);
+    text_item->setParentItem(item);
+    text_item->setDefaultTextColor(Qt::black);
+    text_item->setPlainText(letter);
+    text_item->setPos(-1.5, -3.5);
 
-    int size = 15;
+    int size = 10;
     QPainterPath _path;
     _path.addRoundedRect(QRectF(0, 0, size, size), size, size);
     item->setPath(_path);
@@ -251,8 +300,7 @@ void node_rect::set_icon(QString _icon_name)
 
 void node_rect::set_position(float x, float y)
 {
-    if (attributes)
-        attribute_box->setPos(x, y);
+    attribute_box->setPos(x, y);
     node::set_position(x, y);
 }
 

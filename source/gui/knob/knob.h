@@ -7,6 +7,7 @@
 #include <QMenu>
 #include <QPushButton>
 #include <QWidget>
+#include <QGraphicsItem>
 
 #include <button.h>
 #include <project_struct.h>
@@ -19,6 +20,7 @@ private:
     button *animation_button;
     QWidget *_vinacomp;
     QWidget *_parent;
+    QGraphicsItem *this_node;
 
     QList<QWidget *> *viewers_gl;
 
@@ -52,7 +54,7 @@ public:
     void set_init_space(int space, QString label = "");
     QJsonValue get_param_value() const;
     void set_env(QWidget *parent, project_struct *project, QWidget *_vinacomp,
-                 QList<QWidget *> *viewers_gl);
+                 QList<QWidget *> *viewers_gl, QGraphicsItem *_this_node);
     void set_data(QJsonObject _knob_data, QJsonObject *_params);
     QString get_node_type() const;
     QString get_node_name() const;
