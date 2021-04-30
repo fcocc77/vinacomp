@@ -17,12 +17,21 @@ private:
     QGraphicsLineItem *disable_line_a;
     QGraphicsLineItem *disable_line_b;
 
+    QGraphicsPathItem *attribute_box;
+    QGraphicsPathItem *anim_item, *clone_item, *expression_item, *link_item;
+    bool attributes;
+
+    bool animated, cloned, expression, with_link;
+
     QGraphicsPixmapItem *icon_item;
 
     void refresh();
+    void refresh_attribute_box();
     void set_size(int width, int height);
     void update_text(QString name, QString tips);
     void set_selected(bool selected) override;
+    void set_position(float x, float y) override;
+    QGraphicsPathItem *add_attribute_item(QString letter, QColor color);
 
 public:
     node_rect(node_props _props, QMap<QString, node *> *_selected_nodes,

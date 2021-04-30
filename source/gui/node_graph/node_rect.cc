@@ -6,6 +6,12 @@ node_rect::node_rect(node_props _props, QMap<QString, node *> *_selected_nodes,
     : node(_props, _selected_nodes, _node_graph)
     , icon_area_width(45)
     , disable(false)
+    , attributes(false)
+    , animated(true)
+    , cloned(true)
+    , expression(false)
+    , with_link(false)
+
 {
     this->setFlags(QGraphicsItem::ItemIsMovable);
 
@@ -23,6 +29,27 @@ node_rect::node_rect(node_props _props, QMap<QString, node *> *_selected_nodes,
     tips_text->setFont(font_tips);
     tips_text->setParentItem(this);
     //
+    //
+
+    // caja de atributos
+    attribute_box = new QGraphicsPathItem;
+    attribute_box->setVisible(attributes);
+    QLinearGradient attr_ramp(0, 100, 0, 0);
+    attr_ramp.setColorAt(0.5, QColor(30, 30, 30));
+    attr_ramp.setColorAt(0.45, QColor(45, 45, 45));
+    attribute_box->setBrush(attr_ramp);
+    attribute_box->setPen(QPen(Qt::black, 0));
+    _props.scene->addItem(attribute_box);
+
+    anim_item = add_attribute_item("A", Qt::red);
+    clone_item = add_attribute_item("C", Qt::magenta);
+    expression_item = add_attribute_item("E", Qt::green);
+    link_item = add_attribute_item("L", Qt::blue);
+
+    anim_item->setParentItem(attribute_box);
+    clone_item->setParentItem(attribute_box);
+    expression_item->setParentItem(attribute_box);
+    link_item->setParentItem(attribute_box);
     //
 
     set_icon(nodes_loaded->get_effect(type).value("icon").toString());
@@ -70,6 +97,80 @@ node_rect::~node_rect()
     delete disable_line_a;
     delete disable_line_b;
     delete icon_item;
+    delete attribute_box;
+}
+
+void node_rect::refresh_attribute_box()
+{
+    if (!attributes)
+        return;
+
+    int width = current_width;
+    int height = current_height;
+
+    // caja
+    int radius = 3;
+    QPainterPath attr_box_rect;
+    int attr_width = 100;
+    int attr_height = 32;
+    float attr_pos_x = (width - attr_width) / 2;
+    attr_box_rect.addRoundedRect(
+        QRectF(attr_pos_x, height - 10, 100, attr_height), radius, radius);
+    attribute_box->setPath(attr_box_rect);
+    //
+
+    float space = 5;
+    for (QGraphicsItem *item :
+         {anim_item, clone_item, expression_item, link_item})
+    {
+        item->setPos({space + attr_pos_x, height + 4.0});
+        space += 25;
+    }
+
+    QColor disable_color = {40, 40, 40};
+    if (animated)
+        anim_item->setBrush(QBrush(Qt::red));
+    else
+        anim_item->setBrush(QBrush(disable_color));
+
+    if (cloned)
+        clone_item->setBrush(QBrush(Qt::magenta));
+    else
+        clone_item->setBrush(QBrush(disable_color));
+
+    if (expression)
+        expression_item->setBrush(QBrush(Qt::green));
+    else
+        expression_item->setBrush(QBrush(disable_color));
+
+    if (with_link)
+        link_item->setBrush(QBrush(Qt::blue));
+    else
+        link_item->setBrush(QBrush(disable_color));
+}
+
+QGraphicsPathItem *node_rect::add_attribute_item(QString letter, QColor color)
+{
+    QGraphicsPathItem *item = new QGraphicsPathItem;
+    item->setBrush(QBrush(color));
+    item->setPen(QPen(Qt::black, 0));
+
+    QGraphicsTextItem *letter_item = new QGraphicsTextItem;
+    QFont font;
+    font.setPixelSize(10);
+    font.setBold(true);
+    letter_item->setFont(font);
+    letter_item->setParentItem(item);
+    letter_item->setDefaultTextColor(Qt::black);
+    letter_item->setPlainText(letter);
+    letter_item->setPos(-0.5, -3);
+
+    int size = 15;
+    QPainterPath _path;
+    _path.addRoundedRect(QRectF(0, 0, size, size), size, size);
+    item->setPath(_path);
+
+    return item;
 }
 
 void node_rect::update_text(QString _name, QString _tips)
@@ -148,6 +249,13 @@ void node_rect::set_icon(QString _icon_name)
     node::set_icon_name(_icon_name);
 }
 
+void node_rect::set_position(float x, float y)
+{
+    if (attributes)
+        attribute_box->setPos(x, y);
+    node::set_position(x, y);
+}
+
 void node_rect::set_selected(bool selected)
 {
     if (selected)
@@ -172,6 +280,8 @@ void node_rect::refresh()
     QPainterPath rectangle;
     rectangle.addRoundedRect(QRectF(0, 0, width, height), radius, radius);
     this->setPath(rectangle);
+
+    refresh_attribute_box();
 
     // disable lines
     if (!disable)
