@@ -76,7 +76,8 @@ public:
                float b = 1, float a = 1);
     ~knob_color();
 
-    void set_color(float red, float green, float blue, float alpha = 1);
+    void set_color(float red, float green, float blue, float alpha = 1,
+                   bool set_sliders = true);
 signals:
     void changed(float r, float g, float b, float a);
 };

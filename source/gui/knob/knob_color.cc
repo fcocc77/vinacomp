@@ -41,10 +41,10 @@ knob_color::knob_color(float min, float max, float r, float g, float b, float a)
     blue_vedit = new QLineEdit(this);
     alpha_vedit = new QLineEdit(this);
 
-    red_slider = new slider(min, max);
-    green_slider = new slider(min, max);
-    blue_slider = new slider(min, max);
-    alpha_slider = new slider(min, max);
+    red_slider = new slider(min, max, 0, true, true);
+    green_slider = new slider(min, max, 0, true, true);
+    blue_slider = new slider(min, max, 0, true, true);
+    alpha_slider = new slider(min, max, 0, true, true);
 
     picker_button = new QPushButton(this);
     palette_button = new QPushButton(this);
@@ -126,6 +126,11 @@ void knob_color::restore_param()
 
     mono_slider->set_default_value(red);
 
+    red_slider->set_default_value(red);
+    green_slider->set_default_value(green);
+    blue_slider->set_default_value(blue);
+    alpha_slider->set_default_value(alpha);
+
     init_colors();
 }
 
@@ -190,7 +195,8 @@ void knob_color::toggle_sliders_colors()
     set_visible_sliders_colors(sliders_colors);
 }
 
-void knob_color::set_color(float _red, float _green, float _blue, float _alpha)
+void knob_color::set_color(float _red, float _green, float _blue, float _alpha,
+                           bool set_sliders)
 {
     red = _red;
     green = _green;
@@ -200,24 +206,29 @@ void knob_color::set_color(float _red, float _green, float _blue, float _alpha)
     if (red == green && red == blue && red == alpha)
     {
         mono_edit->setText(QString::number(red));
-        mono_slider->set_value(red);
+        if (set_sliders)
+            mono_slider->set_value(red);
     }
 
     red_vedit->setText(QString::number(red));
     red_hedit->setText(QString::number(red));
-    red_slider->set_value(red);
 
     green_vedit->setText(QString::number(green));
     green_hedit->setText(QString::number(green));
-    green_slider->set_value(green);
 
     blue_vedit->setText(QString::number(blue));
     blue_hedit->setText(QString::number(blue));
-    blue_slider->set_value(blue);
 
     alpha_vedit->setText(QString::number(alpha));
     alpha_hedit->setText(QString::number(alpha));
-    alpha_slider->set_value(alpha);
+
+    if (set_sliders)
+    {
+        red_slider->set_value(red);
+        green_slider->set_value(green);
+        blue_slider->set_value(blue);
+        alpha_slider->set_value(alpha);
+    }
 
     changed(red, green, blue, alpha); // Signal
     update_value(QJsonArray{red, green, blue, alpha});

@@ -99,7 +99,7 @@ void knob_color::connections()
 {
     // Mono Color
     connect(mono_slider, &slider::moved, this,
-            [=](float value) { set_color(value, value, value, value); });
+            [=](float value) { set_color(value, value, value, value, false); });
     connect(mono_edit, &QLineEdit::editingFinished, this, [=]() {
         float value = mono_edit->text().toDouble();
         set_color(value, value, value, value);
@@ -109,13 +109,13 @@ void knob_color::connections()
 
     // Sliders
     connect(red_slider, &slider::moved, this,
-            [=](float value) { set_color(value, green, blue, alpha); });
+            [=](float value) { set_color(value, green, blue, alpha, false); });
     connect(green_slider, &slider::moved, this,
-            [=](float value) { set_color(red, value, blue, alpha); });
+            [=](float value) { set_color(red, value, blue, alpha, false); });
     connect(blue_slider, &slider::moved, this,
-            [=](float value) { set_color(red, green, value, alpha); });
+            [=](float value) { set_color(red, green, value, alpha, false); });
     connect(alpha_slider, &slider::moved, this,
-            [=](float value) { set_color(red, green, blue, value); });
+            [=](float value) { set_color(red, green, blue, value, false); });
     //
     //
 
