@@ -138,13 +138,13 @@ QWidget *viewer::image_correction_setup_ui()
     gain_action->set_checkable();
     gain_action->connect_to(this, []() {});
 
-    knob_floating *gain_knob = new knob_floating(0.015, 64);
+    knob_floating *gain_knob = new knob_floating(0.015, 64, 1, false, true);
 
     action *gamma_action = new action("Gamma", "", "gamma");
     gamma_action->set_checkable();
     gamma_action->connect_to(this, []() {});
 
-    knob_floating *gamma_knob = new knob_floating(0, 4);
+    knob_floating *gamma_knob = new knob_floating(0, 4, 1, false, true);
 
     bar->add_action(gain_action);
     bar->add_widget(gain_knob);
