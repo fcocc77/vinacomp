@@ -28,7 +28,7 @@ knob_slider::knob_slider(float min, float max, float default_value,
     value_1_edit->setMaximumWidth(50);
 
     // slider
-    _slider = new slider(min, max, 0, floating);
+    _slider = new slider(min, max, default_value, floating);
     connect(_slider, &slider::moved, this, [=](float value) {
         values = {value, value};
 

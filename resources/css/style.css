@@ -21,7 +21,7 @@ QPushButton {
     width: 0px; }
 
 QMainWindow {
-  qproperty-windowIcon: url("/home/pancho/Documents/develop/vinacomp/resources/images/vinacomp.png"); }
+  qproperty-windowIcon: url("{{path}}/resources/images/vinacomp.png"); }
 
 QMenu {
   background-color: #292d32;
@@ -109,29 +109,23 @@ QScrollBar {
   QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left-arrow:horizontal, QScrollBar::right-arrow:horizontal {
     background: transparent; }
   QScrollBar::up-arrow:vertical {
-    image: url("/home/pancho/Documents/develop/vinacomp/resources/images/up_arrow.png"); }
+    image: url("{{path}}/resources/images/up_arrow.png"); }
   QScrollBar::down-arrow:vertical {
-    image: url("/home/pancho/Documents/develop/vinacomp/resources/images/down_arrow.png"); }
+    image: url("{{path}}/resources/images/down_arrow.png"); }
   QScrollBar::left-arrow:horizontal {
-    image: url("/home/pancho/Documents/develop/vinacomp/resources/images/right_arrow.png"); }
+    image: url("{{path}}/resources/images/right_arrow.png"); }
   QScrollBar::right-arrow:horizontal {
-    image: url("/home/pancho/Documents/develop/vinacomp/resources/images/left_arrow.png"); }
+    image: url("{{path}}/resources/images/left_arrow.png"); }
 
-QSlider {
-  height: 15px;
-  background: none; }
-  QSlider::groove {
-    background-color: #1e2024;
-    height: 5px;
+#slider {
+  background: None; }
+  #slider #slider_center {
+    background: #1e2024;
     border-radius: 2px; }
-  QSlider::handle {
-    background-color: #5e6673;
-    width: 13px;
-    height: 13px;
-    margin-top: -4px;
-    margin-bottom: -4px;
-    border-radius: 6px; }
-    QSlider::handle::hover {
+  #slider #slider_handler {
+    background: #5e6673;
+    border-radius: 7px; }
+    #slider #slider_handler:hover {
       background: #ffcc00; }
 
 #knob_floating #init_space, #knob_integer #init_space, #knob_dimensions #init_space {
