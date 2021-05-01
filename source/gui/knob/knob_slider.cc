@@ -39,12 +39,8 @@ knob_slider::knob_slider(float min, float max, float default_value,
         if (value_2_edit)
             value_2_edit->setText(QString::number(value));
 
-        if (emmit_signal)
-        {
-            update_handler();
-            changed(value); // Signal
-            update_value(value);
-        }
+        to_emmit_signal();
+        emmit_signal = true;
     });
 
     layout->addWidget(value_1_edit);
@@ -118,6 +114,16 @@ void knob_slider::set_animated(bool animated)
     knob::set_animated(animated);
 }
 
+void knob_slider::to_emmit_signal()
+{
+    if (!emmit_signal)
+        return;
+
+    update_handler();
+    changed(values.first, values.second); // Signal
+    update_value(values.first);
+}
+
 void knob_slider::update_animated()
 {
     int frame = project->frame;
@@ -132,21 +138,17 @@ void knob_slider::update_animated()
 
 void knob_slider::set_value_internal(float value, int dimension)
 {
-    // este set value, ajusta el valor pero sin llamar al slider, ya que esta
-    // emite otra señal 'changed' y 'update_handler'
     if (dimensions)
     {
         if (dimension == 0)
             value_1_edit->setText(QString::number(value));
         else
             value_2_edit->setText(QString::number(value));
-
-        update_handler();
-        changed(values.first); // Signal
-        update_value(values.first);
     }
     else
-        set_value(value, dimension);
+        set_value(value, dimension, true);
+
+    to_emmit_signal();
 }
 
 void knob_slider::separate_dimensions(bool separate)

@@ -49,6 +49,8 @@ private:
     QString current_layer;
     bool playing;
 
+    float gain, gamma;
+
     //
     void setup_ui();
     void create_menu();

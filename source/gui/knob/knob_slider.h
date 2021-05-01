@@ -31,6 +31,7 @@ private:
 
     void separate_dimensions(bool separate);
     void set_value_internal(float value, int dimension);
+    void to_emmit_signal();
 
     void restore_param() override;
     void set_animated(bool animated) override;

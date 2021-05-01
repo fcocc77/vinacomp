@@ -4,21 +4,23 @@
 
 viewer::viewer(QString _name, project_struct *_project, renderer *__renderer,
                QWidget *__vinacomp)
-    : name(_name)
-    , project(_project)
-    , _renderer(__renderer)
+    : project(_project)
+    , name(_name)
     , _vinacomp(__vinacomp)
+    , _renderer(__renderer)
 
-    , frame_rate(60)
+    , global_range(true)
     , first_frame(1)
     , last_frame(100)
-    , in_out(false)
     , input(0)
     , output(100)
-    , global_range(true)
+    , frame_rate(60)
+    , in_out(false)
     , render_pause(false)
     , visible_channel(-1)
     , playing(false)
+    , gain(1)
+    , gamma(1)
     , play_direction(vina::right)
 {
     rdata = new render_data;

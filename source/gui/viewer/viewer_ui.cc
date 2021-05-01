@@ -135,16 +135,35 @@ QWidget *viewer::image_correction_setup_ui()
     bar->setObjectName("image_correction");
 
     action *gain_action = new action("Gain", "", "gain");
-    gain_action->set_checkable();
-    gain_action->connect_to(this, []() {});
 
     knob_floating *gain_knob = new knob_floating(0.015, 64, 1, false, true);
+    connect(gain_knob, &knob_floating::changed, this, [=](float value) {
+        gain = value;
+        gain_action->set_checked(true);
+    });
+
+    gain_action->set_checkable();
+    gain_action->connect_to(this, [=]() {
+        if (gain_action->is_checked())
+            gain_knob->set_value(gain, 0, false);
+        else
+            gain_knob->set_value(1, 0, false);
+    });
 
     action *gamma_action = new action("Gamma", "", "gamma");
-    gamma_action->set_checkable();
-    gamma_action->connect_to(this, []() {});
-
     knob_floating *gamma_knob = new knob_floating(0, 4, 1, false, true);
+    connect(gamma_knob, &knob_floating::changed, this, [=](float value) {
+        gamma = value;
+        gamma_action->set_checked(true);
+    });
+
+    gamma_action->set_checkable();
+    gamma_action->connect_to(this, [=]() {
+        if (gamma_action->is_checked())
+            gamma_knob->set_value(gamma, 0, false);
+        else
+            gamma_knob->set_value(1, 0, false);
+    });
 
     bar->add_action(gain_action);
     bar->add_widget(gain_knob);
