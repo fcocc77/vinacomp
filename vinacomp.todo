@@ -31,6 +31,8 @@ gui__viewer_gl:
 gui__time_line:
 	☐ Cambiarle el color a la seleccion
 gui__viewer_players:
+gui__properties:
+    ☐ boton para restablecer el nodo por defecto
 gui__node_graph:
 	☐ crear grilla que switchee con el boton de 'grid'
 	✔ crear backdrop @done(2021-04-26 12:32) @project(gui__node_graph)

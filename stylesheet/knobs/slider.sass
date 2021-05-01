@@ -1,5 +1,4 @@
-#slider
-    background: None
+@mixin slider_base
     #slider_center
         background: $b12
         border-radius: 2px
@@ -9,3 +8,6 @@
         border-radius: 7px
         &:hover
             background: $base
+
+#slider
+    @include slider_base

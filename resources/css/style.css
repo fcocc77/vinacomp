@@ -21,7 +21,7 @@ QPushButton {
     width: 0px; }
 
 QMainWindow {
-  qproperty-windowIcon: url("/home/pancho/Documents/develop/vinacomp/resources/images/vinacomp.png"); }
+  qproperty-windowIcon: url("{{path}}/resources/images/vinacomp.png"); }
 
 QMenu {
   background-color: #292d32;
@@ -109,24 +109,23 @@ QScrollBar {
   QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left-arrow:horizontal, QScrollBar::right-arrow:horizontal {
     background: transparent; }
   QScrollBar::up-arrow:vertical {
-    image: url("/home/pancho/Documents/develop/vinacomp/resources/images/up_arrow.png"); }
+    image: url("{{path}}/resources/images/up_arrow.png"); }
   QScrollBar::down-arrow:vertical {
-    image: url("/home/pancho/Documents/develop/vinacomp/resources/images/down_arrow.png"); }
+    image: url("{{path}}/resources/images/down_arrow.png"); }
   QScrollBar::left-arrow:horizontal {
-    image: url("/home/pancho/Documents/develop/vinacomp/resources/images/right_arrow.png"); }
+    image: url("{{path}}/resources/images/right_arrow.png"); }
   QScrollBar::right-arrow:horizontal {
-    image: url("/home/pancho/Documents/develop/vinacomp/resources/images/left_arrow.png"); }
+    image: url("{{path}}/resources/images/left_arrow.png"); }
 
-#slider {
-  background: None; }
-  #slider #slider_center {
-    background: #1e2024;
-    border-radius: 2px; }
-  #slider #slider_handler {
-    background: #5e6673;
-    border-radius: 7px; }
-    #slider #slider_handler:hover {
-      background: #ffcc00; }
+#slider #slider_center {
+  background: #1e2024;
+  border-radius: 2px; }
+
+#slider #slider_handler {
+  background: #5e6673;
+  border-radius: 7px; }
+  #slider #slider_handler:hover {
+    background: #ffcc00; }
 
 #knob_floating #init_space, #knob_integer #init_space, #knob_dimensions #init_space {
   background: None; }
@@ -308,6 +307,16 @@ QScrollBar {
         border-radius: 7px;
         background: #caced3; }
 
+#slider #slider_center {
+  background: #1e2024;
+  border-radius: 2px; }
+
+#slider #slider_handler {
+  background: #5e6673;
+  border-radius: 7px; }
+  #slider #slider_handler:hover {
+    background: #ffcc00; }
+
 #knob_color QWidget {
   background: transparent; }
 
@@ -348,28 +357,68 @@ QScrollBar {
   #knob_color #alpha_edit::focus {
     border-color: white; }
 
-#knob_color #red_slider::groove {
+#knob_color #red_slider #slider_center {
+  background: #1e2024;
+  border-radius: 2px; }
+
+#knob_color #red_slider #slider_handler {
+  background: #5e6673;
+  border-radius: 7px; }
+  #knob_color #red_slider #slider_handler:hover {
+    background: #ffcc00; }
+
+#knob_color #red_slider #slider_center {
   border-bottom: 1px solid #8f1012; }
 
-#knob_color #red_slider::handle {
+#knob_color #red_slider #slider_handler {
   background: red; }
 
-#knob_color #green_slider::groove {
+#knob_color #green_slider #slider_center {
+  background: #1e2024;
+  border-radius: 2px; }
+
+#knob_color #green_slider #slider_handler {
+  background: #5e6673;
+  border-radius: 7px; }
+  #knob_color #green_slider #slider_handler:hover {
+    background: #ffcc00; }
+
+#knob_color #green_slider #slider_center {
   border-bottom: 1px solid #0f5012; }
 
-#knob_color #green_slider::handle {
+#knob_color #green_slider #slider_handler {
   background: green; }
 
-#knob_color #blue_slider::groove {
+#knob_color #blue_slider #slider_center {
+  background: #1e2024;
+  border-radius: 2px; }
+
+#knob_color #blue_slider #slider_handler {
+  background: #5e6673;
+  border-radius: 7px; }
+  #knob_color #blue_slider #slider_handler:hover {
+    background: #ffcc00; }
+
+#knob_color #blue_slider #slider_center {
   border-bottom: 1px solid #090abd; }
 
-#knob_color #blue_slider::handle {
+#knob_color #blue_slider #slider_handler {
   background: blue; }
 
-#knob_color #alpha_slider::groove {
+#knob_color #alpha_slider #slider_center {
+  background: #1e2024;
+  border-radius: 2px; }
+
+#knob_color #alpha_slider #slider_handler {
+  background: #5e6673;
+  border-radius: 7px; }
+  #knob_color #alpha_slider #slider_handler:hover {
+    background: #ffcc00; }
+
+#knob_color #alpha_slider #slider_center {
   border-bottom: 1px solid #8f9092; }
 
-#knob_color #alpha_slider::handle {
+#knob_color #alpha_slider #slider_handler {
   background: white; }
 
 #knob_group QWidget {

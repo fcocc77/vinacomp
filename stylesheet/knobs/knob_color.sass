@@ -1,4 +1,5 @@
 @import small_button
+@import slider
 
 #knob_color
     QWidget
@@ -23,22 +24,26 @@
         &::focus
             border-color: white
     #red_slider
-        &::groove
+        @include slider_base
+        #slider_center
             border-bottom: 1px solid mix(red, $b12, 50%)
-        &::handle
+        #slider_handler
             background: red
     #green_slider
-        &::groove
+        @include slider_base
+        #slider_center
             border-bottom: 1px solid mix(green, $b12, 50%)
-        &::handle
+        #slider_handler
             background: green
     #blue_slider
-        &::groove
+        @include slider_base
+        #slider_center
             border-bottom: 1px solid mix(blue, $b12, 70%)
-        &::handle
+        #slider_handler
             background: blue
     #alpha_slider
-        &::groove
+        @include slider_base
+        #slider_center
             border-bottom: 1px solid mix(white, $b12, 50%)
-        &::handle
+        #slider_handler
             background: white
