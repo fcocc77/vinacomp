@@ -63,7 +63,7 @@ void slider::set_default_value(float _default_value)
 
 float slider::get_percent_by_value(float value)
 {
-    if (!centered_handler)
+    if (!centered_handler || !floating)
         return (value - min) * 100.0 / (max - min);
 
     // transforma manualmente el valor al porcentaje para mantener el 'handler'
@@ -129,7 +129,7 @@ float slider::get_percent_by_value(float value)
 
 float slider::get_value_by_percent(float percent)
 {
-    if (!centered_handler)
+    if (!centered_handler || !floating)
         return (((max - min) * handler_percent) / 100.0) + min;
 
     // hace un calculo para que siempre el 'handler' este en el centro,
@@ -170,6 +170,9 @@ float slider::get_value_by_percent(float percent)
 
 void slider::set_value(float value)
 {
+    if (!floating)
+        value = round(value);
+
     // esta funcion no emite señal, solo cambia los valores de la sloder
     handler_percent = get_percent_by_value(value);
 
@@ -180,6 +183,9 @@ void slider::set_value(float value)
 void slider::to_emmit_signal()
 {
     float value = get_value_by_percent(handler_percent);
+
+    if (!floating)
+        value = round(value);
 
     // limita los decimales a 2
     float value_round = int(value * 1000.0) / 1000.0;
@@ -195,6 +201,13 @@ void slider::refresh()
         handler_percent = 0;
 
     handler->setVisible(!out_range);
+
+    if (!floating)
+    {
+        int slider_range = max - min;
+        float adapted_percent = round(slider_range * handler_percent / 100);
+        handler_percent = adapted_percent * 100 / slider_range;
+    }
 
     int pos_x = (width() - handler->width()) * handler_percent / 100;
     handler->move({pos_x, 3});

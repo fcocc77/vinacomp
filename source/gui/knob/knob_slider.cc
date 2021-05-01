@@ -23,6 +23,8 @@ knob_slider::knob_slider(float min, float max, float default_value,
     value_1_edit->set_menu(knob::menu);
     connect(value_1_edit, &line_edit::editingFinished, this, [=]() {
         values.first = value_1_edit->text().toDouble();
+        if (!floating)
+            values.first = round(values.first);
         set_value_internal(values.first, 0);
     });
 
@@ -56,6 +58,8 @@ knob_slider::knob_slider(float min, float max, float default_value,
 
         connect(value_2_edit, &line_edit::editingFinished, this, [=]() {
             values.second = value_2_edit->text().toDouble();
+            if (!floating)
+                values.second = round(values.second);
             set_value_internal(values.second, 1);
         });
         value_2_edit->setMaximumWidth(50);
