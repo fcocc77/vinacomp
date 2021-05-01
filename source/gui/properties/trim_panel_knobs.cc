@@ -64,7 +64,7 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
 
         knob *_knob = nullptr;
         if (type == "color")
-            _knob = new knob_color(min, max);
+            _knob = new knob_color(min, max, 0, 0, 0, 0, centered_handler);
 
         else if (type == "check_box")
             _knob = new knob_check_box();

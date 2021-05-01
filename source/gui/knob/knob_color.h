@@ -73,7 +73,7 @@ private:
 
 public:
     knob_color(float min = 0, float max = 100, float r = 1, float g = 1,
-               float b = 1, float a = 1);
+               float b = 1, float a = 1, bool centered_handler = false);
     ~knob_color();
 
     void set_color(float red, float green, float blue, float alpha = 1,

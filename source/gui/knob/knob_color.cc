@@ -1,6 +1,7 @@
 #include <knob_color.h>
 
-knob_color::knob_color(float min, float max, float r, float g, float b, float a)
+knob_color::knob_color(float min, float max, float r, float g, float b, float a,
+                       bool centered_handler)
     : red(r)
     , green(g)
     , blue(b)
@@ -20,7 +21,7 @@ knob_color::knob_color(float min, float max, float r, float g, float b, float a)
     separate_colors_slider_layout = new QVBoxLayout(separate_colors_slider);
 
     mono_edit = new QLineEdit(this);
-    mono_slider = new slider(min, max, 0, true, true);
+    mono_slider = new slider(min, max, 0, true, centered_handler);
 
     red_widget = new QWidget(this);
     green_widget = new QWidget(this);
@@ -41,10 +42,10 @@ knob_color::knob_color(float min, float max, float r, float g, float b, float a)
     blue_vedit = new QLineEdit(this);
     alpha_vedit = new QLineEdit(this);
 
-    red_slider = new slider(min, max, 0, true, true);
-    green_slider = new slider(min, max, 0, true, true);
-    blue_slider = new slider(min, max, 0, true, true);
-    alpha_slider = new slider(min, max, 0, true, true);
+    red_slider = new slider(min, max, 0, true, centered_handler);
+    green_slider = new slider(min, max, 0, true, centered_handler);
+    blue_slider = new slider(min, max, 0, true, centered_handler);
+    alpha_slider = new slider(min, max, 0, true, centered_handler);
 
     picker_button = new QPushButton(this);
     palette_button = new QPushButton(this);
