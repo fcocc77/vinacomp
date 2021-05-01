@@ -17,7 +17,7 @@ private:
     float handler_percent;
     float min, max, default_value;
 
-    bool center_default_value;
+    bool centered_handler;
 
     QWidget *slider_center, *handler;
 
@@ -31,12 +31,13 @@ private:
     void resizeEvent(QResizeEvent *event) override;
 
 public:
-    slider(float _min = 0, float _max = 100, float _default_value = 1.0,
-           bool _floating = true);
+    slider(float _min = 0, float _max = 100, float _default_value = 0,
+           bool _floating = true, bool centered_handler = false);
     ~slider();
 
     void set_min_max(float min, float max);
     void set_value(float value, bool emmit_signal = true);
+    void set_default_value(float _default_value);
 
 signals:
     void moved(float value);

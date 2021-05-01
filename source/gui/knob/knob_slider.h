@@ -38,7 +38,8 @@ private:
 
 public:
     knob_slider(float min = 0, float max = 100, float default_value = 1,
-                bool two_dimensional = false, bool floating = true);
+                bool two_dimensional = false, bool floating = true,
+                bool centered_handler = false);
     ~knob_slider();
 
     void set_value(float value, int dimension = 0, bool _emmit_signal = true);

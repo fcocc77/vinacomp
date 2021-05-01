@@ -1,14 +1,15 @@
 #include <slider.h>
 #include <util.h>
 
-slider::slider(float _min, float _max, float _default_value, bool _floating)
+slider::slider(float _min, float _max, float _default_value, bool _floating,
+               bool _centered_handler)
     : floating(_floating)
     , float_interval(100)
     , handler_percent(50)
     , min(_min)
     , max(_max)
     , default_value(_default_value)
-    , center_default_value(true)
+    , centered_handler(_centered_handler)
 {
     // QVBoxLayout *layout = new QVBoxLayout;
     // layout->setMargin(0);
@@ -46,7 +47,16 @@ slider::slider(float _min, float _max, float _default_value, bool _floating)
     // this->setValue(default_value);
 }
 
-slider::~slider() {}
+slider::~slider()
+{
+    delete slider_center;
+    delete handler;
+}
+
+void slider::set_default_value(float _default_value)
+{
+    default_value = _default_value;
+}
 
 void slider::set_min_max(float min, float max)
 {
@@ -64,7 +74,7 @@ void slider::set_min_max(float min, float max)
 
 float slider::get_percent_by_value(float value)
 {
-    if (!center_default_value)
+    if (!centered_handler)
         return (value - min) * 100.0 / (max - min);
 
     // transforma manualmente el valor al porcentaje para mantener el 'handler'
@@ -98,6 +108,7 @@ float slider::get_percent_by_value(float value)
     float x4 = max;
     float p4 = get_percent(m4, x4);
 
+
     float result = 0;
 
     if (p1 != -1)
@@ -130,7 +141,7 @@ float slider::get_percent_by_value(float value)
 
 float slider::get_value_by_percent(float percent)
 {
-    if (!center_default_value)
+    if (!centered_handler)
         return (((max - min) * handler_percent) / 100.0) + min;
 
     // hace un calculo para que siempre el 'handler' este en el centro,

@@ -10,7 +10,7 @@ private:
 
 public:
     knob_floating(float min = 0, float max = 100, float default_value = 0,
-                  bool two_dimensional = false);
+                  bool two_dimensional = false, bool centered_handler = false);
     ~knob_floating();
 };
 

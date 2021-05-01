@@ -20,7 +20,7 @@ knob_color::knob_color(float min, float max, float r, float g, float b, float a)
     separate_colors_slider_layout = new QVBoxLayout(separate_colors_slider);
 
     mono_edit = new QLineEdit(this);
-    mono_slider = new slider(min, max);
+    mono_slider = new slider(min, max, 0, true, true);
 
     red_widget = new QWidget(this);
     green_widget = new QWidget(this);
@@ -123,6 +123,8 @@ void knob_color::restore_param()
     green = _default.at(1).toDouble();
     blue = _default.at(2).toDouble();
     alpha = _default.at(3).toDouble();
+
+    mono_slider->set_default_value(red);
 
     init_colors();
 }

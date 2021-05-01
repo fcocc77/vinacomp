@@ -9,7 +9,7 @@ class knob_integer : public knob_slider
 private:
 public:
     knob_integer(int min = 0, int max = 100, int default_value = 0,
-                 bool two_dimensional = false);
+                 bool two_dimensional = false, bool centered_handler = false);
     ~knob_integer();
 
     inline void set_value(int value, int dimension = 0,
