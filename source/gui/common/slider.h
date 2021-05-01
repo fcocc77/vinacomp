@@ -6,6 +6,7 @@
 #include <QPainter>
 #include <QStyleOption>
 #include <QResizeEvent>
+#include <QLabel>
 
 class slider : public QWidget
 {
@@ -18,8 +19,12 @@ private:
     float min, max, default_value;
 
     bool centered_handler;
+    bool out_range;
 
-    QWidget *slider_center, *handler;
+    QWidget *slider_center ;
+    QLabel *handler;
+    QLabel *handler_left;
+    QLabel *handler_right;
 
     void refresh();
     void to_emmit_signal();
@@ -35,8 +40,7 @@ public:
            bool _floating = true, bool centered_handler = false);
     ~slider();
 
-    void set_min_max(float min, float max);
-    void set_value(float value, bool emmit_signal = true);
+    void set_value(float value);
     void set_default_value(float _default_value);
 
 signals:

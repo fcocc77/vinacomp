@@ -57,10 +57,10 @@ gui__node:
     ☐ si agarramos el link y pesionamos el click derecho, el texto queda mal posicionado
     ☐ cambiar la position del rectangulo de atributos, dividirlo en 2 cuadros uno arriba y el otro abajo en la parte del icono del nodo
 gui__knobs:
-	☐ slider: rehacer el slider con QPainter para tener mas control de todo @today
-	☐ slider: mover el manejador en la posicion del click
-	☐ slider: cuando el valor sea mayor o menor al limite, cambiar la forma del manejador a una flecha
-	☐ slider: opcion para mantener el 'handler' siempre al centro independiente del valor minimo y maximo
+	✔ slider: rehacer el slider con QPainter para tener mas control de todo @today @done(2021-05-01 15:03) @project(gui__knobs)
+	✔ slider: mover el manejador en la posicion del click @done(2021-05-01 15:03) @project(gui__knobs)
+	✔ slider: cuando el valor sea mayor o menor al limite, cambiar la forma del manejador a una flecha @done(2021-05-01 15:04) @project(gui__knobs)
+	✔ slider: opcion para mantener el 'handler' siempre al centro independiente del valor minimo y maximo @done(2021-05-01 15:04) @project(gui__knobs)
 	☐ que los qlineedit con boton derecho despliegue el menu de animacion
 	☐ terminar button knob'
 	☐ terminar button knob'

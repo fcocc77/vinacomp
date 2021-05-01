@@ -1,3 +1,4 @@
+#include <qt.h>
 #include <slider.h>
 #include <util.h>
 
@@ -11,65 +12,53 @@ slider::slider(float _min, float _max, float _default_value, bool _floating,
     , default_value(_default_value)
     , centered_handler(_centered_handler)
 {
-    // QVBoxLayout *layout = new QVBoxLayout;
-    // layout->setMargin(0);
-    // this->setLayout(layout);
-
     setObjectName("slider");
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     slider_center = new QWidget(this);
-    slider_center->move(0, 6);
+    slider_center->move(0, 8);
 
     slider_center->setObjectName("slider_center");
     slider_center->setMaximumHeight(6);
 
-    handler = new QWidget(this);
+    handler = new QLabel(this);
     int handler_size = 15;
+    handler->setMinimumSize({handler_size, handler_size});
     handler->setMaximumSize({handler_size, handler_size});
     handler->setObjectName("slider_handler");
 
-    // layout->addWidget(slider);
-    // layout->addWidget(handler);
+    // flecha izquierda
+    handler_left = new QLabel(this);
+    int arrow_size = 30;
+    handler_left->setMinimumSize({arrow_size, arrow_size});
+    handler_left->setMaximumSize({arrow_size, arrow_size});
+    handler_left->setObjectName("slider_arrow");
+    QPixmap pixmap_left("resources/images/arrow_left_a.png");
+    handler_left->setPixmap(pixmap_left.scaled(
+        arrow_size, arrow_size, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    handler_left->move({-11, -4});
 
-    set_min_max(min, max);
-
-    // connect(this, &QSlider::valueChanged, this, [=](int value) {
-    // if (emmit_signal)
-    // {
-    // if (floating)
-    // moved(float(value) / float_interval);
-    // else
-    // moved(value);
-    // }
-    // });
-
-    // this->setValue(default_value);
+    // flecha derecha
+    handler_right = new QLabel(this);
+    handler_right->setMinimumSize({arrow_size, arrow_size});
+    handler_right->setMaximumSize({arrow_size, arrow_size});
+    handler_right->setObjectName("slider_arrow");
+    QPixmap pixmap_right("resources/images/arrow_right_a.png");
+    handler_right->setPixmap(pixmap_right.scaled(
+        arrow_size, arrow_size, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 }
 
 slider::~slider()
 {
     delete slider_center;
     delete handler;
+    delete handler_left;
+    delete handler_right;
 }
 
 void slider::set_default_value(float _default_value)
 {
     default_value = _default_value;
-}
-
-void slider::set_min_max(float min, float max)
-{
-    if (floating)
-    {
-        // this->setMinimum(min * float_interval);
-        // this->setMaximum(max * float_interval);
-    }
-    else
-    {
-        // this->setMinimum(min);
-        // this->setMaximum(max);
-    }
 }
 
 float slider::get_percent_by_value(float value)
@@ -107,7 +96,6 @@ float slider::get_percent_by_value(float value)
     float m4 = x3;
     float x4 = max;
     float p4 = get_percent(m4, x4);
-
 
     float result = 0;
 
@@ -180,13 +168,13 @@ float slider::get_value_by_percent(float percent)
     return result;
 }
 
-void slider::set_value(float value, bool emmit_signal)
+void slider::set_value(float value)
 {
+    // esta funcion no emite señal, solo cambia los valores de la sloder
     handler_percent = get_percent_by_value(value);
-    refresh();
 
-    // if (emmit_signal)
-    // to_emmit_signal();
+    out_range = handler_percent < 0 || handler_percent > 100;
+    refresh();
 }
 
 void slider::to_emmit_signal()
@@ -206,8 +194,30 @@ void slider::refresh()
     else if (handler_percent < 0)
         handler_percent = 0;
 
+    handler->setVisible(!out_range);
+
     int pos_x = (width() - handler->width()) * handler_percent / 100;
-    handler->move({pos_x, 0});
+    handler->move({pos_x, 3});
+
+    if (!out_range)
+    {
+        handler_left->setVisible(false);
+        handler_right->setVisible(false);
+    }
+    else
+    {
+        if (handler_percent == 100)
+        {
+            handler_left->setVisible(false);
+            handler_right->setVisible(true);
+            handler_right->move({width() - 20, -4});
+        }
+        else if (handler_percent == 0)
+        {
+            handler_left->setVisible(true);
+            handler_right->setVisible(false);
+        }
+    }
 }
 
 void slider::resizeEvent(QResizeEvent *event)
@@ -219,6 +229,7 @@ void slider::resizeEvent(QResizeEvent *event)
 void slider::mousePressEvent(QMouseEvent *event)
 {
     handler_percent = event->x() * 100.0 / (float)width();
+    out_range = false;
     refresh();
     to_emmit_signal();
 }
@@ -226,6 +237,7 @@ void slider::mousePressEvent(QMouseEvent *event)
 void slider::mouseMoveEvent(QMouseEvent *event)
 {
     handler_percent = event->x() * 100.0 / (float)width();
+    out_range = false;
     refresh();
     to_emmit_signal();
 }

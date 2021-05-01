@@ -195,7 +195,7 @@ void knob_slider::set_values(pair<float, float> _values, bool _emmit_signal)
     separate_dimensions(values.first != values.second);
 
     value_1_edit->setText(QString::number(values.first));
-    _slider->set_value(_values.first, false);
+    _slider->set_value(_values.first);
 
     value_2_edit->setText(QString::number(values.second));
 }
