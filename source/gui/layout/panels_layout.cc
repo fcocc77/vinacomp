@@ -159,6 +159,8 @@ panel *panels_layout::get_some_empty_panel() const
     for (panel *_panel : get_all_panels())
         if (_panel->get_tabs_list().empty())
             return _panel;
+
+    return nullptr;
 }
 
 void panels_layout::isolate_panel()
