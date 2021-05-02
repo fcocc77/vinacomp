@@ -288,7 +288,11 @@ void node_rect::update_text(QString _name, QString _tips)
 void node_rect::set_icon(QString _icon_name)
 {
     icon_name = _icon_name;
+
     QImage image("resources/images/" + icon_name + "_a.png");
+    if (icon_name.contains("/"))
+        image = QImage(icon_name);
+
     QPixmap icon = QPixmap::fromImage(image);
     icon = icon.scaledToHeight(40, Qt::SmoothTransformation);
     icon_item = new QGraphicsPixmapItem(icon);

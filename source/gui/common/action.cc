@@ -16,7 +16,12 @@ action::action(QString _label, QString shortcut_key, QString _icon_name)
 {
     this->setText(label);
     if (!icon_name.isEmpty())
-        this->setIcon(QIcon("resources/images/" + icon_name + "_a.png"));
+    {
+        if (icon_name.contains("/"))
+            this->setIcon(QIcon(icon_name));
+        else
+            this->setIcon(QIcon("resources/images/" + icon_name + "_a.png"));
+    }
 
     this->setShortcutContext(Qt::WidgetWithChildrenShortcut);
     if (!key.isEmpty())

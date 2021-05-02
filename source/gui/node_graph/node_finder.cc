@@ -44,7 +44,10 @@ node_finder::node_finder(QWidget *__node_view, nodes_load *_nodes)
 
         item->setText(0, node_name);
         item->setText(1, node_id);
-        item->setIcon(0, QIcon("resources/images/" + icon_name + "_a.png"));
+        if (icon_name.contains("/"))
+            item->setIcon(0, QIcon(icon_name));
+        else
+            item->setIcon(0, QIcon("resources/images/" + icon_name + "_a.png"));
         tree->addTopLevelItem(item);
     }
 

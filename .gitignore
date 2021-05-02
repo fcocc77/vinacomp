@@ -18,3 +18,5 @@ session.vim
 resources/images/
 gdb.txt
 tags
+libs/ofx
+plugins

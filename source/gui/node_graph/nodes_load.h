@@ -8,6 +8,7 @@ class nodes_load : public QObject
 {
 private:
     QJsonObject effects;
+    void load_ofx_plugins();
 
 public:
     nodes_load();

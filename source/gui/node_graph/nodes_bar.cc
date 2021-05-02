@@ -29,6 +29,7 @@ void nodes_bar::setup_ui()
     add_menu("merge", "merge");
     add_menu("transform", "transform");
     add_menu("other", "other");
+    add_menu("cimg", "radial");
 
     layout->addStretch();
 

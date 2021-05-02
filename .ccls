@@ -13,6 +13,7 @@ clang++
 -I/usr/include/python3.6m
 
 -I./libs/QCodeEditor/includes
+-I./libs/ofx/include
 
 -I./source/gui/app
 -I./source/gui/node_graph
