@@ -60,15 +60,31 @@ node *node_view::create_node(node_struct node_data, bool basic_creation,
     if (!from_project)
     {
         node *selected_node = get_selected_node();
+
         if (selected_node && !basic_creation)
         {
             position = get_min_node_separation(_node, selected_node);
         }
         else
         {
-            // crea el nodo en la posicion del puntero del mouse
-            QPoint origin = this->mapFromGlobal(QCursor::pos());
-            position = this->mapToScene(origin);
+            QWidget *over_widget = qApp->widgetAt(QCursor::pos());
+
+            bool over_node_view = false;
+            if (over_widget)
+                over_node_view =
+                    over_widget->parentWidget()->objectName() == "node_view";
+
+            if (!over_node_view)
+            {
+                // posicion en el centro del 'node_view'
+                position = mapToScene(QPoint{width() / 2, height() / 2});
+            }
+            else
+            {
+                // crea el nodo en la posicion del puntero del mouse
+                QPoint origin = this->mapFromGlobal(QCursor::pos());
+                position = this->mapToScene(origin);
+            }
 
             auto size = _node->get_size();
             position = {position.x() - (size.width() / 2),
@@ -90,12 +106,12 @@ node *node_view::create_node(node_struct node_data, bool basic_creation,
 
     nodes->insert(node_data.name, _node);
 
-    if (!basic_creation && !backdrop)
-        // conecta los nodos conectado al nodo seleccionado, al nuevo nodo
-        connect_node_to_selected_nodes(_node);
-
     if (!basic_creation)
     {
+        // conecta los nodos conectado al nodo seleccionado, al nuevo nodo
+        if (!backdrop)
+            connect_node_to_selected_nodes(_node);
+
         select_all(false);
         select_node(node_data.name, true);
     }
