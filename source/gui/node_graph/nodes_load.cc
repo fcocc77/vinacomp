@@ -30,7 +30,10 @@ void nodes_load::load_ofx(QString ofx_name)
     QLibrary lib(ofx_path);
 
     if (!lib.load())
+    {
+        print(lib.errorString());
         return;
+    }
 
     // carga las 2 funciones de ofx necesarias
     typedef int (*get_count_proto)();
@@ -53,19 +56,32 @@ void nodes_load::load_ofx(QString ofx_name)
         QString effect_id = plug->pluginIdentifier;
 
         QString icon_path = ofx_resources + effect_id + ".png";
-        QJsonObject effect = {{"group", "cimg"},
+
+        if (!os::isfile(icon_path))
+            icon_path = "default_icon";
+
+        QJsonObject effect = {{"group", ofx_name},
                               {"id", effect_id},
                               {"label", effect_id},
                               {"icon", icon_path}};
 
         effects.insert(effect_id, effect);
     }
+
+    QString ofx_icon = ofx_resources + ofx_name + ".png";
+    if (!os::isfile(ofx_icon))
+        ofx_icon = "default_icon";
+
+    ofx_list.insert(ofx_name, ofx_icon);
+    lib.unload();
 }
 
 void nodes_load::load_ofx_plugins()
 {
     load_ofx("CImg");
     load_ofx("Misc");
+    load_ofx("Arena");
+    load_ofx("GMIC");
 }
 
 QJsonObject nodes_load::get_effect(QString id) const

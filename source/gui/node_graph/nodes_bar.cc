@@ -29,7 +29,12 @@ void nodes_bar::setup_ui()
     add_menu("merge", "merge");
     add_menu("transform", "transform");
     add_menu("other", "other");
-    add_menu("cimg", "radial");
+
+    for (QString ofx_name : nodes->get_ofx_list().keys())
+    {
+        QString ofx_icon = nodes->get_ofx_list().value(ofx_name);
+        add_menu(ofx_name, ofx_icon);
+    }
 
     layout->addStretch();
 
