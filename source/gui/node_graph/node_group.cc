@@ -52,6 +52,7 @@ void node_group::open_group(bool add_to_panel)
 
 void node_group::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
-    open_group();
+    if (qt::control())
+        open_group();
     node_rect::mouseDoubleClickEvent(event);
 }

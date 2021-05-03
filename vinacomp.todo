@@ -33,6 +33,8 @@ gui__time_line:
 gui__viewer_players:
 gui__properties:
     ☐ boton para restablecer el nodo por defecto
+gui__trim_panel:
+    ☐ knob_editor: crear button que vincule el plugin de python con el 'script_editor'
 gui__node_graph:
 	☐ crear grilla que switchee con el boton de 'grid'
 	✔ crear backdrop @done(2021-04-26 12:32) @project(gui__node_graph)
@@ -51,9 +53,8 @@ gui__node_graph:
     ☐ ordenado de nodos
     ✔ conectar los nodos extraidos cuando son mas que 1 nodos @done(2021-04-28 22:21) @project(gui__node_graph)
     ✔ desaparecen los link fantasmas al activar el 'allow_insertion_between_nodes' en false, hay que activarlo otra vez sin afectar en la creacion de dot que tambien se usa @done(2021-04-28 22:40) @project(gui__node_graph)
-☐
     ☐ terminal undo redo
-    ☐ al crear un nodo desde el menu y no hay ningun otro nodo seleccionado, que el nuevo nodo quede en el centro
+    ✔ al crear un nodo desde el menu y no hay ningun otro nodo seleccionado, que el nuevo nodo quede en el centro @done(2021-05-03 12:26) @project(gui__node_graph)
 gui__node:
     ✔ agregar otro rectangulo en la parte inferior del nodos con iconos los diferentes atributor "animated", "cloned", "cuda" @done(2021-04-30 10:47) @project(gui__node)
     ☐ que el nodo contenga el tamaño adicional provocado por la caja de atributos.

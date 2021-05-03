@@ -3,7 +3,8 @@
 #include <tools.h>
 #include <qt.h>
 
-knob_editor::knob_editor()
+knob_editor::knob_editor(QWidget *_panel)
+    : panel(_panel)
 {
     layout = new QVBoxLayout(this);
     layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
@@ -20,6 +21,7 @@ knob_editor::knob_editor()
         minimum_edit->show();
         maximum_edit->show();
         edit_box->setVisible(float_knob_action->is_checked());
+        current_knob_type = "floating";
     });
     //
     //
@@ -31,6 +33,7 @@ knob_editor::knob_editor()
         minimum_edit->show();
         maximum_edit->show();
         edit_box->setVisible(int_knob_action->is_checked());
+        current_knob_type = "integer";
     });
     //
     //
@@ -42,6 +45,7 @@ knob_editor::knob_editor()
         minimum_edit->show();
         maximum_edit->show();
         edit_box->setVisible(color_knob_action->is_checked());
+        current_knob_type = "color";
     });
     //
     //
@@ -53,6 +57,7 @@ knob_editor::knob_editor()
         minimum_edit->hide();
         maximum_edit->hide();
         edit_box->setVisible(button_knob_action->is_checked());
+        current_knob_type = "button";
     });
     //
     //
@@ -64,6 +69,7 @@ knob_editor::knob_editor()
         minimum_edit->hide();
         maximum_edit->hide();
         edit_box->setVisible(combo_box_knob_action->is_checked());
+        current_knob_type = "choice";
     });
     //
     //
@@ -75,6 +81,7 @@ knob_editor::knob_editor()
         minimum_edit->hide();
         maximum_edit->hide();
         edit_box->setVisible(check_box_knob_action->is_checked());
+        current_knob_type = "check_box";
     });
     //
     //
@@ -86,6 +93,7 @@ knob_editor::knob_editor()
         minimum_edit->hide();
         maximum_edit->hide();
         edit_box->setVisible(text_knob_action->is_checked());
+        current_knob_type = "text";
     });
     //
     //
@@ -97,6 +105,7 @@ knob_editor::knob_editor()
         minimum_edit->hide();
         maximum_edit->hide();
         edit_box->setVisible(file_knob_action->is_checked());
+        current_knob_type = "file";
     });
     //
     //
@@ -108,6 +117,7 @@ knob_editor::knob_editor()
         minimum_edit->hide();
         maximum_edit->hide();
         edit_box->setVisible(position_knob_action->is_checked());
+        current_knob_type = "floating_dimensions";
     });
     //
     //
@@ -119,6 +129,7 @@ knob_editor::knob_editor()
         minimum_edit->hide();
         maximum_edit->hide();
         edit_box->setVisible(label_knob_action->is_checked());
+        current_knob_type = "label";
     });
     //
     //
@@ -130,6 +141,7 @@ knob_editor::knob_editor()
         minimum_edit->hide();
         maximum_edit->hide();
         edit_box->setVisible(group_knob_action->is_checked());
+        current_knob_type = "group";
     });
     //
     //
@@ -141,6 +153,7 @@ knob_editor::knob_editor()
         minimum_edit->hide();
         maximum_edit->hide();
         edit_box->setVisible(separator_knob_action->is_checked());
+        current_knob_type = "separator";
     });
     //
     //
@@ -185,6 +198,7 @@ knob_editor::knob_editor()
     qt::set_icon(drag_button, "position_a", 20);
 
     QPushButton *add_button = new QPushButton(this);
+    connect(add_button, &QPushButton::clicked, this, &knob_editor::add_knob);
     qt::set_icon(add_button, "add_a", 20);
 
     edit_box_layout->addWidget(knob_name);

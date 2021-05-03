@@ -78,6 +78,7 @@ public:
                QGraphicsItem *_node, QWidget *_node_view);
     ~trim_panel();
 
+    void update_controls_knobs(QJsonArray _knobs);
     void maximize(bool _maximize);
     inline QString get_name() const;
     inline QString get_type() const;

@@ -65,7 +65,7 @@ trim_panel::trim_panel(properties *__properties, QString _name, QString _type,
 
     QJsonArray _knobs = nodes_loaded->get_effect(type).value("knobs").toArray();
     setup_gui_panels(_knobs);
-    setup_knobs(_knobs, controls_layout, viewers_gl);
+    update_controls_knobs(_knobs);
 
     QJsonArray shared_knobs =
         jread("source/engine/nodes/json/shared_params.json").value("knobs").toArray();
@@ -75,8 +75,8 @@ trim_panel::trim_panel(properties *__properties, QString _name, QString _type,
     // si no existen 'knobs' oculta el tab de 'control'
     if (_knobs.empty())
     {
-        tabs->set_index(1);
-        tabs->get_tab(0)->setVisible(false);
+        // tabs->set_index(1);
+        // tabs->get_tab(0)->setVisible(false);
     }
 }
 
@@ -105,6 +105,17 @@ trim_panel::~trim_panel()
 
     delete tabs;
     //
+}
+
+void trim_panel::update_controls_knobs(QJsonArray _knobs)
+{
+    // !!! hay  que borrar solo los de 'controls_layout' ahora los borra todos
+    for (knob *_knob : *knobs)
+        delete _knob;
+    knobs->clear();
+
+    // borrar todos los que knobs antes de agregar los nuevos
+    setup_knobs(_knobs, controls_layout, viewers_gl);
 }
 
 void trim_panel::setup_shared_params()
@@ -256,7 +267,7 @@ void trim_panel::knob_editor_toggle()
         // solo se usa para editar los knobs, y solo se crea si no esta creado antes
         QHBoxLayout *knob_editor_layout = new QHBoxLayout(knob_editor_container);
         knob_editor_layout->setMargin(0);
-        _knob_editor = new knob_editor();
+        _knob_editor = new knob_editor(this);
         _knob_editor->hide();
         knob_editor_layout->addWidget(_knob_editor);
     }
