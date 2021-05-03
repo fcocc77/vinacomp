@@ -10,6 +10,12 @@ knob_editor::knob_editor(QWidget *_panel)
     layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
     layout->setMargin(0);
 
+    temp_widget = new QWidget;
+    temp_widget->hide();
+    temp_widget->setMinimumHeight(3);
+    temp_widget->setStyleSheet(
+        "border-bottom: 2px solid green; border-style: dotted;");
+
     tools *tools_bar = new tools(20);
     tools_bar->allow_one_check_at_time();
     layout->addWidget(tools_bar);

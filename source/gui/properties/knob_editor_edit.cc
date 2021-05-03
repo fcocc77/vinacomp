@@ -133,3 +133,68 @@ QString knob_editor::get_available_name() const
 
     return available_name;
 }
+
+knob *knob_editor::get_knob_under_cursor() const
+{
+    int vertical_gap = -15;
+
+    QWidget *_widget =
+        qApp->widgetAt({QCursor::pos().x(), QCursor::pos().y() + vertical_gap});
+    while (_widget)
+    {
+        QString name = _widget->objectName();
+        knob *_knob = dynamic_cast<knob *>(_widget);
+        if (_knob)
+            return _knob;
+
+        _widget = _widget->parentWidget();
+    }
+
+    return nullptr;
+}
+
+int knob_editor::get_index_knob(QString knob_name) const
+{
+    int index = 0;
+    for (QJsonValue value : knobs)
+    {
+        if (value.toObject().value("name").toString() == knob_name)
+            return index;
+
+        index++;
+    }
+
+    return index;
+}
+
+QVBoxLayout *knob_editor::get_controls_layout() const
+{
+    QLayout *layout =
+        static_cast<trim_panel *>(panel)->get_controls_tab()->layout();
+
+    return static_cast<QVBoxLayout *>(layout);
+}
+
+void knob_editor::mousePressEvent(QMouseEvent *event)
+{
+    this->setCursor(Qt::ClosedHandCursor);
+}
+
+void knob_editor::mouseMoveEvent(QMouseEvent *event)
+{
+    knob *_knob = get_knob_under_cursor();
+
+    if (_knob)
+    {
+        int index = get_index_knob(_knob->get_name()) + 2;
+        get_controls_layout()->insertWidget(index, temp_widget);
+        temp_widget->show();
+    }
+}
+
+void knob_editor::mouseReleaseEvent(QMouseEvent *event)
+{
+    temp_widget->hide();
+    this->setCursor(Qt::ArrowCursor);
+}
+

@@ -87,7 +87,13 @@ public:
     inline knob *get_knob(QString name) const;
     inline bool maximized() const;
     inline QMap<QString, knob *> *get_knobs() const;
+    inline QWidget *get_controls_tab() const;
 };
+
+inline QWidget *trim_panel::get_controls_tab() const
+{
+    return controls_tab;
+}
 
 inline knob *trim_panel::get_knob(QString name) const
 {

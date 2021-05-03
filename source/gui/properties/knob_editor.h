@@ -8,6 +8,9 @@
 #include <QVBoxLayout>
 #include <QWidget>
 #include <QJsonArray>
+#include <QMouseEvent>
+
+#include <knob.h>
 
 class knob_editor : public QWidget
 {
@@ -25,10 +28,19 @@ private:
     QLabel *new_line_label;
     QCheckBox *new_line_check;
 
+    QWidget *temp_widget;
+
     // edit
     QJsonArray knobs;
     QString get_available_name() const;
     void add_knob();
+    knob *get_knob_under_cursor() const;
+    QVBoxLayout *get_controls_layout() const;
+    int get_index_knob(QString knob_name) const;
+
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
 
 public:
     knob_editor(QWidget *panel);
