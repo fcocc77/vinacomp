@@ -1,6 +1,7 @@
 #include <nodes_load.h>
 #include <os.h>
 #include <ofxCore.h>
+#include <QLibrary>
 
 nodes_load::nodes_load()
 {
@@ -21,20 +22,37 @@ nodes_load::nodes_load()
 
 nodes_load::~nodes_load() {}
 
-void nodes_load::load_ofx_plugins()
+void nodes_load::load_ofx(QString ofx_name)
 {
-    int num = OfxGetNumberOfPlugins();
+    QString ofx_path = "plugins/" + ofx_name +
+                       ".ofx.bundle/Contents/Linux-x86-64/" + ofx_name + ".ofx";
 
-    OfxHost *ofx_host = new OfxHost;
+    QLibrary lib(ofx_path);
 
-    QString cimg_resources = "plugins/CImg.ofx.bundle/Contents/Resources/";
-    for (int i = 0; i < num; i++)
+    if (!lib.load())
+        return;
+
+    // carga las 2 funciones de ofx necesarias
+    typedef int (*get_count_proto)();
+    get_count_proto get_count =
+        (get_count_proto)lib.resolve("OfxGetNumberOfPlugins");
+
+    typedef OfxPlugin *(*get_plugin_proto)(int index);
+    get_plugin_proto get_plugin = (get_plugin_proto)lib.resolve("OfxGetPlugin");
+
+    if (!get_count || !get_plugin)
+        return;
+    //
+
+    QString ofx_resources =
+        "plugins/" + ofx_name + ".ofx.bundle/Contents/Resources/";
+
+    for (int i = 0; i < get_count(); i++)
     {
-        OfxPlugin *plug = OfxGetPlugin(i);
-        plug->setHost(ofx_host);
+        OfxPlugin *plug = get_plugin(i);
         QString effect_id = plug->pluginIdentifier;
 
-        QString icon_path = cimg_resources + effect_id + ".png";
+        QString icon_path = ofx_resources + effect_id + ".png";
         QJsonObject effect = {{"group", "cimg"},
                               {"id", effect_id},
                               {"label", effect_id},
@@ -42,6 +60,12 @@ void nodes_load::load_ofx_plugins()
 
         effects.insert(effect_id, effect);
     }
+}
+
+void nodes_load::load_ofx_plugins()
+{
+    load_ofx("CImg");
+    load_ofx("Misc");
 }
 
 QJsonObject nodes_load::get_effect(QString id) const

@@ -51,13 +51,16 @@ gui__node_graph:
     ☐ ordenado de nodos
     ✔ conectar los nodos extraidos cuando son mas que 1 nodos @done(2021-04-28 22:21) @project(gui__node_graph)
     ✔ desaparecen los link fantasmas al activar el 'allow_insertion_between_nodes' en false, hay que activarlo otra vez sin afectar en la creacion de dot que tambien se usa @done(2021-04-28 22:40) @project(gui__node_graph)
+☐
     ☐ terminal undo redo
+    ☐ al crear un nodo desde el menu y no hay ningun otro nodo seleccionado, que el nuevo nodo quede en el centro
 gui__node:
     ✔ agregar otro rectangulo en la parte inferior del nodos con iconos los diferentes atributor "animated", "cloned", "cuda" @done(2021-04-30 10:47) @project(gui__node)
     ☐ que el nodo contenga el tamaño adicional provocado por la caja de atributos.
     ☐ la caja de atributo que tenga el mismo valor de zValue que el nodo.
     ☐ si agarramos el link y pesionamos el click derecho, el texto queda mal posicionado
     ☐ cambiar la position del rectangulo de atributos, dividirlo en 2 cuadros uno arriba y el otro abajo en la parte del icono del nodo
+    ☐ el snap a icono verticalmente no funciona si el nodo es ancho ancho
 gui__knobs:
 	✔ slider: rehacer el slider con QPainter para tener mas control de todo @today @done(2021-05-01 15:03) @project(gui__knobs)
 	✔ slider: mover el manejador en la posicion del click @done(2021-05-01 15:03) @project(gui__knobs)

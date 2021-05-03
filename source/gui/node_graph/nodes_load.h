@@ -9,6 +9,7 @@ class nodes_load : public QObject
 private:
     QJsonObject effects;
     void load_ofx_plugins();
+    void load_ofx(QString ofx_name);
 
 public:
     nodes_load();

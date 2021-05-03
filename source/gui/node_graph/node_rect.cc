@@ -287,6 +287,9 @@ void node_rect::update_text(QString _name, QString _tips)
 
 void node_rect::set_icon(QString _icon_name)
 {
+    if (_icon_name.isEmpty())
+        return;
+
     icon_name = _icon_name;
 
     QImage image("resources/images/" + icon_name + "_a.png");

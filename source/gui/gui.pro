@@ -13,7 +13,6 @@ INCLUDEPATH += ../engine/nodes
 
 # ofx libreria
 INCLUDEPATH += ../../libs/ofx/include
-LIBS += /home/pancho/Documents/develop/vinacomp/plugins/CImg.ofx.bundle/Contents/Linux-x86-64/CImg.ofx
 #
 
 QT += core gui widgets multimedia
