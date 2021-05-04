@@ -9,9 +9,10 @@ slider::slider(float _min, float _max, float _default_value, bool _floating,
     , handler_percent(50)
     , min(_min)
     , max(_max)
-    , default_value(_default_value)
     , centered_handler(_centered_handler)
 {
+    set_default_value(_default_value);
+
     setObjectName("slider");
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
@@ -59,6 +60,8 @@ slider::~slider()
 void slider::set_default_value(float _default_value)
 {
     default_value = _default_value;
+    if (default_value <= min || default_value >= max)
+        centered_handler = false;
 }
 
 float slider::get_percent_by_value(float value)

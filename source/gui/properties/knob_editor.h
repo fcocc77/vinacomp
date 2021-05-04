@@ -32,8 +32,10 @@ private:
 
     // edit
     QJsonArray knobs;
+    int insert_index;
+
     QString get_available_name() const;
-    void add_knob();
+    void add_knob(int index = -1);
     knob *get_knob_under_cursor() const;
     QVBoxLayout *get_controls_layout() const;
     int get_index_knob(QString knob_name) const;

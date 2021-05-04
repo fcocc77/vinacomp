@@ -35,6 +35,7 @@ gui__properties:
     ☐ boton para restablecer el nodo por defecto
 gui__trim_panel:
     ☐ knob_editor: crear button que vincule el plugin de python con el 'script_editor'
+    ☐ knob_editor: crear un nuevo tab cuando el nodo no es un grupo
 gui__node_graph:
 	☐ crear grilla que switchee con el boton de 'grid'
 	✔ crear backdrop @done(2021-04-26 12:32) @project(gui__node_graph)

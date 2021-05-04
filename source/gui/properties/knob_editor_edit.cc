@@ -2,8 +2,11 @@
 #include <trim_panel.h>
 #include <util.h>
 
-void knob_editor::add_knob()
+void knob_editor::add_knob(int index)
 {
+    if (index == -2)
+        return;
+
     QString label = knob_label->text();
     QString name = get_available_name();
 
@@ -93,7 +96,15 @@ void knob_editor::add_knob()
     if (knob_object.empty())
         return;
 
-    knobs.push_back(knob_object);
+    if (index == -1)
+        knobs.push_back(knob_object);
+    else
+    {
+        if (knobs.count() < index)
+            return;
+        knobs.insert(index, knob_object);
+    }
+
     static_cast<trim_panel *>(panel)->update_controls_knobs(knobs);
 }
 
@@ -177,6 +188,7 @@ QVBoxLayout *knob_editor::get_controls_layout() const
 
 void knob_editor::mousePressEvent(QMouseEvent *event)
 {
+    insert_index = -2;
     this->setCursor(Qt::ClosedHandCursor);
 }
 
@@ -186,8 +198,8 @@ void knob_editor::mouseMoveEvent(QMouseEvent *event)
 
     if (_knob)
     {
-        int index = get_index_knob(_knob->get_name()) + 2;
-        get_controls_layout()->insertWidget(index, temp_widget);
+        insert_index = get_index_knob(_knob->get_name()) + 1;
+        get_controls_layout()->insertWidget(insert_index + 1, temp_widget);
         temp_widget->show();
     }
 }
@@ -196,5 +208,6 @@ void knob_editor::mouseReleaseEvent(QMouseEvent *event)
 {
     temp_widget->hide();
     this->setCursor(Qt::ArrowCursor);
+    add_knob(insert_index);
 }
 

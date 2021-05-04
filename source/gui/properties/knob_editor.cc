@@ -27,8 +27,14 @@ knob_editor::knob_editor(QWidget *_panel)
         minimum_edit->show();
         maximum_edit->show();
         edit_box->setVisible(float_knob_action->is_checked());
-        current_knob_type = "floating";
+        this->setCursor(Qt::ArrowCursor);
     });
+    tools_bar->add_action(float_knob_action);
+    connect(float_knob_action->get_button(), &QPushButton::pressed, this,
+            [=]() {
+                current_knob_type = "floating";
+                this->setCursor(Qt::ClosedHandCursor);
+            });
     //
     //
 
@@ -39,8 +45,14 @@ knob_editor::knob_editor(QWidget *_panel)
         minimum_edit->show();
         maximum_edit->show();
         edit_box->setVisible(int_knob_action->is_checked());
-        current_knob_type = "integer";
+        this->setCursor(Qt::ArrowCursor);
     });
+    tools_bar->add_action(int_knob_action);
+    connect(int_knob_action->get_button(), &QPushButton::pressed, this,
+            [=]() {
+                current_knob_type = "integer";
+                this->setCursor(Qt::ClosedHandCursor);
+            });
     //
     //
 
@@ -51,8 +63,14 @@ knob_editor::knob_editor(QWidget *_panel)
         minimum_edit->show();
         maximum_edit->show();
         edit_box->setVisible(color_knob_action->is_checked());
-        current_knob_type = "color";
+        this->setCursor(Qt::ArrowCursor);
     });
+    tools_bar->add_action(color_knob_action);
+    connect(color_knob_action->get_button(), &QPushButton::pressed, this,
+            [=]() {
+                current_knob_type = "color";
+                this->setCursor(Qt::ClosedHandCursor);
+            });
     //
     //
 
@@ -63,8 +81,14 @@ knob_editor::knob_editor(QWidget *_panel)
         minimum_edit->hide();
         maximum_edit->hide();
         edit_box->setVisible(button_knob_action->is_checked());
-        current_knob_type = "button";
+        this->setCursor(Qt::ArrowCursor);
     });
+    tools_bar->add_action(button_knob_action);
+    connect(button_knob_action->get_button(), &QPushButton::pressed, this,
+            [=]() {
+                current_knob_type = "button";
+                this->setCursor(Qt::ClosedHandCursor);
+            });
     //
     //
 
@@ -75,8 +99,14 @@ knob_editor::knob_editor(QWidget *_panel)
         minimum_edit->hide();
         maximum_edit->hide();
         edit_box->setVisible(combo_box_knob_action->is_checked());
-        current_knob_type = "choice";
+        this->setCursor(Qt::ArrowCursor);
     });
+    tools_bar->add_action(combo_box_knob_action);
+    connect(combo_box_knob_action->get_button(), &QPushButton::pressed, this,
+            [=]() {
+                current_knob_type = "choice";
+                this->setCursor(Qt::ClosedHandCursor);
+            });
     //
     //
 
@@ -87,8 +117,14 @@ knob_editor::knob_editor(QWidget *_panel)
         minimum_edit->hide();
         maximum_edit->hide();
         edit_box->setVisible(check_box_knob_action->is_checked());
-        current_knob_type = "check_box";
+        this->setCursor(Qt::ArrowCursor);
     });
+    tools_bar->add_action(check_box_knob_action);
+    connect(check_box_knob_action->get_button(), &QPushButton::pressed, this,
+            [=]() {
+                current_knob_type = "check_box";
+                this->setCursor(Qt::ClosedHandCursor);
+            });
     //
     //
 
@@ -99,8 +135,14 @@ knob_editor::knob_editor(QWidget *_panel)
         minimum_edit->hide();
         maximum_edit->hide();
         edit_box->setVisible(text_knob_action->is_checked());
-        current_knob_type = "text";
+        this->setCursor(Qt::ArrowCursor);
     });
+    tools_bar->add_action(text_knob_action);
+    connect(text_knob_action->get_button(), &QPushButton::pressed, this,
+            [=]() {
+                current_knob_type = "text";
+                this->setCursor(Qt::ClosedHandCursor);
+            });
     //
     //
 
@@ -111,8 +153,14 @@ knob_editor::knob_editor(QWidget *_panel)
         minimum_edit->hide();
         maximum_edit->hide();
         edit_box->setVisible(file_knob_action->is_checked());
-        current_knob_type = "file";
+        this->setCursor(Qt::ArrowCursor);
     });
+    tools_bar->add_action(file_knob_action);
+    connect(file_knob_action->get_button(), &QPushButton::pressed, this,
+            [=]() {
+                current_knob_type = "file";
+                this->setCursor(Qt::ClosedHandCursor);
+            });
     //
     //
 
@@ -123,10 +171,18 @@ knob_editor::knob_editor(QWidget *_panel)
         minimum_edit->hide();
         maximum_edit->hide();
         edit_box->setVisible(position_knob_action->is_checked());
-        current_knob_type = "floating_dimensions";
+        this->setCursor(Qt::ArrowCursor);
     });
+    tools_bar->add_action(position_knob_action);
+    connect(position_knob_action->get_button(), &QPushButton::pressed, this,
+            [=]() {
+                current_knob_type = "floating_dimensions";
+                this->setCursor(Qt::ClosedHandCursor);
+            });
     //
     //
+
+    tools_bar->add_separator();
 
     // Label
     action *label_knob_action = new action("Label Knob", "", "label");
@@ -135,8 +191,14 @@ knob_editor::knob_editor(QWidget *_panel)
         minimum_edit->hide();
         maximum_edit->hide();
         edit_box->setVisible(label_knob_action->is_checked());
-        current_knob_type = "label";
+        this->setCursor(Qt::ArrowCursor);
     });
+    tools_bar->add_action(label_knob_action);
+    connect(label_knob_action->get_button(), &QPushButton::pressed, this,
+            [=]() {
+                current_knob_type = "label";
+                this->setCursor(Qt::ClosedHandCursor);
+            });
     //
     //
 
@@ -147,8 +209,14 @@ knob_editor::knob_editor(QWidget *_panel)
         minimum_edit->hide();
         maximum_edit->hide();
         edit_box->setVisible(group_knob_action->is_checked());
-        current_knob_type = "group";
+        this->setCursor(Qt::ArrowCursor);
     });
+    tools_bar->add_action(group_knob_action);
+    connect(group_knob_action->get_button(), &QPushButton::pressed, this,
+            [=]() {
+                current_knob_type = "group";
+                this->setCursor(Qt::ClosedHandCursor);
+            });
     //
     //
 
@@ -159,25 +227,19 @@ knob_editor::knob_editor(QWidget *_panel)
         minimum_edit->hide();
         maximum_edit->hide();
         edit_box->setVisible(separator_knob_action->is_checked());
-        current_knob_type = "separator";
+        this->setCursor(Qt::ArrowCursor);
     });
+    tools_bar->add_action(separator_knob_action);
+    connect(separator_knob_action->get_button(), &QPushButton::pressed, this,
+            [=]() {
+                current_knob_type = "separator";
+                this->setCursor(Qt::ClosedHandCursor);
+            });
     //
     //
 
-    tools_bar->add_action(float_knob_action);
-    tools_bar->add_action(int_knob_action);
-    tools_bar->add_action(color_knob_action);
-    tools_bar->add_action(button_knob_action);
-    tools_bar->add_action(combo_box_knob_action);
-    tools_bar->add_action(check_box_knob_action);
-    tools_bar->add_action(text_knob_action);
-    tools_bar->add_action(file_knob_action);
-    tools_bar->add_action(position_knob_action);
-    tools_bar->add_separator();
-    tools_bar->add_action(label_knob_action);
-    tools_bar->add_action(group_knob_action);
-    tools_bar->add_action(separator_knob_action);
     tools_bar->add_stretch();
+
 
     // Caja de edicion
     edit_box = new QWidget(this);
@@ -200,9 +262,6 @@ knob_editor::knob_editor(QWidget *_panel)
     minimum_edit->setPlaceholderText("Min: 0");
     maximum_edit->setPlaceholderText("Max: 100");
 
-    QPushButton *drag_button = new QPushButton(this);
-    qt::set_icon(drag_button, "position_a", 20);
-
     QPushButton *add_button = new QPushButton(this);
     connect(add_button, &QPushButton::clicked, this, &knob_editor::add_knob);
     qt::set_icon(add_button, "add_a", 20);
@@ -213,7 +272,6 @@ knob_editor::knob_editor(QWidget *_panel)
     edit_box_layout->addWidget(new_line_label);
     edit_box_layout->addWidget(minimum_edit);
     edit_box_layout->addWidget(maximum_edit);
-    edit_box_layout->addWidget(drag_button);
     edit_box_layout->addWidget(add_button);
 }
 

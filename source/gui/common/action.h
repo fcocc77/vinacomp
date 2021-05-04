@@ -39,6 +39,7 @@ public:
     void update();
     void set_visible(bool _visible);
     void set_icon(QString icon_name);
+    inline QPushButton *get_button() const;
 
     template <class T, typename Func> void connect_to(T *obj, Func func)
     {
@@ -54,5 +55,10 @@ public:
         obj->addAction(this);
     }
 };
+
+inline QPushButton *action::get_button() const
+{
+    return button;
+}
 
 #endif // ACTION_HPP
