@@ -4,6 +4,7 @@
 #include <QCheckBox>
 #include <QLabel>
 #include <QLineEdit>
+#include <QTextEdit>
 #include <QTreeWidget>
 #include <QVBoxLayout>
 #include <QWidget>
@@ -11,6 +12,7 @@
 #include <QMouseEvent>
 
 #include <knob.h>
+#include <knob_check_box.h>
 
 class knob_editor : public QWidget
 {
@@ -21,12 +23,11 @@ private:
     QWidget *_properties;
     QString current_knob_type;
 
+    QTextEdit *knob_tips;
     QLineEdit *knob_name;
-    QLineEdit *knob_label;
     QLineEdit *minimum_edit;
     QLineEdit *maximum_edit;
-    QLabel *new_line_label;
-    QCheckBox *new_line_check;
+    knob_check_box *new_line_check;
 
     QWidget *temp_widget;
 
@@ -40,6 +41,7 @@ private:
     knob *get_knob_under_cursor() const;
     QVBoxLayout *get_controls_layout(QWidget *panel) const;
     int get_index_knob(QWidget *panel, QString knob_name) const;
+    QWidget *get_panel_under_cursor() const;
 
     void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;

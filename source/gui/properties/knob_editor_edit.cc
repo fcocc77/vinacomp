@@ -18,33 +18,41 @@ void knob_editor::add_knob(QWidget *panel, int index)
     if (index == -2 || !panel)
         return;
 
-    QString label = knob_label->text();
-    QString name = get_available_name(panel);
-
+    QString label = knob_name->text();
     if (label.isEmpty())
-        label = name;
+        label = current_knob_type;
+
+    QString name = get_available_name(panel);
+    QString tips = knob_tips->toPlainText();
+    
+    float min = 0;
+    float max = 100;
+    if (!minimum_edit->text().isEmpty())
+        min = minimum_edit->text().toDouble();
+    if (!maximum_edit->text().isEmpty())
+        max = maximum_edit->text().toDouble();
 
     QJsonObject knob_object;
     if (current_knob_type == "floating")
     {
         knob_object = {{"name", name},  {"type", "floating"}, {"label", label},
-                       {"tooltip", ""}, {"minimum", 0},       {"maximum", 1},
-                       {"default", 0.5}};
+                       {"tooltip", tips}, {"minimum", min},       {"maximum", max},
+                       {"default", min}};
     }
     else if (current_knob_type == "integer")
     {
         knob_object = {{"name", name},  {"type", "integer"}, {"label", label},
-                       {"tooltip", ""}, {"minimum", 0},      {"maximum", 1},
-                       {"default", 0.5}};
+                       {"tooltip", tips}, {"minimum", min},      {"maximum", max},
+                       {"default", min}};
     }
     else if (current_knob_type == "color")
     {
         knob_object = {{"name", name},
                        {"type", "color"},
                        {"label", label},
-                       {"tooltip", ""},
-                       {"minimum", 0},
-                       {"maximum", 1},
+                       {"tooltip", tips},
+                       {"minimum", min},
+                       {"maximum", max},
                        {"centered_handler", true},
                        {"default", QJsonArray{0, 0, 0, 0}}};
     }
@@ -53,36 +61,36 @@ void knob_editor::add_knob(QWidget *panel, int index)
         knob_object = {{"name", name},
                        {"type", "button"},
                        {"label", label},
-                       {"tooltip", ""}};
+                       {"tooltip", tips}};
     }
     else if (current_knob_type == "choice")
     {
         knob_object = {{"name", name},          {"type", "choice"},
-                       {"label", label},        {"tooltip", ""},
+                       {"label", label},        {"tooltip", tips},
                        {"items", QJsonArray{}}, {"default", QJsonArray{0, ""}}};
     }
     else if (current_knob_type == "check_box")
     {
         knob_object = {{"name", name},       {"type", "check_box"},
-                       {"label", label},     {"tooltip", ""},
+                       {"label", label},     {"tooltip", tips},
                        {"over_line", false}, {"default", false}};
     }
     else if (current_knob_type == "text")
     {
         knob_object = {{"name", name},  {"type", "text"},     {"label", label},
-                       {"tooltip", ""}, {"over_line", false}, {"default", ""}};
+                       {"tooltip", ""}, {"over_line", false}, {"default", tips}};
     }
     else if (current_knob_type == "file")
     {
         knob_object = {{"name", name},  {"type", "file"},     {"label", label},
-                       {"tooltip", ""}, {"over_line", false}, {"default", ""}};
+                       {"tooltip", ""}, {"over_line", false}, {"default", tips}};
     }
     else if (current_knob_type == "floating_dimensions")
     {
         knob_object = {{"name", name},
                        {"type", "floating_dimensions"},
                        {"label", label},
-                       {"tooltip", ""},
+                       {"tooltip", tips},
                        {"dimensions", 2},
                        {"over_line", false},
                        {"default", QJsonArray{0, 0}}};
@@ -131,6 +139,8 @@ QString knob_editor::get_available_name(QWidget *panel) const
     if (name.isEmpty())
         name = current_knob_type;
 
+    name = name.replace(" ", "_").toLower();
+
     auto exist = [=](QString _name) {
         for (QJsonValue value : knobs)
             if (value.toObject().value("name").toString() == _name)
@@ -148,14 +158,15 @@ QString knob_editor::get_available_name(QWidget *panel) const
     };
 
     QString basename = get_basename(name);
-    QString available_name;
+    QString available_name = basename;
 
     int number = 1;
     while (true)
     {
-        available_name = basename + QString::number(number);
         if (!exist(available_name))
             break;
+
+        available_name = basename + QString::number(number);
         number++;
     }
 
@@ -170,10 +181,24 @@ knob *knob_editor::get_knob_under_cursor() const
         qApp->widgetAt({QCursor::pos().x(), QCursor::pos().y() + vertical_gap});
     while (_widget)
     {
-        QString name = _widget->objectName();
         knob *_knob = dynamic_cast<knob *>(_widget);
         if (_knob)
             return _knob;
+
+        _widget = _widget->parentWidget();
+    }
+
+    return nullptr;
+}
+
+QWidget *knob_editor::get_panel_under_cursor() const
+{
+    QWidget *_widget = qApp->widgetAt(QCursor::pos());
+    while (_widget)
+    {
+        trim_panel *panel = dynamic_cast<trim_panel *>(_widget);
+        if (panel)
+            return panel;
 
         _widget = _widget->parentWidget();
     }
@@ -203,6 +228,9 @@ int knob_editor::get_index_knob(QWidget *panel, QString knob_name) const
 
 QVBoxLayout *knob_editor::get_controls_layout(QWidget *panel) const
 {
+    if (!panel)
+        return nullptr;
+
     QLayout *layout =
         static_cast<trim_panel *>(panel)->get_controls_tab()->layout();
 
@@ -219,13 +247,24 @@ void knob_editor::mousePressEvent(QMouseEvent *event)
 void knob_editor::mouseMoveEvent(QMouseEvent *event)
 {
     knob *_knob = get_knob_under_cursor();
+    QWidget *panel = get_panel_under_cursor();
 
     if (_knob)
     {
         current_panel = _knob->get_panel();
         insert_index = get_index_knob(current_panel, _knob->get_name()) + 1;
-        get_controls_layout(current_panel)->insertWidget(insert_index + 1, temp_widget);
-        temp_widget->show();
+        QVBoxLayout *layout = get_controls_layout(current_panel);
+        if (layout)
+        {
+            layout->insertWidget(insert_index + 1, temp_widget);
+            temp_widget->show();
+        }
+    }
+
+    if (!panel)
+    {
+        temp_widget->hide();
+        current_panel = nullptr;
     }
 }
 

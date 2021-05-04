@@ -7,9 +7,12 @@ knob_editor::knob_editor(QWidget *__properties)
     : _properties(__properties)
     , current_panel(nullptr)
 {
+    this->setObjectName("knob_editor");
+
     layout = new QVBoxLayout(this);
     layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
     layout->setMargin(0);
+    layout->setSpacing(0);
 
     temp_widget = new QWidget;
     temp_widget->hide();
@@ -25,6 +28,8 @@ knob_editor::knob_editor(QWidget *__properties)
     action *float_knob_action = new action("Floating Knob", "", "float");
     float_knob_action->set_checkable(true);
     float_knob_action->connect_to(this, [=]() {
+        minimum_edit->setText("0");
+        maximum_edit->setText("1");
         minimum_edit->show();
         maximum_edit->show();
         edit_box->setVisible(float_knob_action->is_checked());
@@ -43,6 +48,8 @@ knob_editor::knob_editor(QWidget *__properties)
     action *int_knob_action = new action("Integer Knob", "", "int");
     int_knob_action->set_checkable(true);
     int_knob_action->connect_to(this, [=]() {
+        minimum_edit->setText("0");
+        maximum_edit->setText("10");
         minimum_edit->show();
         maximum_edit->show();
         edit_box->setVisible(int_knob_action->is_checked());
@@ -61,6 +68,8 @@ knob_editor::knob_editor(QWidget *__properties)
     action *color_knob_action = new action("Color Knob", "", "color");
     color_knob_action->set_checkable(true);
     color_knob_action->connect_to(this, [=]() {
+        minimum_edit->setText("0");
+        maximum_edit->setText("1");
         minimum_edit->show();
         maximum_edit->show();
         edit_box->setVisible(color_knob_action->is_checked());
@@ -241,39 +250,65 @@ knob_editor::knob_editor(QWidget *__properties)
 
     tools_bar->add_stretch();
 
+    action *add_action = new action("Add Knob", "", "add");
+    add_action->connect_to(this, [=]() { push_knob(); });
+    tools_bar->add_action(add_action);
 
     // Caja de edicion
     edit_box = new QWidget(this);
+    edit_box->setObjectName("edit_box");
     edit_box->hide();
     QHBoxLayout *edit_box_layout = new QHBoxLayout(edit_box);
+    edit_box_layout->setAlignment(Qt::AlignTop);
     layout->addWidget(edit_box);
 
+    // name and tips widget
+    QWidget *name_and_tips = new QWidget(this);
+    name_and_tips->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    name_and_tips->setObjectName("name_and_tips");
+    QVBoxLayout *name_and_tips_layout = new QVBoxLayout(name_and_tips);
+    name_and_tips_layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
+    name_and_tips_layout->setMargin(0);
+
     knob_name = new QLineEdit(this);
-    knob_label = new QLineEdit(this);
+    knob_name->setPlaceholderText("Name Knob");
+    name_and_tips_layout->addWidget(knob_name);
+
+    knob_tips = new QTextEdit(this);
+    knob_tips->setMaximumHeight(100);
+    knob_tips->setMinimumHeight(100);
+    knob_tips->setPlaceholderText("ToolTip Knob");
+    name_and_tips_layout->addWidget(knob_tips);
+    //
+
+    // min, max and other
+    QWidget *min_max = new QWidget;
+    min_max->setObjectName("min_max");
+    QHBoxLayout *min_max_layout = new QHBoxLayout(min_max);
+    min_max_layout->setMargin(0);
     minimum_edit = new QLineEdit(this);
     maximum_edit = new QLineEdit(this);
-    new_line_label = new QLabel("New Line");
-    new_line_check = new QCheckBox(this);
+    minimum_edit->setPlaceholderText("Min");
+    maximum_edit->setPlaceholderText("Max");
+    min_max_layout->addWidget(minimum_edit);
+    min_max_layout->addWidget(maximum_edit);
+    //
 
-    minimum_edit->setMaximumWidth(70);
-    maximum_edit->setMaximumWidth(70);
+    //
+    QWidget *second_widget = new QWidget;
+    second_widget->setObjectName("second_widget");
+    second_widget->setMaximumWidth(200);
+    QVBoxLayout *second_widget_layout = new QVBoxLayout(second_widget);
+    second_widget_layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
+    second_widget_layout->setMargin(0);
 
-    knob_name->setPlaceholderText("Name Knob");
-    knob_label->setPlaceholderText("Label Knob");
-    minimum_edit->setPlaceholderText("Min: 0");
-    maximum_edit->setPlaceholderText("Max: 100");
+    new_line_check = new knob_check_box("New Line");
+    second_widget_layout->addWidget(min_max);
+    second_widget_layout->addWidget(new_line_check);
+    //
 
-    QPushButton *add_button = new QPushButton(this);
-    connect(add_button, &QPushButton::clicked, this, &knob_editor::push_knob);
-    qt::set_icon(add_button, "add_a", 20);
-
-    edit_box_layout->addWidget(knob_name);
-    edit_box_layout->addWidget(knob_label);
-    edit_box_layout->addWidget(new_line_check);
-    edit_box_layout->addWidget(new_line_label);
-    edit_box_layout->addWidget(minimum_edit);
-    edit_box_layout->addWidget(maximum_edit);
-    edit_box_layout->addWidget(add_button);
+    edit_box_layout->addWidget(name_and_tips);
+    edit_box_layout->addWidget(second_widget);
 }
 
 knob_editor::~knob_editor() {}

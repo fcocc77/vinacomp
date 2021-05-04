@@ -21,7 +21,7 @@ QPushButton {
     width: 0px; }
 
 QMainWindow {
-  qproperty-windowIcon: url("/home/pancho/Documents/develop/vinacomp/resources/images/vinacomp.png"); }
+  qproperty-windowIcon: url("{{path}}/resources/images/vinacomp.png"); }
 
 QMenu {
   background-color: #292d32;
@@ -109,13 +109,13 @@ QScrollBar {
   QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left-arrow:horizontal, QScrollBar::right-arrow:horizontal {
     background: transparent; }
   QScrollBar::up-arrow:vertical {
-    image: url("/home/pancho/Documents/develop/vinacomp/resources/images/up_arrow.png"); }
+    image: url("{{path}}/resources/images/up_arrow.png"); }
   QScrollBar::down-arrow:vertical {
-    image: url("/home/pancho/Documents/develop/vinacomp/resources/images/down_arrow.png"); }
+    image: url("{{path}}/resources/images/down_arrow.png"); }
   QScrollBar::left-arrow:horizontal {
-    image: url("/home/pancho/Documents/develop/vinacomp/resources/images/right_arrow.png"); }
+    image: url("{{path}}/resources/images/right_arrow.png"); }
   QScrollBar::right-arrow:horizontal {
-    image: url("/home/pancho/Documents/develop/vinacomp/resources/images/left_arrow.png"); }
+    image: url("{{path}}/resources/images/left_arrow.png"); }
 
 #slider #slider_center {
   background: #1e2024;
@@ -567,6 +567,21 @@ QScrollBar {
     background: #30343b; }
   #properties #trim_panels {
     background: #30343b; }
+  #properties #knob_editor #tools {
+    border-top: 1px solid #272a30;
+    border-bottom: 1px solid #1e2024; }
+  #properties #knob_editor #edit_box {
+    background: #25282d; }
+  #properties #knob_editor #name_and_tips, #properties #knob_editor #second_widget, #properties #knob_editor #min_max {
+    background: none; }
+  #properties #knob_editor QTextEdit {
+    color: #aeb4bc;
+    padding: 3px;
+    border-radius: 2px;
+    background: #1e2024;
+    border: 1px solid #1e2024; }
+    #properties #knob_editor QTextEdit:focus {
+      border-color: #8f7612; }
 
 #script_editor {
   background: #30343b; }

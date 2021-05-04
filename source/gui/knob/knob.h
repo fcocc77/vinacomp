@@ -30,6 +30,8 @@ private:
 
 protected:
     QString name;
+    QString label;
+    QString tips;
     QString type;
     QString anim_name;
 

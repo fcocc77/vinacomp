@@ -158,8 +158,8 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
 
                 layout->addWidget(_knob);
             }
-            _knob->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
+            _knob->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
             _knob->set_env(this, project, _vinacomp, viewers_gl, this_node);
             _knob->set_data(knob_object, data);
 

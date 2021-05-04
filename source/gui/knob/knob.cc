@@ -86,8 +86,16 @@ void knob::set_data(QJsonObject _knob_data, QJsonObject *_params)
     // name and type
     name = knob_data.value("name").toString();
     type = knob_data.value("type").toString();
+    tips = knob_data.value("tooltip").toString();
     anim_name = name + "_anim";
     //
+
+    if (tips.isEmpty())
+        tips = name;
+    else
+        tips = name + ": " + tips;
+
+    label_widget->setToolTip(tips);
 }
 
 void knob::update_handler()
@@ -102,8 +110,9 @@ void knob::update_handler()
     }
 }
 
-void knob::set_init_space(int space, QString label)
+void knob::set_init_space(int space, QString _label)
 {
+    label = _label;
     if (space == 0)
         return;
 

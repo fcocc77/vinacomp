@@ -74,9 +74,10 @@ void action::set_object_name(QString name)
 
 void action::uncheck_all()
 {
-    if (_tools)
-        if (_one_check_at_time)
-            static_cast<tools *>(_tools)->set_checked_all(false);
+    if (!checkable || !_tools || !_one_check_at_time)
+        return;
+
+    static_cast<tools *>(_tools)->set_checked_all(false);
 }
 
 void action::set_checked(bool _checked)
