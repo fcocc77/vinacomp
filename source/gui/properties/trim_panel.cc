@@ -19,7 +19,6 @@ trim_panel::trim_panel(properties *__properties, QString _name, QString _type,
     : _knob_editor(nullptr)
     , this_node(_node)
     , nodes_loaded(_nodes_loaded)
-    , knob_editor_visible(false)
     , _vinacomp(__vinacomp)
     , project(_project)
     , _node_view(__node_view)
@@ -46,9 +45,6 @@ trim_panel::trim_panel(properties *__properties, QString _name, QString _type,
 
     buttons = top_buttons_setup_ui();
     layout->addWidget(buttons);
-
-    knob_editor_container = new QWidget(this);
-    layout->addWidget(knob_editor_container);
 
     tabs = tabs_ui();
     layout->addWidget(tabs);
@@ -83,7 +79,6 @@ trim_panel::trim_panel(properties *__properties, QString _name, QString _type,
 trim_panel::~trim_panel()
 {
     delete layout;
-    delete knob_editor_container;
 
     if (_node_gui)
         delete _node_gui;
@@ -183,10 +178,10 @@ QWidget *trim_panel::top_buttons_setup_ui()
     qt::set_icon(center_node, "center_a", icon_size);
     layout->addWidget(center_node);
 
-    knob_editor_button = new QPushButton(widget);
-    connect(knob_editor_button, &QPushButton::clicked, this, [=]() { knob_editor_toggle(); });
-    qt::set_icon(knob_editor_button, "edit_a", icon_size);
-    layout->addWidget(knob_editor_button);
+    restart_button = new QPushButton(widget);
+    connect(restart_button, &QPushButton::clicked, this, [=]() {  });
+    qt::set_icon(restart_button, "restart_a", icon_size);
+    layout->addWidget(restart_button);
 
     layout->addStretch();
 
@@ -257,28 +252,6 @@ tab_widget *trim_panel::tabs_ui()
     tabs->set_index(0);
 
     return tabs;
-}
-
-void trim_panel::knob_editor_toggle()
-{
-    if (!_knob_editor)
-    {
-        // el 'knob_editor' solo se crea cuando se presiona el boton se 'edit', ya que
-        // solo se usa para editar los knobs, y solo se crea si no esta creado antes
-        QHBoxLayout *knob_editor_layout = new QHBoxLayout(knob_editor_container);
-        knob_editor_layout->setMargin(0);
-        _knob_editor = new knob_editor(this);
-        _knob_editor->hide();
-        knob_editor_layout->addWidget(_knob_editor);
-    }
-
-    knob_editor_visible = !knob_editor_visible;
-    _knob_editor->setVisible(knob_editor_visible);
-
-    if (knob_editor_visible)
-        qt::set_icon(knob_editor_button, "edit_c", 20);
-    else
-        qt::set_icon(knob_editor_button, "edit_a", 20);
 }
 
 void trim_panel::maximize(bool _maximize)

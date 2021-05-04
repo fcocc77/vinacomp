@@ -1,14 +1,25 @@
 #include <knob_editor.h>
 #include <trim_panel.h>
 #include <util.h>
+#include <properties.h>
 
-void knob_editor::add_knob(int index)
+void knob_editor::push_knob()
 {
-    if (index == -2)
+    // inserta el knob en el primer panel, si es que hay uno
+    QWidget *panel = static_cast<properties *>(_properties)->get_first_panel();
+    if (!panel)
+        return;
+
+    add_knob(panel);
+}
+
+void knob_editor::add_knob(QWidget *panel, int index)
+{
+    if (index == -2 || !panel)
         return;
 
     QString label = knob_label->text();
-    QString name = get_available_name();
+    QString name = get_available_name(panel);
 
     if (label.isEmpty())
         label = name;
@@ -96,6 +107,9 @@ void knob_editor::add_knob(int index)
     if (knob_object.empty())
         return;
 
+    trim_panel *_panel = static_cast<trim_panel *>(panel);
+    QJsonArray &knobs = _panel->custom_knobs;
+
     if (index == -1)
         knobs.push_back(knob_object);
     else
@@ -105,16 +119,19 @@ void knob_editor::add_knob(int index)
         knobs.insert(index, knob_object);
     }
 
-    static_cast<trim_panel *>(panel)->update_controls_knobs(knobs);
+    _panel->update_controls_knobs(knobs);
 }
 
-QString knob_editor::get_available_name() const
+QString knob_editor::get_available_name(QWidget *panel) const
 {
+    trim_panel *_panel = static_cast<trim_panel *>(panel);
+    QJsonArray &knobs = _panel->custom_knobs;
+
     QString name = knob_name->text();
     if (name.isEmpty())
         name = current_knob_type;
 
-    auto exist = [this](QString _name) {
+    auto exist = [=](QString _name) {
         for (QJsonValue value : knobs)
             if (value.toObject().value("name").toString() == _name)
                 return true;
@@ -164,8 +181,14 @@ knob *knob_editor::get_knob_under_cursor() const
     return nullptr;
 }
 
-int knob_editor::get_index_knob(QString knob_name) const
+int knob_editor::get_index_knob(QWidget *panel, QString knob_name) const
 {
+    if (!panel)
+        return -2;
+
+    trim_panel *_panel = static_cast<trim_panel *>(panel);
+    QJsonArray &knobs = _panel->custom_knobs;
+
     int index = 0;
     for (QJsonValue value : knobs)
     {
@@ -178,7 +201,7 @@ int knob_editor::get_index_knob(QString knob_name) const
     return index;
 }
 
-QVBoxLayout *knob_editor::get_controls_layout() const
+QVBoxLayout *knob_editor::get_controls_layout(QWidget *panel) const
 {
     QLayout *layout =
         static_cast<trim_panel *>(panel)->get_controls_tab()->layout();
@@ -189,6 +212,7 @@ QVBoxLayout *knob_editor::get_controls_layout() const
 void knob_editor::mousePressEvent(QMouseEvent *event)
 {
     insert_index = -2;
+    current_panel = nullptr;
     this->setCursor(Qt::ClosedHandCursor);
 }
 
@@ -198,8 +222,9 @@ void knob_editor::mouseMoveEvent(QMouseEvent *event)
 
     if (_knob)
     {
-        insert_index = get_index_knob(_knob->get_name()) + 1;
-        get_controls_layout()->insertWidget(insert_index + 1, temp_widget);
+        current_panel = _knob->get_panel();
+        insert_index = get_index_knob(current_panel, _knob->get_name()) + 1;
+        get_controls_layout(current_panel)->insertWidget(insert_index + 1, temp_widget);
         temp_widget->show();
     }
 }
@@ -208,6 +233,6 @@ void knob_editor::mouseReleaseEvent(QMouseEvent *event)
 {
     temp_widget->hide();
     this->setCursor(Qt::ArrowCursor);
-    add_knob(insert_index);
+    add_knob(current_panel, insert_index);
 }
 

@@ -13,7 +13,6 @@
 // Gui
 #include <knob.h>
 #include <knob_button.h>
-#include <knob_editor.h>
 #include <nodes_load.h>
 #include <properties.h>
 #include <tab_widget.h>
@@ -33,9 +32,7 @@ private:
     knob_editor *_knob_editor;
     QGraphicsItem *this_node;
     nodes_load *nodes_loaded;
-    QWidget *knob_editor_container;
-    bool knob_editor_visible;
-    QPushButton *knob_editor_button;
+    QPushButton *restart_button;
     QWidget *_vinacomp;
     QWidget *_curve_editor;
     QList<QWidget *> *viewers_gl;
@@ -62,7 +59,6 @@ private:
 
     QJsonObject *data;
 
-    void knob_editor_toggle();
     void setup_gui_panels(QJsonArray _knobs);
     QWidget *top_buttons_setup_ui();
     tab_widget *tabs_ui();
@@ -72,6 +68,8 @@ private:
     void update_render();
 
 public:
+    QJsonArray custom_knobs;
+
     trim_panel(properties *_properties, QString _name, QString _type,
                QColor color, QString _icon_name, nodes_load *nodes_loaded,
                project_struct *project, QWidget *_vinacomp,

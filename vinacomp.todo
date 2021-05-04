@@ -33,8 +33,9 @@ gui__time_line:
 gui__viewer_players:
 gui__properties:
     ☐ boton para restablecer el nodo por defecto
+    ☐ incrustar un script editor,tiene que ser un editor para todos los nodos, par ahorrar memoria, el editor tiene que tener un aceptar y cancelar
 gui__trim_panel:
-    ☐ knob_editor: crear button que vincule el plugin de python con el 'script_editor'
+    ☐ knob_editor: crear button que vincule el plugin de python con el 'script_editor' del panel
     ☐ knob_editor: crear un nuevo tab cuando el nodo no es un grupo
 gui__node_graph:
 	☐ crear grilla que switchee con el boton de 'grid'

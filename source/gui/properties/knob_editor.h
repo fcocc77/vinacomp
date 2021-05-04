@@ -18,7 +18,7 @@ private:
     QVBoxLayout *layout;
     QTreeWidget *knobs_list;
     QWidget *edit_box;
-    QWidget *panel;
+    QWidget *_properties;
     QString current_knob_type;
 
     QLineEdit *knob_name;
@@ -31,21 +31,22 @@ private:
     QWidget *temp_widget;
 
     // edit
-    QJsonArray knobs;
     int insert_index;
+    QWidget *current_panel;
 
-    QString get_available_name() const;
-    void add_knob(int index = -1);
+    QString get_available_name(QWidget *panel) const;
+    void add_knob(QWidget *panel, int index = -1);
+    void push_knob();
     knob *get_knob_under_cursor() const;
-    QVBoxLayout *get_controls_layout() const;
-    int get_index_knob(QString knob_name) const;
+    QVBoxLayout *get_controls_layout(QWidget *panel) const;
+    int get_index_knob(QWidget *panel, QString knob_name) const;
 
     void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
 
 public:
-    knob_editor(QWidget *panel);
+    knob_editor(QWidget *properties);
     ~knob_editor();
 };
 

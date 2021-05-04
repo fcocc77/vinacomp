@@ -4,12 +4,26 @@
 button::button(QWidget *parent, bool _hover)
     : QPushButton(parent)
     , hover(_hover)
+    , checkable(false)
+    , checked(false)
 {
     if (hover)
     {
         this->setMouseTracking(true);
         this->setTabletTracking(true);
     }
+
+    connect(this, &QPushButton::clicked, this, [=]() {
+        if (checkable)
+        {
+            checked = !checked;
+            if (checked)
+                set_hover_icon();
+            else
+                set_normal_icon();
+        }
+        clicked(checked);
+    });
 }
 
 button::~button() {}

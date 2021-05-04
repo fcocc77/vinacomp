@@ -64,6 +64,7 @@ public:
     inline QString get_name() const;
     inline bool is_animated() const;
     inline void set_visible(bool visible);
+    inline QWidget *get_panel() const;
     void set_param_value(QJsonValue value);
     void set_animatable(bool _animatable = true);
 
@@ -78,6 +79,11 @@ public:
 signals:
     void to_node_gui(knob *_knob);
 };
+
+inline QWidget *knob::get_panel() const
+{
+    return _parent;
+}
 
 inline void knob::set_visible(bool visible)
 {

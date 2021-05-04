@@ -3,8 +3,9 @@
 #include <tools.h>
 #include <qt.h>
 
-knob_editor::knob_editor(QWidget *_panel)
-    : panel(_panel)
+knob_editor::knob_editor(QWidget *__properties)
+    : _properties(__properties)
+    , current_panel(nullptr)
 {
     layout = new QVBoxLayout(this);
     layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
@@ -263,7 +264,7 @@ knob_editor::knob_editor(QWidget *_panel)
     maximum_edit->setPlaceholderText("Max: 100");
 
     QPushButton *add_button = new QPushButton(this);
-    connect(add_button, &QPushButton::clicked, this, &knob_editor::add_knob);
+    connect(add_button, &QPushButton::clicked, this, &knob_editor::push_knob);
     qt::set_icon(add_button, "add_a", 20);
 
     edit_box_layout->addWidget(knob_name);
