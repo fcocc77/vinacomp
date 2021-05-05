@@ -45,6 +45,7 @@ public:
     template <class T> void add_trim_panel(T *_trim_panel);
 
     void update_animated_knobs();
+    void set_edit_mode(bool enable);
 };
 //
 //

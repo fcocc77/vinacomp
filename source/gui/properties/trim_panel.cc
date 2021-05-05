@@ -114,6 +114,13 @@ void trim_panel::update_controls_knobs(QJsonArray _knobs)
     // setup_knobs(_knobs, controls_layout, viewers_gl);
 }
 
+void trim_panel::set_edit_mode(bool enable)
+{
+    for (tab *_tab : tabs->get_tabs())
+        if (!tabs_only_read.contains(_tab->get_name()))
+            _tab->set_visible_close_button(enable);
+}
+
 void trim_panel::setup_shared_params()
 {
     // crea las conecciones a los parametros que estan en el tab de 'node'

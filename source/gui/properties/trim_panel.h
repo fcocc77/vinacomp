@@ -75,6 +75,7 @@ public:
     void update_controls_knobs(QJsonArray _knobs);
     void maximize(bool _maximize);
     void add_tab(QString tab_name, int index = -1);
+    void set_edit_mode(bool enable);
     inline QString get_name() const;
     inline QString get_type() const;
     inline QColor get_color() const;

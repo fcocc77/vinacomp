@@ -275,7 +275,7 @@ knob_editor::knob_editor(QWidget *__properties)
     tools_bar->add_stretch();
 
     action *add_action = new action("Add Knob", "", "add");
-    add_action->connect_to(this, [=]() { push_knob(); });
+    add_action->connect_to(this, [=]() { push_knob_or_tab(); });
     tools_bar->add_action(add_action);
 
     // Caja de edicion

@@ -40,7 +40,7 @@ private:
     QString get_available_tab_name(QWidget *panel) const;
     QString get_available_name(QStringList name_list, QString name) const;
     void add_knob(QWidget *panel, int index = -1);
-    void push_knob();
+    void push_knob_or_tab();
     knob *get_knob_under_cursor() const;
     QVBoxLayout *get_controls_layout(QWidget *panel) const;
     int get_index_knob(QWidget *panel, QString knob_name) const;
@@ -49,7 +49,7 @@ private:
     QWidget *get_tab_widget_under_cursor() const;
     void insert_division_to_tabs(QPointF position);
     void insert_division_to_knobs();
-    void add_tab(QWidget *panel, int index);
+    void add_tab(QWidget *panel, int index = -1);
 
     void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;

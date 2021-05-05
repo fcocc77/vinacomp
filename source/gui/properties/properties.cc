@@ -78,6 +78,7 @@ QWidget *properties::top_buttons_setup_ui()
     edit_knobs->set_icon("edit", icon_size);
     connect(edit_knobs, &button::clicked, this, [=](bool checked) {
         _knob_editor->setVisible(checked);
+        set_edit_mode(checked);
     });
     layout->addWidget(edit_knobs);
 
@@ -89,6 +90,12 @@ QWidget *properties::top_buttons_setup_ui()
     layout->addStretch();
 
     return widget;
+}
+
+void properties::set_edit_mode(bool enable)
+{
+    for (QWidget *panel : get_trim_panels())
+        static_cast<trim_panel *>(panel)->set_edit_mode(enable);
 }
 
 void properties::minimize_all_panels()

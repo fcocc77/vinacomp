@@ -4,12 +4,19 @@
 #include <properties.h>
 #include <tab_widget.h>
 
-void knob_editor::push_knob()
+void knob_editor::push_knob_or_tab()
 {
-    // inserta el knob en el primer panel, si es que hay uno
+    // inserta el knob o tab en el primer panel, si es que hay uno
     QWidget *panel = static_cast<properties *>(_properties)->get_first_panel();
     if (!panel)
         return;
+
+    if (current_knob_type == "tab")
+    {
+        add_tab(panel);
+        return;
+    }
+
 
     add_knob(panel);
 }
@@ -138,6 +145,7 @@ void knob_editor::add_tab(QWidget *panel, int index)
         return;
 
     _panel->add_tab(get_available_tab_name(panel), index);
+    _panel->set_edit_mode(true);
 }
 
 QString knob_editor::get_available_tab_name(QWidget *panel) const
@@ -364,6 +372,10 @@ void knob_editor::mouseReleaseEvent(QMouseEvent *event)
 {
     temp_widget->hide();
     temp_vertical_widget->hide();
+
+    temp_widget->setParent(0);
+    temp_vertical_widget->setParent(0);
+
     this->setCursor(Qt::ArrowCursor);
     add_knob(current_panel, insert_index);
     add_tab(current_panel, insert_index);
