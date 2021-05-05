@@ -2,6 +2,7 @@
 #include <trim_panel.h>
 #include <util.h>
 #include <properties.h>
+#include <tab_widget.h>
 
 void knob_editor::push_knob()
 {
@@ -24,7 +25,7 @@ void knob_editor::add_knob(QWidget *panel, int index)
 
     QString name = get_available_name(panel);
     QString tips = knob_tips->toPlainText();
-    
+
     float min = 0;
     float max = 100;
     if (!minimum_edit->text().isEmpty())
@@ -116,7 +117,7 @@ void knob_editor::add_knob(QWidget *panel, int index)
         return;
 
     trim_panel *_panel = static_cast<trim_panel *>(panel);
-    QJsonArray &knobs = _panel->custom_knobs;
+    QJsonArray &knobs = _panel->_knobs;
 
     if (index == -1)
         knobs.push_back(knob_object);
@@ -130,10 +131,19 @@ void knob_editor::add_knob(QWidget *panel, int index)
     _panel->update_controls_knobs(knobs);
 }
 
+void knob_editor::add_tab(QWidget *panel, int index)
+{
+    trim_panel *_panel = static_cast<trim_panel *>(panel);
+    if (!_panel)
+        return;
+
+    _panel->add_tab("newtab");
+}
+
 QString knob_editor::get_available_name(QWidget *panel) const
 {
     trim_panel *_panel = static_cast<trim_panel *>(panel);
-    QJsonArray &knobs = _panel->custom_knobs;
+    QJsonArray &knobs = _panel->_knobs;
 
     QString name = knob_name->text();
     if (name.isEmpty())
@@ -194,57 +204,75 @@ knob *knob_editor::get_knob_under_cursor() const
 QWidget *knob_editor::get_panel_under_cursor() const
 {
     QWidget *_widget = qApp->widgetAt(QCursor::pos());
-    while (_widget)
+    return get_panel_from_widget(_widget);
+}
+
+QWidget *knob_editor::get_panel_from_widget(QWidget *widget) const
+{
+    while (widget)
     {
-        trim_panel *panel = dynamic_cast<trim_panel *>(_widget);
+        trim_panel *panel = dynamic_cast<trim_panel *>(widget);
         if (panel)
             return panel;
 
-        _widget = _widget->parentWidget();
+        widget = widget->parentWidget();
     }
 
     return nullptr;
 }
 
-int knob_editor::get_index_knob(QWidget *panel, QString knob_name) const
+QWidget *knob_editor::get_tab_widget_under_cursor() const
 {
-    if (!panel)
-        return -2;
+    QWidget *_widget = qApp->widgetAt(QCursor::pos());
+    while (_widget)
+    {
+        if (_widget->objectName() == "tab_widget")
+            return _widget;
 
-    trim_panel *_panel = static_cast<trim_panel *>(panel);
-    QJsonArray &knobs = _panel->custom_knobs;
+        _widget = _widget->parentWidget();
+    }
+
+    return nullptr;
+
+}
+
+void knob_editor::insert_division_to_tabs(QPointF position)
+{
+    QWidget *__tab_widget = get_tab_widget_under_cursor();
+    if (!__tab_widget)
+        return;
+
+    current_panel = get_panel_from_widget(__tab_widget);
+    if (!current_panel)
+    {
+        temp_vertical_widget->hide();
+        return;
+    }
+
+    tab_widget *_tab_widget = static_cast<tab_widget *>(__tab_widget);
 
     int index = 0;
-    for (QJsonValue value : knobs)
+    for (tab *_tab : _tab_widget->get_tabs())
     {
-        if (value.toObject().value("name").toString() == knob_name)
-            return index;
+        float tab_center_x = _tab->pos().x() + (_tab->size().width() / 2);
+        if (position.x() < tab_center_x)
+            break;
 
         index++;
     }
 
-    return index;
+    QHBoxLayout *tabs_layout = _tab_widget->get_tab_bar_layout();
+    if (index >= tabs_layout->count())
+        tabs_layout->addWidget(temp_vertical_widget);
+    else
+        tabs_layout->insertWidget(index + 1, temp_vertical_widget);
+
+    temp_vertical_widget->show();
+
+    insert_index = index;
 }
 
-QVBoxLayout *knob_editor::get_controls_layout(QWidget *panel) const
-{
-    if (!panel)
-        return nullptr;
-
-    QLayout *layout =
-        static_cast<trim_panel *>(panel)->get_controls_tab()->layout();
-
-    return static_cast<QVBoxLayout *>(layout);
-}
-
-void knob_editor::mousePressEvent(QMouseEvent *event)
-{
-    insert_index = -2;
-    current_panel = nullptr;
-    this->setCursor(Qt::ClosedHandCursor);
-}
-
-void knob_editor::mouseMoveEvent(QMouseEvent *event)
+void knob_editor::insert_division_to_knobs()
 {
     knob *_knob = get_knob_under_cursor();
     QWidget *panel = get_panel_under_cursor();
@@ -268,10 +296,59 @@ void knob_editor::mouseMoveEvent(QMouseEvent *event)
     }
 }
 
+int knob_editor::get_index_knob(QWidget *panel, QString knob_name) const
+{
+    if (!panel)
+        return -2;
+
+    trim_panel *_panel = static_cast<trim_panel *>(panel);
+    QJsonArray &knobs = _panel->_knobs;
+
+    int index = 0;
+    for (QJsonValue value : knobs)
+    {
+        if (value.toObject().value("name").toString() == knob_name)
+            return index;
+
+        index++;
+    }
+
+    return index;
+}
+
+QVBoxLayout *knob_editor::get_controls_layout(QWidget *panel) const
+{
+    return nullptr;
+    if (!panel)
+        return nullptr;
+
+    // QLayout *layout =
+        // static_cast<trim_panel *>(panel)->get_controls_tab()->layout();
+
+    // return static_cast<QVBoxLayout *>(layout);
+}
+
+void knob_editor::mousePressEvent(QMouseEvent *event)
+{
+    insert_index = -2;
+    current_panel = nullptr;
+    this->setCursor(Qt::ClosedHandCursor);
+}
+
+void knob_editor::mouseMoveEvent(QMouseEvent *event)
+{
+    if (current_knob_type == "tab")
+        insert_division_to_tabs(event->pos());
+    else
+        insert_division_to_knobs();
+}
+
 void knob_editor::mouseReleaseEvent(QMouseEvent *event)
 {
     temp_widget->hide();
+    temp_vertical_widget->hide();
     this->setCursor(Qt::ArrowCursor);
     add_knob(current_panel, insert_index);
+    add_tab(current_panel, insert_index);
 }
 

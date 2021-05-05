@@ -20,6 +20,12 @@ knob_editor::knob_editor(QWidget *__properties)
     temp_widget->setStyleSheet(
         "border-bottom: 2px solid green; border-style: dotted;");
 
+    temp_vertical_widget = new QWidget;
+    temp_vertical_widget->hide();
+    temp_vertical_widget->setMinimumWidth(3);
+    temp_vertical_widget->setStyleSheet(
+        "border-left: 2px solid green;");
+
     tools *tools_bar = new tools(20);
     tools_bar->allow_one_check_at_time();
     layout->addWidget(tools_bar);
@@ -193,6 +199,24 @@ knob_editor::knob_editor(QWidget *__properties)
     //
 
     tools_bar->add_separator();
+
+    // Label
+    action *tab_action = new action("Add Tab", "", "tab");
+    tab_action->set_checkable(true);
+    tab_action->connect_to(this, [=]() {
+        minimum_edit->hide();
+        maximum_edit->hide();
+        edit_box->setVisible(tab_action->is_checked());
+        this->setCursor(Qt::ArrowCursor);
+    });
+    tools_bar->add_action(tab_action);
+    connect(tab_action->get_button(), &QPushButton::pressed, this,
+            [=]() {
+                current_knob_type = "tab";
+                this->setCursor(Qt::ClosedHandCursor);
+            });
+    //
+    //
 
     // Label
     action *label_knob_action = new action("Label Knob", "", "label");

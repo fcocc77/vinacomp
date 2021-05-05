@@ -30,6 +30,7 @@ private:
     knob_check_box *new_line_check;
 
     QWidget *temp_widget;
+    QWidget *temp_vertical_widget;
 
     // edit
     int insert_index;
@@ -41,7 +42,12 @@ private:
     knob *get_knob_under_cursor() const;
     QVBoxLayout *get_controls_layout(QWidget *panel) const;
     int get_index_knob(QWidget *panel, QString knob_name) const;
+    QWidget *get_panel_from_widget(QWidget *widget) const;
     QWidget *get_panel_under_cursor() const;
+    QWidget *get_tab_widget_under_cursor() const;
+    void insert_division_to_tabs(QPointF position);
+    void insert_division_to_knobs();
+    void add_tab(QWidget *panel, int index);
 
     void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;

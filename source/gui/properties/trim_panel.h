@@ -34,8 +34,9 @@ private:
     nodes_load *nodes_loaded;
     QPushButton *restart_button;
     QWidget *_vinacomp;
-    QWidget *_curve_editor;
     QList<QWidget *> *viewers_gl;
+    
+    QStringList tabs_only_read;
 
     project_struct *project;
     QWidget *_node_view;
@@ -44,10 +45,6 @@ private:
     bool is_maximize;
     properties *_properties;
 
-    QWidget *controls_tab;
-    QVBoxLayout *controls_layout;
-    QWidget *node_tab;
-    QVBoxLayout *node_tab_layout;
     QLineEdit *name_edit;
     node_gui *_node_gui;
     QWidget *buttons;
@@ -59,16 +56,15 @@ private:
 
     QJsonObject *data;
 
-    void setup_gui_panels(QJsonArray _knobs);
+    void setup_gui_panels(QJsonArray _knobs, QVBoxLayout *_layout);
     QWidget *top_buttons_setup_ui();
-    tab_widget *tabs_ui();
     void setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
                      QList<QWidget *> *viewers);
     void setup_shared_params();
     void update_render();
 
 public:
-    QJsonArray custom_knobs;
+    QJsonArray _knobs;
 
     trim_panel(properties *_properties, QString _name, QString _type,
                QColor color, QString _icon_name, nodes_load *nodes_loaded,
@@ -78,6 +74,7 @@ public:
 
     void update_controls_knobs(QJsonArray _knobs);
     void maximize(bool _maximize);
+    void add_tab(QString tab_name);
     inline QString get_name() const;
     inline QString get_type() const;
     inline QColor get_color() const;
@@ -85,13 +82,7 @@ public:
     inline knob *get_knob(QString name) const;
     inline bool maximized() const;
     inline QMap<QString, knob *> *get_knobs() const;
-    inline QWidget *get_controls_tab() const;
 };
-
-inline QWidget *trim_panel::get_controls_tab() const
-{
-    return controls_tab;
-}
 
 inline knob *trim_panel::get_knob(QString name) const
 {

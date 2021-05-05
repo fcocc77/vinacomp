@@ -47,9 +47,15 @@ public:
     inline QList<tab*> get_tabs() const;
     inline int count() const;
     inline bool empty() const;
+    inline QHBoxLayout *get_tab_bar_layout() const;
 signals:
     void closed_tab(QString name);
 };
+
+inline QHBoxLayout *tab_widget::get_tab_bar_layout() const
+{
+    return tab_bar_layout;
+}
 
 inline QList<tab*> tab_widget::get_tabs() const
 {

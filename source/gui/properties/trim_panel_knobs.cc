@@ -127,8 +127,9 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
                 }
                 else
                 {
-                    line_widget = new QWidget(controls_tab);
-                    line_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+                    line_widget = new QWidget(layout->widget());
+                    line_widget->setSizePolicy(QSizePolicy::Expanding,
+                                               QSizePolicy::Fixed);
                     line_widget->setObjectName("line_widget");
 
                     line_layout = new QHBoxLayout(line_widget);

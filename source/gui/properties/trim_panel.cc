@@ -46,34 +46,41 @@ trim_panel::trim_panel(properties *__properties, QString _name, QString _type,
     buttons = top_buttons_setup_ui();
     layout->addWidget(buttons);
 
-    tabs = tabs_ui();
-    layout->addWidget(tabs);
-
-    vinacomp *vina = static_cast<vinacomp *>(_vinacomp);
-
-    // curve_editor para emitir señal al editor de curva
-    _curve_editor = vina->get_curve_editor();
-
     // obtiene la lista de viewers en una lista de viewers pero con 'QWidget'
-    // para usarlos con static_cast y no tener que importar el viewer.h a cada knob
+    // para usarlos con static_cast y no tener que importar el viewer.h a cada
+    // knob
+    vinacomp *vina = static_cast<vinacomp *>(_vinacomp);
     viewers_gl = vina->get_viewers_gl();
+
+    // tabs = tabs_ui();
+    _knobs = nodes_loaded->get_effect(type).value("knobs").toArray();
+
+    // encuentra todos los tab que estan en los 'knobs'
+    QStringList finded_tabs;
+    for (QJsonValue value : _knobs)
+    {
+        QString tab_name = value.toObject().value("tab").toString();
+        if (!tab_name.isEmpty() && !finded_tabs.contains(tab_name))
+            finded_tabs.push_back(tab_name);
+    }
     //
 
-    QJsonArray _knobs = nodes_loaded->get_effect(type).value("knobs").toArray();
-    setup_gui_panels(_knobs);
-    update_controls_knobs(_knobs);
+    tabs = new tab_widget();
+    layout->addWidget(tabs);
 
-    QJsonArray shared_knobs =
-        jread("source/engine/nodes/json/shared_params.json").value("knobs").toArray();
-    setup_knobs(shared_knobs, node_tab_layout, viewers_gl);
-    setup_shared_params();
+    // añade cada tabs, 'controls' y 'node' son por defecto
+    add_tab("controls");
+    for (QString tab_name : finded_tabs)
+        add_tab(tab_name);
+    add_tab("node");
 
-    // si no existen 'knobs' oculta el tab de 'control'
-    if (_knobs.empty())
-    {
-        // tabs->set_index(1);
-        // tabs->get_tab(0)->setVisible(false);
-    }
+    tabs_only_read = finded_tabs;
+    tabs_only_read.push_back("controls");
+    tabs_only_read.push_back("node");
+    //
+
+    tabs->set_index(0);
+    //
 }
 
 trim_panel::~trim_panel()
@@ -92,12 +99,6 @@ trim_panel::~trim_panel()
     delete buttons;
 
     // tabs
-    delete node_tab_layout;
-    delete node_tab;
-
-    delete controls_layout;
-    delete controls_tab;
-
     delete tabs;
     //
 }
@@ -110,7 +111,7 @@ void trim_panel::update_controls_knobs(QJsonArray _knobs)
     knobs->clear();
 
     // borrar todos los que knobs antes de agregar los nuevos
-    setup_knobs(_knobs, controls_layout, viewers_gl);
+    // setup_knobs(_knobs, controls_layout, viewers_gl);
 }
 
 void trim_panel::setup_shared_params()
@@ -135,7 +136,7 @@ void trim_panel::setup_shared_params()
         get_knob("disable_node")->set_visible(false);
 }
 
-void trim_panel::setup_gui_panels(QJsonArray _knobs)
+void trim_panel::setup_gui_panels(QJsonArray _knobs, QVBoxLayout *_layout)
 {
     // todos estos nodo gui son solo si el nodo efecto tiene algun boton
     // u otra interface adicional a las que se generan en 'setup_knobs'
@@ -151,7 +152,7 @@ void trim_panel::setup_gui_panels(QJsonArray _knobs)
     else if (type == "shuffle")
     {
         knob_data = _knobs[0].toObject();
-        _node_gui = new shuffle_gui(controls_layout);
+        _node_gui = new shuffle_gui(_layout);
     }
 
     if (_node_gui)
@@ -229,29 +230,48 @@ QWidget *trim_panel::top_buttons_setup_ui()
     return widget;
 }
 
-tab_widget *trim_panel::tabs_ui()
+void trim_panel::add_tab(QString tab_name)
 {
-    tab_widget *tabs = new tab_widget();
-    tabs->setParent(this);
+    QWidget *widget = new QWidget(this);
+    QVBoxLayout *layout = new QVBoxLayout(widget);
+    layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
+    layout->setSpacing(5);
+    widget->setObjectName("knobs_tab");
 
-    controls_tab = new QWidget(this);
-    controls_layout = new QVBoxLayout(controls_tab);
-    controls_layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
-    controls_layout->setSpacing(5);
-    controls_tab->setObjectName("controls");
+    tabs->add_tab(widget, tab_name);
 
-    node_tab = new QWidget(this);
-    node_tab->setObjectName("node_tab");
-    node_tab_layout = new QVBoxLayout(node_tab);
-    node_tab_layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
-    node_tab_layout->setSpacing(5);
+    if (tab_name == "node")
+    {
+        QJsonArray shared_knobs =
+            jread("source/engine/nodes/json/shared_params.json")
+                .value("knobs")
+                .toArray();
+        setup_knobs(shared_knobs, layout, viewers_gl);
+        setup_shared_params();
 
-    tabs->add_tab(controls_tab, "Controls");
-    tabs->add_tab(node_tab, "Node");
+        return;
+    }
 
-    tabs->set_index(0);
+    QJsonArray this_tab_knobs;
+    for (QJsonValue knob : _knobs)
+    {
+        QString _tab_name = knob.toObject().value("tab").toString();
 
-    return tabs;
+        // si el tab del knob esta vacio, queda en el tab por defecto que es 'controls'
+        if (tab_name == "controls" && _tab_name.isEmpty())
+        {
+            this_tab_knobs.push_back(knob);
+            continue;
+        }
+
+        if (_tab_name == tab_name)
+            this_tab_knobs.push_back(knob);
+    }
+
+    if (tab_name == "controls")
+        setup_gui_panels(this_tab_knobs, layout);
+
+    setup_knobs(this_tab_knobs, layout, viewers_gl);
 }
 
 void trim_panel::maximize(bool _maximize)
