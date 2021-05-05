@@ -23,7 +23,7 @@ void knob_editor::add_knob(QWidget *panel, int index)
     if (label.isEmpty())
         label = current_knob_type;
 
-    QString name = get_available_name(panel);
+    QString name = get_available_knob_name(panel);
     QString tips = knob_tips->toPlainText();
 
     float min = 0;
@@ -137,10 +137,26 @@ void knob_editor::add_tab(QWidget *panel, int index)
     if (!_panel)
         return;
 
-    _panel->add_tab("newtab");
+    _panel->add_tab(get_available_tab_name(panel), index);
 }
 
-QString knob_editor::get_available_name(QWidget *panel) const
+QString knob_editor::get_available_tab_name(QWidget *panel) const
+{
+    tab_widget *_tab_widget =
+        static_cast<trim_panel *>(panel)->get_tab_widget();
+
+    QString name = knob_name->text();
+    if (name.isEmpty())
+        name = current_knob_type;
+
+    QStringList name_list;
+    for (tab *_tab : _tab_widget->get_tabs())
+        name_list.push_back(_tab->get_name());
+
+    return get_available_name(name_list, name);
+}
+
+QString knob_editor::get_available_knob_name(QWidget *panel) const
 {
     trim_panel *_panel = static_cast<trim_panel *>(panel);
     QJsonArray &knobs = _panel->_knobs;
@@ -149,15 +165,16 @@ QString knob_editor::get_available_name(QWidget *panel) const
     if (name.isEmpty())
         name = current_knob_type;
 
+    QStringList name_list;
+    for (QJsonValue value : knobs)
+        name_list.push_back(value.toObject().value("name").toString());
+
+    return get_available_name(name_list, name);
+}
+
+QString knob_editor::get_available_name(QStringList name_list, QString name) const
+{
     name = name.replace(" ", "_").toLower();
-
-    auto exist = [=](QString _name) {
-        for (QJsonValue value : knobs)
-            if (value.toObject().value("name").toString() == _name)
-                return true;
-
-        return false;
-    };
 
     auto get_basename = [](QString name) {
         QString str;
@@ -173,7 +190,7 @@ QString knob_editor::get_available_name(QWidget *panel) const
     int number = 1;
     while (true)
     {
-        if (!exist(available_name))
+        if (!name_list.contains(available_name))
             break;
 
         available_name = basename + QString::number(number);

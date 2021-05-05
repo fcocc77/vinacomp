@@ -121,7 +121,7 @@ void tab_widget::clear()
     tabs.clear();
 }
 
-void tab_widget::add_tab(QWidget *widget, QString name)
+void tab_widget::add_tab(QWidget *widget, QString name, int insert_index)
 {
     // si no es -1 el tab ya existe y lo deja visible
     int index = get_index_by_name(name);
@@ -148,11 +148,20 @@ void tab_widget::add_tab(QWidget *widget, QString name)
     //
 
     tab *_tab = new tab(this, name, widget, has_close_button);
-    tabs.push_back(_tab);
+    if (insert_index == -1)
+    {
+        tabs.push_back(_tab);
+        tab_bar_layout->insertWidget(tabs.count(), _tab);
 
-    tab_bar_layout->insertWidget(tabs.count(), _tab);
+        set_index(tabs.count() - 1);
+    }
+    else
+    {
+        tabs.insert(insert_index, _tab);
+        tab_bar_layout->insertWidget(insert_index + 1, _tab);
 
-    set_index(tabs.count() - 1);
+        set_index(insert_index);
+    }
 }
 
 void tab_widget::remove_tab(QString name)

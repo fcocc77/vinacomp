@@ -36,7 +36,9 @@ private:
     int insert_index;
     QWidget *current_panel;
 
-    QString get_available_name(QWidget *panel) const;
+    QString get_available_knob_name(QWidget *panel) const;
+    QString get_available_tab_name(QWidget *panel) const;
+    QString get_available_name(QStringList name_list, QString name) const;
     void add_knob(QWidget *panel, int index = -1);
     void push_knob();
     knob *get_knob_under_cursor() const;

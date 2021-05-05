@@ -74,7 +74,7 @@ public:
 
     void update_controls_knobs(QJsonArray _knobs);
     void maximize(bool _maximize);
-    void add_tab(QString tab_name);
+    void add_tab(QString tab_name, int index = -1);
     inline QString get_name() const;
     inline QString get_type() const;
     inline QColor get_color() const;
@@ -82,7 +82,13 @@ public:
     inline knob *get_knob(QString name) const;
     inline bool maximized() const;
     inline QMap<QString, knob *> *get_knobs() const;
+    inline tab_widget *get_tab_widget() const;
 };
+
+inline tab_widget *trim_panel::get_tab_widget() const
+{
+    return tabs;
+}
 
 inline knob *trim_panel::get_knob(QString name) const
 {

@@ -230,7 +230,7 @@ QWidget *trim_panel::top_buttons_setup_ui()
     return widget;
 }
 
-void trim_panel::add_tab(QString tab_name)
+void trim_panel::add_tab(QString tab_name, int index)
 {
     QWidget *widget = new QWidget(this);
     QVBoxLayout *layout = new QVBoxLayout(widget);
@@ -238,7 +238,7 @@ void trim_panel::add_tab(QString tab_name)
     layout->setSpacing(5);
     widget->setObjectName("knobs_tab");
 
-    tabs->add_tab(widget, tab_name);
+    tabs->add_tab(widget, tab_name, index);
 
     if (tab_name == "node")
     {
