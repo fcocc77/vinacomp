@@ -52,31 +52,21 @@ trim_panel::trim_panel(properties *__properties, QString _name, QString _type,
     vinacomp *vina = static_cast<vinacomp *>(_vinacomp);
     viewers_gl = vina->get_viewers_gl();
 
-    // tabs = tabs_ui();
-    _knobs = nodes_loaded->get_effect(type).value("knobs").toArray();
-
-    // encuentra todos los tab que estan en los 'knobs'
-    QStringList finded_tabs;
-    for (QJsonValue value : _knobs)
-    {
-        QString tab_name = value.toObject().value("tab").toString();
-        if (!tab_name.isEmpty() && !finded_tabs.contains(tab_name))
-            finded_tabs.push_back(tab_name);
-    }
-    //
+    base_knobs = nodes_loaded->get_effect(type).value("knobs").toArray();
+    QStringList finded_tabs = get_tabs_from_knobs(base_knobs);
 
     tabs = new tab_widget();
     layout->addWidget(tabs);
 
     // añade cada tabs, 'controls' y 'node' son por defecto
+    tabs_only_read = finded_tabs;
+    tabs_only_read.push_back("controls");
+    tabs_only_read.push_back("node");
+
     add_tab("controls");
     for (QString tab_name : finded_tabs)
         add_tab(tab_name);
     add_tab("node");
-
-    tabs_only_read = finded_tabs;
-    tabs_only_read.push_back("controls");
-    tabs_only_read.push_back("node");
     //
 
     tabs->set_index(0);
@@ -103,15 +93,42 @@ trim_panel::~trim_panel()
     //
 }
 
-void trim_panel::update_controls_knobs(QJsonArray _knobs)
+QStringList trim_panel::get_tabs_from_knobs(QJsonArray _knobs)
 {
-    // !!! hay  que borrar solo los de 'controls_layout' ahora los borra todos
-    for (knob *_knob : *knobs)
-        delete _knob;
-    knobs->clear();
+    // encuentra todos los tab que estan en los '_knobs'
+    QStringList finded_tabs;
+    for (QJsonValue value : _knobs)
+    {
+        QString tab_name = value.toObject().value("tab").toString();
+        if (!tab_name.isEmpty() && !finded_tabs.contains(tab_name))
+            finded_tabs.push_back(tab_name);
+    }
 
-    // borrar todos los que knobs antes de agregar los nuevos
-    // setup_knobs(_knobs, controls_layout, viewers_gl);
+    return finded_tabs;
+}
+
+void trim_panel::update_custom_knobs()
+{
+
+    QStringList custom_knobs_names;
+    for (QJsonValue value : custom_knobs)
+        custom_knobs_names.push_back(value.toObject().value("name").toString());
+
+
+    // borra todos los 'knobs' custom
+    for (QString knob_name : custom_knobs_names)
+    {
+        knob *_knob = knobs->value(knob_name);
+        if (!_knob)
+            continue;
+
+        delete _knob;
+        knobs->remove(knob_name);
+    }
+    //
+
+    for (QString tab_name : get_tabs_from_knobs(custom_knobs))
+        add_tab(tab_name);
 }
 
 void trim_panel::set_edit_mode(bool enable)
@@ -239,13 +256,40 @@ QWidget *trim_panel::top_buttons_setup_ui()
 
 void trim_panel::add_tab(QString tab_name, int index)
 {
-    QWidget *widget = new QWidget(this);
-    QVBoxLayout *layout = new QVBoxLayout(widget);
-    layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
-    layout->setSpacing(5);
-    widget->setObjectName("knobs_tab");
+    // si el tab no existe lo crea
+    tab *_tab = tabs->get_tab(tab_name);
+    QVBoxLayout *tab_layout;
+    if (!_tab)
+    {
+        QWidget *widget = new QWidget(this);
+        tab_layout = new QVBoxLayout(widget);
+        tab_layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
+        tab_layout->setSpacing(5);
+        widget->setObjectName("knobs_tab");
 
-    tabs->add_tab(widget, tab_name, index);
+        tabs->add_tab(widget, tab_name, index);
+    }
+    else
+    {
+        tab_layout = static_cast<QVBoxLayout *>(_tab->get_widget()->layout());
+    }
+    //
+
+    // custom tabs
+    if (!tabs_only_read.contains(tab_name))
+    {
+        QJsonArray this_tab_custom_knobs;
+        for (QJsonValue knob : custom_knobs)
+        {
+            QString _tab_name = knob.toObject().value("tab").toString();
+            if (_tab_name == tab_name)
+                this_tab_custom_knobs.push_back(knob);
+        }
+
+        setup_knobs(this_tab_custom_knobs, tab_layout, viewers_gl);
+        return;
+    }
+    //
 
     if (tab_name == "node")
     {
@@ -253,14 +297,14 @@ void trim_panel::add_tab(QString tab_name, int index)
             jread("source/engine/nodes/json/shared_params.json")
                 .value("knobs")
                 .toArray();
-        setup_knobs(shared_knobs, layout, viewers_gl);
+        setup_knobs(shared_knobs, tab_layout, viewers_gl);
         setup_shared_params();
 
         return;
     }
 
     QJsonArray this_tab_knobs;
-    for (QJsonValue knob : _knobs)
+    for (QJsonValue knob : base_knobs)
     {
         QString _tab_name = knob.toObject().value("tab").toString();
 
@@ -276,9 +320,9 @@ void trim_panel::add_tab(QString tab_name, int index)
     }
 
     if (tab_name == "controls")
-        setup_gui_panels(this_tab_knobs, layout);
+        setup_gui_panels(this_tab_knobs, tab_layout);
 
-    setup_knobs(this_tab_knobs, layout, viewers_gl);
+    setup_knobs(this_tab_knobs, tab_layout, viewers_gl);
 }
 
 void trim_panel::maximize(bool _maximize)

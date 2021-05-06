@@ -56,21 +56,6 @@ void tab::set_visible_close_button(bool visible)
         layout->setContentsMargins(10, 2, 10, 2);
 }
 
-QString tab::get_name() const
-{
-    return name;
-}
-
-QWidget *tab::get_content_widget() const
-{
-    return content;
-}
-
-bool tab::checked() const
-{
-    return _checked;
-}
-
 void tab::set_checked(bool __checked)
 {
     _checked = __checked;

@@ -91,7 +91,7 @@ void tab_widget::set_tab(QString name)
 
 void tab_widget::delete_tab(tab *_tab)
 {
-    QWidget *widget = _tab->get_content_widget();
+    QWidget *widget = _tab->get_widget();
     widget->hide();
     widget->setParent(0);
     _tab->setParent(0);
@@ -172,4 +172,18 @@ void tab_widget::remove_tab(QString name)
 int tab_widget::get_current_index() const
 {
     return current_index;
+}
+
+QString tab_widget::get_current_tab() const
+{
+    return get_tab(get_current_index())->get_name();
+}
+
+tab *tab_widget::get_tab(QString name) const
+{
+    for (tab *_tab : tabs)
+        if (_tab->get_name() == name)
+            return _tab;
+
+    return nullptr;
 }

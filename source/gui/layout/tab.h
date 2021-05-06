@@ -28,15 +28,31 @@ public:
     tab(QWidget *_tab_widget, QString name, QWidget *_content, bool _has_close_button = false);
     ~tab();
 
-    QWidget *get_content_widget() const;
-    bool checked() const;
+    inline QWidget *get_widget() const;
+    inline bool checked() const;
     void set_checked(bool __checked);
-    QString get_name() const;
+    inline QString get_name() const;
 
     void set_visible_close_button(bool visible);
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;
 };
+
+inline QString tab::get_name() const
+{
+    return name;
+}
+
+inline QWidget *tab::get_widget() const
+{
+    return content;
+}
+
+inline bool tab::checked() const
+{
+    return _checked;
+}
+
 
 #endif // TAB_H

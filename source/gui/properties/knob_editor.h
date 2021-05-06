@@ -37,8 +37,10 @@ private:
     QWidget *current_panel;
 
     QString get_available_knob_name(QWidget *panel) const;
-    QString get_available_tab_name(QWidget *panel) const;
+    QString get_available_tab_name(QWidget *panel,
+                                   QString preferred_name = "") const;
     QString get_available_name(QStringList name_list, QString name) const;
+    QString get_custom_tab_name(QWidget *panel);
     void add_knob(QWidget *panel, int index = -1);
     void push_knob_or_tab();
     knob *get_knob_under_cursor() const;
@@ -49,7 +51,8 @@ private:
     QWidget *get_tab_widget_under_cursor() const;
     void insert_division_to_tabs(QPointF position);
     void insert_division_to_knobs();
-    void add_tab(QWidget *panel, int index = -1);
+    QString add_tab(QWidget *panel, int index = -1, QString preferred_name = "");
+    void update_edit_options(bool visible);
 
     void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;

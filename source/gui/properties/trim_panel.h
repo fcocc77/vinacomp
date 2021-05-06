@@ -62,9 +62,11 @@ private:
                      QList<QWidget *> *viewers);
     void setup_shared_params();
     void update_render();
+    QStringList get_tabs_from_knobs(QJsonArray _knobs);
 
 public:
-    QJsonArray _knobs;
+    QJsonArray base_knobs;
+    QJsonArray custom_knobs;
 
     trim_panel(properties *_properties, QString _name, QString _type,
                QColor color, QString _icon_name, nodes_load *nodes_loaded,
@@ -72,7 +74,7 @@ public:
                QGraphicsItem *_node, QWidget *_node_view);
     ~trim_panel();
 
-    void update_controls_knobs(QJsonArray _knobs);
+    void update_custom_knobs();
     void maximize(bool _maximize);
     void add_tab(QString tab_name, int index = -1);
     void set_edit_mode(bool enable);
@@ -84,7 +86,13 @@ public:
     inline bool maximized() const;
     inline QMap<QString, knob *> *get_knobs() const;
     inline tab_widget *get_tab_widget() const;
+    inline QStringList get_only_read_tabs() const;
 };
+
+inline QStringList trim_panel::get_only_read_tabs() const
+{
+    return tabs_only_read;
+}
 
 inline tab_widget *trim_panel::get_tab_widget() const
 {

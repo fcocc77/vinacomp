@@ -572,7 +572,7 @@ QScrollBar {
     border-bottom: 1px solid #1e2024; }
   #properties #knob_editor #edit_box {
     background: #25282d; }
-  #properties #knob_editor #name_and_tips, #properties #knob_editor #second_widget, #properties #knob_editor #min_max {
+  #properties #knob_editor #one_line {
     background: none; }
   #properties #knob_editor QTextEdit {
     color: #aeb4bc;
