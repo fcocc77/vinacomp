@@ -431,7 +431,9 @@ void knob_editor::mouseReleaseEvent(QMouseEvent *event)
     temp_vertical_widget->setParent(0);
 
     this->setCursor(Qt::ArrowCursor);
-    add_knob(current_panel, insert_index);
-    add_tab(current_panel, insert_index);
+    if (current_knob_type == "tab")
+        add_tab(current_panel, insert_index);
+    else
+        add_knob(current_panel, insert_index);
 }
 

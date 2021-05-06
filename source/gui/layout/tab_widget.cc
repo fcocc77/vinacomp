@@ -110,7 +110,11 @@ void tab_widget::close_tab(QString name)
 
     tabs.removeAt(index);
 
-    set_index(index - 1);
+    index--;
+    if (index < 0)
+        set_index(0);
+    else
+        set_index(index);
 
     closed_tab(name, widget); // Signal
 }
