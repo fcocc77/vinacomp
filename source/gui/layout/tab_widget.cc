@@ -105,12 +105,14 @@ void tab_widget::close_tab(QString name)
         return;
 
     tab *_tab = tabs[index];
+    QWidget *widget = _tab->get_widget();
     delete_tab(_tab);
 
     tabs.removeAt(index);
-    set_index(0);
 
-    closed_tab(name); // Signal
+    set_index(index - 1);
+
+    closed_tab(name, widget); // Signal
 }
 
 void tab_widget::clear()

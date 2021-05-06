@@ -35,7 +35,7 @@ private:
     QPushButton *restart_button;
     QWidget *_vinacomp;
     QList<QWidget *> *viewers_gl;
-    
+
     QStringList tabs_only_read;
 
     project_struct *project;
@@ -63,6 +63,8 @@ private:
     void setup_shared_params();
     void update_render();
     QStringList get_tabs_from_knobs(QJsonArray _knobs);
+    void delete_tab(QString tab_name);
+    void remove_custom_knob(QString knob_name);
 
 public:
     QJsonArray base_knobs;

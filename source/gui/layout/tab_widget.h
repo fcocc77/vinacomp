@@ -51,7 +51,7 @@ public:
     inline bool empty() const;
     inline QHBoxLayout *get_tab_bar_layout() const;
 signals:
-    void closed_tab(QString name);
+    void closed_tab(QString name, QWidget *widget);
 };
 
 inline QHBoxLayout *tab_widget::get_tab_bar_layout() const

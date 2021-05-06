@@ -56,6 +56,11 @@ trim_panel::trim_panel(properties *__properties, QString _name, QString _type,
     QStringList finded_tabs = get_tabs_from_knobs(base_knobs);
 
     tabs = new tab_widget();
+    connect(tabs, &tab_widget::closed_tab, this,
+            [=](QString tab_name, QWidget *widget) {
+                delete_tab(tab_name);
+                delete widget;
+            });
     layout->addWidget(tabs);
 
     // añade cada tabs, 'controls' y 'node' son por defecto
@@ -109,7 +114,6 @@ QStringList trim_panel::get_tabs_from_knobs(QJsonArray _knobs)
 
 void trim_panel::update_custom_knobs()
 {
-
     QStringList custom_knobs_names;
     for (QJsonValue value : custom_knobs)
         custom_knobs_names.push_back(value.toObject().value("name").toString());
@@ -323,6 +327,43 @@ void trim_panel::add_tab(QString tab_name, int index)
         setup_gui_panels(this_tab_knobs, tab_layout);
 
     setup_knobs(this_tab_knobs, tab_layout, viewers_gl);
+}
+
+void trim_panel::delete_tab(QString tab_name)
+{
+    // no usar esta funcion, solo usar en retorno de señal del closed del
+    // tab_widget, por que el puntero de del widget no de borra, si se quere
+    // usar esta funcion borrar manualmente el widget 'delete' despues de
+    // invocar esta funcion
+    QStringList knob_to_delete;
+    for (QJsonValue knob : custom_knobs)
+    {
+        QString tab_knob = knob.toObject().value("tab").toString();
+        if (tab_knob == tab_name)
+            knob_to_delete.push_back(knob.toObject().value("name").toString());
+    }
+
+    for (QString knob_name : knob_to_delete)
+        remove_custom_knob(knob_name);
+}
+
+void trim_panel::remove_custom_knob(QString knob_name)
+{
+    QJsonArray new_custom_knobs;
+    for (QJsonValue knob : custom_knobs)
+    {
+        QString _knob_name = knob.toObject().value("name").toString();
+        if (_knob_name != knob_name)
+            new_custom_knobs.push_back(knob);
+    }
+
+    custom_knobs = new_custom_knobs;
+
+    knob *_knob = knobs->value(knob_name);
+    if (_knob)
+        delete _knob;
+
+    knobs->remove(knob_name);
 }
 
 void trim_panel::maximize(bool _maximize)
