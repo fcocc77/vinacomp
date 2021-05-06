@@ -65,13 +65,13 @@ trim_panel::trim_panel(properties *__properties, QString _name, QString _type,
 
     // añade cada tabs, 'controls' y 'node' son por defecto
     tabs_only_read = finded_tabs;
-    tabs_only_read.push_back("controls");
-    tabs_only_read.push_back("node");
+    tabs_only_read.push_back("Controls");
+    tabs_only_read.push_back("Node");
 
-    add_tab("controls");
+    add_tab("Controls");
     for (QString tab_name : finded_tabs)
         add_tab(tab_name);
-    add_tab("node");
+    add_tab("Node");
     //
 
     tabs->set_index(0);
@@ -295,7 +295,7 @@ void trim_panel::add_tab(QString tab_name, int index)
     }
     //
 
-    if (tab_name == "node")
+    if (tab_name == "Node")
     {
         QJsonArray shared_knobs =
             jread("source/engine/nodes/json/shared_params.json")
@@ -313,7 +313,7 @@ void trim_panel::add_tab(QString tab_name, int index)
         QString _tab_name = knob.toObject().value("tab").toString();
 
         // si el tab del knob esta vacio, queda en el tab por defecto que es 'controls'
-        if (tab_name == "controls" && _tab_name.isEmpty())
+        if (tab_name == "Controls" && _tab_name.isEmpty())
         {
             this_tab_knobs.push_back(knob);
             continue;
@@ -323,7 +323,7 @@ void trim_panel::add_tab(QString tab_name, int index)
             this_tab_knobs.push_back(knob);
     }
 
-    if (tab_name == "controls")
+    if (tab_name == "Controls")
         setup_gui_panels(this_tab_knobs, tab_layout);
 
     setup_knobs(this_tab_knobs, tab_layout, viewers_gl);
