@@ -48,8 +48,8 @@ void button::set_icon(QString name, int size)
     }
     else
     {
-        normal_icon = name + "_a";
-        hover_icon = name + "_c";
+        normal_icon = name + "_normal";
+        hover_icon = name + "_checked";
     }
 
     change_icon(normal_icon);

@@ -34,7 +34,7 @@ slider::slider(float _min, float _max, float _default_value, bool _floating,
     handler_left->setMinimumSize({arrow_size, arrow_size});
     handler_left->setMaximumSize({arrow_size, arrow_size});
     handler_left->setObjectName("slider_arrow");
-    QPixmap pixmap_left("resources/images/arrow_left_a.png");
+    QPixmap pixmap_left("resources/images/arrow_left_normal.png");
     handler_left->setPixmap(pixmap_left.scaled(
         arrow_size, arrow_size, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     handler_left->move({-11, -4});
@@ -44,7 +44,7 @@ slider::slider(float _min, float _max, float _default_value, bool _floating,
     handler_right->setMinimumSize({arrow_size, arrow_size});
     handler_right->setMaximumSize({arrow_size, arrow_size});
     handler_right->setObjectName("slider_arrow");
-    QPixmap pixmap_right("resources/images/arrow_right_a.png");
+    QPixmap pixmap_right("resources/images/arrow_right_normal.png");
     handler_right->setPixmap(pixmap_right.scaled(
         arrow_size, arrow_size, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 }

@@ -20,7 +20,7 @@ action::action(QString _label, QString shortcut_key, QString _icon_name)
         if (icon_name.contains("/"))
             this->setIcon(QIcon(icon_name));
         else
-            this->setIcon(QIcon("resources/images/" + icon_name + "_a.png"));
+            this->setIcon(QIcon("resources/images/" + icon_name + "_normal.png"));
     }
 
     this->setShortcutContext(Qt::WidgetWithChildrenShortcut);
@@ -59,7 +59,7 @@ QPushButton *action::make_button(QWidget *__tools, int _icon_size, bool __one_ch
         if (!object_name.isEmpty())
             button->setObjectName(object_name);
         button->setToolTip(label);
-        qt::set_icon(button, icon_name + "_a", icon_size);
+        qt::set_icon(button, icon_name + "_normal", icon_size);
 
         connect(button, &QPushButton::clicked, this, [=]() { this->trigger(); });
     }
@@ -87,20 +87,30 @@ void action::set_checked(bool _checked)
 
     checked = _checked;
 
-    if (button)
-    {
-        if (checked)
-            qt::set_icon(button, icon_name + "_c", icon_size);
-        else
-            qt::set_icon(button, icon_name + "_a", icon_size);
-    }
+    set_illuminated_button(false);
 
     if (checked)
-        this->setIcon(QIcon("resources/images/" + icon_name + "_c.png"));
+        this->setIcon(QIcon("resources/images/" + icon_name + "_checked.png"));
     else
-        this->setIcon(QIcon("resources/images/" + icon_name + "_a.png"));
+        this->setIcon(QIcon("resources/images/" + icon_name + "_normal.png"));
 
     this->setChecked(checked);
+}
+
+void action::set_illuminated_button(bool illuminated)
+{
+    if (!button)
+        return;
+
+    if (checked)
+        qt::set_icon(button, icon_name + "_checked", icon_size);
+    else
+    {
+        if (illuminated)
+            qt::set_icon(button, icon_name + "_white", icon_size);
+        else
+            qt::set_icon(button, icon_name + "_normal", icon_size);
+    }
 }
 
 QString action::get_icon_name() const

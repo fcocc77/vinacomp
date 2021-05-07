@@ -5,9 +5,10 @@ source utils/shell/util.sh
 svgs='resources/svg'
 images='resources/images'
 
-color_a="$(jread stylesheet/palette.json 'b60')"
-color_b="$(jread stylesheet/palette.json 'b80')"
-color_c="$(jread stylesheet/palette.json 'base')"
+disable_color="$(jread stylesheet/palette.json 'b30')"
+normal_color="$(jread stylesheet/palette.json 'b60')"
+hi_color="$(jread stylesheet/palette.json 'b80')"
+checked_color="$(jread stylesheet/palette.json 'base')"
 
 size=128
 
@@ -48,8 +49,10 @@ function export_png() {
 }
 
 for svg in $svgs/*; do
-    export_png $svg 'a' $color_a &>/dev/null
-    export_png $svg 'b' $color_b &>/dev/null
-    export_png $svg 'c' $color_c &>/dev/null
+    export_png $svg 'normal' $normal_color &>/dev/null
+    export_png $svg 'disable' $disable_color &>/dev/null
+    export_png $svg 'hi' $hi_color &>/dev/null
+    export_png $svg 'white' 'white' &>/dev/null
+    export_png $svg 'checked' $checked_color &>/dev/null
     echo $svg 'Exporting ...'
 done

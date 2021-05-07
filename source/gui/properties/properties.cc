@@ -70,7 +70,7 @@ QWidget *properties::top_buttons_setup_ui()
 
     QPushButton *clear = new QPushButton();
     connect(clear, &QPushButton::clicked, this, &properties::close_all);
-    qt::set_icon(clear, "close_a", icon_size);
+    qt::set_icon(clear, "close_normal", icon_size);
     layout->addWidget(clear);
 
     button *edit_knobs = new button();
@@ -84,7 +84,7 @@ QWidget *properties::top_buttons_setup_ui()
 
     QPushButton *maximize_all = new QPushButton();
     connect(maximize_all, &QPushButton::clicked, this, &properties::minimize_all_panels);
-    qt::set_icon(maximize_all, "maximize_a", icon_size);
+    qt::set_icon(maximize_all, "maximize_normal", icon_size);
     layout->addWidget(maximize_all);
 
     layout->addStretch();

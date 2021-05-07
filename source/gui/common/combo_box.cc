@@ -21,7 +21,7 @@ combo_box::combo_box(QList<combo_box_item> input_items, int default_index, QWidg
     layout->addStretch();
 
     // Flecha
-    QString path = "resources/images/combo_box_arrow_a.png";
+    QString path = "resources/images/combo_box_arrow_normal.png";
     QPixmap pixmap(path);
     arrow = new QLabel(this);
     pixmap = pixmap.scaledToHeight(9, Qt::SmoothTransformation);
@@ -77,13 +77,13 @@ void combo_box::set_index(int _index, bool emit_signal)
         return;
 
     // cambia el icono a la accion anterior
-    actions[current_index]->set_icon("radio_button_unchecked_a");
+    actions[current_index]->set_icon("radio_button_unchecked_normal");
     //
 
     current_index = _index;
 
     action *_action = actions.value(_index);
-    _action->set_icon("radio_button_checked_b");
+    _action->set_icon("radio_button_checked_hi");
     QString name = _action->get_label();
     label->setText(name);
 
@@ -112,13 +112,13 @@ int combo_box::add_item(combo_box_item item)
     // por defecto no es un boton, es un checkbox
     if (!item.button)
     {
-        _action->set_icon("radio_button_unchecked_a");
+        _action->set_icon("radio_button_unchecked_normal");
         _action->connect_to(this, [=]() { set_value(item.value); });
     }
     else
     {
         if (!item.icon_name.isEmpty())
-            _action->set_icon(item.icon_name + "_a");
+            _action->set_icon(item.icon_name + "_normal");
     }
 
     int index = items.count();

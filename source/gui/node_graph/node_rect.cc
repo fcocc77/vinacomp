@@ -292,7 +292,7 @@ void node_rect::set_icon(QString _icon_name)
 
     icon_name = _icon_name;
 
-    QImage image("resources/images/" + icon_name + "_a.png");
+    QImage image("resources/images/" + icon_name + "_normal.png");
     if (icon_name.contains("/"))
         image = QImage(icon_name);
 

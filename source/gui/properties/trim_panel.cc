@@ -204,12 +204,12 @@ QWidget *trim_panel::top_buttons_setup_ui()
     int icon_size = 20;
 
     QPushButton *center_node = new QPushButton(widget);
-    qt::set_icon(center_node, "center_a", icon_size);
+    qt::set_icon(center_node, "center_normal", icon_size);
     layout->addWidget(center_node);
 
     restart_button = new QPushButton(widget);
     connect(restart_button, &QPushButton::clicked, this, [=]() {  });
-    qt::set_icon(restart_button, "restart_a", icon_size);
+    qt::set_icon(restart_button, "restart_normal", icon_size);
     layout->addWidget(restart_button);
 
     layout->addStretch();
@@ -218,7 +218,7 @@ QWidget *trim_panel::top_buttons_setup_ui()
     if (icon_name.contains("/"))
         qt::set_icon(icon_node, icon_name, icon_size);
     else
-        qt::set_icon(icon_node, icon_name + "_a", icon_size);
+        qt::set_icon(icon_node, icon_name + "_normal", icon_size);
     layout->addWidget(icon_node);
 
     name_edit = new QLineEdit(widget);
@@ -240,19 +240,19 @@ QWidget *trim_panel::top_buttons_setup_ui()
     // Minimize
     QPushButton *minimize = new QPushButton(widget);
     connect(minimize, &QPushButton::clicked, this, [=]() { this->maximize(!is_maximize); });
-    qt::set_icon(minimize, "minimize_a", icon_size);
+    qt::set_icon(minimize, "minimize_normal", icon_size);
     layout->addWidget(minimize);
     // Minimize
     //
 
     QPushButton *maximize_button = new QPushButton(widget);
-    qt::set_icon(maximize_button, "maximize_a", icon_size);
+    qt::set_icon(maximize_button, "maximize_normal", icon_size);
     layout->addWidget(maximize_button);
 
     QPushButton *close = new QPushButton(widget);
     connect(close, &QPushButton::clicked, this,
             [this]() { _properties->close_trim_panel(this->get_name()); });
-    qt::set_icon(close, "close_a", icon_size);
+    qt::set_icon(close, "close_normal", icon_size);
     layout->addWidget(close);
 
     return widget;

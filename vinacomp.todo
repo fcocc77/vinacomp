@@ -1,3 +1,5 @@
+general:
+    ☐ depurar memoria con 'delete' usando 'valgrind' @high
 gui__settings_projects:
 	☐ el proxy va a remplazar el rscale de videovina
 gui__gl_view:

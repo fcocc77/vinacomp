@@ -87,7 +87,7 @@ void knob_color::setup_ui()
     layout->addWidget(picker_button);
 
     palette_button->setObjectName("small_button");
-    qt::set_icon(palette_button, "color_a", icon_size);
+    qt::set_icon(palette_button, "color_normal", icon_size);
     layout->addWidget(palette_button);
 
     mono_color_button->setObjectName("small_button");

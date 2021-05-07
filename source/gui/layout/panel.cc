@@ -30,49 +30,49 @@ panel::~panel() {}
 
 QPushButton *panel::setup_cornel_buttons()
 {
-    QPushButton *menu_button = _tab_widget->add_cornel_button("layout_a");
+    QPushButton *menu_button = _tab_widget->add_cornel_button("layout_normal");
 
     // Menu
     QAction *split_vertical = new QAction("Vertical Split");
     connect(split_vertical, &QAction::triggered, this, [this]() { split(Qt::Horizontal); });
-    split_vertical->setIcon(QIcon("resources/images/vertical_split_a.png"));
+    split_vertical->setIcon(QIcon("resources/images/vertical_split_normal.png"));
 
     QAction *split_horizontal = new QAction("Horizontal Split");
     connect(split_horizontal, &QAction::triggered, this, [this]() { split(Qt::Vertical); });
-    split_horizontal->setIcon(QIcon("resources/images/horizontal_split_a.png"));
+    split_horizontal->setIcon(QIcon("resources/images/horizontal_split_normal.png"));
 
     // Cerrar panel
     QAction *close_panel_action = new QAction("Close Panel");
     connect(close_panel_action, &QAction::triggered, this, [this]() { close_panel(); });
-    close_panel_action->setIcon(QIcon("resources/images/close_a.png"));
+    close_panel_action->setIcon(QIcon("resources/images/close_normal.png"));
     //
 
     // Add NodeGraph
     QAction *add_node_graph_action = new QAction("Node Graph");
     connect(add_node_graph_action, &QAction::triggered, this,
             [this]() { add_fixed_panel("Node Graph"); });
-    add_node_graph_action->setIcon(QIcon("resources/images/node_graph_a.png"));
+    add_node_graph_action->setIcon(QIcon("resources/images/node_graph_normal.png"));
     //
 
     // Add Script Editor
     QAction *add_script_editor_action = new QAction("Script Editor");
     connect(add_script_editor_action, &QAction::triggered, this,
             [this]() { add_fixed_panel("Script Editor"); });
-    add_script_editor_action->setIcon(QIcon("resources/images/script_editor_a.png"));
+    add_script_editor_action->setIcon(QIcon("resources/images/script_editor_normal.png"));
     //
 
     // Add Curve Editor
     QAction *add_curve_editor_action = new QAction("Curve Editor");
     connect(add_curve_editor_action, &QAction::triggered, this,
             [this]() { add_fixed_panel("Curve Editor"); });
-    add_curve_editor_action->setIcon(QIcon("resources/images/curve_editor_a.png"));
+    add_curve_editor_action->setIcon(QIcon("resources/images/curve_editor_normal.png"));
     //
 
     // Add Properties
     QAction *add_properties_action = new QAction("Properties");
     connect(add_properties_action, &QAction::triggered, this,
             [this]() { add_fixed_panel("Properties"); });
-    add_properties_action->setIcon(QIcon("resources/images/properties_a.png"));
+    add_properties_action->setIcon(QIcon("resources/images/properties_normal.png"));
     //
 
     // Add Viewer
@@ -85,7 +85,7 @@ QPushButton *panel::setup_cornel_buttons()
         else
             add_viewer(viewers->first());
     });
-    add_viewer_action->setIcon(QIcon("resources/images/viewer_a.png"));
+    add_viewer_action->setIcon(QIcon("resources/images/viewer_normal.png"));
     //
 
     // New Viewer
@@ -94,7 +94,7 @@ QPushButton *panel::setup_cornel_buttons()
         node *viewer_node = _node_graph->get_maker()->create_fx("viewer");
         add_viewer(viewer_node->get_viewer());
     });
-    new_viewer_action->setIcon(QIcon("resources/images/viewer_a.png"));
+    new_viewer_action->setIcon(QIcon("resources/images/viewer_normal.png"));
     //
 
     // Viewers Menu
@@ -232,7 +232,7 @@ void panel::update_viewers_menu()
     {
         QAction *viewer_action = new QAction(_viewer->get_name());
         connect(viewer_action, &QAction::triggered, this, [=]() { add_viewer(_viewer); });
-        viewer_action->setIcon(QIcon("resources/images/viewer_a.png"));
+        viewer_action->setIcon(QIcon("resources/images/viewer_normal.png"));
         viewers_menu->addAction(viewer_action);
     }
 
@@ -258,7 +258,7 @@ void panel::update_groups_menu()
             add_group(_graph_group);
         });
 
-        group_action->setIcon(QIcon("resources/images/group_a.png"));
+        group_action->setIcon(QIcon("resources/images/group_normal.png"));
         groups_menu->addAction(group_action);
     }
 
