@@ -42,7 +42,7 @@ public:
     void close_tab(QString name);
     QPushButton *add_cornel_button(QString icon);
     int get_current_index() const;
-    QString get_current_tab() const;
+    tab *get_current_tab() const;
     void clear();
     inline tab *get_tab(int index) const;
     tab *get_tab(QString name) const;

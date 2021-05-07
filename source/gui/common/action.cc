@@ -102,12 +102,12 @@ void action::set_illuminated_button(bool illuminated)
     if (!button)
         return;
 
-    if (checked)
-        qt::set_icon(button, icon_name + "_checked", icon_size);
+    if (illuminated)
+        qt::set_icon(button, icon_name + "_white", icon_size);
     else
     {
-        if (illuminated)
-            qt::set_icon(button, icon_name + "_white", icon_size);
+        if (checked)
+            qt::set_icon(button, icon_name + "_checked", icon_size);
         else
             qt::set_icon(button, icon_name + "_normal", icon_size);
     }

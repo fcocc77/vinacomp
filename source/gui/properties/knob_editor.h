@@ -13,6 +13,7 @@
 
 #include <knob.h>
 #include <knob_check_box.h>
+#include <action.h>
 
 class knob_editor : public QWidget
 {
@@ -21,13 +22,17 @@ private:
     QTreeWidget *knobs_list;
     QWidget *edit_box;
     QWidget *_properties;
+
     QString current_knob_type;
+    QString checked_knob_type;
 
     QTextEdit *knob_tips;
     QLineEdit *knob_name;
     QLineEdit *minimum_edit;
     QLineEdit *maximum_edit;
     knob_check_box *new_line_check;
+
+    QList<action *> actions;
 
     QWidget *temp_widget;
     QWidget *temp_vertical_widget;
@@ -43,9 +48,12 @@ private:
     QString get_custom_tab_name(QWidget *panel);
     void add_knob(QWidget *panel, int index = -1);
     void push_knob_or_tab();
+    void insert_knob_in_tab(QJsonArray *knobs, QJsonObject knob_obj,
+                            QString tab_name, int index = -1);
     knob *get_knob_under_cursor() const;
-    QVBoxLayout *get_controls_layout(QWidget *panel) const;
-    int get_index_knob(QWidget *panel, QString knob_name) const;
+    QVBoxLayout *get_layout_current_tab(QWidget *panel) const;
+    int get_index_knob(QWidget *panel, QString knob_name,
+                       QString tab_name) const;
     QWidget *get_panel_from_widget(QWidget *widget) const;
     QWidget *get_panel_under_cursor() const;
     QWidget *get_tab_widget_under_cursor() const;

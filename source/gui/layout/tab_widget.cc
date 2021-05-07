@@ -180,9 +180,9 @@ int tab_widget::get_current_index() const
     return current_index;
 }
 
-QString tab_widget::get_current_tab() const
+tab *tab_widget::get_current_tab() const
 {
-    return get_tab(get_current_index())->get_name();
+    return get_tab(get_current_index());
 }
 
 tab *tab_widget::get_tab(QString name) const

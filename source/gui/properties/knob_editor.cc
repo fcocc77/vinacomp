@@ -1,4 +1,3 @@
-#include <action.h>
 #include <knob_editor.h>
 #include <qt.h>
 #include <tools.h>
@@ -8,6 +7,7 @@ knob_editor::knob_editor(QWidget *__properties)
     , current_panel(nullptr)
 {
     this->setObjectName("knob_editor");
+    this->setAcceptDrops(true);
 
     layout = new QVBoxLayout(this);
     layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
@@ -29,191 +29,40 @@ knob_editor::knob_editor(QWidget *__properties)
     tools_bar->allow_one_check_at_time();
     layout->addWidget(tools_bar);
 
-    // Floating
-    action *float_knob_action = new action("Floating Knob", "", "float");
-    float_knob_action->set_checkable(true);
-    float_knob_action->connect_to(
-        this, [=]() { update_edit_options(float_knob_action->is_checked()); });
-    tools_bar->add_action(float_knob_action);
-    connect(float_knob_action->get_button(), &QPushButton::pressed, this,
-            [=]() {
-                current_knob_type = "floating";
-                this->setCursor(Qt::ClosedHandCursor);
-            });
-    //
-    //
+    auto add_knob_action = [=](QString label, QString icon, QString id) {
+        action *knob_action = new action(label, "", icon);
+        knob_action->set_checkable(true);
+        knob_action->connect_to(this, [=]() {
+            update_edit_options(knob_action->is_checked());
+            knob_action->set_illuminated_button(false);
+            checked_knob_type = id;
+        });
+        tools_bar->add_action(knob_action);
+        connect(knob_action->get_button(), &QPushButton::pressed, this,
+                [=]() {
+                    knob_action->set_illuminated_button(true);
+                    current_knob_type = id;
+                    this->setCursor(Qt::ClosedHandCursor);
+                });
+        actions.push_back(knob_action);
+    };
 
-    // Integer
-    action *int_knob_action = new action("Integer Knob", "", "int");
-    int_knob_action->set_checkable(true);
-    int_knob_action->connect_to(
-        this, [=]() { update_edit_options(int_knob_action->is_checked()); });
-    tools_bar->add_action(int_knob_action);
-    connect(int_knob_action->get_button(), &QPushButton::pressed, this, [=]() {
-        current_knob_type = "integer";
-        this->setCursor(Qt::ClosedHandCursor);
-    });
-    //
-    //
-
-    // Color
-    action *color_knob_action = new action("Color Knob", "", "color");
-    color_knob_action->set_checkable(true);
-    color_knob_action->connect_to(
-        this, [=]() { update_edit_options(color_knob_action->is_checked()); });
-    tools_bar->add_action(color_knob_action);
-    connect(color_knob_action->get_button(), &QPushButton::pressed, this,
-            [=]() {
-                current_knob_type = "color";
-                this->setCursor(Qt::ClosedHandCursor);
-            });
-    //
-    //
-
-    // Button
-    action *button_knob_action = new action("Button Knob", "", "button");
-    button_knob_action->set_checkable(true);
-    button_knob_action->connect_to(
-        this, [=]() { update_edit_options(button_knob_action->is_checked()); });
-    tools_bar->add_action(button_knob_action);
-    connect(button_knob_action->get_button(), &QPushButton::pressed, this,
-            [=]() {
-                current_knob_type = "button";
-                this->setCursor(Qt::ClosedHandCursor);
-            });
-    //
-    //
-
-    // Combo Box
-    action *combo_box_knob_action = new action("Choice Knob", "", "combo_box");
-    combo_box_knob_action->set_checkable(true);
-    combo_box_knob_action->connect_to(this, [=]() {
-        update_edit_options(combo_box_knob_action->is_checked());
-    });
-    tools_bar->add_action(combo_box_knob_action);
-    connect(combo_box_knob_action->get_button(), &QPushButton::pressed, this,
-            [=]() {
-                current_knob_type = "choice";
-                this->setCursor(Qt::ClosedHandCursor);
-            });
-    //
-    //
-
-    // CheckBox
-    action *check_box_knob_action =
-        new action("CheckBox Knob", "", "check_box");
-    check_box_knob_action->set_checkable(true);
-    check_box_knob_action->connect_to(this, [=]() {
-        update_edit_options(check_box_knob_action->is_checked());
-    });
-    tools_bar->add_action(check_box_knob_action);
-    connect(check_box_knob_action->get_button(), &QPushButton::pressed, this,
-            [=]() {
-                current_knob_type = "check_box";
-                this->setCursor(Qt::ClosedHandCursor);
-            });
-    //
-    //
-
-    // Text
-    action *text_knob_action = new action("Text Knob", "", "text");
-    text_knob_action->set_checkable(true);
-    text_knob_action->connect_to(
-        this, [=]() { update_edit_options(text_knob_action->is_checked()); });
-    tools_bar->add_action(text_knob_action);
-    connect(text_knob_action->get_button(), &QPushButton::pressed, this, [=]() {
-        current_knob_type = "text";
-        this->setCursor(Qt::ClosedHandCursor);
-    });
-    //
-    //
-
-    // File
-    action *file_knob_action = new action("File Knob", "", "create_new_folder");
-    file_knob_action->set_checkable(true);
-    file_knob_action->connect_to(
-        this, [=]() { update_edit_options(file_knob_action->is_checked()); });
-    tools_bar->add_action(file_knob_action);
-    connect(file_knob_action->get_button(), &QPushButton::pressed, this, [=]() {
-        current_knob_type = "file";
-        this->setCursor(Qt::ClosedHandCursor);
-    });
-    //
-    //
-
-    // Position
-    action *position_knob_action = new action("Position Knob", "", "position");
-    position_knob_action->set_checkable(true);
-    position_knob_action->connect_to(this, [=]() {
-        update_edit_options(position_knob_action->is_checked());
-    });
-    tools_bar->add_action(position_knob_action);
-    connect(position_knob_action->get_button(), &QPushButton::pressed, this,
-            [=]() {
-                current_knob_type = "position";
-                this->setCursor(Qt::ClosedHandCursor);
-            });
-    //
-    //
+    add_knob_action("Floating Knob", "float", "floating");
+    add_knob_action("Integer Knob", "int", "integer");
+    add_knob_action("Color Knob", "color", "color");
+    add_knob_action("Button Knob", "button", "button");
+    add_knob_action("Choice Knob", "combo_box", "choice");
+    add_knob_action("CheckBox Knob", "check_box", "check_box");
+    add_knob_action("Text Knob", "text", "text");
+    add_knob_action("File Knob", "create_new_folder", "file");
+    add_knob_action("Position Knob", "position", "position");
 
     tools_bar->add_separator();
 
-    // Tab
-    action *tab_action = new action("Add Tab", "", "tab");
-    tab_action->set_checkable(true);
-    tab_action->connect_to(
-        this, [=]() { update_edit_options(tab_action->is_checked()); });
-    tools_bar->add_action(tab_action);
-    connect(tab_action->get_button(), &QPushButton::pressed, this, [=]() {
-        current_knob_type = "tab";
-        this->setCursor(Qt::ClosedHandCursor);
-    });
-    //
-    //
-
-    // Label
-    action *label_knob_action = new action("Label Knob", "", "label");
-    label_knob_action->set_checkable(true);
-    label_knob_action->connect_to(
-        this, [=]() { update_edit_options(label_knob_action->is_checked()); });
-    tools_bar->add_action(label_knob_action);
-    connect(label_knob_action->get_button(), &QPushButton::pressed, this,
-            [=]() {
-                current_knob_type = "label";
-                this->setCursor(Qt::ClosedHandCursor);
-            });
-    //
-    //
-
-    // Group
-    action *group_knob_action = new action("Group Knob", "", "group");
-    group_knob_action->set_checkable(true);
-    group_knob_action->connect_to(
-        this, [=]() { update_edit_options(group_knob_action->is_checked()); });
-    tools_bar->add_action(group_knob_action);
-    connect(group_knob_action->get_button(), &QPushButton::pressed, this,
-            [=]() {
-                current_knob_type = "group";
-                this->setCursor(Qt::ClosedHandCursor);
-            });
-    //
-    //
-
-    // Separator
-    action *separator_knob_action =
-        new action("Separator Knob", "", "separator");
-    separator_knob_action->set_checkable(true);
-    separator_knob_action->connect_to(this, [=]() {
-        update_edit_options(separator_knob_action->is_checked());
-    });
-    tools_bar->add_action(separator_knob_action);
-    connect(separator_knob_action->get_button(), &QPushButton::pressed, this,
-            [=]() {
-                current_knob_type = "separator";
-                this->setCursor(Qt::ClosedHandCursor);
-            });
-    //
-    //
+    add_knob_action("Add Tab", "tab", "tab");
+    add_knob_action("Label Knob", "label", "label");
+    add_knob_action("Group Knob", "group", "group");
+    add_knob_action("Separator Knob", "separator", "separator");
 
     tools_bar->add_stretch();
 
@@ -311,3 +160,41 @@ void knob_editor::update_edit_options(bool visible)
     edit_box->setVisible(visible);
     this->setCursor(Qt::ArrowCursor);
 }
+
+void knob_editor::mousePressEvent(QMouseEvent *event)
+{
+    insert_index = -2;
+    current_panel = nullptr;
+    this->setCursor(Qt::ClosedHandCursor);
+}
+
+void knob_editor::mouseMoveEvent(QMouseEvent *event)
+{
+    if (current_knob_type == "tab")
+        insert_division_to_tabs(event->pos());
+    else
+        insert_division_to_knobs();
+}
+
+void knob_editor::mouseReleaseEvent(QMouseEvent *event)
+{
+    temp_widget->hide();
+    temp_vertical_widget->hide();
+
+    temp_widget->setParent(0);
+    temp_vertical_widget->setParent(0);
+
+    this->setCursor(Qt::ArrowCursor);
+    if (current_knob_type == "tab")
+        add_tab(current_panel, insert_index);
+    else
+        add_knob(current_panel, insert_index);
+
+    for (action *knob_action : actions)
+        knob_action->set_illuminated_button(false);
+
+    // deja en preferencia el tipo de dato actual, al boton checkeado una vez se
+    // utilizo el drag
+    current_knob_type = checked_knob_type;
+}
+
