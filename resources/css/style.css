@@ -21,7 +21,7 @@ QPushButton {
     width: 0px; }
 
 QMainWindow {
-  qproperty-windowIcon: url("/home/pancho/Documents/develop/vinacomp/resources/images/vinacomp.png"); }
+  qproperty-windowIcon: url("{{path}}/resources/images/vinacomp.png"); }
 
 QMenu {
   background-color: #292d32;
@@ -67,55 +67,36 @@ QSplitter::handle::horizontal {
 QSplitter::handle::vertical {
   height: 1px; }
 
-QScrollBar {
-  padding: 3px; }
-  QScrollBar:vertical, QScrollBar:horizontal {
-    background: #22252a; }
-  QScrollBar:vertical {
-    width: 15px;
-    margin: 23px 0px 23px 0px; }
-  QScrollBar:horizontal {
-    height: 15px;
-    margin: 0px 23px 0px 23px; }
-  QScrollBar::handle:vertical, QScrollBar::handle:horizontal {
-    background: #30343b;
-    border-radius: 4px; }
-    QScrollBar::handle:vertical:hover, QScrollBar::handle:horizontal:hover {
-      background: #98801e; }
-  QScrollBar::handle:vertical {
-    min-height: 20px; }
-  QScrollBar::handle:horizontal {
-    min-width: 20px; }
-  QScrollBar::add-page:vertical, QScrollBar::add-page:horizontal, QScrollBar::sub-page:vertical, QScrollBar::sub-page:horizontal {
-    background: transparent; }
-  QScrollBar::add-line:vertical, QScrollBar::add-line:horizontal {
-    background: #2c2f35;
-    subcontrol-origin: margin; }
-  QScrollBar::add-line:vertical {
-    height: 20px;
-    subcontrol-position: bottom; }
-  QScrollBar::add-line:horizontal {
-    width: 20px;
-    subcontrol-position: left; }
-  QScrollBar::sub-line:vertical, QScrollBar::sub-line:horizontal {
-    background: #2c2f35;
-    subcontrol-origin: margin; }
-  QScrollBar::sub-line:vertical {
-    height: 20px;
-    subcontrol-position: top; }
-  QScrollBar::sub-line:horizontal {
-    width: 20px;
-    subcontrol-position: right; }
-  QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left-arrow:horizontal, QScrollBar::right-arrow:horizontal {
-    background: transparent; }
-  QScrollBar::up-arrow:vertical {
-    image: url("/home/pancho/Documents/develop/vinacomp/resources/images/up_arrow.png"); }
-  QScrollBar::down-arrow:vertical {
-    image: url("/home/pancho/Documents/develop/vinacomp/resources/images/down_arrow.png"); }
-  QScrollBar::left-arrow:horizontal {
-    image: url("/home/pancho/Documents/develop/vinacomp/resources/images/right_arrow.png"); }
-  QScrollBar::right-arrow:horizontal {
-    image: url("/home/pancho/Documents/develop/vinacomp/resources/images/left_arrow.png"); }
+QScrollBar:vertical, QScrollBar:horizontal {
+  background: #191b1f; }
+
+QScrollBar:vertical {
+  width: 10px;
+  margin: 23px 0px 23px 0px; }
+
+QScrollBar:horizontal {
+  height: 15px;
+  margin: 0px 23px 0px 23px; }
+
+QScrollBar::handle:vertical, QScrollBar::handle:horizontal {
+  background: #292d32;
+  border-radius: 4px; }
+  QScrollBar::handle:vertical:hover, QScrollBar::handle:horizontal:hover {
+    background: #98801e; }
+
+QScrollBar::handle:vertical {
+  min-height: 20px; }
+
+QScrollBar::handle:horizontal {
+  min-width: 20px; }
+
+QScrollBar::add-line:vertical, QScrollBar::add-line:horizontal, QScrollBar::sub-line:vertical, QScrollBar::sub-line:horizontal, QScrollBar::add-page:vertical, QScrollBar::add-page:horizontal, QScrollBar::sub-page:vertical, QScrollBar::sub-page:horizontal {
+  height: 0px;
+  width: 0px;
+  background: none; }
+
+QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left-arrow:horizontal, QScrollBar::right-arrow:horizontal {
+  background: none; }
 
 #slider #slider_center {
   background: #1e2024;

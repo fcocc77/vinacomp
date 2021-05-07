@@ -75,18 +75,17 @@ QSplitter
 
 QScrollBar
     $width: 20px
-    padding: 3px
     &:vertical, &:horizontal
-        background: $b14
+        background: $b10
     &:vertical
-        width: 15px
+        width: 10px
         margin : 23px 0px 23px 0px
     &:horizontal
         height: 15px
         margin : 0px 23px 0px 23px
     &::handle
         &:vertical, &:horizontal
-            background: $b20
+            background: $b17
             border-radius: 4px
             &:hover
                 background: mix($base, $b20, 50%)
@@ -94,42 +93,16 @@ QScrollBar
             min-height: $width
         &:horizontal
             min-width: $width
-    &::add-page, &::sub-page
+    &::add-line, &::sub-line, &::add-page, &::sub-page
         &:vertical, &:horizontal
-            background: transparent
-    &::add-line
-        &:vertical, &:horizontal
-            background: $b18
-            subcontrol-origin: margin
-        &:vertical
-            height: $width
-            subcontrol-position: bottom
-        &:horizontal
-            width: $width
-            subcontrol-position: left
-    &::sub-line
-        &:vertical, &:horizontal
-            background: $b18
-            subcontrol-origin: margin
-        &:vertical
-            height: $width
-            subcontrol-position: top
-        &:horizontal
-            width: $width
-            subcontrol-position: right
+            height: 0px
+            width: 0px
+            background: none
     &::up-arrow:vertical,
     &::down-arrow:vertical,
     &::left-arrow:horizontal,
     &::right-arrow:horizontal
-        background: transparent
-    &::up-arrow:vertical
-        image : url('#{$images}/up_arrow.png')
-    &::down-arrow:vertical
-        image : url('#{$images}/down_arrow.png')
-    &::left-arrow:horizontal
-        image : url('#{$images}/right_arrow.png')
-    &::right-arrow:horizontal
-        image : url('#{$images}/left_arrow.png')
+        background: none
 
 // QSlider
     todos los valores tienen que sumar el total del alto,
