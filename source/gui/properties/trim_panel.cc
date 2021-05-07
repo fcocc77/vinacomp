@@ -87,6 +87,7 @@ trim_panel::trim_panel(properties *__properties, QString _name, QString _type,
     dividing_line_h = new QWidget;
 
     dividing_line_h->hide();
+    dividing_line_h->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     dividing_line_h->setMinimumHeight(3);
     dividing_line_h->setStyleSheet(
         "border-bottom: 2px solid green; border-style: dotted;");
@@ -428,7 +429,7 @@ void trim_panel::leave_properties()
     // arrastrando el knob en el 'knob_editor', para evitar conflictos, finaliza
     // la insercion si se quedan pegadas las lineas divisoras, ya que en el
     // 'knob_editor' se estan usando 'dividing_line_h' y 'dividing_line_v'
-    _knob_editor->finish_insertion();
+    _knob_editor->finish_insertion(false);
     //
 }
 
@@ -441,7 +442,7 @@ void trim_panel::mousePressEvent(QMouseEvent *event)
     // arrastrando el knob en el 'knob_editor', para evitar conflictos, finaliza
     // la insercion si se quedan pegadas las lineas divisoras, ya que en el
     // 'knob_editor' se estan usando 'dividing_line_h' y 'dividing_line_v'
-    _knob_editor->finish_insertion();
+    _knob_editor->finish_insertion(false);
     //
 }
 

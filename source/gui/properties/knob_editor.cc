@@ -167,7 +167,7 @@ void knob_editor::start_insertion()
     insert_knob_or_tab = true;
 }
 
-void knob_editor::finish_insertion()
+void knob_editor::finish_insertion(bool add_item)
 {
     if (!insert_knob_or_tab)
         return;
@@ -175,10 +175,13 @@ void knob_editor::finish_insertion()
     hide_all_dividing_line();
 
     this->setCursor(Qt::ArrowCursor);
-    if (current_knob_type == "tab")
-        add_tab(current_panel, insert_index);
-    else
-        add_knob(current_panel, insert_index);
+    if (add_item)
+    {
+        if (current_knob_type == "tab")
+            add_tab(current_panel, insert_index);
+        else
+            add_knob(current_panel, insert_index);
+    }
 
     for (action *knob_action : actions)
         knob_action->set_illuminated_button(false);

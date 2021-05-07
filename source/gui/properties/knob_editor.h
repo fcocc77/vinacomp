@@ -70,7 +70,7 @@ public:
     knob_editor(QWidget *properties);
     ~knob_editor();
 
-    void finish_insertion();
+    void finish_insertion(bool add_item = true);
 };
 
 #endif // KNOB_EDITOR_H
