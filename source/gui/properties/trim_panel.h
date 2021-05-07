@@ -72,6 +72,7 @@ private:
 
 public:
     QJsonArray base_knobs;
+    QJsonArray shared_knobs;
     QJsonArray custom_knobs;
 
     trim_panel(properties *_properties, QString _name, QString _type,

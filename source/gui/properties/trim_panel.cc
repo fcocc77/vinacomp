@@ -53,6 +53,10 @@ trim_panel::trim_panel(properties *__properties, QString _name, QString _type,
     vinacomp *vina = static_cast<vinacomp *>(_vinacomp);
     viewers_gl = vina->get_viewers_gl();
 
+    shared_knobs = jread("source/engine/nodes/json/shared_params.json")
+                       .value("knobs")
+                       .toArray();
+
     base_knobs = nodes_loaded->get_effect(type).value("knobs").toArray();
     QStringList finded_tabs = get_tabs_from_knobs(base_knobs);
 
@@ -325,10 +329,6 @@ void trim_panel::add_tab(QString tab_name, int index)
 
     if (tab_name == "Node")
     {
-        QJsonArray shared_knobs =
-            jread("source/engine/nodes/json/shared_params.json")
-                .value("knobs")
-                .toArray();
         setup_knobs(shared_knobs, tab_layout, viewers_gl);
         setup_shared_params();
 

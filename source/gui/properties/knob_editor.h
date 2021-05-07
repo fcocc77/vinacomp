@@ -34,6 +34,7 @@ private:
 
     QList<action *> actions;
     bool insert_knob_or_tab;
+    action *add_action;
 
     // edit
     int insert_index;

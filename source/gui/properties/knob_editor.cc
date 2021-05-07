@@ -23,9 +23,16 @@ knob_editor::knob_editor(QWidget *__properties)
         action *knob_action = new action(label, "", icon);
         knob_action->set_checkable(true);
         knob_action->connect_to(this, [=]() {
-            update_edit_options(knob_action->is_checked());
+            bool checked = knob_action->is_checked();
+            update_edit_options(checked);
+
             knob_action->set_illuminated_button(false);
             checked_knob_type = id;
+
+            add_action->set_visible(checked);
+
+            if (!checked)
+                current_knob_type = "";
         });
         tools_bar->add_action(knob_action);
         connect(knob_action->get_button(), &QPushButton::pressed, this, [=]() {
@@ -55,7 +62,8 @@ knob_editor::knob_editor(QWidget *__properties)
 
     tools_bar->add_stretch();
 
-    action *add_action = new action("Add Knob", "", "add");
+    add_action = new action("Add Knob", "", "add");
+    add_action->set_visible(false);
     add_action->connect_to(this, [=]() { push_knob_or_tab(); });
     tools_bar->add_action(add_action);
 

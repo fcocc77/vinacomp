@@ -220,14 +220,22 @@ QString knob_editor::get_available_tab_name(QWidget *panel, QString preferred_na
 QString knob_editor::get_available_knob_name(QWidget *panel) const
 {
     trim_panel *_panel = static_cast<trim_panel *>(panel);
-    QJsonArray &knobs = _panel->custom_knobs;
+    QJsonArray &custom_knobs = _panel->custom_knobs;
+    QJsonArray &base_knobs = _panel->base_knobs;
+    QJsonArray &shared_knobs = _panel->shared_knobs;
 
     QString name = knob_name->text();
     if (name.isEmpty())
         name = current_knob_type;
 
     QStringList name_list;
-    for (QJsonValue value : knobs)
+    for (QJsonValue value : custom_knobs)
+        name_list.push_back(value.toObject().value("name").toString());
+
+    for (QJsonValue value : base_knobs)
+        name_list.push_back(value.toObject().value("name").toString());
+
+    for (QJsonValue value : shared_knobs)
         name_list.push_back(value.toObject().value("name").toString());
 
     name = name.replace(" ", "_").toLower();

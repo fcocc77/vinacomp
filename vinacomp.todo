@@ -39,7 +39,7 @@ gui__properties:
 gui__trim_panel:
     ☐ knob_editor: crear button que vincule el plugin de python con el 'script_editor' del panel
     ☐ knob_editor: crear un nuevo tab cuando el nodo no es un grupo
-    ☐ knob_editor: considerar tambien los knobs que vienen en el nodo, para que no queden con algun nombre que ya exista
+    ✔ knob_editor: considerar tambien los knobs que vienen en el nodo, para que no queden con algun nombre que ya exista @done(2021-05-07 18:30) @project(gui__trim_panel)
 gui__node_graph:
 	☐ crear grilla que switchee con el boton de 'grid'
 	✔ crear backdrop @done(2021-04-26 12:32) @project(gui__node_graph)
