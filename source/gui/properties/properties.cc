@@ -6,6 +6,9 @@
 
 properties::properties(QWidget *__vinacomp)
     : _vinacomp(__vinacomp)
+    , is_maximize(true)
+    , max_panels(10)
+    , edit_mode(false)
 {
     this->setObjectName("properties");
     setup_ui();
@@ -77,8 +80,9 @@ QWidget *properties::top_buttons_setup_ui()
     edit_knobs->set_checkable();
     edit_knobs->set_icon("edit", icon_size);
     connect(edit_knobs, &button::clicked, this, [=](bool checked) {
-        _knob_editor->setVisible(checked);
-        set_edit_mode(checked);
+        edit_mode = checked;
+        _knob_editor->setVisible(edit_mode);
+        set_edit_mode(edit_mode);
     });
     layout->addWidget(edit_knobs);
 
@@ -125,8 +129,7 @@ void properties::close_trim_panel(QString panel_name)
     if (!_trim_panel)
         return;
 
-    _trim_panel->hide();
-    _trim_panel->setParent(0);
+    _trim_panel->leave_properties();
 
     auto _curve_editor = static_cast<vinacomp *>(_vinacomp)->get_curve_editor();
     _curve_editor->delete_panel(_trim_panel);

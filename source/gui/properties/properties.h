@@ -23,8 +23,9 @@ private:
     
     knob_editor *_knob_editor;
 
-    bool is_maximize = true;
-    int max_panels = 10;
+    bool is_maximize;
+    int max_panels;
+    bool edit_mode;
 
     void minimize_all_panels();
     void close_all();
@@ -46,6 +47,8 @@ public:
 
     void update_animated_knobs();
     void set_edit_mode(bool enable);
+    inline QWidget *get_knob_editor() const;
+    inline bool is_edit_mode() const;
 };
 //
 //
@@ -56,11 +59,20 @@ template <class T> void properties::add_trim_panel(T *_trim_panel)
     limit_panels(max_panels - 1);
 
     trim_panels_layout->addWidget(_trim_panel);
-    _trim_panel->maximize(true);
-    _trim_panel->show();
+    _trim_panel->enter_to_properties();
 
     update_curve(_trim_panel);
     update_viewers_handlers();
+}
+
+inline bool properties::is_edit_mode() const
+{
+    return edit_mode;
+}
+
+inline QWidget *properties::get_knob_editor() const
+{
+    return _knob_editor;
 }
 
 #endif // PROPERTIES_HPP

@@ -56,6 +56,8 @@ private:
 
     QJsonObject *data;
 
+    QWidget *dividing_line_v, *dividing_line_h;
+
     void setup_gui_panels(QJsonArray _knobs, QVBoxLayout *_layout);
     QWidget *top_buttons_setup_ui();
     void setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
@@ -65,6 +67,8 @@ private:
     QStringList get_tabs_from_knobs(QJsonArray _knobs);
     void delete_tab(QString tab_name);
     void remove_custom_knob(QString knob_name);
+
+    void mousePressEvent(QMouseEvent *event) override;
 
 public:
     QJsonArray base_knobs;
@@ -80,6 +84,8 @@ public:
     void maximize(bool _maximize);
     void add_tab(QString tab_name, int index = -1);
     void set_edit_mode(bool enable);
+    inline QWidget *get_dividing_line_v() const;
+    inline QWidget *get_dividing_line_h() const;
     inline QString get_name() const;
     inline QString get_type() const;
     inline QColor get_color() const;
@@ -89,7 +95,19 @@ public:
     inline QMap<QString, knob *> *get_knobs() const;
     inline tab_widget *get_tab_widget() const;
     inline QStringList get_only_read_tabs() const;
+    void enter_to_properties();
+    void leave_properties();
 };
+
+inline QWidget *trim_panel::get_dividing_line_v() const
+{
+    return dividing_line_v;
+}
+
+inline QWidget *trim_panel::get_dividing_line_h() const
+{
+    return dividing_line_h;
+}
 
 inline QStringList trim_panel::get_only_read_tabs() const
 {

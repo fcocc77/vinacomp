@@ -1,29 +1,19 @@
 #include <knob_editor.h>
 #include <qt.h>
 #include <tools.h>
+#include <trim_panel.h>
 
 knob_editor::knob_editor(QWidget *__properties)
     : _properties(__properties)
     , current_panel(nullptr)
+    , insert_knob_or_tab(false)
 {
     this->setObjectName("knob_editor");
-    this->setAcceptDrops(true);
 
     layout = new QVBoxLayout(this);
     layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
     layout->setMargin(0);
     layout->setSpacing(0);
-
-    temp_widget = new QWidget;
-    temp_widget->hide();
-    temp_widget->setMinimumHeight(3);
-    temp_widget->setStyleSheet(
-        "border-bottom: 2px solid green; border-style: dotted;");
-
-    temp_vertical_widget = new QWidget;
-    temp_vertical_widget->hide();
-    temp_vertical_widget->setMinimumWidth(3);
-    temp_vertical_widget->setStyleSheet("border-left: 2px solid green;");
 
     tools *tools_bar = new tools(20);
     tools_bar->allow_one_check_at_time();
@@ -38,12 +28,11 @@ knob_editor::knob_editor(QWidget *__properties)
             checked_knob_type = id;
         });
         tools_bar->add_action(knob_action);
-        connect(knob_action->get_button(), &QPushButton::pressed, this,
-                [=]() {
-                    knob_action->set_illuminated_button(true);
-                    current_knob_type = id;
-                    this->setCursor(Qt::ClosedHandCursor);
-                });
+        connect(knob_action->get_button(), &QPushButton::pressed, this, [=]() {
+            knob_action->set_illuminated_button(true);
+            current_knob_type = id;
+            start_insertion();
+        });
         actions.push_back(knob_action);
     };
 
@@ -161,28 +150,21 @@ void knob_editor::update_edit_options(bool visible)
     this->setCursor(Qt::ArrowCursor);
 }
 
-void knob_editor::mousePressEvent(QMouseEvent *event)
+void knob_editor::start_insertion()
 {
     insert_index = -2;
     current_panel = nullptr;
     this->setCursor(Qt::ClosedHandCursor);
+
+    insert_knob_or_tab = true;
 }
 
-void knob_editor::mouseMoveEvent(QMouseEvent *event)
+void knob_editor::finish_insertion()
 {
-    if (current_knob_type == "tab")
-        insert_division_to_tabs(event->pos());
-    else
-        insert_division_to_knobs();
-}
+    if (!insert_knob_or_tab)
+        return;
 
-void knob_editor::mouseReleaseEvent(QMouseEvent *event)
-{
-    temp_widget->hide();
-    temp_vertical_widget->hide();
-
-    temp_widget->setParent(0);
-    temp_vertical_widget->setParent(0);
+    hide_all_dividing_line();
 
     this->setCursor(Qt::ArrowCursor);
     if (current_knob_type == "tab")
@@ -196,5 +178,23 @@ void knob_editor::mouseReleaseEvent(QMouseEvent *event)
     // deja en preferencia el tipo de dato actual, al boton checkeado una vez se
     // utilizo el drag
     current_knob_type = checked_knob_type;
+
+    insert_knob_or_tab = false;
+}
+
+void knob_editor::mouseMoveEvent(QMouseEvent *event)
+{
+    if (!insert_knob_or_tab)
+        return;
+
+    if (current_knob_type == "tab")
+        insert_division_to_tabs(event->pos());
+    else
+        insert_division_to_knobs();
+}
+
+void knob_editor::mouseReleaseEvent(QMouseEvent *event)
+{
+    finish_insertion();
 }
 

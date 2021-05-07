@@ -9,6 +9,7 @@
 #include "node.h"
 #include <node_backdrop.h>
 #include <node_view.h>
+#include <knob_editor.h>
 
 trim_panel::trim_panel(properties *__properties, QString _name, QString _type,
                        QColor _color, QString _icon_name,
@@ -76,10 +77,28 @@ trim_panel::trim_panel(properties *__properties, QString _name, QString _type,
 
     tabs->set_index(0);
     //
+
+    // lineas divisoras para el editor de 'knobs'
+    dividing_line_v = new QWidget;
+    dividing_line_h = new QWidget;
+
+    dividing_line_h->hide();
+    dividing_line_h->setMinimumHeight(3);
+    dividing_line_h->setStyleSheet(
+        "border-bottom: 2px solid green; border-style: dotted;");
+
+    dividing_line_v->hide();
+    dividing_line_v->setMinimumWidth(3);
+    dividing_line_v->setStyleSheet("border-left: 2px solid green;");
 }
 
 trim_panel::~trim_panel()
 {
+    leave_properties();
+
+    delete dividing_line_h;
+    delete dividing_line_v;
+
     delete layout;
 
     if (_node_gui)
@@ -140,6 +159,15 @@ void trim_panel::set_edit_mode(bool enable)
     for (tab *_tab : tabs->get_tabs())
         if (!tabs_only_read.contains(_tab->get_name()))
             _tab->set_visible_close_button(enable);
+
+    if (!enable)
+    {
+        dividing_line_h->hide();
+        dividing_line_v->hide();
+
+        dividing_line_h->setParent(0);
+        dividing_line_v->setParent(0);
+    }
 }
 
 void trim_panel::setup_shared_params()
@@ -378,5 +406,42 @@ void trim_panel::maximize(bool _maximize)
 void trim_panel::update_render()
 {
     static_cast<vinacomp *>(_vinacomp)->update_render_all_viewer();
+}
+
+void trim_panel::enter_to_properties()
+{
+    this->maximize(true);
+    this->show();
+    set_edit_mode(_properties->is_edit_mode());
+}
+
+void trim_panel::leave_properties()
+{
+    this->set_edit_mode(false);
+    this->hide();
+    this->setParent(0);
+
+    knob_editor *_knob_editor =
+        static_cast<knob_editor *>(_properties->get_knob_editor());
+
+    // a veces se queda pegado al presionar otros click cuando se esta
+    // arrastrando el knob en el 'knob_editor', para evitar conflictos, finaliza
+    // la insercion si se quedan pegadas las lineas divisoras, ya que en el
+    // 'knob_editor' se estan usando 'dividing_line_h' y 'dividing_line_v'
+    _knob_editor->finish_insertion();
+    //
+}
+
+void trim_panel::mousePressEvent(QMouseEvent *event)
+{
+    knob_editor *_knob_editor =
+        static_cast<knob_editor *>(_properties->get_knob_editor());
+
+    // a veces se queda pegado al presionar otros click cuando se esta
+    // arrastrando el knob en el 'knob_editor', para evitar conflictos, finaliza
+    // la insercion si se quedan pegadas las lineas divisoras, ya que en el
+    // 'knob_editor' se estan usando 'dividing_line_h' y 'dividing_line_v'
+    _knob_editor->finish_insertion();
+    //
 }
 

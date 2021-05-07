@@ -293,17 +293,28 @@ QString knob_editor::get_custom_tab_name(QWidget *panel)
 
 knob *knob_editor::get_knob_under_cursor() const
 {
-    QWidget *_widget = qApp->widgetAt(QCursor::pos());
-    while (_widget)
-    {
-        knob *_knob = dynamic_cast<knob *>(_widget);
-        if (_knob)
-            return _knob;
+    auto get_knob = [=](int gap) {
+        QPoint pos = QCursor::pos();
+        QWidget *_widget = qApp->widgetAt({pos.x(), pos.y() - gap});
 
-        _widget = _widget->parentWidget();
-    }
+        knob *_knob = nullptr;
+        while (_widget)
+        {
+            _knob = dynamic_cast<knob *>(_widget);
+            if (_knob)
+                return _knob;
 
-    return nullptr;
+            _widget = _widget->parentWidget();
+        }
+
+        return _knob;
+    };
+
+    knob *_knob = get_knob(14);
+    if (!_knob)
+        _knob = get_knob(0);
+
+    return _knob;
 }
 
 QWidget *knob_editor::get_panel_under_cursor() const
@@ -350,7 +361,7 @@ void knob_editor::insert_division_to_tabs(QPointF position)
     current_panel = get_panel_from_widget(__tab_widget);
     if (!current_panel)
     {
-        temp_vertical_widget->hide();
+        hide_all_dividing_line();
         return;
     }
 
@@ -366,13 +377,17 @@ void knob_editor::insert_division_to_tabs(QPointF position)
         index++;
     }
 
-    QHBoxLayout *tabs_layout = _tab_widget->get_tab_bar_layout();
-    if (index >= tabs_layout->count())
-        tabs_layout->addWidget(temp_vertical_widget);
-    else
-        tabs_layout->insertWidget(index + 1, temp_vertical_widget);
+    trim_panel *panel = static_cast<trim_panel *>(current_panel);
 
-    temp_vertical_widget->show();
+    QHBoxLayout *tabs_layout = _tab_widget->get_tab_bar_layout();
+    QWidget *dividing_line_v = panel->get_dividing_line_v();
+
+    if (index >= tabs_layout->count())
+        tabs_layout->addWidget(dividing_line_v);
+    else
+        tabs_layout->insertWidget(index + 1, dividing_line_v);
+
+    dividing_line_v->show();
 
     insert_index = index;
 }
@@ -384,30 +399,35 @@ void knob_editor::insert_division_to_knobs()
 
     if (!panel)
     {
-        temp_widget->hide();
+        hide_all_dividing_line();
         current_panel = nullptr;
         return;
     }
 
-    if (_knob)
-    {
-        QString current_tab = static_cast<trim_panel *>(panel)
-                                  ->get_tab_widget()
-                                  ->get_current_tab()
-                                  ->get_name();
+    trim_panel *_panel = static_cast<trim_panel *>(panel);
 
-        current_panel = _knob->get_panel();
+    QStringList only_read_tabs = _panel->get_only_read_tabs();
+    QString current_tab =
+        _panel->get_tab_widget()->get_current_tab()->get_name();
+
+    if (only_read_tabs.contains(current_tab))
+        return;
+
+    current_panel = panel;
+
+    if (_knob)
         insert_index =
             get_index_knob(current_panel, _knob->get_name(), current_tab) + 1;
+    else
+        insert_index = 0;
 
-        QVBoxLayout *layout = get_layout_current_tab(current_panel);
-        if (layout)
-        {
-            layout->insertWidget(insert_index, temp_widget);
-            temp_widget->show();
-        }
+    QVBoxLayout *layout = get_layout_current_tab(current_panel);
+    if (layout)
+    {
+        QWidget *dividing_line_h = _panel->get_dividing_line_h();
+        layout->insertWidget(insert_index, dividing_line_h);
+        dividing_line_h->show();
     }
-
 }
 
 int knob_editor::get_index_knob(QWidget *panel, QString knob_name,
@@ -437,7 +457,7 @@ int knob_editor::get_index_knob(QWidget *panel, QString knob_name,
         index++;
     }
 
-    return index;
+    return -1;
 }
 
 QVBoxLayout *knob_editor::get_layout_current_tab(QWidget *panel) const
@@ -451,4 +471,19 @@ QVBoxLayout *knob_editor::get_layout_current_tab(QWidget *panel) const
     QLayout *layout = _tab_widget->get_current_tab()->get_widget()->layout();
 
     return static_cast<QVBoxLayout *>(layout);
+}
+
+void knob_editor::hide_all_dividing_line()
+{
+    properties *__properties = static_cast<properties *>(_properties);
+
+    for (QWidget *panel : __properties->get_trim_panels())
+    {
+        trim_panel *_panel = static_cast<trim_panel *>(panel);
+        _panel->get_dividing_line_h()->hide();
+        _panel->get_dividing_line_v()->hide();
+
+        _panel->get_dividing_line_h()->setParent(0);
+        _panel->get_dividing_line_v()->setParent(0);
+    }
 }

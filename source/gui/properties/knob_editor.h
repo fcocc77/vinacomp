@@ -33,9 +33,7 @@ private:
     knob_check_box *new_line_check;
 
     QList<action *> actions;
-
-    QWidget *temp_widget;
-    QWidget *temp_vertical_widget;
+    bool insert_knob_or_tab;
 
     // edit
     int insert_index;
@@ -61,14 +59,17 @@ private:
     void insert_division_to_knobs();
     QString add_tab(QWidget *panel, int index = -1, QString preferred_name = "");
     void update_edit_options(bool visible);
+    void start_insertion();
+    void hide_all_dividing_line();
 
-    void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
 
 public:
     knob_editor(QWidget *properties);
     ~knob_editor();
+
+    void finish_insertion();
 };
 
 #endif // KNOB_EDITOR_H
