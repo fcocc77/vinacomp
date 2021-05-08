@@ -29,7 +29,7 @@ knob::knob(knob_props props)
 
     delete_knob_button = new button;
     connect(delete_knob_button, &button::clicked, this, [=]() {
-        static_cast<knob_editor *>(_knob_editor)->delete_knob(panel, this);
+        static_cast<knob_editor *>(_knob_editor)->delete_knob(this);
     });
     delete_knob_button->setFixedSize({25, 22});
     delete_knob_button->hide();
@@ -37,15 +37,15 @@ knob::knob(knob_props props)
 
     edit_knob_button = new button;
     connect(edit_knob_button, &button::clicked, this, [=]() {
-        static_cast<knob_editor *>(_knob_editor)->edit_knob(panel, this);
+        static_cast<knob_editor *>(_knob_editor)->edit_knob(this);
     });
     edit_knob_button->setFixedSize({25, 22});
     edit_knob_button->hide();
     edit_knob_button->set_icon("edit");
 
     drag_knob_button = new button;
-    connect(drag_knob_button, &button::clicked, this, [=]() {
-        static_cast<knob_editor *>(_knob_editor)->drag_knob(panel, this);
+    connect(drag_knob_button, &button::pressed, this, [=]() {
+        static_cast<knob_editor *>(_knob_editor)->drag_knob(this);
     });
     drag_knob_button->setFixedSize({25, 22});
     drag_knob_button->hide();

@@ -17,125 +17,111 @@ void knob_editor::push_knob_or_tab()
         return;
     }
 
-    add_knob(panel);
+    add_knob(panel, get_params_from_edit_box(panel));
 }
 
-void knob_editor::add_knob(QWidget *panel, int index)
+void knob_editor::add_knob(QWidget *panel, knob_params params, int index)
 {
     if (index == -2 || !panel)
         return;
 
     trim_panel *_panel = static_cast<trim_panel *>(panel);
 
-    QString label = knob_name->text();
-    if (label.isEmpty())
-        label = current_knob_type;
-
-    QString name = get_available_knob_name(panel);
-    QString tips = knob_tips->toPlainText();
-
-    float min = 0;
-    float max = 1;
-    if (!minimum_edit->text().isEmpty())
-        min = minimum_edit->text().toDouble();
-    if (!maximum_edit->text().isEmpty())
-        max = maximum_edit->text().toDouble();
-
     QString custom_tab = get_custom_tab_name(panel);
 
     QJsonObject knob_object;
-    if (current_knob_type == "floating")
+    if (params.type == "floating")
     {
-        knob_object = {{"name", name},   {"type", "floating"},
-                       {"label", label}, {"tooltip", tips},
-                       {"minimum", min}, {"maximum", max},
-                       {"default", min}, {"tab", custom_tab}};
+        knob_object = {{"name", params.name},   {"type", "floating"},
+                       {"label", params.label}, {"tooltip", params.tips},
+                       {"minimum", params.min}, {"maximum", params.max},
+                       {"default", params.min}, {"tab", custom_tab}};
     }
-    else if (current_knob_type == "integer")
+    else if (params.type == "integer")
     {
-        knob_object = {{"name", name},    {"type", "integer"}, {"label", label},
-                       {"tooltip", tips}, {"minimum", min},    {"maximum", max},
-                       {"default", min},  {"tab", custom_tab}};
+        knob_object = {{"name", params.name},    {"type", "integer"}, {"label", params.label},
+                       {"tooltip", params.tips}, {"minimum", params.min},    {"maximum", params.max},
+                       {"default", params.min},  {"tab", custom_tab}};
     }
-    else if (current_knob_type == "color")
+    else if (params.type == "color")
     {
-        knob_object = {{"name", name},
+        knob_object = {{"name", params.name},
                        {"type", "color"},
-                       {"label", label},
-                       {"tooltip", tips},
-                       {"minimum", min},
-                       {"maximum", max},
+                       {"label", params.label},
+                       {"tooltip", params.tips},
+                       {"minimum", params.min},
+                       {"maximum", params.max},
                        {"centered_handler", true},
                        {"tab", custom_tab},
                        {"default", QJsonArray{0, 0, 0, 0}}};
     }
-    else if (current_knob_type == "button")
+    else if (params.type == "button")
     {
-        knob_object = {{"name", name},
+        knob_object = {{"name", params.name},
                        {"type", "button"},
-                       {"label", label},
+                       {"label", params.label},
                        {"tab", custom_tab},
-                       {"tooltip", tips}};
+                       {"tooltip", params.tips}};
     }
-    else if (current_knob_type == "choice")
+    else if (params.type == "choice")
     {
-        knob_object = {{"name", name},
+        knob_object = {{"name", params.name},
                        {"type", "choice"},
-                       {"label", label},
-                       {"tooltip", tips},
+                       {"label", params.label},
+                       {"tooltip", params.tips},
                        {"tab", custom_tab},
                        {"items", QJsonArray{}},
                        {"default", QJsonArray{0, ""}}};
     }
-    else if (current_knob_type == "check_box")
+    else if (params.type == "check_box")
     {
-        knob_object = {{"name", name},       {"type", "check_box"},
-                       {"label", label},     {"tooltip", tips},
+        knob_object = {{"name", params.name},       {"type", "check_box"},
+                       {"label", params.label},     {"tooltip", params.tips},
                        {"over_line", false}, {"default", false},
                        {"tab", custom_tab}};
     }
-    else if (current_knob_type == "text")
+    else if (params.type == "text")
     {
-        knob_object = {{"name", name},       {"type", "text"},
-                       {"label", label},     {"tooltip", ""},
-                       {"over_line", false}, {"default", tips},
+        knob_object = {{"name", params.name},       {"type", "text"},
+                       {"label", params.label},     {"tooltip", ""},
+                       {"over_line", false}, {"default", params.tips},
                        {"tab", custom_tab}};
     }
-    else if (current_knob_type == "file")
+    else if (params.type == "file")
     {
-        knob_object = {{"name", name},       {"type", "file"},
-                       {"label", label},     {"tooltip", ""},
-                       {"over_line", false}, {"default", tips},
+        knob_object = {{"name", params.name},       {"type", "file"},
+                       {"label", params.label},     {"tooltip", ""},
+                       {"over_line", false}, {"default", params.tips},
                        {"tab", custom_tab}};
     }
-    else if (current_knob_type == "position")
+    else if (params.type == "floating_dimensions")
     {
-        knob_object = {{"name", name},
+        knob_object = {{"name", params.name},
                        {"type", "floating_dimensions"},
-                       {"label", label},
-                       {"tooltip", tips},
+                       {"label", params.label},
+                       {"tooltip", params.tips},
                        {"dimensions", 2},
                        {"over_line", false},
                        {"default", QJsonArray{0, 0}},
                        {"tab", custom_tab}};
     }
-    else if (current_knob_type == "label")
+    else if (params.type == "label")
     {
-        knob_object = {{"name", name},
+        knob_object = {{"name", params.name},
                        {"type", "label"},
-                       {"label", label},
+                       {"label", params.label},
                        {"tab", custom_tab}};
     }
-    else if (current_knob_type == "group")
+    else if (params.type == "group")
     {
-        knob_object = {{"name", name},   {"type", "group"},
-                       {"label", label}, {"open", false},
+        knob_object = {{"name", params.name},   {"type", "group"},
+                       {"label", params.label}, {"open", false},
                        {"knobs", 2},     {"tab", custom_tab}};
     }
-    else if (current_knob_type == "separator")
+    else if (params.type == "separator")
     {
         knob_object = {
-            {"name", name}, {"type", "separator"}, {"tab", custom_tab}};
+            {"name", params.name}, {"type", "separator"}, {"tab", custom_tab}};
     }
 
     if (knob_object.empty())
@@ -154,6 +140,34 @@ void knob_editor::add_knob(QWidget *panel, int index)
 
     _panel->update_custom_knobs();
     _panel->set_edit_mode(true);
+}
+
+void knob_editor::move_knob(QWidget *panel, int index)
+{
+    QJsonObject knob_data = dragging_knob->get_knob_data();
+
+    knob_params params;
+    QString name = knob_data.value("type").toString();
+    QString tab_name = knob_data.value("tab").toString();
+    params.name = get_available_knob_name(panel, name);
+
+    params.type = knob_data.value("type").toString();
+    params.tips = knob_data.value("tooltip").toString();
+    params.label = knob_data.value("label").toString();
+    params.min = knob_data.value("minimum").toDouble();
+    params.max = knob_data.value("maximum").toDouble();
+    params.new_line = knob_data.value("new_line").toBool();
+
+    int dragging_knob_index =
+        get_index_knob(panel, dragging_knob->get_name(), tab_name);
+
+    // resta uno al index cuando el index es mayor al del knob arrastrado, por
+    // que el knob se elimina antes de añadir uno nuevo
+    if (dragging_knob_index < index)
+        index--;
+
+    delete_knob(dragging_knob);
+    add_knob(panel, params, index);
 }
 
 void knob_editor::insert_knob_in_tab(QJsonArray *knobs, QJsonObject knob_obj,
@@ -199,6 +213,36 @@ QString knob_editor::add_tab(QWidget *panel, int index, QString preferred_name)
     return tab_name;
 }
 
+knob_params knob_editor::get_params_from_edit_box(QWidget *panel) const
+{
+    if (!panel)
+        return {};
+
+    knob_params params;
+
+    params.label = knob_name->text();
+    if (params.label.isEmpty())
+        params.label = current_knob_type;
+
+    QString name = knob_name->text();
+    if (name.isEmpty())
+        name = current_knob_type;
+
+    params.name = get_available_knob_name(panel, name);
+    params.tips = knob_tips->toPlainText();
+
+    params.min = 0;
+    params.max = 1;
+    if (!minimum_edit->text().isEmpty())
+        params.min = minimum_edit->text().toDouble();
+    if (!maximum_edit->text().isEmpty())
+        params.max = maximum_edit->text().toDouble();
+
+    params.type = current_knob_type;
+
+    return params;
+}
+
 QString knob_editor::get_available_tab_name(QWidget *panel, QString preferred_name) const
 {
     tab_widget *_tab_widget =
@@ -218,16 +262,12 @@ QString knob_editor::get_available_tab_name(QWidget *panel, QString preferred_na
     return get_available_name(name_list, name);
 }
 
-QString knob_editor::get_available_knob_name(QWidget *panel) const
+QString knob_editor::get_available_knob_name(QWidget *panel, QString name) const
 {
     trim_panel *_panel = static_cast<trim_panel *>(panel);
     QJsonArray &custom_knobs = _panel->custom_knobs;
     QJsonArray &base_knobs = _panel->base_knobs;
     QJsonArray &shared_knobs = _panel->shared_knobs;
-
-    QString name = knob_name->text();
-    if (name.isEmpty())
-        name = current_knob_type;
 
     QStringList name_list;
     for (QJsonValue value : custom_knobs)
@@ -497,17 +537,35 @@ void knob_editor::hide_all_dividing_line()
     }
 }
 
-void knob_editor::delete_knob(QWidget *panel, knob *_knob)
+void knob_editor::delete_knob(knob *_knob)
 {
-    print("delete:", _knob->get_name());
+    static_cast<trim_panel *>(_knob->get_panel())
+        ->remove_custom_knob(_knob->get_name());
 }
 
-void knob_editor::edit_knob(QWidget *panel, knob *_knob)
+void knob_editor::edit_knob(knob *_knob)
 {
+    _knob->get_panel();
     print("edit:", _knob->get_name());
 }
 
-void knob_editor::drag_knob(QWidget *panel, knob *_knob)
+void knob_editor::drag_knob(knob *_knob)
 {
-    print("drag: ", _knob->get_name());
+    trim_panel *panel = static_cast<trim_panel *>(_knob->get_panel());
+    panel->setCursor(Qt::ClosedHandCursor);
+
+    dragging_knob = _knob;
+    start_insertion();
+}
+void knob_editor::drag_knob_move(QWidget *panel)
+{
+    dragging_insertion();
+}
+
+void knob_editor::drag_knob_release(QWidget *_panel)
+{
+    trim_panel *panel = static_cast<trim_panel *>(_panel);
+    panel->setCursor(Qt::ArrowCursor);
+
+    finish_insertion();
 }

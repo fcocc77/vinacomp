@@ -86,6 +86,7 @@ public:
     inline QWidget *get_panel() const;
     void set_param_value(QJsonValue value);
     void set_animatable(bool _animatable = true);
+    inline QJsonObject get_knob_data() const;
 
     virtual void update_animated();
     virtual void restore_param();
@@ -98,6 +99,11 @@ public:
 signals:
     void to_node_gui(knob *_knob);
 };
+
+inline QJsonObject knob::get_knob_data() const
+{
+    return knob_data;
+}
 
 inline QWidget *knob::get_panel() const
 {

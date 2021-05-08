@@ -31,7 +31,7 @@ trim_panel::trim_panel(properties *__properties, QString _name, QString _type,
     , type(_type)
     , icon_name(_icon_name)
     , color(_color)
-    , data(project->nodes[_name].params)
+    , params(project->nodes[_name].params)
 
 {
     _knob_editor = static_cast<knob_editor *>(_properties->get_knob_editor());
@@ -144,8 +144,9 @@ void trim_panel::update_custom_knobs()
     for (QJsonValue value : custom_knobs)
         custom_knobs_names.push_back(value.toObject().value("name").toString());
 
-
-    // borra todos los 'knobs' custom
+    // borra todos los 'knobs' custom solo los 'knobs' y no el 'custom_knobs'
+    // json ni de los 'params' del proyecto como lo hace la funcion
+    // 'remove_custom_knob'
     for (QString knob_name : custom_knobs_names)
     {
         knob *_knob = knobs->value(knob_name);
@@ -228,7 +229,7 @@ void trim_panel::setup_gui_panels(QJsonArray _knobs, QVBoxLayout *_layout)
 
     if (_node_gui)
     {
-        _node_gui->setup(this, _vinacomp, data, knob_data, name);
+        _node_gui->setup(this, _vinacomp, params, knob_data, name);
         _node_gui->restore_param();
     }
 }
@@ -402,6 +403,9 @@ void trim_panel::remove_custom_knob(QString knob_name)
     if (_knob)
         delete _knob;
 
+    params->remove(knob_name);
+    params->remove(knob_name + "_anim");
+
     knobs->remove(knob_name);
 }
 
@@ -450,3 +454,14 @@ void trim_panel::mousePressEvent(QMouseEvent *event)
     //
 }
 
+void trim_panel::mouseMoveEvent(QMouseEvent *event)
+{
+    if (_properties->is_edit_mode())
+        _knob_editor->drag_knob_move(this);
+}
+
+void trim_panel::mouseReleaseEvent(QMouseEvent *event)
+{
+    if (_properties->is_edit_mode())
+        _knob_editor->drag_knob_release(this);
+}

@@ -5,8 +5,9 @@
 
 knob_editor::knob_editor(QWidget *__properties)
     : _properties(__properties)
-    , current_panel(nullptr)
     , insert_knob_or_tab(false)
+    , dragging_knob(nullptr)
+    , current_panel(nullptr)
 {
     this->setObjectName("knob_editor");
 
@@ -51,7 +52,7 @@ knob_editor::knob_editor(QWidget *__properties)
     add_knob_action("CheckBox Knob", "check_box", "check_box");
     add_knob_action("Text Knob", "text", "text");
     add_knob_action("File Knob", "create_new_folder", "file");
-    add_knob_action("Position Knob", "position", "position");
+    add_knob_action("Position Knob", "position", "floating_dimensions");
 
     tools_bar->add_separator();
 
@@ -98,10 +99,14 @@ knob_editor::knob_editor(QWidget *__properties)
     maximum_edit->setPlaceholderText("Max");
 
     new_line_check = new knob_check_box({}, "New Line");
+    bidimensional_check = new knob_check_box({}, "BiDimensional");
+    animatable_check = new knob_check_box({}, "Animatable");
 
     one_line_layout->addWidget(minimum_edit);
     one_line_layout->addWidget(maximum_edit);
     one_line_layout->addWidget(new_line_check);
+    one_line_layout->addWidget(bidimensional_check);
+    one_line_layout->addWidget(animatable_check);
 
     edit_box_layout->addWidget(knob_name);
     edit_box_layout->addWidget(one_line);
@@ -123,6 +128,8 @@ void knob_editor::update_edit_options(bool visible)
     minimum_edit->hide();
     maximum_edit->hide();
     new_line_check->hide();
+    bidimensional_check->hide();
+    animatable_check->hide();
 
     QStringList list_for_tips{"floating", "integer", "color",
                               "button",   "choice",  "check_box",
@@ -134,6 +141,8 @@ void knob_editor::update_edit_options(bool visible)
 
     QStringList list_for_min_max{"floating", "integer", "color"};
     QStringList list_for_new_line{"floating", "integer", "color"};
+    QStringList list_for_animatable{"floating", "integer", "color"};
+    QStringList list_for_bidimensional{"floating", "integer"};
 
     QString type = current_knob_type;
 
@@ -151,6 +160,12 @@ void knob_editor::update_edit_options(bool visible)
 
     if (list_for_new_line.contains(current_knob_type))
         new_line_check->show();
+
+    if (list_for_animatable.contains(current_knob_type))
+        animatable_check->show();
+
+    if (list_for_bidimensional.contains(current_knob_type))
+        bidimensional_check->show();
     //
     //
 
@@ -177,10 +192,13 @@ void knob_editor::finish_insertion(bool add_item)
     this->setCursor(Qt::ArrowCursor);
     if (add_item)
     {
-        if (current_knob_type == "tab")
+        if (dragging_knob)
+            move_knob(current_panel, insert_index);
+        else if (current_knob_type == "tab")
             add_tab(current_panel, insert_index);
         else
-            add_knob(current_panel, insert_index);
+            add_knob(current_panel, get_params_from_edit_box(current_panel),
+                     insert_index);
     }
 
     for (action *knob_action : actions)
@@ -191,17 +209,23 @@ void knob_editor::finish_insertion(bool add_item)
     current_knob_type = checked_knob_type;
 
     insert_knob_or_tab = false;
+    dragging_knob = nullptr;
 }
 
-void knob_editor::mouseMoveEvent(QMouseEvent *event)
+void knob_editor::dragging_insertion(QPointF pos)
 {
     if (!insert_knob_or_tab)
         return;
 
     if (current_knob_type == "tab")
-        insert_division_to_tabs(event->pos());
+        insert_division_to_tabs(pos);
     else
         insert_division_to_knobs();
+}
+
+void knob_editor::mouseMoveEvent(QMouseEvent *event)
+{
+    dragging_insertion(event->pos());
 }
 
 void knob_editor::mouseReleaseEvent(QMouseEvent *event)

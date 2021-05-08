@@ -166,7 +166,7 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
             }
 
             _knob->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-            _knob->set_data(knob_object, data);
+            _knob->set_data(knob_object, params);
 
             _knob->restore_param();
 
