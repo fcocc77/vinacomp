@@ -34,6 +34,11 @@ knob::knob()
     edit_knob_button->hide();
     edit_knob_button->set_icon("edit");
 
+    drag_knob_button = new button;
+    drag_knob_button->setFixedSize({25, 22});
+    drag_knob_button->hide();
+    drag_knob_button->set_icon("drag");
+
     QHBoxLayout *layout = new QHBoxLayout(init_space);
     label_widget = new QLabel();
     label_widget->hide();
@@ -41,6 +46,7 @@ knob::knob()
 
     layout->addWidget(delete_knob_button);
     layout->addWidget(edit_knob_button);
+    layout->addWidget(drag_knob_button);
     layout->addStretch();
     layout->addWidget(label_widget);
     layout->setMargin(0);
@@ -57,6 +63,7 @@ knob::~knob()
     delete animation_button;
     delete delete_knob_button;
     delete edit_knob_button;
+    delete drag_knob_button;
 }
 
 void knob::set_env(QWidget *__parent, project_struct *_project,
@@ -153,10 +160,11 @@ void knob::set_edit_mode(bool enable)
     init_space->show();
     delete_knob_button->setVisible(enable);
     edit_knob_button->setVisible(enable);
+    drag_knob_button->setVisible(enable);
 
     if (enable)
     {
-        int space = init_space_width + 70;
+        int space = init_space_width + 100;
 
         init_space->setMaximumWidth(space);
         init_space->setMinimumWidth(space);

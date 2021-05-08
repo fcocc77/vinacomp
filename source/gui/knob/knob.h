@@ -27,6 +27,7 @@ private:
     bool edit_mode;
     button *delete_knob_button;
     button *edit_knob_button;
+    button *drag_knob_button;
 
     void set_keyframe(bool auto_value = true);
     void enable_animation();
