@@ -5,6 +5,7 @@ knob_text::knob_text(QString default_text)
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->setMargin(0);
     layout->addWidget(init_space);
+    this->setObjectName("knob_text");
 
     text = new QLineEdit(default_text);
     connect(text, &QLineEdit::editingFinished, this, [=]() {

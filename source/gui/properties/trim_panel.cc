@@ -165,6 +165,14 @@ void trim_panel::set_edit_mode(bool enable)
         if (!tabs_only_read.contains(_tab->get_name()))
             _tab->set_visible_close_button(enable);
 
+    for (QJsonValue value : custom_knobs)
+    {
+        QString knob_name = value.toObject().value("name").toString();
+        knob *_knob = knobs->value(knob_name);
+        if (_knob)
+            _knob->set_edit_mode(enable);
+    }
+
     if (!enable)
     {
         dividing_line_h->hide();

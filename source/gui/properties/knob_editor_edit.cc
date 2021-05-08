@@ -153,6 +153,7 @@ void knob_editor::add_knob(QWidget *panel, int index)
     }
 
     _panel->update_custom_knobs();
+    _panel->set_edit_mode(true);
 }
 
 void knob_editor::insert_knob_in_tab(QJsonArray *knobs, QJsonObject knob_obj,

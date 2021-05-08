@@ -18,7 +18,7 @@ knob_file::knob_file(QString file_path)
 
     file_open = new QPushButton();
     connect(file_open, &QPushButton::clicked, this, &knob_file::open_file);
-    qt::set_icon(file_open, "folder_a", 20);
+    qt::set_icon(file_open, "folder_normal", 20);
     layout->addWidget(file_open);
 }
 

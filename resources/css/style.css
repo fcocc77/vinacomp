@@ -75,7 +75,7 @@ QScrollBar:vertical {
   margin: 23px 0px 23px 0px; }
 
 QScrollBar:horizontal {
-  height: 15px;
+  height: 10px;
   margin: 0px 23px 0px 23px; }
 
 QScrollBar::handle:vertical, QScrollBar::handle:horizontal {
@@ -152,13 +152,27 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left
   #knob_floating QPushButton[disable=true], #knob_integer QPushButton[disable=true], #knob_dimensions QPushButton[disable=true] {
     color: #474d57; }
 
+#knob_check_box QPushButton, #knob_text QPushButton, #knob_choice QPushButton, #knob_file QPushButton, #knob_group QPushButton, #knob_separator QPushButton, #knob_label QPushButton {
+  width: 25px;
+  height: 22px;
+  border-radius: 2px;
+  background: #3c4149; }
+  #knob_check_box QPushButton:hover, #knob_text QPushButton:hover, #knob_choice QPushButton:hover, #knob_file QPushButton:hover, #knob_group QPushButton:hover, #knob_separator QPushButton:hover, #knob_label QPushButton:hover {
+    background: #434851; }
+  #knob_check_box QPushButton[active=true], #knob_text QPushButton[active=true], #knob_choice QPushButton[active=true], #knob_file QPushButton[active=true], #knob_group QPushButton[active=true], #knob_separator QPushButton[active=true], #knob_label QPushButton[active=true] {
+    background: #25282d; }
+    #knob_check_box QPushButton[active=true]:hover, #knob_text QPushButton[active=true]:hover, #knob_choice QPushButton[active=true]:hover, #knob_file QPushButton[active=true]:hover, #knob_group QPushButton[active=true]:hover, #knob_separator QPushButton[active=true]:hover, #knob_label QPushButton[active=true]:hover {
+      background: #1e2024; }
+  #knob_check_box QPushButton[disable=true], #knob_text QPushButton[disable=true], #knob_choice QPushButton[disable=true], #knob_file QPushButton[disable=true], #knob_group QPushButton[disable=true], #knob_separator QPushButton[disable=true], #knob_label QPushButton[disable=true] {
+    color: #474d57; }
+
 #knob_choice {
   background: transparent; }
 
-#knob_separator QWidget {
+#knob_separator #knob_separator_line {
   border-bottom: 1px solid #25282d; }
 
-#knob_label QWidget {
+#knob_label #start_line, #knob_label #end_line {
   background: transparent;
   border-bottom: 1px solid #3c4149; }
 

@@ -23,6 +23,10 @@ private:
     QGraphicsItem *this_node;
 
     QList<QWidget *> *viewers_gl;
+    int init_space_width;
+    bool edit_mode;
+    button *delete_knob_button;
+    button *edit_knob_button;
 
     void set_keyframe(bool auto_value = true);
     void enable_animation();
@@ -53,6 +57,7 @@ public:
     knob();
     ~knob();
 
+    void set_edit_mode(bool enable);
     void set_init_space(int space, QString label = "");
     QJsonValue get_param_value() const;
     void set_env(QWidget *parent, project_struct *project, QWidget *_vinacomp,

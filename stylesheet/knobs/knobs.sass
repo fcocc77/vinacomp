@@ -35,13 +35,17 @@ $keyframe_color: #008cff
         @include q_line_edit
         @include line_edit_states
     @include small_button
+
+#knob_check_box, #knob_text, #knob_choice, #knob_file, #knob_group, #knob_separator, #knob_label
+    @include small_button
+
 #knob_choice
     background: transparent
 #knob_separator
-    QWidget
+    #knob_separator_line
         border-bottom: 1px solid $b15
 #knob_label
-    QWidget
+    #start_line, #end_line
         background: transparent
         border-bottom: 1px solid $b25
     QLabel

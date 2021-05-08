@@ -13,18 +13,32 @@ knob::knob()
     , _vinacomp(nullptr)
     , _parent(nullptr)
     , viewers_gl(nullptr)
+    , edit_mode(false)
     , params(nullptr)
     , project(nullptr)
     , animated(false)
 {
     // Espacio inicial
     init_space = new QWidget();
-    init_space->hide();
     init_space->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     init_space->setObjectName("init_space");
 
+    delete_knob_button = new button;
+    delete_knob_button->setFixedSize({25, 22});
+    delete_knob_button->hide();
+    delete_knob_button->set_icon("close");
+
+    edit_knob_button = new button;
+    edit_knob_button->setFixedSize({25, 22});
+    edit_knob_button->hide();
+    edit_knob_button->set_icon("edit");
+
     QHBoxLayout *layout = new QHBoxLayout(init_space);
     label_widget = new QLabel();
+    label_widget->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+
+    layout->addWidget(delete_knob_button);
+    layout->addWidget(edit_knob_button);
     layout->addStretch();
     layout->addWidget(label_widget);
     layout->setMargin(0);
@@ -39,6 +53,8 @@ knob::knob()
 knob::~knob()
 {
     delete animation_button;
+    delete delete_knob_button;
+    delete edit_knob_button;
 }
 
 void knob::set_env(QWidget *__parent, project_struct *_project,
@@ -112,6 +128,8 @@ void knob::update_handler()
 
 void knob::set_init_space(int space, QString _label)
 {
+    init_space_width = space;
+
     label = _label;
     if (space == 0)
         return;
@@ -120,6 +138,27 @@ void knob::set_init_space(int space, QString _label)
     init_space->setMaximumWidth(space);
     init_space->setMinimumWidth(space);
     label_widget->setText(label);
+}
+
+void knob::set_edit_mode(bool enable)
+{
+    edit_mode = enable;
+
+    delete_knob_button->setVisible(enable);
+    edit_knob_button->setVisible(enable);
+
+    if (enable)
+    {
+        int space = init_space_width + 70;
+
+        init_space->setMaximumWidth(space);
+        init_space->setMinimumWidth(space);
+    }
+    else
+    {
+        init_space->setMaximumWidth(init_space_width);
+        init_space->setMinimumWidth(init_space_width);
+    }
 }
 
 void knob::update_animated() {}

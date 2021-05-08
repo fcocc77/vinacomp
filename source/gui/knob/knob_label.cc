@@ -14,6 +14,8 @@ knob_label::knob_label()
 
     QWidget *start_line = new QWidget(this);
     QWidget *end_line = new QWidget(this);
+    start_line->setObjectName("start_line");
+    end_line->setObjectName("end_line");
     start_line->setMaximumHeight(1);
     end_line->setMaximumHeight(1);
 

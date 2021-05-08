@@ -9,6 +9,7 @@ knob_separator::knob_separator(/* args */)
     layout->addWidget(init_space);
     layout->setMargin(0);
     QWidget *line = new QWidget(this);
+    line->setObjectName("knob_separator_line");
     line->setMaximumHeight(1);
     layout->addWidget(line);
 }
