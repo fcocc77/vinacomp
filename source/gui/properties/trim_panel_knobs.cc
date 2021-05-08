@@ -154,6 +154,8 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
                 over_line_knobs.clear();
                 if (type == "label" || type == "separator")
                     _knob->set_init_space(0);
+                else if (type == "button" || type == "check_box")
+                    _knob->set_init_space(init_space_width);
                 else
                     _knob->set_init_space(init_space_width, label);
 

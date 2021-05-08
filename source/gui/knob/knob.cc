@@ -20,6 +20,7 @@ knob::knob()
 {
     // Espacio inicial
     init_space = new QWidget();
+    init_space->hide();
     init_space->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     init_space->setObjectName("init_space");
 
@@ -35,6 +36,7 @@ knob::knob()
 
     QHBoxLayout *layout = new QHBoxLayout(init_space);
     label_widget = new QLabel();
+    label_widget->hide();
     label_widget->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
     layout->addWidget(delete_knob_button);
@@ -131,6 +133,10 @@ void knob::set_init_space(int space, QString _label)
     init_space_width = space;
 
     label = _label;
+
+    if (!label.isEmpty())
+        label_widget->show();
+
     if (space == 0)
         return;
 
@@ -144,6 +150,7 @@ void knob::set_edit_mode(bool enable)
 {
     edit_mode = enable;
 
+    init_space->show();
     delete_knob_button->setVisible(enable);
     edit_knob_button->setVisible(enable);
 
