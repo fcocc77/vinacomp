@@ -95,8 +95,10 @@ knob_editor::knob_editor(QWidget *__properties)
 
     minimum_edit = new QLineEdit(this);
     maximum_edit = new QLineEdit(this);
+    default_value_edit = new QLineEdit(this);
     minimum_edit->setPlaceholderText("Min");
     maximum_edit->setPlaceholderText("Max");
+    default_value_edit->setPlaceholderText("Default Value");
 
     new_line_check = new knob_check_box({}, "New Line");
     bidimensional_check = new knob_check_box({}, "BiDimensional");
@@ -104,6 +106,7 @@ knob_editor::knob_editor(QWidget *__properties)
 
     one_line_layout->addWidget(minimum_edit);
     one_line_layout->addWidget(maximum_edit);
+    one_line_layout->addWidget(default_value_edit);
     one_line_layout->addWidget(new_line_check);
     one_line_layout->addWidget(bidimensional_check);
     one_line_layout->addWidget(animatable_check);
@@ -130,19 +133,22 @@ void knob_editor::update_edit_options(bool visible)
     new_line_check->hide();
     bidimensional_check->hide();
     animatable_check->hide();
+    default_value_edit->hide();
 
     QStringList list_for_tips{"floating", "integer", "color",
                               "button",   "choice",  "check_box",
-                              "text",     "file",    "position"};
+                              "text",     "file",    "floating_dimensions"};
 
-    QStringList list_for_name{"floating", "integer",   "color", "button",
-                              "choice",   "check_box", "text",  "file",
-                              "position", "label",     "group", "tab"};
+    QStringList list_for_name{"floating", "integer", "color",
+                              "button",   "choice",  "check_box",
+                              "text",     "file",    "floating_dimensions",
+                              "label",    "group",   "tab"};
 
     QStringList list_for_min_max{"floating", "integer", "color"};
     QStringList list_for_new_line{"floating", "integer", "color"};
     QStringList list_for_animatable{"floating", "integer", "color"};
     QStringList list_for_bidimensional{"floating", "integer"};
+    QStringList list_for_default_value{"floating", "integer", "color"};
 
     QString type = current_knob_type;
 
@@ -166,6 +172,9 @@ void knob_editor::update_edit_options(bool visible)
 
     if (list_for_bidimensional.contains(current_knob_type))
         bidimensional_check->show();
+
+    if (list_for_default_value.contains(current_knob_type))
+        default_value_edit->show();
     //
     //
 

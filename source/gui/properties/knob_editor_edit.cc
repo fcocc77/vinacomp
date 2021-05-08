@@ -32,19 +32,30 @@ void knob_editor::add_knob(QWidget *panel, knob_params params, int index)
     QJsonObject knob_object;
     if (params.type == "floating")
     {
-        knob_object = {{"name", params.name},   {"type", "floating"},
-                       {"label", params.label}, {"tooltip", params.tips},
-                       {"minimum", params.min}, {"maximum", params.max},
-                       {"default", params.min}, {"tab", custom_tab}};
+        knob_object = {{"name", params.name},
+                       {"type", "floating"},
+                       {"label", params.label},
+                       {"tooltip", params.tips},
+                       {"minimum", params.min},
+                       {"maximum", params.max},
+                       {"default", params.default_value},
+                       {"tab", custom_tab}};
     }
     else if (params.type == "integer")
     {
-        knob_object = {{"name", params.name},    {"type", "integer"}, {"label", params.label},
-                       {"tooltip", params.tips}, {"minimum", params.min},    {"maximum", params.max},
-                       {"default", params.min},  {"tab", custom_tab}};
+        knob_object = {{"name", params.name},
+                       {"type", "integer"},
+                       {"label", params.label},
+                       {"tooltip", params.tips},
+                       {"minimum", params.min},
+                       {"maximum", params.max},
+                       {"default", params.default_value},
+                       {"tab", custom_tab}};
     }
     else if (params.type == "color")
     {
+        float def = params.default_value;
+
         knob_object = {{"name", params.name},
                        {"type", "color"},
                        {"label", params.label},
@@ -53,7 +64,7 @@ void knob_editor::add_knob(QWidget *panel, knob_params params, int index)
                        {"maximum", params.max},
                        {"centered_handler", true},
                        {"tab", custom_tab},
-                       {"default", QJsonArray{0, 0, 0, 0}}};
+                       {"default", QJsonArray{def, def, def, def}}};
     }
     else if (params.type == "button")
     {
@@ -65,33 +76,30 @@ void knob_editor::add_knob(QWidget *panel, knob_params params, int index)
     }
     else if (params.type == "choice")
     {
-        knob_object = {{"name", params.name},
-                       {"type", "choice"},
-                       {"label", params.label},
-                       {"tooltip", params.tips},
-                       {"tab", custom_tab},
-                       {"items", QJsonArray{}},
+        knob_object = {{"name", params.name},         {"type", "choice"},
+                       {"label", params.label},       {"tooltip", params.tips},
+                       {"tab", custom_tab},           {"items", QJsonArray{}},
                        {"default", QJsonArray{0, ""}}};
     }
     else if (params.type == "check_box")
     {
-        knob_object = {{"name", params.name},       {"type", "check_box"},
-                       {"label", params.label},     {"tooltip", params.tips},
-                       {"over_line", false}, {"default", false},
+        knob_object = {{"name", params.name},   {"type", "check_box"},
+                       {"label", params.label}, {"tooltip", params.tips},
+                       {"over_line", false},    {"default", false},
                        {"tab", custom_tab}};
     }
     else if (params.type == "text")
     {
-        knob_object = {{"name", params.name},       {"type", "text"},
-                       {"label", params.label},     {"tooltip", ""},
-                       {"over_line", false}, {"default", params.tips},
+        knob_object = {{"name", params.name},   {"type", "text"},
+                       {"label", params.label}, {"tooltip", ""},
+                       {"over_line", false},    {"default", params.tips},
                        {"tab", custom_tab}};
     }
     else if (params.type == "file")
     {
-        knob_object = {{"name", params.name},       {"type", "file"},
-                       {"label", params.label},     {"tooltip", ""},
-                       {"over_line", false}, {"default", params.tips},
+        knob_object = {{"name", params.name},   {"type", "file"},
+                       {"label", params.label}, {"tooltip", ""},
+                       {"over_line", false},    {"default", params.tips},
                        {"tab", custom_tab}};
     }
     else if (params.type == "floating_dimensions")
@@ -156,6 +164,7 @@ void knob_editor::move_knob(QWidget *panel, int index)
     params.label = knob_data.value("label").toString();
     params.min = knob_data.value("minimum").toDouble();
     params.max = knob_data.value("maximum").toDouble();
+    params.default_value = knob_data.value("default").toDouble();
     params.new_line = knob_data.value("new_line").toBool();
 
     int dragging_knob_index =
@@ -237,6 +246,12 @@ knob_params knob_editor::get_params_from_edit_box(QWidget *panel) const
         params.min = minimum_edit->text().toDouble();
     if (!maximum_edit->text().isEmpty())
         params.max = maximum_edit->text().toDouble();
+
+    QString default_value = default_value_edit->text();
+    if (default_value.isEmpty())
+        params.default_value = params.min;
+    else
+        params.default_value = default_value.toDouble();
 
     params.type = current_knob_type;
 

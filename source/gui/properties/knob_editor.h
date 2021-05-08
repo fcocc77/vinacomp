@@ -23,6 +23,7 @@ struct knob_params
     QString type;
     float min;
     float max;
+    float default_value;
     bool new_line;
     bool animatable;
     bool bidimensional;
@@ -43,6 +44,7 @@ private:
     QLineEdit *knob_name;
     QLineEdit *minimum_edit;
     QLineEdit *maximum_edit;
+    QLineEdit *default_value_edit;
     knob_check_box *new_line_check;
     knob_check_box *bidimensional_check;
     knob_check_box *animatable_check;
