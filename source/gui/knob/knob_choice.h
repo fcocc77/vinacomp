@@ -16,7 +16,8 @@ private:
     void restore_param() override;
 
 public:
-    knob_choice(QList<combo_box_item> items = {}, int default_index = 0);
+    knob_choice(knob_props props, QList<combo_box_item> items = {},
+                int default_index = 0);
     ~knob_choice();
 
     int get_index() const;

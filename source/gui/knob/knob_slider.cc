@@ -1,10 +1,11 @@
 #include <animation.h>
 #include <knob_slider.h>
 
-knob_slider::knob_slider(float min, float max, float default_value,
-                         bool _two_dimensional, bool floating,
-                         bool centered_handler)
-    : value_2_edit(nullptr)
+knob_slider::knob_slider(knob_props props, float min, float max,
+                         float default_value, bool _two_dimensional,
+                         bool floating, bool centered_handler)
+    : knob(props)
+    , value_2_edit(nullptr)
     , dimensions(false)
     , two_dimensional(_two_dimensional)
     , show_dimensions(nullptr)

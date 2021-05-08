@@ -6,16 +6,19 @@
 #include <viewer_gl.h>
 #include <vinacomp.h>
 #include <node_rect.h>
+#include <knob_editor.h>
 
-knob::knob()
+knob::knob(knob_props props)
     : knob_layout(nullptr)
     , animation_button(nullptr)
-    , _vinacomp(nullptr)
-    , _parent(nullptr)
-    , viewers_gl(nullptr)
+    , _vinacomp(props._vinacomp)
+    , panel(props.panel)
+    , this_node(props.this_node)
+    , _knob_editor(props._knob_editor)
+    , viewers_gl(props.viewers_gl)
     , edit_mode(false)
     , params(nullptr)
-    , project(nullptr)
+    , project(props.project)
     , animated(false)
 {
     // Espacio inicial
@@ -25,16 +28,25 @@ knob::knob()
     init_space->setObjectName("init_space");
 
     delete_knob_button = new button;
+    connect(delete_knob_button, &button::clicked, this, [=]() {
+        static_cast<knob_editor *>(_knob_editor)->delete_knob(panel, this);
+    });
     delete_knob_button->setFixedSize({25, 22});
     delete_knob_button->hide();
     delete_knob_button->set_icon("close");
 
     edit_knob_button = new button;
+    connect(edit_knob_button, &button::clicked, this, [=]() {
+        static_cast<knob_editor *>(_knob_editor)->edit_knob(panel, this);
+    });
     edit_knob_button->setFixedSize({25, 22});
     edit_knob_button->hide();
     edit_knob_button->set_icon("edit");
 
     drag_knob_button = new button;
+    connect(drag_knob_button, &button::clicked, this, [=]() {
+        static_cast<knob_editor *>(_knob_editor)->drag_knob(panel, this);
+    });
     drag_knob_button->setFixedSize({25, 22});
     drag_knob_button->hide();
     drag_knob_button->set_icon("drag");
@@ -66,25 +78,14 @@ knob::~knob()
     delete drag_knob_button;
 }
 
-void knob::set_env(QWidget *__parent, project_struct *_project,
-                   QWidget *__vinacomp, QList<QWidget *> *_viewers_gl,
-                   QGraphicsItem *_this_node)
-{
-    _parent = __parent;
-    project = _project;
-    _vinacomp = __vinacomp;
-    viewers_gl = _viewers_gl;
-    this_node = _this_node;
-}
-
 QString knob::get_node_name() const
 {
-    return static_cast<trim_panel *>(_parent)->get_name();
+    return static_cast<trim_panel *>(panel)->get_name();
 }
 
 QString knob::get_node_type() const
 {
-    return static_cast<trim_panel *>(_parent)->get_type();
+    return static_cast<trim_panel *>(panel)->get_type();
 }
 
 void knob::set_data(QJsonObject _knob_data, QJsonObject *_params)

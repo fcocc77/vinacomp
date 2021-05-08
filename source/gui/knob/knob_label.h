@@ -13,7 +13,7 @@ private:
     QLabel *label_widget;
     void restore_param() override;
 public:
-    knob_label();
+    knob_label(knob_props props);
     ~knob_label();
 };
 

@@ -1,6 +1,7 @@
 #include <knob_file.h>
 
-knob_file::knob_file(QString file_path)
+knob_file::knob_file(knob_props props, QString file_path)
+    : knob(props)
 {
     this->setObjectName("knob_file");
     QHBoxLayout *layout = new QHBoxLayout(this);

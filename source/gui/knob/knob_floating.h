@@ -9,8 +9,9 @@ class knob_floating : public knob_slider
 private:
 
 public:
-    knob_floating(float min = 0, float max = 100, float default_value = 0,
-                  bool two_dimensional = false, bool centered_handler = false);
+    knob_floating(knob_props props, float min = 0, float max = 100,
+                  float default_value = 0, bool two_dimensional = false,
+                  bool centered_handler = false);
     ~knob_floating();
 };
 

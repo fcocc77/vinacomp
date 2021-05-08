@@ -35,16 +35,16 @@ knob_channels::knob_channels(project_struct *_project, QString _layer,
     accept_button->setText("OK");
     cancel_button->setText("Cancel");
 
-    red = new knob_check_box("", _channels[0]);
+    red = new knob_check_box({}, "", _channels[0]);
     red->setObjectName("red");
 
-    green = new knob_check_box("", _channels[1]);
+    green = new knob_check_box({}, "", _channels[1]);
     green->setObjectName("green");
 
-    blue = new knob_check_box("", _channels[2]);
+    blue = new knob_check_box({}, "", _channels[2]);
     blue->setObjectName("blue");
 
-    alpha = new knob_check_box("", _channels[3]);
+    alpha = new knob_check_box({}, "", _channels[3]);
     alpha->setObjectName("alpha");
 
     connect(red, &knob_check_box::changed, this,

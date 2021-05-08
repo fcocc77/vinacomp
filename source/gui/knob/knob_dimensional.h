@@ -25,7 +25,7 @@ private:
     virtual void changed_values(QList<float> values);
 
 public:
-    knob_dimensional(int dimensions_count = 2,
+    knob_dimensional(knob_props props, int dimensions_count = 2,
                      QList<float> default_values = {0, 1},
                      bool floating = true);
     ~knob_dimensional();

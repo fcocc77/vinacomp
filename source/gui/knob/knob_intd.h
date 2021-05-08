@@ -12,7 +12,8 @@ private:
     void changed_values(QList<float> values) override;
 
 public:
-    knob_intd(int dimensions_count = 2, QList<int> defaults = {0, 1});
+    knob_intd(knob_props props, int dimensions_count = 2,
+              QList<int> defaults = {0, 1});
     ~knob_intd();
 
     inline void set_values(QList<int> values, bool emmit_signal = true);

@@ -1,8 +1,9 @@
 #include <knob_color.h>
 
-knob_color::knob_color(float min, float max, float r, float g, float b, float a,
-                       bool centered_handler)
-    : red(r)
+knob_color::knob_color(knob_props props, float min, float max, float r, float g,
+                       float b, float a, bool centered_handler)
+    : knob(props)
+    , red(r)
     , green(g)
     , blue(b)
     , alpha(a)

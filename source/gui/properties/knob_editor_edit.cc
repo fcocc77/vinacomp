@@ -496,3 +496,18 @@ void knob_editor::hide_all_dividing_line()
         _panel->get_dividing_line_v()->setParent(0);
     }
 }
+
+void knob_editor::delete_knob(QWidget *panel, knob *_knob)
+{
+    print("delete:", _knob->get_name());
+}
+
+void knob_editor::edit_knob(QWidget *panel, knob *_knob)
+{
+    print("edit:", _knob->get_name());
+}
+
+void knob_editor::drag_knob(QWidget *panel, knob *_knob)
+{
+    print("drag: ", _knob->get_name());
+}

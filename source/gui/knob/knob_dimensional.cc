@@ -1,8 +1,9 @@
 #include <knob_dimensional.h>
 
-knob_dimensional::knob_dimensional(int dimensions_count,
+knob_dimensional::knob_dimensional(knob_props props, int dimensions_count,
                                    QList<float> default_values, bool _floating)
-    : floating(_floating)
+    : knob(props)
+    , floating(_floating)
 {
     this->setObjectName("knob_dimensions");
     QHBoxLayout *layout = new QHBoxLayout(this);

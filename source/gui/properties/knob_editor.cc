@@ -97,7 +97,7 @@ knob_editor::knob_editor(QWidget *__properties)
     minimum_edit->setPlaceholderText("Min");
     maximum_edit->setPlaceholderText("Max");
 
-    new_line_check = new knob_check_box("New Line");
+    new_line_check = new knob_check_box({}, "New Line");
 
     one_line_layout->addWidget(minimum_edit);
     one_line_layout->addWidget(maximum_edit);

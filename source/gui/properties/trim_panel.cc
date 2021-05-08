@@ -34,6 +34,8 @@ trim_panel::trim_panel(properties *__properties, QString _name, QString _type,
     , data(project->nodes[_name].params)
 
 {
+    _knob_editor = static_cast<knob_editor *>(_properties->get_knob_editor());
+
     knobs = new QMap<QString, knob *>;
 
     this->setObjectName("trim_panel");
@@ -430,9 +432,6 @@ void trim_panel::leave_properties()
     this->hide();
     this->setParent(0);
 
-    knob_editor *_knob_editor =
-        static_cast<knob_editor *>(_properties->get_knob_editor());
-
     // a veces se queda pegado al presionar otros click cuando se esta
     // arrastrando el knob en el 'knob_editor', para evitar conflictos, finaliza
     // la insercion si se quedan pegadas las lineas divisoras, ya que en el
@@ -443,9 +442,6 @@ void trim_panel::leave_properties()
 
 void trim_panel::mousePressEvent(QMouseEvent *event)
 {
-    knob_editor *_knob_editor =
-        static_cast<knob_editor *>(_properties->get_knob_editor());
-
     // a veces se queda pegado al presionar otros click cuando se esta
     // arrastrando el knob en el 'knob_editor', para evitar conflictos, finaliza
     // la insercion si se quedan pegadas las lineas divisoras, ya que en el

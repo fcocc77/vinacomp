@@ -22,7 +22,7 @@ private:
     void restore_param() override;
 
 public:
-    knob_group(QString label = "", int knobs_included = 0,
+    knob_group(knob_props props, QString label = "", int knobs_included = 0,
                bool open_group = true);
     ~knob_group();
 

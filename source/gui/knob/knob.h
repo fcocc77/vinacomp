@@ -12,6 +12,16 @@
 #include <button.h>
 #include <project_struct.h>
 
+struct knob_props
+{
+    QWidget *panel;
+    project_struct *project;
+    QWidget *_vinacomp;
+    QList<QWidget *> *viewers_gl;
+    QGraphicsItem *this_node;
+    QWidget *_knob_editor;
+};
+
 class knob : public QWidget
 {
     Q_OBJECT
@@ -19,8 +29,9 @@ private:
     QHBoxLayout *knob_layout;
     button *animation_button;
     QWidget *_vinacomp;
-    QWidget *_parent;
+    QWidget *panel;
     QGraphicsItem *this_node;
+    QWidget *_knob_editor;
 
     QList<QWidget *> *viewers_gl;
     int init_space_width;
@@ -55,15 +66,15 @@ protected:
     virtual void set_animated(bool _animated);
 
 public:
-    knob();
+    knob(knob_props props = {});
     ~knob();
 
     void set_edit_mode(bool enable);
     void set_init_space(int space, QString label = "");
     QJsonValue get_param_value() const;
-    void set_env(QWidget *parent, project_struct *project, QWidget *_vinacomp,
-                 QList<QWidget *> *viewers_gl, QGraphicsItem *_this_node);
+
     void set_data(QJsonObject _knob_data, QJsonObject *_params);
+
     QString get_node_type() const;
     QString get_node_name() const;
     inline void set_knob_layout(QHBoxLayout *layout);
@@ -90,7 +101,7 @@ signals:
 
 inline QWidget *knob::get_panel() const
 {
-    return _parent;
+    return panel;
 }
 
 inline void knob::set_visible(bool visible)

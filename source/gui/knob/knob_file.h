@@ -22,7 +22,7 @@ private:
     void restore_param() override;
 
 public:
-    knob_file(QString file_path = "");
+    knob_file(knob_props props, QString file_path = "");
     ~knob_file();
 signals:
     void changed(QString file_path);

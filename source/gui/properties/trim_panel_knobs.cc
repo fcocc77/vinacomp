@@ -1,4 +1,4 @@
-#include <knob.h>
+
 #include <knob_button.h>
 #include <knob_channels.h>
 #include <knob_check_box.h>
@@ -62,53 +62,56 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
         QString label = knob_object.value("label").toString();
         bool over_line = knob_object.value("over_line").toBool();
 
+        knob_props props = {this,       project,   _vinacomp,
+                            viewers_gl, this_node, _knob_editor};
+
         knob *_knob = nullptr;
         if (type == "color")
-            _knob = new knob_color(min, max, 0, 0, 0, 0, centered_handler);
+            _knob = new knob_color(props, min, max, 0, 0, 0, 0, centered_handler);
 
         else if (type == "check_box")
-            _knob = new knob_check_box();
+            _knob = new knob_check_box(props);
 
         else if (type == "file")
-            _knob = new knob_file();
+            _knob = new knob_file(props);
 
         else if (type == "choice")
-            _knob = new knob_choice();
+            _knob = new knob_choice(props);
 
         else if (type == "text")
-            _knob = new knob_text();
+            _knob = new knob_text(props);
 
         else if (type == "label")
-            _knob = new knob_label();
+            _knob = new knob_label(props);
 
         else if (type == "button")
-            _knob = new knob_button();
+            _knob = new knob_button(props);
 
         else if (type == "group")
-            _knob = new knob_group();
+            _knob = new knob_group(props);
 
         else if (type == "integer")
-            _knob = new knob_integer(min, max, default_value, two_dimensional,
+            _knob = new knob_integer(props, min, max, default_value, two_dimensional,
                                      centered_handler);
 
         else if (type == "floating")
-            _knob = new knob_floating(min, max, default_value, two_dimensional,
+            _knob = new knob_floating(props, min, max, default_value, two_dimensional,
                                       centered_handler);
 
         else if (type == "separator")
-            _knob = new knob_separator();
+            _knob = new knob_separator(props);
 
         else if (type == "floating_dimensions")
-            _knob = new knob_floatd(dimensions_count);
+            _knob = new knob_floatd(props, dimensions_count);
 
         else if (type == "integer_dimensions")
-            _knob = new knob_intd(dimensions_count);
+            _knob = new knob_intd(props, dimensions_count);
 
         else if (type == "channels")
             _knob = new knob_channels();
 
         else if (type == "progress")
-            _knob = new knob_progress();
+            _knob = new knob_progress(props);
 
         if (_knob)
         {
@@ -163,7 +166,6 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
             }
 
             _knob->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-            _knob->set_env(this, project, _vinacomp, viewers_gl, this_node);
             _knob->set_data(knob_object, data);
 
             _knob->restore_param();

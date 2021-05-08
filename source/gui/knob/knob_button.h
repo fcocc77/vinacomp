@@ -15,7 +15,7 @@ private:
     void restore_param() override;
 
 public:
-    knob_button();
+    knob_button(knob_props props);
     ~knob_button();
 };
 

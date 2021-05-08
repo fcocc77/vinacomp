@@ -1,6 +1,7 @@
 #include <knob_label.h>
 
-knob_label::knob_label()
+knob_label::knob_label(knob_props props)
+    : knob(props)
 {
     this->setObjectName("knob_label");
 

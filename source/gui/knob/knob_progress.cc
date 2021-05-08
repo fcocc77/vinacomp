@@ -1,6 +1,7 @@
 #include <knob_progress.h>
 
-knob_progress::knob_progress()
+knob_progress::knob_progress(knob_props props)
+    : knob(props)
 {
     this->setObjectName("knob_progress");
 

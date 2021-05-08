@@ -71,6 +71,9 @@ public:
     ~knob_editor();
 
     void finish_insertion(bool add_item = true);
+    void delete_knob(QWidget *panel, knob *_knob);
+    void edit_knob(QWidget *panel, knob *_knob);
+    void drag_knob(QWidget *panel, knob *_knob);
 };
 
 #endif // KNOB_EDITOR_H

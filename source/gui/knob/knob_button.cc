@@ -1,6 +1,7 @@
 #include <knob_button.h>
 
-knob_button::knob_button()
+knob_button::knob_button(knob_props props)
+    : knob(props)
 {
     this->setObjectName("knob_button");
 

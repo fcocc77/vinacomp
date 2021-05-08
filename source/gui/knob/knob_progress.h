@@ -15,7 +15,7 @@ private:
     void restore_param() override;
 
 public:
-    knob_progress();
+    knob_progress(knob_props props);
     ~knob_progress();
 
     inline void set_value(int value);

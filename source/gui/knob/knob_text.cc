@@ -1,6 +1,7 @@
 #include <knob_text.h>
 
-knob_text::knob_text(QString default_text)
+knob_text::knob_text(knob_props props, QString default_text)
+    : knob(props)
 {
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->setMargin(0);

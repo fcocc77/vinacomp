@@ -1,7 +1,8 @@
 #include <knob_intd.h>
 
-knob_intd::knob_intd(int dimensions_count, QList<int> defaults)
-    : knob_dimensional(dimensions_count, int_to_float(defaults), false)
+knob_intd::knob_intd(knob_props props, int dimensions_count,
+                     QList<int> defaults)
+    : knob_dimensional(props, dimensions_count, int_to_float(defaults), false)
 {
 }
 

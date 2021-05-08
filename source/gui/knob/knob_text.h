@@ -16,7 +16,7 @@ private:
 
     void restore_param() override;
 public:
-    knob_text(QString default_text = "");
+    knob_text(knob_props props, QString default_text = "");
     ~knob_text();
 
     inline void set_text(QString text);

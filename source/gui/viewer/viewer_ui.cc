@@ -136,7 +136,7 @@ QWidget *viewer::image_correction_setup_ui()
 
     action *gain_action = new action("Gain", "", "gain");
 
-    knob_floating *gain_knob = new knob_floating(0.015, 64, 1, false, true);
+    knob_floating *gain_knob = new knob_floating({}, 0.015, 64, 1, false, true);
     connect(gain_knob, &knob_floating::changed, this, [=](float value) {
         gain = value;
         gain_action->set_checked(true);
@@ -151,7 +151,7 @@ QWidget *viewer::image_correction_setup_ui()
     });
 
     action *gamma_action = new action("Gamma", "", "gamma");
-    knob_floating *gamma_knob = new knob_floating(0, 4, 1, false, true);
+    knob_floating *gamma_knob = new knob_floating({}, 0, 4, 1, false, true);
     connect(gamma_knob, &knob_floating::changed, this, [=](float value) {
         gamma = value;
         gamma_action->set_checked(true);

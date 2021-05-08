@@ -1,7 +1,9 @@
 #include <knob_group.h>
 
-knob_group::knob_group(QString label, int _knobs_included, bool open_group)
-    : knobs_included(_knobs_included)
+knob_group::knob_group(knob_props props, QString label, int _knobs_included,
+                       bool open_group)
+    : knob(props)
+    , knobs_included(_knobs_included)
     , open(open_group)
 {
     this->setObjectName("knob_group");

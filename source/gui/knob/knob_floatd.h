@@ -10,7 +10,8 @@ private:
     void changed_values(QList<float> values) override;
 
 public:
-    knob_floatd(int dimensions_count = 2, QList<float> default_values = {0, 1});
+    knob_floatd(knob_props props, int dimensions_count = 2,
+                QList<float> default_values = {0, 1});
     ~knob_floatd();
 
 signals:

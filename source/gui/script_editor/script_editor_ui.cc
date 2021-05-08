@@ -39,7 +39,7 @@ QWidget *script_editor::tools_setup_ui()
     clear_action->connect_to(this, [=]() { output->clear(); });
     run_script_action->connect_to(this, [=]() { run_script(); });
 
-    knob_integer *font_size_slider = new knob_integer(7, 50, 14);
+    knob_integer *font_size_slider = new knob_integer({}, 7, 50, 14);
     connect(font_size_slider, &knob_integer::changed, this, [=](int value) {
         QString style = "font-size: " + QString::number(value) + "px;";
         output->setStyleSheet(style);

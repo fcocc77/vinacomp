@@ -24,7 +24,8 @@ private:
     void set_label(QString label);
 
 public:
-    knob_check_box(QString _label = "", bool _default_value = 0);
+    knob_check_box(knob_props props, QString _label = "",
+                   bool _default_value = 0);
     ~knob_check_box();
 
     void set_check(bool value, bool emmit_signal = true);

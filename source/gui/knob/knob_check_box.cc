@@ -1,8 +1,9 @@
 #include <knob_check_box.h>
 
-knob_check_box::knob_check_box(QString label, bool default_value)
-
-    : label_widget(nullptr)
+knob_check_box::knob_check_box(knob_props props, QString label,
+                               bool default_value)
+    : knob(props)
+    , label_widget(nullptr)
     , checked(default_value)
     , emmit_signal(true)
 {
