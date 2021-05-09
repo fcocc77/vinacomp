@@ -152,6 +152,9 @@ void knob_editor::add_knob(QWidget *panel, knob_params params, int index)
 
 void knob_editor::move_knob(QWidget *panel, int index)
 {
+    if (!panel)
+        return;
+
     QJsonObject knob_data = dragging_knob->get_knob_data();
 
     knob_params params;
@@ -552,6 +555,13 @@ void knob_editor::hide_all_dividing_line()
     }
 }
 
+void knob_editor::set_append_mode(bool enable)
+{
+    edit_tools->setVisible(enable);
+    append_tools->setVisible(!enable);
+    edit_box->setVisible(true);
+}
+
 void knob_editor::delete_knob(knob *_knob)
 {
     static_cast<trim_panel *>(_knob->get_panel())
@@ -560,8 +570,28 @@ void knob_editor::delete_knob(knob *_knob)
 
 void knob_editor::edit_knob(knob *_knob)
 {
-    _knob->get_panel();
-    print("edit:", _knob->get_name());
+    QJsonObject knob_data = _knob->get_knob_data();
+
+    QString name = knob_data.value("name").toString();
+    QString type = knob_data.value("type").toString();
+    QString tips = knob_data.value("tooltip").toString();
+    QString label = knob_data.value("label").toString();
+    float min = knob_data.value("minimum").toDouble();
+    float max = knob_data.value("maximum").toDouble();
+    float default_value = knob_data.value("default").toDouble();
+    bool new_line = knob_data.value("new_line").toBool();
+
+    knob_name->setText(name);
+    knob_tips->setText(tips);
+    minimum_edit->setText(QString::number(min));
+    maximum_edit->setText(QString::number(max));
+    default_value_edit->setText(QString::number(default_value));
+    new_line_check->set_check(new_line);
+
+    edit_label->setText(_knob->get_name() + "' ...");
+    edit_icon->set_icon(get_icon_name_from_type(_knob->get_type()));
+    set_append_mode(true);
+    update_edit_options_from_type(true, _knob->get_type());
 }
 
 void knob_editor::drag_knob(knob *_knob)

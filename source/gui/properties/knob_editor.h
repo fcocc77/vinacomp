@@ -14,6 +14,7 @@
 #include <knob.h>
 #include <knob_check_box.h>
 #include <action.h>
+#include <tools.h>
 
 struct knob_params
 {
@@ -40,6 +41,7 @@ private:
     QString current_knob_type;
     QString checked_knob_type;
 
+    tools *append_tools;
     QTextEdit *knob_tips;
     QLineEdit *knob_name;
     QLineEdit *minimum_edit;
@@ -48,6 +50,11 @@ private:
     knob_check_box *new_line_check;
     knob_check_box *bidimensional_check;
     knob_check_box *animatable_check;
+    QWidget *edit_tools;
+    QPushButton *ok_button;
+    QPushButton *cancel_button;
+    QLabel *edit_label;
+    button *edit_icon;
 
     QList<action *> actions;
     bool insert_knob_or_tab;
@@ -67,8 +74,12 @@ private:
     void add_knob(QWidget *panel, knob_params params, int index = -1);
     void move_knob(QWidget *panel, int index = -1);
     void push_knob_or_tab();
+
     void insert_knob_in_tab(QJsonArray *knobs, QJsonObject knob_obj,
                             QString tab_name, int index = -1);
+
+    QString get_icon_name_from_type(QString knob_type) const;
+
     knob *get_knob_under_cursor() const;
     QVBoxLayout *get_layout_current_tab(QWidget *panel) const;
     int get_index_knob(QWidget *panel, QString knob_name,
@@ -79,10 +90,11 @@ private:
     void insert_division_to_tabs(QPointF position);
     void insert_division_to_knobs();
     QString add_tab(QWidget *panel, int index = -1, QString preferred_name = "");
-    void update_edit_options(bool visible);
+    void update_edit_options_from_type(bool visible, QString knob_type);
     void start_insertion();
     void dragging_insertion(QPointF pos = {});
     void hide_all_dividing_line();
+    void set_append_mode(bool enable);
 
     void mouseMoveEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;

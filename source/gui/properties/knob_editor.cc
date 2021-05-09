@@ -1,6 +1,5 @@
 #include <knob_editor.h>
 #include <qt.h>
-#include <tools.h>
 #include <trim_panel.h>
 
 knob_editor::knob_editor(QWidget *__properties)
@@ -16,16 +15,17 @@ knob_editor::knob_editor(QWidget *__properties)
     layout->setMargin(0);
     layout->setSpacing(0);
 
-    tools *tools_bar = new tools(20);
-    tools_bar->allow_one_check_at_time();
-    layout->addWidget(tools_bar);
+    append_tools = new tools(20);
+    append_tools->allow_one_check_at_time();
+    layout->addWidget(append_tools);
 
-    auto add_knob_action = [=](QString label, QString icon, QString id) {
-        action *knob_action = new action(label, "", icon);
+    auto add_knob_action = [=](QString label, QString id) {
+        action *knob_action =
+            new action(label, "", get_icon_name_from_type(id));
         knob_action->set_checkable(true);
         knob_action->connect_to(this, [=]() {
             bool checked = knob_action->is_checked();
-            update_edit_options(checked);
+            update_edit_options_from_type(checked, current_knob_type);
 
             knob_action->set_illuminated_button(false);
             checked_knob_type = id;
@@ -35,7 +35,7 @@ knob_editor::knob_editor(QWidget *__properties)
             if (!checked)
                 current_knob_type = "";
         });
-        tools_bar->add_action(knob_action);
+        append_tools->add_action(knob_action);
         connect(knob_action->get_button(), &QPushButton::pressed, this, [=]() {
             knob_action->set_illuminated_button(true);
             current_knob_type = id;
@@ -44,29 +44,63 @@ knob_editor::knob_editor(QWidget *__properties)
         actions.push_back(knob_action);
     };
 
-    add_knob_action("Floating Knob", "float", "floating");
-    add_knob_action("Integer Knob", "int", "integer");
-    add_knob_action("Color Knob", "color", "color");
-    add_knob_action("Button Knob", "button", "button");
-    add_knob_action("Choice Knob", "combo_box", "choice");
-    add_knob_action("CheckBox Knob", "check_box", "check_box");
-    add_knob_action("Text Knob", "text", "text");
-    add_knob_action("File Knob", "create_new_folder", "file");
-    add_knob_action("Position Knob", "position", "floating_dimensions");
+    add_knob_action("Floating Knob", "floating");
+    add_knob_action("Integer Knob", "integer");
+    add_knob_action("Color Knob", "color");
+    add_knob_action("Button Knob", "button");
+    add_knob_action("Choice Knob", "choice");
+    add_knob_action("CheckBox Knob", "check_box");
+    add_knob_action("Text Knob", "text");
+    add_knob_action("File Knob", "file");
+    add_knob_action("Position Knob", "floating_dimensions");
 
-    tools_bar->add_separator();
+    append_tools->add_separator();
 
-    add_knob_action("Add Tab", "tab", "tab");
-    add_knob_action("Label Knob", "label", "label");
-    add_knob_action("Group Knob", "group", "group");
-    add_knob_action("Separator Knob", "separator", "separator");
+    add_knob_action("Add Tab", "tab");
+    add_knob_action("Label Knob", "label");
+    add_knob_action("Group Knob", "group");
+    add_knob_action("Separator Knob", "separator");
 
-    tools_bar->add_stretch();
+    append_tools->add_stretch();
+
+    // edit mode
+    edit_tools = new QWidget(this);
+    edit_tools->setObjectName("edit_tools");
+    edit_tools->hide();
+    QHBoxLayout *edit_tools_layout = new QHBoxLayout(edit_tools);
+    edit_tools_layout->setContentsMargins(10, 5, 10, 5);
+
+    QLabel *edit_label_init = new QLabel("Expanding knob: ");
+    edit_label = new QLabel("Editando knob 'mi knob' ...");
+    edit_label->setObjectName("edit_label");
+    edit_icon = new button();
+    edit_icon->setObjectName("edit_icon");
+    edit_icon->set_icon("color");
+
+    ok_button = new QPushButton("OK");
+    cancel_button = new QPushButton("Cancel");
+
+    connect(ok_button, &QPushButton::clicked, this,
+            [this]() { set_append_mode(false); });
+
+    connect(cancel_button, &QPushButton::clicked, this,
+            [this]() { set_append_mode(false); });
+
+    edit_tools_layout->addWidget(edit_icon);
+    edit_tools_layout->addWidget(edit_label_init);
+    edit_tools_layout->addWidget(edit_label);
+    edit_tools_layout->addStretch();
+    edit_tools_layout->addWidget(cancel_button);
+    edit_tools_layout->addWidget(ok_button);
+
+
+    layout->addWidget(edit_tools);
+    //
 
     add_action = new action("Add Knob", "", "add");
     add_action->set_visible(false);
     add_action->connect_to(this, [=]() { push_knob_or_tab(); });
-    tools_bar->add_action(add_action);
+    append_tools->add_action(add_action);
 
     // Caja de edicion
     edit_box = new QWidget(this);
@@ -86,7 +120,6 @@ knob_editor::knob_editor(QWidget *__properties)
     knob_tips->setPlaceholderText("ToolTip Knob");
     //
 
-    // una sola linea
     QWidget *one_line = new QWidget;
     one_line->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     one_line->setObjectName("one_line");
@@ -118,9 +151,9 @@ knob_editor::knob_editor(QWidget *__properties)
 
 knob_editor::~knob_editor() {}
 
-void knob_editor::update_edit_options(bool visible)
+void knob_editor::update_edit_options_from_type(bool visible, QString knob_type)
 {
-    if (current_knob_type == "tab")
+    if (knob_type == "tab")
         knob_name->setPlaceholderText("Name Tab");
     else
         knob_name->setPlaceholderText("Name Knob");
@@ -150,30 +183,28 @@ void knob_editor::update_edit_options(bool visible)
     QStringList list_for_bidimensional{"floating", "integer"};
     QStringList list_for_default_value{"floating", "integer", "color"};
 
-    QString type = current_knob_type;
-
-    if (list_for_tips.contains(current_knob_type))
+    if (list_for_tips.contains(knob_type))
         knob_tips->show();
 
-    if (list_for_name.contains(current_knob_type))
+    if (list_for_name.contains(knob_type))
         knob_name->show();
 
-    if (list_for_min_max.contains(current_knob_type))
+    if (list_for_min_max.contains(knob_type))
     {
         minimum_edit->show();
         maximum_edit->show();
     }
 
-    if (list_for_new_line.contains(current_knob_type))
+    if (list_for_new_line.contains(knob_type))
         new_line_check->show();
 
-    if (list_for_animatable.contains(current_knob_type))
+    if (list_for_animatable.contains(knob_type))
         animatable_check->show();
 
-    if (list_for_bidimensional.contains(current_knob_type))
+    if (list_for_bidimensional.contains(knob_type))
         bidimensional_check->show();
 
-    if (list_for_default_value.contains(current_knob_type))
+    if (list_for_default_value.contains(knob_type))
         default_value_edit->show();
     //
     //
@@ -189,6 +220,51 @@ void knob_editor::start_insertion()
     this->setCursor(Qt::ClosedHandCursor);
 
     insert_knob_or_tab = true;
+}
+
+QString knob_editor::get_icon_name_from_type(QString knob_type) const
+{
+    if (knob_type == "floating")
+        return "float";
+
+    else if (knob_type == "integer")
+        return "int";
+
+    else if (knob_type == "color")
+        return "color";
+
+    else if (knob_type == "button")
+        return "button";
+
+    else if (knob_type == "choice")
+        return "combo_box";
+
+    else if (knob_type == "check_box")
+        return "check_box";
+
+    else if (knob_type == "check_box")
+        return "check_box";
+
+    else if (knob_type == "text")
+        return "text";
+
+    else if (knob_type == "file")
+        return "create_new_folder";
+
+    else if (knob_type == "floating_dimensions")
+        return "position";
+
+    else if (knob_type == "tab")
+        return "tab";
+
+    else if (knob_type == "label")
+        return "label";
+
+    else if (knob_type == "group")
+        return "group";
+
+    else if (knob_type == "separator")
+        return "separator";
 }
 
 void knob_editor::finish_insertion(bool add_item)

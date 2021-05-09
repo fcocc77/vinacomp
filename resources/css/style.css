@@ -21,7 +21,7 @@ QPushButton {
     width: 0px; }
 
 QMainWindow {
-  qproperty-windowIcon: url("/home/pancho/Documents/develop/vinacomp/resources/images/vinacomp.png"); }
+  qproperty-windowIcon: url("{{path}}/resources/images/vinacomp.png"); }
 
 QMenu {
   background-color: #292d32;
@@ -562,9 +562,6 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left
     background: #30343b; }
   #properties #trim_panels {
     background: #30343b; }
-  #properties #knob_editor #tools {
-    border-top: 1px solid #272a30;
-    border-bottom: 1px solid #1e2024; }
   #properties #knob_editor #edit_box {
     background: #25282d; }
   #properties #knob_editor #one_line {
@@ -577,6 +574,22 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left
     border: 1px solid #1e2024; }
     #properties #knob_editor QTextEdit:focus {
       border-color: #8f7612; }
+  #properties #knob_editor #tools, #properties #knob_editor #edit_tools {
+    border-top: 1px solid #272a30;
+    border-bottom: 1px solid #1e2024;
+    background: #2c2f35; }
+  #properties #knob_editor #edit_tools QPushButton {
+    border-radius: 3px;
+    padding: 4px 7px 4px 7px;
+    background: #353941; }
+    #properties #knob_editor #edit_tools QPushButton:hover {
+      color: #ffcc00; }
+  #properties #knob_editor #edit_tools #edit_label {
+    color: #ffcc00; }
+  #properties #knob_editor #edit_tools #edit_icon {
+    background: #25282d;
+    border: 1px solid #3c4149;
+    border-radius: 14px; }
 
 #script_editor {
   background: #30343b; }

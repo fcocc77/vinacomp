@@ -10,12 +10,27 @@
     #trim_panels
         background: $b20
     #knob_editor
-        #tools
-            border-top: 1px solid $b16
-            border-bottom: 1px solid $b12
         #edit_box
             background: $b15
         #one_line
             background: none
         QTextEdit
             @include q_line_edit
+        #tools, #edit_tools
+            border-top: 1px solid $b16
+            border-bottom: 1px solid $b12
+            background: $b18
+        #edit_tools
+            QPushButton
+                border-radius: 3px
+                padding: 4px 7px 4px 7px
+                background: $b22
+                &:hover
+                    color: $base
+            #edit_label
+                color: $base
+            #edit_icon
+                background: $b15
+                border: 1px solid $b25
+                border-radius: 14px
+
