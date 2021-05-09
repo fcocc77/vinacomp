@@ -223,6 +223,9 @@ void properties::update_animated_knobs()
         for (QString key : knobs->keys())
         {
             knob *_knob = knobs->value(key);
+            if (!_knob)
+                continue;
+
             if (_knob->is_animated())
                 _knob->update_animated();
         }
