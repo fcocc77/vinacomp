@@ -20,7 +20,6 @@ nodes_load::nodes_load()
     for (QJsonObject effect : ofx->get_plugins())
     {
         QString effect_id = effect.value("id").toString();
-        print(effect_id);
         effects.insert(effect_id, effect);
     }
 }
