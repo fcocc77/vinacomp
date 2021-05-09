@@ -29,6 +29,7 @@ clang++
 -I./source/gui/viewer
 
 -I./source/python_api
+-I./source/ofx
 
 -I./source/engine/app
 -I./source/engine/nodes

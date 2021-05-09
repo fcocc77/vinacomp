@@ -7,6 +7,7 @@ INCLUDEPATH += $$files(*)
 INCLUDEPATH += ../../libs/QCodeEditor/includes
 INCLUDEPATH += ../../utils/c++
 INCLUDEPATH += ../python_api
+INCLUDEPATH += ../ofx
 INCLUDEPATH += ../engine/render
 INCLUDEPATH += ../engine/project
 INCLUDEPATH += ../engine/nodes
@@ -24,6 +25,7 @@ HEADERS +=  $$system(ls */*.h) \
             ../../libs/QCodeEditor/includes/* \
             ../../libs/ofx/include/*.h \
             ../python_api/*.h \
+            ../ofx/*.h \
 			../engine/render/*.h \
 			../engine/project/*.h \
 			../engine/nodes/*.h \
@@ -32,6 +34,7 @@ SOURCES += 	 $$system(ls */*.cc) \
             ../../utils/c++/*.cc \
             ../../libs/QCodeEditor/src/* \
             ../python_api/*.cc \
+            ../ofx/*.cc \
 			../engine/render/*.cc \
 			../engine/project/*.cc \
 			../engine/nodes/*.cc \

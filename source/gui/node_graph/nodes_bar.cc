@@ -30,11 +30,8 @@ void nodes_bar::setup_ui()
     add_menu("transform", "transform");
     add_menu("other", "other");
 
-    for (QString ofx_name : nodes->get_ofx_list().keys())
-    {
-        QString ofx_icon = nodes->get_ofx_list().value(ofx_name);
-        add_menu(ofx_name, ofx_icon);
-    }
+    for (auto binary : nodes->get_ofx()->get_binaries())
+        add_menu(binary.name, binary.icon);
 
     layout->addStretch();
 
@@ -49,11 +46,11 @@ void nodes_bar::setup_ui()
     layout->addStretch();
 
     QPushButton *show_exp_link = new QPushButton();
-    qt::set_icon(show_exp_link, "link_off_a", icon_size);
+    qt::set_icon(show_exp_link, "link_off_normal", icon_size);
     layout->addWidget(show_exp_link);
 
     QPushButton *show_grid = new QPushButton();
-    qt::set_icon(show_grid, "grid_a", icon_size);
+    qt::set_icon(show_grid, "grid_normal", icon_size);
     layout->addWidget(show_grid);
 }
 
