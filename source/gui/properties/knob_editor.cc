@@ -112,13 +112,24 @@ knob_editor::knob_editor(QWidget *__properties)
     edit_box_layout->setAlignment(Qt::AlignTop);
     layout->addWidget(edit_box);
 
+    QWidget *name_and_label = new QWidget(this);
+    name_and_label->setObjectName("name_and_label");
+    QHBoxLayout *name_and_label_layout = new QHBoxLayout(name_and_label);
+    name_and_label_layout->setMargin(0);
     knob_name = new QLineEdit(this);
+    knob_label = new QLineEdit(this);
     knob_name->setPlaceholderText("Name Knob");
+    knob_label->setPlaceholderText("Label Knob");
+    knob_name->setToolTip("Name");
+    knob_label->setToolTip("Label");
+    name_and_label_layout->addWidget(knob_label);
+    name_and_label_layout->addWidget(knob_name);
 
     knob_tips = new QTextEdit(this);
     knob_tips->setMaximumHeight(100);
     knob_tips->setMinimumHeight(100);
     knob_tips->setPlaceholderText("ToolTip Knob");
+    knob_tips->setToolTip("ToolTip");
     //
 
     QWidget *one_line = new QWidget;
@@ -132,7 +143,10 @@ knob_editor::knob_editor(QWidget *__properties)
     default_value_edit = new QLineEdit(this);
     minimum_edit->setPlaceholderText("Min");
     maximum_edit->setPlaceholderText("Max");
+    minimum_edit->setToolTip("Min");
+    maximum_edit->setToolTip("Max");
     default_value_edit->setPlaceholderText("Default Value");
+    default_value_edit->setToolTip("Default");
 
     new_line_check = new knob_check_box({}, "New Line");
     bidimensional_check = new knob_check_box({}, "BiDimensional");
@@ -145,7 +159,7 @@ knob_editor::knob_editor(QWidget *__properties)
     one_line_layout->addWidget(bidimensional_check);
     one_line_layout->addWidget(animatable_check);
 
-    edit_box_layout->addWidget(knob_name);
+    edit_box_layout->addWidget(name_and_label);
     edit_box_layout->addWidget(one_line);
     edit_box_layout->addWidget(knob_tips);
 }
@@ -162,6 +176,7 @@ void knob_editor::update_edit_options_from_type(bool visible, QString knob_type)
     // visibilidad de opciones
     knob_tips->hide();
     knob_name->hide();
+    knob_label->hide();
     minimum_edit->hide();
     maximum_edit->hide();
     new_line_check->hide();
@@ -178,6 +193,11 @@ void knob_editor::update_edit_options_from_type(bool visible, QString knob_type)
                               "text",     "file",    "floating_dimensions",
                               "label",    "group",   "tab"};
 
+    QStringList list_for_label{"floating", "integer", "color",
+                               "button",   "choice",  "check_box",
+                               "text",     "file",    "floating_dimensions",
+                               "label",    "group"};
+
     QStringList list_for_min_max{"floating", "integer", "color"};
     QStringList list_for_new_line{"floating", "integer", "color"};
     QStringList list_for_animatable{"floating", "integer", "color"};
@@ -189,6 +209,9 @@ void knob_editor::update_edit_options_from_type(bool visible, QString knob_type)
 
     if (list_for_name.contains(knob_type))
         knob_name->show();
+
+    if (list_for_label.contains(knob_type))
+        knob_label->show();
 
     if (list_for_min_max.contains(knob_type))
     {

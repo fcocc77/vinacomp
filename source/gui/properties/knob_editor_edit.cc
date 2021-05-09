@@ -236,13 +236,18 @@ knob_params knob_editor::get_params_from_edit_box(QWidget *panel) const
 
     knob_params params;
 
-    params.label = knob_name->text();
-    if (params.label.isEmpty())
-        params.label = current_knob_type;
+    QString label = knob_label->text();
+    if (label.isEmpty())
+    {
+        label = knob_name->text();
+        if (label.isEmpty())
+            label = current_knob_type;
+    }
+    params.label = label;
 
     QString name = knob_name->text();
     if (name.isEmpty())
-        name = current_knob_type;
+        name = label;
 
     params.name = get_available_knob_name(panel, name);
     params.tips = knob_tips->toPlainText();
@@ -269,6 +274,7 @@ void knob_editor::edit_box_clear()
 {
     knob_tips->clear();
     knob_name->clear();
+    knob_label->clear();
     minimum_edit->clear();
     maximum_edit->clear();
     default_value_edit->clear();
@@ -581,6 +587,9 @@ void knob_editor::hide_all_dividing_line()
 
 void knob_editor::delete_knob(knob *_knob)
 {
+    if (_knob == editing_knob)
+        edit_knob_ok_cancel(false);
+
     static_cast<trim_panel *>(_knob->get_panel())
         ->remove_custom_knob(_knob->get_name());
 }
@@ -605,6 +614,7 @@ void knob_editor::edit_knob(knob *_knob)
     bool new_line = knob_data.value("new_line").toBool();
 
     knob_name->setText(name);
+    knob_label->setText(label);
     knob_tips->setText(tips);
     minimum_edit->setText(QString::number(min));
     maximum_edit->setText(QString::number(max));

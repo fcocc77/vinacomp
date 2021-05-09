@@ -44,6 +44,7 @@ private:
     tools *append_tools;
     QTextEdit *knob_tips;
     QLineEdit *knob_name;
+    QLineEdit *knob_label;
     QLineEdit *minimum_edit;
     QLineEdit *maximum_edit;
     QLineEdit *default_value_edit;
