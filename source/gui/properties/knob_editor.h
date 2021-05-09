@@ -61,6 +61,7 @@ private:
     action *add_action;
 
     knob *dragging_knob;
+    knob *editing_knob;
 
     int insert_index;
     QWidget *current_panel;
@@ -71,6 +72,8 @@ private:
     QString get_available_name(QStringList name_list, QString name) const;
     QString get_custom_tab_name(QWidget *panel);
     knob_params get_params_from_edit_box(QWidget *panel) const;
+    void edit_box_clear();
+    void edit_box_close();
     void add_knob(QWidget *panel, knob_params params, int index = -1);
     void move_knob(QWidget *panel, int index = -1);
     void push_knob_or_tab();
@@ -94,7 +97,7 @@ private:
     void start_insertion();
     void dragging_insertion(QPointF pos = {});
     void hide_all_dividing_line();
-    void set_append_mode(bool enable);
+    void edit_knob_ok_cancel(bool ok);
 
     void mouseMoveEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;

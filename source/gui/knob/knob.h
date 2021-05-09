@@ -70,6 +70,7 @@ public:
     ~knob();
 
     void set_edit_mode(bool enable);
+    void set_editing_knob(bool editing);
     void set_init_space(int space, QString label = "");
     QJsonValue get_param_value() const;
 

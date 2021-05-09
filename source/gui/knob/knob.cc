@@ -78,6 +78,15 @@ knob::~knob()
     delete drag_knob_button;
 }
 
+void knob::set_editing_knob(bool editing)
+{
+    // ajusta el editando 'knob'
+    if (editing)
+        edit_knob_button->set_hover_icon();
+    else
+        edit_knob_button->set_normal_icon();
+}
+
 QString knob::get_node_name() const
 {
     return static_cast<trim_panel *>(panel)->get_name();

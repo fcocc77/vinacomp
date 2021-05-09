@@ -155,6 +155,10 @@ void knob_editor::move_knob(QWidget *panel, int index)
     if (!panel)
         return;
 
+    // cancela la edicion si un knob se esta editando
+    if (editing_knob)
+        edit_knob_ok_cancel(false);
+
     QJsonObject knob_data = dragging_knob->get_knob_data();
 
     knob_params params;
@@ -259,6 +263,26 @@ knob_params knob_editor::get_params_from_edit_box(QWidget *panel) const
     params.type = current_knob_type;
 
     return params;
+}
+
+void knob_editor::edit_box_clear()
+{
+    knob_tips->clear();
+    knob_name->clear();
+    minimum_edit->clear();
+    maximum_edit->clear();
+    default_value_edit->clear();
+    new_line_check->set_check(false);
+    bidimensional_check->set_check(false);
+    animatable_check->set_check(false);
+}
+
+void knob_editor::edit_box_close()
+{
+    for (action *_action : actions)
+        _action->set_checked(false);
+
+    edit_box->hide();
 }
 
 QString knob_editor::get_available_tab_name(QWidget *panel, QString preferred_name) const
@@ -555,13 +579,6 @@ void knob_editor::hide_all_dividing_line()
     }
 }
 
-void knob_editor::set_append_mode(bool enable)
-{
-    edit_tools->setVisible(enable);
-    append_tools->setVisible(!enable);
-    edit_box->setVisible(true);
-}
-
 void knob_editor::delete_knob(knob *_knob)
 {
     static_cast<trim_panel *>(_knob->get_panel())
@@ -570,6 +587,12 @@ void knob_editor::delete_knob(knob *_knob)
 
 void knob_editor::edit_knob(knob *_knob)
 {
+    if (editing_knob)
+        editing_knob->set_editing_knob(false);
+
+    editing_knob = _knob;
+    _knob->set_editing_knob(true);
+
     QJsonObject knob_data = _knob->get_knob_data();
 
     QString name = knob_data.value("name").toString();
@@ -590,8 +613,37 @@ void knob_editor::edit_knob(knob *_knob)
 
     edit_label->setText(_knob->get_name() + "' ...");
     edit_icon->set_icon(get_icon_name_from_type(_knob->get_type()));
-    set_append_mode(true);
+
+    edit_tools->setVisible(true);
+    append_tools->setVisible(false);
+
     update_edit_options_from_type(true, _knob->get_type());
+}
+
+void knob_editor::edit_knob_ok_cancel(bool ok)
+{
+    if (ok)
+    {
+        QWidget *panel = editing_knob->get_panel();
+        QString tab_name = get_custom_tab_name(panel);
+        int index = get_index_knob(panel, editing_knob->get_name(), tab_name);
+
+        delete_knob(editing_knob);
+        add_knob(panel, get_params_from_edit_box(panel), index);
+
+        editing_knob = nullptr;
+    }
+
+    edit_box_clear();
+
+    if (editing_knob)
+        editing_knob->set_editing_knob(false);
+
+    edit_tools->setVisible(false);
+    append_tools->setVisible(true);
+    edit_box_close();
+
+    editing_knob = nullptr;
 }
 
 void knob_editor::drag_knob(knob *_knob)

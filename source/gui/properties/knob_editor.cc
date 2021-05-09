@@ -6,6 +6,7 @@ knob_editor::knob_editor(QWidget *__properties)
     : _properties(__properties)
     , insert_knob_or_tab(false)
     , dragging_knob(nullptr)
+    , editing_knob(nullptr)
     , current_panel(nullptr)
 {
     this->setObjectName("knob_editor");
@@ -81,10 +82,10 @@ knob_editor::knob_editor(QWidget *__properties)
     cancel_button = new QPushButton("Cancel");
 
     connect(ok_button, &QPushButton::clicked, this,
-            [this]() { set_append_mode(false); });
+            [this]() { edit_knob_ok_cancel(true); });
 
     connect(cancel_button, &QPushButton::clicked, this,
-            [this]() { set_append_mode(false); });
+            [this]() { edit_knob_ok_cancel(false); });
 
     edit_tools_layout->addWidget(edit_icon);
     edit_tools_layout->addWidget(edit_label_init);
