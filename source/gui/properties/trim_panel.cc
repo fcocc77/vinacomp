@@ -158,8 +158,30 @@ void trim_panel::update_custom_knobs()
     }
     //
 
+    clean_empty_line_widget();
+
     for (QString tab_name : get_tabs_from_knobs(custom_knobs))
         add_tab(tab_name);
+}
+
+void trim_panel::clean_empty_line_widget()
+{
+    // borra todos los 'line_widget' vacios que queden al eliminar algun 'knob'
+    // 'line_widget' se genera al crear un 'knob' sobre otro 'over_line'
+
+    for (tab *_tab : tabs->get_tabs())
+    {
+        if (tabs_only_read.contains(_tab->get_name()))
+            continue;
+
+        QList<QWidget *> childers =
+            _tab->get_widget()->findChildren<QWidget *>("line_widget");
+
+        for (QWidget *line_widget : childers)
+            if (line_widget->children().count() <= 1)
+                // el 1 que hay es el layout
+                delete line_widget;
+    }
 }
 
 void trim_panel::set_edit_mode(bool enable)
@@ -407,6 +429,8 @@ void trim_panel::remove_custom_knob(QString knob_name)
     params->remove(knob_name + "_anim");
 
     knobs->remove(knob_name);
+
+    clean_empty_line_widget();
 }
 
 void trim_panel::maximize(bool _maximize)

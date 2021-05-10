@@ -115,7 +115,7 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
 
         if (_knob)
         {
-            if (over_line)
+            if (over_line && !over_line_knobs.empty())
             {
                 // si el parametro tiene 'over_line', crea un widget de linea si no esta creado
                 // e inserta todos los knob anteriores que tengan 'over_line'

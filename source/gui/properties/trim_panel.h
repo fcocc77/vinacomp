@@ -66,6 +66,7 @@ private:
     void update_render();
     QStringList get_tabs_from_knobs(QJsonArray _knobs);
     void delete_tab(QString tab_name);
+    void clean_empty_line_widget();
 
     void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
