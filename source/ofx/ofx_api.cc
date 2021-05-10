@@ -2,6 +2,7 @@
 #include <ofxImageEffect.h>
 #include <ofx_api.h>
 #include <ofx_property_suite.h>
+#include <ofx_image_effect_suite.h>
 #include <os.h>
 #include <util.h>
 
@@ -25,6 +26,7 @@ ofx_api::ofx_api()
     host->fetchSuite = fetchSuite;
 
     // agrega nuestras funciones a los punteros de funciones de
+
     // 'OfxPropertySuiteV1'
     prop_suite->propSetPointer = prop_set_pointer;
     prop_suite->propSetString = prop_set_string;
@@ -44,6 +46,22 @@ ofx_api::ofx_api()
     prop_suite->propGetIntN = prop_get_int_n;
     prop_suite->propReset = prop_reset;
     prop_suite->propGetDimension = prop_get_dimension;
+    //
+
+    // 'OfxImageEffectSuiteV1'
+    effect_suite->getPropertySet = get_property_set;
+    effect_suite->getParamSet = get_param_set;
+    effect_suite->clipDefine = clip_define;
+    effect_suite->clipGetHandle = clip_get_handle;
+    effect_suite->clipGetPropertySet = clip_get_property_set;
+    effect_suite->clipGetImage = clip_get_image;
+    effect_suite->clipReleaseImage = clip_release_image;
+    effect_suite->clipGetRegionOfDefinition = clip_get_region_of_definition;
+    effect_suite->abort = abort;
+    effect_suite->imageMemoryAlloc = image_memory_alloc;
+    effect_suite->imageMemoryFree = image_memory_free;
+    effect_suite->imageMemoryLock = image_memory_lock;
+    effect_suite->imageMemoryUnlock = image_memory_unlock;
     //
 
     // load("plugins/CImg.ofx.bundle/Contents/Linux-x86-64/CImg.ofx");
