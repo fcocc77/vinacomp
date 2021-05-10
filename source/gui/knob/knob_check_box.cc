@@ -61,6 +61,8 @@ void knob_check_box::set_label(QString label)
     }
 
     label_widget->setText(label);
+    this->setMaximumWidth(label_widget->width() + checkbox->width() +
+                          init_space_width);
 }
 
 void knob_check_box::set_check(bool value, bool _emmit_signal)

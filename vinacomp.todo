@@ -87,10 +87,10 @@ gui__knobs:
 	☐ terminar text knob'
 nodes:
 	☐ crear nodo de speed, para que cambie todas las velocidades como 'videovina' y asi no lo tenemos que hacer en videovina
-engine__project_struct:
-	☐ Una vez tengamos las entrada de los nodos ok, cambiar el tipo de los 'inputs' de QJsonObject a QJsonArray
-engine__grade:
-	☐ hacer que todos los nodos de color solo iteren lo pixel una sola vez, para no gastar recursos inecesasios
+engine:
+    ☐ renderer: si el frame demora mas de 1 segundo en renderizar, comienza a renderizar por linea de abajo hacia arriba
+	☐ project_struct: Una vez tengamos las entrada de los nodos ok, cambiar el tipo de los 'inputs' de QJsonObject a QJsonArray
+	☐ grade: hacer que todos los nodos de color solo iteren lo pixel una sola vez, para no gastar recursos inecesasios
 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
 Archive:
     ✔ cambiar la barra por la propia 'tools' @done(2021-04-06 22:15) @project(gui__script_editor)

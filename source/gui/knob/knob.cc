@@ -18,6 +18,7 @@ knob::knob(knob_props props)
     , viewers_gl(props.viewers_gl)
     , edit_mode(false)
     , params(nullptr)
+    , init_space_width(0)
     , project(props.project)
     , animated(false)
 {

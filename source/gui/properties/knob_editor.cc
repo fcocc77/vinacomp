@@ -136,6 +136,7 @@ knob_editor::knob_editor(QWidget *__properties)
     one_line->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     one_line->setObjectName("one_line");
     QHBoxLayout *one_line_layout = new QHBoxLayout(one_line);
+    one_line_layout->setAlignment(Qt::AlignLeft);
     one_line_layout->setMargin(0);
 
     minimum_edit = new QLineEdit(this);
@@ -199,9 +200,14 @@ void knob_editor::update_edit_options_from_type(bool visible, QString knob_type)
                                "label",    "group"};
 
     QStringList list_for_min_max{"floating", "integer", "color"};
-    QStringList list_for_new_line{"floating", "integer", "color"};
+
+    QStringList list_for_new_line{"floating", "integer", "color", "choice",
+                                  "check_box"};
+
     QStringList list_for_animatable{"floating", "integer", "color"};
+
     QStringList list_for_bidimensional{"floating", "integer"};
+
     QStringList list_for_default_value{"floating", "integer", "color"};
 
     if (list_for_tips.contains(knob_type))

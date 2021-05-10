@@ -34,7 +34,6 @@ private:
     QWidget *_knob_editor;
 
     QList<QWidget *> *viewers_gl;
-    int init_space_width;
     bool edit_mode;
     button *delete_knob_button;
     button *edit_knob_button;
@@ -55,6 +54,7 @@ protected:
 
     QJsonObject knob_data;
     QJsonObject *params;
+    int init_space_width;
 
     project_struct *project;
     bool animated;

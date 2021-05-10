@@ -136,6 +136,7 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
                     line_widget->setObjectName("line_widget");
 
                     line_layout = new QHBoxLayout(line_widget);
+                    line_layout->setAlignment(Qt::AlignLeft);
                     line_layout->setMargin(0);
                 }
                 //

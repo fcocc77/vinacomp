@@ -21,7 +21,7 @@ QPushButton {
     width: 0px; }
 
 QMainWindow {
-  qproperty-windowIcon: url("/home/pancho/Documents/develop/vinacomp/resources/images/vinacomp.png"); }
+  qproperty-windowIcon: url("{{path}}/resources/images/vinacomp.png"); }
 
 QMenu {
   background-color: #292d32;
@@ -196,7 +196,7 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left
       color: #caced3; }
 
 #knob_check_box {
-  background: transparent; }
+  background: none; }
   #knob_check_box QCheckBox {
     spacing: 0px;
     background: #1e2024;
@@ -212,7 +212,7 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left
         background: #caced3; }
 
 #knob_channels #red, #knob_channels #green, #knob_channels #blue, #knob_channels #alpha {
-  background: transparent; }
+  background: none; }
   #knob_channels #red QCheckBox, #knob_channels #green QCheckBox, #knob_channels #blue QCheckBox, #knob_channels #alpha QCheckBox {
     spacing: 0px;
     background: #1e2024;
@@ -287,7 +287,7 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left
     color: #ffcc00; }
 
 #knob_check_box {
-  background: transparent; }
+  background: none; }
   #knob_check_box QCheckBox {
     spacing: 0px;
     background: #1e2024;
