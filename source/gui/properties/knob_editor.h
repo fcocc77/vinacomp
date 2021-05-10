@@ -108,7 +108,7 @@ public:
     ~knob_editor();
 
     void finish_insertion(bool add_item = true);
-    void delete_knob(knob *_knob);
+    void delete_knob(knob *_knob, bool cancel_editing_knob = true);
     void edit_knob(knob *_knob);
     void drag_knob(knob *_knob);
     void drag_knob_move(QWidget *panel);

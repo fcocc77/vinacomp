@@ -585,9 +585,9 @@ void knob_editor::hide_all_dividing_line()
     }
 }
 
-void knob_editor::delete_knob(knob *_knob)
+void knob_editor::delete_knob(knob *_knob, bool cancel_editing_knob)
 {
-    if (_knob == editing_knob)
+    if (_knob == editing_knob && cancel_editing_knob)
         edit_knob_ok_cancel(false);
 
     static_cast<trim_panel *>(_knob->get_panel())
@@ -638,7 +638,7 @@ void knob_editor::edit_knob_ok_cancel(bool ok)
         QString tab_name = get_custom_tab_name(panel);
         int index = get_index_knob(panel, editing_knob->get_name(), tab_name);
 
-        delete_knob(editing_knob);
+        delete_knob(editing_knob, false);
         add_knob(panel, get_params_from_edit_box(panel), index);
 
         editing_knob = nullptr;
