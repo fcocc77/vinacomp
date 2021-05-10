@@ -22,6 +22,8 @@ const void *fetchSuite(OfxPropertySetHandle host, const char *suiteName,
         return effect_suite;
     else if (name == (QString)kOfxParameterSuite)
         return param_suite;
+
+    return host;
 }
 
 ofx_api::ofx_api()
@@ -89,8 +91,9 @@ ofx_api::ofx_api()
     param_suite->paramEditEnd = param_edit_end;
     //
 
-    // load("plugins/CImg.ofx.bundle/Contents/Linux-x86-64/CImg.ofx");
-    load("libs/ofx/Documentation/sources/Guide/Code/Example3/gain.ofx");
+    load("plugins/CImg.ofx.bundle/Contents/Linux-x86-64/CImg.ofx");
+    load("plugins/Misc.ofx.bundle/Contents/Linux-x86-64/Misc.ofx");
+    // load("libs/ofx/Documentation/sources/Guide/Code/Example3/gain.ofx");
 }
 
 void ofx_api::load(QString ofx_file)
@@ -129,7 +132,8 @@ void ofx_api::load(QString ofx_file)
         OfxPlugin *plug = get_plugin(i);
         plug->setHost(host);
         plug->mainEntry(kOfxActionLoad, 0, 0, 0);
-        // plug->mainEntry(kOfxActionDescribe, 0, 0, 0);
+        plug->mainEntry(kOfxActionDescribe, 0, 0, 0);
+        plug->mainEntry(kOfxImageEffectActionDescribeInContext, 0, 0, 0);
 
         QString plugin_id = plug->pluginIdentifier;
 
