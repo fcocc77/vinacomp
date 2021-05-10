@@ -644,8 +644,11 @@ void knob_editor::finish_edit_knob(bool ok)
         QString tab_name = get_custom_tab_name(panel);
         int index = get_index_knob(panel, editing_knob->get_name(), tab_name);
 
+        knob_params params = get_params_from_edit_box(panel);
+        params.type = editing_knob->get_type();
+
         delete_knob(editing_knob, false);
-        add_knob(panel, get_params_from_edit_box(panel), index);
+        add_knob(panel, params, index);
 
         editing_knob = nullptr;
     }
