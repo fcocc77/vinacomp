@@ -3,11 +3,13 @@
 #include <ofx_api.h>
 #include <ofx_property_suite.h>
 #include <ofx_image_effect_suite.h>
+#include <ofx_parameter_suite.h>
 #include <os.h>
 #include <util.h>
 
 OfxPropertySuiteV1 *prop_suite = new OfxPropertySuiteV1;
 OfxImageEffectSuiteV1 *effect_suite = new OfxImageEffectSuiteV1;
+OfxParameterSuiteV1 *param_suite = new OfxParameterSuiteV1;
 
 const void *fetchSuite(OfxPropertySetHandle host, const char *suiteName,
                        int suiteVersion)
@@ -18,6 +20,8 @@ const void *fetchSuite(OfxPropertySetHandle host, const char *suiteName,
         return prop_suite;
     else if (name == (QString)kOfxImageEffectSuite)
         return effect_suite;
+    else if (name == (QString)kOfxParameterSuite)
+        return param_suite;
 }
 
 ofx_api::ofx_api()
@@ -62,6 +66,27 @@ ofx_api::ofx_api()
     effect_suite->imageMemoryFree = image_memory_free;
     effect_suite->imageMemoryLock = image_memory_lock;
     effect_suite->imageMemoryUnlock = image_memory_unlock;
+    //
+
+    // 'OfxParameterSuiteV1'
+    param_suite->paramDefine = param_define;
+    param_suite->paramGetHandle = param_get_handle;
+    param_suite->paramSetGetPropertySet = param_set_get_property_set;
+    param_suite->paramGetPropertySet = param_get_property_set;
+    param_suite->paramGetValue = param_get_value;
+    param_suite->paramGetValueAtTime = param_get_value_at_time;
+    param_suite->paramGetDerivative = param_get_derivative;
+    param_suite->paramGetIntegral = param_get_integral;
+    param_suite->paramSetValue = param_set_value;
+    param_suite->paramSetValueAtTime = param_set_value_at_time;
+    param_suite->paramGetNumKeys = param_get_num_keys;
+    param_suite->paramGetKeyTime = param_get_key_time;
+    param_suite->paramGetKeyIndex = param_get_key_index;
+    param_suite->paramDeleteKey = param_delete_key;
+    param_suite->paramDeleteAllKeys = param_delete_all_keys;
+    param_suite->paramCopy = param_copy;
+    param_suite->paramEditBegin = param_edit_begin;
+    param_suite->paramEditEnd = param_edit_end;
     //
 
     // load("plugins/CImg.ofx.bundle/Contents/Linux-x86-64/CImg.ofx");
