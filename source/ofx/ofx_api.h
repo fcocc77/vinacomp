@@ -26,7 +26,7 @@ class ofx_api
 private:
     QMap<QString, ofx_plugin> plugins;
     QList<ofx_binary> binaries;
-    OfxHost *host = new OfxHost;
+    OfxHost *host;
 
     void load(QString ofx_file);
 

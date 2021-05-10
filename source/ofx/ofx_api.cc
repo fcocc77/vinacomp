@@ -1,12 +1,53 @@
-#include <ofx_api.h>
-#include <util.h>
-#include <os.h>
 #include <QLibrary>
+#include <ofxImageEffect.h>
+#include <ofx_api.h>
+#include <ofx_property_suite.h>
+#include <os.h>
+#include <util.h>
+
+OfxPropertySuiteV1 *prop_suite = new OfxPropertySuiteV1;
+OfxImageEffectSuiteV1 *effect_suite = new OfxImageEffectSuiteV1;
+
+const void *fetchSuite(OfxPropertySetHandle host, const char *suiteName,
+                       int suiteVersion)
+{
+    QString name = suiteName;
+
+    if (name == (QString)kOfxPropertySuite)
+        return prop_suite;
+    else if (name == (QString)kOfxImageEffectSuite)
+        return effect_suite;
+}
 
 ofx_api::ofx_api()
 {
-    load("plugins/CImg.ofx.bundle/Contents/Linux-x86-64/CImg.ofx");
-    get_json_plugin("net.sf.cimg.CImgBlur");
+    host = new OfxHost;
+    host->fetchSuite = fetchSuite;
+
+    // agrega nuestras funciones a los punteros de funciones de
+    // 'OfxPropertySuiteV1'
+    prop_suite->propSetPointer = prop_set_pointer;
+    prop_suite->propSetString = prop_set_string;
+    prop_suite->propSetDouble = prop_set_double;
+    prop_suite->propSetInt = prop_set_int;
+    prop_suite->propSetPointerN = prop_set_pointer_n;
+    prop_suite->propSetStringN = prop_set_string_n;
+    prop_suite->propSetDoubleN = prop_set_double_n;
+    prop_suite->propSetIntN = prop_set_int_n;
+    prop_suite->propGetPointer = prop_get_pointer;
+    prop_suite->propGetString = prop_get_string;
+    prop_suite->propGetDouble = prop_get_double;
+    prop_suite->propGetInt = prop_get_int;
+    prop_suite->propGetPointerN = prop_get_pointer_n;
+    prop_suite->propGetStringN = prop_get_string_n;
+    prop_suite->propGetDoubleN = prop_get_double_n;
+    prop_suite->propGetIntN = prop_get_int_n;
+    prop_suite->propReset = prop_reset;
+    prop_suite->propGetDimension = prop_get_dimension;
+    //
+
+    // load("plugins/CImg.ofx.bundle/Contents/Linux-x86-64/CImg.ofx");
+    load("libs/ofx/Documentation/sources/Guide/Code/Example3/gain.ofx");
 }
 
 void ofx_api::load(QString ofx_file)
@@ -44,6 +85,9 @@ void ofx_api::load(QString ofx_file)
     {
         OfxPlugin *plug = get_plugin(i);
         plug->setHost(host);
+        plug->mainEntry(kOfxActionLoad, 0, 0, 0);
+        // plug->mainEntry(kOfxActionDescribe, 0, 0, 0);
+
         QString plugin_id = plug->pluginIdentifier;
 
         QString icon_path = resources + "/" + plugin_id + ".png";
@@ -56,8 +100,6 @@ void ofx_api::load(QString ofx_file)
     }
 
     binaries.push_back({binary_name, binary_icon});
-
-    lib.unload();
 }
 
 QJsonObject ofx_api::get_json_plugin(QString ofx_id) const
