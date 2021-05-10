@@ -25,8 +25,7 @@ struct knob_params
     float min;
     float max;
     float default_value;
-    bool new_line;
-    bool animatable;
+    bool over_line;
     bool bidimensional;
 };
 
@@ -48,9 +47,8 @@ private:
     QLineEdit *minimum_edit;
     QLineEdit *maximum_edit;
     QLineEdit *default_value_edit;
-    knob_check_box *new_line_check;
+    knob_check_box *over_line_check;
     knob_check_box *bidimensional_check;
-    knob_check_box *animatable_check;
     QWidget *edit_tools;
     QPushButton *ok_button;
     QPushButton *cancel_button;

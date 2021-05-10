@@ -149,16 +149,14 @@ knob_editor::knob_editor(QWidget *__properties)
     default_value_edit->setPlaceholderText("Default Value");
     default_value_edit->setToolTip("Default");
 
-    new_line_check = new knob_check_box({}, "New Line");
+    over_line_check = new knob_check_box({}, "Over Line");
     bidimensional_check = new knob_check_box({}, "BiDimensional");
-    animatable_check = new knob_check_box({}, "Animatable");
 
     one_line_layout->addWidget(minimum_edit);
     one_line_layout->addWidget(maximum_edit);
     one_line_layout->addWidget(default_value_edit);
-    one_line_layout->addWidget(new_line_check);
+    one_line_layout->addWidget(over_line_check);
     one_line_layout->addWidget(bidimensional_check);
-    one_line_layout->addWidget(animatable_check);
 
     edit_box_layout->addWidget(name_and_label);
     edit_box_layout->addWidget(one_line);
@@ -180,9 +178,8 @@ void knob_editor::update_edit_options_from_type(bool visible, QString knob_type)
     knob_label->hide();
     minimum_edit->hide();
     maximum_edit->hide();
-    new_line_check->hide();
+    over_line_check->hide();
     bidimensional_check->hide();
-    animatable_check->hide();
     default_value_edit->hide();
 
     QStringList list_for_tips{"floating", "integer", "color",
@@ -201,10 +198,8 @@ void knob_editor::update_edit_options_from_type(bool visible, QString knob_type)
 
     QStringList list_for_min_max{"floating", "integer", "color"};
 
-    QStringList list_for_new_line{"floating", "integer", "color", "choice",
+    QStringList list_for_over_line{"floating", "integer", "color", "choice",
                                   "check_box"};
-
-    QStringList list_for_animatable{"floating", "integer", "color"};
 
     QStringList list_for_bidimensional{"floating", "integer"};
 
@@ -225,11 +220,8 @@ void knob_editor::update_edit_options_from_type(bool visible, QString knob_type)
         maximum_edit->show();
     }
 
-    if (list_for_new_line.contains(knob_type))
-        new_line_check->show();
-
-    if (list_for_animatable.contains(knob_type))
-        animatable_check->show();
+    if (list_for_over_line.contains(knob_type))
+        over_line_check->show();
 
     if (list_for_bidimensional.contains(knob_type))
         bidimensional_check->show();

@@ -2,12 +2,12 @@
 #include <knob_slider.h>
 
 knob_slider::knob_slider(knob_props props, float min, float max,
-                         float default_value, bool _two_dimensional,
+                         float default_value, bool _bidimensional,
                          bool floating, bool centered_handler)
     : knob(props)
     , value_2_edit(nullptr)
     , dimensions(false)
-    , two_dimensional(_two_dimensional)
+    , bidimensional(_bidimensional)
     , show_dimensions(nullptr)
     , emmit_signal(true)
     , empty_widget(nullptr)
@@ -46,7 +46,7 @@ knob_slider::knob_slider(knob_props props, float min, float max,
 
     layout->addWidget(value_1_edit);
 
-    if (two_dimensional)
+    if (bidimensional)
     {
         // value 2
         value_2_edit = new line_edit();
@@ -76,7 +76,7 @@ knob_slider::knob_slider(knob_props props, float min, float max,
     }
 
     layout->addWidget(_slider);
-    if (two_dimensional)
+    if (bidimensional)
         layout->addWidget(show_dimensions);
 
     set_value(default_value);
@@ -87,7 +87,7 @@ knob_slider::~knob_slider()
     delete value_1_edit;
     delete _slider;
     delete layout;
-    if (two_dimensional)
+    if (bidimensional)
     {
         delete value_2_edit;
         delete empty_widget;

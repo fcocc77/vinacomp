@@ -311,7 +311,7 @@ void trim_panel::add_tab(QString tab_name, int index)
     {
         QWidget *widget = new QWidget(this);
         tab_layout = new QVBoxLayout(widget);
-        tab_layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
+        tab_layout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
         tab_layout->setSpacing(5);
         widget->setObjectName("knobs_tab");
 

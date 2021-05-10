@@ -22,7 +22,7 @@ private:
     line_edit *value_1_edit;
     line_edit *value_2_edit;
     bool dimensions;
-    bool two_dimensional;
+    bool bidimensional;
     button *show_dimensions;
     bool emmit_signal;
     QWidget *empty_widget;
@@ -39,7 +39,7 @@ private:
 
 public:
     knob_slider(knob_props props, float min = 0, float max = 100,
-                float default_value = 1, bool two_dimensional = false,
+                float default_value = 1, bool bidimensional = false,
                 bool floating = true, bool centered_handler = false);
     ~knob_slider();
 

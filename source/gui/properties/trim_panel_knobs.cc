@@ -57,7 +57,7 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
         float default_value = knob_object.value("default").toDouble();
         bool centered_handler = knob_object.value("centered_handler").toBool();
         int dimensions_count = knob_object.value("dimensions").toDouble();
-        bool two_dimensional = knob_object.value("two_dimensional").toBool();
+        bool bidimensional = knob_object.value("bidimensional").toBool();
         QString name = knob_object.value("name").toString();
         QString label = knob_object.value("label").toString();
         bool over_line = knob_object.value("over_line").toBool();
@@ -91,11 +91,11 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
             _knob = new knob_group(props);
 
         else if (type == "integer")
-            _knob = new knob_integer(props, min, max, default_value, two_dimensional,
+            _knob = new knob_integer(props, min, max, default_value, bidimensional,
                                      centered_handler);
 
         else if (type == "floating")
-            _knob = new knob_floating(props, min, max, default_value, two_dimensional,
+            _knob = new knob_floating(props, min, max, default_value, bidimensional,
                                       centered_handler);
 
         else if (type == "separator")

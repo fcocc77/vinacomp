@@ -13,7 +13,7 @@
             "minimum": 0,
             "maximum": 100,
             "default": 0,
-            "two_dimensional": true
+            "bidimensional": true
         },
         {
             "name": "filter",

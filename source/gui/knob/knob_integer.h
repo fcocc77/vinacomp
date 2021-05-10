@@ -9,7 +9,7 @@ class knob_integer : public knob_slider
 private:
 public:
     knob_integer(knob_props props, int min = 0, int max = 100,
-                 int default_value = 0, bool two_dimensional = false,
+                 int default_value = 0, bool bidimensional = false,
                  bool centered_handler = false);
     ~knob_integer();
 

@@ -39,6 +39,7 @@ void knob_editor::add_knob(QWidget *panel, knob_params params, int index)
                        {"minimum", params.min},
                        {"maximum", params.max},
                        {"default", params.default_value},
+                       {"bidimensional", params.bidimensional},
                        {"tab", custom_tab}};
     }
     else if (params.type == "integer")
@@ -49,6 +50,7 @@ void knob_editor::add_knob(QWidget *panel, knob_params params, int index)
                        {"tooltip", params.tips},
                        {"minimum", params.min},
                        {"maximum", params.max},
+                       {"bidimensional", params.bidimensional},
                        {"default", params.default_value},
                        {"tab", custom_tab}};
     }
@@ -72,6 +74,7 @@ void knob_editor::add_knob(QWidget *panel, knob_params params, int index)
                        {"type", "button"},
                        {"label", params.label},
                        {"tab", custom_tab},
+                       {"over_line", params.over_line},
                        {"tooltip", params.tips}};
     }
     else if (params.type == "choice")
@@ -79,28 +82,27 @@ void knob_editor::add_knob(QWidget *panel, knob_params params, int index)
         knob_object = {{"name", params.name},         {"type", "choice"},
                        {"label", params.label},       {"tooltip", params.tips},
                        {"tab", custom_tab},           {"items", QJsonArray{}},
+                       {"over_line", params.over_line},
                        {"default", QJsonArray{0, ""}}};
     }
     else if (params.type == "check_box")
     {
         knob_object = {{"name", params.name},   {"type", "check_box"},
                        {"label", params.label}, {"tooltip", params.tips},
-                       {"over_line", false},    {"default", false},
+                       {"default", false},      {"over_line", params.over_line},
                        {"tab", custom_tab}};
     }
     else if (params.type == "text")
     {
-        knob_object = {{"name", params.name},   {"type", "text"},
-                       {"label", params.label}, {"tooltip", ""},
-                       {"over_line", false},    {"default", params.tips},
-                       {"tab", custom_tab}};
+        knob_object = {{"name", params.name},    {"type", "text"},
+                       {"label", params.label},  {"tooltip", ""},
+                       {"default", params.tips}, {"tab", custom_tab}};
     }
     else if (params.type == "file")
     {
-        knob_object = {{"name", params.name},   {"type", "file"},
-                       {"label", params.label}, {"tooltip", ""},
-                       {"over_line", false},    {"default", params.tips},
-                       {"tab", custom_tab}};
+        knob_object = {{"name", params.name},    {"type", "file"},
+                       {"label", params.label},  {"tooltip", ""},
+                       {"default", params.tips}, {"tab", custom_tab}};
     }
     else if (params.type == "floating_dimensions")
     {
@@ -109,7 +111,7 @@ void knob_editor::add_knob(QWidget *panel, knob_params params, int index)
                        {"label", params.label},
                        {"tooltip", params.tips},
                        {"dimensions", 2},
-                       {"over_line", false},
+                       {"over_line", params.over_line},
                        {"default", QJsonArray{0, 0}},
                        {"tab", custom_tab}};
     }
@@ -172,7 +174,7 @@ void knob_editor::move_knob(QWidget *panel, int index)
     params.min = knob_data.value("minimum").toDouble();
     params.max = knob_data.value("maximum").toDouble();
     params.default_value = knob_data.value("default").toDouble();
-    params.new_line = knob_data.value("new_line").toBool();
+    params.over_line = knob_data.value("over_line").toBool();
 
     int dragging_knob_index =
         get_index_knob(panel, dragging_knob->get_name(), tab_name);
@@ -265,6 +267,9 @@ knob_params knob_editor::get_params_from_edit_box(QWidget *panel) const
     else
         params.default_value = default_value.toDouble();
 
+    params.over_line = over_line_check->is_checked();
+    params.bidimensional = bidimensional_check->is_checked();
+
     params.type = current_knob_type;
 
     return params;
@@ -278,9 +283,8 @@ void knob_editor::edit_box_clear()
     minimum_edit->clear();
     maximum_edit->clear();
     default_value_edit->clear();
-    new_line_check->set_check(false);
+    over_line_check->set_check(false);
     bidimensional_check->set_check(false);
-    animatable_check->set_check(false);
 }
 
 void knob_editor::edit_box_close()
@@ -611,7 +615,8 @@ void knob_editor::edit_knob(knob *_knob)
     float min = knob_data.value("minimum").toDouble();
     float max = knob_data.value("maximum").toDouble();
     float default_value = knob_data.value("default").toDouble();
-    bool new_line = knob_data.value("new_line").toBool();
+    bool over_line = knob_data.value("over_line").toBool();
+    bool bidimensional = knob_data.value("bidimensional").toBool();
 
     knob_name->setText(name);
     knob_label->setText(label);
@@ -619,7 +624,8 @@ void knob_editor::edit_knob(knob *_knob)
     minimum_edit->setText(QString::number(min));
     maximum_edit->setText(QString::number(max));
     default_value_edit->setText(QString::number(default_value));
-    new_line_check->set_check(new_line);
+    over_line_check->set_check(over_line);
+    bidimensional_check->set_check(bidimensional);
 
     edit_label->setText(_knob->get_name() + "' ...");
     edit_icon->set_icon(get_icon_name_from_type(_knob->get_type()));
