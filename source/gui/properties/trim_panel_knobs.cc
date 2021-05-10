@@ -62,8 +62,8 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
         QString label = knob_object.value("label").toString();
         bool over_line = knob_object.value("over_line").toBool();
 
-        knob_props props = {this,       project,   _vinacomp,
-                            viewers_gl, this_node, _knob_editor};
+        knob_props props = {this,      project,      _vinacomp,   viewers_gl,
+                            this_node, _knob_editor, knob_object, params};
 
         knob *_knob = nullptr;
         if (type == "color")
@@ -167,8 +167,7 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
             }
 
             _knob->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-            _knob->set_data(knob_object, params);
-
+            _knob->set_data();
             _knob->restore_param();
 
             if (_node_gui)

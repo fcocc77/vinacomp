@@ -15,6 +15,7 @@ knob_check_box::knob_check_box(knob_props props, QString label,
     layout->addWidget(init_space);
 
     checkbox = new QCheckBox(this);
+    checkbox->setToolTip(get_tips());
     checkbox->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     connect(checkbox, &QCheckBox::stateChanged, this, [=](int state) {
         checked = state != 0;
@@ -61,6 +62,7 @@ void knob_check_box::set_label(QString label)
     }
 
     label_widget->setText(label);
+    label_widget->setToolTip(get_tips());
 }
 
 void knob_check_box::set_check(bool value, bool _emmit_signal)

@@ -11,6 +11,7 @@ knob_button::knob_button(knob_props props)
     layout->addWidget(init_space);
 
     button = new QPushButton();
+    button->setToolTip(get_tips());
     connect(button, &QPushButton::clicked, this, [=]() {
         // el boton solo funciona en gui
         to_node_gui(this);

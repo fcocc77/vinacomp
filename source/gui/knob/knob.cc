@@ -17,7 +17,8 @@ knob::knob(knob_props props)
     , _knob_editor(props._knob_editor)
     , viewers_gl(props.viewers_gl)
     , edit_mode(false)
-    , params(nullptr)
+    , knob_data(props.knob_data)
+    , params(props.params)
     , init_space_width(0)
     , project(props.project)
     , animated(false)
@@ -69,6 +70,20 @@ knob::knob(knob_props props)
     menu = new QMenu(this);
 
     icon_size = 15;
+
+    // name and type
+    name = knob_data.value("name").toString();
+    type = knob_data.value("type").toString();
+    tips = knob_data.value("tooltip").toString();
+    anim_name = name + "_anim";
+    //
+
+    if (tips.isEmpty())
+        tips = name;
+    else
+        tips = name + ": " + tips;
+
+    label_widget->setToolTip(tips);
 }
 
 knob::~knob()
@@ -98,11 +113,8 @@ QString knob::get_node_type() const
     return static_cast<trim_panel *>(panel)->get_type();
 }
 
-void knob::set_data(QJsonObject _knob_data, QJsonObject *_params)
+void knob::set_data()
 {
-    knob_data = _knob_data;
-    params = _params;
-
     // animatable
     bool animatable = true;
     if (knob_data.contains("animatable"))
@@ -118,20 +130,6 @@ void knob::set_data(QJsonObject _knob_data, QJsonObject *_params)
 
     set_visible(visible);
     //
-
-    // name and type
-    name = knob_data.value("name").toString();
-    type = knob_data.value("type").toString();
-    tips = knob_data.value("tooltip").toString();
-    anim_name = name + "_anim";
-    //
-
-    if (tips.isEmpty())
-        tips = name;
-    else
-        tips = name + ": " + tips;
-
-    label_widget->setToolTip(tips);
 }
 
 void knob::update_handler()

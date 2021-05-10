@@ -12,6 +12,7 @@ knob_choice::knob_choice(knob_props props, QList<combo_box_item> items,
     layout->addWidget(init_space);
 
     choice = new combo_box(items, default_index);
+    choice->setToolTip(get_tips());
     connect(choice, &combo_box::changed, this, [=](QVariant value, int index) {
         changed(value, index);
         to_node_gui(this);
