@@ -82,10 +82,10 @@ knob_editor::knob_editor(QWidget *__properties)
     cancel_button = new QPushButton("Cancel");
 
     connect(ok_button, &QPushButton::clicked, this,
-            [this]() { edit_knob_ok_cancel(true); });
+            [this]() { finish_edit_knob(true); });
 
     connect(cancel_button, &QPushButton::clicked, this,
-            [this]() { edit_knob_ok_cancel(false); });
+            [this]() { finish_edit_knob(false); });
 
     edit_tools_layout->addWidget(edit_icon);
     edit_tools_layout->addWidget(edit_label_init);

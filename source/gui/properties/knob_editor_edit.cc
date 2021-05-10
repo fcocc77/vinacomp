@@ -157,7 +157,7 @@ void knob_editor::move_knob(QWidget *panel, int index)
 
     // cancela la edicion si un knob se esta editando
     if (editing_knob)
-        edit_knob_ok_cancel(false);
+        finish_edit_knob(false);
 
     QJsonObject knob_data = dragging_knob->get_knob_data();
 
@@ -588,7 +588,7 @@ void knob_editor::hide_all_dividing_line()
 void knob_editor::delete_knob(knob *_knob, bool cancel_editing_knob)
 {
     if (_knob == editing_knob && cancel_editing_knob)
-        edit_knob_ok_cancel(false);
+        finish_edit_knob(false);
 
     static_cast<trim_panel *>(_knob->get_panel())
         ->remove_custom_knob(_knob->get_name());
@@ -630,7 +630,7 @@ void knob_editor::edit_knob(knob *_knob)
     update_edit_options_from_type(true, _knob->get_type());
 }
 
-void knob_editor::edit_knob_ok_cancel(bool ok)
+void knob_editor::finish_edit_knob(bool ok)
 {
     if (ok)
     {

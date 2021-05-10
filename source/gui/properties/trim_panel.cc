@@ -439,8 +439,10 @@ void trim_panel::leave_properties()
     // a veces se queda pegado al presionar otros click cuando se esta
     // arrastrando el knob en el 'knob_editor', para evitar conflictos, finaliza
     // la insercion si se quedan pegadas las lineas divisoras, ya que en el
-    // 'knob_editor' se estan usando 'dividing_line_h' y 'dividing_line_v'
+    // 'knob_editor' se estan usando 'dividing_line_h' y 'dividing_line_v',
+    // tambien termina el modo de edicion de 'knobs'
     _knob_editor->finish_insertion(false);
+    _knob_editor->finish_edit_knob(false);
     //
 }
 
