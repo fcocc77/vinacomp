@@ -165,7 +165,6 @@ void knob_editor::move_knob(QWidget *panel, int index)
 
     knob_params params;
     QString name = knob_data.value("type").toString();
-    QString tab_name = knob_data.value("tab").toString();
     params.name = get_available_knob_name(panel, name);
 
     params.type = knob_data.value("type").toString();
@@ -177,7 +176,7 @@ void knob_editor::move_knob(QWidget *panel, int index)
     params.over_line = knob_data.value("over_line").toBool();
 
     int dragging_knob_index =
-        get_index_knob(panel, dragging_knob->get_name(), tab_name);
+        get_indexs_knob(panel, dragging_knob->get_name()).first;
 
     // resta uno al index cuando el index es mayor al del knob arrastrado, por
     // que el knob se elimina antes de añadir uno nuevo
@@ -196,25 +195,38 @@ void knob_editor::insert_knob_in_tab(QJsonArray *knobs, QJsonObject knob_obj,
     // otra con los demas knobs, se inserta el knob a la lista de tab y luego se
     // unen las 2 listas.
 
-    QJsonArray knobs_from_tab;
     QJsonArray knobs_other_tabs;
+    QList<QList<QJsonObject>> knobs_from_tab;
+
     for (QJsonValue value : *knobs)
     {
         if (value.toObject().value("tab").toString() == tab_name)
-            knobs_from_tab.push_back(value);
+        {
+            bool over_line = value.toObject().value("over_line").toBool();
+
+            if (over_line && !knobs_from_tab.empty())
+            {
+                knobs_from_tab.last().push_back(value.toObject());
+                continue;
+            }
+
+            QList<QJsonObject> line_knobs = {value.toObject()};
+            knobs_from_tab.push_back(line_knobs);
+        }
         else
             knobs_other_tabs.push_back(value);
     }
 
     if (index == -1)
-        knobs_from_tab.push_back(knob_obj);
+        knobs_from_tab.push_back({knob_obj});
     else
-        knobs_from_tab.insert(index, knob_obj);
+        knobs_from_tab.insert(index, {knob_obj});
 
     // union de knobs
     *knobs = knobs_other_tabs;
-    for (QJsonValue value : knobs_from_tab)
-        knobs->push_back(value);
+    for (auto list_knobs : knobs_from_tab)
+        for (QJsonObject __knob : list_knobs)
+            knobs->push_back(__knob);
 }
 
 QString knob_editor::add_tab(QWidget *panel, int index, QString preferred_name)
@@ -392,7 +404,7 @@ QString knob_editor::get_custom_tab_name(QWidget *panel)
     return tab_name;
 }
 
-knob *knob_editor::get_knob_under_cursor() const
+knob *knob_editor::get_knob_under_cursor()
 {
     auto get_knob = [=](int gap) {
         QPoint pos = QCursor::pos();
@@ -411,9 +423,30 @@ knob *knob_editor::get_knob_under_cursor() const
         return _knob;
     };
 
+    // detecta si el over cursor es el primer 'knob'
+    bool is_first = false;
+    knob *first_knob = get_knob(-14);
+    if (first_knob)
+        if (first_knob->y() < 25)
+            is_first = true;
+
+    if (is_first)
+    {
+        last_knob_under_cursor = nullptr;
+        return nullptr;
+    }
+    //
+    //
+
     knob *_knob = get_knob(14);
     if (!_knob)
         _knob = get_knob(0);
+
+    if (!_knob)
+        _knob = last_knob_under_cursor;
+
+    if (_knob)
+        last_knob_under_cursor = _knob;
 
     return _knob;
 }
@@ -516,49 +549,107 @@ void knob_editor::insert_division_to_knobs()
 
     current_panel = panel;
 
+    int horizontal_index = 0;
+    insert_index = 0;
+
     if (_knob)
-        insert_index =
-            get_index_knob(current_panel, _knob->get_name(), current_tab) + 1;
-    else
-        insert_index = 0;
+    {
+        auto indexs = get_indexs_knob(current_panel, _knob->get_name());
+        // se suma 1 al los index para que el index 0 quede cuando no hay ningun
+        // 'knob' por debajo
+        horizontal_index = indexs.second + 1;
+        insert_index = indexs.first + 1;
+    }
 
     QVBoxLayout *layout = get_layout_current_tab(current_panel);
     if (layout)
     {
+        QWidget *dividing_line_v = _panel->get_dividing_line_v();
         QWidget *dividing_line_h = _panel->get_dividing_line_h();
-        layout->insertWidget(insert_index, dividing_line_h);
-        dividing_line_h->show();
+
+        if (qt::control())
+        {
+            if (!_knob)
+                return;
+
+            QWidget *line_widget = static_cast<QWidget *>(_knob->parent());
+
+            if (line_widget)
+            {
+                if (line_widget->objectName() == "line_widget")
+                {
+                    QHBoxLayout *line_layout =
+                        static_cast<QHBoxLayout *>(line_widget->layout());
+                    line_layout->insertWidget(horizontal_index,
+                                              dividing_line_v);
+
+                    dividing_line_v->show();
+                    dividing_line_h->hide();
+                }
+            }
+        }
+        else
+        {
+            layout->insertWidget(insert_index, dividing_line_h);
+            dividing_line_v->hide();
+            dividing_line_h->show();
+        }
     }
 }
 
-int knob_editor::get_index_knob(QWidget *panel, QString knob_name,
-                                QString tab_name) const
+std::pair<int, int> knob_editor::get_indexs_knob(QWidget *panel,
+                                                 QString knob_name) const
 {
     if (!panel)
-        return -2;
+        return {-2, -2};
 
-    trim_panel *_panel = static_cast<trim_panel *>(panel);
-    QJsonArray &knobs = _panel->custom_knobs;
+    QList<QList<knob *>> lines_knobs;
 
-    // lista de knob que estan en un tab especifico
-    QJsonArray knobs_from_tab;
-    for (QJsonValue value : knobs)
-        if (value.toObject().value("tab").toString() == tab_name)
-            knobs_from_tab.push_back(value);
-
-    // encuentra el index del tab
-    int index = 0;
-    for (QJsonValue value : knobs_from_tab)
+    // crea una lista de listas de 'knobs' asi incluir los knobs que estan en
+    // 'over_line'
+    QVBoxLayout *layout = get_layout_current_tab(panel);
+    for (int i = 0; i < layout->count(); i++)
     {
-        QString _knob_name = value.toObject().value("name").toString();
+        QLayoutItem *item = layout->itemAt(i);
+        QWidget *item_widget = item->widget();
 
-        if (_knob_name == knob_name)
-            return index;
+        if (!item_widget)
+            continue;
 
-        index++;
+        knob *_knob = dynamic_cast<knob *>(item_widget);
+
+        if (_knob)
+            lines_knobs.push_back({_knob});
+        else if (item_widget->objectName() == "line_widget")
+        {
+            QList<knob *> line_widget_knobs;
+
+            QLayout *line_layout = item_widget->layout();
+            for (int i2 = 0; i2 < line_layout->count(); i2++)
+            {
+                QWidget *item_widget2 = line_layout->itemAt(i2)->widget();
+                knob *_knob = dynamic_cast<knob *>(item_widget2);
+                if (_knob)
+                    line_widget_knobs.push_back(_knob);
+            }
+
+            lines_knobs.push_back(line_widget_knobs);
+        }
     }
 
-    return -1;
+    // encuentra el knob y retorna el index de la linea en la que esta el 'knob'
+    for (int i = 0; i < lines_knobs.count(); i++)
+    {
+        int horizontal_index = 0;
+        for (knob *_knob : lines_knobs.value(i))
+        {
+            if (_knob->get_name() == knob_name)
+                return {i, horizontal_index};
+            horizontal_index++;
+        }
+    }
+
+    return {-1, -1};
 }
 
 QVBoxLayout *knob_editor::get_layout_current_tab(QWidget *panel) const
@@ -642,7 +733,7 @@ void knob_editor::finish_edit_knob(bool ok)
     {
         QWidget *panel = editing_knob->get_panel();
         QString tab_name = get_custom_tab_name(panel);
-        int index = get_index_knob(panel, editing_knob->get_name(), tab_name);
+        int index = get_indexs_knob(panel, editing_knob->get_name()).first;
 
         knob_params params = get_params_from_edit_box(panel);
         params.type = editing_knob->get_type();

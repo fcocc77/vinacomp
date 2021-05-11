@@ -5,6 +5,7 @@
 knob_editor::knob_editor(QWidget *__properties)
     : _properties(__properties)
     , insert_knob_or_tab(false)
+    , last_knob_under_cursor(nullptr)
     , dragging_knob(nullptr)
     , editing_knob(nullptr)
     , current_panel(nullptr)
@@ -316,6 +317,7 @@ void knob_editor::finish_insertion(bool add_item)
 
     insert_knob_or_tab = false;
     dragging_knob = nullptr;
+    last_knob_under_cursor = nullptr;
 }
 
 void knob_editor::dragging_insertion(QPointF pos)

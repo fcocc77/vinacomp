@@ -59,6 +59,7 @@ private:
     bool insert_knob_or_tab;
     action *add_action;
 
+    knob *last_knob_under_cursor;
     knob *dragging_knob;
     knob *editing_knob;
 
@@ -82,10 +83,10 @@ private:
 
     QString get_icon_name_from_type(QString knob_type) const;
 
-    knob *get_knob_under_cursor() const;
+    knob *get_knob_under_cursor();
     QVBoxLayout *get_layout_current_tab(QWidget *panel) const;
-    int get_index_knob(QWidget *panel, QString knob_name,
-                       QString tab_name) const;
+    std::pair<int, int> get_indexs_knob(QWidget *panel,
+                                        QString knob_name) const;
     QWidget *get_panel_from_widget(QWidget *widget) const;
     QWidget *get_panel_under_cursor() const;
     QWidget *get_tab_widget_under_cursor() const;
