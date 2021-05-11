@@ -44,7 +44,8 @@ private:
     layer_struct *get_layer(QString layer);
 
 public:
-    knob_channels(project_struct *project = nullptr, QString layer = "main",
+    knob_channels(knob_props props = {}, project_struct *project = nullptr,
+                  QString layer = "main",
                   QList<bool> channels = {true, true, true, true});
     ~knob_channels();
 

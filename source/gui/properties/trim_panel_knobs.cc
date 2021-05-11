@@ -108,7 +108,7 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
             _knob = new knob_intd(props, dimensions_count);
 
         else if (type == "channels")
-            _knob = new knob_channels();
+            _knob = new knob_channels(props);
 
         else if (type == "progress")
             _knob = new knob_progress(props);

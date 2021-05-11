@@ -1,10 +1,12 @@
 #include <knob_channels.h>
 
-knob_channels::knob_channels(project_struct *_project, QString _layer,
-                             QList<bool> _channels)
-    : current_layer("main")
+knob_channels::knob_channels(knob_props props, project_struct *_project,
+                             QString _layer, QList<bool> _channels)
+    : knob(props)
+    , current_layer("main")
 {
-    project = _project;
+    if (_project)
+        project = _project;
 
     this->setObjectName("knob_channels");
 

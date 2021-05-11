@@ -50,7 +50,7 @@ QWidget *viewer::control_setup_ui()
     bar->setObjectName("controls");
 
     // Layers
-    knob_channels *layers = new knob_channels(project);
+    knob_channels *layers = new knob_channels({}, project);
     connect(layers, &knob_channels::changed, this,
             [=](QString layer) { change_layer(layer); });
 
