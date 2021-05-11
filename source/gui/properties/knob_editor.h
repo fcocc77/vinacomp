@@ -85,8 +85,7 @@ private:
 
     knob *get_knob_under_cursor();
     QVBoxLayout *get_layout_current_tab(QWidget *panel) const;
-    std::pair<int, int> get_indexs_knob(QWidget *panel,
-                                        QString knob_name) const;
+    int get_index_knob(QWidget *panel, QString knob_name) const;
     QWidget *get_panel_from_widget(QWidget *widget) const;
     QWidget *get_panel_under_cursor() const;
     QWidget *get_tab_widget_under_cursor() const;

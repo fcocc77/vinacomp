@@ -176,7 +176,7 @@ void knob_editor::move_knob(QWidget *panel, int index)
     params.over_line = knob_data.value("over_line").toBool();
 
     int dragging_knob_index =
-        get_indexs_knob(panel, dragging_knob->get_name()).first;
+        get_index_knob(panel, dragging_knob->get_name());
 
     // resta uno al index cuando el index es mayor al del knob arrastrado, por
     // que el knob se elimina antes de añadir uno nuevo
@@ -548,60 +548,25 @@ void knob_editor::insert_division_to_knobs()
         return;
 
     current_panel = panel;
-
-    int horizontal_index = 0;
     insert_index = 0;
 
     if (_knob)
-    {
-        auto indexs = get_indexs_knob(current_panel, _knob->get_name());
-        // se suma 1 al los index para que el index 0 quede cuando no hay ningun
-        // 'knob' por debajo
-        horizontal_index = indexs.second + 1;
-        insert_index = indexs.first + 1;
-    }
+        insert_index = get_index_knob(current_panel, _knob->get_name()) + 1;
 
     QVBoxLayout *layout = get_layout_current_tab(current_panel);
     if (layout)
     {
-        QWidget *dividing_line_v = _panel->get_dividing_line_v();
         QWidget *dividing_line_h = _panel->get_dividing_line_h();
 
-        if (qt::control())
-        {
-            if (!_knob)
-                return;
-
-            QWidget *line_widget = static_cast<QWidget *>(_knob->parent());
-
-            if (line_widget)
-            {
-                if (line_widget->objectName() == "line_widget")
-                {
-                    QHBoxLayout *line_layout =
-                        static_cast<QHBoxLayout *>(line_widget->layout());
-                    line_layout->insertWidget(horizontal_index,
-                                              dividing_line_v);
-
-                    dividing_line_v->show();
-                    dividing_line_h->hide();
-                }
-            }
-        }
-        else
-        {
-            layout->insertWidget(insert_index, dividing_line_h);
-            dividing_line_v->hide();
-            dividing_line_h->show();
-        }
+        layout->insertWidget(insert_index, dividing_line_h);
+        dividing_line_h->show();
     }
 }
 
-std::pair<int, int> knob_editor::get_indexs_knob(QWidget *panel,
-                                                 QString knob_name) const
+int knob_editor::get_index_knob(QWidget *panel, QString knob_name) const
 {
     if (!panel)
-        return {-2, -2};
+        return -2;
 
     QList<QList<knob *>> lines_knobs;
 
@@ -640,16 +605,12 @@ std::pair<int, int> knob_editor::get_indexs_knob(QWidget *panel,
     // encuentra el knob y retorna el index de la linea en la que esta el 'knob'
     for (int i = 0; i < lines_knobs.count(); i++)
     {
-        int horizontal_index = 0;
         for (knob *_knob : lines_knobs.value(i))
-        {
             if (_knob->get_name() == knob_name)
-                return {i, horizontal_index};
-            horizontal_index++;
-        }
+                return i;
     }
 
-    return {-1, -1};
+    return -1;
 }
 
 QVBoxLayout *knob_editor::get_layout_current_tab(QWidget *panel) const
@@ -733,7 +694,7 @@ void knob_editor::finish_edit_knob(bool ok)
     {
         QWidget *panel = editing_knob->get_panel();
         QString tab_name = get_custom_tab_name(panel);
-        int index = get_indexs_knob(panel, editing_knob->get_name()).first;
+        int index = get_index_knob(panel, editing_knob->get_name());
 
         knob_params params = get_params_from_edit_box(panel);
         params.type = editing_knob->get_type();
