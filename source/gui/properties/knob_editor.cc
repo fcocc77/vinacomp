@@ -240,15 +240,6 @@ void knob_editor::update_edit_options_from_type(bool visible, QString knob_type)
     this->setCursor(Qt::ArrowCursor);
 }
 
-void knob_editor::start_insertion()
-{
-    insert_index = -2;
-    current_panel = nullptr;
-    this->setCursor(Qt::ClosedHandCursor);
-
-    insert_knob_or_tab = true;
-}
-
 QString knob_editor::get_icon_name_from_type(QString knob_type) const
 {
     if (knob_type == "floating")
@@ -292,37 +283,6 @@ QString knob_editor::get_icon_name_from_type(QString knob_type) const
 
     else if (knob_type == "separator")
         return "separator";
-}
-
-void knob_editor::finish_insertion(bool add_item)
-{
-    if (!insert_knob_or_tab)
-        return;
-
-    hide_all_dividing_line();
-
-    this->setCursor(Qt::ArrowCursor);
-    if (add_item)
-    {
-        if (dragging_knob)
-            move_knob(current_panel, insert_index);
-        else if (current_knob_type == "tab")
-            add_tab(current_panel, insert_index);
-        else
-            add_knob(current_panel, get_params_from_edit_box(current_panel),
-                     insert_index);
-    }
-
-    for (action *knob_action : actions)
-        knob_action->set_illuminated_button(false);
-
-    // deja en preferencia el tipo de dato actual, al boton checkeado una vez se
-    // utilizo el drag
-    current_knob_type = checked_knob_type;
-
-    insert_knob_or_tab = false;
-    dragging_knob = nullptr;
-    last_knob_under_cursor = nullptr;
 }
 
 void knob_editor::dragging_insertion(QPointF pos)
