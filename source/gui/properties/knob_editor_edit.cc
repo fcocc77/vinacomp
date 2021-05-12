@@ -94,9 +94,9 @@ void knob_editor::add_knob(QWidget *panel, knob_params params, int index)
     }
     else if (params.type == "text")
     {
-        knob_object = {{"name", params.name},    {"type", "text"},
-                       {"label", params.label},  {"tooltip", ""},
-                       {"default", params.tips}, {"tab", custom_tab}};
+        knob_object = {{"name", params.name},   {"type", "text"},
+                       {"label", params.label}, {"tooltip", params.tips},
+                       {"default", ""},         {"tab", custom_tab}};
     }
     else if (params.type == "file")
     {

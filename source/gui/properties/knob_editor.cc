@@ -59,8 +59,8 @@ knob_editor::knob_editor(QWidget *__properties)
     append_tools->add_separator();
 
     add_knob_action("Add Tab", "tab");
-    add_knob_action("Label Knob", "label");
     add_knob_action("Group Knob", "group");
+    add_knob_action("Label Knob", "label");
     add_knob_action("Separator Knob", "separator");
 
     append_tools->add_stretch();
@@ -194,7 +194,8 @@ void knob_editor::update_edit_options_from_type(bool visible, QString knob_type)
     QStringList list_for_name{"floating", "integer", "color",
                               "button",   "choice",  "check_box",
                               "text",     "file",    "floating_dimensions",
-                              "label",    "group",   "tab"};
+                              "label",    "group",   "tab",
+                              "separator"};
 
     QStringList list_for_label{"floating", "integer", "color",
                                "button",   "choice",  "check_box",
