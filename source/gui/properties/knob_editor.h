@@ -84,9 +84,15 @@ private:
     QString get_icon_name_from_type(QString knob_type) const;
     QString disable_over_line_to_next_knob(QWidget *panel, QString knob_name);
 
+    QList<QList<QJsonObject>>
+    get_knobs_by_tab(QJsonArray knobs, QString tab_name,
+                     QJsonArray *leftover_knobs = nullptr) const;
+
     knob *get_knob_under_cursor();
+
     QList<knob *> get_line_widget_knobs(QWidget *panel,
                                         QString knob_name) const;
+
     QVBoxLayout *get_layout_current_tab(QWidget *panel) const;
     int get_index_knob(QWidget *panel, QString knob_name) const;
     QWidget *get_panel_from_widget(QWidget *widget) const;

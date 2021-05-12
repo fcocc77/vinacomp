@@ -263,11 +263,45 @@ void knob_editor::insert_knob_in_tab(QJsonArray *knobs, QJsonObject knob_obj,
     // a estar en una misma lista. Separando los knobs en 2 listas una del tab y
     // otra con los demas knobs, se inserta el knob a la lista de tab y luego se
     // unen las 2 listas.
+    QJsonArray knobs_other_tabs;
+    auto knobs_from_tab = get_knobs_by_tab(*knobs, tab_name, &knobs_other_tabs);
 
+    // evita que el nuevo knob quede sobre otro knob que no es permitido que
+    // este en una linea
+    auto previous_knob_line = knobs_from_tab.value(index - 1);
+    if (!previous_knob_line.empty())
+    {
+        QStringList allowed_over_line = {"check_box", "choice",
+                                         "floating_dimensions", "button"};
+
+        QString prev_type = previous_knob_line.last().value("type").toString();
+        for (QString allowed : allowed_over_line)
+            if (!allowed_over_line.contains(prev_type))
+                knob_obj["over_line"] = false;
+    }
+    //
+    //
+
+    if (index == -1)
+        knobs_from_tab.push_back({knob_obj});
+    else
+        knobs_from_tab.insert(index, {knob_obj});
+
+    // union de knobs
+    *knobs = knobs_other_tabs;
+    for (auto list_knobs : knobs_from_tab)
+        for (QJsonObject __knob : list_knobs)
+            knobs->push_back(__knob);
+}
+
+QList<QList<QJsonObject>>
+knob_editor::get_knobs_by_tab(QJsonArray knobs, QString tab_name,
+                              QJsonArray *leftover_knobs) const
+{
     QJsonArray knobs_other_tabs;
     QList<QList<QJsonObject>> knobs_from_tab;
 
-    for (QJsonValue value : *knobs)
+    for (QJsonValue value : knobs)
     {
         if (value.toObject().value("tab").toString() == tab_name)
         {
@@ -282,20 +316,11 @@ void knob_editor::insert_knob_in_tab(QJsonArray *knobs, QJsonObject knob_obj,
             QList<QJsonObject> line_knobs = {value.toObject()};
             knobs_from_tab.push_back(line_knobs);
         }
-        else
-            knobs_other_tabs.push_back(value);
+        else if (leftover_knobs)
+            leftover_knobs->push_back(value);
     }
 
-    if (index == -1)
-        knobs_from_tab.push_back({knob_obj});
-    else
-        knobs_from_tab.insert(index, {knob_obj});
-
-    // union de knobs
-    *knobs = knobs_other_tabs;
-    for (auto list_knobs : knobs_from_tab)
-        for (QJsonObject __knob : list_knobs)
-            knobs->push_back(__knob);
+    return knobs_from_tab;
 }
 
 QString knob_editor::add_tab(QWidget *panel, int index, QString preferred_name)

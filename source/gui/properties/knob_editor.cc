@@ -151,6 +151,10 @@ knob_editor::knob_editor(QWidget *__properties)
     default_value_edit->setToolTip("Default");
 
     over_line_check = new knob_check_box({}, "Over Line");
+    over_line_check->setToolTip(
+        "The 'over line' can only be placed next to a \n"
+        "check_box, button, choice or position type, if it is placed \n"
+        "next to another type, it will be disabled");
     bidimensional_check = new knob_check_box({}, "BiDimensional");
 
     one_line_layout->addWidget(minimum_edit);
