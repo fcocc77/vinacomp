@@ -115,6 +115,11 @@ void knob_slider::set_animated(bool animated)
     knob::set_animated(animated);
 }
 
+void knob_slider::set_has_expression(bool expression)
+{
+    qt::set_property(value_1_edit, "expression", expression);
+}
+
 void knob_slider::to_emmit_signal()
 {
     if (!emmit_signal)

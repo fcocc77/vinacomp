@@ -228,6 +228,7 @@ void knob::set_animatable(bool _animatable)
     });
     action *clear_expression_action =
         new action("Clear Expression", "", "close");
+    clear_expression_action->connect_to(this, [this]() { set_expression(""); });
 
     action *copy_values_action = new action("Copy Values", "");
     action *copy_animation_action = new action("Copy Animation", "");
@@ -304,6 +305,8 @@ void knob::restore_param()
         enable_animation();
         set_animated(true);
     }
+
+    set_expression(params->value(exp_name).toString());
 }
 
 void knob::update_value(QJsonValue value)
@@ -361,6 +364,8 @@ void knob::disable_animation()
 
 void knob::set_animated(bool _animated) {}
 
+void knob::set_has_expression(bool expression) {}
+
 void knob::set_keyframe(bool auto_value)
 {
     QString curve = get_param_value().toString();
@@ -383,5 +388,12 @@ void knob::set_keyframe(bool auto_value)
 
 void knob::set_expression(QString expression)
 {
-    params->insert(exp_name, expression);
+    bool has_expression = !expression.isEmpty();
+
+    set_has_expression(has_expression);
+
+    if (has_expression)
+        params->insert(exp_name, expression);
+    else
+        params->remove(exp_name);
 }

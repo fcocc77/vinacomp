@@ -67,6 +67,7 @@ protected:
     void update_value(QJsonValue value);
     inline QJsonValue get_default() const;
     virtual void set_animated(bool _animated);
+    virtual void set_has_expression(bool expression);
 
 public:
     knob(knob_props props = {});
