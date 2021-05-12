@@ -73,7 +73,7 @@ knob_editor::knob_editor(QWidget *__properties)
     edit_tools_layout->setContentsMargins(10, 5, 10, 5);
 
     QLabel *edit_label_init = new QLabel("Expanding knob: ");
-    edit_label = new QLabel("Editando knob 'mi knob' ...");
+    edit_label = new QLabel();
     edit_label->setObjectName("edit_label");
     edit_icon = new button();
     edit_icon->setObjectName("edit_icon");

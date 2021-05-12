@@ -38,8 +38,12 @@ private:
     QTextEdit *output;
     QWidget *node_graph;
 
+    bool expression_editor;
+    QWidget *expression_editor_bar;
+
     void run_script();
     void append_output(QString text, QColor color = Qt::white);
+    QWidget *set_expression_editor_bar();
 
     // python
     void python_initialize();
@@ -49,7 +53,8 @@ private:
     //
 
 public:
-    script_editor(QJsonObject *_project, QWidget *_node_graph);
+    script_editor(QJsonObject *_project, QWidget *_node_graph,
+                  bool expression_editor = false);
     ~script_editor();
 
     void open_script_from_project();

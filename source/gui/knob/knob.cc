@@ -7,6 +7,7 @@
 #include <vinacomp.h>
 #include <node_rect.h>
 #include <knob_editor.h>
+#include <script_editor.h>
 
 knob::knob(knob_props props)
     : knob_layout(nullptr)
@@ -209,24 +210,44 @@ void knob::set_animatable(bool _animatable)
     knob_layout->addWidget(animation_button);
 
     action *set_key_action = new action("Set Key", "", "key");
-    action *delete_key_action = new action("Delete Key", "");
+    action *delete_key_action = new action("Delete Key", "", "close");
     action *no_animation_action = new action("No Animation", "");
+    action *reset_to_default_action =
+        new action("Reset to default", "", "restart");
+
     action *curve_editor_action =
         new action("Curve Editor...", "", "curve_editor");
+    action *edit_expression_action = new action("Edit Expression", "", "code");
+    edit_expression_action->connect_to(this, [this]() {
+        script_editor *expression_editor = static_cast<trim_panel *>(panel)
+                                               ->get_properties()
+                                               ->get_expression_editor();
+
+        expression_editor->show();
+    });
+    action *clear_expression_action =
+        new action("Clear Expression", "", "close");
+
     action *copy_values_action = new action("Copy Values", "");
     action *copy_animation_action = new action("Copy Animation", "");
-    action *copy_links_action = new action("Copy Links", "");
-    action *paste_absolute_action = new action("Paste Absolute");
+    action *copy_links_action = new action("Copy Links", "", "link");
+
+    action *paste_absolute_action = new action("Paste Absolute", "", "paste");
     action *paste_relative_action = new action("Paste Relative");
-    action *generate_keys_action = new action("Generate Keys");
-    action *smooth_curve_action = new action("Smooth Curve");
-    action *loop_action = new action("Loop");
+
+    action *generate_keys_action =
+        new action("Generate Keys", "", "generate_keys");
+    action *smooth_curve_action = new action("Smooth Curve","", "curve_smooth");
+    action *loop_action = new action("Loop", "", "refresh");
 
     menu->addAction(set_key_action);
     menu->addAction(delete_key_action);
     menu->addAction(no_animation_action);
+    menu->addAction(reset_to_default_action);
     menu->addSeparator();
     menu->addAction(curve_editor_action);
+    menu->addAction(edit_expression_action);
+    menu->addAction(clear_expression_action);
     menu->addSeparator();
     menu->addAction(copy_values_action);
     menu->addAction(copy_animation_action);

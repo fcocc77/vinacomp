@@ -28,6 +28,9 @@ void properties::setup_ui()
     _knob_editor->hide();
     layout->addWidget(_knob_editor);
 
+    expression_editor = new script_editor(0, 0, true);
+    layout->addWidget(expression_editor);
+
     trim_panels = new QWidget(this);
     trim_panels->setObjectName("trim_panels");
     trim_panels_layout = new QVBoxLayout(trim_panels);

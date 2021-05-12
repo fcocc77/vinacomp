@@ -1,9 +1,12 @@
 #include <script_editor.h>
 #include <action.h>
 
-script_editor::script_editor(QJsonObject *_project, QWidget *_node_graph)
+script_editor::script_editor(QJsonObject *_project, QWidget *_node_graph,
+                             bool _expression_editor)
     : project(_project)
     , node_graph(_node_graph)
+    , expression_editor(_expression_editor)
+    , expression_editor_bar(nullptr)
 {
 
     this->setObjectName("script_editor");

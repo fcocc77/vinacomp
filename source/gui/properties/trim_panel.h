@@ -100,9 +100,15 @@ public:
     inline tab_widget *get_tab_widget() const;
     inline QStringList get_only_read_tabs() const;
     inline QJsonObject *get_params() const;
+    inline properties *get_properties() const;
     void enter_to_properties();
     void leave_properties();
 };
+
+inline properties *trim_panel::get_properties() const
+{
+    return _properties;
+}
 
 inline QJsonObject *trim_panel::get_params() const
 {

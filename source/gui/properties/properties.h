@@ -10,6 +10,7 @@
 #include <QWidget>
 
 #include <knob_editor.h>
+#include <script_editor.h>
 
 class properties : public QWidget
 {
@@ -22,6 +23,7 @@ private:
     QWidget *_vinacomp;
     
     knob_editor *_knob_editor;
+    script_editor *expression_editor;
 
     bool is_maximize;
     int max_panels;
@@ -49,6 +51,7 @@ public:
     void set_edit_mode(bool enable);
     inline QWidget *get_knob_editor() const;
     inline bool is_edit_mode() const;
+    inline script_editor *get_expression_editor() const;
 };
 //
 //
@@ -63,6 +66,11 @@ template <class T> void properties::add_trim_panel(T *_trim_panel)
 
     update_curve(_trim_panel);
     update_viewers_handlers();
+}
+
+inline script_editor *properties::get_expression_editor() const
+{
+    return expression_editor;
 }
 
 inline bool properties::is_edit_mode() const

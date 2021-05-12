@@ -9,6 +9,12 @@ void script_editor::setup_ui()
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->setMargin(0);
 
+    if (expression_editor)
+    {
+        expression_editor_bar = set_expression_editor_bar();
+        layout->addWidget(expression_editor_bar);
+    }
+
     QWidget *_tools = tools_setup_ui();
 
     output = new QTextEdit();
@@ -69,8 +75,41 @@ QCodeEditor *script_editor::code_editor()
 
     connect(editor, &QTextEdit::textChanged, this, [this]() {
         // guarda el script escrito en el proyecto
-        project->insert("script_editor", editor->toPlainText());
+        if (project)
+            project->insert("script_editor", editor->toPlainText());
     });
 
     return editor;
+}
+
+QWidget *script_editor::set_expression_editor_bar()
+{
+    QWidget *widget = new QWidget;
+    widget->setObjectName("expression_editor_bar");
+
+    QHBoxLayout *layout = new QHBoxLayout(widget);
+    layout->setContentsMargins(10, 4, 10, 4);
+
+    QLabel *exp_label_init = new QLabel("Editing Expression: ");
+    QLabel *exp_label = new QLabel("'param name'");
+    exp_label->setObjectName("exp_label");
+    button *code_icon = new button();
+    code_icon->setObjectName("code_icon");
+    code_icon->set_icon("code");
+
+    QPushButton *ok_button = new QPushButton("OK");
+    QPushButton *cancel_button = new QPushButton("Cancel");
+
+    connect(ok_button, &QPushButton::clicked, this, [this]() { hide(); });
+
+    connect(cancel_button, &QPushButton::clicked, this, [this]() { hide(); });
+
+    layout->addWidget(code_icon);
+    layout->addWidget(exp_label_init);
+    layout->addWidget(exp_label);
+    layout->addStretch();
+    layout->addWidget(cancel_button);
+    layout->addWidget(ok_button);
+
+    return widget;
 }

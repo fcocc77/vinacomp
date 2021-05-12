@@ -86,6 +86,7 @@ gui__knobs:
 	☐ terminar integer knob' @today
 	☐ terminar position knob' @today
 	☐ terminar text knob'
+    ☐ el munu del knob dejarlo por fuera, en el trim_panel, por que tenerlo en cada 'knob' gasta mucha ram
 nodes:
 	☐ crear nodo de speed, para que cambie todas las velocidades como 'videovina' y asi no lo tenemos que hacer en videovina
 engine:
