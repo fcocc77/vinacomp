@@ -7,6 +7,7 @@
 void script_editor::setup_ui()
 {
     QVBoxLayout *layout = new QVBoxLayout(this);
+    layout->setSpacing(0);
     layout->setMargin(0);
 
     if (expression_editor)
@@ -14,15 +15,17 @@ void script_editor::setup_ui()
         expression_editor_bar = set_expression_editor_bar();
         layout->addWidget(expression_editor_bar);
     }
-
-    QWidget *_tools = tools_setup_ui();
+    else
+    {
+        QWidget *_tools = tools_setup_ui();
+        layout->addWidget(_tools);
+    }
 
     output = new QTextEdit();
     output->setReadOnly(true);
     output->setObjectName("output");
     QCodeEditor *input = code_editor();
 
-    layout->addWidget(_tools);
 
     QSplitter *splitter = new QSplitter();
     splitter->setOrientation(Qt::Vertical);
@@ -91,7 +94,7 @@ QWidget *script_editor::set_expression_editor_bar()
     layout->setContentsMargins(10, 4, 10, 4);
 
     QLabel *exp_label_init = new QLabel("Editing Expression: ");
-    QLabel *exp_label = new QLabel("'param name'");
+    exp_label = new QLabel("'param name'");
     exp_label->setObjectName("exp_label");
     button *code_icon = new button();
     code_icon->setObjectName("code_icon");
@@ -100,9 +103,10 @@ QWidget *script_editor::set_expression_editor_bar()
     QPushButton *ok_button = new QPushButton("OK");
     QPushButton *cancel_button = new QPushButton("Cancel");
 
-    connect(ok_button, &QPushButton::clicked, this, [this]() { hide(); });
-
-    connect(cancel_button, &QPushButton::clicked, this, [this]() { hide(); });
+    connect(ok_button, &QPushButton::clicked, this,
+            &script_editor::expression_ok);
+    connect(cancel_button, &QPushButton::clicked, this,
+            &script_editor::expression_cancel);
 
     layout->addWidget(code_icon);
     layout->addWidget(exp_label_init);

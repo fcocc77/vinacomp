@@ -31,6 +31,7 @@ knob::knob(knob_props props)
     label = knob_data.value("label").toString();
     tips = knob_data.value("tooltip").toString();
     anim_name = name + "_anim";
+    exp_name = name + "_exp";
     //
 
     // Espacio inicial
@@ -223,7 +224,7 @@ void knob::set_animatable(bool _animatable)
                                                ->get_properties()
                                                ->get_expression_editor();
 
-        expression_editor->show();
+        expression_editor->set_knob(this);
     });
     action *clear_expression_action =
         new action("Clear Expression", "", "close");
@@ -378,4 +379,9 @@ void knob::set_keyframe(bool auto_value)
         static_cast<vinacomp *>(_vinacomp)->get_curve_editor();
 
     _curve_editor->update_curve(this);
+}
+
+void knob::set_expression(QString expression)
+{
+    params->insert(exp_name, expression);
 }

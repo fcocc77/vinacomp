@@ -51,6 +51,7 @@ protected:
     QString tips;
     QString type;
     QString anim_name;
+    QString exp_name;
     QWidget *over_line_widget;
 
     QMenu *menu;
@@ -81,6 +82,8 @@ public:
     void set_data();
     QString get_node_type() const;
     QString get_node_name() const;
+    void set_expression(QString expression);
+    inline QString get_expression() const;
     void set_init_label(bool has_label);
     void set_init_label_text(QString label);
     inline void set_knob_layout(QHBoxLayout *layout);
@@ -108,6 +111,11 @@ public:
 signals:
     void to_node_gui(knob *_knob);
 };
+
+inline QString knob::get_expression() const
+{
+    return params->value(exp_name).toString();
+}
 
 inline int knob::get_init_space_width() const
 {

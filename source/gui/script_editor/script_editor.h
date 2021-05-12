@@ -38,8 +38,16 @@ private:
     QTextEdit *output;
     QWidget *node_graph;
 
+    // expression
     bool expression_editor;
     QWidget *expression_editor_bar;
+    QLabel *exp_label;
+    QWidget *current_knob;
+
+    void expression_ok();
+    void expression_cancel();
+    void finish_expression_edit();
+    //
 
     void run_script();
     void append_output(QString text, QColor color = Qt::white);
@@ -58,6 +66,7 @@ public:
     ~script_editor();
 
     void open_script_from_project();
+    void set_knob(QWidget *knob);
 };
 
 #endif // SCRIPT_EDITOR_HPP

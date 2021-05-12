@@ -29,6 +29,8 @@ void properties::setup_ui()
     layout->addWidget(_knob_editor);
 
     expression_editor = new script_editor(0, 0, true);
+    expression_editor->setMaximumHeight(300);
+    expression_editor->hide();
     layout->addWidget(expression_editor);
 
     trim_panels = new QWidget(this);
