@@ -82,6 +82,7 @@ private:
                             QString tab_name, int index = -1);
 
     QString get_icon_name_from_type(QString knob_type) const;
+    QString disable_over_line_to_next_knob(QWidget *panel, QString knob_name);
 
     knob *get_knob_under_cursor();
     QList<knob *> get_line_widget_knobs(QWidget *panel,

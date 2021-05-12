@@ -65,7 +65,6 @@ protected:
     void update_handler();
     void update_value(QJsonValue value);
     inline QJsonValue get_default() const;
-    inline QString get_label() const;
     virtual void set_animated(bool _animated);
 
 public:
@@ -74,7 +73,7 @@ public:
 
     void set_edit_mode(bool enable);
     void set_editing_knob(bool editing);
-    void set_init_space(int space, QString label = "");
+    void set_init_space(int space);
     inline void set_over_line_widget(QWidget *widget);
     inline QWidget *get_over_line_widget() const;
     QJsonValue get_param_value() const;
@@ -82,17 +81,21 @@ public:
     void set_data();
     QString get_node_type() const;
     QString get_node_name() const;
+    void set_init_label(bool has_label);
+    void set_init_label_text(QString label);
     inline void set_knob_layout(QHBoxLayout *layout);
     inline QString get_full_name() const;
     inline QString get_type() const;
     inline QString get_name() const;
     inline QString get_tips() const;
+    inline QString get_label() const;
     inline bool is_animated() const;
     inline void set_visible(bool visible);
     inline QWidget *get_panel() const;
     void set_param_value(QJsonValue value);
     void set_animatable(bool _animatable = true);
     inline QJsonObject get_knob_data() const;
+    inline int get_init_space_width() const;
 
     virtual void update_animated();
     virtual void restore_param();
@@ -105,6 +108,11 @@ public:
 signals:
     void to_node_gui(knob *_knob);
 };
+
+inline int knob::get_init_space_width() const
+{
+    return init_space_width;
+}
 
 inline void knob::set_over_line_widget(QWidget *widget)
 {
@@ -138,7 +146,7 @@ inline QJsonValue knob::get_default() const
 
 inline QString knob::get_label() const
 {
-    return knob_data.value("label").toString();
+    return label;
 }
 
 inline void knob::set_param_value(QJsonValue value)

@@ -46,7 +46,8 @@ QWidget *script_editor::tools_setup_ui()
         editor->setStyleSheet(style);
     });
     font_size_slider->set_animatable(false);
-    font_size_slider->set_init_space(100, "Font Size");
+    font_size_slider->set_init_space(100);
+    font_size_slider->set_init_label_text("Font Size");
 
     _tools->add_action(clear_action);
     _tools->add_action(run_script_action);

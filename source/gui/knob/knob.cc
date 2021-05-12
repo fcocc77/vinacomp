@@ -24,6 +24,14 @@ knob::knob(knob_props props)
     , project(props.project)
     , animated(false)
 {
+    // name and type
+    name = knob_data.value("name").toString();
+    type = knob_data.value("type").toString();
+    label = knob_data.value("label").toString();
+    tips = knob_data.value("tooltip").toString();
+    anim_name = name + "_anim";
+    //
+
     // Espacio inicial
     init_space = new QWidget();
     init_space->hide();
@@ -56,7 +64,6 @@ knob::knob(knob_props props)
 
     QHBoxLayout *layout = new QHBoxLayout(init_space);
     label_widget = new QLabel();
-    label_widget->hide();
     label_widget->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
     layout->addWidget(delete_knob_button);
@@ -71,13 +78,6 @@ knob::knob(knob_props props)
     menu = new QMenu(this);
 
     icon_size = 15;
-
-    // name and type
-    name = knob_data.value("name").toString();
-    type = knob_data.value("type").toString();
-    tips = knob_data.value("tooltip").toString();
-    anim_name = name + "_anim";
-    //
 
     if (tips.isEmpty())
         tips = name;
@@ -145,14 +145,9 @@ void knob::update_handler()
     }
 }
 
-void knob::set_init_space(int space, QString _label)
+void knob::set_init_space(int space)
 {
     init_space_width = space;
-
-    label = _label;
-
-    if (!label.isEmpty())
-        label_widget->show();
 
     if (space == 0)
         return;
@@ -160,6 +155,18 @@ void knob::set_init_space(int space, QString _label)
     init_space->show();
     init_space->setMaximumWidth(space);
     init_space->setMinimumWidth(space);
+}
+
+void knob::set_init_label(bool has_label)
+{
+    if (has_label)
+        label_widget->setText(label);
+    else
+        label_widget->setText("");
+}
+
+void knob::set_init_label_text(QString label)
+{
     label_widget->setText(label);
 }
 

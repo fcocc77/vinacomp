@@ -31,14 +31,16 @@ project_settings::project_settings(QWidget *__vinacomp)
         for (viewer *_viewer : *viewers)
             _viewer->update_input_range();
     });
-    frame_range_knob->set_init_space(init_space, "Frame Range");
+    frame_range_knob->set_init_space(init_space);
+    frame_range_knob->set_init_label_text("Frame Range");
     //
     //
 
     // Proxy Scale
     knob_floating *proxy_scale_knob =
         new knob_floating({}, 0.1, 1, proxy_scale);
-    proxy_scale_knob->set_init_space(init_space, "Proxy Scale");
+    proxy_scale_knob->set_init_space(init_space);
+    proxy_scale_knob->set_init_label_text("Proxy Scale");
     //
 
     // Comment

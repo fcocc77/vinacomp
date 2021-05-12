@@ -152,6 +152,7 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
                 line_layout->addWidget(_knob);
 
                 _knob->set_init_space(0);
+
                 _knob->set_over_line_widget(line_widget);
                 layout->addWidget(line_widget);
             }
@@ -163,7 +164,10 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
                 else if (type == "button" || type == "check_box")
                     _knob->set_init_space(init_space_width);
                 else
-                    _knob->set_init_space(init_space_width, label);
+                {
+                    _knob->set_init_space(init_space_width);
+                    _knob->set_init_label(true);
+                }
 
                 layout->addWidget(_knob);
             }
