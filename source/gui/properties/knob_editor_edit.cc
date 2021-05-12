@@ -732,7 +732,8 @@ void knob_editor::delete_knob(knob *_knob, bool cancel_editing_knob)
         knob *next_knob = panel->get_knob(next_knob_name);
         next_knob->set_init_space(_knob->get_init_space_width());
 
-        if (next_knob->get_type() == "choice")
+        QString type = next_knob->get_type();
+        if (type == "choice" || type == "floating_dimensions")
             next_knob->set_init_label(true);
 
         next_knob->set_edit_mode(true);

@@ -199,7 +199,8 @@ void knob_editor::update_edit_options_from_type(bool visible, QString knob_type)
 
     QStringList list_for_min_max{"floating", "integer", "color"};
 
-    QStringList list_for_over_line{"choice", "check_box", "button"};
+    QStringList list_for_over_line{"choice", "check_box", "button",
+                                   "floating_dimensions"};
 
     QStringList list_for_bidimensional{"floating", "integer"};
 
