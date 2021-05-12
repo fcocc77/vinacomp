@@ -51,6 +51,7 @@ protected:
     QString tips;
     QString type;
     QString anim_name;
+    QWidget *over_line_widget;
 
     QMenu *menu;
 
@@ -74,6 +75,8 @@ public:
     void set_edit_mode(bool enable);
     void set_editing_knob(bool editing);
     void set_init_space(int space, QString label = "");
+    inline void set_over_line_widget(QWidget *widget);
+    inline QWidget *get_over_line_widget() const;
     QJsonValue get_param_value() const;
 
     void set_data();
@@ -102,6 +105,16 @@ public:
 signals:
     void to_node_gui(knob *_knob);
 };
+
+inline void knob::set_over_line_widget(QWidget *widget)
+{
+    over_line_widget = widget;
+}
+
+inline QWidget *knob::get_over_line_widget() const
+{
+    return over_line_widget;
+}
 
 inline QJsonObject knob::get_knob_data() const
 {

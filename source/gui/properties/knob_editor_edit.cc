@@ -164,7 +164,7 @@ void knob_editor::move_knob(QWidget *panel, int index)
     QJsonObject knob_data = dragging_knob->get_knob_data();
 
     knob_params params;
-    QString name = knob_data.value("type").toString();
+    QString name = knob_data.value("name").toString();
     params.name = get_available_knob_name(panel, name);
 
     params.type = knob_data.value("type").toString();
@@ -173,18 +173,79 @@ void knob_editor::move_knob(QWidget *panel, int index)
     params.min = knob_data.value("minimum").toDouble();
     params.max = knob_data.value("maximum").toDouble();
     params.default_value = knob_data.value("default").toDouble();
-    params.over_line = knob_data.value("over_line").toBool();
+
+    // cualquier knob que se mueva queda sin 'over_line'
+    params.over_line = false;
 
     int dragging_knob_index =
         get_index_knob(panel, dragging_knob->get_name());
 
+    // si es que el 'knob' esta dentro de un 'line_widget' busca el hermano
+    // siguiente y ya que al mover este, el siguiente quedara ubicado primero en
+    // el 'line_widget' se tiene que desabilitar el 'over_line'
+    QString next_knob_name;
+    auto brother_knobs = get_line_widget_knobs(panel, name);
+    bool is_line_widget = !brother_knobs.empty();
+    if (brother_knobs.count() >= 2)
+        next_knob_name = brother_knobs.value(1)->get_name();
+
+    trim_panel *_panel = static_cast<trim_panel *>(panel);
+    for (int i = 0; i < _panel->custom_knobs.count(); i++)
+    {
+        QJsonObject __knob = _panel->custom_knobs[i].toObject();
+        QString knob_name = __knob.value("name").toString();
+        if (knob_name == next_knob_name)
+        {
+            __knob["over_line"] = false;
+            _panel->custom_knobs[i] = __knob;
+        }
+    }
+    //
+
     // resta uno al index cuando el index es mayor al del knob arrastrado, por
     // que el knob se elimina antes de añadir uno nuevo
-    if (dragging_knob_index < index)
-        index--;
+    if (is_line_widget)
+    {
+        if (dragging_knob_index < index - 1)
+            index--;
+    }
+    else
+    {
+        if (dragging_knob_index < index)
+            index--;
+    }
+    //
 
     delete_knob(dragging_knob);
     add_knob(panel, params, index);
+
+}
+
+QList<knob *> knob_editor::get_line_widget_knobs(QWidget *_panel,
+                                                 QString knob_name) const
+{
+    // obtiene una lista de todos los knob hermanos de widget 'over_line'
+    trim_panel *panel = static_cast<trim_panel *>(_panel);
+    knob *_knob = panel->get_knob(knob_name);
+
+    if (!_knob)
+        return {};
+
+    QWidget *line_widget = _knob->get_over_line_widget();
+    if (!line_widget)
+        return {};
+
+    QList<knob *> list_knobs;
+
+    for (int i = 0; i < line_widget->layout()->count(); i++)
+    {
+        QLayoutItem *item = line_widget->layout()->itemAt(i);
+        knob *__knob = dynamic_cast<knob *>(item->widget());
+        if (__knob)
+            list_knobs.push_back(__knob);
+    }
+
+    return list_knobs;
 }
 
 void knob_editor::insert_knob_in_tab(QJsonArray *knobs, QJsonObject knob_obj,
@@ -423,12 +484,19 @@ knob *knob_editor::get_knob_under_cursor()
         return _knob;
     };
 
-    // detecta si el over cursor es el primer 'knob'
+    // detecta si el over cursor es el primer 'knob' si es 'over_line'
+    // utiliza el padre 'line_widget' para comparar el 'y()'
     bool is_first = false;
     knob *first_knob = get_knob(-14);
     if (first_knob)
-        if (first_knob->y() < 25)
+    {
+        QWidget *widget = first_knob->get_over_line_widget();
+        if (!widget)
+            widget = first_knob;
+
+        if (widget->y() < 25)
             is_first = true;
+    }
 
     if (is_first)
     {

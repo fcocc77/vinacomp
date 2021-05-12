@@ -84,6 +84,8 @@ private:
     QString get_icon_name_from_type(QString knob_type) const;
 
     knob *get_knob_under_cursor();
+    QList<knob *> get_line_widget_knobs(QWidget *panel,
+                                        QString knob_name) const;
     QVBoxLayout *get_layout_current_tab(QWidget *panel) const;
     int get_index_knob(QWidget *panel, QString knob_name) const;
     QWidget *get_panel_from_widget(QWidget *widget) const;

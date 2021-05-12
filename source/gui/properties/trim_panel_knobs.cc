@@ -145,12 +145,14 @@ void trim_panel::setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
                 for (knob *last_knob : over_line_knobs)
                 {
                     line_layout->addWidget(last_knob);
+                    last_knob->set_over_line_widget(line_widget);
                     last_knob->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
                 }
 
                 line_layout->addWidget(_knob);
 
                 _knob->set_init_space(0);
+                _knob->set_over_line_widget(line_widget);
                 layout->addWidget(line_widget);
             }
             else
