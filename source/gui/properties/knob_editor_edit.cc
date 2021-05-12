@@ -195,10 +195,19 @@ void knob_editor::move_knob(QWidget *panel, int index)
             index--;
     }
     //
+    trim_panel *_panel = static_cast<trim_panel *>(panel);
+
+    // rescata el parametro antes de borrar el knob, ya que el 'delete_knob'
+    // borra el parametro
+    QJsonValue param_project = _panel->get_params()->value(name);
 
     delete_knob(dragging_knob);
-    add_knob(panel, params, index);
 
+    // resaura los valores del parametro en el proyecto, si es que existe
+    if (!param_project.isUndefined())
+        _panel->get_params()->insert(params.name, param_project);
+
+    add_knob(panel, params, index);
 }
 
 QString knob_editor::disable_over_line_to_next_knob(QWidget *panel,
@@ -856,14 +865,24 @@ void knob_editor::finish_edit_knob(bool ok)
 {
     if (ok)
     {
-        QWidget *panel = editing_knob->get_panel();
+        trim_panel *panel =
+            static_cast<trim_panel *>(editing_knob->get_panel());
+
         QString tab_name = get_custom_tab_name(panel);
         int index = get_index_knob(panel, editing_knob->get_name());
 
         knob_params params = get_params_from_edit_box(panel);
         params.type = editing_knob->get_type();
 
+        QJsonValue param_project =
+            panel->get_params()->value(editing_knob->get_name());
+
         delete_knob(editing_knob, false);
+
+        // resaura los valores del parametro en el proyecto, si es que existe
+        if (!param_project.isUndefined())
+            panel->get_params()->insert(params.name, param_project);
+
         add_knob(panel, params, index);
 
         editing_knob = nullptr;

@@ -99,9 +99,15 @@ public:
     inline QMap<QString, knob *> *get_knobs() const;
     inline tab_widget *get_tab_widget() const;
     inline QStringList get_only_read_tabs() const;
+    inline QJsonObject *get_params() const;
     void enter_to_properties();
     void leave_properties();
 };
+
+inline QJsonObject *trim_panel::get_params() const
+{
+    return params;
+}
 
 inline QWidget *trim_panel::get_dividing_line_v() const
 {

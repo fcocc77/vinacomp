@@ -41,7 +41,7 @@ gui__trim_panel:
     ☐ knob_editor: crear button que vincule el plugin de python con el 'script_editor' del panel
     ☐ knob_editor: crear un nuevo tab cuando el nodo no es un grupo
     ✔ knob_editor: al arrastrar un knob de un nodo a otro, el index no se mantiene @done(2021-05-12 11:44) @project(gui__trim_panel)
-    ☐ knob_editor: conservar el valor del params en el proyecto al mover o editar un knob, ya que al borrar el knob se elimina el params tambien
+    ✔ knob_editor: conservar el valor del params en el proyecto al mover o editar un knob, ya que al borrar el knob se elimina el params tambien @done(2021-05-12 12:32) @project(gui__trim_panel)
     ✔ knob_editor: considerar tambien los knobs que vienen en el nodo, para que no queden con algun nombre que ya exista @done(2021-05-07 18:30) @project(gui__trim_panel)
 gui__node_graph:
 	☐ crear grilla que switchee con el boton de 'grid'
