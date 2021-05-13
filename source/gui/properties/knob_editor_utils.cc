@@ -103,7 +103,7 @@ knob_params knob_editor::get_params_from_edit_box(QWidget *panel) const
         _allowed_file_types.push_back(_file_type.simplified());
 
     params.allowed_file_types = _allowed_file_types;
-    save_file_dialog_check->is_checked();
+    params.save_file_dialog = save_file_dialog_check->is_checked();
 
     return params;
 }
