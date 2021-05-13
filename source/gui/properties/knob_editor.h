@@ -79,7 +79,8 @@ private:
     void edit_box_clear();
     void edit_box_close();
     void add_knob(QWidget *panel, knob_params params, int index = -1);
-    void update_knob(knob *_knob, knob_params params, int index);
+    void update_knob(knob *_knob, knob_params params, int index,
+                     bool keep_name = false);
     void move_knob(QWidget *panel, int index = -1);
     void push_knob_or_tab();
 

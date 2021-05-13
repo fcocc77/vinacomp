@@ -159,6 +159,9 @@ QString knob_editor::get_available_name(QStringList name_list, QString name) con
         return str;
     };
 
+    if (!name_list.contains(name))
+        return name;
+
     QString basename = get_basename(name);
     QString available_name = basename;
 

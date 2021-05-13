@@ -171,7 +171,6 @@ void knob_editor::move_knob(QWidget *panel, int index)
 
     knob_params params;
     QString name = knob_data.value("name").toString();
-    params.name = get_available_knob_name(panel, name);
 
     params.type = knob_data.value("type").toString();
     params.tips = knob_data.value("tooltip").toString();
@@ -202,13 +201,17 @@ void knob_editor::move_knob(QWidget *panel, int index)
             index--;
     }
 
-    update_knob(dragging_knob, params, index);
+    update_knob(dragging_knob, params, index, true);
 }
 
-void knob_editor::update_knob(knob *_knob, knob_params params, int index)
+void knob_editor::update_knob(knob *_knob, knob_params params, int index,
+                              bool keep_name)
 {
     trim_panel *_panel = static_cast<trim_panel *>(_knob->get_panel());
     QString name = _knob->get_name();
+
+    if (keep_name)
+        params.name = name;
 
     // rescata el parametro antes de borrar el knob, ya que el 'delete_knob'
     // borra el parametro
@@ -567,7 +570,8 @@ void knob_editor::finish_edit_knob(bool ok)
         knob_params params = get_params_from_edit_box(panel);
         params.type = editing_knob->get_type();
 
-        update_knob(editing_knob, params, index);
+        bool keep_name = editing_knob->get_name() == knob_name->text();
+        update_knob(editing_knob, params, index, keep_name);
 
         editing_knob = nullptr;
     }
