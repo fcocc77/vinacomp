@@ -24,7 +24,6 @@ void group_gui::export_plugin()
     trim_panel *panel = static_cast<trim_panel *>(name_knob->get_panel());
 
     QString name = name_knob->get_value();
-    print(name);
     QString icon_path = static_cast<knob_file *>(get_knob("icon"))->get_value();
 
     QString group_name =
@@ -49,4 +48,7 @@ void group_gui::export_plugin()
     plugin["knobs"] = *panel->custom_knobs;
 
     jwrite(base_path + name + ".json", plugin);
+
+    // crea script para el nodo
+    fwrite(base_path + name + ".py", {});
 }
