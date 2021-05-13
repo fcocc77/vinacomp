@@ -526,7 +526,13 @@ void knob_editor::edit_knob(knob *_knob)
     bool over_line = knob_data.value("over_line").toBool();
     bool bidimensional = knob_data.value("bidimensional").toBool();
     bool save_file_dialog = knob_data.value("save_file_dialog").toBool();
-    QString _allowed_file_types = knob_data.value("allowed_file_types").toString();
+
+    QString _allowed_file_types;
+    for (QJsonValue value : knob_data.value("allowed_file_types").toArray())
+        _allowed_file_types += value.toString() + "\n";
+
+    _allowed_file_types =
+        _allowed_file_types.left(_allowed_file_types.length() - 1);
 
     knob_name->setText(name);
     knob_label->setText(label);

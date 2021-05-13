@@ -27,7 +27,7 @@ struct knob_params
     float default_value;
     bool over_line;
     bool bidimensional;
-    QString allowed_file_types;
+    QJsonArray allowed_file_types;
     bool save_file_dialog;
 };
 
