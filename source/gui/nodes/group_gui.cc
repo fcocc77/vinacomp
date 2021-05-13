@@ -32,11 +32,13 @@ void group_gui::export_plugin()
     QString group_icon_path =
         static_cast<knob_file *>(get_knob("group_icon"))->get_value();
 
-    QString base_path = "plugins/py_plugins/" + name;
+    QString base_path = "plugins/py_plugins/";
 
-    // copiado de icono
-    QString plugin_icon = base_path + ".png";
+        // copiado de icono
+    QString plugin_icon = base_path + name + ".png";
     os::copy(icon_path, plugin_icon);
+
+    os::copy(group_icon_path, base_path + group_name + ".png");
 
     // copia los custom_knobs
     QJsonObject plugin;
@@ -46,5 +48,5 @@ void group_gui::export_plugin()
     plugin["icon"] = plugin_icon;
     plugin["knobs"] = *panel->custom_knobs;
 
-    jwrite(base_path + ".json", plugin);
+    jwrite(base_path + name + ".json", plugin);
 }

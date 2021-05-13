@@ -22,6 +22,41 @@ nodes_load::nodes_load()
         QString effect_id = effect.value("id").toString();
         effects.insert(effect_id, effect);
     }
+
+    // cargar nodos py_plugins
+    QString py_plugins = "plugins/py_plugins";
+
+    QStringList icons;
+    for (QString file : os::listdir(py_plugins))
+    {
+        QString basename = os::basename(file);
+        QString ext = basename.split(".").last();
+        QString name = basename.split(".").first();
+
+        if (ext == "png")
+            icons.push_back(name);
+
+        if (ext != "json")
+            continue;
+
+        QJsonObject effect = jread(file);
+        QString effect_id = effect.value("id").toString();
+        QString group = effect.value("group").toString();
+
+        py_plugins_groups.insert(group, {group, ""});
+
+        effects.insert(effect_id, effect);
+    }
+    //
+
+    // agrea el icono a los grupos de py_plugins si es que existe algun png con
+    // el mismo nombre
+    for (QString icon_name : icons)
+    {
+        if (py_plugins_groups.contains(icon_name))
+            py_plugins_groups[icon_name].icon =
+                py_plugins + "/" + icon_name + ".png";
+    }
 }
 
 nodes_load::~nodes_load() {}

@@ -33,6 +33,9 @@ void nodes_bar::setup_ui()
     for (auto binary : nodes->get_ofx()->get_binaries())
         add_menu(binary.name, binary.icon);
 
+    for (auto py_plugins_group : nodes->get_py_plugins_groups())
+        add_menu(py_plugins_group.name, py_plugins_group.icon);
+
     layout->addStretch();
 
     find_node_edit = new QLineEdit();
