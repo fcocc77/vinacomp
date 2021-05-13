@@ -10,15 +10,19 @@ project_struct::~project_struct() {}
 
 void project_struct::insert_node(QString _name, QString _type,
                                  QJsonObject _params, QColor _color,
-                                 QPointF _pos, QJsonObject _inputs, QSize size,
+                                 QPointF _pos, QJsonObject _inputs,
+                                 QJsonArray custom_knobs, QSize size,
                                  int z_value, QString tips)
 {
     if (nodes.contains(_name))
         return;
 
     QJsonObject *params = new QJsonObject(_params);
-    node_struct node(
-        {_name, _color, _type, tips, _pos, params, _inputs, size, z_value});
+    QJsonArray *knobs = new QJsonArray(custom_knobs);
+
+    node_struct node({_name, _color, _type, tips, _pos, params, _inputs, knobs,
+                      size, z_value});
+
     nodes.insert(_name, node);
 }
 
@@ -28,6 +32,7 @@ void project_struct::delete_node(QString name)
         return;
 
     delete nodes[name].params;
+    delete nodes[name].custom_knobs;
     nodes.remove(name);
 }
 
@@ -77,6 +82,9 @@ QJsonObject project_struct::get_project_json() const
             _node["size"] = QJsonArray({node.size.width(), node.size.height()});
             _node["z_value"] = node.z_value;
         }
+
+        if (!node.custom_knobs->empty())
+            _node["knobs"] = *node.custom_knobs;
 
         _nodes.insert(name, _node);
     }
@@ -128,6 +136,8 @@ void project_struct::load_from_json(QJsonObject project)
         QJsonObject params = node.value("params").toObject();
         QJsonObject inputs = node.value("inputs").toObject();
 
+        QJsonArray custom_knobs = node.value("knobs").toArray();
+
         QJsonArray size = node.value("size").toArray();
         QSize _size = {size[0].toInt(), size[1].toInt()};
 
@@ -136,8 +146,8 @@ void project_struct::load_from_json(QJsonObject project)
         // extrae el tips del parametro de label
         QString tips = params.value("label").toString();
 
-        insert_node(name, type, params, _color, _position, inputs, _size,
-                    z_value, tips);
+        insert_node(name, type, params, _color, _position, inputs, custom_knobs,
+                    _size, z_value, tips);
     }
     //
 

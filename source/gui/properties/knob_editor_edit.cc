@@ -137,15 +137,15 @@ void knob_editor::add_knob(QWidget *panel, knob_params params, int index)
     if (knob_object.empty())
         return;
 
-    QJsonArray &knobs = _panel->custom_knobs;
+    QJsonArray *knobs = _panel->custom_knobs;
 
     if (index == -1)
-        insert_knob_in_tab(&knobs, knob_object, custom_tab);
+        insert_knob_in_tab(knobs, knob_object, custom_tab);
     else
     {
-        if (knobs.count() < index)
+        if (knobs->count() < index)
             return;
-        insert_knob_in_tab(&knobs, knob_object, custom_tab, index);
+        insert_knob_in_tab(knobs, knob_object, custom_tab, index);
     }
 
     _panel->update_custom_knobs();
@@ -223,14 +223,14 @@ QString knob_editor::disable_over_line_to_next_knob(QWidget *panel,
         next_knob_name = brother_knobs.value(1)->get_name();
 
     trim_panel *_panel = static_cast<trim_panel *>(panel);
-    for (int i = 0; i < _panel->custom_knobs.count(); i++)
+    for (int i = 0; i < _panel->custom_knobs->count(); i++)
     {
-        QJsonObject __knob = _panel->custom_knobs[i].toObject();
+        QJsonObject __knob = (*_panel->custom_knobs)[i].toObject();
         QString __knob_name = __knob.value("name").toString();
         if (__knob_name == next_knob_name)
         {
             __knob["over_line"] = false;
-            _panel->custom_knobs[i] = __knob;
+            (*_panel->custom_knobs)[i] = __knob;
         }
     }
     //
@@ -432,12 +432,12 @@ QString knob_editor::get_available_tab_name(QWidget *panel, QString preferred_na
 QString knob_editor::get_available_knob_name(QWidget *panel, QString name) const
 {
     trim_panel *_panel = static_cast<trim_panel *>(panel);
-    QJsonArray &custom_knobs = _panel->custom_knobs;
+    QJsonArray *custom_knobs = _panel->custom_knobs;
     QJsonArray &base_knobs = _panel->base_knobs;
     QJsonArray &shared_knobs = _panel->shared_knobs;
 
     QStringList name_list;
-    for (QJsonValue value : custom_knobs)
+    for (QJsonValue value : *custom_knobs)
         name_list.push_back(value.toObject().value("name").toString());
 
     for (QJsonValue value : base_knobs)

@@ -32,6 +32,7 @@ trim_panel::trim_panel(properties *__properties, QString _name, QString _type,
     , icon_name(_icon_name)
     , color(_color)
     , params(project->nodes[_name].params)
+    , custom_knobs(project->nodes[_name].custom_knobs)
 
 {
     _knob_editor = static_cast<knob_editor *>(_properties->get_knob_editor());
@@ -80,6 +81,8 @@ trim_panel::trim_panel(properties *__properties, QString _name, QString _type,
         add_tab(tab_name);
     add_tab("Node");
     //
+
+    update_custom_knobs();
 
     tabs->set_index(0);
     //
@@ -141,7 +144,7 @@ QStringList trim_panel::get_tabs_from_knobs(QJsonArray _knobs)
 void trim_panel::update_custom_knobs()
 {
     QStringList custom_knobs_names;
-    for (QJsonValue value : custom_knobs)
+    for (QJsonValue value : *custom_knobs)
         custom_knobs_names.push_back(value.toObject().value("name").toString());
 
     // borra todos los 'knobs' custom solo los 'knobs' y no el 'custom_knobs'
@@ -160,7 +163,7 @@ void trim_panel::update_custom_knobs()
 
     clean_empty_line_widget();
 
-    for (QString tab_name : get_tabs_from_knobs(custom_knobs))
+    for (QString tab_name : get_tabs_from_knobs(*custom_knobs))
         add_tab(tab_name);
 }
 
@@ -190,7 +193,7 @@ void trim_panel::set_edit_mode(bool enable)
         if (!tabs_only_read.contains(_tab->get_name()))
             _tab->set_visible_close_button(enable);
 
-    for (QJsonValue value : custom_knobs)
+    for (QJsonValue value : *custom_knobs)
     {
         QString knob_name = value.toObject().value("name").toString();
         knob *_knob = knobs->value(knob_name);
@@ -349,7 +352,7 @@ void trim_panel::add_tab(QString tab_name, int index)
     if (!tabs_only_read.contains(tab_name))
     {
         QJsonArray this_tab_custom_knobs;
-        for (QJsonValue knob : custom_knobs)
+        for (QJsonValue knob : *custom_knobs)
         {
             QString _tab_name = knob.toObject().value("tab").toString();
             if (_tab_name == tab_name)
@@ -398,7 +401,7 @@ void trim_panel::delete_tab(QString tab_name)
     // usar esta funcion borrar manualmente el widget 'delete' despues de
     // invocar esta funcion
     QStringList knob_to_delete;
-    for (QJsonValue knob : custom_knobs)
+    for (QJsonValue knob : *custom_knobs)
     {
         QString tab_knob = knob.toObject().value("tab").toString();
         if (tab_knob == tab_name)
@@ -412,14 +415,14 @@ void trim_panel::delete_tab(QString tab_name)
 void trim_panel::remove_custom_knob(QString knob_name)
 {
     QJsonArray new_custom_knobs;
-    for (QJsonValue knob : custom_knobs)
+    for (QJsonValue knob : *custom_knobs)
     {
         QString _knob_name = knob.toObject().value("name").toString();
         if (_knob_name != knob_name)
             new_custom_knobs.push_back(knob);
     }
 
-    custom_knobs = new_custom_knobs;
+    *custom_knobs = new_custom_knobs;
 
     knob *_knob = knobs->value(knob_name);
     if (_knob)
@@ -427,6 +430,7 @@ void trim_panel::remove_custom_knob(QString knob_name)
 
     params->remove(knob_name);
     params->remove(knob_name + "_anim");
+    params->remove(knob_name + "_exp");
 
     knobs->remove(knob_name);
 
