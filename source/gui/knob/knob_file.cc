@@ -2,6 +2,8 @@
 
 knob_file::knob_file(knob_props props, QString file_path)
     : knob(props)
+    , save_file_dialog(props.knob_data.value("save_file_dialog").toBool())
+    , allowed_file_types(props.knob_data.value("allowed_file_types").toArray())
 {
     this->setObjectName("knob_file");
     QHBoxLayout *layout = new QHBoxLayout(this);
@@ -37,9 +39,14 @@ void knob_file::restore_param()
 void knob_file::open_file()
 {
     QFileDialog dialog(this);
-    dialog.setFileMode(QFileDialog::AnyFile);
+    if (save_file_dialog)
+        dialog.setAcceptMode(dialog.AcceptSave);
 
-    // dialog.setNameFilter();
+    QStringList filters;
+    for (QJsonValue value : allowed_file_types)
+        filters.push_back("*." + value.toString());
+
+    dialog.setNameFilters(filters);
 
     if (dialog.exec())
     {

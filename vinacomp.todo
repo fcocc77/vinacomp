@@ -3,6 +3,7 @@ general:
     ☐ crear api para plugins 'G`mic' con su libreria 'https://gmic.eu/libgmic.html' solo los efectos mas necesarios
 gui__settings_projects:
 	☐ el proxy va a remplazar el rscale de videovina
+    ☐ crear administrador de py_plugins para añadir, eliminar, cambiar iconos, y renombrar plugins
 gui__gl_view:
 	☐ que el zoom con el scroll del mouse apunte donde esta el cursor y no en el centro como esta ahora
 gui__curve_view:
@@ -42,7 +43,7 @@ gui__trim_panel:
     ☐ knob_editor: crear un nuevo tab cuando el nodo no es un grupo
     ✔ knob_editor: al arrastrar un knob de un nodo a otro, el index no se mantiene @done(2021-05-12 11:44) @project(gui__trim_panel)
     ✔ knob_editor: conservar el valor del params en el proyecto al mover o editar un knob, ya que al borrar el knob se elimina el params tambien @done(2021-05-12 12:32) @project(gui__trim_panel)
-    ☐ knob_editor: guradar custom knobs en el proyecto
+    ✔ knob_editor: guradar custom knobs en el proyecto @done(2021-05-13 11:39) @project(gui__trim_panel)
     ✔ knob_editor: considerar tambien los knobs que vienen en el nodo, para que no queden con algun nombre que ya exista @done(2021-05-07 18:30) @project(gui__trim_panel)
 gui__node_graph:
 	☐ crear grilla que switchee con el boton de 'grid'

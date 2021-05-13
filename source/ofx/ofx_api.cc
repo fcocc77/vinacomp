@@ -91,8 +91,8 @@ ofx_api::ofx_api()
     param_suite->paramEditEnd = param_edit_end;
     //
 
-    load("plugins/CImg.ofx.bundle/Contents/Linux-x86-64/CImg.ofx");
-    load("plugins/Misc.ofx.bundle/Contents/Linux-x86-64/Misc.ofx");
+    load("plugins/ofx/CImg.ofx.bundle/Contents/Linux-x86-64/CImg.ofx");
+    load("plugins/ofx/Misc.ofx.bundle/Contents/Linux-x86-64/Misc.ofx");
     // load("libs/ofx/Documentation/sources/Guide/Code/Example3/gain.ofx");
 }
 

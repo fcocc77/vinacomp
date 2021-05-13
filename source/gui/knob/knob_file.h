@@ -18,6 +18,9 @@ private:
     QPushButton *file_open;
     QLineEdit *filename;
 
+    bool save_file_dialog;
+    QJsonArray allowed_file_types;
+
     void open_file();
     void restore_param() override;
 

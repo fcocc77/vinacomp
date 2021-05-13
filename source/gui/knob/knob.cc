@@ -84,7 +84,7 @@ knob::knob(knob_props props)
     if (tips.isEmpty())
         tips = name;
     else
-        tips = name + ": " + tips;
+        tips = name + ":\n\n" + tips;
 
     label_widget->setToolTip(tips);
 }
