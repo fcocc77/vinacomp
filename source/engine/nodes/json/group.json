@@ -3,5 +3,89 @@
     "id": "group",
     "label": "Group",
     "icon": "group",
-    "knobs": []
+    "knobs": [
+        {
+            "label": "Plugin Script",
+            "name": "plugin_script",
+            "tab": "Plugin Settings",
+            "type": "label"
+        },
+        {
+            "label": "Edit Plugin Script",
+            "name": "edit_script",
+            "over_line": false,
+            "tab": "Plugin Settings",
+            "tooltip": "Edit the script that belongs to \nthe 'plugin' group with all its parameters",
+            "type": "button"
+        },
+        {
+            "label": "Plugin Exporter",
+            "name": "title",
+            "tab": "Plugin Settings",
+            "type": "label"
+        },
+        {
+            "default": "",
+            "label": "Plugin Name",
+            "name": "name",
+            "tab": "Plugin Settings",
+            "tooltip": "",
+            "type": "text"
+        },
+        {
+            "allowed_file_types": [
+                "png"
+            ],
+            "default": "",
+            "label": "Plugin Icon",
+            "name": "icon",
+            "over_line": false,
+            "save_file_dialog": false,
+            "tab": "Plugin Settings",
+            "tooltip": "",
+            "type": "file"
+        },
+        {
+            "name": "separator",
+            "over_line": false,
+            "tab": "Plugin Settings",
+            "type": "separator"
+        },
+        {
+            "default": "",
+            "label": "Group Name",
+            "name": "group",
+            "over_line": false,
+            "tab": "Plugin Settings",
+            "tooltip": "",
+            "type": "text"
+        },
+        {
+            "allowed_file_types": [
+                "png"
+            ],
+            "default": "",
+            "label": "Group Icon",
+            "name": "group_icon",
+            "over_line": false,
+            "save_file_dialog": false,
+            "tab": "Plugin Settings",
+            "tooltip": "Add an icon to the group, if the group already exists, \nreplace the icon if you have one",
+            "type": "file"
+        },
+        {
+            "name": "separator1",
+            "over_line": false,
+            "tab": "Plugin Settings",
+            "type": "separator"
+        },
+        {
+            "label": "Export",
+            "name": "export",
+            "over_line": false,
+            "tab": "Plugin Settings",
+            "tooltip": "Export the plugin to the vinacomp \"plugins/py_plugins' folder",
+            "type": "button"
+        }
+    ]
 }

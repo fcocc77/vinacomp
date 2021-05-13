@@ -27,8 +27,15 @@ private:
 public:
     knob_file(knob_props props, QString file_path = "");
     ~knob_file();
+
+    inline QString get_value() const;
 signals:
     void changed(QString file_path);
 };
+
+inline QString knob_file::get_value() const
+{
+    return filename->text();
+}
 
 #endif // KNOB_FILE_HPP

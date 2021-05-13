@@ -3,6 +3,7 @@
 #include <shuffle_gui.h>
 #include <reformat_gui.h>
 #include <frame_range_gui.h>
+#include <group_gui.h>
 #include <write_gui.h>
 #include <knob_text.h>
 #include <knob_check_box.h>
@@ -251,6 +252,8 @@ void trim_panel::setup_gui_panels(QJsonArray _knobs, QVBoxLayout *_layout)
         _node_gui = new reformat_gui();
     else if (type == "write")
         _node_gui = new write_gui(project);
+    else if (type == "group")
+        _node_gui = new group_gui();
     else if (type == "shuffle")
     {
         knob_data = _knobs[0].toObject();
