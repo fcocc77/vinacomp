@@ -15,6 +15,7 @@
 #include <knob_check_box.h>
 #include <action.h>
 #include <tools.h>
+#include <tab.h>
 
 struct knob_params
 {
@@ -66,6 +67,7 @@ private:
     knob *last_knob_under_cursor;
     knob *dragging_knob;
     knob *editing_knob;
+    tab *editing_tab;
 
     int insert_index;
     QWidget *current_panel;
@@ -111,6 +113,8 @@ private:
     void start_insertion();
     void dragging_insertion(QPointF pos = {});
     void hide_all_dividing_line();
+    void finish_edit_tab();
+    void finish_edit_knob();
 
     void mouseMoveEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
@@ -120,7 +124,8 @@ public:
     ~knob_editor();
 
     void finish_insertion(bool add_item = true);
-    void finish_edit_knob(bool ok);
+    void finish_edit(bool ok);
+    void edit_tab(tab *_tab);
     void delete_knob(knob *_knob, bool cancel_editing_knob = true);
     void edit_knob(knob *_knob);
     void drag_knob(knob *_knob);

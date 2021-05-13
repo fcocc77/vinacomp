@@ -1,7 +1,10 @@
 #include <tab_widget.h>
 
-tab_widget::tab_widget(bool _has_close_button)
-    : current_index(0)
+tab_widget::tab_widget(bool _has_close_button, QWidget *__knob_editor,
+                       QWidget *_panel)
+    : _knob_editor(__knob_editor)
+    , panel(_panel)
+    , current_index(0)
     , has_close_button(_has_close_button)
 {
     this->setObjectName("tab_widget");
@@ -153,7 +156,8 @@ void tab_widget::add_tab(QWidget *widget, QString name, int insert_index)
     //
     //
 
-    tab *_tab = new tab(this, name, widget, has_close_button);
+    tab *_tab =
+        new tab(this, name, widget, has_close_button, _knob_editor, panel);
     if (insert_index == -1)
     {
         tabs.push_back(_tab);

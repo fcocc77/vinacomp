@@ -72,7 +72,7 @@ knob_editor::knob_editor(QWidget *__properties)
     QHBoxLayout *edit_tools_layout = new QHBoxLayout(edit_tools);
     edit_tools_layout->setContentsMargins(10, 5, 10, 5);
 
-    QLabel *edit_label_init = new QLabel("Expanding knob: ");
+    QLabel *edit_label_init = new QLabel("Modifying knob: ");
     edit_label = new QLabel();
     edit_label->setObjectName("edit_label");
     edit_icon = new button();
@@ -83,10 +83,10 @@ knob_editor::knob_editor(QWidget *__properties)
     cancel_button = new QPushButton("Cancel");
 
     connect(ok_button, &QPushButton::clicked, this,
-            [this]() { finish_edit_knob(true); });
+            [this]() { finish_edit(true); });
 
     connect(cancel_button, &QPushButton::clicked, this,
-            [this]() { finish_edit_knob(false); });
+            [this]() { finish_edit(false); });
 
     edit_tools_layout->addWidget(edit_icon);
     edit_tools_layout->addWidget(edit_label_init);

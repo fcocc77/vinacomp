@@ -165,7 +165,7 @@ void knob_editor::move_knob(QWidget *panel, int index)
 
     // cancela la edicion si un knob se esta editando
     if (editing_knob)
-        finish_edit_knob(false);
+        finish_edit(false);
 
     QJsonObject knob_data = dragging_knob->get_knob_data();
 
@@ -486,7 +486,7 @@ void knob_editor::hide_all_dividing_line()
 void knob_editor::delete_knob(knob *_knob, bool cancel_editing_knob)
 {
     if (_knob == editing_knob && cancel_editing_knob)
-        finish_edit_knob(false);
+        finish_edit(false);
 
     trim_panel *panel = static_cast<trim_panel *>(_knob->get_panel());
 
@@ -507,6 +507,24 @@ void knob_editor::delete_knob(knob *_knob, bool cancel_editing_knob)
     //
 
     panel->remove_custom_knob(_knob->get_name());
+}
+
+void knob_editor::edit_tab(tab *_tab)
+{
+    if (editing_knob)
+        editing_knob->set_editing_knob(false);
+
+    editing_tab = _tab;
+
+    knob_name->setText(_tab->get_name());
+
+    edit_label->setText(_tab->get_name() + "' ...");
+    edit_icon->set_icon(get_icon_name_from_type("tab"));
+
+    edit_tools->setVisible(true);
+    append_tools->setVisible(false);
+
+    update_edit_options_from_type(true, "tab");
 }
 
 void knob_editor::edit_knob(knob *_knob)
@@ -557,23 +575,14 @@ void knob_editor::edit_knob(knob *_knob)
     update_edit_options_from_type(true, _knob->get_type());
 }
 
-void knob_editor::finish_edit_knob(bool ok)
+void knob_editor::finish_edit(bool ok)
 {
     if (ok)
     {
-        trim_panel *panel =
-            static_cast<trim_panel *>(editing_knob->get_panel());
-
-        QString tab_name = get_custom_tab_name(panel);
-        int index = get_index_knob(panel, editing_knob->get_name());
-
-        knob_params params = get_params_from_edit_box(panel);
-        params.type = editing_knob->get_type();
-
-        bool keep_name = editing_knob->get_name() == knob_name->text();
-        update_knob(editing_knob, params, index, keep_name);
-
-        editing_knob = nullptr;
+        if (editing_knob)
+            finish_edit_knob();
+        else
+            finish_edit_tab();
     }
 
     edit_box_clear();
@@ -584,6 +593,59 @@ void knob_editor::finish_edit_knob(bool ok)
     edit_tools->setVisible(false);
     append_tools->setVisible(true);
     edit_box_close();
+
+    editing_knob = nullptr;
+    editing_tab = nullptr;
+}
+
+void knob_editor::finish_edit_tab()
+{
+    if (!editing_tab)
+        return;
+
+    trim_panel *panel = static_cast<trim_panel *>(editing_tab->get_panel());
+
+    QString old_name = editing_tab->get_name();
+
+    if (old_name == knob_name->text())
+    {
+        editing_knob = nullptr;
+        return;
+    }
+
+    QString new_name = get_available_tab_name(panel, knob_name->text());
+    QJsonArray *custom_knobs = panel->custom_knobs;
+
+    QJsonArray custom_knobs_edited;
+
+    for (QJsonValue value : *custom_knobs)
+    {
+        QJsonObject knob_obj = value.toObject();
+        if (knob_obj.value("tab").toString() == old_name)
+            knob_obj["tab"] = new_name;
+
+        custom_knobs_edited.push_back(knob_obj);
+    }
+
+    *panel->custom_knobs = custom_knobs_edited;
+
+    editing_tab->set_name(new_name);
+
+    editing_tab = nullptr;
+}
+
+void knob_editor::finish_edit_knob()
+{
+    trim_panel *panel = static_cast<trim_panel *>(editing_knob->get_panel());
+
+    QString tab_name = get_custom_tab_name(panel);
+    int index = get_index_knob(panel, editing_knob->get_name());
+
+    knob_params params = get_params_from_edit_box(panel);
+    params.type = editing_knob->get_type();
+
+    bool keep_name = editing_knob->get_name() == knob_name->text();
+    update_knob(editing_knob, params, index, keep_name);
 
     editing_knob = nullptr;
 }

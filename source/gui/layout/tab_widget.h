@@ -21,6 +21,8 @@ private:
     QWidget *tab_bar;
     QWidget *widget_section;
     QVBoxLayout *widget_section_layout;
+    QWidget *_knob_editor;
+    QWidget *panel;
 
     int current_index;
     QPushButton *cornel_button;
@@ -31,7 +33,8 @@ private:
     void delete_tab(tab *_tab);
 
 public:
-    tab_widget(bool _has_close_button = false);
+    tab_widget(bool _has_close_button = false, QWidget *_knob_editor = nullptr,
+               QWidget *panel = nullptr);
     ~tab_widget();
 
     void add_tab(QWidget *tab, QString label, int insert_index = -1);

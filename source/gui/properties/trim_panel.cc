@@ -63,7 +63,7 @@ trim_panel::trim_panel(properties *__properties, QString _name, QString _type,
     base_knobs = nodes_loaded->get_effect(type).value("knobs").toArray();
     QStringList finded_tabs = get_tabs_from_knobs(base_knobs);
 
-    tabs = new tab_widget();
+    tabs = new tab_widget(false, _knob_editor, this);
     connect(tabs, &tab_widget::closed_tab, this,
             [=](QString tab_name, QWidget *widget) {
                 delete_tab(tab_name);
@@ -190,8 +190,13 @@ void trim_panel::clean_empty_line_widget()
 void trim_panel::set_edit_mode(bool enable)
 {
     for (tab *_tab : tabs->get_tabs())
+    {
         if (!tabs_only_read.contains(_tab->get_name()))
+        {
+            _tab->set_visible_edit_button(enable);
             _tab->set_visible_close_button(enable);
+        }
+    }
 
     for (QJsonValue value : *custom_knobs)
     {
@@ -470,7 +475,7 @@ void trim_panel::leave_properties()
     // 'knob_editor' se estan usando 'dividing_line_h' y 'dividing_line_v',
     // tambien termina el modo de edicion de 'knobs'
     _knob_editor->finish_insertion(false);
-    _knob_editor->finish_edit_knob(false);
+    _knob_editor->finish_edit(false);
     //
 }
 
