@@ -127,8 +127,7 @@ knob_editor::knob_editor(QWidget *__properties)
     name_and_label_layout->addWidget(knob_name);
 
     knob_tips = new QTextEdit(this);
-    knob_tips->setMaximumHeight(100);
-    knob_tips->setMinimumHeight(100);
+    knob_tips->setFixedHeight(100);
     knob_tips->setPlaceholderText("ToolTip Knob");
     knob_tips->setToolTip("ToolTip");
     //
@@ -157,11 +156,19 @@ knob_editor::knob_editor(QWidget *__properties)
         "next to another type, it will be disabled");
     bidimensional_check = new knob_check_box({}, "BiDimensional");
 
+    allowed_file_types = new QTextEdit(this);
+    allowed_file_types->setFixedHeight(70);
+    allowed_file_types->setPlaceholderText("Allowed File Type List");
+    allowed_file_types->setToolTip("Each file type must be separated by a line break");
+    save_file_dialog_check = new knob_check_box({}, "Save File Dialog");
+
     one_line_layout->addWidget(minimum_edit);
     one_line_layout->addWidget(maximum_edit);
     one_line_layout->addWidget(default_value_edit);
     one_line_layout->addWidget(over_line_check);
     one_line_layout->addWidget(bidimensional_check);
+    one_line_layout->addWidget(allowed_file_types);
+    one_line_layout->addWidget(save_file_dialog_check);
 
     edit_box_layout->addWidget(name_and_label);
     edit_box_layout->addWidget(one_line);
@@ -186,6 +193,8 @@ void knob_editor::update_edit_options_from_type(bool visible, QString knob_type)
     over_line_check->hide();
     bidimensional_check->hide();
     default_value_edit->hide();
+    allowed_file_types->hide();
+    save_file_dialog_check->hide();
 
     QStringList list_for_tips{"floating", "integer", "color",
                               "button",   "choice",  "check_box",
@@ -211,6 +220,9 @@ void knob_editor::update_edit_options_from_type(bool visible, QString knob_type)
 
     QStringList list_for_default_value{"floating", "integer", "color"};
 
+    QStringList list_for_allowed_file_type{"file"};
+    QStringList list_for_save_file_dialog{"file"};
+
     if (list_for_tips.contains(knob_type))
         knob_tips->show();
 
@@ -234,6 +246,12 @@ void knob_editor::update_edit_options_from_type(bool visible, QString knob_type)
 
     if (list_for_default_value.contains(knob_type))
         default_value_edit->show();
+
+    if (list_for_save_file_dialog.contains(knob_type))
+        save_file_dialog_check->show();
+
+    if (list_for_allowed_file_type.contains(knob_type))
+        allowed_file_types->show();
     //
     //
 

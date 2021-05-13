@@ -98,6 +98,9 @@ knob_params knob_editor::get_params_from_edit_box(QWidget *panel) const
 
     params.type = current_knob_type;
 
+    params.allowed_file_types = allowed_file_types->toPlainText();
+    params.save_file_dialog = save_file_dialog_check->is_checked();
+
     return params;
 }
 

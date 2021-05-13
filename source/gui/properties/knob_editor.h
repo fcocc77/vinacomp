@@ -27,6 +27,8 @@ struct knob_params
     float default_value;
     bool over_line;
     bool bidimensional;
+    QString allowed_file_types;
+    bool save_file_dialog;
 };
 
 class knob_editor : public QWidget
@@ -49,6 +51,8 @@ private:
     QLineEdit *default_value_edit;
     knob_check_box *over_line_check;
     knob_check_box *bidimensional_check;
+    knob_check_box *save_file_dialog_check;
+    QTextEdit *allowed_file_types;
     QWidget *edit_tools;
     QPushButton *ok_button;
     QPushButton *cancel_button;

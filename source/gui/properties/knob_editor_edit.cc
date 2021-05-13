@@ -100,9 +100,15 @@ void knob_editor::add_knob(QWidget *panel, knob_params params, int index)
     }
     else if (params.type == "file")
     {
-        knob_object = {{"name", params.name},   {"type", "file"},
-                       {"label", params.label}, {"tooltip", params.tips},
-                       {"default", ""},         {"tab", custom_tab}};
+
+        knob_object = {{"name", params.name},
+                       {"type", "file"},
+                       {"save_file_dialog", params.save_file_dialog},
+                       {"allowed_file_types", params.allowed_file_types},
+                       {"label", params.label},
+                       {"tooltip", params.tips},
+                       {"default", ""},
+                       {"tab", custom_tab}};
     }
     else if (params.type == "floating_dimensions")
     {
@@ -313,6 +319,8 @@ void knob_editor::edit_box_clear()
     default_value_edit->clear();
     over_line_check->set_check(false);
     bidimensional_check->set_check(false);
+    save_file_dialog_check->set_check(false);
+    allowed_file_types->clear();
 }
 
 void knob_editor::edit_box_close()
@@ -517,6 +525,8 @@ void knob_editor::edit_knob(knob *_knob)
     float default_value = knob_data.value("default").toDouble();
     bool over_line = knob_data.value("over_line").toBool();
     bool bidimensional = knob_data.value("bidimensional").toBool();
+    bool save_file_dialog = knob_data.value("save_file_dialog").toBool();
+    QString _allowed_file_types = knob_data.value("allowed_file_types").toString();
 
     knob_name->setText(name);
     knob_label->setText(label);
@@ -526,6 +536,8 @@ void knob_editor::edit_knob(knob *_knob)
     default_value_edit->setText(QString::number(default_value));
     over_line_check->set_check(over_line);
     bidimensional_check->set_check(bidimensional);
+    save_file_dialog_check->set_check(save_file_dialog);
+    allowed_file_types->setText(_allowed_file_types);
 
     edit_label->setText(_knob->get_name() + "' ...");
     edit_icon->set_icon(get_icon_name_from_type(_knob->get_type()));
