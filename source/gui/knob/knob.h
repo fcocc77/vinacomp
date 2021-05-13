@@ -50,7 +50,7 @@ protected:
     QString label;
     QString tips;
     QString type;
-    QString anim_name;
+    QString curve_name;
     QString exp_name;
     QWidget *over_line_widget;
 

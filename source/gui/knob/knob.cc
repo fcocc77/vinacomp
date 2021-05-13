@@ -30,7 +30,7 @@ knob::knob(knob_props props)
     type = knob_data.value("type").toString();
     label = knob_data.value("label").toString();
     tips = knob_data.value("tooltip").toString();
-    anim_name = name + "_anim";
+    curve_name = name + "_curve";
     exp_name = name + "_exp";
     //
 
@@ -297,8 +297,8 @@ void knob::restore_param()
 {
     bool _animated = false;
 
-    if (params->contains(anim_name))
-        _animated = params->value(anim_name).toBool();
+    if (params->contains(curve_name))
+        _animated = params->value(curve_name).toBool();
 
     if (_animated)
     {
@@ -319,17 +319,17 @@ void knob::update_value(QJsonValue value)
         if (get_default() != value)
         {
             params->insert(name, value);
-            params->insert(anim_name, false);
+            params->insert(curve_name, false);
         }
         else
         {
             params->remove(name);
-            params->remove(anim_name);
+            params->remove(curve_name);
         }
     }
     else
     {
-        params->insert(anim_name, true);
+        params->insert(curve_name, true);
         set_keyframe(false);
         // params->insert(name,
         // anim::update_curve(params->value(name).toString(), _value,
@@ -378,7 +378,7 @@ void knob::set_keyframe(bool auto_value)
         new_curve = anim::set_keyframe(curve, project->frame);
 
     params->insert(name, new_curve);
-    params->insert(anim_name, true);
+    params->insert(curve_name, true);
 
     curve_editor *_curve_editor =
         static_cast<vinacomp *>(_vinacomp)->get_curve_editor();

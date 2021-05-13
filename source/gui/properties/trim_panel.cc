@@ -429,7 +429,7 @@ void trim_panel::remove_custom_knob(QString knob_name)
         delete _knob;
 
     params->remove(knob_name);
-    params->remove(knob_name + "_anim");
+    params->remove(knob_name + "_curve");
     params->remove(knob_name + "_exp");
 
     knobs->remove(knob_name);
