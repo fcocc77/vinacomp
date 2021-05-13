@@ -286,17 +286,6 @@ QString knob_editor::get_icon_name_from_type(QString knob_type) const
         return "separator";
 }
 
-void knob_editor::dragging_insertion(QPointF pos)
-{
-    if (!insert_knob_or_tab)
-        return;
-
-    if (current_knob_type == "tab" && !dragging_knob)
-        insert_division_to_tabs(pos);
-    else
-        insert_division_to_knobs();
-}
-
 void knob_editor::mouseMoveEvent(QMouseEvent *event)
 {
     dragging_insertion(event->pos());
