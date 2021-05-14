@@ -1,10 +1,12 @@
+#include <button.h>
 #include <file_dialog.h>
 #include <os.h>
-#include <button.h>
 
 file_dialog::file_dialog(QWidget *parent)
     : QDialog(parent)
     , preview_image_visible(false)
+    , file_mode(true)
+    , save_mode(false)
     , current_dir("/home/pancho")
 {
     layout = new QVBoxLayout(this);
@@ -30,9 +32,15 @@ file_dialog::file_dialog(QWidget *parent)
     path_edit = new QLineEdit;
     QLabel *filter_label = new QLabel("Filter:");
     QLineEdit *filter_line = new QLineEdit;
-    QPushButton *open_save_button = new QPushButton("Open");
+    open_save_button = new QPushButton("Open");
     QPushButton *cancel_button = new QPushButton("Cancel");
     disk_path = new combo_box({{"Root", "", true, "disk"}});
+    //
+
+    // open and close button
+    connect(open_save_button, &QPushButton::clicked, this,
+            &file_dialog::open_or_save);
+    connect(cancel_button, &QPushButton::clicked, this, [this] { hide(); });
     //
 
     // Tool Bar
@@ -46,7 +54,8 @@ file_dialog::file_dialog(QWidget *parent)
     action *image_preview_action = new action("Image Preview", "", "image");
     image_preview_action->connect_to(this,
                                      [this]() { switch_preview_image(); });
-    action *add_bookmark_action = new action("Add BookMark", "", "bookmark_add");
+    action *add_bookmark_action =
+        new action("Add BookMark", "", "bookmark_add");
     action *remove_bookmark_action =
         new action("Remove BookMark", "", "bookmark_remove");
     add_bookmark_action->connect_to(this, [this]() { add_bookmark(); });
@@ -75,17 +84,17 @@ file_dialog::file_dialog(QWidget *parent)
     tree->setAlternatingRowColors(true);
 
     connect(tree, &QTreeWidget::itemDoubleClicked, this,
-            [this](QTreeWidgetItem *item) { enter_to_dir(item->text(0)); });
+            [this](QTreeWidgetItem *item) { open_or_save(); });
 
     connect(tree, &QTreeWidget::itemClicked, this,
             [this](QTreeWidgetItem *item) {
+                current_filename = item->text(0);
+                current_path = current_dir + "/" + item->text(0);
                 set_preview_image(item->text(0));
             });
 
     connect(bookmark_tree, &QTreeWidget::itemClicked, this,
             [this](QTreeWidgetItem *item) { open_bookmark(item->text(0)); });
-
-    connect(cancel_button, &QPushButton::clicked, this, [this] { hide(); });
 
     // Preview
     preview_image->setMinimumWidth(500);
@@ -114,6 +123,13 @@ file_dialog::file_dialog(QWidget *parent)
 
 file_dialog::~file_dialog() {}
 
+int file_dialog::exec()
+{
+    update();
+    QDialog::exec();
+    return files.count();
+}
+
 void file_dialog::update()
 {
     path_edit->setText(current_dir);
@@ -124,9 +140,18 @@ void file_dialog::update()
     items.clear();
     tree->clear();
 
+    current_path.clear();
+    current_filename.clear();
+
     for (QString _path : os::listdir(current_dir))
     {
         QString basename = os::basename(_path);
+
+        QString ext = basename.split(".").last();
+        if (!filter_files.empty() && !os::isdir(_path))
+            if (!filter_files.contains(ext))
+                continue;
+
         QTreeWidgetItem *item = new QTreeWidgetItem;
 
         if (os::isdir(_path))
@@ -143,7 +168,17 @@ void file_dialog::update()
 
         items.push_back(item);
     }
+
+    if (save_mode && file_mode)
+        open_save_button->setText("Save File");
+    else if (save_mode && !file_mode)
+        open_save_button->setText("Save Directory");
+    else if (!save_mode && file_mode)
+        open_save_button->setText("Open File");
+    else if (!save_mode && !file_mode)
+        open_save_button->setText("Open Folder");
 }
+
 void file_dialog::go_to_parent()
 {
     current_dir = os::dirname(current_dir);
@@ -224,7 +259,6 @@ void file_dialog::switch_preview_image()
         this->setFixedWidth(700);
 
     preview_image->setVisible(preview_image_visible);
-
 }
 
 void file_dialog::set_preview_image(QString image_basename)
@@ -246,4 +280,31 @@ void file_dialog::set_preview_image(QString image_basename)
     preview_image->setPixmap(pixmap.scaled(preview_image->width(), 1000,
                                            Qt::KeepAspectRatio,
                                            Qt::SmoothTransformation));
+}
+
+void file_dialog::open_or_save()
+{
+    if (os::isdir(current_path))
+    {
+        enter_to_dir(current_filename);
+        return;
+    }
+
+    files.clear();
+    files.push_back(current_path);
+    hide();
+}
+
+void file_dialog::set_init_directory(QString directory)
+{
+    if (directory.isEmpty() || !os::isdir(directory))
+        return;
+
+    current_dir = directory;
+    update();
+}
+
+void file_dialog::set_file_filter(QStringList filters, QString filter_name)
+{
+    filter_files = filters;
 }

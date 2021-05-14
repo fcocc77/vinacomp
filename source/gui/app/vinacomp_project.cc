@@ -64,17 +64,16 @@ void vinacomp::recorder_recent_projects(QString project_path)
 
 void vinacomp::open_project_dialog()
 {
-    _file_dialog->showNormal();
+    _file_dialog->set_file_mode();
+    _file_dialog->set_file_filter({"vina"}, "VinaComp Project");
+    _file_dialog->set_init_directory(os::dirname(current_project));
 
-    return;
-    QFileDialog dialog(this);
-    dialog.setDirectory(os::dirname(current_project));
-    dialog.setFileMode(QFileDialog::AnyFile);
+    if (!_file_dialog->exec())
+        return;
 
-    dialog.setNameFilter(tr("VinaComp Project (*.vina)"));
+    QString project_path = _file_dialog->get_files().first();
 
-    if (dialog.exec())
-        open_project(dialog.selectedFiles()[0]);
+    open_project(project_path);
 }
 
 void vinacomp::open_project(QString project_path)
