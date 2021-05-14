@@ -21,7 +21,7 @@ QPushButton {
     width: 0px; }
 
 QMainWindow {
-  qproperty-windowIcon: url("{{path}}/resources/images/vinacomp.png"); }
+  qproperty-windowIcon: url("/home/pancho/Documents/develop/vinacomp/resources/images/vinacomp.png"); }
 
 QMenu {
   background-color: #292d32;
@@ -524,6 +524,8 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left
     border: 1px solid #1e2024; }
     #node_graph #nodes_bar QLineEdit:focus {
       border-color: #8f7612; }
+  #node_graph #nodes_bar #nodes_widget {
+    background: none; }
 
 #node_graph #node_view {
   background: #30343b; }

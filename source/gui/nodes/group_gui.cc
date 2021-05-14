@@ -6,7 +6,10 @@
 #include <trim_panel.h>
 #include <util.h>
 
-group_gui::group_gui() {}
+group_gui::group_gui(nodes_load *_nodes_loaded)
+    : nodes_loaded(_nodes_loaded)
+{
+}
 
 group_gui::~group_gui() {}
 
@@ -51,4 +54,6 @@ void group_gui::export_plugin()
 
     // crea script para el nodo
     fwrite(base_path + name + ".py", {});
+
+    nodes_loaded->update_py_plugins();
 }

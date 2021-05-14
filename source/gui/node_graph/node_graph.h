@@ -51,7 +51,13 @@ public:
     inline bool is_group() const;
     inline QString get_group_name() const;
     inline node_group *get_node_group() const;
+    inline nodes_bar *get_nodes_bar() const;
 };
+
+inline nodes_bar *node_graph::get_nodes_bar() const
+{
+    return _nodes_bar;
+}
 
 inline node_group *node_graph::get_node_group() const
 {

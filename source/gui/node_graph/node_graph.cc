@@ -15,7 +15,7 @@ node_graph::node_graph(QWidget *_vinacomp, project_struct *_project,
     layout->setMargin(0);
     layout->setSpacing(0);
 
-    nodes_loaded = new nodes_load();
+    nodes_loaded = new nodes_load(this);
 
     _node_view = new node_view(_vinacomp, _properties, nodes_loaded, project, this);
     _maker = new maker(_vinacomp, _properties, nodes_loaded, _node_view, this);

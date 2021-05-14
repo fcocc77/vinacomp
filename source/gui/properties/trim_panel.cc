@@ -253,7 +253,7 @@ void trim_panel::setup_gui_panels(QJsonArray _knobs, QVBoxLayout *_layout)
     else if (type == "write")
         _node_gui = new write_gui(project);
     else if (type == "group")
-        _node_gui = new group_gui();
+        _node_gui = new group_gui(nodes_loaded);
     else if (type == "shuffle")
     {
         knob_data = _knobs[0].toObject();

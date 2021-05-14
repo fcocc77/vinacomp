@@ -1,7 +1,10 @@
+#include <node_graph.h>
+#include <nodes_bar.h>
 #include <nodes_load.h>
 #include <os.h>
 
-nodes_load::nodes_load()
+nodes_load::nodes_load(QWidget *__node_graph)
+    : _node_graph(__node_graph)
 {
     QString json_nodes_path = "source/engine/nodes/json";
 
@@ -23,11 +26,18 @@ nodes_load::nodes_load()
         effects.insert(effect_id, effect);
     }
 
+    load_py_plugins();
+}
+
+nodes_load::~nodes_load() {}
+
+void nodes_load::load_py_plugins()
+{
     // cargar nodos py_plugins
-    QString py_plugins = "plugins/py_plugins";
+    QString py_plugins_dir = "plugins/py_plugins";
 
     QStringList icons;
-    for (QString file : os::listdir(py_plugins))
+    for (QString file : os::listdir(py_plugins_dir))
     {
         QString basename = os::basename(file);
         QString ext = basename.split(".").last();
@@ -46,6 +56,7 @@ nodes_load::nodes_load()
         py_plugins_groups.insert(group, {group, ""});
 
         effects.insert(effect_id, effect);
+        py_plugins.push_back(effect_id);
     }
     //
 
@@ -55,11 +66,24 @@ nodes_load::nodes_load()
     {
         if (py_plugins_groups.contains(icon_name))
             py_plugins_groups[icon_name].icon =
-                py_plugins + "/" + icon_name + ".png";
+                py_plugins_dir + "/" + icon_name + ".png";
     }
 }
 
-nodes_load::~nodes_load() {}
+void nodes_load::update_py_plugins()
+{
+    for (QString effect : py_plugins)
+        effects.remove(effect);
+
+    py_plugins.clear();
+    py_plugins_groups.clear();
+
+    load_py_plugins();
+
+    static_cast<node_graph *>(_node_graph)
+        ->get_nodes_bar()
+        ->update_py_plugins();
+}
 
 QJsonObject nodes_load::get_effect(QString id) const
 {

@@ -18,13 +18,19 @@ class nodes_load : public QObject
 private:
     ofx_api *ofx;
 
-    QJsonObject effects;
+    QWidget *_node_graph;
+
+    QStringList py_plugins;
     QMap<QString, py_plugin_group> py_plugins_groups;
 
+    QJsonObject effects;
+    void load_py_plugins();
+
 public:
-    nodes_load();
+    nodes_load(QWidget *_node_graph);
     ~nodes_load();
 
+    void update_py_plugins();
     QJsonObject get_effect(QString id) const;
     QJsonObject get_effects(QString group = "") const;
     inline ofx_api *get_ofx() const;

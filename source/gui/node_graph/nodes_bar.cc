@@ -10,6 +10,13 @@ nodes_bar::nodes_bar(QWidget *_parent, maker *__maker, nodes_load *_nodes)
     layout = new QHBoxLayout(this);
     layout->setMargin(4);
 
+    QWidget *nodes_widget = new QWidget;
+    nodes_widget->setObjectName("nodes_widget");
+    nodes_layout = new QHBoxLayout(nodes_widget);
+    nodes_layout->setMargin(0);
+
+    layout->addWidget(nodes_widget);
+
     setup_ui();
 }
 
@@ -33,8 +40,7 @@ void nodes_bar::setup_ui()
     for (auto binary : nodes->get_ofx()->get_binaries())
         add_menu(binary.name, binary.icon);
 
-    for (auto py_plugins_group : nodes->get_py_plugins_groups())
-        add_menu(py_plugins_group.name, py_plugins_group.icon);
+    update_py_plugins();
 
     layout->addStretch();
 
@@ -57,13 +63,14 @@ void nodes_bar::setup_ui()
     layout->addWidget(show_grid);
 }
 
-void nodes_bar::add_menu(QString group, QString icon_group)
+menu *nodes_bar::add_menu(QString group, QString icon_group)
 {
     button *popup_button = new button(this);
+    popup_button->setToolTip(group);
     popup_button->set_icon(icon_group);
     popup_button->setObjectName("nodes_bar_button");
 
-    menu *_menu = new menu(popup_button);
+    menu *_menu = new menu(this, popup_button);
 
     connect(popup_button, &QPushButton::pressed, this, [=] {
         popup_button->set_hover_icon();
@@ -94,12 +101,46 @@ void nodes_bar::add_menu(QString group, QString icon_group)
             shortcut = "K";
 
         action *effect_action = new action(label, shortcut, icon);
-        _menu->addAction(effect_action);
+        _menu->add_action(effect_action);
 
         effect_action->connect_to(parent, [=]() { _maker->create_fx(id); });
     }
 
-    layout->addWidget(popup_button);
+    nodes_layout->addWidget(popup_button);
+
+    return _menu;
+}
+
+void nodes_bar::update_py_plugins()
+{
+    for (menu *_menu : py_plugins_menus)
+        delete _menu;
+
+    py_plugins_menus.clear();
+
+    for (auto py_plugins_group : nodes->get_py_plugins_groups())
+    {
+        menu *_menu = add_menu(py_plugins_group.name, py_plugins_group.icon);
+        py_plugins_menus.push_back(_menu);
+    }
+}
+
+menu::menu(QWidget *parent, button *__button)
+    : QMenu(parent)
+    , popup_button(__button){};
+
+menu::~menu()
+{
+    delete popup_button;
+
+    for (action *_action : actions)
+        delete _action;
+}
+
+void menu::add_action(action *_action)
+{
+    addAction(_action);
+    actions.push_back(_action);
 }
 
 void menu::hideEvent(QHideEvent *event)

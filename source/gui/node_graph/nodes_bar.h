@@ -15,11 +15,13 @@ class menu : public QMenu
 {
 private:
     button *popup_button;
+    QList<action *> actions;
 
 public:
-    menu(button *parent)
-        : QMenu(parent)
-        , popup_button(parent){};
+    menu(QWidget *parent, button *_button);
+    ~menu();
+
+    void add_action(action *_action);
 
 protected:
     void mouseMoveEvent(QMouseEvent *event) override;
@@ -36,15 +38,20 @@ private:
     nodes_load *nodes;
     QWidget *parent;
     QLineEdit *find_node_edit;
+    QHBoxLayout *nodes_layout;
+
+    QList<menu *> py_plugins_menus;
 
     void setup_ui();
-    void add_menu(QString group, QString icon_group);
+    menu *add_menu(QString group, QString icon_group);
 
 public:
     nodes_bar(QWidget *parent, maker *_maker, nodes_load *_nodes);
     ~nodes_bar();
 
+    void update_py_plugins();
     inline void focus_to_find_edit();
+
 signals:
     void search_changed(QString key);
 };
