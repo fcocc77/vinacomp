@@ -19,6 +19,7 @@
 #include <settings.h>
 #include <viewer.h>
 #include <tools.h>
+#include <file_dialog.h>
 
 // Engine
 #include <project_struct.h>
@@ -36,6 +37,7 @@ private:
     settings *_settings;
     project_settings *_project_settings;
     renderer *_renderer;
+    file_dialog *_file_dialog;
 
     QMap<QString, viewer *> *viewers;
     QList<QWidget *> *viewers_gl;
@@ -106,7 +108,13 @@ public:
     inline properties *get_properties() const;
     inline curve_editor *get_curve_editor() const;
     inline QMap<QString, node_graph*> *get_groups_node_graph() const;
+    inline file_dialog *get_file_dialog() const;
 };
+
+inline file_dialog *vinacomp::get_file_dialog() const
+{
+    return _file_dialog;
+}
 
 inline curve_editor *vinacomp::get_curve_editor() const
 {
