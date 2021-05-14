@@ -4,11 +4,36 @@
 
 file_dialog::file_dialog(QWidget *parent)
     : QDialog(parent)
+    , preview_image_visible(false)
     , current_dir("/home/pancho")
 {
     layout = new QVBoxLayout(this);
     setObjectName("file_dialog");
     setMinimumSize({700, 500});
+
+    // Widgets
+    center_widget = new QWidget;
+    preview_image = new QLabel;
+    bottom_widget = new QWidget;
+    bottom_tools_widget = new QWidget;
+    //
+
+    // Layouts
+    QHBoxLayout *bottom_layout = new QHBoxLayout(bottom_widget);
+    QHBoxLayout *center_layout = new QHBoxLayout(center_widget);
+    QHBoxLayout *bottom_tools_layout = new QHBoxLayout(bottom_tools_widget);
+    //
+
+    // Widgets new
+    tree = new QTreeWidget;
+    bookmark_tree = new QTreeWidget;
+    path_edit = new QLineEdit;
+    QLabel *filter_label = new QLabel("Filter:");
+    QLineEdit *filter_line = new QLineEdit;
+    QPushButton *open_save_button = new QPushButton("Open");
+    QPushButton *cancel_button = new QPushButton("Cancel");
+    disk_path = new combo_box({{"Root", "", true, "disk"}});
+    //
 
     // Tool Bar
     tool_bar = new tools();
@@ -18,81 +43,63 @@ file_dialog::file_dialog(QWidget *parent)
     go_to_parent_action->connect_to(this, [this]() { go_to_parent(); });
     action *create_folder =
         new action("Create Directorio", "", "create_new_folder");
+    action *image_preview_action = new action("Image Preview", "", "image");
+    image_preview_action->connect_to(this,
+                                     [this]() { switch_preview_image(); });
+    action *add_bookmark_action = new action("Add BookMark", "", "bookmark_add");
+    action *remove_bookmark_action =
+        new action("Remove BookMark", "", "bookmark_remove");
+    add_bookmark_action->connect_to(this, [this]() { add_bookmark(); });
+    remove_bookmark_action->connect_to(this, [this]() { remove_bookmark(); });
 
+    tool_bar->add_widget(disk_path);
+    tool_bar->add_separator();
+    tool_bar->add_action(add_bookmark_action);
+    tool_bar->add_action(remove_bookmark_action);
+    tool_bar->add_separator();
+    tool_bar->add_action(create_folder);
+    tool_bar->add_action(image_preview_action);
     tool_bar->add_stretch();
     tool_bar->add_action(go_back_action);
     tool_bar->add_action(go_forward_action);
     tool_bar->add_action(go_to_parent_action);
-    tool_bar->add_action(create_folder);
     //
 
-    // Widgets
-    center_widget = new QWidget;
-    bookmark_widget = new QWidget;
-    preview_widget = new QWidget;
-    bottom_widget = new QWidget;
-    directory_widget = new QWidget;
-    QWidget *bookmark_buttons = new QWidget;
-    //
-
-    // Layouts
-    QHBoxLayout *bottom_layout = new QHBoxLayout(bottom_widget);
-    QVBoxLayout *bookmark_widget_layout = new QVBoxLayout(bookmark_widget);
-    QHBoxLayout *bookmark_buttons_layout = new QHBoxLayout(bookmark_buttons);
-    QHBoxLayout *center_layout = new QHBoxLayout(center_widget);
-    QVBoxLayout *directory_layout = new QVBoxLayout(directory_widget);
-    //
-
-    // Widgets new
-    tree = new QTreeWidget;
-    bookmark_tree = new QTreeWidget;
-    button *add_bookmark_button = new button();
-    button *remove_bookmark_button = new button();
-    path_edit = new QLineEdit;
-    QLabel *filter_label = new QLabel("Filter:");
-    QLineEdit *filter_line = new QLineEdit;
-    QPushButton *open_save_button = new QPushButton("Open");
-    QPushButton *cancel_button = new QPushButton("Cancel");
-    //
+    center_layout->setMargin(0);
+    bottom_layout->setMargin(0);
+    bottom_tools_layout->setMargin(0);
 
     center_widget->setObjectName("center_widget");
-    center_layout->setMargin(0);
+    bottom_widget->setObjectName("bottom_widget");
 
+    tree->setAlternatingRowColors(true);
 
-    directory_layout->setMargin(0);
     connect(tree, &QTreeWidget::itemDoubleClicked, this,
             [this](QTreeWidgetItem *item) { enter_to_dir(item->text(0)); });
+
+    connect(tree, &QTreeWidget::itemClicked, this,
+            [this](QTreeWidgetItem *item) {
+                if (preview_image_visible)
+                    preview_image->setPixmap(
+                        QPixmap(current_dir + "/" + item->text(0)));
+            });
 
     connect(bookmark_tree, &QTreeWidget::itemClicked, this,
             [this](QTreeWidgetItem *item) { open_bookmark(item->text(0)); });
 
-    bottom_widget->setObjectName("bottom_widget");
-    bottom_layout->setMargin(0);
     connect(cancel_button, &QPushButton::clicked, this, [this] { hide(); });
 
-    // BookMark buttons
-    bookmark_widget->setObjectName("bookmark_widget");
-    bookmark_buttons->setObjectName("bookmark_buttons");
-    add_bookmark_button->set_icon("bookmark_add");
-    remove_bookmark_button->set_icon("bookmark_remove");
-    connect(add_bookmark_button, &button::clicked, this, &file_dialog::add_bookmark);
-    connect(remove_bookmark_button, &button::clicked, this, &file_dialog::remove_bookmark);
+    // Preview
+    preview_image->setMinimumWidth(500);
+    preview_image->setVisible(preview_image_visible);
     //
 
     // Layouts Construccion
-    bookmark_buttons_layout->addStretch();
-    bookmark_buttons_layout->addWidget(remove_bookmark_button);
-    bookmark_buttons_layout->addWidget(add_bookmark_button);
+    bottom_tools_layout->addWidget(path_edit);
 
-    bookmark_widget_layout->addWidget(bookmark_tree);
-    bookmark_widget_layout->addWidget(bookmark_buttons);
-
-    directory_layout->addWidget(tree);
-    directory_layout->addWidget(path_edit);
-
-    center_layout->addWidget(bookmark_widget);
-    center_layout->addWidget(directory_widget);
-    center_layout->addWidget(preview_widget);
+    center_layout->addWidget(bookmark_tree);
+    center_layout->addWidget(tree);
+    center_layout->addWidget(preview_image);
 
     bottom_layout->addWidget(filter_label);
     bottom_layout->addWidget(filter_line);
@@ -101,6 +108,7 @@ file_dialog::file_dialog(QWidget *parent)
 
     layout->addWidget(tool_bar);
     layout->addWidget(center_widget);
+    layout->addWidget(bottom_tools_widget);
     layout->addWidget(bottom_widget);
 
     update();
@@ -122,6 +130,16 @@ void file_dialog::update()
     {
         QString basename = os::basename(_path);
         QTreeWidgetItem *item = new QTreeWidgetItem;
+
+        if (os::isdir(_path))
+        {
+            item->setIcon(0, QIcon("resources/images/folder_checked.png"));
+            QFont font("Helvetica", 7, QFont::Bold);
+            item->setFont(0, font);
+        }
+        else
+            item->setIcon(0, QIcon("resources/images/default_icon_normal.png"));
+
         item->setText(0, basename);
         tree->addTopLevelItem(item);
 
@@ -170,6 +188,7 @@ void file_dialog::add_bookmark()
         return;
 
     QTreeWidgetItem *bookmark_item = new QTreeWidgetItem;
+    bookmark_item->setIcon(0, QIcon("resources/images/bookmark_normal.png"));
     bookmark_item->setText(0, dirname);
     bookmark_tree->addTopLevelItem(bookmark_item);
 
@@ -195,4 +214,17 @@ void file_dialog::open_bookmark(QString _bookmark)
     bookmark mark = bookmarks.value(_bookmark);
     current_dir = mark.path;
     update();
+}
+
+void file_dialog::switch_preview_image()
+{
+    preview_image_visible = !preview_image_visible;
+
+    if (preview_image_visible)
+        this->setFixedWidth(1200);
+    else
+        this->setFixedWidth(700);
+
+    preview_image->setVisible(preview_image_visible);
+
 }

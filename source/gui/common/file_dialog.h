@@ -10,6 +10,7 @@
 #include <QTreeWidget>
 
 #include <tools.h>
+#include <combo_box.h>
 
 class file_dialog : public QDialog
 {
@@ -17,12 +18,14 @@ private:
     QVBoxLayout *layout;
 
     tools *tool_bar;
-    QWidget *center_widget, *bookmark_widget, *directory_widget, *preview_widget;
-    QWidget *bottom_widget;
+    QWidget *center_widget, *bottom_widget, *bottom_tools_widget;
+    QLabel *preview_image;
     QTreeWidget *tree, *bookmark_tree;
     QList<QTreeWidgetItem*> items;
 
     QLineEdit *path_edit;
+    combo_box *disk_path;
+    bool preview_image_visible;
 
     struct bookmark
     {
@@ -40,6 +43,7 @@ private:
     void add_bookmark();
     void remove_bookmark();
     void open_bookmark(QString bookmark);
+    void switch_preview_image();
 
 public:
     file_dialog(QWidget *parent);

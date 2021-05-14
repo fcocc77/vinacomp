@@ -77,13 +77,23 @@ void combo_box::set_index(int _index, bool emit_signal)
         return;
 
     // cambia el icono a la accion anterior
-    actions[current_index]->set_icon("radio_button_unchecked_normal");
+    combo_box_item last_item = items[current_index];
+    if (last_item.button)
+        actions[current_index]->set_icon(last_item.icon_name + "_normal");
+    else
+        actions[current_index]->set_icon("radio_button_unchecked_normal");
     //
 
     current_index = _index;
 
     action *_action = actions.value(_index);
-    _action->set_icon("radio_button_checked_hi");
+
+    auto _item = items.value(_index);
+    if (_item.button)
+        _action->set_icon(_item.icon_name + "_hi");
+    else
+        _action->set_icon("radio_button_checked_hi");
+
     QString name = _action->get_label();
     label->setText(name);
 
