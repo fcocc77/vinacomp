@@ -463,6 +463,23 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left
     #shuffle_node #input_channels #output #cwhite[connected=false], #shuffle_node #input_channels #output #cblack[connected=false], #shuffle_node #output_channels #output #cwhite[connected=false], #shuffle_node #output_channels #output #cblack[connected=false] {
       background: none; }
 
+#file_dialog {
+  background: #25282d; }
+  #file_dialog #center_widget, #file_dialog #bottom_widget {
+    background: none; }
+  #file_dialog QLineEdit {
+    color: #aeb4bc;
+    padding: 3px;
+    border-radius: 2px;
+    background: #1e2024;
+    border: 1px solid #1e2024; }
+    #file_dialog QLineEdit:focus {
+      border-color: #8f7612; }
+  #file_dialog #bottom_widget QPushButton {
+    padding: 10px;
+    background: #30343b;
+    border-radius: 2px; }
+
 #node_finder QLineEdit {
   color: #aeb4bc;
   padding: 3px;

@@ -7,16 +7,15 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   height="24px"
+   height="24"
    viewBox="0 0 24 24"
-   width="24px"
-   fill="#000000"
+   width="24"
    version="1.1"
-   id="svg6"
-   sodipodi:docname="bookmark.svg"
+   id="svg4"
+   sodipodi:docname="arrow_top.svg"
    inkscape:version="0.92.2 (5c3e80d, 2017-08-06)">
   <metadata
-     id="metadata12">
+     id="metadata10">
     <rdf:RDF>
       <cc:Work
          rdf:about="">
@@ -27,7 +26,7 @@
     </rdf:RDF>
   </metadata>
   <defs
-     id="defs10" />
+     id="defs8" />
   <sodipodi:namedview
      pagecolor="#ffffff"
      bordercolor="#666666"
@@ -39,17 +38,18 @@
      inkscape:pageshadow="2"
      inkscape:window-width="948"
      inkscape:window-height="1035"
-     id="namedview8"
+     id="namedview6"
      showgrid="false"
      inkscape:zoom="9.8333333"
-     inkscape:cx="11.79661"
-     inkscape:cy="10.169492"
+     inkscape:cx="12.813559"
+     inkscape:cy="6.7118644"
      inkscape:window-x="5"
      inkscape:window-y="38"
      inkscape:window-maximized="0"
-     inkscape:current-layer="svg6" />
+     inkscape:current-layer="svg4" />
   <path
-     d="M17 3H7c-1.1 0-1.99.9-1.99 2L5 21l7-3 7 3V5c0-1.1-.9-2-2-2z"
-     id="path4"
-     style="fill:none" />
+     d="M 16.301923,15.403559 11.694915,10.806588 7.0879071,15.403559 5.6726824,13.988335 11.694915,7.9661017 17.717148,13.988335 Z"
+     id="path2"
+     style="fill:none;stroke-width:1.0037055"
+     inkscape:connector-curvature="0" />
 </svg>

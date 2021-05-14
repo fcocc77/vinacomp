@@ -7,13 +7,14 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   enable-background="new 0 0 24 24"
    height="24px"
    viewBox="0 0 24 24"
    width="24px"
    fill="#000000"
    version="1.1"
    id="svg6"
-   sodipodi:docname="bookmark.svg"
+   sodipodi:docname="bookmark_remove.svg"
    inkscape:version="0.92.2 (5c3e80d, 2017-08-06)">
   <metadata
      id="metadata12">
@@ -42,14 +43,14 @@
      id="namedview8"
      showgrid="false"
      inkscape:zoom="9.8333333"
-     inkscape:cx="11.79661"
-     inkscape:cy="10.169492"
+     inkscape:cx="10.677966"
+     inkscape:cy="1.0169492"
      inkscape:window-x="5"
      inkscape:window-y="38"
      inkscape:window-maximized="0"
      inkscape:current-layer="svg6" />
   <path
-     d="M17 3H7c-1.1 0-1.99.9-1.99 2L5 21l7-3 7 3V5c0-1.1-.9-2-2-2z"
+     d="M21,7h-6V5h6V7z M19,10.9c-0.32,0.07-0.66,0.1-1,0.1c-2.76,0-5-2.24-5-5c0-1.13,0.37-2.16,1-3L7,3C5.9,3,5,3.9,5,5v16l7-3 l7,3V10.9z"
      id="path4"
      style="fill:none" />
 </svg>

@@ -64,6 +64,8 @@ void vinacomp::recorder_recent_projects(QString project_path)
 
 void vinacomp::open_project_dialog()
 {
+    _file_dialog->showNormal();
+    return;
     QFileDialog dialog(this);
     dialog.setDirectory(os::dirname(current_project));
     dialog.setFileMode(QFileDialog::AnyFile);
