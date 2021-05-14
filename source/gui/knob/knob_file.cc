@@ -1,4 +1,5 @@
 #include <knob_file.h>
+#include <vinacomp.h>
 
 knob_file::knob_file(knob_props props, QString file_path)
     : knob(props)
@@ -38,19 +39,23 @@ void knob_file::restore_param()
 
 void knob_file::open_file()
 {
-    QFileDialog dialog(this);
+    file_dialog *dialog = static_cast<vinacomp *>(_vinacomp)->get_file_dialog();
+
+    dialog->set_file_mode();
     if (save_file_dialog)
-        dialog.setAcceptMode(dialog.AcceptSave);
+        dialog->set_save_mode();
+    else
+        dialog->set_open_mode();
 
     QStringList filters;
     for (QJsonValue value : allowed_file_types)
-        filters.push_back("*." + value.toString());
+        filters.push_back(value.toString());
 
-    dialog.setNameFilters(filters);
+    dialog->set_file_filter(filters);
 
-    if (dialog.exec())
+    if (dialog->exec())
     {
-        QString file = dialog.selectedFiles().value(0);
+        QString file = dialog->get_files().first();
         filename->setText(file);
         changed(file);
         update_value(file);

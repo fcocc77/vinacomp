@@ -30,7 +30,6 @@ class knob : public QWidget
 private:
     QHBoxLayout *knob_layout;
     button *animation_button;
-    QWidget *_vinacomp;
     QWidget *panel;
     QGraphicsItem *this_node;
     QWidget *_knob_editor;
@@ -46,6 +45,8 @@ private:
     void disable_animation();
 
 protected:
+    QWidget *_vinacomp;
+
     QString name;
     QString label;
     QString tips;
