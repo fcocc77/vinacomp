@@ -44,6 +44,7 @@ private:
     void remove_bookmark();
     void open_bookmark(QString bookmark);
     void switch_preview_image();
+    void set_preview_image(QString image_basename);
 
 public:
     file_dialog(QWidget *parent);

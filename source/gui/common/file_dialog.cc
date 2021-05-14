@@ -79,9 +79,7 @@ file_dialog::file_dialog(QWidget *parent)
 
     connect(tree, &QTreeWidget::itemClicked, this,
             [this](QTreeWidgetItem *item) {
-                if (preview_image_visible)
-                    preview_image->setPixmap(
-                        QPixmap(current_dir + "/" + item->text(0)));
+                set_preview_image(item->text(0));
             });
 
     connect(bookmark_tree, &QTreeWidget::itemClicked, this,
@@ -227,4 +225,25 @@ void file_dialog::switch_preview_image()
 
     preview_image->setVisible(preview_image_visible);
 
+}
+
+void file_dialog::set_preview_image(QString image_basename)
+{
+    if (!preview_image_visible)
+        return;
+
+    QStringList allowed_images = {"png", "jpg", "tiff"};
+
+    QString ext = image_basename.split(".").last().toLower();
+    if (!allowed_images.contains(ext))
+    {
+        preview_image->clear();
+        return;
+    }
+
+    QString image_file = current_dir + "/" + image_basename;
+    QPixmap pixmap(image_file);
+    preview_image->setPixmap(pixmap.scaled(preview_image->width(), 1000,
+                                           Qt::KeepAspectRatio,
+                                           Qt::SmoothTransformation));
 }
