@@ -31,7 +31,7 @@ file_dialog::file_dialog(QWidget *parent)
     bookmark_tree = new QTreeWidget;
     path_edit = new QLineEdit;
     QLabel *filter_label = new QLabel("Filter:");
-    QLineEdit *filter_line = new QLineEdit;
+    filter_box = new combo_box();
     open_save_button = new QPushButton("Open");
     QPushButton *cancel_button = new QPushButton("Cancel");
     disk_path = new combo_box({{"Root", "", true, "disk"}});
@@ -109,7 +109,8 @@ file_dialog::file_dialog(QWidget *parent)
     center_layout->addWidget(preview_image);
 
     bottom_layout->addWidget(filter_label);
-    bottom_layout->addWidget(filter_line);
+    bottom_layout->addWidget(filter_box);
+    bottom_layout->addStretch();
     bottom_layout->addWidget(open_save_button);
     bottom_layout->addWidget(cancel_button);
 
@@ -307,4 +308,12 @@ void file_dialog::set_init_directory(QString directory)
 void file_dialog::set_file_filter(QStringList filters, QString filter_name)
 {
     filter_files = filters;
+
+    filter_box->clear();
+
+    for (QString filter : filters)
+        filter_box->add_item({filter_name + "   *." + filter, "", false, ""});
+
+    filter_box->add_item({"All Files   *", "", false, "multi_lines"});
+
 }

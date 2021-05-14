@@ -25,6 +25,7 @@ private:
 
     QLineEdit *path_edit;
     combo_box *disk_path;
+    combo_box *filter_box;
     bool preview_image_visible;
     QString current_path;
     QString current_filename;
