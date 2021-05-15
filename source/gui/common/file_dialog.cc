@@ -1,13 +1,16 @@
 #include <button.h>
 #include <file_dialog.h>
-#include <os.h>
 #include <global.h>
+#include <knob_check_box.h>
+#include <os.h>
+#include <path_utils.h>
 
 file_dialog::file_dialog(QWidget *parent)
     : QDialog(parent)
     , preview_image_visible(false)
     , file_mode(true)
     , save_mode(false)
+    , image_sequence(true)
     , current_dir("/home/pancho")
 {
     layout = new QVBoxLayout(this);
@@ -36,17 +39,8 @@ file_dialog::file_dialog(QWidget *parent)
     open_save_button = new QPushButton("Open");
     QPushButton *cancel_button = new QPushButton("Cancel");
     disk_path = new combo_box({{"Root", "", true, "disk"}});
-    //
-
-    // open and close button
-    connect(open_save_button, &QPushButton::clicked, this,
-            &file_dialog::open_or_save);
-    connect(cancel_button, &QPushButton::clicked, this, [this] { hide(); });
-    //
-
-    // Filters
-    connect(filter_box, &combo_box::changed, this,
-            [this](QVariant value) { filter(value.toString()); });
+    knob_check_box *sequence_check =
+        new knob_check_box({}, "Image Sequence", 0);
     //
 
     // Tool Bar
@@ -89,6 +83,26 @@ file_dialog::file_dialog(QWidget *parent)
 
     tree->setAlternatingRowColors(true);
 
+    // Preview
+    preview_image->setMinimumWidth(500);
+    preview_image->setVisible(preview_image_visible);
+    //
+
+    // Conecciones
+    connect(open_save_button, &QPushButton::clicked, this,
+            &file_dialog::open_or_save);
+
+    connect(cancel_button, &QPushButton::clicked, this, [this] { hide(); });
+
+    connect(sequence_check, &knob_check_box::changed, this,
+            [this](bool checked) {
+                image_sequence = checked;
+                update();
+            });
+
+    connect(filter_box, &combo_box::changed, this,
+            [this](QVariant value) { filter(value.toString()); });
+
     connect(tree, &QTreeWidget::itemDoubleClicked, this,
             [this](QTreeWidgetItem *item) { open_or_save(); });
 
@@ -101,10 +115,6 @@ file_dialog::file_dialog(QWidget *parent)
 
     connect(bookmark_tree, &QTreeWidget::itemClicked, this,
             [this](QTreeWidgetItem *item) { open_bookmark(item->text(0)); });
-
-    // Preview
-    preview_image->setMinimumWidth(500);
-    preview_image->setVisible(preview_image_visible);
     //
 
     // Layouts Construccion
@@ -116,6 +126,7 @@ file_dialog::file_dialog(QWidget *parent)
 
     bottom_layout->addWidget(filter_label);
     bottom_layout->addWidget(filter_box);
+    bottom_layout->addWidget(sequence_check);
     bottom_layout->addStretch();
     bottom_layout->addWidget(open_save_button);
     bottom_layout->addWidget(cancel_button);
@@ -164,7 +175,11 @@ void file_dialog::update()
     current_path.clear();
     current_filename.clear();
 
-    for (QString _path : os::listdir(current_dir))
+    QStringList file_list = os::listdir(current_dir);
+    if (image_sequence)
+        file_list = filter_by_sequence(file_list);
+
+    for (QString _path : file_list)
     {
         QString basename = os::basename(_path);
 
@@ -181,6 +196,8 @@ void file_dialog::update()
             QFont font("Helvetica", 7, QFont::Bold);
             item->setFont(0, font);
         }
+        else if (basename.contains("#"))
+            item->setIcon(0, QIcon("resources/images/sequence_normal.png"));
         else
             item->setIcon(0, QIcon("resources/images/default_icon_normal.png"));
 
@@ -236,7 +253,10 @@ void file_dialog::add_bookmark()
     dirpath = dirpath.replace("//", "/");
 
     if (!os::isdir(dirpath))
-        return;
+    {
+        dirpath = os::dirname(dirpath);
+        dirname = os::basename(dirpath);
+    }
 
     if (bookmarks.contains(dirname))
         return;
@@ -386,4 +406,63 @@ void file_dialog::filter(QString _filter)
     filter_box->set_value(_filter, false);
 
     update();
+}
+
+QStringList file_dialog::filter_by_sequence(QStringList files)
+{
+    QStringList temp_list;
+    QStringList files_with_sequence;
+    QMap<QString, int> padding_counts;
+
+    for (QString _path : files)
+    {
+        QString path_no_padding = path_util::remove_padding(_path);
+
+        if (temp_list.contains(path_no_padding))
+        {
+            // encuentra el padding mas larga de una misma secuencia
+            int padding_count = path_util::get_padding(_path).length();
+            if (!padding_counts.contains(path_no_padding))
+                padding_counts.insert(path_no_padding, padding_count);
+            else
+            {
+                int last_padding = padding_counts.value(path_no_padding);
+                if (padding_count > last_padding)
+                    padding_counts.insert(path_no_padding, padding_count);
+            }
+            //
+
+            if (!files_with_sequence.contains(path_no_padding))
+                files_with_sequence.push_back(path_no_padding);
+        }
+        else
+            temp_list.push_back(path_no_padding);
+    }
+
+    QStringList final_list;
+
+    for (QString _path : files)
+    {
+        QString path_no_padding = path_util::remove_padding(_path);
+
+        if (files_with_sequence.contains(path_no_padding))
+        {
+            QString ext = path_util::get_ext(_path);
+            QString padding = path_util::get_padding(_path);
+            QString path_sequence = path_util::remove_ext(path_no_padding);
+
+            QString sequence_sign;
+            for (int i = 0; i < padding_counts.value(path_no_padding); i++)
+                sequence_sign += "#";
+
+            path_sequence += sequence_sign + "." + ext;
+
+            if (!final_list.contains(path_sequence))
+                final_list.push_back(path_sequence);
+        }
+        else
+            final_list.push_back(_path);
+    }
+
+    return final_list;
 }

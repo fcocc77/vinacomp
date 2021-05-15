@@ -33,6 +33,7 @@ private:
 
     QStringList files;
     bool file_mode, save_mode;
+    bool image_sequence;
 
     struct filter_struct
     {
@@ -66,6 +67,7 @@ private:
     void bookmark_backup();
     void filter(QString _filter);
     void update_filter_box();
+    QStringList filter_by_sequence(QStringList files);
 
 public:
     file_dialog(QWidget *parent);
