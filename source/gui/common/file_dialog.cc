@@ -1,6 +1,7 @@
 #include <button.h>
 #include <file_dialog.h>
 #include <os.h>
+#include <global.h>
 
 file_dialog::file_dialog(QWidget *parent)
     : QDialog(parent)
@@ -119,6 +120,16 @@ file_dialog::file_dialog(QWidget *parent)
     layout->addWidget(bottom_tools_widget);
     layout->addWidget(bottom_widget);
 
+    // restaura los bookmark de usuario
+    QJsonObject bookmarks_obj =
+        jread(VINACOMP_CONF_PATH + "/file_dialog_bookmarks.json");
+
+    for (QString dirname : bookmarks_obj.keys())
+    {
+        QString dirpath = bookmarks_obj.value(dirname).toString();
+        add_bookmark(dirname, dirpath);
+    }
+
     update();
 }
 
@@ -127,7 +138,11 @@ file_dialog::~file_dialog() {}
 int file_dialog::exec()
 {
     update();
+
     QDialog::exec();
+
+    bookmark_backup();
+
     return files.count();
 }
 
@@ -221,12 +236,26 @@ void file_dialog::add_bookmark()
     if (bookmarks.contains(dirname))
         return;
 
+    add_bookmark(dirname, dirpath);
+}
+
+void file_dialog::add_bookmark(QString dirname, QString dirpath)
+{
     QTreeWidgetItem *bookmark_item = new QTreeWidgetItem;
     bookmark_item->setIcon(0, QIcon("resources/images/bookmark_normal.png"));
     bookmark_item->setText(0, dirname);
     bookmark_tree->addTopLevelItem(bookmark_item);
 
     bookmarks.insert(dirname, {dirname, dirpath, bookmark_item});
+}
+
+void file_dialog::bookmark_backup()
+{
+    QJsonObject bookmarks_obj;
+    for (auto bookmark : bookmarks)
+        bookmarks_obj.insert(bookmark.name, bookmark.path);
+
+    jwrite(VINACOMP_CONF_PATH + "/file_dialog_bookmarks.json", bookmarks_obj);
 }
 
 void file_dialog::remove_bookmark()

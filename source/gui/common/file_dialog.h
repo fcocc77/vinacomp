@@ -49,11 +49,13 @@ private:
     void go_to_parent();
     void enter_to_dir(QString dirname);
     void add_bookmark();
+    void add_bookmark(QString dirname, QString dirpath);
     void remove_bookmark();
     void open_bookmark(QString bookmark);
     void switch_preview_image();
     void set_preview_image(QString image_basename);
     void open_or_save();
+    void bookmark_backup();
 
 public:
     file_dialog(QWidget *parent);
