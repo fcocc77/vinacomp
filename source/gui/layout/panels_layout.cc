@@ -1,5 +1,6 @@
 #include <panels_layout.h>
 #include <vinacomp.h>
+#include <global.h>
 
 panels_layout::panels_layout(QWidget *__vinacomp, node_graph *_node_graph, QLabel *empty_viewer,
                              script_editor *_script_editor, properties *_properties,
@@ -296,7 +297,7 @@ void panels_layout::save_layout()
     //
 
     save_json_layout(main_splitter);
-    jwrite("resources/data/layout.json", json_layout);
+    jwrite(VINACOMP_CONF_PATH + "/layout.json", json_layout);
 }
 
 void panels_layout::load_splitter(QJsonObject splitter_obj, panel *panel_a)
@@ -335,9 +336,15 @@ void panels_layout::load_splitter(QJsonObject splitter_obj, panel *panel_a)
 
 void panels_layout::load_layout()
 {
-    QJsonObject layout = jread("resources/data/layout.json");
-    QJsonObject main = layout["splitter"].toObject();
+    QString custom_layout = VINACOMP_CONF_PATH + "/layout.json";
+    QJsonObject layout;
 
+    if (os::isfile(custom_layout))
+        layout = jread(custom_layout);
+    else
+        layout = jread("resources/data/default_layout.json");
+
+    QJsonObject main = layout["splitter"].toObject();
     load_splitter(main, first_panel);
 }
 
