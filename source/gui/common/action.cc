@@ -61,7 +61,19 @@ QPushButton *action::make_button(QWidget *__tools, int _icon_size, bool __one_ch
         button->setToolTip(label);
         qt::set_icon(button, icon_name + "_normal", icon_size);
 
-        connect(button, &QPushButton::clicked, this, [=]() { this->trigger(); });
+        connect(button, &QPushButton::clicked, this,
+                [=]() { this->trigger(); });
+
+        connect(button, &QPushButton::pressed, this, [=]() {
+            qt::set_icon(button, icon_name + "_disable", icon_size);
+        });
+
+        connect(button, &QPushButton::released, this, [=]() {
+            if (checked)
+                qt::set_icon(button, icon_name + "_checked", icon_size);
+            else
+                qt::set_icon(button, icon_name + "_normal", icon_size);
+        });
     }
 
     return button;
