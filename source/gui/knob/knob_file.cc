@@ -51,7 +51,7 @@ void knob_file::open_file()
     for (QJsonValue value : allowed_file_types)
         filters.push_back(value.toString());
 
-    dialog->set_file_filter(filters);
+    dialog->set_name_filter("Images", filters);
 
     if (dialog->exec())
     {

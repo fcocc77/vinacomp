@@ -32,8 +32,16 @@ private:
     QPushButton *open_save_button;
 
     QStringList files;
-    QStringList filter_files;
     bool file_mode, save_mode;
+
+    struct filter_struct
+    {
+        QString name;
+        QStringList filters;
+    };
+
+    QMap<QString, filter_struct> filters;
+    QStringList current_filters;
 
     struct bookmark
     {
@@ -56,6 +64,8 @@ private:
     void set_preview_image(QString image_basename);
     void open_or_save();
     void bookmark_backup();
+    void filter(QString _filter);
+    void update_filter_box();
 
 public:
     file_dialog(QWidget *parent);
@@ -64,7 +74,8 @@ public:
     int exec() override;
     inline QStringList get_files() const;
     void set_init_directory(QString directory);
-    void set_file_filter(QStringList filters, QString filter_name = "");
+    void set_name_filter(QString name_filter, QStringList filters);
+    void set_names_filters(QList<filter_struct> filters);
     inline void set_file_mode();
     inline void set_dir_mode();
     inline void set_save_mode();

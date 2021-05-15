@@ -44,6 +44,11 @@ file_dialog::file_dialog(QWidget *parent)
     connect(cancel_button, &QPushButton::clicked, this, [this] { hide(); });
     //
 
+    // Filters
+    connect(filter_box, &combo_box::changed, this,
+            [this](QVariant value) { filter(value.toString()); });
+    //
+
     // Tool Bar
     tool_bar = new tools();
     action *go_back_action = new action("Go Back", "", "arrow_left");
@@ -164,8 +169,8 @@ void file_dialog::update()
         QString basename = os::basename(_path);
 
         QString ext = basename.split(".").last();
-        if (!filter_files.empty() && !os::isdir(_path))
-            if (!filter_files.contains(ext))
+        if (!current_filters.empty() && !os::isdir(_path))
+            if (!current_filters.contains(ext))
                 continue;
 
         QTreeWidgetItem *item = new QTreeWidgetItem;
@@ -334,15 +339,51 @@ void file_dialog::set_init_directory(QString directory)
     update();
 }
 
-void file_dialog::set_file_filter(QStringList filters, QString filter_name)
+void file_dialog::update_filter_box()
 {
-    filter_files = filters;
+    for (auto filter : filters)
+    {
+        QString filters_string;
+        for (QString ext : filter.filters)
+            filters_string += "." + ext + "  ";
 
+        filter_box->add_item(
+            {filter.name + ":   " + filters_string, filter.name, false, ""});
+    }
+
+    filter_box->add_item({"All Files   *", "all_files", false, "multi_lines"});
+
+    filter(filters.first().name);
+}
+
+void file_dialog::set_name_filter(QString name_filter, QStringList filters_list)
+{
     filter_box->clear();
+    filters.clear();
 
-    for (QString filter : filters)
-        filter_box->add_item({filter_name + "   *." + filter, "", false, ""});
+    filters.insert(name_filter, {name_filter, filters_list});
+    update_filter_box();
+}
 
-    filter_box->add_item({"All Files   *", "", false, "multi_lines"});
+void file_dialog::set_names_filters(QList<filter_struct> _filters)
+{
+    filter_box->clear();
+    filters.clear();
 
+    for (auto _filter : _filters)
+        filters.insert(_filter.name, _filter);
+
+    update_filter_box();
+}
+
+void file_dialog::filter(QString _filter)
+{
+    if (_filter == "all_files")
+        current_filters = QStringList{};
+    else
+        current_filters = filters.value(_filter).filters;
+
+    filter_box->set_value(_filter, false);
+
+    update();
 }

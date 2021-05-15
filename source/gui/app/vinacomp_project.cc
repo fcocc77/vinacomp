@@ -65,7 +65,7 @@ void vinacomp::recorder_recent_projects(QString project_path)
 void vinacomp::open_project_dialog()
 {
     _file_dialog->set_file_mode();
-    _file_dialog->set_file_filter({"vina"}, "VinaComp Project");
+    _file_dialog->set_name_filter("VinaComp Project", {"vina"});
     _file_dialog->set_init_directory(os::dirname(current_project));
 
     if (!_file_dialog->exec())
