@@ -25,7 +25,7 @@ private:
 
 public:
     knob_check_box(knob_props props, QString _label = "",
-                   bool _default_value = 0);
+                   bool _default_value = false);
     ~knob_check_box();
 
     void set_check(bool value, bool emmit_signal = true);

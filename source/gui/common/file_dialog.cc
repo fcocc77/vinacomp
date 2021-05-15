@@ -40,7 +40,7 @@ file_dialog::file_dialog(QWidget *parent)
     QPushButton *cancel_button = new QPushButton("Cancel");
     disk_path = new combo_box({{"Root", "", true, "disk"}});
     knob_check_box *sequence_check =
-        new knob_check_box({}, "Image Sequence", 0);
+        new knob_check_box({}, "Image Sequence", image_sequence);
     //
 
     // Tool Bar
@@ -115,6 +115,9 @@ file_dialog::file_dialog(QWidget *parent)
 
     connect(bookmark_tree, &QTreeWidget::itemClicked, this,
             [this](QTreeWidgetItem *item) { open_bookmark(item->text(0)); });
+
+    connect(path_edit, &QLineEdit::editingFinished, this,
+            [this]() { enter_to_dir(path_edit->text()); });
     //
 
     // Layouts Construccion
@@ -223,14 +226,15 @@ void file_dialog::go_to_parent()
     update();
 }
 
-void file_dialog::enter_to_dir(QString dirname)
+void file_dialog::enter_to_dir(QString dirpath)
 {
-    QString dirpath = current_dir + "/" + dirname;
     dirpath = dirpath.replace("//", "/");
+
     if (!os::isdir(dirpath))
         return;
 
     current_dir = dirpath;
+
     update();
 }
 
@@ -266,6 +270,9 @@ void file_dialog::add_bookmark()
 
 void file_dialog::add_bookmark(QString dirname, QString dirpath)
 {
+    if (dirname.isEmpty())
+        return;
+
     QTreeWidgetItem *bookmark_item = new QTreeWidgetItem;
     bookmark_item->setIcon(0, QIcon("resources/images/bookmark_normal.png"));
     bookmark_item->setText(0, dirname);
@@ -341,7 +348,7 @@ void file_dialog::open_or_save()
 {
     if (os::isdir(current_path))
     {
-        enter_to_dir(current_filename);
+        enter_to_dir(current_dir + "/" + current_filename);
         return;
     }
 
