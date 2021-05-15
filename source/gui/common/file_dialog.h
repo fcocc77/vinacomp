@@ -30,6 +30,7 @@ private:
     QString current_path;
     QString current_filename;
     QPushButton *open_save_button;
+    QLineEdit *create_folder_name;
 
     QStringList files;
     bool file_mode, save_mode;
@@ -68,6 +69,7 @@ private:
     void filter(QString _filter);
     void update_filter_box();
     QStringList filter_by_sequence(QStringList files);
+    void create_directory();
 
 public:
     file_dialog(QWidget *parent);

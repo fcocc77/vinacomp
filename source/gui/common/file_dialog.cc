@@ -41,6 +41,8 @@ file_dialog::file_dialog(QWidget *parent)
     disk_path = new combo_box({{"Root", "", true, "disk"}});
     knob_check_box *sequence_check =
         new knob_check_box({}, "Image Sequence", image_sequence);
+    create_folder_name = new QLineEdit;
+
     //
 
     // Tool Bar
@@ -48,30 +50,12 @@ file_dialog::file_dialog(QWidget *parent)
     action *go_back_action = new action("Go Back", "", "arrow_left");
     action *go_forward_action = new action("Go Forward", "", "arrow_right");
     action *go_to_parent_action = new action("Go Back", "", "arrow_up");
-    go_to_parent_action->connect_to(this, [this]() { go_to_parent(); });
-    action *create_folder =
-        new action("Create Directorio", "", "create_new_folder");
     action *image_preview_action = new action("Image Preview", "", "image");
-    image_preview_action->connect_to(this,
-                                     [this]() { switch_preview_image(); });
+    action *create_directory_action = new action("Create Directory", "", "add");
     action *add_bookmark_action =
         new action("Add BookMark", "", "bookmark_add");
     action *remove_bookmark_action =
         new action("Remove BookMark", "", "bookmark_remove");
-    add_bookmark_action->connect_to(this, [this]() { add_bookmark(); });
-    remove_bookmark_action->connect_to(this, [this]() { remove_bookmark(); });
-
-    tool_bar->add_widget(disk_path);
-    tool_bar->add_separator();
-    tool_bar->add_action(add_bookmark_action);
-    tool_bar->add_action(remove_bookmark_action);
-    tool_bar->add_separator();
-    tool_bar->add_action(create_folder);
-    tool_bar->add_action(image_preview_action);
-    tool_bar->add_stretch();
-    tool_bar->add_action(go_back_action);
-    tool_bar->add_action(go_forward_action);
-    tool_bar->add_action(go_to_parent_action);
     //
 
     center_layout->setMargin(0);
@@ -88,7 +72,20 @@ file_dialog::file_dialog(QWidget *parent)
     preview_image->setVisible(preview_image_visible);
     //
 
+    create_folder_name->setPlaceholderText("Directory Name");
+
     // Conecciones
+    create_directory_action->connect_to(this, [this]() { create_directory(); });
+
+    go_to_parent_action->connect_to(this, [this]() { go_to_parent(); });
+
+    image_preview_action->connect_to(this,
+                                     [this]() { switch_preview_image(); });
+
+    add_bookmark_action->connect_to(this, [this]() { add_bookmark(); });
+
+    remove_bookmark_action->connect_to(this, [this]() { remove_bookmark(); });
+
     connect(open_save_button, &QPushButton::clicked, this,
             &file_dialog::open_or_save);
 
@@ -120,7 +117,21 @@ file_dialog::file_dialog(QWidget *parent)
             [this]() { enter_to_dir(path_edit->text()); });
     //
 
-    // Layouts Construccion
+    // Layouts
+    tool_bar->add_widget(disk_path);
+    tool_bar->add_separator();
+    tool_bar->add_action(add_bookmark_action);
+    tool_bar->add_action(remove_bookmark_action);
+    tool_bar->add_separator();
+    tool_bar->add_action(image_preview_action);
+    tool_bar->add_separator();
+    tool_bar->add_widget(create_folder_name);
+    tool_bar->add_action(create_directory_action);
+    tool_bar->add_stretch();
+    tool_bar->add_action(go_back_action);
+    tool_bar->add_action(go_forward_action);
+    tool_bar->add_action(go_to_parent_action);
+
     bottom_tools_layout->addWidget(path_edit);
 
     center_layout->addWidget(bookmark_tree);
@@ -157,6 +168,7 @@ file_dialog::~file_dialog() {}
 int file_dialog::exec()
 {
     update();
+    create_folder_name->clear();
 
     QDialog::exec();
 
@@ -472,4 +484,19 @@ QStringList file_dialog::filter_by_sequence(QStringList files)
     }
 
     return final_list;
+}
+
+void file_dialog::create_directory()
+{
+    QString name = create_folder_name->text();
+    if (name.isEmpty())
+        return;
+
+    QString directory = current_dir + "/" + name;
+
+    if (os::isdir(directory))
+        return;
+
+    os::makedir(directory);
+    update();
 }
