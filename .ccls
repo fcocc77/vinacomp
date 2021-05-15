@@ -30,6 +30,7 @@ clang++
 
 -I./source/python_api
 -I./source/ofx
+-I./source/global
 
 -I./source/engine/app
 -I./source/engine/nodes
