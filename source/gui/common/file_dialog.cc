@@ -365,6 +365,8 @@ void file_dialog::open_bookmark(QString _bookmark)
 {
     bookmark mark = bookmarks.value(_bookmark);
     current_dir = mark.path;
+
+    add_history(current_dir);
     update();
 }
 
