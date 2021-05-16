@@ -205,8 +205,6 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left
     #knob_check_box QCheckBox:checked {
       border-color: #76808f; }
     #knob_check_box QCheckBox::indicator {
-      width: 2px;
-      height: 2px;
       border-radius: 2px; }
       #knob_check_box QCheckBox::indicator:checked {
         border: 8px solid transparent;
@@ -223,8 +221,6 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left
     #knob_channels #red QCheckBox:checked, #knob_channels #green QCheckBox:checked, #knob_channels #blue QCheckBox:checked, #knob_channels #alpha QCheckBox:checked {
       border-color: #76808f; }
     #knob_channels #red QCheckBox::indicator, #knob_channels #green QCheckBox::indicator, #knob_channels #blue QCheckBox::indicator, #knob_channels #alpha QCheckBox::indicator {
-      width: 2px;
-      height: 2px;
       border-radius: 2px; }
       #knob_channels #red QCheckBox::indicator:checked, #knob_channels #green QCheckBox::indicator:checked, #knob_channels #blue QCheckBox::indicator:checked, #knob_channels #alpha QCheckBox::indicator:checked {
         border: 8px solid transparent;
@@ -300,8 +296,6 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left
     #knob_check_box QCheckBox:checked {
       border-color: #76808f; }
     #knob_check_box QCheckBox::indicator {
-      width: 2px;
-      height: 2px;
       border-radius: 2px; }
       #knob_check_box QCheckBox::indicator:checked {
         border: 8px solid transparent;
@@ -730,6 +724,52 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left
       color: #ffcc00; }
     #script_editor #expression_editor_bar #code_icon {
       background: none; }
+
+#settings QTreeWidget {
+  background-color: #292d32;
+  alternate-background-color: #2e3238;
+  border-left: 1px solid #191b1f; }
+  #settings QTreeWidget::item {
+    background: transparent;
+    border-top: 1px solid transparent;
+    border-bottom: 1px solid #353941; }
+    #settings QTreeWidget::item:selected {
+      background: #343530;
+      border-color: rgba(255, 204, 0, 0.5);
+      color: #caced3; }
+      #settings QTreeWidget::item:selected:hover {
+        background: #343530; }
+    #settings QTreeWidget::item:hover {
+      background-color: rgba(255, 204, 0, 0.02);
+      border-color: rgba(255, 204, 0, 0.3); }
+  #settings QTreeWidget::branch {
+    background: transparent;
+    border-top: 1px solid transparent;
+    border-bottom: 1px solid #353941; }
+    #settings QTreeWidget::branch:selected {
+      background: #343530;
+      border-color: rgba(255, 204, 0, 0.5);
+      color: #caced3; }
+      #settings QTreeWidget::branch:selected:hover {
+        background: #343530; }
+    #settings QTreeWidget::branch:hover {
+      background-color: rgba(255, 204, 0, 0.02);
+      border-color: rgba(255, 204, 0, 0.3); }
+  #settings QTreeWidget QHeaderView::section {
+    background-color: #292d32;
+    padding: 5px 10px 5px 10px;
+    border: 0px solid none;
+    margin-left: 1px;
+    margin-top: 1px;
+    margin-bottom: 1px; }
+
+#settings #settings_content {
+  background: #30343b; }
+  #settings #settings_content #general_widget, #settings #settings_content #auto_save_widget, #settings #settings_content #plugins_widget, #settings #settings_content #appearance_widget {
+    background: none; }
+
+#settings #init_space {
+  background: none; }
 
 #tool_bar {
   background: #25282d;

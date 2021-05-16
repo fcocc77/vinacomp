@@ -1,7 +1,7 @@
 general:
     ☐ depurar memoria con 'delete' usando 'valgrind' @high
     ☐ crear api para plugins 'G`mic' con su libreria 'https://gmic.eu/libgmic.html' solo los efectos mas necesarios
-    ☐ crear ventana de archivos, para importar y exportar archivos, con un arbol de directorios y previsualizador de imagenes, y para guardar tags
+    ✔ crear ventana de archivos, para importar y exportar archivos, con un arbol de directorios y previsualizador de imagenes, y para guardar tags @done(2021-05-16 15:01) @project(general)
 gui__settings_projects:
 	☐ el proxy va a remplazar el rscale de videovina
     ☐ crear administrador de py_plugins para añadir, eliminar, cambiar iconos, y renombrar plugins

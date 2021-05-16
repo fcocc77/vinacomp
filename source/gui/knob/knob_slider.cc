@@ -18,6 +18,7 @@ knob_slider::knob_slider(knob_props props, float min, float max,
     layout->setMargin(0);
     layout->addWidget(init_space);
     this->set_knob_layout(layout);
+    this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
     // value 1
     value_1_edit = new line_edit();
