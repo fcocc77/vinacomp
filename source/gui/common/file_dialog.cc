@@ -209,9 +209,10 @@ int file_dialog::exec()
     history_current = 0;
     add_history(current_dir);
 
-    QDialog::exec();
+    preview_image_visible = true;
+    switch_preview_image();
 
-    bookmark_backup();
+    QDialog::exec();
 
     return files.count();
 }
