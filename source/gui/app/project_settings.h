@@ -5,17 +5,20 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
+#include <settings.h>
 #include <stdio.h>
 
-class project_settings : public QWidget
+class project_settings : public settings
 {
 private:
-    QVBoxLayout *layout;
     QWidget *_vinacomp;
 
     int first_frame, last_frame;
     float proxy_scale;
     QTextEdit *comment_text_edit;
+
+    void setup_sequence();
+    void setup_layers();
 
 public:
     project_settings(QWidget *_vinacomp);

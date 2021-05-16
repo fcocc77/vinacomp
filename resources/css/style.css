@@ -728,7 +728,8 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left
 #settings QTreeWidget {
   background-color: #292d32;
   alternate-background-color: #2e3238;
-  border-left: 1px solid #191b1f; }
+  border-left: 1px solid #191b1f;
+  border-bottom: 1px solid #191b1f; }
   #settings QTreeWidget::item {
     background: transparent;
     border-top: 1px solid transparent;
@@ -764,12 +765,22 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left
     margin-bottom: 1px; }
 
 #settings #settings_content {
-  background: #30343b; }
+  background: #30343b;
+  border-bottom: 1px solid #191b1f; }
   #settings #settings_content #general_widget, #settings #settings_content #auto_save_widget, #settings #settings_content #plugins_widget, #settings #settings_content #appearance_widget {
     background: none; }
 
 #settings #init_space {
   background: none; }
+
+#settings QTextEdit {
+  color: #aeb4bc;
+  padding: 3px;
+  border-radius: 2px;
+  background: #1e2024;
+  border: 1px solid #1e2024; }
+  #settings QTextEdit:focus {
+    border-color: #8f7612; }
 
 #tool_bar {
   background: #25282d;

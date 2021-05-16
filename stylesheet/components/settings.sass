@@ -4,9 +4,13 @@
     QTreeWidget
         @include q_tree_widget($b17, $b19, $b22)
         border-left: 1px solid $b10
+        border-bottom: 1px solid $b10
     #settings_content
         background: $b20
+        border-bottom: 1px solid $b10
         #general_widget, #auto_save_widget, #plugins_widget, #appearance_widget
             background: none
     #init_space
         background: none
+    QTextEdit
+        @include q_line_edit
