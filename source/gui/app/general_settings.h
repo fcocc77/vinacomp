@@ -4,25 +4,16 @@
 // QT5
 #include <QTreeWidget>
 #include <QVBoxLayout>
-#include <QWidget>
 
-class general_settings : public QWidget
+#include <settings.h>
+
+class general_settings : public settings
 {
 private:
-    QVBoxLayout *layout;
-    QHBoxLayout *content_layout;
-
-    QWidget *general_widget;
-    QWidget *auto_save_widget;
-    QWidget *plugins_widget;
-    QWidget *appearance_widget;
-
-    void set_content(QString content_name);
-
-    void set_visible_general(bool visible);
-    void set_visible_auto_save(bool visible);
-    void set_visible_plugins(bool visible);
-    void set_visible_appearance(bool visible);
+    void setup_general();
+    void setup_auto_save();
+    void setup_plugins();
+    void setup_appearance();
 
 public:
     general_settings();
