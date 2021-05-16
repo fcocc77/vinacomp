@@ -26,13 +26,11 @@ file_dialog::file_dialog(QWidget *parent)
     center_widget = new QWidget;
     preview_image = new QLabel;
     bottom_widget = new QWidget;
-    bottom_tools_widget = new QWidget;
     //
 
     // Layouts
     QHBoxLayout *bottom_layout = new QHBoxLayout(bottom_widget);
     QHBoxLayout *center_layout = new QHBoxLayout(center_widget);
-    QHBoxLayout *bottom_tools_layout = new QHBoxLayout(bottom_tools_widget);
     //
 
     // Widgets new
@@ -70,14 +68,12 @@ file_dialog::file_dialog(QWidget *parent)
 
     center_layout->setMargin(0);
     bottom_layout->setMargin(0);
-    bottom_tools_layout->setMargin(0);
 
     center_widget->setObjectName("center_widget");
     bottom_widget->setObjectName("bottom_widget");
 
-    tree->setAlternatingRowColors(true);
-
     // Preview
+    preview_image->setObjectName("preview_image");
     preview_image->setMinimumWidth(500);
     preview_image->setVisible(preview_image_visible);
     //
@@ -86,17 +82,27 @@ file_dialog::file_dialog(QWidget *parent)
 
     // Splitter
     splitter->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    splitter->setObjectName("splitter");
     //
 
     // Tree
     tree->setSortingEnabled(true);
+    tree->setObjectName("folder_tree");
     QStringList columns{"Name", "Size", "Type", "Data Modified"};
     tree->setHeaderLabels(columns);
+    tree->setAlternatingRowColors(true);
 
-    tree->setColumnWidth(0, 300);
+    tree->setColumnWidth(0, 200);
     tree->setColumnWidth(1, 80);
     tree->setColumnWidth(2, 60);
     tree->setColumnWidth(3, 200);
+    //
+
+    // BookMark Tree
+    bookmark_tree->setHeaderHidden(true);
+    bookmark_tree->setAlternatingRowColors(true);
+
+    bookmark_tree->setObjectName("bookmark_tree");
     //
 
     // Conecciones
@@ -179,8 +185,6 @@ file_dialog::file_dialog(QWidget *parent)
     splitter->addWidget(bookmark_tree);
     splitter->addWidget(tree);
 
-    bottom_tools_layout->addWidget(path_edit);
-
     center_layout->addWidget(splitter);
     center_layout->addWidget(preview_image);
 
@@ -193,7 +197,7 @@ file_dialog::file_dialog(QWidget *parent)
 
     layout->addWidget(tool_bar);
     layout->addWidget(center_widget);
-    layout->addWidget(bottom_tools_widget);
+    layout->addWidget(path_edit);
     layout->addWidget(bottom_widget);
 
     // restaura los bookmark de usuario
@@ -275,13 +279,16 @@ void file_dialog::update()
             ext = "...";
         }
         else if (basename.contains("#"))
+        {
             item->setIcon(0, QIcon("resources/images/sequence_normal.png"));
+            size = "...";
+        }
         else
             item->setIcon(0, QIcon("resources/images/default_icon_normal.png"));
 
         item->setText(0, basename);
         item->setText(1, size);
-        item->setText(2, ext);
+        item->setText(2, ext.toUpper());
         item->setText(3, file_info.lastModified().toString());
         tree->addTopLevelItem(item);
 

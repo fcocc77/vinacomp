@@ -19,7 +19,7 @@ private:
     QVBoxLayout *layout;
 
     tools *tool_bar;
-    QWidget *center_widget, *bottom_widget, *bottom_tools_widget;
+    QWidget *center_widget, *bottom_widget;
     QLabel *preview_image;
     QTreeWidget *tree, *bookmark_tree;
     QList<QTreeWidgetItem*> items;

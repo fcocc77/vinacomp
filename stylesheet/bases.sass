@@ -9,52 +9,39 @@
     &:focus
         border-color: mix($base, $b12, 50)
 
-@mixin treecolor
+@mixin treecolor($main_color, $border_color)
+    background: transparent
+    border-top: 1px solid transparent
+    border-bottom: 1px solid $border_color
+
     &:selected
-        background-color: rgba($base, .03)
+        background: mix($base, $main_color, 5)
         border-color: rgba($base, .5)
         color: $b80
+
+        &:hover
+            background: mix($base, $main_color, 5)
+
     &:hover
         background-color: rgba($base,.02)
-        border-color: rgba($base,.5)
+        border-color: rgba($base,.3)
 
-@mixin q_tree_widget
-    alternate-background-color: $b18
-    background-color: $b15
-    border: 1px solid $b18
+@mixin q_tree_widget($main_color, $alternate_color, $border_color)
+    background-color: $main_color
+    alternate-background-color: $alternate_color
 
-    *
-        background: none
     &::item
-        // border-bottom: 1px solid $b20
-        // border-top: 1px solid transparent
-        height: 20px
-        &:first
-            padding-left: 15px
-
-        @include treecolor
-
-        // QLabel
-            // padding: 5px
-        &:has-children
-            // background: $b14
-            // min-height: 20px
-            // @include treecolor
+        @include treecolor($main_color, $border_color)
     &::branch
-        background: transparent
-        border-top: 1px solid transparent
-        border-bottom: 1px solid $b20
-        @include treecolor
-        &:selected
-            background: mix($base, $b15, 10)
-        &:hover
-            background: mix($base,$b15,2)
-        &:has-children
-            background: $b14
-            &:selected
-                background: mix($base,$b14,11)
-            &:hover
-                background: mix($base,$b14,3)
+        @include treecolor($main_color, $border_color)
+    QHeaderView
+        &::section
+            background-color: $main_color
+            padding: 5px 10px 5px 10px
+            border: 0px solid none
+            margin-left: 1px
+            margin-top: 1px
+            margin-bottom: 1px
 
 @mixin q_combo_box
     margin-right: 10px
