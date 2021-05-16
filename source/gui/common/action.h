@@ -14,6 +14,7 @@ private:
     bool checkable;
     bool checked;
     bool visible;
+    bool disable;
     bool _one_check_at_time;
     QWidget *_tools;
     QString object_name;
@@ -40,6 +41,7 @@ public:
     void update();
     void set_visible(bool _visible);
     void set_icon(QString icon_name);
+    void set_disable(bool disable);
     inline QPushButton *get_button() const;
 
     template <class T, typename Func> void connect_to(T *obj, Func func)

@@ -33,11 +33,14 @@ private:
     QPushButton *open_save_button;
     QLineEdit *create_folder_name;
     QSplitter *splitter;
+    QStringList history;
+    int history_current;
 
     QStringList files;
     bool file_mode, save_mode;
     bool image_sequence;
 
+    action *go_back_action, *go_forward_action;
     struct filter_struct
     {
         QString name;
@@ -73,6 +76,8 @@ private:
     QStringList filter_by_sequence(QStringList files);
     void create_directory();
     void center();
+    bool go_to_history(bool forward);
+    void add_history(QString _path);
 
 public:
     file_dialog(QWidget *parent);

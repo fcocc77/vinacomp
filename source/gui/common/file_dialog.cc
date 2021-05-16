@@ -11,6 +11,7 @@
 file_dialog::file_dialog(QWidget *parent)
     : QDialog(parent)
     , preview_image_visible(false)
+    , history_current(0)
     , file_mode(true)
     , save_mode(false)
     , image_sequence(true)
@@ -53,9 +54,10 @@ file_dialog::file_dialog(QWidget *parent)
 
     // Tool Bar
     tool_bar = new tools();
-    action *go_back_action = new action("Go Back", "", "arrow_left");
-    action *go_forward_action = new action("Go Forward", "", "arrow_right");
-    action *go_to_parent_action = new action("Go Back", "", "arrow_up");
+    go_back_action = new action("Go Back Directory History", "", "arrow_left");
+    go_forward_action =
+        new action("Go Forward Directory History", "", "arrow_right");
+    action *go_to_parent_action = new action("Go Back Parent", "", "arrow_up");
     action *image_preview_action = new action("Image Preview", "", "image");
     action *create_directory_action = new action("Create Directory", "", "add");
     action *add_bookmark_action =
@@ -85,6 +87,22 @@ file_dialog::file_dialog(QWidget *parent)
     //
 
     // Conecciones
+    go_back_action->connect_to(this, [=]() {
+        go_forward_action->set_disable(false);
+
+        bool has_history = go_to_history(false);
+        if (!has_history)
+            go_back_action->set_disable(true);
+    });
+
+    go_forward_action->connect_to(this, [=]() {
+        go_back_action->set_disable(false);
+
+        bool has_history = go_to_history(true);
+        if (!has_history)
+            go_forward_action->set_disable(true);
+    });
+
     create_directory_action->connect_to(this, [this]() { create_directory(); });
 
     go_to_parent_action->connect_to(this, [this]() { go_to_parent(); });
@@ -187,6 +205,10 @@ int file_dialog::exec()
     create_folder_name->clear();
     center();
 
+    history.clear();
+    history_current = 0;
+    add_history(current_dir);
+
     QDialog::exec();
 
     bookmark_backup();
@@ -252,17 +274,22 @@ void file_dialog::update()
 void file_dialog::go_to_parent()
 {
     current_dir = os::dirname(current_dir);
+    add_history(current_dir);
     update();
 }
 
 void file_dialog::enter_to_dir(QString dirpath)
 {
+    if (dirpath.isEmpty())
+        return;
+
     dirpath = dirpath.replace("//", "/");
 
     if (!os::isdir(dirpath))
         return;
 
     current_dir = dirpath;
+    add_history(current_dir);
 
     update();
 }
@@ -526,4 +553,43 @@ void file_dialog::create_directory()
 
     os::makedir(directory);
     update();
+}
+
+void file_dialog::add_history(QString _path)
+{
+    if (_path.isEmpty())
+        return;
+
+    if (!history.empty())
+        if (_path == history.first())
+            return;
+
+    history.push_front(_path);
+    history_current = 0;
+
+    go_back_action->set_disable(false);
+    go_forward_action->set_disable(false);
+}
+
+bool file_dialog::go_to_history(bool forward)
+{
+    if (!forward)
+    {
+        if (history_current < history.count() - 1)
+            history_current++;
+        else
+            return false;
+    }
+    else
+    {
+        if (history_current > 0)
+            history_current--;
+        else
+            return false;
+    }
+
+    current_dir = history.value(history_current);
+    update();
+
+    return true;
 }
