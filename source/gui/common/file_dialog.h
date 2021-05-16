@@ -8,6 +8,7 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QTreeWidget>
+#include <QSplitter>
 
 #include <tools.h>
 #include <combo_box.h>
@@ -31,6 +32,7 @@ private:
     QString current_filename;
     QPushButton *open_save_button;
     QLineEdit *create_folder_name;
+    QSplitter *splitter;
 
     QStringList files;
     bool file_mode, save_mode;

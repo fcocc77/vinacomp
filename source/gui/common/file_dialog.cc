@@ -42,7 +42,7 @@ file_dialog::file_dialog(QWidget *parent)
     knob_check_box *sequence_check =
         new knob_check_box({}, "Image Sequence", image_sequence);
     create_folder_name = new QLineEdit;
-
+    splitter = new QSplitter;
     //
 
     // Tool Bar
@@ -73,6 +73,10 @@ file_dialog::file_dialog(QWidget *parent)
     //
 
     create_folder_name->setPlaceholderText("Directory Name");
+
+    // Splitter
+    splitter->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    //
 
     // Conecciones
     create_directory_action->connect_to(this, [this]() { create_directory(); });
@@ -132,10 +136,12 @@ file_dialog::file_dialog(QWidget *parent)
     tool_bar->add_action(go_forward_action);
     tool_bar->add_action(go_to_parent_action);
 
+    splitter->addWidget(bookmark_tree);
+    splitter->addWidget(tree);
+
     bottom_tools_layout->addWidget(path_edit);
 
-    center_layout->addWidget(bookmark_tree);
-    center_layout->addWidget(tree);
+    center_layout->addWidget(splitter);
     center_layout->addWidget(preview_image);
 
     bottom_layout->addWidget(filter_label);
@@ -168,6 +174,7 @@ file_dialog::~file_dialog() {}
 int file_dialog::exec()
 {
     update();
+    splitter->setSizes({20, 140});
     create_folder_name->clear();
 
     QDialog::exec();
