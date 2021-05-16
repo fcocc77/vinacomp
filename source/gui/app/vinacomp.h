@@ -16,7 +16,7 @@
 #include <project_settings.h>
 #include <properties.h>
 #include <script_editor.h>
-#include <settings.h>
+#include <general_settings.h>
 #include <viewer.h>
 #include <tools.h>
 #include <file_dialog.h>
@@ -34,7 +34,7 @@ private:
     properties *_properties;
     curve_editor *_curve_editor;
     tools *_tool_bar;
-    settings *_settings;
+    general_settings *_settings;
     project_settings *_project_settings;
     renderer *_renderer;
     file_dialog *_file_dialog;
