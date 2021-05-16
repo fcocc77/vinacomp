@@ -19,7 +19,7 @@ file_dialog::file_dialog(QWidget *parent)
 {
     layout = new QVBoxLayout(this);
     setObjectName("file_dialog");
-    setMinimumSize({700, 500});
+    setMinimumSize({900, 500});
 
     // Widgets
     center_widget = new QWidget;
@@ -58,7 +58,8 @@ file_dialog::file_dialog(QWidget *parent)
     go_forward_action =
         new action("Go Forward Directory History", "", "arrow_right");
     action *go_to_parent_action = new action("Go Back Parent", "", "arrow_up");
-    action *image_preview_action = new action("Image Preview", "", "image");
+    image_preview_action = new action("Image Preview", "", "image");
+    image_preview_action->set_checkable();
     action *create_directory_action = new action("Create Directory", "", "add");
     action *add_bookmark_action =
         new action("Add BookMark", "", "bookmark_add");
@@ -211,6 +212,7 @@ int file_dialog::exec()
 
     preview_image_visible = true;
     switch_preview_image();
+    image_preview_action->set_checked(false);
 
     QDialog::exec();
 
@@ -377,7 +379,7 @@ void file_dialog::switch_preview_image()
     if (preview_image_visible)
         this->setFixedWidth(1200);
     else
-        this->setFixedWidth(700);
+        this->setFixedWidth(900);
 
     preview_image->setVisible(preview_image_visible);
 

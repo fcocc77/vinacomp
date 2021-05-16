@@ -40,7 +40,7 @@ private:
     bool file_mode, save_mode;
     bool image_sequence;
 
-    action *go_back_action, *go_forward_action;
+    action *go_back_action, *go_forward_action, *image_preview_action;
     struct filter_struct
     {
         QString name;
