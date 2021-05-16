@@ -35,7 +35,7 @@ public:
     void set_checkable(bool checkable = true);
     bool is_checked() const;
     void set_illuminated_button(bool illuminated);
-    void set_checked(bool _checked);
+    void set_checked(bool _checked, bool emmit_signal = false);
     QPushButton *make_button(QWidget *_tools, int _icon_size, bool _one_check_at_time);
     void set_object_name(QString name);
     void update();

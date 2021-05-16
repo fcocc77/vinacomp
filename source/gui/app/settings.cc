@@ -1,6 +1,8 @@
 #include <settings.h>
+#include <vinacomp.h>
 
-settings::settings(bool has_dialog_buttons)
+settings::settings(bool has_dialog_buttons, QWidget *__vinacomp)
+    : _vinacomp(__vinacomp)
 
 {
     this->hide();
@@ -45,12 +47,15 @@ settings::settings(bool has_dialog_buttons)
         QPushButton *cancel_button = new QPushButton("Cancel");
 
         connect(save_button, &QPushButton::clicked, this, [this]() {
-            hide();
+            static_cast<vinacomp *>(_vinacomp)->settings_action->set_checked(
+                false, true);
             save_settings();
         });
 
-        connect(cancel_button, &QPushButton::clicked, this,
-                [this]() { hide(); });
+        connect(cancel_button, &QPushButton::clicked, this, [this]() {
+            static_cast<vinacomp *>(_vinacomp)->settings_action->set_checked(
+                false, true);
+        });
 
         dialog_buttons_layout->addStretch();
         dialog_buttons_layout->addWidget(save_button);

@@ -100,10 +100,16 @@ void action::uncheck_all()
     static_cast<tools *>(_tools)->set_checked_all(false);
 }
 
-void action::set_checked(bool _checked)
+void action::set_checked(bool _checked, bool emmit_signal)
 {
     if (!checkable)
         return;
+
+    if (button && emmit_signal)
+    {
+        button->click();
+        return;
+    }
 
     checked = _checked;
 

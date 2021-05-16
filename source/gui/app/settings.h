@@ -11,6 +11,8 @@
 class settings : public QWidget
 {
 private:
+    QWidget *_vinacomp;
+
     struct item_struct
     {
         QString name;
@@ -27,7 +29,7 @@ protected:
     virtual void save_settings();
 
 public:
-    settings(bool has_dialog_buttons = false);
+    settings(bool has_dialog_buttons = false, QWidget *_vinacomp = 0);
     ~settings();
 
     QVBoxLayout *add_item(QString name);

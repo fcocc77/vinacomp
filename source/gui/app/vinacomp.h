@@ -52,8 +52,6 @@ private:
     QAction *update_sylesheet_action;
     action *new_project_action;
     action *open_project_action;
-    action *settings_action;
-    action *project_settings_action;
     action *script_layout_action;
     action *comp_layout_action;
     //
@@ -93,6 +91,9 @@ private:
 public:
     vinacomp();
     ~vinacomp();
+
+    action *settings_action;
+    action *project_settings_action;
 
     // undo & redo
     void add_history();

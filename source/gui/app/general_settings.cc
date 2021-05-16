@@ -4,8 +4,8 @@
 #include <knob_check_box.h>
 #include <knob_integer.h>
 
-general_settings::general_settings()
-    : settings(true)
+general_settings::general_settings(QWidget *_vinacomp)
+    : settings(true, _vinacomp)
 {
     setup_general();
     setup_auto_save();

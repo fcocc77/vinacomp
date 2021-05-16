@@ -18,7 +18,7 @@ private:
     void save_settings() override;
 
 public:
-    general_settings();
+    general_settings(QWidget *_vinacomp);
     ~general_settings();
 };
 
