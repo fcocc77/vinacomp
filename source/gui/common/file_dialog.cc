@@ -1,3 +1,6 @@
+#include <QApplication>
+#include <QDesktopWidget>
+
 #include <button.h>
 #include <file_dialog.h>
 #include <global.h>
@@ -38,7 +41,10 @@ file_dialog::file_dialog(QWidget *parent)
     filter_box = new combo_box();
     open_save_button = new QPushButton("Open");
     QPushButton *cancel_button = new QPushButton("Cancel");
-    disk_path = new combo_box({{"Root", "", true, "disk"}});
+
+    disk_path = new combo_box({{"Root: /", "/", false, ""},
+                               {"Home: " + USER_DIR, USER_DIR, false, ""}});
+
     knob_check_box *sequence_check =
         new knob_check_box({}, "Image Sequence", image_sequence);
     create_folder_name = new QLineEdit;
@@ -103,6 +109,9 @@ file_dialog::file_dialog(QWidget *parent)
 
     connect(filter_box, &combo_box::changed, this,
             [this](QVariant value) { filter(value.toString()); });
+
+    connect(disk_path, &combo_box::changed, this,
+            [this](QVariant value) { enter_to_dir(value.toString()); });
 
     connect(tree, &QTreeWidget::itemDoubleClicked, this,
             [this](QTreeWidgetItem *item) { open_or_save(); });
@@ -176,6 +185,7 @@ int file_dialog::exec()
     update();
     splitter->setSizes({20, 140});
     create_folder_name->clear();
+    center();
 
     QDialog::exec();
 
@@ -340,6 +350,16 @@ void file_dialog::switch_preview_image()
         this->setFixedWidth(700);
 
     preview_image->setVisible(preview_image_visible);
+
+    center();
+}
+
+void file_dialog::center()
+{
+    QRect screenGeometry = qApp->desktop()->screenGeometry();
+    int x = (screenGeometry.width() - this->width()) / 2;
+    int y = (screenGeometry.height() - this->height()) / 2;
+    this->move(x, y);
 }
 
 void file_dialog::set_preview_image(QString image_basename)

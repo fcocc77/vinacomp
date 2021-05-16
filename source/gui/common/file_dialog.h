@@ -72,6 +72,7 @@ private:
     void update_filter_box();
     QStringList filter_by_sequence(QStringList files);
     void create_directory();
+    void center();
 
 public:
     file_dialog(QWidget *parent);
