@@ -782,6 +782,14 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left
   #settings QTextEdit:focus {
     border-color: #8f7612; }
 
+#settings #dialog_buttons {
+  background: #2e3238;
+  border-bottom: 1px solid #191b1f; }
+  #settings #dialog_buttons QPushButton {
+    padding-left: 10px; }
+    #settings #dialog_buttons QPushButton:hover {
+      color: #ffcc00; }
+
 #tool_bar {
   background: #25282d;
   border-left: 1px solid #191b1f; }

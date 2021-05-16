@@ -5,6 +5,7 @@
 #include <knob_integer.h>
 
 general_settings::general_settings()
+    : settings(true)
 {
     setup_general();
     setup_auto_save();
@@ -46,4 +47,9 @@ void general_settings::setup_plugins()
 void general_settings::setup_appearance()
 {
     QVBoxLayout *layout = add_item("Appearance");
+}
+
+void general_settings::save_settings()
+{
+    print("save");
 }

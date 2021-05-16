@@ -6,6 +6,7 @@
 #include <QWidget>
 #include <QTreeWidget>
 #include <QSplitter>
+#include <QPushButton>
 
 class settings : public QWidget
 {
@@ -22,8 +23,11 @@ private:
     QHBoxLayout *content_layout;
     QTreeWidget *tree;
 
+protected:
+    virtual void save_settings();
+
 public:
-    settings();
+    settings(bool has_dialog_buttons = false);
     ~settings();
 
     QVBoxLayout *add_item(QString name);

@@ -1,6 +1,7 @@
 #include <settings.h>
 
-settings::settings()
+settings::settings(bool has_dialog_buttons)
+
 {
     this->hide();
     this->setObjectName("settings");
@@ -25,8 +26,41 @@ settings::settings()
     content_layout->setMargin(0);
     content->setObjectName("settings_content");
 
+    QWidget *right_widget = new QWidget;
+    QVBoxLayout *right_layout = new QVBoxLayout(right_widget);
+    right_layout->setMargin(0);
+    right_layout->setSpacing(0);
+
+    right_layout->addWidget(content);
+
+    if (has_dialog_buttons)
+    {
+        QWidget *dialog_buttons = new QWidget;
+        dialog_buttons->setObjectName("dialog_buttons");
+        dialog_buttons->setSizePolicy(QSizePolicy::Expanding,
+                                      QSizePolicy::Fixed);
+        QHBoxLayout *dialog_buttons_layout = new QHBoxLayout(dialog_buttons);
+
+        QPushButton *save_button = new QPushButton("Save Settings");
+        QPushButton *cancel_button = new QPushButton("Cancel");
+
+        connect(save_button, &QPushButton::clicked, this, [this]() {
+            hide();
+            save_settings();
+        });
+
+        connect(cancel_button, &QPushButton::clicked, this,
+                [this]() { hide(); });
+
+        dialog_buttons_layout->addStretch();
+        dialog_buttons_layout->addWidget(save_button);
+        dialog_buttons_layout->addWidget(cancel_button);
+
+        right_layout->addWidget(dialog_buttons);
+    }
+
     splitter->addWidget(tree);
-    splitter->addWidget(content);
+    splitter->addWidget(right_widget);
     splitter->setSizes({100, 200});
 
     layout->addWidget(splitter);
@@ -68,3 +102,5 @@ void settings::set_content(QString content_name)
     if (_item)
         tree->setItemSelected(_item, true);
 }
+
+void settings::save_settings() {}

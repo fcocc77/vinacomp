@@ -15,6 +15,8 @@ private:
     void setup_plugins();
     void setup_appearance();
 
+    void save_settings() override;
+
 public:
     general_settings();
     ~general_settings();
