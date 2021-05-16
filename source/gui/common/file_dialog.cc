@@ -1,4 +1,5 @@
 #include <QApplication>
+#include <QDateTime>
 #include <QDesktopWidget>
 
 #include <button.h>
@@ -85,6 +86,17 @@ file_dialog::file_dialog(QWidget *parent)
 
     // Splitter
     splitter->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    //
+
+    // Tree
+    tree->setSortingEnabled(true);
+    QStringList columns{"Name", "Size", "Type", "Data Modified"};
+    tree->setHeaderLabels(columns);
+
+    tree->setColumnWidth(0, 300);
+    tree->setColumnWidth(1, 80);
+    tree->setColumnWidth(2, 60);
+    tree->setColumnWidth(3, 200);
     //
 
     // Conecciones
@@ -210,6 +222,8 @@ int file_dialog::exec()
     history_current = 0;
     add_history(current_dir);
 
+    tree->sortByColumn(2, Qt::SortOrder::AscendingOrder);
+
     preview_image_visible = true;
     switch_preview_image();
     image_preview_action->set_checked(false);
@@ -247,11 +261,18 @@ void file_dialog::update()
 
         QTreeWidgetItem *item = new QTreeWidgetItem;
 
+        QFileInfo file_info(_path);
+        QString size = size_format(file_info.size());
+
         if (os::isdir(_path))
         {
             item->setIcon(0, QIcon("resources/images/folder_checked.png"));
             QFont font("Helvetica", 7, QFont::Bold);
             item->setFont(0, font);
+            item->setFont(3, font);
+
+            size = "...";
+            ext = "...";
         }
         else if (basename.contains("#"))
             item->setIcon(0, QIcon("resources/images/sequence_normal.png"));
@@ -259,6 +280,9 @@ void file_dialog::update()
             item->setIcon(0, QIcon("resources/images/default_icon_normal.png"));
 
         item->setText(0, basename);
+        item->setText(1, size);
+        item->setText(2, ext);
+        item->setText(3, file_info.lastModified().toString());
         tree->addTopLevelItem(item);
 
         items.push_back(item);
@@ -392,6 +416,26 @@ void file_dialog::center()
     int x = (screenGeometry.width() - this->width()) / 2;
     int y = (screenGeometry.height() - this->height()) / 2;
     this->move(x, y);
+}
+
+QString file_dialog::size_format(int size)
+{
+    float num = size;
+    QStringList list;
+    list << "KB"
+         << "MB"
+         << "GB"
+         << "TB";
+
+    QStringListIterator i(list);
+    QString unit("bytes");
+
+    while (num >= 1024.0 && i.hasNext())
+    {
+        unit = i.next();
+        num /= 1024.0;
+    }
+    return QString().setNum(num, 'f', 1) + " " + unit;
 }
 
 void file_dialog::set_preview_image(QString image_basename)

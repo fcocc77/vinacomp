@@ -78,6 +78,7 @@ private:
     void center();
     bool go_to_history(bool forward);
     void add_history(QString _path);
+    QString size_format(int size);
 
 public:
     file_dialog(QWidget *parent);
