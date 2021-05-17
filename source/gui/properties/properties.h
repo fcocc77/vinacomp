@@ -16,7 +16,7 @@ class properties : public QWidget
 {
 private:
     void setup_ui();
-    QWidget *top_buttons_setup_ui();
+    QWidget *setup_tool_bar();
 
     QVBoxLayout *trim_panels_layout;
     QWidget *trim_panels;

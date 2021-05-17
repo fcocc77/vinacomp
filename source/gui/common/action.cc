@@ -11,6 +11,7 @@ action::action(QString _label, QString shortcut_key, QString _icon_name)
     , checked(false)
     , visible(true)
     , disable(false)
+    , has_shortcut(!shortcut_key.isEmpty())
     , _tools(nullptr)
     , button(nullptr)
 
@@ -25,7 +26,7 @@ action::action(QString _label, QString shortcut_key, QString _icon_name)
     }
 
     this->setShortcutContext(Qt::WidgetWithChildrenShortcut);
-    if (!key.isEmpty())
+    if (has_shortcut)
         this->setShortcut(QKeySequence(key));
 }
 
@@ -59,7 +60,7 @@ QPushButton *action::make_button(QWidget *__tools, int _icon_size, bool __one_ch
         button = new QPushButton();
         if (!object_name.isEmpty())
             button->setObjectName(object_name);
-        button->setToolTip(label);
+        set_tool_tip(label);
         qt::set_icon(button, icon_name + "_normal", icon_size);
 
         connect(button, &QPushButton::clicked, this, [=]() {
@@ -162,7 +163,13 @@ bool action::is_checked() const
 
 void action::set_tool_tip(QString tip)
 {
-    tool_tip = tip;
+    if (has_shortcut)
+        tool_tip = tip + ":  " + key;
+    else
+        tool_tip = tip;
+
+    if (button)
+        button->setToolTip(tool_tip);
 }
 
 QString action::get_tool_tip() const

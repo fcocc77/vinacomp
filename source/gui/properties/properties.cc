@@ -3,6 +3,7 @@
 #include <vinacomp.h>
 #include <knob.h>
 #include <button.h>
+#include <tools.h>
 
 properties::properties(QWidget *__vinacomp)
     : _vinacomp(__vinacomp)
@@ -21,7 +22,7 @@ void properties::setup_ui()
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->setMargin(0);
 
-    QWidget *butttons = top_buttons_setup_ui();
+    QWidget *butttons = setup_tool_bar();
     layout->addWidget(butttons);
 
     _knob_editor = new knob_editor(this);
@@ -48,18 +49,8 @@ void properties::setup_ui()
     layout->addWidget(scrollArea);
 }
 
-QWidget *properties::top_buttons_setup_ui()
+QWidget *properties::setup_tool_bar()
 {
-    QWidget *widget = new QWidget();
-    widget->setObjectName("butttons");
-    widget->setMaximumHeight(50);
-    QHBoxLayout *layout = new QHBoxLayout();
-    layout->setContentsMargins(10, 5, 0, 0);
-
-    widget->setLayout(layout);
-    //
-    //
-
     int icon_size = 20;
 
     QLineEdit *max_panels_edit = new QLineEdit();
@@ -73,32 +64,35 @@ QWidget *properties::top_buttons_setup_ui()
         limit_panels(max_panels);
     });
 
+    tools *tool_bar = new tools(icon_size);
+
+    action *clear_action = new action("Clear Panels", "", "close");
+    action *knob_edit_action = new action("Knob Edit", "", "edit");
+    action *maximize_all_action = new action("Maximize All", "", "maximize");
+
+    // Atributos
+    knob_edit_action->set_checkable();
     max_panels_edit->setMaximumWidth(50);
-    layout->addWidget(max_panels_edit);
 
-    QPushButton *clear = new QPushButton();
-    connect(clear, &QPushButton::clicked, this, &properties::close_all);
-    qt::set_icon(clear, "close_normal", icon_size);
-    layout->addWidget(clear);
+    // Conecciones
+    clear_action->connect_to(this, [this]() { close_all(); });
 
-    button *edit_knobs = new button();
-    edit_knobs->set_checkable();
-    edit_knobs->set_icon("edit", icon_size);
-    connect(edit_knobs, &button::clicked, this, [=](bool checked) {
-        edit_mode = checked;
+    knob_edit_action->connect_to(this, [=]() {
+        edit_mode = knob_edit_action->is_checked();
         _knob_editor->setVisible(edit_mode);
         set_edit_mode(edit_mode);
     });
-    layout->addWidget(edit_knobs);
 
-    QPushButton *maximize_all = new QPushButton();
-    connect(maximize_all, &QPushButton::clicked, this, &properties::minimize_all_panels);
-    qt::set_icon(maximize_all, "maximize_normal", icon_size);
-    layout->addWidget(maximize_all);
+    maximize_all_action->connect_to(this, [this]() { minimize_all_panels(); });
 
-    layout->addStretch();
+    // Layout
+    tool_bar->add_widget(max_panels_edit);
+    tool_bar->add_action(clear_action);
+    tool_bar->add_action(knob_edit_action);
+    tool_bar->add_action(maximize_all_action);
+    tool_bar->add_stretch();
 
-    return widget;
+    return tool_bar;
 }
 
 void properties::set_edit_mode(bool enable)

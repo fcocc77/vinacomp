@@ -16,6 +16,7 @@ private:
     bool visible;
     bool disable;
     bool _one_check_at_time;
+    bool has_shortcut;
     QWidget *_tools;
     QString object_name;
 
