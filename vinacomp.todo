@@ -2,6 +2,7 @@ general:
     ☐ depurar memoria con 'delete' usando 'valgrind' @high
     ☐ crear api para plugins 'G`mic' con su libreria 'https://gmic.eu/libgmic.html' solo los efectos mas necesarios
     ✔ crear ventana de archivos, para importar y exportar archivos, con un arbol de directorios y previsualizador de imagenes, y para guardar tags @done(2021-05-16 15:01) @project(general)
+    ☐ crear un checklist con todas las partes del software, y con esa lista ir manualmente verificando si funciona
 gui__settings_projects:
 	☐ el proxy va a remplazar el rscale de videovina
     ☐ crear administrador de py_plugins para añadir, eliminar, cambiar iconos, y renombrar plugins
@@ -30,7 +31,7 @@ gui__viewer_controls:
 gui__viewer_image_correcction:
 	☐ que los botones permuten entre la gamma y la exposicion habilitada y desabilitada
 gui__viewer_info:
-	☐ ubicar el viewer info a la derecha del viewer gl
+	☐ ubicar el viewer info a la dercha del viewer gl
 gui__viewer_gl:
 	☐ poner un texto de la resolucion en la parte inferior izquierda del cuadro
 gui__time_line:

@@ -1,0 +1,93 @@
+node_graph:
+    tool_bar:
+    menu_node:
+        ☐ Copy Nodes
+        ☐ Cut Nodes
+        ☐ Paste Nodes
+        ☐ Remove Nodes
+        ☐ Rename Node
+        ☐ Extract Node
+        ☐ Switch Input A and B
+        ☐ Duplicate Nodes
+        ☐ Clone Nodes
+        ☐ Disable Node
+        ☐ Group from Selection
+        ☐ Open Group
+    menu_general:
+        ☐ Paste Nodes
+        ☐ Search
+        ☐ Show Expression Links
+        ☐ Show Grid
+        ☐ Center on All Nodes
+    node_view:
+    node_finder:
+
+curve_editor:
+    tool_bar:
+    curve_tree:
+    curve_view:
+
+script_editor:
+    tool_bar:
+    output_code:
+    input_code:
+
+viewer:
+    tool_bar:
+    correction_bar:
+    viewer_gl:
+        menu:
+            ☐ Overlay
+            ☐ Pause Render
+            ☐ Show pixel out of frame
+            ☐ Render Area
+            ☐ Render all Lines
+            ☐ Refresh
+
+    image_info:
+    time_line:
+    player_controls:
+
+properties:
+    tool_bar:
+    knob_editor:
+    expression_editor:
+    trim_panel:
+
+panel_layout:
+    layout:
+        cornel_menu:
+            ☐ Vertical Split
+            ☐ Horizontal Split
+            ☐ Node Graph
+            ☐ Curve Editor
+            ☐ Script Editor
+            ☐ Properties
+            ☐ Viewer
+            ☐ New Viewer
+            ☐ Group
+            ☐ Close Panel
+
+general_settings:
+    general:
+    auto_save:
+        ☐ Enable AutoSave
+        ☐ Delay
+    plugins:
+    appearance:
+    dialog_buttons:
+        ☐ Save
+        ☐ Cancel
+
+project_settings:
+    sequence:
+        ☐ Frame Range
+        ☐ Proxy Scale
+        ☐ Project Commen
+    layers:
+
+file_dialog:
+
+right_bar:
+
+menu_bar:
