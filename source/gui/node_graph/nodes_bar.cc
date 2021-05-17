@@ -1,9 +1,9 @@
 #include <nodes_bar.h>
 
 nodes_bar::nodes_bar(QWidget *_parent, maker *__maker, nodes_load *_nodes)
-    : parent(_parent)
-    , _maker(__maker)
+    : _maker(__maker)
     , nodes(_nodes)
+    , parent(_parent)
 
 {
     this->setObjectName("nodes_bar");
@@ -14,17 +14,6 @@ nodes_bar::nodes_bar(QWidget *_parent, maker *__maker, nodes_load *_nodes)
     nodes_widget->setObjectName("nodes_widget");
     nodes_layout = new QHBoxLayout(nodes_widget);
     nodes_layout->setMargin(0);
-
-    layout->addWidget(nodes_widget);
-
-    setup_ui();
-}
-
-nodes_bar::~nodes_bar() {}
-
-void nodes_bar::setup_ui()
-{
-    int icon_size = 20;
 
     add_menu("image", "image");
     add_menu("draw", "brush");
@@ -42,26 +31,30 @@ void nodes_bar::setup_ui()
 
     update_py_plugins();
 
-    layout->addStretch();
-
     find_node_edit = new QLineEdit();
     connect(find_node_edit, &QLineEdit::textChanged, this,
             &nodes_bar::search_changed);
     QLabel *find_node_label = new QLabel("Search Node");
 
-    layout->addWidget(find_node_label);
-    layout->addWidget(find_node_edit);
+    action *show_exp_link_action =
+        new action("Show Expression Links", "", "link_off");
+    action *show_grid_action = new action("Show Grid", "", "grid");
 
-    layout->addStretch();
+    // Layout
+    add_widget(nodes_widget);
 
-    QPushButton *show_exp_link = new QPushButton();
-    qt::set_icon(show_exp_link, "link_off_normal", icon_size);
-    layout->addWidget(show_exp_link);
+    add_stretch();
 
-    QPushButton *show_grid = new QPushButton();
-    qt::set_icon(show_grid, "grid_normal", icon_size);
-    layout->addWidget(show_grid);
+    add_widget(find_node_label);
+    add_widget(find_node_edit);
+
+    add_stretch();
+
+    add_action(show_exp_link_action);
+    add_action(show_grid_action);
 }
+
+nodes_bar::~nodes_bar() {}
 
 menu *nodes_bar::add_menu(QString group, QString icon_group)
 {

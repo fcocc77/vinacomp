@@ -10,6 +10,7 @@
 #include <button.h>
 #include <maker.h>
 #include <nodes_load.h>
+#include <tools.h>
 
 class menu : public QMenu
 {
@@ -28,7 +29,7 @@ protected:
     void hideEvent(QHideEvent *event) override;
 };
 
-class nodes_bar : public QWidget
+class nodes_bar : public tools
 {
     Q_OBJECT
 #include <q_object.h>
@@ -42,7 +43,6 @@ private:
 
     QList<menu *> py_plugins_menus;
 
-    void setup_ui();
     menu *add_menu(QString group, QString icon_group);
 
 public:
