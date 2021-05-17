@@ -302,6 +302,10 @@ QWidget *trim_panel::setup_tool_bar()
     action *close_action = new action("Close Panel", "", "close");
 
     // Conecciones
+    center_node_action->connect_to(this, [=]() {
+        static_cast<node_view *>(_node_view)
+            ->center_node(static_cast<node *>(this_node));
+    });
     minimize_action->connect_to(this, [=]() { this->maximize(!is_maximize); });
     close_action->connect_to(
         this, [this]() { _properties->close_trim_panel(this->get_name()); });

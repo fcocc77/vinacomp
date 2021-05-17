@@ -95,6 +95,7 @@ public:
     void delete_node(node *_node);
     void delete_node(QString name);
     void copy_nodes();
+    void center_node(node *_node);
     void paste_nodes();
     node *get_node(QString name);
     inline QMap<QString, node *> *get_nodes();

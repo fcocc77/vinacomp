@@ -332,3 +332,10 @@ void node_view::set_visible_ghost_dots(bool visible)
             link->set_visible_ghost_dot(visible);
     }
 }
+
+void node_view::center_node(node *_node)
+{
+    select_all(false);
+    select_node(_node, true);
+    fit_view_to_nodes();
+}
