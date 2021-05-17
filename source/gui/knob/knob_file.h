@@ -18,14 +18,17 @@ private:
     QPushButton *file_open;
     QLineEdit *filename;
 
+    QString default_value;
+
     bool save_file_dialog;
     QJsonArray allowed_file_types;
 
     void open_file();
+    void restore_default() override;
     void restore_param() override;
 
 public:
-    knob_file(knob_props props, QString file_path = "");
+    knob_file(knob_props props, QString default_value = "");
     ~knob_file();
 
     inline QString get_value() const;

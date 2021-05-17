@@ -56,6 +56,7 @@ private:
     slider *alpha_slider;
 
     float red, green, blue, alpha;
+    float default_red, default_green, default_blue, default_alpha;
     bool mono_color;
     bool sliders_colors;
 
@@ -69,6 +70,7 @@ private:
     void set_visible_sliders_colors(bool visible);
     void init_colors();
 
+    void restore_default() override;
     void restore_param() override;
 
 public:
@@ -78,7 +80,7 @@ public:
     ~knob_color();
 
     void set_color(float red, float green, float blue, float alpha = 1,
-                   bool set_sliders = true);
+                   bool set_sliders = true, bool emmit_signal = true);
 signals:
     void changed(float r, float g, float b, float a);
 };

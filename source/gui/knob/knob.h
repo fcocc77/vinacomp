@@ -81,6 +81,7 @@ public:
     inline QWidget *get_over_line_widget() const;
     QJsonValue get_param_value() const;
 
+    virtual void restore_default();
     void set_data();
     QString get_node_type() const;
     QString get_node_name() const;

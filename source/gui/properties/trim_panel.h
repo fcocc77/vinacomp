@@ -70,6 +70,8 @@ private:
     void delete_tab(QString tab_name);
     void clean_empty_line_widget();
 
+    void restore_default_values();
+
     void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;

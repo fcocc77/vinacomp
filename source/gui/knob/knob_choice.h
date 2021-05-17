@@ -13,6 +13,9 @@ class knob_choice : public knob
     Q_OBJECT
 private:
     combo_box *choice;
+    int default_index;
+
+    void restore_default() override;
     void restore_param() override;
 
 public:

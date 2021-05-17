@@ -1,7 +1,8 @@
 #include <knob_text.h>
 
-knob_text::knob_text(knob_props props, QString default_text)
+knob_text::knob_text(knob_props props, QString _default_text)
     : knob(props)
+    , default_text(_default_text)
 {
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->setMargin(0);
@@ -20,6 +21,12 @@ knob_text::knob_text(knob_props props, QString default_text)
 }
 
 knob_text::~knob_text() {}
+
+void knob_text::restore_default()
+{
+    knob::restore_default();
+    text->setText(default_text);
+}
 
 void knob_text::restore_param()
 {

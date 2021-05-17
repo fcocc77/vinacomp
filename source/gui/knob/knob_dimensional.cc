@@ -1,8 +1,9 @@
 #include <knob_dimensional.h>
 
 knob_dimensional::knob_dimensional(knob_props props, int dimensions_count,
-                                   QList<float> default_values, bool _floating)
+                                   QList<float> _default_values, bool _floating)
     : knob(props)
+    , default_values(_default_values)
     , floating(_floating)
 {
     this->setObjectName("knob_dimensions");
@@ -38,6 +39,12 @@ knob_dimensional::~knob_dimensional()
 {
     for (QLineEdit *edit : dimensions_edits)
         delete edit;
+}
+
+void knob_dimensional::restore_default()
+{
+    knob::restore_default();
+    set_values(default_values, false);
 }
 
 void knob_dimensional::restore_param()

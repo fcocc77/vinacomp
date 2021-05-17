@@ -296,7 +296,7 @@ QWidget *trim_panel::setup_tool_bar()
 
     // Acciones
     action *center_node_action = new action("Center Node", "", "center");
-    action *restart_action = new action("Restart Node", "", "restart");
+    action *restore_action = new action("Restore default values", "", "restart");
     minimize_action = new action("Minimize Panel", "", "minimize");
     action *float_panel_action = new action("Float Panel", "", "float_panel");
     action *close_action = new action("Close Panel", "", "close");
@@ -306,13 +306,17 @@ QWidget *trim_panel::setup_tool_bar()
         static_cast<node_view *>(_node_view)
             ->center_node(static_cast<node *>(this_node));
     });
+
+    restore_action->connect_to(this, [this]() { restore_default_values(); });
+
     minimize_action->connect_to(this, [=]() { this->maximize(!is_maximize); });
+
     close_action->connect_to(
         this, [this]() { _properties->close_trim_panel(this->get_name()); });
 
     // Layout
     tool_bar->add_action(center_node_action);
-    tool_bar->add_action(restart_action);
+    tool_bar->add_action(restore_action);
 
     tool_bar->add_stretch();
 
@@ -469,6 +473,12 @@ void trim_panel::enter_to_properties()
     this->maximize(true);
     this->show();
     set_edit_mode(_properties->is_edit_mode());
+}
+
+void trim_panel::restore_default_values()
+{
+    for (knob *_knob : *knobs)
+        _knob->restore_default();
 }
 
 void trim_panel::leave_properties()

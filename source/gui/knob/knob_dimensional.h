@@ -16,10 +16,12 @@ class knob_dimensional : public knob
     Q_OBJECT
 private:
     QList<QLineEdit *> dimensions_edits;
+    QList<float> default_values;
     QList<float> values;
 
     bool floating;
 
+    void restore_default() override;
     void restore_param() override;
 
     virtual void changed_values(QList<float> values);

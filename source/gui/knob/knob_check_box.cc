@@ -1,9 +1,10 @@
 #include <knob_check_box.h>
 
 knob_check_box::knob_check_box(knob_props props, QString label,
-                               bool default_value)
+                               bool _default_value)
     : knob(props)
     , label_widget(nullptr)
+    , default_value(_default_value)
     , checked(default_value)
     , emmit_signal(true)
 {
@@ -37,6 +38,12 @@ knob_check_box::knob_check_box(knob_props props, QString label,
 }
 
 knob_check_box::~knob_check_box() {}
+
+void knob_check_box::restore_default()
+{
+    knob::restore_default();
+    set_check(default_value, false);
+}
 
 void knob_check_box::restore_param()
 {

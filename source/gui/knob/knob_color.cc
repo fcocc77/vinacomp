@@ -7,6 +7,10 @@ knob_color::knob_color(knob_props props, float min, float max, float r, float g,
     , green(g)
     , blue(b)
     , alpha(a)
+    , default_red(r)
+    , default_green(g)
+    , default_blue(b)
+    , default_alpha(a)
 
     , mono_color(false)
     , sliders_colors(false)
@@ -116,15 +120,27 @@ void knob_color::init_colors()
     set_color(red, green, blue, alpha);
 }
 
+void knob_color::restore_default()
+{
+    knob::restore_default();
+    set_color(default_red, default_green, default_blue, default_alpha, true,
+              false);
+}
+
 void knob_color::restore_param()
 {
     QJsonValue param_value = get_param_value();
     QJsonArray _default = get_param_value().toArray();
 
-    red = _default.at(0).toDouble();
-    green = _default.at(1).toDouble();
-    blue = _default.at(2).toDouble();
-    alpha = _default.at(3).toDouble();
+    default_red = _default.at(0).toDouble();
+    default_green = _default.at(1).toDouble();
+    default_blue = _default.at(2).toDouble();
+    default_alpha = _default.at(3).toDouble();
+
+    red = default_red;
+    green = default_green;
+    blue = default_blue;
+    green = default_alpha;
 
     mono_slider->set_default_value(red);
 
@@ -198,7 +214,7 @@ void knob_color::toggle_sliders_colors()
 }
 
 void knob_color::set_color(float _red, float _green, float _blue, float _alpha,
-                           bool set_sliders)
+                           bool set_sliders, bool emmit_signal)
 {
     red = _red;
     green = _green;
@@ -232,8 +248,11 @@ void knob_color::set_color(float _red, float _green, float _blue, float _alpha,
         alpha_slider->set_value(alpha);
     }
 
-    changed(red, green, blue, alpha); // Signal
-    update_value(QJsonArray{red, green, blue, alpha});
+    if (emmit_signal)
+    {
+        changed(red, green, blue, alpha); // Signal
+        update_value(QJsonArray{red, green, blue, alpha});
+    }
 
     if (_red < 0)
         _red = 0;

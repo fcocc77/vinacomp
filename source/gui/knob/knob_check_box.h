@@ -17,9 +17,12 @@ private:
     QLabel *label_widget;
     QCheckBox *checkbox;
 
+    bool default_value;
+
     bool checked;
     bool emmit_signal;
 
+    void restore_default() override;
     void restore_param() override;
     void set_label(QString label);
 

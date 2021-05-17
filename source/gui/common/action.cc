@@ -122,23 +122,27 @@ QString action::get_icon_name() const
     return icon_name;
 }
 
-void action::set_icon(QString _icon_name)
+void action::set_icon(QString _icon_name, QString force_state)
 {
     if (_icon_name.isEmpty())
         return;
 
     icon_name = _icon_name;
-
     QString icon_state;
 
-    if (disable)
-        icon_state = icon_name + "_disable";
-    else if (illuminated_icon)
-        icon_state = icon_name + "_white";
-    else if (checked)
-        icon_state = icon_name + "_checked";
+    if (force_state.isEmpty())
+    {
+        if (disable)
+            icon_state = icon_name + "_disable";
+        else if (illuminated_icon)
+            icon_state = icon_name + "_white";
+        else if (checked)
+            icon_state = icon_name + "_checked";
+        else
+            icon_state = icon_name + "_normal";
+    }
     else
-        icon_state = icon_name + "_normal";
+        icon_state = icon_name + "_" + force_state;
 
     this->setIcon(QIcon("resources/images/" + icon_state + ".png"));
 

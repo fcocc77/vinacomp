@@ -2,7 +2,7 @@
 #include <knob_slider.h>
 
 knob_slider::knob_slider(knob_props props, float min, float max,
-                         float default_value, bool _bidimensional,
+                         float _default_value, bool _bidimensional,
                          bool floating, bool centered_handler)
     : knob(props)
     , value_2_edit(nullptr)
@@ -11,6 +11,7 @@ knob_slider::knob_slider(knob_props props, float min, float max,
     , show_dimensions(nullptr)
     , emmit_signal(true)
     , empty_widget(nullptr)
+    , default_value(_default_value)
 
 {
     this->setObjectName("knob_slider");
@@ -93,6 +94,15 @@ knob_slider::~knob_slider()
         delete value_2_edit;
         delete empty_widget;
     }
+}
+
+void knob_slider::restore_default()
+{
+    knob::restore_default();
+    set_animated(false);
+    set_value(default_value, 0, false);
+    set_value(default_value, 1, false);
+    separate_dimensions(false);
 }
 
 void knob_slider::restore_param()
@@ -185,6 +195,9 @@ void knob_slider::separate_dimensions(bool separate)
 
 void knob_slider::set_value(float value, int dimension, bool _emmit_signal)
 {
+    if (!bidimensional && dimension >= 1)
+        return;
+
     emmit_signal = _emmit_signal;
 
     if (dimension == 0)

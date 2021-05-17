@@ -42,7 +42,7 @@ public:
     void set_object_name(QString name);
     void update();
     void set_visible(bool _visible);
-    void set_icon(QString icon_name);
+    void set_icon(QString icon_name, QString force_state = "");
     void set_disable(bool disable);
     inline QPushButton *get_button() const;
 

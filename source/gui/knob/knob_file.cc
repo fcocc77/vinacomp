@@ -1,8 +1,9 @@
 #include <knob_file.h>
 #include <vinacomp.h>
 
-knob_file::knob_file(knob_props props, QString file_path)
+knob_file::knob_file(knob_props props, QString _default_value)
     : knob(props)
+    , default_value(_default_value)
     , save_file_dialog(props.knob_data.value("save_file_dialog").toBool())
     , allowed_file_types(props.knob_data.value("allowed_file_types").toArray())
 {
@@ -12,7 +13,7 @@ knob_file::knob_file(knob_props props, QString file_path)
 
     layout->addWidget(init_space);
 
-    filename = new QLineEdit(file_path);
+    filename = new QLineEdit(default_value);
     connect(filename, &QLineEdit::editingFinished, this, [=]() {
         QString value = filename->text();
         changed(value);
@@ -29,6 +30,12 @@ knob_file::knob_file(knob_props props, QString file_path)
 knob_file::~knob_file()
 {
     delete file_open;
+}
+
+void knob_file::restore_default()
+{
+    knob::restore_default();
+    filename->setText(default_value);
 }
 
 void knob_file::restore_param()

@@ -2,8 +2,9 @@
 #include <util.h>
 
 knob_choice::knob_choice(knob_props props, QList<combo_box_item> items,
-                         int default_index)
+                         int _default_index)
     : knob(props)
+    , default_index(_default_index)
 {
     this->setObjectName("knob_choice");
     QHBoxLayout *layout = new QHBoxLayout(this);
@@ -24,6 +25,12 @@ knob_choice::knob_choice(knob_props props, QList<combo_box_item> items,
 }
 
 knob_choice::~knob_choice() {}
+
+void knob_choice::restore_default()
+{
+    knob::restore_default();
+    choice->set_index(default_index, false);
+}
 
 void knob_choice::restore_param()
 {

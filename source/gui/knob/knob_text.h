@@ -13,7 +13,9 @@ class knob_text : public knob
     Q_OBJECT
 private:
     QLineEdit *text;
+    QString default_text;
 
+    void restore_default() override;
     void restore_param() override;
 public:
     knob_text(knob_props props, QString default_text = "");

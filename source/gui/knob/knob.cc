@@ -397,3 +397,14 @@ void knob::set_expression(QString expression)
     else
         params->remove(exp_name);
 }
+
+void knob::restore_default()
+{
+    set_expression("");
+    if (animated)
+        disable_animation();
+
+    params->remove(name);
+    params->remove(curve_name);
+    params->remove(exp_name);
+}

@@ -26,6 +26,7 @@ private:
     button *show_dimensions;
     bool emmit_signal;
     QWidget *empty_widget;
+    float default_value;
 
     pair<float, float> values;
 
@@ -37,6 +38,7 @@ private:
     void set_animated(bool animated) override;
     void set_has_expression(bool expression) override;
     void update_animated() override;
+    void restore_default() override;
 
 public:
     knob_slider(knob_props props, float min = 0, float max = 100,
