@@ -21,6 +21,7 @@ void properties::setup_ui()
 {
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->setMargin(0);
+    layout->setSpacing(0);
 
     QWidget *butttons = setup_tool_bar();
     layout->addWidget(butttons);

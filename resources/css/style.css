@@ -21,7 +21,7 @@ QPushButton {
     width: 0px; }
 
 QMainWindow {
-  qproperty-windowIcon: url("/home/pancho/Documents/develop/vinacomp/resources/images/vinacomp.png"); }
+  qproperty-windowIcon: url("{{path}}/resources/images/vinacomp.png"); }
 
 QMenu {
   background-color: #292d32;
@@ -673,7 +673,8 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left
   #properties #trim_panels {
     background: #30343b; }
   #properties #knob_editor #edit_box {
-    background: #25282d; }
+    background: #25282d;
+    border-bottom: 1px solid #1e2024; }
   #properties #knob_editor #one_line, #properties #knob_editor #name_and_label {
     background: none; }
   #properties #knob_editor QTextEdit {
