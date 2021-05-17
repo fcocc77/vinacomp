@@ -11,19 +11,14 @@ action::action(QString _label, QString shortcut_key, QString _icon_name)
     , checked(false)
     , visible(true)
     , disable(false)
+    , illuminated_icon(false)
     , has_shortcut(!shortcut_key.isEmpty())
     , _tools(nullptr)
     , button(nullptr)
 
 {
     this->setText(label);
-    if (!icon_name.isEmpty())
-    {
-        if (icon_name.contains("/"))
-            this->setIcon(QIcon(icon_name));
-        else
-            this->setIcon(QIcon("resources/images/" + icon_name + "_normal.png"));
-    }
+    set_icon(icon_name);
 
     this->setShortcutContext(Qt::WidgetWithChildrenShortcut);
     if (has_shortcut)
@@ -61,7 +56,7 @@ QPushButton *action::make_button(QWidget *__tools, int _icon_size, bool __one_ch
         if (!object_name.isEmpty())
             button->setObjectName(object_name);
         set_tool_tip(label);
-        qt::set_icon(button, icon_name + "_normal", icon_size);
+        set_icon(icon_name);
 
         connect(button, &QPushButton::clicked, this, [=]() {
             if (disable)
@@ -78,10 +73,7 @@ QPushButton *action::make_button(QWidget *__tools, int _icon_size, bool __one_ch
             if (disable)
                 return;
 
-            if (checked)
-                qt::set_icon(button, icon_name + "_checked", icon_size);
-            else
-                qt::set_icon(button, icon_name + "_normal", icon_size);
+            set_icon(icon_name);
         });
     }
 
@@ -116,28 +108,13 @@ void action::set_checked(bool _checked, bool emmit_signal)
 
     set_illuminated_button(false);
 
-    if (checked)
-        this->setIcon(QIcon("resources/images/" + icon_name + "_checked.png"));
-    else
-        this->setIcon(QIcon("resources/images/" + icon_name + "_normal.png"));
-
     this->setChecked(checked);
 }
 
 void action::set_illuminated_button(bool illuminated)
 {
-    if (!button)
-        return;
-
-    if (illuminated)
-        qt::set_icon(button, icon_name + "_white", icon_size);
-    else
-    {
-        if (checked)
-            qt::set_icon(button, icon_name + "_checked", icon_size);
-        else
-            qt::set_icon(button, icon_name + "_normal", icon_size);
-    }
+    illuminated_icon = illuminated;
+    set_icon(icon_name);
 }
 
 QString action::get_icon_name() const
@@ -145,9 +122,28 @@ QString action::get_icon_name() const
     return icon_name;
 }
 
-void action::set_icon(QString icon_name)
+void action::set_icon(QString _icon_name)
 {
-    this->setIcon(QIcon("resources/images/" + icon_name + ".png"));
+    if (_icon_name.isEmpty())
+        return;
+
+    icon_name = _icon_name;
+
+    QString icon_state;
+
+    if (disable)
+        icon_state = icon_name + "_disable";
+    else if (illuminated_icon)
+        icon_state = icon_name + "_white";
+    else if (checked)
+        icon_state = icon_name + "_checked";
+    else
+        icon_state = icon_name + "_normal";
+
+    this->setIcon(QIcon("resources/images/" + icon_state + ".png"));
+
+    if (button)
+        qt::set_icon(button, icon_state, icon_size);
 }
 
 void action::set_checkable(bool _checkable)
@@ -184,19 +180,6 @@ QString action::get_label() const
 
 void action::set_disable(bool _disable)
 {
-    if (!button)
-        return;
-
     disable = _disable;
-
-    if (disable)
-    {
-        qt::set_icon(button, icon_name + "_disable", icon_size);
-        return;
-    }
-
-    if (checked)
-        qt::set_icon(button, icon_name + "_checked", icon_size);
-    else
-        qt::set_icon(button, icon_name + "_normal", icon_size);
+    set_icon(icon_name);
 }

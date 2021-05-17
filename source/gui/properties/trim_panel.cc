@@ -11,6 +11,7 @@
 #include <node_backdrop.h>
 #include <node_view.h>
 #include <knob_editor.h>
+#include <tools.h>
 
 trim_panel::trim_panel(properties *__properties, QString _name, QString _type,
                        QColor _color, QString _icon_name,
@@ -48,7 +49,7 @@ trim_panel::trim_panel(properties *__properties, QString _name, QString _type,
     layout->setSpacing(0);
     layout->setMargin(0);
 
-    buttons = top_buttons_setup_ui();
+    buttons = setup_tool_bar();
     layout->addWidget(buttons);
 
     // obtiene la lista de viewers en una lista de viewers pero con 'QWidget'
@@ -267,38 +268,17 @@ void trim_panel::setup_gui_panels(QJsonArray _knobs, QVBoxLayout *_layout)
     }
 }
 
-QWidget *trim_panel::top_buttons_setup_ui()
+QWidget *trim_panel::setup_tool_bar()
 {
-    QWidget *widget = new QWidget(this);
-    widget->setObjectName("butttons");
-    widget->setMaximumHeight(30);
-
-    QHBoxLayout *layout = new QHBoxLayout(widget);
-    layout->setMargin(5);
-    //
-    //
-
     int icon_size = 20;
 
-    QPushButton *center_node = new QPushButton(widget);
-    qt::set_icon(center_node, "center_normal", icon_size);
-    layout->addWidget(center_node);
-
-    restart_button = new QPushButton(widget);
-    connect(restart_button, &QPushButton::clicked, this, [=]() {  });
-    qt::set_icon(restart_button, "restart_normal", icon_size);
-    layout->addWidget(restart_button);
-
-    layout->addStretch();
-
-    QPushButton *icon_node = new QPushButton(widget);
+    QPushButton *icon_node = new QPushButton();
     if (icon_name.contains("/"))
         qt::set_icon(icon_node, icon_name, icon_size);
     else
         qt::set_icon(icon_node, icon_name + "_normal", icon_size);
-    layout->addWidget(icon_node);
 
-    name_edit = new QLineEdit(widget);
+    name_edit = new QLineEdit();
     connect(name_edit, &QLineEdit::editingFinished, [=]() {
         if (name_edit->text() == name)
             return;
@@ -310,29 +290,39 @@ QWidget *trim_panel::top_buttons_setup_ui()
             name_edit->setText(name);
     });
     name_edit->setText(name);
-    layout->addWidget(name_edit);
 
-    layout->addStretch();
-
-    // Minimize
-    QPushButton *minimize = new QPushButton(widget);
-    connect(minimize, &QPushButton::clicked, this, [=]() { this->maximize(!is_maximize); });
-    qt::set_icon(minimize, "minimize_normal", icon_size);
-    layout->addWidget(minimize);
-    // Minimize
     //
+    tools *tool_bar = new tools(icon_size);
 
-    QPushButton *maximize_button = new QPushButton(widget);
-    qt::set_icon(maximize_button, "maximize_normal", icon_size);
-    layout->addWidget(maximize_button);
+    // Acciones
+    action *center_node_action = new action("Center Node", "", "center");
+    action *restart_action = new action("Restart Node", "", "restart");
+    minimize_action = new action("Minimize Panel", "", "minimize");
+    action *float_panel_action = new action("Float Panel", "", "float_panel");
+    action *close_action = new action("Close Panel", "", "close");
 
-    QPushButton *close = new QPushButton(widget);
-    connect(close, &QPushButton::clicked, this,
-            [this]() { _properties->close_trim_panel(this->get_name()); });
-    qt::set_icon(close, "close_normal", icon_size);
-    layout->addWidget(close);
+    // Conecciones
+    minimize_action->connect_to(this, [=]() { this->maximize(!is_maximize); });
+    close_action->connect_to(
+        this, [this]() { _properties->close_trim_panel(this->get_name()); });
 
-    return widget;
+    // Layout
+    tool_bar->add_action(center_node_action);
+    tool_bar->add_action(restart_action);
+
+    tool_bar->add_stretch();
+
+    tool_bar->add_widget(icon_node);
+    tool_bar->add_widget(name_edit);
+
+    tool_bar->add_stretch();
+
+    tool_bar->add_action(minimize_action);
+    tool_bar->add_action(float_panel_action);
+    tool_bar->add_action(close_action);
+
+
+    return tool_bar;
 }
 
 void trim_panel::add_tab(QString tab_name, int index)
@@ -449,6 +439,17 @@ void trim_panel::maximize(bool _maximize)
 {
     tabs->setVisible(_maximize);
     is_maximize = _maximize;
+
+    if (is_maximize)
+    {
+        minimize_action->set_icon("minimize");
+        minimize_action->set_tool_tip("Minimize Panel");
+    }
+    else
+    {
+        minimize_action->set_icon("maximize");
+        minimize_action->set_tool_tip("Maximize Panel");
+    }
 
     for (QWidget *vgl : *viewers_gl)
         static_cast<viewer_gl *>(vgl)->handlers_update();

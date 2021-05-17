@@ -54,12 +54,14 @@ private:
     QString icon_name;
     QColor color;
 
+    action *minimize_action;
+
     QJsonObject *params;
 
     QWidget *dividing_line_v, *dividing_line_h;
 
     void setup_gui_panels(QJsonArray _knobs, QVBoxLayout *_layout);
-    QWidget *top_buttons_setup_ui();
+    QWidget *setup_tool_bar();
     void setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
                      QList<QWidget *> *viewers);
     void setup_shared_params();

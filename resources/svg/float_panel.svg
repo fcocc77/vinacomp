@@ -11,22 +11,23 @@
    viewBox="0 0 24 24"
    width="24"
    version="1.1"
-   id="svg4"
-   sodipodi:docname="minimize.svg"
+   id="svg6"
+   sodipodi:docname="float_panel.svg"
    inkscape:version="0.92.2 (5c3e80d, 2017-08-06)">
   <metadata
-     id="metadata10">
+     id="metadata12">
     <rdf:RDF>
       <cc:Work
          rdf:about="">
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <defs
-     id="defs8" />
+     id="defs10" />
   <sodipodi:namedview
      pagecolor="#ffffff"
      bordercolor="#666666"
@@ -38,21 +39,19 @@
      inkscape:pageshadow="2"
      inkscape:window-width="948"
      inkscape:window-height="1035"
-     id="namedview6"
+     id="namedview8"
      showgrid="false"
-     showguides="true"
-     inkscape:guide-bbox="true"
      inkscape:zoom="9.8333333"
-     inkscape:cx="10.016949"
-     inkscape:cy="-0.91525429"
+     inkscape:cx="8.3898305"
+     inkscape:cy="4.0677966"
      inkscape:window-x="5"
      inkscape:window-y="38"
      inkscape:window-maximized="0"
-     inkscape:current-layer="svg4" />
+     inkscape:current-layer="svg6" />
   <path
-     d="m 7.8474576,14.830509 h 3.1144074 v 5.423728 h 2.076271 v -5.423728 h 3.114407 L 12.000001,9.4067794 Z M 3.6949152,3.9830508 V 6.6949152 H 20.305085 V 3.9830508 Z"
-     id="path2"
-     style="fill:none;stroke-width:1.18644071"
+     d="m 12.101695,7.1355932 v 2 h 3 v 2.9999998 h 2 V 7.1355932 Z M 9.1016949,14.762712 v -3 h -2 v 5 h 5.0000001 v -2 z m -6,-9.6271188 V 18.762712 c 0,1.1 0.9,2 2,2 H 19.101695 c 1.1,0 2,-0.9 2,-2 V 5.1355932 c 0,-1.1 -0.9,-2 -2,-2 H 5.1016949 c -1.1,0 -2,0.9 -2,2 z m 16.0100001,0 V 18.762712 H 5.0916949 V 5.1355932 Z"
+     id="path4"
+     style="fill:none"
      inkscape:connector-curvature="0"
-     sodipodi:nodetypes="ccccccccccccc" />
+     sodipodi:nodetypes="ccccccccccccccsssssssssccccc" />
 </svg>

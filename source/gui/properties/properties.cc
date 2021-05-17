@@ -69,7 +69,7 @@ QWidget *properties::setup_tool_bar()
 
     action *clear_action = new action("Clear Panels", "", "close");
     action *knob_edit_action = new action("Knob Edit", "", "edit");
-    action *maximize_all_action = new action("Maximize All", "", "maximize");
+    action *maximize_all_action = new action("Minimize All Panels", "", "minimize");
 
     // Atributos
     knob_edit_action->set_checkable();
@@ -84,7 +84,20 @@ QWidget *properties::setup_tool_bar()
         set_edit_mode(edit_mode);
     });
 
-    maximize_all_action->connect_to(this, [this]() { minimize_all_panels(); });
+    maximize_all_action->connect_to(this, [=]() {
+        minimize_all_panels();
+
+        if (!is_maximize)
+        {
+            maximize_all_action->set_icon("maximize");
+            maximize_all_action->set_tool_tip("Maximize All Panels");
+        }
+        else
+        {
+            maximize_all_action->set_icon("minimize");
+            maximize_all_action->set_tool_tip("Minimize All Panels");
+        }
+    });
 
     // Layout
     tool_bar->add_widget(max_panels_edit);

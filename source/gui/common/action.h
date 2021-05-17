@@ -15,6 +15,7 @@ private:
     bool checked;
     bool visible;
     bool disable;
+    bool illuminated_icon;
     bool _one_check_at_time;
     bool has_shortcut;
     QWidget *_tools;
