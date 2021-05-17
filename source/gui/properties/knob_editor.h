@@ -29,6 +29,7 @@ struct knob_params
     bool over_line;
     bool bidimensional;
     QJsonArray allowed_file_types;
+    QJsonArray choice_items;
     bool save_file_dialog;
 };
 
@@ -54,6 +55,7 @@ private:
     knob_check_box *bidimensional_check;
     knob_check_box *save_file_dialog_check;
     QTextEdit *allowed_file_types;
+    QTextEdit *choice_items_edit;
     QWidget *edit_tools;
     QPushButton *ok_button;
     QPushButton *cancel_button;

@@ -98,11 +98,24 @@ knob_params knob_editor::get_params_from_edit_box(QWidget *panel) const
 
     params.type = current_knob_type;
 
+    // Allow File Types
     QJsonArray _allowed_file_types;
     for (QString _file_type : allowed_file_types->toPlainText().split("\n"))
         _allowed_file_types.push_back(_file_type.simplified());
-
     params.allowed_file_types = _allowed_file_types;
+
+
+    // Choice Items
+    QJsonArray choice_items;
+    for (QString item : choice_items_edit->toPlainText().split("\n"))
+    {
+        QString item_name = item.split("&").first().simplified();
+        QString item_label = item.split("&").last().simplified();
+
+        choice_items.push_back(QJsonArray{item_name, item_label});
+    }
+    params.choice_items = choice_items;
+
     params.save_file_dialog = save_file_dialog_check->is_checked();
 
     return params;

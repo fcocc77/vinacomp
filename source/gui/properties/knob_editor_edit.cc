@@ -79,10 +79,14 @@ void knob_editor::add_knob(QWidget *panel, knob_params params, int index)
     }
     else if (params.type == "choice")
     {
-        knob_object = {{"name", params.name},         {"type", "choice"},
-                       {"label", params.label},       {"tooltip", params.tips},
-                       {"tab", custom_tab},           {"items", QJsonArray{}},
+        knob_object = {{"name", params.name},
+                       {"type", "choice"},
+                       {"label", params.label},
+                       {"tooltip", params.tips},
+                       {"tab", custom_tab},
+                       {"items", QJsonArray{}},
                        {"over_line", params.over_line},
+                       {"items", params.choice_items},
                        {"default", QJsonArray{0, ""}}};
     }
     else if (params.type == "check_box")
@@ -555,6 +559,13 @@ void knob_editor::edit_knob(knob *_knob)
     _allowed_file_types =
         _allowed_file_types.left(_allowed_file_types.length() - 1);
 
+    QString choice_items;
+    for (QJsonValue value : knob_data.value("items").toArray())
+        choice_items += value.toArray().at(0).toString() + " & " +
+                        value.toArray().at(1).toString() + "\n";
+
+    choice_items = choice_items.left(choice_items.length() - 1);
+
     knob_name->setText(name);
     knob_label->setText(label);
     knob_tips->setText(tips);
@@ -565,6 +576,7 @@ void knob_editor::edit_knob(knob *_knob)
     bidimensional_check->set_check(bidimensional);
     save_file_dialog_check->set_check(save_file_dialog);
     allowed_file_types->setText(_allowed_file_types);
+    choice_items_edit->setText(choice_items);
 
     edit_label->setText(_knob->get_name() + "' ...");
     edit_icon->set_icon(get_icon_name_from_type(_knob->get_type()));

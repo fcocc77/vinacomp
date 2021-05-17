@@ -160,11 +160,22 @@ knob_editor::knob_editor(QWidget *__properties)
     allowed_file_types->setFixedHeight(70);
     allowed_file_types->setPlaceholderText("Allowed File Type List");
     allowed_file_types->setToolTip("Each file type must be separated by a line break");
+
+    choice_items_edit = new QTextEdit(this);
+    choice_items_edit->setFixedHeight(70);
+    choice_items_edit->setPlaceholderText("Item List");
+    choice_items_edit->setToolTip(
+        "Each element must be separated by a line break, each line must have 2 \n"
+        "values separated by the '&' sign, the first value is the name and the \n"
+        "second is the label, if you only put one value, the name and the \n"
+        "label will remain with that value");
+
     save_file_dialog_check = new knob_check_box({}, "Save File Dialog");
 
     one_line_layout->addWidget(minimum_edit);
     one_line_layout->addWidget(maximum_edit);
     one_line_layout->addWidget(default_value_edit);
+    one_line_layout->addWidget(choice_items_edit);
     one_line_layout->addWidget(over_line_check);
     one_line_layout->addWidget(bidimensional_check);
     one_line_layout->addWidget(allowed_file_types);
@@ -194,6 +205,7 @@ void knob_editor::update_edit_options_from_type(bool visible, QString knob_type)
     bidimensional_check->hide();
     default_value_edit->hide();
     allowed_file_types->hide();
+    choice_items_edit->hide();
     save_file_dialog_check->hide();
 
     QStringList list_for_tips{"floating", "integer", "color",
@@ -221,6 +233,9 @@ void knob_editor::update_edit_options_from_type(bool visible, QString knob_type)
     QStringList list_for_default_value{"floating", "integer", "color"};
 
     QStringList list_for_allowed_file_type{"file"};
+
+    QStringList list_for_choice_items{"choice"};
+
     QStringList list_for_save_file_dialog{"file"};
 
     if (list_for_tips.contains(knob_type))
@@ -252,6 +267,9 @@ void knob_editor::update_edit_options_from_type(bool visible, QString knob_type)
 
     if (list_for_allowed_file_type.contains(knob_type))
         allowed_file_types->show();
+
+    if (list_for_choice_items.contains(knob_type))
+        choice_items_edit->show();
     //
     //
 
