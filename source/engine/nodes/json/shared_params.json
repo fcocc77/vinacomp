@@ -1,5 +1,21 @@
 {
 	"knobs": [
+        {
+            "name": "node_color",
+            "type": "color",
+            "label": "Node Color",
+            "tooltip": "",
+            "minimum": 0,
+            "maximum": 1,
+            "visible": true,
+            "default": [
+                0,
+                0,
+                0,
+                0
+            ],
+            "centered_handler": true
+        },
 		{
 			"name": "label",
 			"type": "text",

@@ -51,12 +51,14 @@ void project_settings::setup_sequence()
 
     // Comment
     comment_text_edit = new QTextEdit();
+    comment_text_edit->setMaximumHeight(200);
     comment_text_edit->setPlaceholderText("Project Comment");
     //
 
     layout->addWidget(frame_range_knob);
     layout->addWidget(proxy_scale_knob);
     layout->addWidget(comment_text_edit);
+    layout->addStretch();
 }
 
 void project_settings::setup_layers()

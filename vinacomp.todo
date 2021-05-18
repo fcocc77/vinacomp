@@ -26,21 +26,19 @@ gui__curve_view:
 gui__script_editor:
 	☐ boton de arrastre para poder arrastrar el script como acceso directo a una barra de herramienta en la parte inferior del node graph
 	☐ cambiar el color del qtextedit a los colores de la interface
-gui__viewer_controls:
-	☐ agregar combobox con los distintos porcentajes de zoom
-gui__viewer_image_correcction:
-	☐ que los botones permuten entre la gamma y la exposicion habilitada y desabilitada
-gui__viewer_info:
-	☐ ubicar el viewer info a la dercha del viewer gl
-gui__viewer_gl:
-	☐ poner un texto de la resolucion en la parte inferior izquierda del cuadro
-gui__time_line:
-	☐ Cambiarle el color a la seleccion
-gui__viewer_players:
+gui__viewer:
+    ☐ que todos los botones desaparescan cuando el viewer se esta achicando
+    ☐ pnerle un limite a lo mas chico que puede estar el viewer
+	☐ controls: agregar combobox con los distintos porcentajes de zoom
+	☐ image_correction: que los botones permuten entre la gamma y la exposicion habilitada y desabilitada
+	☐ info: ubicar el viewer info a la dercha del viewer gl
+	☐ viewer_gl: poner un texto de la resolucion en la parte inferior izquierda del cuadro
+	☐ timeline: Cambiarle el color a la seleccion
 gui__properties:
     ☐ boton para restablecer el nodo por defecto
     ☐ incrustar un script editor,tiene que ser un editor para todos los nodos, par ahorrar memoria, el editor tiene que tener un aceptar y cancelar
 gui__trim_panel:
+    ☐ poner limite a lo mas chico que puede estar el trim_panel en lo ancho
     ☐ knob_editor: crear button que vincule el plugin de python con el 'script_editor' del panel
     ☐ knob_editor: crear un nuevo tab cuando el nodo no es un grupo
     ☐ knob_editor: en el botton de arrastre del knob, al arrastra y soltarlo en el mismo boton, la linea de divicion de queda pegada
@@ -77,6 +75,7 @@ gui__node:
     ☐ el snap a icono verticalmente no funciona si el nodo es ancho ancho
     ☐ el texto del link no desaparece cuando el nodo es muy ancho, al ocultar el texto hay que medirlo desde el borde del nodo y no del centro
     ☐ el nodo tenga un ancho maximo y cuando cumpla ese tamaño maximo el nombre del nodo que quede con 3 puntos ...
+    ☐ en el panel de node en el trim_panel poner un knob de color para cambiar el color del nodo
 gui__knobs:
 	✔ slider: rehacer el slider con QPainter para tener mas control de todo @today @done(2021-05-01 15:03) @project(gui__knobs)
 	✔ slider: mover el manejador en la posicion del click @done(2021-05-01 15:03) @project(gui__knobs)
