@@ -142,12 +142,12 @@ void knob_color::restore_param()
     blue = param_value.at(2).toDouble();
     alpha = param_value.at(3).toDouble();
 
-    mono_slider->set_default_value(red);
+    mono_slider->set_default_value(default_red);
 
-    red_slider->set_default_value(red);
-    green_slider->set_default_value(green);
-    blue_slider->set_default_value(blue);
-    alpha_slider->set_default_value(alpha);
+    red_slider->set_default_value(default_red);
+    green_slider->set_default_value(default_green);
+    blue_slider->set_default_value(default_blue);
+    alpha_slider->set_default_value(default_alpha);
 
     init_colors();
 }
