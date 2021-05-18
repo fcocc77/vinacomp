@@ -108,7 +108,7 @@ trim_panel::trim_panel(properties *__properties, QString _name, QString _type,
 
 trim_panel::~trim_panel()
 {
-    leave_properties();
+    leave_properties(false);
 
     delete dividing_line_h;
     delete dividing_line_v;
@@ -528,9 +528,11 @@ void trim_panel::float_panel(bool enable, bool relocate)
         _properties->add_trim_panel(this);
 }
 
-void trim_panel::leave_properties()
+void trim_panel::leave_properties(bool disable_edit_mode)
 {
-    this->set_edit_mode(false);
+    if (disable_edit_mode)
+        this->set_edit_mode(false);
+
     this->hide();
     this->setParent(0);
 

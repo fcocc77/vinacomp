@@ -110,7 +110,7 @@ public:
     inline QJsonObject *get_params() const;
     inline properties *get_properties() const;
     void enter_to_properties();
-    void leave_properties();
+    void leave_properties(bool disable_edit_mode = true);
 };
 
 inline properties *trim_panel::get_properties() const
