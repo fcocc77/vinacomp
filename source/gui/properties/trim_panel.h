@@ -9,6 +9,7 @@
 #include <QVBoxLayout>
 #include <QWidget>
 #include <QGraphicsItem>
+#include <QDockWidget>
 
 // Gui
 #include <knob.h>
@@ -37,6 +38,8 @@ private:
     QList<QWidget *> *viewers_gl;
 
     QStringList tabs_only_read;
+    QDockWidget *float_dock;
+    bool panel_is_float;
 
     project_struct *project;
     QWidget *_node_view;
@@ -71,6 +74,7 @@ private:
     void clean_empty_line_widget();
 
     void restore_default_values();
+    void float_panel(bool enable, bool relocate = true);
 
     void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;

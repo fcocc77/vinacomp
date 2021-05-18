@@ -1,5 +1,5 @@
 
-#trim_panel
+@mixin trim_panel
     background: $b18
     #tools
         background: $b15
@@ -13,3 +13,10 @@
             background: $b20
         #init_space
             background: transparent
+
+#trim_panel
+    @include trim_panel
+
+#trim_panel_float_dock
+    #trim_panel
+        @include trim_panel

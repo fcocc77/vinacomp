@@ -872,6 +872,21 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left
     #trim_panel #knobs_tab #init_space {
       background: transparent; }
 
+#trim_panel_float_dock #trim_panel {
+  background: #2c2f35; }
+  #trim_panel_float_dock #trim_panel #tools {
+    background: #25282d; }
+  #trim_panel_float_dock #trim_panel #knobs_tab {
+    background: #30343b; }
+    #trim_panel_float_dock #trim_panel #knobs_tab QLineEdit {
+      padding: 0px;
+      padding-left: 4px;
+      height: 20px; }
+    #trim_panel_float_dock #trim_panel #knobs_tab > QWidget {
+      background: #30343b; }
+    #trim_panel_float_dock #trim_panel #knobs_tab #init_space {
+      background: transparent; }
+
 #tools {
   background: #2c2f35; }
 

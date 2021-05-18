@@ -23,6 +23,8 @@ trim_panel::trim_panel(properties *__properties, QString _name, QString _type,
     , this_node(_node)
     , nodes_loaded(_nodes_loaded)
     , _vinacomp(__vinacomp)
+    , float_dock(0)
+    , panel_is_float(false)
     , project(_project)
     , _node_view(__node_view)
 
@@ -311,8 +313,13 @@ QWidget *trim_panel::setup_tool_bar()
 
     minimize_action->connect_to(this, [=]() { this->maximize(!is_maximize); });
 
-    close_action->connect_to(
-        this, [this]() { _properties->close_trim_panel(this->get_name()); });
+    float_panel_action->connect_to(this,
+                                   [this]() { float_panel(!panel_is_float); });
+
+    close_action->connect_to(this, [this]() {
+        _properties->close_trim_panel(this->get_name());
+        float_panel(false, false);
+    });
 
     // Layout
     tool_bar->add_action(center_node_action);
@@ -470,6 +477,13 @@ void trim_panel::update_render()
 
 void trim_panel::enter_to_properties()
 {
+    minimize_action->set_visible(true);
+    if (float_dock)
+    {
+        float_dock->hide();
+        panel_is_float = false;
+    }
+
     this->maximize(true);
     this->show();
     set_edit_mode(_properties->is_edit_mode());
@@ -479,6 +493,36 @@ void trim_panel::restore_default_values()
 {
     for (knob *_knob : *knobs)
         _knob->restore_default();
+}
+
+void trim_panel::float_panel(bool enable, bool relocate)
+{
+    if (!float_dock)
+    {
+        float_dock = new QDockWidget(_vinacomp);
+        float_dock->setTitleBarWidget(new QWidget);
+        float_dock->setObjectName("trim_panel_float_dock");
+        float_dock->setFixedWidth(500);
+    }
+
+    if (!enable)
+        float_dock->hide();
+
+    panel_is_float = enable;
+
+    minimize_action->set_visible(!enable);
+    maximize(true);
+
+    float_dock->setWidget(this);
+    float_dock->setFloating(true);
+
+    float_dock->move(QCursor::pos().x() - 250, QCursor::pos().y() - 50);
+
+    if (enable)
+        float_dock->show();
+
+    if (!enable && relocate)
+        _properties->add_trim_panel(this);
 }
 
 void trim_panel::leave_properties()
