@@ -119,7 +119,7 @@ public:
     inline trim_panel *get_trim_panel() const;
     QString get_type() const;
     inline QSize get_size() const;
-    void make_panel();
+    void make_panel(bool float_panel = false);
     QPointF get_center_position() const;
     void set_center_position(float x, float y);
     inline void freeze_position();

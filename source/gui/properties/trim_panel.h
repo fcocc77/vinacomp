@@ -74,7 +74,6 @@ private:
     void clean_empty_line_widget();
 
     void restore_default_values();
-    void float_panel(bool enable, bool relocate = true);
 
     void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
@@ -91,6 +90,7 @@ public:
                QGraphicsItem *_node, QWidget *_node_view);
     ~trim_panel();
 
+    void float_panel(bool enable, bool relocate = true);
     void update_custom_knobs();
     void maximize(bool _maximize);
     void add_tab(QString tab_name, int index = -1);

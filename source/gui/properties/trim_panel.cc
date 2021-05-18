@@ -118,6 +118,9 @@ trim_panel::~trim_panel()
     if (_node_gui)
         delete _node_gui;
 
+    if (float_dock)
+        delete float_dock;
+
     // knobs
     for (knob *_knob : *knobs)
         delete _knob;

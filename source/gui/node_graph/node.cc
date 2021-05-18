@@ -98,7 +98,7 @@ node::~node()
     // borrar viewer del panels_layout y de la lista del panel
 }
 
-void node::make_panel()
+void node::make_panel(bool float_panel)
 {
     QString name = get_name();
 
@@ -111,7 +111,10 @@ void node::make_panel()
             _trim_panel = new trim_panel(props._properties, name, type, color,
                                          icon_name, nodes_loaded, props.project,
                                          props.vinacomp, this, _node_view);
-        props._properties->add_trim_panel(_trim_panel);
+        if (float_panel)
+            _trim_panel->float_panel(true);
+        else
+            props._properties->add_trim_panel(_trim_panel);
     }
     //
     //
@@ -408,7 +411,7 @@ void node::set_center_position(float x, float y)
 
 void node::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
-    make_panel();
+    make_panel(qt::control());
 }
 
 void node::mousePressEvent(QGraphicsSceneMouseEvent *event)
