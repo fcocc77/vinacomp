@@ -60,8 +60,11 @@ slider::~slider()
 void slider::set_default_value(float _default_value)
 {
     default_value = _default_value;
+
     if (default_value <= min || default_value >= max)
         centered_handler = false;
+    else
+        centered_handler = true;
 }
 
 float slider::get_percent_by_value(float value)

@@ -26,7 +26,7 @@ knob_color::knob_color(knob_props props, float min, float max, float r, float g,
     separate_colors_slider_layout = new QVBoxLayout(separate_colors_slider);
 
     mono_edit = new QLineEdit(this);
-    mono_slider = new slider(min, max, 0, true, centered_handler);
+    mono_slider = new slider(min, max, default_red, true, centered_handler);
 
     red_widget = new QWidget(this);
     green_widget = new QWidget(this);
@@ -47,10 +47,10 @@ knob_color::knob_color(knob_props props, float min, float max, float r, float g,
     blue_vedit = new QLineEdit(this);
     alpha_vedit = new QLineEdit(this);
 
-    red_slider = new slider(min, max, 0, true, centered_handler);
-    green_slider = new slider(min, max, 0, true, centered_handler);
-    blue_slider = new slider(min, max, 0, true, centered_handler);
-    alpha_slider = new slider(min, max, 0, true, centered_handler);
+    red_slider = new slider(min, max, default_red, true, centered_handler);
+    green_slider = new slider(min, max, default_green, true, centered_handler);
+    blue_slider = new slider(min, max, default_blue, true, centered_handler);
+    alpha_slider = new slider(min, max, default_alpha, true, centered_handler);
 
     picker_button = new QPushButton(this);
     palette_button = new QPushButton(this);
@@ -108,16 +108,16 @@ void knob_color::init_colors()
     if (red == green && red == blue && red == alpha)
     {
         mono_color = false;
-        set_visible_mono_color(true);
+        set_visible_mono_color(true, false);
     }
     else
     {
         mono_color = true;
-        set_visible_mono_color(false);
+        set_visible_mono_color(false, false);
     }
     //
     //
-    set_color(red, green, blue, alpha);
+    set_color(red, green, blue, alpha, true, false);
 }
 
 void knob_color::restore_default()
@@ -129,18 +129,18 @@ void knob_color::restore_default()
 
 void knob_color::restore_param()
 {
-    QJsonValue param_value = get_param_value();
-    QJsonArray _default = get_param_value().toArray();
+    QJsonArray param_value = get_param_value().toArray();
+    QJsonArray _default = get_default().toArray();;
 
     default_red = _default.at(0).toDouble();
     default_green = _default.at(1).toDouble();
     default_blue = _default.at(2).toDouble();
     default_alpha = _default.at(3).toDouble();
 
-    red = default_red;
-    green = default_green;
-    blue = default_blue;
-    green = default_alpha;
+    red = param_value.at(0).toDouble();
+    green = param_value.at(1).toDouble();
+    blue = param_value.at(2).toDouble();
+    alpha = param_value.at(3).toDouble();
 
     mono_slider->set_default_value(red);
 
@@ -157,7 +157,7 @@ void knob_color::update()
     set_color(red, green, blue, alpha);
 }
 
-void knob_color::set_visible_mono_color(bool visible)
+void knob_color::set_visible_mono_color(bool visible, bool emmit_signal)
 {
     if (sliders_colors)
     {
@@ -180,11 +180,12 @@ void knob_color::set_visible_mono_color(bool visible)
         mono_edit->setText(QString::number(color));
         mono_slider->set_value(color);
 
-        set_color(color, color, color, color);
+        set_color(color, color, color, color, true, emmit_signal);
     }
 
     qt::set_property(mono_color_button, "active", !visible);
-    update();
+    if (emmit_signal)
+        update();
 }
 
 void knob_color::toggle_mono_color()

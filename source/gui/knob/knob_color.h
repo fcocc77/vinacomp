@@ -66,7 +66,7 @@ private:
     void update();
     void toggle_mono_color();
     void toggle_sliders_colors();
-    void set_visible_mono_color(bool visible);
+    void set_visible_mono_color(bool visible, bool emmit_signal = true);
     void set_visible_sliders_colors(bool visible);
     void init_colors();
 
