@@ -21,13 +21,15 @@ private:
     QVBoxLayout *trim_panels_layout;
     QWidget *trim_panels;
     QWidget *_vinacomp;
-
+    
     knob_editor *_knob_editor;
     script_editor *expression_editor;
 
     bool is_maximize;
     int max_panels;
     bool edit_mode;
+
+    std::pair<knob *, QString> copied_knob_value;
 
     void minimize_all_panels();
     void close_all();
@@ -52,6 +54,8 @@ public:
     inline QWidget *get_knob_editor() const;
     inline bool is_edit_mode() const;
     inline script_editor *get_expression_editor() const;
+    inline std::pair<knob *, QString> get_copied_knob_value() const;
+    inline void set_copied_knob_value(std::pair<knob *, QString> copied_knob);
 };
 //
 //
@@ -66,6 +70,17 @@ template <class T> void properties::add_trim_panel(T *_trim_panel)
 
     update_curve(_trim_panel);
     update_viewers_handlers();
+}
+
+inline std::pair<knob *, QString> properties::get_copied_knob_value() const
+{
+    return copied_knob_value;
+}
+
+inline void
+properties::set_copied_knob_value(std::pair<knob *, QString> copied_knob)
+{
+    copied_knob_value = copied_knob;
 }
 
 inline script_editor *properties::get_expression_editor() const
