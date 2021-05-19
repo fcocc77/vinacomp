@@ -79,6 +79,28 @@ void vinacomp::open_project_dialog()
 
 void vinacomp::open_project(QString project_path)
 {
+    if (project_opened)
+    {
+        QMessageBox msgBox(this);
+        msgBox.setText("There is a project open");
+        msgBox.setInformativeText(
+            "You want to save it before loading the new one?");
+        msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard |
+                                  QMessageBox::Cancel);
+        msgBox.setDefaultButton(QMessageBox::Save);
+        int ret = msgBox.exec();
+
+        if (ret == QMessageBox::Save)
+        {
+            to_save_project();
+            _node_graph->clear_tree();
+        }
+        else if (ret == QMessageBox::Discard)
+            _node_graph->clear_tree();
+        else
+            return;
+    }
+
     QString ext = path_util::get_ext(project_path);
     if (ext != "vina")
         return;
