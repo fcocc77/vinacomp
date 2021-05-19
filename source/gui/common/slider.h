@@ -20,6 +20,7 @@ private:
 
     bool centered_handler;
     bool out_range;
+    bool disable;
 
     QWidget *slider_center ;
     QLabel *handler;
@@ -42,6 +43,7 @@ public:
 
     void set_value(float value);
     void set_default_value(float _default_value);
+    void set_disable(bool disable);
 
 signals:
     void moved(float value);

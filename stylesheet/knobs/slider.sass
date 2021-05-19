@@ -2,12 +2,18 @@
     #slider_center
         background: $b12
         border-radius: 2px
+        &[disable = true]
+            background: $b15
 
     #slider_handler
         background: $b40
         border-radius: 7px
-        &:hover
-            background: $base
+        &[disable = true]
+            background: $b30
+
+        &[disable = false]
+            &:hover
+                background: $base
 
 #slider
     @include slider_base

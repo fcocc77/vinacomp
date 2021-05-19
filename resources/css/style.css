@@ -14,6 +14,8 @@ QToolTip {
 
 QLabel {
   background: transparent; }
+  QLabel[disable=true] {
+    color: #5e6673; }
 
 QPushButton {
   background: transparent; }
@@ -117,11 +119,15 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left
 #slider #slider_center {
   background: #1e2024;
   border-radius: 2px; }
+  #slider #slider_center[disable=true] {
+    background: #25282d; }
 
 #slider #slider_handler {
   background: #5e6673;
   border-radius: 7px; }
-  #slider #slider_handler:hover {
+  #slider #slider_handler[disable=true] {
+    background: #474d57; }
+  #slider #slider_handler[disable=false]:hover {
     background: #ffcc00; }
 
 #knob_floating #init_space, #knob_integer #init_space, #knob_dimensions #init_space {
@@ -153,6 +159,12 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left
     color: #ffd342; }
     #knob_floating QLineEdit[expression=true]:focus, #knob_integer QLineEdit[expression=true]:focus, #knob_dimensions QLineEdit[expression=true]:focus {
       border-color: #ffd342; }
+  #knob_floating QLineEdit[disable=true], #knob_integer QLineEdit[disable=true], #knob_dimensions QLineEdit[disable=true] {
+    background-color: #25282d;
+    border-color: #3c4149;
+    color: #474d57; }
+    #knob_floating QLineEdit[disable=true]:focus, #knob_integer QLineEdit[disable=true]:focus, #knob_dimensions QLineEdit[disable=true]:focus {
+      border-color: #3c4149; }
 
 #knob_floating QPushButton, #knob_integer QPushButton, #knob_dimensions QPushButton {
   width: 25px;
@@ -327,11 +339,15 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left
 #slider #slider_center {
   background: #1e2024;
   border-radius: 2px; }
+  #slider #slider_center[disable=true] {
+    background: #25282d; }
 
 #slider #slider_handler {
   background: #5e6673;
   border-radius: 7px; }
-  #slider #slider_handler:hover {
+  #slider #slider_handler[disable=true] {
+    background: #474d57; }
+  #slider #slider_handler[disable=false]:hover {
     background: #ffcc00; }
 
 #knob_color QWidget {
@@ -377,11 +393,15 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left
 #knob_color #red_slider #slider_center {
   background: #1e2024;
   border-radius: 2px; }
+  #knob_color #red_slider #slider_center[disable=true] {
+    background: #25282d; }
 
 #knob_color #red_slider #slider_handler {
   background: #5e6673;
   border-radius: 7px; }
-  #knob_color #red_slider #slider_handler:hover {
+  #knob_color #red_slider #slider_handler[disable=true] {
+    background: #474d57; }
+  #knob_color #red_slider #slider_handler[disable=false]:hover {
     background: #ffcc00; }
 
 #knob_color #red_slider #slider_center {
@@ -393,11 +413,15 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left
 #knob_color #green_slider #slider_center {
   background: #1e2024;
   border-radius: 2px; }
+  #knob_color #green_slider #slider_center[disable=true] {
+    background: #25282d; }
 
 #knob_color #green_slider #slider_handler {
   background: #5e6673;
   border-radius: 7px; }
-  #knob_color #green_slider #slider_handler:hover {
+  #knob_color #green_slider #slider_handler[disable=true] {
+    background: #474d57; }
+  #knob_color #green_slider #slider_handler[disable=false]:hover {
     background: #ffcc00; }
 
 #knob_color #green_slider #slider_center {
@@ -409,11 +433,15 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left
 #knob_color #blue_slider #slider_center {
   background: #1e2024;
   border-radius: 2px; }
+  #knob_color #blue_slider #slider_center[disable=true] {
+    background: #25282d; }
 
 #knob_color #blue_slider #slider_handler {
   background: #5e6673;
   border-radius: 7px; }
-  #knob_color #blue_slider #slider_handler:hover {
+  #knob_color #blue_slider #slider_handler[disable=true] {
+    background: #474d57; }
+  #knob_color #blue_slider #slider_handler[disable=false]:hover {
     background: #ffcc00; }
 
 #knob_color #blue_slider #slider_center {
@@ -425,11 +453,15 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left
 #knob_color #alpha_slider #slider_center {
   background: #1e2024;
   border-radius: 2px; }
+  #knob_color #alpha_slider #slider_center[disable=true] {
+    background: #25282d; }
 
 #knob_color #alpha_slider #slider_handler {
   background: #5e6673;
   border-radius: 7px; }
-  #knob_color #alpha_slider #slider_handler:hover {
+  #knob_color #alpha_slider #slider_handler[disable=true] {
+    background: #474d57; }
+  #knob_color #alpha_slider #slider_handler[disable=false]:hover {
     background: #ffcc00; }
 
 #knob_color #alpha_slider #slider_center {

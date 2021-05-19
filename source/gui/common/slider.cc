@@ -10,6 +10,7 @@ slider::slider(float _min, float _max, float _default_value, bool _floating,
     , min(_min)
     , max(_max)
     , centered_handler(_centered_handler)
+    , disable(false)
 {
     set_default_value(_default_value);
 
@@ -247,6 +248,9 @@ void slider::resizeEvent(QResizeEvent *event)
 
 void slider::mousePressEvent(QMouseEvent *event)
 {
+    if (disable)
+        return;
+
     handler_percent = event->x() * 100.0 / (float)width();
     out_range = false;
     refresh();
@@ -255,8 +259,20 @@ void slider::mousePressEvent(QMouseEvent *event)
 
 void slider::mouseMoveEvent(QMouseEvent *event)
 {
+    if (disable)
+        return;
+
     handler_percent = event->x() * 100.0 / (float)width();
     out_range = false;
     refresh();
     to_emmit_signal();
+}
+
+void slider::set_disable(bool _disable)
+{
+    disable = _disable;
+    refresh();
+
+    qt::set_property(slider_center, "disable", disable);
+    qt::set_property(handler, "disable", disable);
 }

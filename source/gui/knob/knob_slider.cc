@@ -131,6 +131,19 @@ void knob_slider::set_animated(bool animated)
     knob::set_animated(animated);
 }
 
+void knob_slider::set_disable(bool disable)
+{
+    value_1_edit->setDisabled(disable);
+    if (value_2_edit)
+        value_2_edit->setDisabled(disable);
+
+    _slider->set_disable(disable);
+
+    qt::set_property(value_1_edit, "disable", disable);
+
+    knob::set_disable(disable);
+}
+
 void knob_slider::set_has_expression(bool expression)
 {
     qt::set_property(value_1_edit, "expression", expression);

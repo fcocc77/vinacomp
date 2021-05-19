@@ -40,6 +40,8 @@ private:
     button *edit_knob_button;
     button *drag_knob_button;
 
+    knob *linked_knob;
+
     void set_keyframe(bool auto_value = true);
 
 protected:
@@ -66,6 +68,8 @@ public:
     ~knob();
 
     virtual void set_animated(bool _animated);
+    virtual void set_disable(bool disable);
+    void set_link(knob *_linked_knob);
     void enable_animation();
     void disable_animation();
 
@@ -82,8 +86,6 @@ public:
     QString get_node_name() const;
     void set_expression(QString expression);
     inline QString get_expression() const;
-    void set_link(QString node_name, QString param_name);
-    void remove_link();
     void set_init_label(bool has_label);
     void set_init_label_text(QString label);
     inline void set_knob_layout(QHBoxLayout *layout);
