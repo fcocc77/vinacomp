@@ -18,7 +18,7 @@ knob::knob(knob_props props)
     , _knob_editor(props._knob_editor)
     , viewers_gl(props.viewers_gl)
     , edit_mode(false)
-    , linked_knob(false)
+    , linked(false)
     , _vinacomp(props._vinacomp)
     , over_line_widget(nullptr)
     , knob_data(props.knob_data)
@@ -34,7 +34,8 @@ knob::knob(knob_props props)
     tips = knob_data.value("tooltip").toString();
     curve_name = name + "_curve";
     exp_name = name + "_exp";
-    link_name = name + "_link";
+    linked_name = name + "_linked";
+    linked_list_name = name + "_linked_list";
     //
 
     // Espacio inicial
@@ -243,11 +244,14 @@ void knob::restore_param()
 
     set_expression(params->value(exp_name).toString());
 
-    if (params->contains(link_name))
+    if (params->contains(linked_name))
     {
-        QJsonArray linked = params->value(link_name).toArray();
-        set_link(linked.at(0).toString(), linked.at(1).toString());
+        QJsonArray linked = params->value(linked_name).toArray();
+        set_linked(linked.at(0).toString(), linked.at(1).toString());
     }
+
+    if (params->contains(linked_list_name))
+        linked_knobs = params->value(linked_list_name).toArray();
 }
 
 void knob::update_value(QJsonValue value)
@@ -339,23 +343,29 @@ void knob::set_expression(QString expression)
         params->remove(exp_name);
 }
 
-void knob::set_link(QString node_name , QString param_name)
+void knob::add_link_knob(QString node_name, QString param_name)
 {
-    if (node_name == get_node_name() && param_name == get_name())
-        // evita que se linkee asi mismo
-        return;
+    // lista de knobs que son manejados por este knob
+    linked_knobs.push_back(QJsonArray{node_name, param_name});
+    params->insert(linked_list_name, linked_knobs);
+}
 
-    linked_knob = true;
-    params->insert(link_name, QJsonArray{node_name, param_name});
+void knob::set_linked(QString node_name, QString param_name)
+{
+    // si este knob es manejado por otro knob
+    linked = true;
 
-    set_disable(true);
+    linked_node_name = node_name;
+    linked_param_name = param_name;
+
+    params->insert(linked_name, QJsonArray{node_name, param_name});
+    set_disable(linked);
 }
 
 void knob::remove_link()
 {
-    params->remove(link_name);
-
-    linked_knob = false;
+    params->remove(linked_name);
+    linked = false;
     set_disable(false);
 }
 
@@ -375,5 +385,6 @@ void knob::restore_default()
     params->remove(name);
     params->remove(curve_name);
     params->remove(exp_name);
-    params->remove(link_name);
+    params->remove(linked_name);
+    params->remove(linked_list_name);
 }

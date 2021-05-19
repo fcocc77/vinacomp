@@ -126,6 +126,11 @@ void knob_curve_menu::paste()
     QString copied_action = copied_knob_value.second;
 
     if (copied_action == "link")
-        current_knob->set_link(copied_knob->get_node_name(),
-                               copied_knob->get_name());
+    {
+        copied_knob->add_link_knob(current_knob->get_node_name(),
+                                   current_knob->get_name());
+
+        current_knob->set_linked(copied_knob->get_node_name(),
+                                 copied_knob->get_name());
+    }
 }
