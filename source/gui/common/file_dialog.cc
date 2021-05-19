@@ -134,7 +134,10 @@ file_dialog::file_dialog(QWidget *parent)
     connect(open_save_button, &QPushButton::clicked, this,
             &file_dialog::open_or_save);
 
-    connect(cancel_button, &QPushButton::clicked, this, [this] { hide(); });
+    connect(cancel_button, &QPushButton::clicked, this, [this] {
+        files.clear();
+        hide();
+    });
 
     connect(sequence_check, &knob_check_box::changed, this,
             [this](bool checked) {
