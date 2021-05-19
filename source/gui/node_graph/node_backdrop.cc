@@ -41,12 +41,12 @@ node_backdrop::node_backdrop(node_props _props,
     if (props.from_project)
         color = props.color;
 
-    set_color(color);
-
     QPen pen(Qt::black);
     pen.setWidth(0);
     this->setPen(pen);
-    set_title_area_height(title_area_height);
+
+    node::set_color(color);
+    update_title_area_height(title_area_height);
     //
     //
 
@@ -81,26 +81,12 @@ node_backdrop::~node_backdrop()
     delete corner;
 }
 
-void node_backdrop::set_title_area_height(int height)
+void node_backdrop::update_title_area_height(int height)
 {
     height *= 2;
-
     title_area_height = height;
 
-    QColor color2 = get_color();
-
-    // baja la intensidad al color 2
-    int h, s, l;
-    color2.getHsl(&h, &s, &l);
-    color2.setHsl(h, s, l * 0.9);
-    //
-
-    QLinearGradient ramp(0, height, 0, 0);
-    ramp.setColorAt(0.5000, color);
-    ramp.setColorAt(0.5001, color2);
-
-    QBrush brush(ramp);
-    this->setBrush(brush);
+    set_color(get_color());
 }
 
 void node_backdrop::update_text(QString _name, QString _tips)
@@ -148,7 +134,7 @@ void node_backdrop::update_text(QString _name, QString _tips)
         tips_text->setPlainText("...");
     }
 
-    set_title_area_height(title_area);
+    update_title_area_height(title_area);
 }
 
 void node_backdrop::set_tips(QString _tips)
@@ -315,6 +301,25 @@ QColor node_backdrop::get_random_color() const
     blue *= gain;
 
     return QColor(red, green, blue);
+}
+
+void node_backdrop::set_color(QColor color1)
+{
+    node::set_color(color1);
+    QColor color2 = color1;
+
+    // baja la intensidad al color 2
+    int h, s, l;
+    color2.getHsl(&h, &s, &l);
+    color2.setHsl(h, s, l * 0.9);
+    //
+
+    QLinearGradient ramp(0, title_area_height, 0, 0);
+    ramp.setColorAt(0.5000, color);
+    ramp.setColorAt(0.5001, color2);
+
+    QBrush brush(ramp);
+    this->setBrush(brush);
 }
 
 void node_backdrop::resize(QSize size)

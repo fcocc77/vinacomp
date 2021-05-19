@@ -28,7 +28,7 @@ private:
     QSize corner_click_diff;
 
     void update_text(QString name, QString tips);
-    void set_title_area_height(int height);
+    void update_title_area_height(int height);
     QColor get_random_color() const;
     void resize(QSize size);
     void refresh_corner();
@@ -36,6 +36,7 @@ private:
     void increase_z_value();
     bool is_inside_backdrop(node_backdrop *backdrop);
 
+    void set_color(QColor color) override;
     void set_selected(bool enable) override;
     void set_position(float x, float y) override;
 
