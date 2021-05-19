@@ -70,6 +70,8 @@ private:
     void update_recent_projects();
     void recorder_recent_projects(QString project_path);
     void open_project(QString project_path);
+    bool close_project();
+    void new_project();
     void open_project_dialog();
     void setup_ui();
     void setup_style();

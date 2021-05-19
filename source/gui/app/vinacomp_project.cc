@@ -79,27 +79,8 @@ void vinacomp::open_project_dialog()
 
 void vinacomp::open_project(QString project_path)
 {
-    if (project_opened)
-    {
-        QMessageBox msgBox(this);
-        msgBox.setText("There is a project open");
-        msgBox.setInformativeText(
-            "You want to save it before loading the new one?");
-        msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard |
-                                  QMessageBox::Cancel);
-        msgBox.setDefaultButton(QMessageBox::Save);
-        int ret = msgBox.exec();
-
-        if (ret == QMessageBox::Save)
-        {
-            to_save_project();
-            _node_graph->clear_tree();
-        }
-        else if (ret == QMessageBox::Discard)
-            _node_graph->clear_tree();
-        else
-            return;
-    }
+    if (!close_project())
+        return;
 
     QString ext = path_util::get_ext(project_path);
     if (ext != "vina")
@@ -117,6 +98,42 @@ void vinacomp::open_project(QString project_path)
     // _script_editor->open_script_from_project();
 
     this->setWindowTitle(os::basename(project_path) + " - VinaComp");
+}
+
+bool vinacomp::close_project()
+{
+    if (!project_opened)
+        return true;
+
+    project_opened = false;
+
+    QMessageBox msgBox(this);
+    msgBox.setText("There is a project open");
+    msgBox.setInformativeText(
+        "You want to save it before loading the new one?");
+    msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard |
+                              QMessageBox::Cancel);
+    msgBox.setDefaultButton(QMessageBox::Save);
+    int ret = msgBox.exec();
+
+    if (ret == QMessageBox::Save)
+    {
+        to_save_project();
+        _node_graph->clear_tree();
+        return true;
+    }
+    else if (ret == QMessageBox::Discard)
+    {
+        _node_graph->clear_tree();
+        return true;
+    }
+    else
+        return false;
+}
+
+void vinacomp::new_project()
+{
+    close_project();
 }
 
 void vinacomp::to_save_project()

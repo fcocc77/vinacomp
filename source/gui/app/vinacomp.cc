@@ -96,6 +96,7 @@ void vinacomp::main_menu()
     menu_bar->addMenu(file_menu);
 
     new_project_action = new action("New Project", "Ctrl+N", "add");
+    new_project_action->connect_to(this, [this]() { new_project(); });
     file_menu->addAction(new_project_action);
 
     open_project_action = new action("Open Project", "Ctrl+O", "folder");
