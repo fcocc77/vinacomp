@@ -251,7 +251,9 @@ void knob::restore_param()
     }
 
     if (params->contains(linked_list_name))
+    {
         linked_knobs = params->value(linked_list_name).toArray();
+    }
 }
 
 void knob::update_value(QJsonValue value)
@@ -350,20 +352,83 @@ void knob::add_link_knob(QString node_name, QString param_name)
     params->insert(linked_list_name, linked_knobs);
 }
 
+void knob::remove_link_knob(QString node_name, QString param_name)
+{
+    int index = 0;
+    bool finded = false;
+
+    for (knob *_knob : get_linked_knobs())
+    {
+        if (_knob->get_node_name() == node_name &&
+            _knob->get_name() == param_name)
+        {
+            finded = true;
+            break;
+        }
+
+        index++;
+    }
+
+    if (finded)
+        linked_knobs.removeAt(index);
+}
+
 void knob::set_linked(QString node_name, QString param_name)
 {
     // si este knob es manejado por otro knob
     linked = true;
 
-    linked_node_name = node_name;
-    linked_param_name = param_name;
+    handler_knob_node_name = node_name;
+    handler_knob_name = param_name;
 
     params->insert(linked_name, QJsonArray{node_name, param_name});
     set_disable(linked);
 }
 
+knob *knob::get_knob(QString node_name, QString param_name) const
+{
+    node *_node = static_cast<vinacomp *>(_vinacomp)
+                      ->get_node_graph()
+                      ->get_node_view()
+                      ->get_node(node_name);
+
+    trim_panel *panel = nullptr;
+    if (_node)
+        panel = _node->get_trim_panel();
+
+    knob *_knob = nullptr;
+    if (panel)
+        _knob = panel->get_knob(param_name);
+
+    return _knob;
+}
+
+QList<knob *> knob::get_linked_knobs() const
+{
+    QList<knob *> knobs;
+    for (QJsonValue value : linked_knobs)
+    {
+        QString node_name = value.toArray().at(0).toString();
+        QString param_name = value.toArray().at(1).toString();
+
+        knob *_knob = get_knob(node_name, param_name);
+        if (_knob)
+            knobs.push_back(_knob);
+    }
+
+    return knobs;
+}
+
 void knob::remove_link()
 {
+    if (!linked)
+        return;
+
+    // elimina este knob en el manejador
+    knob *handler_knob = get_knob(handler_knob_node_name, handler_knob_name);
+    if (handler_knob)
+        handler_knob->remove_link_knob(get_node_name(), get_name());
+
     params->remove(linked_name);
     linked = false;
     set_disable(false);

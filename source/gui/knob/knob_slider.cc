@@ -1,5 +1,7 @@
-#include <animation.h>
 #include <knob_slider.h>
+#include <vinacomp.h>
+#include "node.h"
+#include <animation.h>
 #include <trim_panel.h>
 
 knob_slider::knob_slider(knob_props props, float min, float max,
@@ -157,6 +159,17 @@ void knob_slider::to_emmit_signal()
     update_handler();
     changed(values.first, values.second); // Signal
     update_value(values.first);
+    update_linked_knobs();
+}
+
+void knob_slider::update_linked_knobs()
+{
+    // actualiza los knob linkeados
+    for (knob *_knob : get_linked_knobs())
+    {
+        knob_slider *_knob_slider = static_cast<knob_slider *>(_knob);
+        _knob_slider->set_values(values, false);
+    }
 }
 
 void knob_slider::update_animated()
@@ -241,7 +254,8 @@ void knob_slider::set_values(pair<float, float> _values, bool _emmit_signal)
     value_1_edit->setText(QString::number(values.first));
     _slider->set_value(_values.first);
 
-    value_2_edit->setText(QString::number(values.second));
+    if (value_2_edit)
+        value_2_edit->setText(QString::number(values.second));
 }
 
 float knob_slider::get_value(int dimension) const

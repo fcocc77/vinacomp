@@ -41,8 +41,7 @@ private:
     button *drag_knob_button;
 
     bool linked;
-    QString linked_node_name, linked_param_name;
-    QJsonArray linked_knobs;
+    QString handler_knob_node_name, handler_knob_name;
 
     void set_keyframe(bool auto_value = true);
 
@@ -52,6 +51,8 @@ protected:
     QString name, label, tips, type;
     QString curve_name, exp_name, linked_name, linked_list_name;
     QWidget *over_line_widget;
+
+    QJsonArray linked_knobs;
 
     QJsonObject knob_data;
     QJsonObject *params;
@@ -72,6 +73,9 @@ public:
     virtual void set_animated(bool _animated);
     virtual void set_disable(bool disable);
     void add_link_knob(QString node_name, QString param_name);
+    void remove_link_knob(QString node_name, QString param_name);
+    QList<knob *> get_linked_knobs() const;
+    knob *get_knob(QString node_name, QString param_name) const;
     void set_linked(QString node_name, QString param_name);
     void remove_link();
     void enable_animation();

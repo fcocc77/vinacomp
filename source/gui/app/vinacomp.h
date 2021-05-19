@@ -111,6 +111,7 @@ public:
     inline properties *get_properties() const;
     inline curve_editor *get_curve_editor() const;
     inline QMap<QString, node_graph*> *get_groups_node_graph() const;
+    inline node_graph *get_node_graph() const;
     inline file_dialog *get_file_dialog() const;
 };
 
@@ -132,6 +133,11 @@ inline panels_layout *vinacomp::get_panels_layout() const
 inline QMap<QString, node_graph *> *vinacomp::get_groups_node_graph() const
 {
     return groups_node_graph;
+}
+
+inline node_graph *vinacomp::get_node_graph() const
+{
+    return _node_graph;
 }
 
 inline QMap<QString, viewer *> *vinacomp::get_viewers() const
