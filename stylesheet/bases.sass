@@ -66,3 +66,18 @@
             background-color: $b20
             color: $base
             padding-left: 0px
+
+@mixin button($color)
+    padding: 7px
+    border-radius: 2px
+    background: $color
+    border: 1px solid $color
+    &::hover
+        color: white
+        border-color: mix(white, $color, 4)
+        background: mix(white, $color, 4)
+    &::pressed
+        background: mix($b10, $color, 20)
+        color: $base
+        border-color: mix($base, $color, 20)
+

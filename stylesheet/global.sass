@@ -1,3 +1,4 @@
+@import bases
 
 // variables globales
 $path: "{{path}}"
@@ -63,14 +64,7 @@ QMenuBar
 QMessageBox
     background: $b18
     QPushButton
-        padding: 7px
-        border-radius: 2px
-        background: $b25
-        border: 1px solid $b25
-        &::pressed
-            background: $b20
-            color: $base
-            border-color: mix($base, $b25, 20)
+        @include button($b25)
 
 QSplitter
     &::handle

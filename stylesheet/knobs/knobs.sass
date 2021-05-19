@@ -55,13 +55,8 @@ $keyframe_color: #008cff
 #knob_button
     background: none
     QPushButton
+        @include button($b27)
         height: 22px
-        border-radius: 2px
-        background: $b27
+        padding: 0px
         padding-right: 10px
         padding-left: 10px
-        &:hover
-            color: $base
-        &:pressed
-            background: $b17
-            color: $b80
