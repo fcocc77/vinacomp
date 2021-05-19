@@ -112,7 +112,7 @@ public:
     inline void remove_input_node(node *_node);
     inline bool is_selected() const;
     inline QColor get_color() const;
-    inline void set_color(QColor color);
+    virtual inline void set_color(QColor color);
     void refresh();
     inline QList<node_link *> *get_links() const;
     node_link *get_link(int index = -1) const;

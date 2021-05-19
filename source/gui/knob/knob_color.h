@@ -68,7 +68,6 @@ private:
     void toggle_sliders_colors();
     void set_visible_mono_color(bool visible, bool emmit_signal = true);
     void set_visible_sliders_colors(bool visible);
-    void init_colors();
 
     void restore_default() override;
     void restore_param() override;
@@ -79,8 +78,12 @@ public:
                bool centered_handler = false);
     ~knob_color();
 
+    void set_init_color(float red, float green, float blue, float alpha = 1);
+
     void set_color(float red, float green, float blue, float alpha = 1,
                    bool set_sliders = true, bool emmit_signal = true);
+
+    void disable_alpha();
 signals:
     void changed(float r, float g, float b, float a);
 };

@@ -31,6 +31,7 @@ private:
     void refresh_attribute_box();
     void set_size(int width, int height);
     void update_text(QString name, QString tips);
+    void set_color(QColor color) override;
     void set_selected(bool selected) override;
     void set_position(float x, float y) override;
     QGraphicsPathItem *add_attribute_item(QString letter,

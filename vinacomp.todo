@@ -83,6 +83,7 @@ gui__knobs:
 	✔ slider: opcion para mantener el 'handler' siempre al centro independiente del valor minimo y maximo @done(2021-05-01 15:04) @project(gui__knobs)
 	☐ que los qlineedit con boton derecho despliegue el menu de animacion
     ☐ en los knob linkeados ponerle otro color al label
+    ☐ knob_color: con la opcion de paleta activada, añadirle 2 opciones mas: hue correct en rgb, y hue correct con hsl
 	☐ terminar button knob'
 	☐ terminar button knob'
 	☐ terminar choice knob'

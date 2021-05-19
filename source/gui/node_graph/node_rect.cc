@@ -75,18 +75,7 @@ node_rect::node_rect(node_props _props, QMap<QString, node *> *_selected_nodes,
     set_disable(disable);
     //
 
-    // Rectangulo Forma
-    QPen pen(Qt::black);
-    QLinearGradient ramp(0, 0, icon_area_width * 2, 0);
-    ramp.setColorAt(0.5000, QColor(50, 50, 50));
-    ramp.setColorAt(0.5001, get_color());
-
-    QBrush brush(ramp);
-    pen.setWidth(0);
-    this->setBrush(brush);
-    this->setPen(pen);
-    //
-    //
+    set_color(get_color());
 
     set_minimum_size(150, 50);
     set_size(150, 50);
@@ -379,4 +368,19 @@ void node_rect::set_tips(QString _tips)
 {
     update_text(get_name(), _tips);
     node::set_tips(_tips);
+}
+
+void node_rect::set_color(QColor color)
+{
+    node::set_color(color);
+
+    QPen pen(Qt::black);
+    QLinearGradient ramp(0, 0, icon_area_width * 2, 0);
+    ramp.setColorAt(0.5000, QColor(50, 50, 50));
+    ramp.setColorAt(0.5001, get_color());
+
+    QBrush brush(ramp);
+    pen.setWidth(0);
+    this->setBrush(brush);
+    this->setPen(pen);
 }

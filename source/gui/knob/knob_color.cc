@@ -58,7 +58,7 @@ knob_color::knob_color(knob_props props, float min, float max, float r, float g,
 
     connections();
     setup_ui();
-    init_colors();
+    set_init_color(red, green, blue, alpha);
 }
 
 knob_color::~knob_color()
@@ -102,7 +102,8 @@ knob_color::~knob_color()
     delete layout;
 }
 
-void knob_color::init_colors()
+void knob_color::set_init_color(float red, float green, float blue,
+                                 float alpha)
 {
     // si los colores son todos iguale activa el 'knob' mono cromatico
     if (red == green && red == blue && red == alpha)
@@ -149,7 +150,7 @@ void knob_color::restore_param()
     blue_slider->set_default_value(default_blue);
     alpha_slider->set_default_value(default_alpha);
 
-    init_colors();
+    set_init_color(red, green, blue, alpha);
 }
 
 void knob_color::update()
@@ -277,4 +278,11 @@ void knob_color::set_color(float _red, float _green, float _blue, float _alpha,
 
     picker_button->setStyleSheet("background: rgb(" + __red + "," + __green + "," + __blue + ");");
     picker_button->update();
+}
+
+void knob_color::disable_alpha()
+{
+    alpha_widget->hide();
+    alpha_hedit->hide();
+    mono_color_button->setText("3");
 }

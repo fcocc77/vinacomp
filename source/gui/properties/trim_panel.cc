@@ -6,6 +6,7 @@
 #include <group_gui.h>
 #include <write_gui.h>
 #include <knob_text.h>
+#include <knob_color.h>
 #include <knob_check_box.h>
 #include "node.h"
 #include <node_backdrop.h>
@@ -228,17 +229,35 @@ void trim_panel::setup_shared_params()
     // crea las conecciones a los parametros que estan en el tab de 'node'
     node *_this_node = static_cast<node *>(this_node);
 
+    // Etiquta Nodo
     knob_text *_knob_text = static_cast<knob_text *>(get_knob("label"));
     connect(_knob_text, &knob_text::text_changed, this, [=](QString text) {
         _this_node->set_tips(text);
         _this_node->refresh();
     });
 
+    // Desabilitacion de Nodo
     knob_check_box *disable_node_knob =
         static_cast<knob_check_box *>(get_knob("disable_node"));
     connect(disable_node_knob, &knob_check_box::changed, this,
             [=](bool changed) {
                 static_cast<node_rect *>(_this_node)->set_disable(changed);
+            });
+
+    // Color Nodo
+    knob_color *node_color_knob =
+        static_cast<knob_color *>(get_knob("node_color"));
+    node_color_knob->disable_alpha();
+    QColor color = _this_node->get_color();
+
+    node_color_knob->set_init_color((float)color.red() / 255,
+                                    (float)color.green() / 255,
+                                    (float)color.blue() / 255);
+
+    connect(node_color_knob, &knob_color::changed, this,
+            [=](float red, float green, float blue) {
+                _this_node->set_color(
+                    {int(red * 255), int(green * 255), int(blue * 255)});
             });
 
     if (type == "backdrop")
