@@ -1,8 +1,10 @@
 #include <vinacomp.h>
+#include <global.h>
+#include <path_utils.h>
 
 QJsonArray vinacomp::get_recent_projects()
 {
-    QString recent_projects_path = "temp/recent_projects.json";
+    QString recent_projects_path = VINACOMP_CONF_PATH + "/recent_projects.json";
     QJsonArray recent_projects = jread(recent_projects_path)["projects"].toArray();
 
     return recent_projects;
@@ -28,9 +30,8 @@ void vinacomp::update_recent_projects()
 void vinacomp::recorder_recent_projects(QString project_path)
 {
     // guarda el proyecto en la lista de proyectos recientes
-    //
 
-    QString recent_projects_path = "temp/recent_projects.json";
+    QString recent_projects_path = VINACOMP_CONF_PATH + "/recent_projects.json";
     int max_projects = 7;
 
     QJsonArray recent_projects = get_recent_projects();
@@ -64,7 +65,7 @@ void vinacomp::recorder_recent_projects(QString project_path)
 
 void vinacomp::open_project_dialog()
 {
-    _file_dialog->set_file_mode();
+    _file_dialog->set_default();
     _file_dialog->set_name_filter("VinaComp Project", {"vina"});
     _file_dialog->set_init_directory(os::dirname(current_project));
 
@@ -78,6 +79,10 @@ void vinacomp::open_project_dialog()
 
 void vinacomp::open_project(QString project_path)
 {
+    QString ext = path_util::get_ext(project_path);
+    if (ext != "vina")
+        return;
+
     project_opened = true;
     current_project = project_path;
     recorder_recent_projects(project_path);
@@ -102,17 +107,17 @@ void vinacomp::to_save_project()
 
 void vinacomp::save_as()
 {
-    QFileDialog dialog(this);
-    dialog.setDirectory(os::dirname(current_project));
-    dialog.setFileMode(QFileDialog::AnyFile);
-    dialog.setNameFilter(tr("VinaComp Project (*.vina)"));
-    dialog.setAcceptMode(QFileDialog::AcceptSave);
+    _file_dialog->set_default();
+    _file_dialog->set_save_mode();
+    _file_dialog->set_name_filter("VinaComp Project", {"vina"});
+    _file_dialog->set_init_directory(os::dirname(current_project));
 
-    if (dialog.exec())
+    if (_file_dialog->exec())
     {
-        QString project_path = dialog.selectedFiles()[0];
+        QString project_path = _file_dialog->get_files().first();
+        QString ext = path_util::get_ext(project_path);
 
-        if (!project_path.contains(".vina"))
+        if (ext != "vina")
             project_path += ".vina";
 
         save_project(project_path);

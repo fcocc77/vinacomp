@@ -48,7 +48,7 @@ void knob_file::open_file()
 {
     file_dialog *dialog = static_cast<vinacomp *>(_vinacomp)->get_file_dialog();
 
-    dialog->set_file_mode();
+    dialog->set_image_sequence_option(true);
     if (save_file_dialog)
         dialog->set_save_mode();
     else

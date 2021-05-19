@@ -12,6 +12,7 @@
 
 #include <tools.h>
 #include <combo_box.h>
+#include <knob_check_box.h>
 
 class file_dialog : public QDialog
 {
@@ -27,6 +28,7 @@ private:
     QLineEdit *path_edit;
     combo_box *disk_path;
     combo_box *filter_box;
+    knob_check_box *sequence_check;
     bool preview_image_visible;
     QString current_path;
     QString current_filename;
@@ -79,6 +81,7 @@ private:
     bool go_to_history(bool forward);
     void add_history(QString _path);
     QString size_format(int size);
+    void set_path_edit(QString _path, bool last_slash);
 
 public:
     file_dialog(QWidget *parent);
@@ -93,6 +96,9 @@ public:
     inline void set_dir_mode();
     inline void set_save_mode();
     inline void set_open_mode();
+    void set_image_sequence(bool enable);
+    void set_image_sequence_option(bool enable);
+    void set_default();
 };
 
 inline QStringList file_dialog::get_files() const

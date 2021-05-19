@@ -5,7 +5,6 @@
 #include <button.h>
 #include <file_dialog.h>
 #include <global.h>
-#include <knob_check_box.h>
 #include <os.h>
 #include <path_utils.h>
 
@@ -45,8 +44,7 @@ file_dialog::file_dialog(QWidget *parent)
     disk_path = new combo_box({{"Root: /", "/", false, ""},
                                {"Home: " + USER_DIR, USER_DIR, false, ""}});
 
-    knob_check_box *sequence_check =
-        new knob_check_box({}, "Image Sequence", image_sequence);
+    sequence_check = new knob_check_box({}, "Image Sequence", image_sequence);
     create_folder_name = new QLineEdit;
     splitter = new QSplitter;
     //
@@ -157,6 +155,7 @@ file_dialog::file_dialog(QWidget *parent)
             [this](QTreeWidgetItem *item) {
                 current_filename = item->text(0);
                 current_path = current_dir + "/" + item->text(0);
+                set_path_edit(current_path, false);
                 set_preview_image(item->text(0));
             });
 
@@ -210,6 +209,7 @@ file_dialog::file_dialog(QWidget *parent)
         add_bookmark(dirname, dirpath);
     }
 
+    set_default();
     update();
 }
 
@@ -237,9 +237,16 @@ int file_dialog::exec()
     return files.count();
 }
 
+void file_dialog::set_default()
+{
+    set_file_mode();
+    set_open_mode();
+    set_image_sequence_option(false);
+}
+
 void file_dialog::update()
 {
-    path_edit->setText(current_dir);
+    set_path_edit(current_dir, true);
 
     for (QTreeWidgetItem *item : items)
         delete item;
@@ -303,6 +310,15 @@ void file_dialog::update()
         open_save_button->setText("Open File");
     else if (!save_mode && !file_mode)
         open_save_button->setText("Open Folder");
+}
+
+void file_dialog::set_path_edit(QString _path, bool last_slash)
+{
+    if (_path.right(1) != '/' && last_slash)
+        _path += '/';
+
+    _path = _path.replace("//", "/");
+    path_edit->setText(_path);
 }
 
 void file_dialog::go_to_parent()
@@ -468,6 +484,9 @@ void file_dialog::set_preview_image(QString image_basename)
 
 void file_dialog::open_or_save()
 {
+    if (save_mode && !os::isfile(current_path))
+        current_path = path_edit->text();
+
     if (os::isdir(current_path))
     {
         enter_to_dir(current_dir + "/" + current_filename);
@@ -648,4 +667,15 @@ bool file_dialog::go_to_history(bool forward)
     update();
 
     return true;
+}
+
+void file_dialog::set_image_sequence(bool enable)
+{
+    image_sequence = enable;
+}
+
+void file_dialog::set_image_sequence_option(bool enable)
+{
+    sequence_check->set_visible(enable);
+    set_image_sequence(enable);
 }
