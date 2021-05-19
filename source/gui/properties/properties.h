@@ -21,7 +21,7 @@ private:
     QVBoxLayout *trim_panels_layout;
     QWidget *trim_panels;
     QWidget *_vinacomp;
-    
+
     knob_editor *_knob_editor;
     script_editor *expression_editor;
 

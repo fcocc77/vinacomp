@@ -65,11 +65,17 @@ knob_curve_menu::knob_curve_menu(QWidget *_panel)
 
     clear_expression_action->connect_to(panel,
                                         [this]() { clear_expression(); });
+
     curve_editor_action->connect_to(panel, [=]() {});
-    copy_values_action->connect_to(panel, [=]() {});
-    copy_animation_action->connect_to(panel, [=]() {});
-    copy_links_action->connect_to(panel, [=]() {});
-    paste_action->connect_to(panel, [=]() {});
+
+    copy_values_action->connect_to(panel, [this]() { copy("values"); });
+
+    copy_animation_action->connect_to(panel, [this]() { copy("animation"); });
+
+    copy_links_action->connect_to(panel, [this]() { copy("link"); });
+
+    paste_action->connect_to(panel, [this]() { paste(); });
+
     generate_keys_action->connect_to(panel, [=]() {});
     smooth_curve_action->connect_to(panel, [=]() {});
     loop_action->connect_to(panel, [=]() {});
@@ -103,3 +109,21 @@ void knob_curve_menu::clear_expression()
 }
 
 void knob_curve_menu::reset_default() {}
+
+void knob_curve_menu::copy(QString copy_action)
+{
+    static_cast<trim_panel *>(panel)->get_properties()->set_copied_knob_value(
+        {current_knob, copy_action});
+}
+
+void knob_curve_menu::paste()
+{
+    auto copied_knob_value = static_cast<trim_panel *>(panel)
+                           ->get_properties()
+                           ->get_copied_knob_value();
+
+    knob *copied_knob = copied_knob_value.first;
+    QString copied_action = copied_knob_value.second;
+
+    print(copied_action);
+}

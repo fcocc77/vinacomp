@@ -16,6 +16,9 @@ private:
     void clear_expression();
     void reset_default();
 
+    void copy(QString copy_action);
+    void paste();
+
 public:
     knob_curve_menu(QWidget *panel);
     ~knob_curve_menu();
