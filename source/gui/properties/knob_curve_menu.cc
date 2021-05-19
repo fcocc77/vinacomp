@@ -119,12 +119,13 @@ void knob_curve_menu::copy(QString copy_action)
 void knob_curve_menu::paste()
 {
     auto copied_knob_value = static_cast<trim_panel *>(panel)
-                           ->get_properties()
-                           ->get_copied_knob_value();
+                                 ->get_properties()
+                                 ->get_copied_knob_value();
 
     knob *copied_knob = copied_knob_value.first;
     QString copied_action = copied_knob_value.second;
 
     if (copied_action == "link")
-        current_knob->set_link(copied_knob);
+        current_knob->set_link(copied_knob->get_node_name(),
+                               copied_knob->get_name());
 }

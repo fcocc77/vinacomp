@@ -40,7 +40,8 @@ private:
     button *edit_knob_button;
     button *drag_knob_button;
 
-    knob *linked_knob;
+    bool linked_knob;
+    QString linked_knob_param, linked_knob_node;
 
     void set_keyframe(bool auto_value = true);
 
@@ -69,7 +70,8 @@ public:
 
     virtual void set_animated(bool _animated);
     virtual void set_disable(bool disable);
-    void set_link(knob *_linked_knob);
+    void set_link(QString node_name, QString param_name);
+    void remove_link();
     void enable_animation();
     void disable_animation();
 

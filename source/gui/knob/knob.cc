@@ -18,7 +18,7 @@ knob::knob(knob_props props)
     , _knob_editor(props._knob_editor)
     , viewers_gl(props.viewers_gl)
     , edit_mode(false)
-    , linked_knob(0)
+    , linked_knob(false)
     , _vinacomp(props._vinacomp)
     , over_line_widget(nullptr)
     , knob_data(props.knob_data)
@@ -242,6 +242,12 @@ void knob::restore_param()
     }
 
     set_expression(params->value(exp_name).toString());
+
+    if (params->contains(link_name))
+    {
+        QJsonArray linked = params->value(link_name).toArray();
+        set_link(linked.at(0).toString(), linked.at(1).toString());
+    }
 }
 
 void knob::update_value(QJsonValue value)
@@ -333,21 +339,24 @@ void knob::set_expression(QString expression)
         params->remove(exp_name);
 }
 
-void knob::set_link(knob *_linked_knob)
+void knob::set_link(QString node_name , QString param_name)
 {
-    if (_linked_knob)
-    {
-        linked_knob = _linked_knob;
-        params->insert(link_name, QJsonArray{linked_knob->get_node_name(),
-                                             linked_knob->get_name()});
-    }
-    else
-    {
-        params->remove(link_name);
-        linked_knob = nullptr;
-    }
+    if (node_name == get_node_name() && param_name == get_name())
+        // evita que se linkee asi mismo
+        return;
 
-    set_disable(_linked_knob);
+    linked_knob = true;
+    params->insert(link_name, QJsonArray{node_name, param_name});
+
+    set_disable(true);
+}
+
+void knob::remove_link()
+{
+    params->remove(link_name);
+
+    linked_knob = false;
+    set_disable(false);
 }
 
 void knob::set_disable(bool disable)
@@ -360,6 +369,8 @@ void knob::restore_default()
     set_expression("");
     if (animated)
         disable_animation();
+    
+    remove_link();
 
     params->remove(name);
     params->remove(curve_name);
