@@ -172,6 +172,7 @@ void vinacomp::save_project(QString project_path)
     project->save(project_path);
 
     project_opened = true;
+    current_project = project_path;
 
     this->setWindowTitle(os::basename(project_path) + " - VinaComp");
 }

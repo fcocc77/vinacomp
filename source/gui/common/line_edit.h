@@ -9,9 +9,10 @@ class line_edit : public QLineEdit
 {
 private:
     QMenu *menu;
+    QWidget *_knob;
 
 public:
-    line_edit();
+    line_edit(QWidget *_knob);
     void set_menu(QMenu *_menu);
 
 protected:

@@ -43,6 +43,7 @@ trim_panel::trim_panel(properties *__properties, QString _name, QString _type,
     _knob_editor = static_cast<knob_editor *>(_properties->get_knob_editor());
 
     knobs = new QMap<QString, knob *>;
+    curve_menu = new knob_curve_menu(this);
 
     this->setObjectName("trim_panel");
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);

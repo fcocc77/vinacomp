@@ -41,21 +41,13 @@ private:
     button *drag_knob_button;
 
     void set_keyframe(bool auto_value = true);
-    void enable_animation();
-    void disable_animation();
 
 protected:
     QWidget *_vinacomp;
 
-    QString name;
-    QString label;
-    QString tips;
-    QString type;
-    QString curve_name;
-    QString exp_name;
+    QString name, label, tips, type;
+    QString curve_name, exp_name, link_name;
     QWidget *over_line_widget;
-
-    QMenu *menu;
 
     QJsonObject knob_data;
     QJsonObject *params;
@@ -67,12 +59,15 @@ protected:
     void update_handler();
     void update_value(QJsonValue value);
     inline QJsonValue get_default() const;
-    virtual void set_animated(bool _animated);
     virtual void set_has_expression(bool expression);
 
 public:
     knob(knob_props props = {});
     ~knob();
+
+    virtual void set_animated(bool _animated);
+    void enable_animation();
+    void disable_animation();
 
     void set_edit_mode(bool enable);
     void set_editing_knob(bool editing);
@@ -87,6 +82,8 @@ public:
     QString get_node_name() const;
     void set_expression(QString expression);
     inline QString get_expression() const;
+    void set_link(QString node_name, QString param_name);
+    void remove_link();
     void set_init_label(bool has_label);
     void set_init_label_text(QString label);
     inline void set_knob_layout(QHBoxLayout *layout);

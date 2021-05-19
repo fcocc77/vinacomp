@@ -18,6 +18,7 @@
 #include <properties.h>
 #include <tab_widget.h>
 #include <node_gui.h>
+#include <knob_curve_menu.h>
 
 // Engine
 #include <project_struct.h>
@@ -36,6 +37,7 @@ private:
     QPushButton *restart_button;
     QWidget *_vinacomp;
     QList<QWidget *> *viewers_gl;
+    knob_curve_menu *curve_menu;
 
     QStringList tabs_only_read;
     QDockWidget *float_dock;
@@ -109,9 +111,15 @@ public:
     inline QStringList get_only_read_tabs() const;
     inline QJsonObject *get_params() const;
     inline properties *get_properties() const;
+    inline knob_curve_menu *get_curve_menu() const;
     void enter_to_properties();
     void leave_properties(bool disable_edit_mode = true);
 };
+
+inline knob_curve_menu *trim_panel::get_curve_menu() const
+{
+    return curve_menu;
+}
 
 inline properties *trim_panel::get_properties() const
 {

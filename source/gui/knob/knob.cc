@@ -8,6 +8,7 @@
 #include <node_rect.h>
 #include <knob_editor.h>
 #include <script_editor.h>
+#include <knob_curve_menu.h>
 
 knob::knob(knob_props props)
     : knob_layout(nullptr)
@@ -32,6 +33,7 @@ knob::knob(knob_props props)
     tips = knob_data.value("tooltip").toString();
     curve_name = name + "_curve";
     exp_name = name + "_exp";
+    link_name = name + "_link";
     //
 
     // Espacio inicial
@@ -76,8 +78,6 @@ knob::knob(knob_props props)
     layout->setMargin(0);
     //
     //
-
-    menu = new QMenu(this);
 
     icon_size = 15;
 
@@ -210,79 +210,13 @@ void knob::set_animatable(bool _animatable)
     animation_button->set_icon("key", icon_size);
     knob_layout->addWidget(animation_button);
 
-    action *set_key_action = new action("Set Key", "", "key");
-    action *delete_key_action = new action("Delete Key", "", "close");
-    action *no_animation_action = new action("No Animation", "");
-    action *reset_to_default_action =
-        new action("Reset to default", "", "restart");
+    knob_curve_menu *curve_menu =
+        static_cast<trim_panel *>(panel)->get_curve_menu();
 
-    action *curve_editor_action =
-        new action("Curve Editor...", "", "curve_editor");
-    action *edit_expression_action = new action("Edit Expression", "", "code");
-    edit_expression_action->connect_to(this, [this]() {
-        script_editor *expression_editor = static_cast<trim_panel *>(panel)
-                                               ->get_properties()
-                                               ->get_expression_editor();
+    connect(animation_button, &button::pressed, this,
+            [=]() { curve_menu->set_knob(this); });
 
-        expression_editor->set_knob(this);
-    });
-    action *clear_expression_action =
-        new action("Clear Expression", "", "close");
-    clear_expression_action->connect_to(this, [this]() { set_expression(""); });
-
-    action *copy_values_action = new action("Copy Values", "");
-    action *copy_animation_action = new action("Copy Animation", "");
-    action *copy_links_action = new action("Copy Links", "", "link");
-
-    action *paste_absolute_action = new action("Paste Absolute", "", "paste");
-    action *paste_relative_action = new action("Paste Relative");
-
-    action *generate_keys_action =
-        new action("Generate Keys", "", "generate_keys");
-    action *smooth_curve_action = new action("Smooth Curve","", "curve_smooth");
-    action *loop_action = new action("Loop", "", "refresh");
-
-    menu->addAction(set_key_action);
-    menu->addAction(delete_key_action);
-    menu->addAction(no_animation_action);
-    menu->addAction(reset_to_default_action);
-    menu->addSeparator();
-    menu->addAction(curve_editor_action);
-    menu->addAction(edit_expression_action);
-    menu->addAction(clear_expression_action);
-    menu->addSeparator();
-    menu->addAction(copy_values_action);
-    menu->addAction(copy_animation_action);
-    menu->addAction(copy_links_action);
-    menu->addSeparator();
-    menu->addAction(paste_absolute_action);
-    menu->addAction(paste_relative_action);
-    menu->addSeparator();
-    menu->addAction(generate_keys_action);
-    menu->addAction(smooth_curve_action);
-    menu->addAction(loop_action);
-
-    animation_button->setMenu(menu);
-
-    // Conecciones
-    set_key_action->connect_to(this, [=]() {
-        enable_animation();
-        set_animated(true);
-    });
-    delete_key_action->connect_to(this, [=]() {});
-    no_animation_action->connect_to(this, [=]() {
-        disable_animation();
-        set_animated(false);
-    });
-    curve_editor_action->connect_to(this, [=]() {});
-    copy_values_action->connect_to(this, [=]() {});
-    copy_animation_action->connect_to(this, [=]() {});
-    copy_links_action->connect_to(this, [=]() {});
-    paste_absolute_action->connect_to(this, [=]() {});
-    paste_relative_action->connect_to(this, [=]() {});
-    generate_keys_action->connect_to(this, [=]() {});
-    smooth_curve_action->connect_to(this, [=]() {});
-    loop_action->connect_to(this, [=]() {});
+    animation_button->setMenu(curve_menu);
 }
 
 QJsonValue knob::get_param_value() const
@@ -398,6 +332,16 @@ void knob::set_expression(QString expression)
         params->remove(exp_name);
 }
 
+void knob::set_link(QString node_name, QString param_name)
+{
+    params->insert(link_name, QJsonArray{node_name, param_name});
+}
+
+void knob::remove_link()
+{
+    params->remove(link_name);
+}
+
 void knob::restore_default()
 {
     set_expression("");
@@ -407,4 +351,5 @@ void knob::restore_default()
     params->remove(name);
     params->remove(curve_name);
     params->remove(exp_name);
+    params->remove(link_name);
 }

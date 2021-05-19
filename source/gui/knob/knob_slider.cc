@@ -1,5 +1,6 @@
 #include <animation.h>
 #include <knob_slider.h>
+#include <trim_panel.h>
 
 knob_slider::knob_slider(knob_props props, float min, float max,
                          float _default_value, bool _bidimensional,
@@ -21,9 +22,13 @@ knob_slider::knob_slider(knob_props props, float min, float max,
     this->set_knob_layout(layout);
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
+    QMenu *curve_menu = nullptr;
+    if (props.panel)
+        curve_menu = static_cast<trim_panel *>(props.panel)->get_curve_menu();
+
     // value 1
-    value_1_edit = new line_edit();
-    value_1_edit->set_menu(knob::menu);
+    value_1_edit = new line_edit(this);
+    value_1_edit->set_menu(curve_menu);
     connect(value_1_edit, &line_edit::editingFinished, this, [=]() {
         values.first = value_1_edit->text().toDouble();
         if (!floating)
@@ -51,8 +56,8 @@ knob_slider::knob_slider(knob_props props, float min, float max,
     if (bidimensional)
     {
         // value 2
-        value_2_edit = new line_edit();
-        value_2_edit->set_menu(knob::menu);
+        value_2_edit = new line_edit(this);
+        value_2_edit->set_menu(curve_menu);
         value_2_edit->hide();
 
         connect(value_2_edit, &line_edit::editingFinished, this, [=]() {
