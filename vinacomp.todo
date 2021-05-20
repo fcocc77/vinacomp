@@ -85,6 +85,7 @@ gui__knobs:
     ☐ en los knob linkeados ponerle otro color al label
     ☐ knob_color: con la opcion de paleta activada, añadirlo 2 opciones mas: hue correct en rgb, y hue correct con hsl
     ☐ knob_color: el menu de animacion tiene otro color
+    ☐ knob_color: falta un picker, gotero
 	☐ terminar button knob'
 	☐ terminar button knob'
 	☐ terminar choice knob'
