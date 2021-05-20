@@ -388,6 +388,7 @@ void file_dialog::add_bookmark(QString dirname, QString dirpath)
     bookmark_tree->addTopLevelItem(bookmark_item);
 
     bookmarks.insert(dirname, {dirname, dirpath, bookmark_item});
+    bookmark_backup();
 }
 
 void file_dialog::bookmark_backup()
