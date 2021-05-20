@@ -282,7 +282,7 @@ void trim_panel::setup_gui_panels(QJsonArray _knobs, QVBoxLayout *_layout)
     else if (type == "group")
         _node_gui = new group_gui(nodes_loaded);
     else if (type == "roto")
-        _node_gui = new roto_gui();
+        _node_gui = new roto_gui(_layout);
     else if (type == "shuffle")
     {
         knob_data = _knobs[0].toObject();
@@ -427,10 +427,10 @@ void trim_panel::add_tab(QString tab_name, int index)
             this_tab_knobs.push_back(knob);
     }
 
+    setup_knobs(this_tab_knobs, tab_layout, viewers_gl);
+
     if (tab_name == "Controls")
         setup_gui_panels(this_tab_knobs, tab_layout);
-
-    setup_knobs(this_tab_knobs, tab_layout, viewers_gl);
 }
 
 void trim_panel::delete_tab(QString tab_name)
