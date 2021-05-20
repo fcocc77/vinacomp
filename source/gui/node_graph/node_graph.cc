@@ -55,6 +55,7 @@ void node_graph::save_nodes_attributes_to_project()
         __node.color = _node->get_color();
         __node.size = _node->get_size();
         __node.z_value = _node->zValue();
+        __node.linked = _node->get_linked_node_name();
     }
 }
 
@@ -116,6 +117,8 @@ void node_graph::restore_tree()
             if (link)
                 link->connect_node(node_to_connect, false);
         }
+
+        _node->set_linked(node_data.linked);
     }
 }
 

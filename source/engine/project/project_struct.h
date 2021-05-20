@@ -19,6 +19,7 @@ struct node_struct
     QJsonObject *params;
     QJsonObject inputs;
     QJsonArray *custom_knobs;
+    QString linked;
 
     // estos 2 atributos son solo para el backdrop
     QSize size;
@@ -52,7 +53,8 @@ public:
     void insert_node(QString _name, QString _type, QJsonObject _params = {},
                      QColor _color = QColor(), QPointF _pos = {0, 0},
                      QJsonObject _inputs = {}, QJsonArray custom_knobs = {},
-                     QSize size = {0, 0}, int z_value = 0, QString tips = "");
+                     QString linked = "", QSize size = {0, 0}, int z_value = 0,
+                     QString tips = "");
 
     void delete_node(QString name);
     void rename_node(QString name, QString new_name);

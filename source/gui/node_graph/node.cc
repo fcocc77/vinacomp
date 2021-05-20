@@ -13,20 +13,19 @@ node::node(node_props _props, QMap<QString, node *> *_selected_nodes,
     , _viewer(nullptr)
     , _node_view(nullptr)
     , props(_props)
+    , nodes_connected_to_the_inputs(new QMap<QString, node *>)
+    , nodes_connected_to_the_output(new QMap<QString, node *>)
     , selected_nodes(_selected_nodes)
     , links(nullptr)
     , _output_link(nullptr)
     , _expression_link(nullptr)
     , linked_node(nullptr)
+    , center_position(new QPointF)
     , nodes_loaded(_props.nodes_loaded)
 
 {
     if (_node_graph)
         _node_view = static_cast<node_graph *>(_node_graph)->get_node_view();
-
-    nodes_connected_to_the_output = new QMap<QString, node *>;
-    nodes_connected_to_the_inputs = new QMap<QString, node *>;
-    center_position = new QPointF;
 
     name = props.name;
     tips = props.tips;
@@ -158,6 +157,9 @@ void node::refresh()
             refresh_links(output_node);
     //
     //
+
+    for (node *linked_node : linked_nodes)
+        linked_node->get_expression_link()->refresh();
 
     _output_link->refresh();
     _expression_link->refresh();
@@ -414,15 +416,33 @@ void node::set_center_position(float x, float y)
     set_position(x - (get_size().width() / 2), y - (get_size().height() / 2));
 }
 
-void node::set_linked(node *_linked_node)
+void node::set_linked(node *new_linked_node)
 {
-    linked_node = _linked_node;
+    if (new_linked_node)
+        new_linked_node->add_linked_node(this);
+    else
+        linked_node->remove_linked_node(this);
+
+    linked_node = new_linked_node;
     _expression_link->refresh();
 }
 
 void node::set_linked(QString node_name)
 {
+    if (node_name.isEmpty())
+        return;
+
     set_linked(static_cast<node_view *>(_node_view)->get_node(node_name));
+}
+
+void node::add_linked_node(node *_node)
+{
+    linked_nodes.push_back(_node);
+}
+
+void node::remove_linked_node(node *_node)
+{
+    linked_nodes.removeOne(_node);
 }
 
 void node::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)

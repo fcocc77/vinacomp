@@ -11,8 +11,8 @@ project_struct::~project_struct() {}
 void project_struct::insert_node(QString _name, QString _type,
                                  QJsonObject _params, QColor _color,
                                  QPointF _pos, QJsonObject _inputs,
-                                 QJsonArray custom_knobs, QSize size,
-                                 int z_value, QString tips)
+                                 QJsonArray custom_knobs, QString linked,
+                                 QSize size, int z_value, QString tips)
 {
     if (nodes.contains(_name))
         return;
@@ -21,7 +21,7 @@ void project_struct::insert_node(QString _name, QString _type,
     QJsonArray *knobs = new QJsonArray(custom_knobs);
 
     node_struct node({_name, _color, _type, tips, _pos, params, _inputs, knobs,
-                      size, z_value});
+                      linked, size, z_value});
 
     nodes.insert(_name, node);
 }
@@ -86,6 +86,9 @@ QJsonObject project_struct::get_project_json() const
         if (!node.custom_knobs->empty())
             _node["knobs"] = *node.custom_knobs;
 
+        if (!node.linked.isEmpty())
+            _node["linked"] = node.linked;
+
         _nodes.insert(name, _node);
     }
     //
@@ -142,12 +145,13 @@ void project_struct::load_from_json(QJsonObject project)
         QSize _size = {size[0].toInt(), size[1].toInt()};
 
         int z_value = node.value("z_value").toInt();
+        QString linked = node.value("linked").toString();
 
-        // extrae el tips del parametro de label
+        // extrae el tips del parametro de label que esta el tab 'node'
         QString tips = params.value("label").toString();
 
         insert_node(name, type, params, _color, _position, inputs, custom_knobs,
-                    _size, z_value, tips);
+                    linked, _size, z_value, tips);
     }
     //
 

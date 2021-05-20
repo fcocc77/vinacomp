@@ -65,6 +65,7 @@ private:
 
     expression_link *_expression_link;
     node *linked_node;
+    QList<node *> linked_nodes;
 
     QPointF *center_position;
 
@@ -73,6 +74,8 @@ private:
     void show_close_link();
     void snap_to_node(node *_node, QPointF this_node_pos, float &x_snap,
                       float &y_snap);
+    void add_linked_node(node *_node);
+    void remove_linked_node(node *_node);
 
 protected:
     nodes_load *nodes_loaded;
@@ -138,11 +141,26 @@ public:
     inline QString get_tips() const;
     inline viewer *get_viewer() const;
     inline node *get_linked_node() const;
+    inline QString get_linked_node_name() const;
+    inline expression_link *get_expression_link() const;
 };
+
+inline expression_link *node::get_expression_link() const
+{
+    return _expression_link;
+}
 
 inline viewer *node::get_viewer() const
 {
     return _viewer;
+}
+
+inline QString node::get_linked_node_name() const
+{
+    if (linked_node)
+        return linked_node->get_name();
+
+    return "";
 }
 
 inline node *node::get_linked_node() const

@@ -84,6 +84,7 @@ gui__knobs:
 	✔ slider: cuando el valor sea mayor o menor al limite, cambiar la forma del manejador a una flecha @done(2021-05-01 15:04) @project(gui__knobs)
 	✔ slider: opcion para mantener el 'handler' siempre al centro independiente del valor minimo y maximo @done(2021-05-01 15:04) @project(gui__knobs)
 	☐ que los qlineedit con boton derecho despliegue el menu de animacion
+    ☐ qlineedit: que al dar foco se seleccione todo el contenido
     ☐ en los knob linkeados ponerle otro color al label
     ☐ knob_color: con la opcion de paleta activada, añadirlo 2 opciones mas: hue correct en rgb, y hue correct con hsl
     ☐ knob_color: el menu de animacion tiene otro color
