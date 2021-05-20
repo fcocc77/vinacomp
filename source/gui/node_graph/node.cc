@@ -422,11 +422,15 @@ void node::set_linked(node *new_linked_node)
     {
         new_linked_node->add_linked_node(this);
         _expression_link->set_disable(false);
+
+        if (static_cast<node_view *>(_node_view)->is_expression_link_visible())
+            _expression_link->set_visible(true);
     }
     else
     {
         if (linked_node)
             linked_node->remove_linked_node(this);
+
         _expression_link->set_disable(true);
     }
 

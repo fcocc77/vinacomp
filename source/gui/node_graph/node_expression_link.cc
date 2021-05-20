@@ -7,7 +7,7 @@ expression_link::expression_link(QGraphicsScene *scene, QWidget *_node_view,
     : this_node(_this_node)
     , arrow(new QGraphicsPolygonItem)
     , disable(true)
-    , visible(true)
+    , visible(false)
 {
     QPen pen(Qt::green);
     pen.setWidth(1);
