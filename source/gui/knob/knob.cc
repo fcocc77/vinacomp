@@ -383,6 +383,9 @@ void knob::set_linked(QString node_name, QString param_name)
 
     params->insert(linked_name, QJsonArray{node_name, param_name});
     set_disable(linked);
+
+    static_cast<node_rect *>(this_node)->set_link_item(true);
+    static_cast<node *>(this_node)->set_linked(node_name);
 }
 
 knob *knob::get_knob(QString node_name, QString param_name) const
@@ -432,6 +435,9 @@ void knob::remove_link()
     params->remove(linked_name);
     linked = false;
     set_disable(false);
+
+    static_cast<node_rect *>(this_node)->set_link_item(false);
+    static_cast<node *>(this_node)->set_linked(0);
 }
 
 void knob::set_disable(bool disable)

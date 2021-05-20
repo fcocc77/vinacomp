@@ -15,6 +15,7 @@
 // Gui
 #include <node_link.h>
 #include <node_output_link.h>
+#include <node_expression_link.h>
 #include <nodes_load.h>
 #include <properties.h>
 #include <trim_panel.h>
@@ -62,6 +63,9 @@ private:
     QPointF _freeze_position;
     output_link *_output_link;
 
+    expression_link *_expression_link;
+    node *linked_node;
+
     QPointF *center_position;
 
     node_link *get_close_link() const;
@@ -100,6 +104,8 @@ public:
 
     inline QJsonObject *get_params() const;
     virtual void set_name(QString name);
+    void set_linked(node *linked_node);
+    void set_linked(QString node_name);
     void set_icon_name(QString name);
     virtual inline void set_tips(QString tips);
     inline QString get_name() const;
@@ -131,11 +137,17 @@ public:
     QList<node_link*> get_output_links() const;
     inline QString get_tips() const;
     inline viewer *get_viewer() const;
+    inline node *get_linked_node() const;
 };
 
 inline viewer *node::get_viewer() const
 {
     return _viewer;
+}
+
+inline node *node::get_linked_node() const
+{
+    return linked_node;
 }
 
 inline QJsonObject *node::get_params() const

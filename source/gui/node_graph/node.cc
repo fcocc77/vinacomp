@@ -16,6 +16,8 @@ node::node(node_props _props, QMap<QString, node *> *_selected_nodes,
     , selected_nodes(_selected_nodes)
     , links(nullptr)
     , _output_link(nullptr)
+    , _expression_link(nullptr)
+    , linked_node(nullptr)
     , nodes_loaded(_props.nodes_loaded)
 
 {
@@ -65,6 +67,7 @@ node::node(node_props _props, QMap<QString, node *> *_selected_nodes,
         this->setZValue((*props.current_z_value) + 1);
 
         _output_link = new output_link(props.scene, _node_view, this);
+        _expression_link = new expression_link(props.scene, _node_view, this);
     }
 }
 
@@ -78,6 +81,7 @@ node::~node()
         delete links;
     }
     delete _output_link;
+    delete _expression_link;
     delete nodes_connected_to_the_inputs;
     delete nodes_connected_to_the_output;
     delete center_position;
@@ -156,6 +160,7 @@ void node::refresh()
     //
 
     _output_link->refresh();
+    _expression_link->refresh();
 }
 
 void node::set_selected(bool enable)
@@ -407,6 +412,17 @@ void node::snap_to_node(node *_node, QPointF this_node_pos, float &x_snap,
 void node::set_center_position(float x, float y)
 {
     set_position(x - (get_size().width() / 2), y - (get_size().height() / 2));
+}
+
+void node::set_linked(node *_linked_node)
+{
+    linked_node = _linked_node;
+    _expression_link->refresh();
+}
+
+void node::set_linked(QString node_name)
+{
+    set_linked(static_cast<node_view *>(_node_view)->get_node(node_name));
 }
 
 void node::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
