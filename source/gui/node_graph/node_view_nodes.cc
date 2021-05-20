@@ -149,6 +149,7 @@ void node_view::delete_node(node *_node)
 
     QString name = _node->get_name();
 
+    _node->unlink_all();
     selected_nodes->remove(name);
     nodes->remove(name);
     copied_nodes.remove(name);

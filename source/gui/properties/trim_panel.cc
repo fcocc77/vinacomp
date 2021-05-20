@@ -569,6 +569,12 @@ void trim_panel::leave_properties(bool disable_edit_mode)
     //
 }
 
+void trim_panel::unlink_all()
+{
+    for (knob *_knob : *knobs)
+        _knob->remove_link();
+}
+
 void trim_panel::mousePressEvent(QMouseEvent *event)
 {
     // a veces se queda pegado al presionar otros click cuando se esta

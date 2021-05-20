@@ -105,6 +105,7 @@ public:
          QWidget *_node_graph = nullptr);
     ~node();
 
+    void unlink_all();
     inline QJsonObject *get_params() const;
     virtual void set_name(QString name);
     void set_linked(node *linked_node);

@@ -419,9 +419,16 @@ void node::set_center_position(float x, float y)
 void node::set_linked(node *new_linked_node)
 {
     if (new_linked_node)
+    {
         new_linked_node->add_linked_node(this);
+        _expression_link->set_visible(true);
+    }
     else
-        linked_node->remove_linked_node(this);
+    {
+        if (linked_node)
+            linked_node->remove_linked_node(this);
+        _expression_link->set_visible(false);
+    }
 
     linked_node = new_linked_node;
     _expression_link->refresh();
@@ -435,9 +442,34 @@ void node::set_linked(QString node_name)
     set_linked(static_cast<node_view *>(_node_view)->get_node(node_name));
 }
 
+void node::unlink_all()
+{
+    auto unlink = [=](node *_node) {
+        _node->set_linked(0);
+        if (_node->get_trim_panel())
+            _node->get_trim_panel()->unlink_all();
+
+        auto *params = _node->get_params();
+        QStringList params_to_delete;
+
+        for (QString param_key : params->keys())
+            if (param_key.contains("linked"))
+                params_to_delete.push_back(param_key);
+
+        for (QString param : params_to_delete)
+            params->remove(param);
+    };
+
+    for (node *linked_node : linked_nodes)
+        unlink(linked_node);
+
+    unlink(this);
+}
+
 void node::add_linked_node(node *_node)
 {
-    linked_nodes.push_back(_node);
+    if (!linked_nodes.contains(_node))
+        linked_nodes.push_back(_node);
 }
 
 void node::remove_linked_node(node *_node)

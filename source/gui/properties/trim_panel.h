@@ -114,6 +114,7 @@ public:
     inline knob_curve_menu *get_curve_menu() const;
     void enter_to_properties();
     void leave_properties(bool disable_edit_mode = true);
+    void unlink_all();
 };
 
 inline knob_curve_menu *trim_panel::get_curve_menu() const
