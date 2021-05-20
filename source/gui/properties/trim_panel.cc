@@ -5,6 +5,7 @@
 #include <frame_range_gui.h>
 #include <group_gui.h>
 #include <write_gui.h>
+#include <roto_gui.h>
 #include <knob_text.h>
 #include <knob_color.h>
 #include <knob_check_box.h>
@@ -280,6 +281,8 @@ void trim_panel::setup_gui_panels(QJsonArray _knobs, QVBoxLayout *_layout)
         _node_gui = new write_gui(project);
     else if (type == "group")
         _node_gui = new group_gui(nodes_loaded);
+    else if (type == "roto")
+        _node_gui = new roto_gui();
     else if (type == "shuffle")
     {
         knob_data = _knobs[0].toObject();

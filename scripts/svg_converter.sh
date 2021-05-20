@@ -36,6 +36,9 @@ function export_png() {
         #
 
         # cambia tamaño
+        sed -i "s|height=\"24px\"|height=\"$size\"|g" $svg_temp
+        sed -i "s|width=\"24px\"|width=\"$size\"|g" $svg_temp
+
         sed -i "s|height=\"24\"|height=\"$size\"|g" $svg_temp
         sed -i "s|width=\"24\"|width=\"$size\"|g" $svg_temp
         #

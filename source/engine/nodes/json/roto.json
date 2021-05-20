@@ -1,0 +1,56 @@
+{
+    "group": "draw",
+    "id": "roto",
+    "label": "Roto",
+    "icon": "roto",
+    "mask": true,
+    "knobs": [
+        {
+            "label": "Shape",
+            "name": "shape_label",
+            "type": "label"
+        },
+        {
+            "centered_handler": true,
+            "default": [
+                1,
+                1,
+                1,
+                1
+            ],
+            "label": "Color",
+            "maximum": 1,
+            "minimum": 0,
+            "name": "color",
+            "over_line": false,
+            "tooltip": "",
+            "type": "color"
+        },
+        {
+            "bidimensional": false,
+            "default": 0,
+            "label": "Feather",
+            "maximum": 500,
+            "minimum": 0,
+            "name": "feather",
+            "over_line": false,
+            "tooltip": "",
+            "type": "floating"
+        },
+        {
+            "name": "separator",
+            "over_line": false,
+            "type": "separator"
+        },
+        {
+            "bidimensional": false,
+            "default": 1,
+            "label": "Mix",
+            "maximum": 1,
+            "minimum": 0,
+            "name": "mix",
+            "tooltip": "",
+            "type": "floating"
+        }
+    ]
+}

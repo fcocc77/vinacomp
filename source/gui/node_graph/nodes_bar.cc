@@ -92,6 +92,8 @@ menu *nodes_bar::add_menu(QString group, QString icon_group)
             shortcut = "W";
         else if (id == "copy")
             shortcut = "K";
+        else if (id == "roto")
+            shortcut = "O";
 
         action *effect_action = new action(label, shortcut, icon);
         _menu->add_action(effect_action);

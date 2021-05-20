@@ -40,6 +40,7 @@
 #include <unpremult_node.h>
 #include <viewer_node.h>
 #include <write_node.h>
+#include <roto_node.h>
 
 renderer_thread::renderer_thread(project_struct *_project)
     : project(_project)
@@ -91,6 +92,7 @@ renderer_thread::renderer_thread(project_struct *_project)
     nodes.insert("lens_distortion", new lens_distortion_node());
     nodes.insert("transform", new transform_node());
     nodes.insert("write", new write_node());
+    nodes.insert("roto", new roto_node());
 }
 
 renderer_thread::~renderer_thread() {}
