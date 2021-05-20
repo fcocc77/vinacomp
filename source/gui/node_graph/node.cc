@@ -421,13 +421,13 @@ void node::set_linked(node *new_linked_node)
     if (new_linked_node)
     {
         new_linked_node->add_linked_node(this);
-        _expression_link->set_visible(true);
+        _expression_link->set_disable(false);
     }
     else
     {
         if (linked_node)
             linked_node->remove_linked_node(this);
-        _expression_link->set_visible(false);
+        _expression_link->set_disable(true);
     }
 
     linked_node = new_linked_node;
@@ -475,6 +475,11 @@ void node::add_linked_node(node *_node)
 void node::remove_linked_node(node *_node)
 {
     linked_nodes.removeOne(_node);
+}
+
+void node::set_visible_expression_link(bool visible)
+{
+    _expression_link->set_visible(visible);
 }
 
 void node::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)

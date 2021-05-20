@@ -21,6 +21,7 @@ node_view::node_view(QWidget *__vinacomp, properties *__properties,
     , project(_project)
     , output_link_node(nullptr)
     , insertion_between_nodes(true)
+    , expression_link_visible(true)
 {
 
     scene = new QGraphicsScene();
@@ -338,4 +339,12 @@ void node_view::center_node(node *_node)
     select_all(false);
     select_node(_node, true);
     fit_view_to_nodes();
+}
+
+void node_view::set_visible_expression_link(bool visible)
+{
+    expression_link_visible = visible;
+
+    for (node *_node : *nodes)
+        _node->set_visible_expression_link(visible);
 }

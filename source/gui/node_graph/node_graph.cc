@@ -19,6 +19,9 @@ node_graph::node_graph(QWidget *_vinacomp, project_struct *_project,
 
     _node_view = new node_view(_vinacomp, _properties, nodes_loaded, project, this);
     _maker = new maker(_vinacomp, _properties, nodes_loaded, _node_view, this);
+
+    init_menu();
+
     _nodes_bar = new nodes_bar(this, _maker, nodes_loaded);
 
     connect(_node_view, &node_view::clicked, this,
@@ -36,8 +39,6 @@ node_graph::node_graph(QWidget *_vinacomp, project_struct *_project,
 
     layout->addWidget(_nodes_bar);
     layout->addWidget(_node_view);
-
-    init_menu();
 }
 
 node_graph::~node_graph() {}

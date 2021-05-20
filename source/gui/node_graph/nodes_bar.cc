@@ -1,9 +1,10 @@
+#include <node_graph.h>
 #include <nodes_bar.h>
 
-nodes_bar::nodes_bar(QWidget *_parent, maker *__maker, nodes_load *_nodes)
+nodes_bar::nodes_bar(QWidget *__node_graph, maker *__maker, nodes_load *_nodes)
     : _maker(__maker)
     , nodes(_nodes)
-    , parent(_parent)
+    , _node_graph(__node_graph)
 
 {
     this->setObjectName("nodes_bar");
@@ -32,13 +33,12 @@ nodes_bar::nodes_bar(QWidget *_parent, maker *__maker, nodes_load *_nodes)
     update_py_plugins();
 
     find_node_edit = new QLineEdit();
-    connect(find_node_edit, &QLineEdit::textChanged, this,
-            &nodes_bar::search_changed);
     QLabel *find_node_label = new QLabel("Search Node");
 
-    action *show_exp_link_action =
-        new action("Show Expression Links", "", "link_off");
-    action *show_grid_action = new action("Show Grid", "", "grid");
+    connect(find_node_edit, &QLineEdit::textChanged, this,
+            &nodes_bar::search_changed);
+
+    node_graph *___node_graph = static_cast<node_graph *>(_node_graph);
 
     // Layout
     add_widget(nodes_widget);
@@ -50,8 +50,8 @@ nodes_bar::nodes_bar(QWidget *_parent, maker *__maker, nodes_load *_nodes)
 
     add_stretch();
 
-    add_action(show_exp_link_action);
-    add_action(show_grid_action);
+    add_action(___node_graph->show_expressions_links);
+    add_action(___node_graph->show_grid_action);
 }
 
 nodes_bar::~nodes_bar() {}
@@ -98,7 +98,8 @@ menu *nodes_bar::add_menu(QString group, QString icon_group)
         action *effect_action = new action(label, shortcut, icon);
         _menu->add_action(effect_action);
 
-        effect_action->connect_to(parent, [=]() { _maker->create_fx(id); });
+        effect_action->connect_to(_node_graph,
+                                  [=]() { _maker->create_fx(id); });
     }
 
     nodes_layout->addWidget(popup_button);

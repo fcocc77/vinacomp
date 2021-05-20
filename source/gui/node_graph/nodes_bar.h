@@ -37,7 +37,7 @@ private:
     QHBoxLayout *layout;
     maker *_maker;
     nodes_load *nodes;
-    QWidget *parent;
+    QWidget *_node_graph;
     QLineEdit *find_node_edit;
     QHBoxLayout *nodes_layout;
 
@@ -46,7 +46,7 @@ private:
     menu *add_menu(QString group, QString icon_group);
 
 public:
-    nodes_bar(QWidget *parent, maker *_maker, nodes_load *_nodes);
+    nodes_bar(QWidget *_node_graph, maker *_maker, nodes_load *_nodes);
     ~nodes_bar();
 
     void update_py_plugins();

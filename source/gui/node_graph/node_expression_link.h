@@ -11,6 +11,9 @@ private:
     QGraphicsItem *this_node;
     QGraphicsPolygonItem *arrow;
 
+    bool disable;
+    bool visible;
+
     void refresh_arrow(QPointF src, QPointF dst);
 public:
     expression_link(QGraphicsScene *scene, QWidget *_node_view,
@@ -19,6 +22,7 @@ public:
 
     void refresh();
     void set_visible(bool visible);
+    void set_disable(bool disable);
 };
 
 #endif // NODE_EXPRESSION_LINK_H

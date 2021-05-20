@@ -144,6 +144,7 @@ public:
     inline node *get_linked_node() const;
     inline QString get_linked_node_name() const;
     inline expression_link *get_expression_link() const;
+    void set_visible_expression_link(bool visible);
 };
 
 inline expression_link *node::get_expression_link() const

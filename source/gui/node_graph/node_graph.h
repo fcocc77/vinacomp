@@ -41,6 +41,11 @@ public:
                node_group *_node_group = nullptr);
     ~node_graph();
 
+    // acciones publicas
+    action *show_expressions_links;
+    action *show_grid_action;
+
+
     void save_nodes_attributes_to_project();
     void restore_tree();
     void clear_tree();

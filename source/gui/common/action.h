@@ -9,6 +9,7 @@ class action : public QAction
 private:
     QString key;
     QString icon_name;
+    QString checked_icon_name;
     QString tool_tip;
     QString label;
     bool checkable;
@@ -34,7 +35,7 @@ public:
     void set_tool_tip(QString tip);
     QString get_tool_tip() const;
     QString get_label() const;
-    void set_checkable(bool checkable = true);
+    void set_checkable(bool checkable = true, QString checked_icon = "");
     bool is_checked() const;
     void set_illuminated_button(bool illuminated);
     void set_checked(bool _checked, bool emmit_signal = false);

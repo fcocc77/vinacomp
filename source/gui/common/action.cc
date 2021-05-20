@@ -137,7 +137,12 @@ void action::set_icon(QString _icon_name, QString force_state)
         else if (illuminated_icon)
             icon_state = icon_name + "_white";
         else if (checked)
-            icon_state = icon_name + "_checked";
+        {
+            if (!checked_icon_name.isEmpty())
+                icon_state = checked_icon_name + "_checked";
+            else
+                icon_state = icon_name + "_checked";
+        }
         else
             icon_state = icon_name + "_normal";
     }
@@ -150,8 +155,10 @@ void action::set_icon(QString _icon_name, QString force_state)
         qt::set_icon(button, icon_state, icon_size);
 }
 
-void action::set_checkable(bool _checkable)
+void action::set_checkable(bool _checkable, QString checked_icon)
 {
+    checked_icon_name = checked_icon;
+
     checkable = _checkable;
     this->setCheckable(checkable);
 }
