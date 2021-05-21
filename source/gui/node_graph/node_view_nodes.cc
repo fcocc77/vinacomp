@@ -144,12 +144,14 @@ void node_view::delete_node(QString name)
 
 void node_view::delete_node(node *_node)
 {
-    if (_node->get_type() != "backdrop")
-        extract_node(_node);
-
     QString name = _node->get_name();
 
-    _node->unlink_all();
+    if (_node->get_type() != "backdrop")
+    {
+        extract_node(_node);
+        _node->unlink_all();
+    }
+
     selected_nodes->remove(name);
     nodes->remove(name);
     copied_nodes.remove(name);
