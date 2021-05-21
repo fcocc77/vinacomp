@@ -43,7 +43,14 @@ node_graph::node_graph(QWidget *__vinacomp, project_struct *_project,
     layout->addWidget(_node_view);
 }
 
-node_graph::~node_graph() {}
+node_graph::~node_graph()
+{
+    delete layout;
+    delete nodes_loaded;
+    delete _node_view;
+    delete _nodes_bar;
+    delete _maker;
+}
 
 void node_graph::save_nodes_attributes_to_project()
 {

@@ -87,7 +87,8 @@ protected:
     int current_height;
 
     QString name;
-    QString group_path;
+    QString label;
+    QString group_name;
     QString tips;
     QString type;
     QString icon_name;
@@ -109,6 +110,7 @@ public:
     void unlink_all();
     inline QJsonObject *get_params() const;
     virtual void set_name(QString name);
+    void set_group_name(QString group_name);
     void set_linked(node *linked_node);
     void set_linked(QString node_name);
     void set_icon_name(QString name);
@@ -147,12 +149,12 @@ public:
     inline QString get_linked_node_name() const;
     inline expression_link *get_expression_link() const;
     void set_visible_expression_link(bool visible);
-    inline QString get_group_path() const;
+    inline QString get_group_name() const;
 };
 
-inline QString node::get_group_path() const
+inline QString node::get_group_name() const
 {
-    return group_path;
+    return group_name;
 }
 
 inline expression_link *node::get_expression_link() const

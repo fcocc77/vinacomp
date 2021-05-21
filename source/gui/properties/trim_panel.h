@@ -182,6 +182,7 @@ inline QColor trim_panel::get_color() const
 inline void trim_panel::set_name(QString _name)
 {
     name = _name;
+    name_edit->setToolTip(name);
     set_label_by_name(name);
 }
 

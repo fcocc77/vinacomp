@@ -320,6 +320,7 @@ QWidget *trim_panel::setup_tool_bar()
             name_edit->setText(label);
     });
 
+    set_name(name);
     set_label_by_name(name);
 
     //

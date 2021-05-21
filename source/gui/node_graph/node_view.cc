@@ -65,7 +65,11 @@ node_view::node_view(QWidget *__vinacomp, properties *__properties,
     setup_shortcut();
 }
 
-node_view::~node_view() {}
+node_view::~node_view()
+{
+    for (node *_node : *nodes)
+        delete_node(_node);
+}
 
 void node_view::setup_shortcut()
 {

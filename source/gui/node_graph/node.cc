@@ -30,10 +30,11 @@ node::node(node_props _props, QMap<QString, node *> *_selected_nodes,
     name = props.name;
     tips = props.tips;
     type = props.type;
+    label = name.split('.').last();
 
     if (name.contains('.'))
         // si el nombre tiene un punto, significa que esta dentro de un grupo
-        group_path = name.left(name.lastIndexOf('.')) + '.';
+        group_name = name.left(name.lastIndexOf('.'));
 
     set_color(props.color);
 
@@ -199,9 +200,16 @@ void node::set_name(QString _name)
     this->setData(0, _name);
 
     name = _name;
+    label = name.split('.').last();
 
     if (_trim_panel)
         _trim_panel->set_name(_name);
+}
+
+void node::set_group_name(QString _group_name)
+{
+    group_name = _group_name;
+    static_cast<node_view *>(_node_view)->rename_node(this, label);
 }
 
 void node::set_position(float x, float y)

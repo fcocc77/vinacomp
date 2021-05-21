@@ -341,7 +341,9 @@ node *node_view::get_node(QString name)
 
 bool node_view::rename_node(node *_node, QString new_name)
 {
-    new_name = _node->get_group_path() + new_name;
+    QString group_name = _node->get_group_name();
+    if (!group_name.isEmpty())
+        new_name = group_name + '.' + new_name;
 
     QString aux = new_name;
     if (get_node(new_name))

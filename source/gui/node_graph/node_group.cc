@@ -19,8 +19,28 @@ node_group::~node_group()
     if (group_node_graph)
     {
         _vinacomp->get_groups_node_graph()->remove(get_name());
-        delete group_node_graph;
+        node_graph *_node_graph = static_cast<node_graph *>(group_node_graph);
+
+        delete _node_graph;
     }
+}
+
+QMap<QString, node *> node_group::get_nodes() const
+{
+    if (!group_node_graph)
+        return {};
+
+    return *static_cast<node_graph *>(group_node_graph)
+                ->get_node_view()
+                ->get_nodes();
+}
+
+void node_group::set_name(QString name)
+{
+    for (node *_node : get_nodes())
+        _node->set_group_name(name);
+
+    node_rect::set_name(name);
 }
 
 void node_group::open_group(bool add_to_panel)
