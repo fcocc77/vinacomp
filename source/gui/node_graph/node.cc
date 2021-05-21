@@ -219,7 +219,14 @@ void node::rename(QString _name)
             link->disconnect_node();
         }
     }
+
+    auto aux_output_links = get_output_links();
+    for (node_link *output_link : aux_output_links)
+        output_link->disconnect_node();
     //
+    //
+
+    props.project->rename_node(get_name(), _name);
     set_name(_name);
 
     // vuelve a conectar los nodos
@@ -231,6 +238,9 @@ void node::rename(QString _name)
             links->at(i)->connect_node(_node);
         }
     }
+
+    for (node_link *output_link : aux_output_links)
+        output_link->connect_node(this);
 }
 
 void node::set_group_name(QString _group_name)
