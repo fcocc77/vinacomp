@@ -55,6 +55,7 @@ private:
     QWidget *buttons;
 
     QString name;
+    QString label;
     QString type;
     QString icon_name;
     QColor color;
@@ -76,6 +77,7 @@ private:
     void clean_empty_line_widget();
 
     void restore_default_values();
+    inline void set_label_by_name(QString name);
 
     void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
@@ -180,7 +182,13 @@ inline QColor trim_panel::get_color() const
 inline void trim_panel::set_name(QString _name)
 {
     name = _name;
-    name_edit->setText(name);
+    set_label_by_name(name);
+}
+
+inline void trim_panel::set_label_by_name(QString name)
+{
+    label = name.split('.').last();
+    name_edit->setText(label);
 }
 
 inline bool trim_panel::maximized() const

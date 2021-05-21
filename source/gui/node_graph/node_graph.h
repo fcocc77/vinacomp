@@ -29,6 +29,7 @@ private:
     project_struct *project;
     node_group *_node_group;
     QString group_name;
+    QWidget *_vinacomp;
 
     QMenu *general_menu;
     QMenu *node_menu;

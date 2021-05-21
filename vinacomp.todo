@@ -77,6 +77,7 @@ gui__node:
     ☐ el snap a icono verticalmente no funciona si el nodo es ancho ancho
     ☐ el texto del link no desaparece cuando el nodo es muy ancho, al ocultar el texto hay que medirlo desde el borde del nodo y no del centro
     ☐ el nodo tenga un ancho maximo y cuando cumpla ese tamaño maximo el nombre del nodo que quede con 3 puntos ...
+    ☐ node_group: al exportar un plugin, verificar si el nombre ya existe en algun nodo, si no, enviar un mensaje
     ✔ en el panel de node en el trim_panel poner un knob de color para cambiar el color del nodo @done(2021-05-20 21:53) @project(gui__node)
 gui__knobs:
 	✔ slider: rehacer el slider con QPainter para tener mas control de todo @today @done(2021-05-01 15:03) @project(gui__knobs)

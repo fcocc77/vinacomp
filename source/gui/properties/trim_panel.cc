@@ -306,18 +306,21 @@ QWidget *trim_panel::setup_tool_bar()
     else
         qt::set_icon(icon_node, icon_name + "_normal", icon_size);
 
+    node *_node = static_cast<node *>(this_node);
+
     name_edit = new QLineEdit();
     connect(name_edit, &QLineEdit::editingFinished, [=]() {
-        if (name_edit->text() == name)
+        if (name_edit->text() == label)
             return;
 
-        node *_node = static_cast<node *>(this_node);
         bool renamed = static_cast<node_view *>(_node_view)
                            ->rename_node(_node, name_edit->text());
+
         if (!renamed)
-            name_edit->setText(name);
+            name_edit->setText(label);
     });
-    name_edit->setText(name);
+
+    set_label_by_name(name);
 
     //
     tools *tool_bar = new tools(icon_size);

@@ -213,6 +213,9 @@ QGraphicsPathItem *node_rect::add_attribute_item(QString letter,
 
 void node_rect::update_text(QString _name, QString _tips)
 {
+    // si el nombre tiene un punto, significa que esta dentro de un grupo
+    _name = _name.split('.').last();
+
     name_text->setPlainText(_name);
     tips_text->setPlainText(_tips);
 

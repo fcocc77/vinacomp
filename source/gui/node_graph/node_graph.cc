@@ -1,13 +1,15 @@
 #include <node_graph.h>
 #include <trim_panel.h>
+#include <vinacomp.h>
 
-node_graph::node_graph(QWidget *_vinacomp, project_struct *_project,
+node_graph::node_graph(QWidget *__vinacomp, project_struct *_project,
                        properties *_properties, QString _group_name,
                        node_group *__node_group)
 
     : project(_project)
     , _node_group(__node_group)
     , group_name(_group_name)
+    , _vinacomp(__vinacomp)
 {
 
     this->setObjectName("node_graph");
@@ -48,7 +50,18 @@ void node_graph::save_nodes_attributes_to_project()
     // ya que algunos atributos no es importante para el renderizado,
     // estos atributos del proyecto no se actualiza, dinamicamente
     // asi que solo se actualiza cuando se guarda el proyecto.
+
+    QList<node *> all_nodes;
+
+    vinacomp *vina = static_cast<vinacomp *>(_vinacomp);
+    for (node_graph *group_graph : *vina->get_groups_node_graph())
+        for (node *_node : *group_graph->get_node_view()->get_nodes())
+            all_nodes.push_back(_node);
+
     for (node *_node : *_node_view->get_nodes())
+        all_nodes.push_back(_node);
+
+    for (node *_node : all_nodes)
     {
         node_struct &__node = project->nodes[_node->get_name()];
 

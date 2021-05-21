@@ -30,6 +30,11 @@ node::node(node_props _props, QMap<QString, node *> *_selected_nodes,
     name = props.name;
     tips = props.tips;
     type = props.type;
+
+    if (name.contains('.'))
+        // si el nombre tiene un punto, significa que esta dentro de un grupo
+        group_path = name.left(name.lastIndexOf('.')) + '.';
+
     set_color(props.color);
 
     props.scene->addItem(this);

@@ -19,6 +19,8 @@ expression_link::expression_link(QGraphicsScene *scene, QWidget *_node_view,
     arrow->setBrush(arrow_brush);
     arrow->setPen(QPen(Qt::green, 0));
     scene->addItem(arrow);
+
+    set_disable(disable);
 }
 
 expression_link::~expression_link()

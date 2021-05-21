@@ -87,6 +87,7 @@ protected:
     int current_height;
 
     QString name;
+    QString group_path;
     QString tips;
     QString type;
     QString icon_name;
@@ -113,6 +114,7 @@ public:
     void set_icon_name(QString name);
     virtual inline void set_tips(QString tips);
     inline QString get_name() const;
+    inline QString get_label() const;
     virtual void set_position(float x, float y);
     virtual void set_selected(bool enable);
     QMap<QString, node *> *get_output_nodes() const;
@@ -145,7 +147,13 @@ public:
     inline QString get_linked_node_name() const;
     inline expression_link *get_expression_link() const;
     void set_visible_expression_link(bool visible);
+    inline QString get_group_path() const;
 };
+
+inline QString node::get_group_path() const
+{
+    return group_path;
+}
 
 inline expression_link *node::get_expression_link() const
 {
@@ -240,6 +248,13 @@ inline QSize node::get_size() const
 inline QString node::get_name() const
 {
     return name;
+}
+
+inline QString node::get_label() const
+{
+    // si el nombre tiene punto esta dentro de un grupo y el 'label' es solo la
+    // ultima parte, sin el nombre del grupo
+    return name.split('.').last();
 }
 
 inline void node::set_tips(QString _tips)

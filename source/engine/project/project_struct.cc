@@ -8,22 +8,16 @@ project_struct::project_struct()
 
 project_struct::~project_struct() {}
 
-void project_struct::insert_node(QString _name, QString _type,
-                                 QJsonObject _params, QColor _color,
-                                 QPointF _pos, QJsonObject _inputs,
-                                 QJsonArray custom_knobs, QString linked,
-                                 QSize size, int z_value, QString tips)
+void project_struct::insert_node(node_struct node, QJsonObject _params,
+                                 QJsonArray custom_knobs)
 {
-    if (nodes.contains(_name))
+    if (nodes.contains(node.name))
         return;
 
-    QJsonObject *params = new QJsonObject(_params);
-    QJsonArray *knobs = new QJsonArray(custom_knobs);
+    node.params = new QJsonObject(_params);
+    node.custom_knobs = new QJsonArray(custom_knobs);
 
-    node_struct node({_name, _color, _type, tips, _pos, params, _inputs, knobs,
-                      linked, size, z_value});
-
-    nodes.insert(_name, node);
+    nodes.insert(node.name, node);
 }
 
 void project_struct::delete_node(QString name)
@@ -127,31 +121,29 @@ void project_struct::load_from_json(QJsonObject project)
     QJsonObject _nodes = project.value("nodes").toObject();
     for (QString name : _nodes.keys())
     {
-        QJsonObject node = _nodes.value(name).toObject();
+        QJsonObject node_obj = _nodes.value(name).toObject();
 
-        QJsonArray color = node.value("color").toArray();
-        QColor _color = {color[0].toInt(), color[1].toInt(), color[2].toInt()};
+        QJsonArray color = node_obj.value("color").toArray();
+        QJsonArray position = node_obj.value("pos").toArray();
+        QJsonObject params = node_obj.value("params").toObject();
+        QJsonArray custom_knobs = node_obj.value("knobs").toArray();
+        QJsonArray size = node_obj.value("size").toArray();
 
-        QJsonArray position = node.value("pos").toArray();
-        QPointF _position = {position[0].toDouble(), position[1].toDouble()};
+        node_struct node;
 
-        QString type = node.value("type").toString();
-        QJsonObject params = node.value("params").toObject();
-        QJsonObject inputs = node.value("inputs").toObject();
-
-        QJsonArray custom_knobs = node.value("knobs").toArray();
-
-        QJsonArray size = node.value("size").toArray();
-        QSize _size = {size[0].toInt(), size[1].toInt()};
-
-        int z_value = node.value("z_value").toInt();
-        QString linked = node.value("linked").toString();
+        node.name = name;
+        node.type = node_obj.value("type").toString();
+        node.color = {color[0].toInt(), color[1].toInt(), color[2].toInt()};
+        node.pos = {position[0].toDouble(), position[1].toDouble()};
+        node.inputs = node_obj.value("inputs").toObject();
+        node.size = {size[0].toInt(), size[1].toInt()};
+        node.z_value = node_obj.value("z_value").toInt();
+        node.linked = node_obj.value("linked").toString();
 
         // extrae el tips del parametro de label que esta el tab 'node'
-        QString tips = params.value("label").toString();
+        node.tips = params.value("label").toString();
 
-        insert_node(name, type, params, _color, _position, inputs, custom_knobs,
-                    linked, _size, z_value, tips);
+        insert_node(node, params, custom_knobs);
     }
     //
 

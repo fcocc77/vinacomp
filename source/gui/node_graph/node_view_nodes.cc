@@ -16,7 +16,7 @@ node *node_view::create_node(node_struct node_data, bool basic_creation,
     if (node_data.params)
         params = *node_data.params;
 
-    project->insert_node(node_data.name, node_data.type, params);
+    project->insert_node(node_data, params);
     //
 
     node_props props;
@@ -341,6 +341,8 @@ node *node_view::get_node(QString name)
 
 bool node_view::rename_node(node *_node, QString new_name)
 {
+    new_name = _node->get_group_path() + new_name;
+
     QString aux = new_name;
     if (get_node(new_name))
     {

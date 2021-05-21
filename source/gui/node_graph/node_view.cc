@@ -239,10 +239,10 @@ void node_view::change_node_name_dialog()
         return;
 
     node *selected_node = selected_nodes->last();
-    if (selected_node == NULL)
+    if (!selected_node)
         return;
 
-    node_rename_edit->setText(selected_node->get_name());
+    node_rename_edit->setText(selected_node->get_label());
     QPoint position = this->mapFromGlobal(QCursor::pos());
 
     node_rename_edit->move(position);
