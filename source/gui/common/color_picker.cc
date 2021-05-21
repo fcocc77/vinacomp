@@ -63,6 +63,12 @@ void rainbow_box::paintEvent(QPaintEvent *event)
 
 void rainbow_box::emmit_signal(float pos_x)
 {
+    if (pos_x < 0)
+        pos_x = 0;
+
+    if (pos_x >= width() - 1)
+        pos_x = width() - 1;
+
     QPixmap qPix = this->grab();
     QImage image(qPix.toImage());
     QColor color(image.pixel(pos_x, 0));
