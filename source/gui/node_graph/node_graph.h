@@ -34,7 +34,6 @@ private:
     QMenu *general_menu;
     QMenu *node_menu;
     void init_menu();
-    QList<node_struct> get_nodes_from_group() const;
 
 public:
     node_graph(QWidget *_vinacomp, project_struct *_project,

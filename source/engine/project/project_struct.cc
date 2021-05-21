@@ -36,6 +36,7 @@ void project_struct::rename_node(QString name, QString new_name)
         return;
 
     node_struct aux = nodes[name];
+    aux.name = new_name;
 
     // no se usa el 'delete_node' porque elimina el puntero de 'params'
     // y solo queremos mover el nodo
@@ -187,4 +188,35 @@ QJsonValue project_struct::get_value_frame(QJsonObject *params, QString param_na
         .toObject()
         .value("f" + QString::number(frame))
         .toArray()[0];
+}
+
+QList<node_struct>
+project_struct::get_nodes_from_group(QString group_name) const
+{
+    if (group_name.isEmpty())
+    {
+        // crea lista con los nodos principales ya que no son grupos al no tener
+        // punto
+        QList<node_struct> main_nodes;
+        for (QString name : nodes.keys())
+        {
+            auto node = nodes.value(name);
+            if (!name.contains('.'))
+                main_nodes.push_back(node);
+        }
+
+        return main_nodes;
+    }
+
+    // obtiene todos los nodos que pertenecen a un grupo especifico
+    group_name += ".";
+    QList<node_struct> nodes_from_group;
+    for (QString name : nodes.keys())
+    {
+        QString group_of_node = name.left(name.lastIndexOf('.') + 1);
+        if (group_of_node == group_name)
+            nodes_from_group.push_back(nodes.value(name));
+    }
+
+    return nodes_from_group;
 }

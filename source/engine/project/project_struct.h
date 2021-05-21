@@ -67,6 +67,8 @@ public:
 
     static QJsonValue get_value_frame(QJsonObject *params, QString param_name,
                                       int frame);
+
+    QList<node_struct> get_nodes_from_group(QString group_name) const;
 };
 
 #endif // PROJECT_STRUCT_H

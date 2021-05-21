@@ -80,41 +80,9 @@ void node_graph::save_nodes_attributes_to_project()
     }
 }
 
-QList<node_struct> node_graph::get_nodes_from_group() const
-{
-    QString group_name = get_group_name();
-
-    if (group_name.isEmpty())
-    {
-        // crea lista con los nodos principales ya que no son grupos al no tener
-        // punto
-        QList<node_struct> main_nodes;
-        for (QString name : project->nodes.keys())
-        {
-            auto node = project->nodes.value(name);
-            if (!name.contains('.'))
-                main_nodes.push_back(node);
-        }
-
-        return main_nodes;
-    }
-
-    // obtiene todos los nodos que pertenecen a un grupo especifico
-    group_name += ".";
-    QList<node_struct> nodes_from_group;
-    for (QString name : project->nodes.keys())
-    {
-        QString group_of_node = name.left(name.lastIndexOf('.') + 1);
-        if (group_of_node == group_name)
-            nodes_from_group.push_back(project->nodes.value(name));
-    }
-
-    return nodes_from_group;
-}
-
 void node_graph::restore_tree()
 {
-    auto nodes = get_nodes_from_group();
+    auto nodes = project->get_nodes_from_group(get_group_name());
 
     // crea los nodos
     for (node_struct node : nodes)

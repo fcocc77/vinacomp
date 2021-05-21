@@ -91,6 +91,8 @@ void node_backdrop::update_title_area_height(int height)
 
 void node_backdrop::update_text(QString _name, QString _tips)
 {
+    _name = _name.split('.').last();
+
     tips_text->setPlainText(_tips);
     bool has_tips = !_tips.isEmpty();
 

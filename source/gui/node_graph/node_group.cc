@@ -41,11 +41,14 @@ void node_group::set_name(QString name)
 {
     vinacomp *_vinacomp = static_cast<vinacomp *>(props.vinacomp);
 
-    for (node *_node : get_nodes())
-        _node->set_group_name(name);
-
+    // si el 'node graph' del grupo esta creado renombra todos lo nodos del
+    // 'node_graph',  si no esta creado renombra todos los nodos que
+    // pertenecen al gurpo en el proyecto
     if (group_node_graph)
     {
+        for (node *_node : get_nodes())
+            _node->set_group_name(name);
+
         node_graph *_node_graph = static_cast<node_graph *>(group_node_graph);
 
         _vinacomp->get_groups_node_graph()->remove(get_name());
@@ -54,6 +57,14 @@ void node_group::set_name(QString name)
         _vinacomp->get_panels_layout()->rename_node_graph_group(get_name(),
                                                                 name);
         _node_graph->set_group_name(name);
+    }
+    else
+    {
+        for (node_struct node : props.project->get_nodes_from_group(get_name()))
+        {
+            QString new_name = name + '.' + node.name.split('.').last();
+            props.project->rename_node(node.name, new_name);
+        }
     }
 
     node_rect::set_name(name);
