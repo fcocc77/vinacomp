@@ -211,14 +211,19 @@ void panel::update_all_viewers_menu()
 void panel::add_group(node_graph *group)
 {
     add_tab(group, group->get_group_name());
+    update_all_group_menu();
+}
 
-    // actualiza el munu de grupos de todos los paneles
-    auto panels =
-        static_cast<panels_layout *>(_panels_layout)->get_all_panels();
+void panel::remove_group(node_graph *group)
+{
+    remove_tab(group->get_group_name());
+    update_all_group_menu();
+}
 
-    for (panel *_panel : panels)
-        _panel->update_groups_menu();
-    //
+void panel::rename_group(QString old_name, QString new_name)
+{
+    _tab_widget->rename_tab(old_name, new_name);
+    update_all_group_menu();
 }
 
 void panel::update_viewers_menu()
@@ -237,6 +242,16 @@ void panel::update_viewers_menu()
     }
 
     viewers_menu->menuAction()->setVisible(!viewers->isEmpty());
+}
+
+void panel::update_all_group_menu()
+{
+    // actualiza el munu de grupos de todos los paneles
+    auto panels =
+        static_cast<panels_layout *>(_panels_layout)->get_all_panels();
+
+    for (panel *_panel : panels)
+        _panel->update_groups_menu();
 }
 
 void panel::update_groups_menu()

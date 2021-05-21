@@ -56,6 +56,7 @@ public:
     inline maker *get_maker() const;
     inline bool is_group() const;
     inline QString get_group_name() const;
+    inline void set_group_name(QString group_name);
     inline node_group *get_node_group() const;
     inline nodes_bar *get_nodes_bar() const;
 };
@@ -68,6 +69,11 @@ inline nodes_bar *node_graph::get_nodes_bar() const
 inline node_group *node_graph::get_node_group() const
 {
     return _node_group;
+}
+
+inline void node_graph::set_group_name(QString _group_name)
+{
+    group_name = _group_name;
 }
 
 inline QString node_graph::get_group_name() const

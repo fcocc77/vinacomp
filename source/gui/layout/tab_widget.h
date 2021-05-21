@@ -39,6 +39,7 @@ public:
 
     void add_tab(QWidget *tab, QString label, int insert_index = -1);
     void remove_tab(QString name);
+    void rename_tab(QString old_name, QString new_name);
     int get_index_by_name(QString name) const;
     void set_tab(QString name);
     void set_index(int index);

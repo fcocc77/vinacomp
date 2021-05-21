@@ -39,6 +39,7 @@ private:
     void add_fixed_panel(QString name);
     void update_all_viewers_menu();
     void update_viewers_menu();
+    void update_all_group_menu();
     QMap<QString, viewer *> *get_viewers() const;
 
 public:
@@ -52,6 +53,8 @@ public:
     void add_viewer(viewer *_viewer);
     void remove_viewer(viewer *_viewer);
     void add_group(node_graph *_group);
+    void remove_group(node_graph *_group);
+    void rename_group(QString old_name, QString new_name);
     void add_tabs(QStringList tabs_list);
     void remove_tab(QString name);
     void close_panel();

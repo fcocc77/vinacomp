@@ -179,6 +179,15 @@ void tab_widget::remove_tab(QString name)
     close_tab(name);
 }
 
+void tab_widget::rename_tab(QString old_name, QString new_name)
+{
+    tab *_tab = get_tab(old_name);
+    if (!_tab)
+        return;
+
+    _tab->set_name(new_name);
+}
+
 int tab_widget::get_current_index() const
 {
     return current_index;

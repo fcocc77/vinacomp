@@ -50,6 +50,8 @@ public:
     void add_viewer(viewer *_viewer);
     void delete_viewer(viewer *_viewer);
     void add_node_graph_group(node_graph *group, QString name);
+    void rename_node_graph_group(QString old_name, QString new_name);
+    void delete_node_graph_group(node_graph *group);
 };
 
 #endif // PANELS_LAYOUT_HPP

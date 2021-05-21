@@ -154,6 +154,24 @@ void panels_layout::add_node_graph_group(node_graph *group, QString name)
     _panel->add_group(group);
 }
 
+void panels_layout::delete_node_graph_group(node_graph *group)
+{
+    panel *group_panel = get_panel(group->get_group_name());
+    if (!group_panel)
+        return;
+
+    group_panel->remove_group(group);
+}
+
+void panels_layout::rename_node_graph_group(QString old_name, QString new_name)
+{
+    panel *group_panel = get_panel(old_name);
+    if (!group_panel)
+        return;
+
+    group_panel->rename_group(old_name, new_name);
+}
+
 panel *panels_layout::get_some_empty_panel() const
 {
     // obtiene el primer panel vacio que encuentra
