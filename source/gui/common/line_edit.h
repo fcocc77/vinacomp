@@ -11,6 +11,8 @@ private:
     QMenu *menu;
     QWidget *_knob;
 
+    void focusInEvent(QFocusEvent *event) override;
+
 public:
     line_edit(QWidget *_knob);
     void set_menu(QMenu *_menu);

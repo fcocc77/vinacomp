@@ -33,7 +33,7 @@ void script_editor::setup_ui()
     splitter->addWidget(output);
     splitter->addWidget(input);
 
-    splitter->setSizes({100, 100});
+    splitter->setSizes({100, 200});
 
     layout->addWidget(splitter);
 }

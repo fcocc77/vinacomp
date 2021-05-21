@@ -1,7 +1,9 @@
+#include <QTimer>
+
+#include <knob.h>
+#include <knob_curve_menu.h>
 #include <line_edit.h>
 #include <util.h>
-#include <knob_curve_menu.h>
-#include <knob.h>
 
 line_edit::line_edit(QWidget *__knob)
     : menu(nullptr)
@@ -29,4 +31,10 @@ void line_edit::contextMenuEvent(QContextMenuEvent *event)
     }
     else
         QLineEdit::contextMenuEvent(event);
+}
+
+void line_edit::focusInEvent(QFocusEvent *event)
+{
+    QLineEdit::focusInEvent(event);
+    QTimer::singleShot(0, this, &QLineEdit::selectAll);
 }

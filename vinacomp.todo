@@ -77,17 +77,17 @@ gui__node:
     ☐ el snap a icono verticalmente no funciona si el nodo es ancho ancho
     ☐ el texto del link no desaparece cuando el nodo es muy ancho, al ocultar el texto hay que medirlo desde el borde del nodo y no del centro
     ☐ el nodo tenga un ancho maximo y cuando cumpla ese tamaño maximo el nombre del nodo que quede con 3 puntos ...
-    ☐ en el panel de node en el trim_panel poner un knob de color para cambiar el color del nodo
+    ✔ en el panel de node en el trim_panel poner un knob de color para cambiar el color del nodo @done(2021-05-20 21:53) @project(gui__node)
 gui__knobs:
 	✔ slider: rehacer el slider con QPainter para tener mas control de todo @today @done(2021-05-01 15:03) @project(gui__knobs)
 	✔ slider: mover el manejador en la posicion del click @done(2021-05-01 15:03) @project(gui__knobs)
 	✔ slider: cuando el valor sea mayor o menor al limite, cambiar la forma del manejador a una flecha @done(2021-05-01 15:04) @project(gui__knobs)
 	✔ slider: opcion para mantener el 'handler' siempre al centro independiente del valor minimo y maximo @done(2021-05-01 15:04) @project(gui__knobs)
 	☐ que los qlineedit con boton derecho despliegue el menu de animacion
-    ☐ qlineedit: que al dar foco se seleccione todo el contenido
+    ✔ qlineedit: que al dar foco se seleccione todo el contenido @done(2021-05-20 21:50) @project(gui__knobs)
     ☐ en los knob linkeados ponerle otro color al label
-    ☐ knob_color: con la opcion de paleta activada, añadirlo 2 opciones mas: hue correct en rgb, y hue correct con hsl
-    ☐ knob_color: el menu de animacion tiene otro color
+    ☐ knob_color: con la opcion de paleta activada, añadirle 2 opciones mas: hue correct en rgb, y hue correct con hsl
+    ✔ knob_color: el menu de animacion tiene otro color @done(2021-05-20 21:51) @project(gui__knobs)
     ☐ knob_color: falta un picker, gotero
 	☐ terminar button knob'
 	☐ terminar button knob'
