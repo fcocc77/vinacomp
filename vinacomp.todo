@@ -52,9 +52,9 @@ gui__node_graph:
 	☐ crear grilla que switchee con el boton de 'grid'
 	✔ crear backdrop @done(2021-04-26 12:32) @project(gui__node_graph)
 	☐ el paneo y zoom van lento cuando hay un widget openGL visible, y si no hay un widget openGL visible, al arrastrar un nodo deja una estela
-    ☐ no permitir crear nombres de nodos cono punto '.' ya que estos se usan para la profundidad de donde esta el nodo en un grupo
+    ✔ no permitir crear nombres de nodos cono punto '.' ya que estos se usan para la profundidad de donde esta el nodo en un grupo @done(2021-05-21 14:19) @project(gui__node_graph)
     ☐ la creacion de dot con control se queda pegado, al dejar presionado control cuando creamos un nodo con el 'node_finder'
-    ☐ en los grupos al crear 2 nodos del mismo tipo quedan con el mismo nombre
+    ✔ en los grupos al crear 2 nodos del mismo tipo quedan con el mismo nombre @done(2021-05-21 14:33) @project(gui__node_graph)
     ✔ al crear el nodo: que el nodo se conecte a los nodos de salida del nodo seleccionado @done(2021-04-26 12:32) @project(gui__node_graph)
     ✔ snap a nodo superior e inferior @done(2021-04-27 11:57) @project(gui__node_graph)
     ☐ snap de todos los nodos que esten dentro de un backdrop con los que esten fuera, al mover el backdrop

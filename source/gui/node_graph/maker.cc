@@ -27,6 +27,23 @@ maker::maker(QWidget *__vinacomp, properties *__properties,
 
 maker::~maker() {}
 
+QString maker::get_available_name(QString name) const
+{
+    QString available_name = name;
+
+    int number = 0;
+    while (true)
+    {
+        if (!_node_view->get_node(available_name))
+            break;
+
+        number++;
+        available_name = name + QString::number(number);
+    }
+
+    return available_name;
+}
+
 node *maker::create_fx(QString id, bool basic_creation)
 {
     QJsonObject effect = nodes_loaded->get_effect(id);
@@ -36,19 +53,7 @@ node *maker::create_fx(QString id, bool basic_creation)
     QString group = effect["group"].toString();
     QString label = effect["label"].toString();
     QColor color = default_color(group);
-
-    // Encuentra un nombre disponible
-    QString name;
-    int node_number = 1;
-    while (true)
-    {
-        name = label + QString::number(node_number);
-        if (!_node_view->get_node(name))
-            break;
-        node_number++;
-    }
-    //
-    //
+    QString name = label;
 
     // si el node_graph es un grupo, le antepone al nombre el nombre del grupo
     node_graph *__node_graph = static_cast<node_graph *>(_node_graph);
@@ -58,7 +63,7 @@ node *maker::create_fx(QString id, bool basic_creation)
 
     // Creación del nodo, con un nombre que no se ha utilizado.
     node_struct node_data;
-    node_data.name = name;
+    node_data.name = get_available_name(name);
     node_data.color = color;
     node_data.type = id;
     node_data.params = nullptr;

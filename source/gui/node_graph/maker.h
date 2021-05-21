@@ -21,6 +21,7 @@ private:
     QWidget *_vinacomp;
 
     QColor default_color(QString effect_group);
+    QString get_available_name(QString name) const;
 
 public:
     maker(QWidget *_vinacomp, properties *_properties,
