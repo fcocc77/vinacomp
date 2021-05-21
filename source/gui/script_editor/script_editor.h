@@ -50,6 +50,7 @@ private:
     //
 
     void run_script();
+    void run_expression();
     void append_output(QString text, QColor color = Qt::white);
     QWidget *set_expression_editor_bar();
 

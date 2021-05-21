@@ -340,9 +340,14 @@ void knob::set_expression(QString expression)
     set_has_expression(has_expression);
 
     if (has_expression)
+    {
         params->insert(exp_name, expression);
+    }
     else
+    {
         params->remove(exp_name);
+        set_error(false);
+    }
 }
 
 void knob::add_link_knob(QString node_name, QString param_name)
@@ -445,12 +450,14 @@ void knob::set_disable(bool disable)
     qt::set_property(label_widget, "disable", disable);
 }
 
+void knob::set_error(bool error) {}
+
 void knob::restore_default()
 {
     set_expression("");
     if (animated)
         disable_animation();
-    
+
     remove_link();
 
     params->remove(name);

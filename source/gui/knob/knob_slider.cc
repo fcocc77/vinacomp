@@ -146,9 +146,17 @@ void knob_slider::set_disable(bool disable)
     knob::set_disable(disable);
 }
 
+void knob_slider::set_error(bool error)
+{
+    qt::set_property(value_1_edit, "error", error);
+    if (error)
+        value_1_edit->setText("Error");
+}
+
 void knob_slider::set_has_expression(bool expression)
 {
     qt::set_property(value_1_edit, "expression", expression);
+    _slider->set_disable(expression);
 }
 
 void knob_slider::to_emmit_signal()

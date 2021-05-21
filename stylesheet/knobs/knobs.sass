@@ -5,6 +5,7 @@
 $expression_color: #ffd342
 $animated_color: #95cfff
 $keyframe_color: #008cff
+$error_color: rgb(200,0,0)
 
 @mixin line_edit_states
     &[ animated = true ]
@@ -34,6 +35,13 @@ $keyframe_color: #008cff
         color: $b30
         &:focus
             border-color: $b25
+
+    &[ error = true ]
+        background-color: mix($error_color, $b22, 10%)
+        border-color: mix($error_color, $b22, 70%)
+        color: $error_color
+        &:focus
+            border-color: $error_color
 
 #knob_floating, #knob_integer, #knob_dimensions
     #init_space

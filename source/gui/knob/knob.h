@@ -70,6 +70,7 @@ public:
     knob(knob_props props = {});
     ~knob();
 
+    virtual void set_error(bool error);
     virtual void set_animated(bool _animated);
     virtual void set_disable(bool disable);
     void add_link_knob(QString node_name, QString param_name);

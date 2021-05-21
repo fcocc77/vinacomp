@@ -77,8 +77,10 @@ QCodeEditor *script_editor::code_editor()
     editor->setHighlighter(python_highlighter);
 
     connect(editor, &QTextEdit::textChanged, this, [this]() {
-        // guarda el script escrito en el proyecto
-        if (project)
+        if (expression_editor)
+            run_expression();
+        else if (project)
+            // guarda el script escrito en el proyecto
             project->insert("script_editor", editor->toPlainText());
     });
 

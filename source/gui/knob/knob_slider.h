@@ -38,6 +38,7 @@ private:
     void restore_param() override;
     void set_animated(bool animated) override;
     void set_disable(bool disable) override;
+    void set_error(bool error) override;
     void set_has_expression(bool expression) override;
     void update_animated() override;
     void restore_default() override;
