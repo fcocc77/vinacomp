@@ -313,8 +313,9 @@ QWidget *trim_panel::setup_tool_bar()
         if (name_edit->text() == label)
             return;
 
-        bool renamed = static_cast<node_view *>(_node_view)
-                           ->rename_node(_node, name_edit->text());
+        bool renamed =
+            static_cast<node_view *>(_node_view)
+                ->rename_node(_node, name_edit->text().replace('.', ""));
 
         if (!renamed)
             name_edit->setText(label);

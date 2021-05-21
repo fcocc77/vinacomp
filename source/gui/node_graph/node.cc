@@ -206,6 +206,33 @@ void node::set_name(QString _name)
         _trim_panel->set_name(_name);
 }
 
+void node::rename(QString _name)
+{
+    // crea lista auxiliar de los nodos conectados, desconecta todos los link y
+    // los conecta despues de cambiar el nombre de este nodo
+    QList<QGraphicsItem *> aux_connected_nodes;
+    if (links)
+    {
+        for (node_link *link : *links)
+        {
+            aux_connected_nodes.push_back(link->get_connected_node());
+            link->disconnect_node();
+        }
+    }
+    //
+    set_name(_name);
+
+    // vuelve a conectar los nodos
+    if (links)
+    {
+        for (int i = 0; i < aux_connected_nodes.count(); i++)
+        {
+            auto *_node = aux_connected_nodes.at(i);
+            links->at(i)->connect_node(_node);
+        }
+    }
+}
+
 void node::set_group_name(QString _group_name)
 {
     group_name = _group_name;

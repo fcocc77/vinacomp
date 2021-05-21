@@ -110,6 +110,7 @@ public:
     void unlink_all();
     inline QJsonObject *get_params() const;
     virtual void set_name(QString name);
+    void rename(QString name);
     void set_group_name(QString group_name);
     void set_linked(node *linked_node);
     void set_linked(QString node_name);

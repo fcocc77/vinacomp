@@ -67,7 +67,11 @@ node_view::node_view(QWidget *__vinacomp, properties *__properties,
 
 node_view::~node_view()
 {
+    QList<node *> to_delete;
     for (node *_node : *nodes)
+        to_delete.push_back(_node);
+
+    for (node *_node : to_delete)
         delete_node(_node);
 }
 
@@ -261,7 +265,7 @@ void node_view::change_node_name()
     if (!selected_node)
         return;
 
-    QString new_name = node_rename_edit->text();
+    QString new_name = node_rename_edit->text().replace('.', "");
 
     rename_node(selected_node, new_name);
 

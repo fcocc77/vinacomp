@@ -358,7 +358,7 @@ bool node_view::rename_node(node *_node, QString new_name)
         return false;
 
     QString name = _node->get_name();
-    _node->set_name(new_name);
+    _node->rename(new_name);
 
     project->rename_node(name, new_name);
 
