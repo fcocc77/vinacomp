@@ -533,7 +533,8 @@ void node::remove_linked_node(node *_node)
 
 void node::set_visible_expression_link(bool visible)
 {
-    _expression_link->set_visible(visible);
+    if (_expression_link)
+        _expression_link->set_visible(visible);
 }
 
 void node::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
