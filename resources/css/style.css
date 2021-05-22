@@ -861,6 +861,47 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left
     #settings #dialog_buttons QPushButton:hover {
       color: #ffcc00; }
 
+#settings #plugin_tree {
+  background-color: #272a30;
+  alternate-background-color: #22252a;
+  border-right: 1px solid #191b1f; }
+  #settings #plugin_tree::item {
+    background: transparent;
+    border-top: 1px solid transparent;
+    border-bottom: 1px solid #353941; }
+    #settings #plugin_tree::item:selected {
+      background: #32322e;
+      border-color: rgba(255, 204, 0, 0.5);
+      color: #caced3; }
+      #settings #plugin_tree::item:selected:hover {
+        background: #32322e; }
+    #settings #plugin_tree::item:hover {
+      background-color: rgba(255, 204, 0, 0.02);
+      border-color: rgba(255, 204, 0, 0.3); }
+  #settings #plugin_tree::branch {
+    background: transparent;
+    border-top: 1px solid transparent;
+    border-bottom: 1px solid #353941; }
+    #settings #plugin_tree::branch:selected {
+      background: #32322e;
+      border-color: rgba(255, 204, 0, 0.5);
+      color: #caced3; }
+      #settings #plugin_tree::branch:selected:hover {
+        background: #32322e; }
+    #settings #plugin_tree::branch:hover {
+      background-color: rgba(255, 204, 0, 0.02);
+      border-color: rgba(255, 204, 0, 0.3); }
+  #settings #plugin_tree QHeaderView::section {
+    background-color: #272a30;
+    padding: 5px 10px 5px 10px;
+    border: 0px solid none;
+    margin-left: 1px;
+    margin-top: 1px;
+    margin-bottom: 1px; }
+
+#settings #plugin_buttons {
+  background: none; }
+
 #tool_bar {
   background: #25282d;
   border-left: 1px solid #191b1f; }

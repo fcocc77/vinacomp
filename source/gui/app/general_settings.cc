@@ -65,6 +65,7 @@ void general_settings::setup_plugins()
     QVBoxLayout *layout = add_item("Plugins");
 
     plugin_tree = new QTreeWidget;
+    plugin_tree->setObjectName("plugin_tree");
     plugin_tree->setAlternatingRowColors(true);
     QStringList columns{"Plugin Name", "Label", "Group"};
     plugin_tree->setHeaderLabels(columns);
@@ -73,7 +74,9 @@ void general_settings::setup_plugins()
     plugin_tree->setColumnWidth(2, 100);
 
     QWidget *buttons = new QWidget;
+    buttons->setObjectName("plugin_buttons");
     QHBoxLayout *buttons_layout = new QHBoxLayout(buttons);
+    buttons_layout->setMargin(0);
 
     button *remove_button = new button();
     button *edit_button = new button();
