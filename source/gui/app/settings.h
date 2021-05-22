@@ -8,6 +8,8 @@
 #include <QSplitter>
 #include <QPushButton>
 
+#include <knob.h>
+
 class settings : public QWidget
 {
 private:
@@ -26,7 +28,10 @@ private:
     QTreeWidget *tree;
 
 protected:
+    QMap<QString, knob *> *knobs;
+
     virtual void save_settings();
+    knob *get_knob(QString name) const;
 
 public:
     settings(bool has_dialog_buttons = false, QWidget *_vinacomp = 0);

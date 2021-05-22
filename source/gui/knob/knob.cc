@@ -223,6 +223,9 @@ void knob::set_animatable(bool _animatable)
 
 QJsonValue knob::get_param_value() const
 {
+    if (!params)
+        return {};
+
     if (params->contains(name))
         return params->value(name);
     else
@@ -231,6 +234,9 @@ QJsonValue knob::get_param_value() const
 
 void knob::restore_param()
 {
+    if (!params)
+        return;
+
     bool _animated = false;
 
     if (params->contains(curve_name))

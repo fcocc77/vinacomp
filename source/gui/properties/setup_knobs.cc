@@ -180,7 +180,7 @@ void setup_knobs(setup_knobs_props props)
             }
 
             _knob->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-            _knob->set_data();
+            // _knob->set_data();
             _knob->restore_param();
 
             if (props._node_gui)

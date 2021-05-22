@@ -11,14 +11,14 @@
 
 struct setup_knobs_props
 {
-    project_struct *project;
-    QWidget *panel;
-    QWidget *vinacomp;
-    QList<QWidget *> *viewers_gl;
-    QGraphicsItem *this_node;
-    QWidget *knob_editor;
-    QJsonObject *params;
-    node_gui *_node_gui;
+    project_struct *project = nullptr;
+    QWidget *panel = nullptr;
+    QWidget *vinacomp = nullptr;
+    QList<QWidget *> *viewers_gl = nullptr;
+    QGraphicsItem *this_node = nullptr;
+    QWidget *knob_editor = nullptr;
+    QJsonObject *params = nullptr;
+    node_gui *_node_gui = nullptr;
     QMap<QString, knob *> *knobs;
     QJsonArray knobs_array;
     QVBoxLayout *layout;

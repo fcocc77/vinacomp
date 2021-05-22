@@ -3,7 +3,7 @@
 
 settings::settings(bool has_dialog_buttons, QWidget *__vinacomp)
     : _vinacomp(__vinacomp)
-
+    , knobs(new QMap<QString, knob *>)
 {
     this->hide();
     this->setObjectName("settings");
@@ -71,7 +71,15 @@ settings::settings(bool has_dialog_buttons, QWidget *__vinacomp)
     layout->addWidget(splitter);
 }
 
-settings::~settings() {}
+settings::~settings()
+{
+    delete knobs;
+}
+
+knob *settings::get_knob(QString name) const
+{
+    return knobs->value(name);
+}
 
 QVBoxLayout *settings::add_item(QString name)
 {
