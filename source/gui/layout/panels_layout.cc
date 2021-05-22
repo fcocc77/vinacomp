@@ -107,7 +107,12 @@ void panels_layout::delete_viewer(viewer *_viewer)
 {
     panel *viewer_panel = get_panel(_viewer->get_name());
     if (!viewer_panel)
+    {
+        for (panel *_panel : get_all_panels())
+            _panel->update_all_viewers_menu();
+
         return;
+    }
 
     viewer_panel->remove_viewer(_viewer);
 }
@@ -157,7 +162,11 @@ void panels_layout::delete_node_graph_group(node_graph *group)
 {
     panel *group_panel = get_panel(group->get_group_name());
     if (!group_panel)
+    {
+        for (panel *_panel : get_all_panels())
+            _panel->update_all_group_menu();
         return;
+    }
 
     group_panel->remove_group(group);
 }

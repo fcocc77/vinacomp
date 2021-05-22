@@ -10,7 +10,15 @@
             "label": "Channels",
             "tooltip": "",
             "visible": true,
-			"default": ["main", [true, true, true, false]]
+            "default": [
+                "main",
+                [
+                    true,
+                    true,
+                    true,
+                    false
+                ]
+            ]
         },
         {
             "name": "color",
@@ -19,18 +27,41 @@
             "tooltip": "color",
             "minimum": 0,
             "maximum": 1,
-			"default": [0, 0, 0, 0]
+            "default": [
+                0.5,
+                0.5,
+                0.5,
+                0.5
+            ]
         },
         {
             "name": "format",
             "type": "choice",
             "label": "Format",
             "tooltip": "format",
-			"items": [
-				["FULL HD    1920x1080", [1920, 1080]],
-				["HD-720     1280x720", [1280, 720]]
-			],
-            "default": [0, [1920, 1080]]
+            "items": [
+                [
+                    "FULL HD    1920x1080",
+                    [
+                        1920,
+                        1080
+                    ]
+                ],
+                [
+                    "HD-720     1280x720",
+                    [
+                        1280,
+                        720
+                    ]
+                ]
+            ],
+            "default": [
+                0,
+                [
+                    1920,
+                    1080
+                ]
+            ]
         },
         {
             "name": "frame_range",
@@ -38,8 +69,11 @@
             "label": "Frame Range",
             "tooltip": "frame_range",
             "dimensions": 2,
-            "default": [1, 1],
-			"animatable": false
-		}
+            "default": [
+                1,
+                1
+            ],
+            "animatable": false
+        }
     ]
 }

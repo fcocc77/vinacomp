@@ -37,9 +37,7 @@ private:
 
     QPushButton *setup_cornel_buttons();
     void add_fixed_panel(QString name);
-    void update_all_viewers_menu();
     void update_viewers_menu();
-    void update_all_group_menu();
     QMap<QString, viewer *> *get_viewers() const;
 
 public:
@@ -48,6 +46,8 @@ public:
           properties *_properties, curve_editor *_curve_editor);
     ~panel();
 
+    void update_all_viewers_menu();
+    void update_all_group_menu();
     panel *split(Qt::Orientation orientation);
     inline void add_tab(QWidget *widget, QString name);
     void add_viewer(viewer *_viewer);
