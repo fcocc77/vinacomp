@@ -9,8 +9,8 @@
             "type": "color",
             "label": "Color",
             "tooltip": "color",
-            "minimum": 0,
-            "maximum": 1,
+            "min": 0,
+            "max": 1,
 			"default": [1, 1, 1, 1]
         },
 		{
@@ -29,8 +29,8 @@
 			"type": "floating",
 			"label": "Softness",
 			"tooltip": "softness",
-			"minimum": 0,
-			"maximum": 1,
+			"min": 0,
+			"max": 1,
 			"default": 1
 		}
     ]

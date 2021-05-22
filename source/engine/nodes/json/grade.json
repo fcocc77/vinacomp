@@ -26,8 +26,8 @@
             "type": "color",
             "label": "Black Point",
             "tooltip": "",
-            "minimum": -1,
-            "maximum": 1,
+            "min": -1,
+            "max": 1,
             "visible": true,
             "default": [
                 0,
@@ -42,8 +42,8 @@
             "type": "color",
             "label": "White Point",
             "tooltip": "",
-            "minimum": 0,
-            "maximum": 4,
+            "min": 0,
+            "max": 4,
             "visible": true,
             "default": [
                 1,
@@ -63,8 +63,8 @@
             "type": "color",
             "label": "Lift",
             "tooltip": "",
-            "minimum": -1,
-            "maximum": 1,
+            "min": -1,
+            "max": 1,
             "visible": true,
             "default": [
                 0,
@@ -79,8 +79,8 @@
             "type": "color",
             "label": "Offset",
             "tooltip": "",
-            "minimum": -1,
-            "maximum": 1,
+            "min": -1,
+            "max": 1,
             "visible": true,
             "default": [
                 0,
@@ -100,8 +100,8 @@
             "type": "color",
             "label": "Gain",
             "tooltip": "",
-            "minimum": 0,
-            "maximum": 4,
+            "min": 0,
+            "max": 4,
             "visible": true,
             "default": [
                 1,
@@ -116,8 +116,8 @@
             "type": "color",
             "label": "Multiply",
             "tooltip": "",
-            "minimum": 0,
-            "maximum": 4,
+            "min": 0,
+            "max": 4,
             "visible": true,
             "default": [
                 1,
@@ -132,8 +132,8 @@
             "type": "color",
             "label": "Gamma",
             "tooltip": "",
-            "minimum": 0.2,
-            "maximum": 5,
+            "min": 0.2,
+            "max": 5,
             "visible": true,
             "default": [
                 1,
@@ -149,8 +149,8 @@
             "label": "Saturation",
             "tooltip": "",
             "centered_handler": true,
-            "minimum": 0,
-            "maximum": 4,
+            "min": 0,
+            "max": 4,
             "default": 1
         },
         {
@@ -163,8 +163,8 @@
             "type": "check_box",
             "label": "Black Clamp",
             "tooltip": "",
-            "minimum": 0,
-            "maximum": 1,
+            "min": 0,
+            "max": 1,
             "default": true
         },
         {
@@ -173,8 +173,8 @@
             "label": "White Clamp",
             "over_line": true,
             "tooltip": "",
-            "minimum": 0,
-            "maximum": 1,
+            "min": 0,
+            "max": 1,
             "default": false
         },
         {
@@ -182,8 +182,8 @@
             "type": "floating",
             "label": "Mix",
             "tooltip": "",
-            "minimum": 0,
-            "maximum": 1,
+            "min": 0,
+            "max": 1,
             "default": 1
         }
     ]

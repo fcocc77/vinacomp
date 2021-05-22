@@ -32,8 +32,8 @@
 			"type": "floating",
 			"label": "Scale",
 			"tooltip": "scale",
-			"minimum": 0.1,
-			"maximum": 10,
+			"min": 0.1,
+			"max": 10,
 			"default": 1,
 			"visible": false,
 			"animatable": false

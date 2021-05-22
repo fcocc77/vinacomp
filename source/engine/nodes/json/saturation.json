@@ -9,8 +9,8 @@
             "type": "floating",
             "label": "Saturation",
             "tooltip": "",
-            "minimum": 0,
-            "maximum": 4,
+            "min": 0,
+            "max": 4,
             "default": 1
         },
         {
@@ -18,8 +18,8 @@
             "type": "floating",
             "label": "Mix",
             "tooltip": "",
-            "minimum": 0,
-            "maximum": 1,
+            "min": 0,
+            "max": 1,
             "default": 0.5
         }
     ]

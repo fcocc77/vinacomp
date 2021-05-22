@@ -17,8 +17,8 @@
             "type": "integer",
             "label": "Which",
             "tooltip": "",
-            "minimum": 0,
-            "maximum": 4,
+            "min": 0,
+            "max": 4,
             "default": 0
         }
     ]

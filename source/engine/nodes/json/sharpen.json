@@ -9,8 +9,8 @@
             "type": "floating",
             "label": "Amount",
             "tooltip": "amount",
-            "minimum": 0,
-            "maximum": 1,
+            "min": 0,
+            "max": 1,
             "default": 1
         },
         {
@@ -18,8 +18,8 @@
             "type": "floating",
             "label": "Size",
             "tooltip": "size",
-            "minimum": 0,
-            "maximum": 100,
+            "min": 0,
+            "max": 100,
             "default": 3
         }
     ]

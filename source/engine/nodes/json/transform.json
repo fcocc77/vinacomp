@@ -20,8 +20,8 @@
             "type": "floating",
             "label": "Rotate",
             "tooltip": "Rotate",
-            "minimum": -180,
-            "maximum": 180,
+            "min": -180,
+            "max": 180,
             "default": 0
         },
         {
@@ -29,8 +29,8 @@
             "type": "floating",
             "label": "Scale",
             "tooltip": "Scale",
-            "minimum": 0.1,
-            "maximum": 10,
+            "min": 0.1,
+            "max": 10,
             "default": 1,
             "two_dimensional": true
         },
@@ -39,8 +39,8 @@
             "type": "floating",
             "label": "Skew X",
             "tooltip": "Skew X",
-            "minimum": -1,
-            "maximum": 1,
+            "min": -1,
+            "max": 1,
             "default": 0
         },
         {
@@ -48,8 +48,8 @@
             "type": "floating",
             "label": "Skew Y",
             "tooltip": "Skew Y",
-            "minimum": -1,
-            "maximum": 1,
+            "min": -1,
+            "max": 1,
             "default": 0
         },
         {
@@ -91,8 +91,8 @@
             "type": "floating",
             "label": "Mix",
             "tooltip": "",
-            "minimum": 0,
-            "maximum": 1,
+            "min": 0,
+            "max": 1,
             "default": 0.5
         }
     ]

@@ -52,8 +52,8 @@ void setup_knobs(setup_knobs_props props)
     {
         QJsonObject knob_object = props.knobs_array.at(i).toObject();
         QString type = knob_object.value("type").toString();
-        float min = knob_object.value("minimum").toDouble();
-        float max = knob_object.value("maximum").toDouble();
+        float min = knob_object.value("min").toDouble();
+        float max = knob_object.value("max").toDouble();
         float default_value = knob_object.value("default").toDouble();
         bool centered_handler = knob_object.value("centered_handler").toBool();
         int dimensions_count = knob_object.value("dimensions").toDouble();

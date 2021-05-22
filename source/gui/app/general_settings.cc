@@ -43,8 +43,8 @@ void general_settings::setup_auto_save()
     QJsonObject delay_knob = {{"type", "integer"},
                               {"name", "auto_save_delay"},
                               {"label", "Delay: Seconds"},
-                              {"minimum", 1},
-                              {"maximum", 30},
+                              {"min", 1},
+                              {"max", 30},
                               {"default", 5}};
 
     props.knobs_array.push_back(enable_knob);

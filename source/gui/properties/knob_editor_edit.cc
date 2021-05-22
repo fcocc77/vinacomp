@@ -36,8 +36,8 @@ void knob_editor::add_knob(QWidget *panel, knob_params params, int index)
                        {"type", "floating"},
                        {"label", params.label},
                        {"tooltip", params.tips},
-                       {"minimum", params.min},
-                       {"maximum", params.max},
+                       {"min", params.min},
+                       {"max", params.max},
                        {"default", params.default_value},
                        {"bidimensional", params.bidimensional},
                        {"tab", custom_tab}};
@@ -48,8 +48,8 @@ void knob_editor::add_knob(QWidget *panel, knob_params params, int index)
                        {"type", "integer"},
                        {"label", params.label},
                        {"tooltip", params.tips},
-                       {"minimum", params.min},
-                       {"maximum", params.max},
+                       {"min", params.min},
+                       {"max", params.max},
                        {"bidimensional", params.bidimensional},
                        {"default", params.default_value},
                        {"tab", custom_tab}};
@@ -62,8 +62,8 @@ void knob_editor::add_knob(QWidget *panel, knob_params params, int index)
                        {"type", "color"},
                        {"label", params.label},
                        {"tooltip", params.tips},
-                       {"minimum", params.min},
-                       {"maximum", params.max},
+                       {"min", params.min},
+                       {"max", params.max},
                        {"centered_handler", true},
                        {"tab", custom_tab},
                        {"default", QJsonArray{def, def, def, def}}};
@@ -179,8 +179,8 @@ void knob_editor::move_knob(QWidget *panel, int index)
     params.type = knob_data.value("type").toString();
     params.tips = knob_data.value("tooltip").toString();
     params.label = knob_data.value("label").toString();
-    params.min = knob_data.value("minimum").toDouble();
-    params.max = knob_data.value("maximum").toDouble();
+    params.min = knob_data.value("min").toDouble();
+    params.max = knob_data.value("max").toDouble();
     params.default_value = knob_data.value("default").toDouble();
     params.bidimensional = knob_data.value("bidimensional").toBool();
 
@@ -545,8 +545,8 @@ void knob_editor::edit_knob(knob *_knob)
     QString type = knob_data.value("type").toString();
     QString tips = knob_data.value("tooltip").toString();
     QString label = knob_data.value("label").toString();
-    float min = knob_data.value("minimum").toDouble();
-    float max = knob_data.value("maximum").toDouble();
+    float min = knob_data.value("min").toDouble();
+    float max = knob_data.value("max").toDouble();
     float default_value = knob_data.value("default").toDouble();
     bool over_line = knob_data.value("over_line").toBool();
     bool bidimensional = knob_data.value("bidimensional").toBool();

@@ -9,8 +9,8 @@
             "type": "integer",
             "label": "Box Size",
             "tooltip": "Box Size",
-            "minimum": 10,
-            "maximum": 100,
+            "min": 10,
+            "max": 100,
             "default": 70
         },
 		{
@@ -22,8 +22,8 @@
             "type": "color",
             "label": "Color A",
             "tooltip": "",
-            "minimum": 0,
-            "maximum": 1,
+            "min": 0,
+            "max": 1,
             "default": [0.8, 0.8, 0.8, 0.8]
         },
         {
@@ -31,8 +31,8 @@
             "type": "color",
             "label": "Color B",
             "tooltip": "",
-            "minimum": 0,
-            "maximum": 1,
+            "min": 0,
+            "max": 1,
             "default": [0.5, 0.5, 0.5, 0.5]
         },
 		{
@@ -44,8 +44,8 @@
 			"type": "integer",
 			"label": "Border Width",
 			"tooltip": "border",
-			"minimum": 0,
-			"maximum": 10,
+			"min": 0,
+			"max": 10,
 			"default": 0
 		},
         {
@@ -53,8 +53,8 @@
             "type": "color",
             "label": "Border Color",
             "tooltip": "border_color",
-            "minimum": 0,
-            "maximum": 1,
+            "min": 0,
+            "max": 1,
 			"default": [1, 1, 1, 1]
         }
     ]
