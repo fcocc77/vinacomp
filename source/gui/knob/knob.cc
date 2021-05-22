@@ -395,10 +395,17 @@ void knob::set_linked(QString node_name, QString param_name)
 
 knob *knob::get_knob(QString node_name, QString param_name) const
 {
-    node *_node = static_cast<vinacomp *>(_vinacomp)
-                      ->get_node_graph()
-                      ->get_node_view()
-                      ->get_node(node_name);
+    vinacomp *vina = static_cast<vinacomp *>(_vinacomp);
+
+    node *_node = vina->get_node_graph()->get_node_view()->get_node(node_name);
+
+    if (!_node)
+        for (node_graph *group : *vina->get_groups_node_graph())
+        {
+            _node = group->get_node_view()->get_node(node_name);
+            if (_node)
+                break;
+        }
 
     trim_panel *panel = nullptr;
     if (_node)
