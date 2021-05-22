@@ -14,6 +14,7 @@
 #include <node_view.h>
 #include <knob_editor.h>
 #include <tools.h>
+#include <setup_knobs.h>
 
 trim_panel::trim_panel(properties *__properties, QString _name, QString _type,
                        QColor _color, QString _icon_name,
@@ -373,6 +374,18 @@ QWidget *trim_panel::setup_tool_bar()
 
 void trim_panel::add_tab(QString tab_name, int index)
 {
+    setup_knobs_props props;
+
+    props._node_gui = _node_gui;
+    props.knob_editor = _knob_editor;
+    props.viewers_gl = viewers_gl;
+    props.knobs = knobs;
+    props.panel = this;
+    props.params = params;
+    props.project = project;
+    props.this_node = this_node;
+    props.vinacomp = _vinacomp;
+
     // si el tab no existe lo crea
     tab *_tab = tabs->get_tab(tab_name);
     QVBoxLayout *tab_layout;
@@ -392,6 +405,8 @@ void trim_panel::add_tab(QString tab_name, int index)
     }
     //
 
+    props.layout = tab_layout;
+
     // custom tabs
     if (!tabs_only_read.contains(tab_name))
     {
@@ -403,14 +418,16 @@ void trim_panel::add_tab(QString tab_name, int index)
                 this_tab_custom_knobs.push_back(knob);
         }
 
-        setup_knobs(this_tab_custom_knobs, tab_layout, viewers_gl);
+        props.knobs_array = this_tab_custom_knobs;
+        setup_knobs(props);
         return;
     }
     //
 
     if (tab_name == "Node")
     {
-        setup_knobs(shared_knobs, tab_layout, viewers_gl);
+        props.knobs_array = shared_knobs;
+        setup_knobs(props);
         setup_shared_params();
 
         return;
@@ -432,7 +449,8 @@ void trim_panel::add_tab(QString tab_name, int index)
             this_tab_knobs.push_back(knob);
     }
 
-    setup_knobs(this_tab_knobs, tab_layout, viewers_gl);
+    props.knobs_array = this_tab_knobs;
+    setup_knobs(props);
 
     if (tab_name == "Controls")
         setup_gui_panels(this_tab_knobs, tab_layout);

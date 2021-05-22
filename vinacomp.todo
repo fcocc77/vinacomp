@@ -98,6 +98,7 @@ gui__knobs:
 	☐ terminar integer knob' @today
 	☐ terminar position knob' @today
 	☐ terminar text knob'
+    ☐ node_gui queda nulo ya que se pasa como parametro antes de setup_gui_panels, corregirlo sin cambiar el orden de los knob gui
     ✔ el munu del knob dejarlo por fuera, en el trim_panel, por que tenerlo en cada 'knob' gasta mucha ram @done(2021-05-19 15:35) @project(gui__knobs)
 nodes:
 	☐ crear nodo de speed, para que cambie todas las velocidades como 'videovina' y asi no lo tenemos que hacer en videovina

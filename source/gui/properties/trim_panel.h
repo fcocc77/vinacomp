@@ -68,8 +68,6 @@ private:
 
     void setup_gui_panels(QJsonArray _knobs, QVBoxLayout *_layout);
     QWidget *setup_tool_bar();
-    void setup_knobs(QJsonArray _knobs, QVBoxLayout *layout,
-                     QList<QWidget *> *viewers);
     void setup_shared_params();
     void update_render();
     QStringList get_tabs_from_knobs(QJsonArray _knobs);
