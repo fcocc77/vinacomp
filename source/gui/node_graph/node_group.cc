@@ -74,10 +74,12 @@ void node_group::open_group(bool add_to_panel)
 {
     vinacomp *_vinacomp = static_cast<vinacomp *>(props.vinacomp);
 
-    // crea el node_graph de grupo solo cuando se necesite abrir el grupo, para
-    // economizar memoria
+    bool first_time = false;
+
     if (!group_node_graph)
     {
+        // crea el node_graph de grupo solo cuando se necesite abrir el grupo,
+        // para economizar memoria
         node_graph *_group_node_graph = new node_graph(
             props.vinacomp, props.project, props._properties, get_name(), this);
 
@@ -89,12 +91,19 @@ void node_group::open_group(bool add_to_panel)
                                                    _group_node_graph);
 
         group_node_graph = _group_node_graph;
+
+        first_time = true;
     }
 
     node_graph *graph = static_cast<node_graph *>(group_node_graph);
 
     if (add_to_panel)
+    {
         _vinacomp->get_panels_layout()->add_node_graph_group(graph, get_name());
+
+        if (first_time)
+            graph->get_node_view()->fit_view_to_nodes();
+    }
 }
 
 void node_group::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)

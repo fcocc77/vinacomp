@@ -56,7 +56,6 @@ private:
     QPointF get_min_node_separation(node *node_a, node *node_b) const;
     void select_nodes_by_area(QPointF selection_end_point);
     void align_selected_nodes();
-    void fit_view_to_nodes();
     void connect_to_viewer();
     node *get_main_viewer() const;
     node *get_selected_node() const;
@@ -82,6 +81,7 @@ public:
     node *create_node(node_struct node_data, bool basic_creation = false,
                       bool from_project = false);
 
+    void fit_view_to_nodes();
     node *get_node_from_position(QPoint position);
     QRectF bbox_nodes(QMap<QString, node *> *_nodes) const;
     bool rename_node(node *_node, QString new_name);
