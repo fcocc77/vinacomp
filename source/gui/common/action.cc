@@ -149,10 +149,18 @@ void action::set_icon(QString _icon_name, QString force_state)
     else
         icon_state = icon_name + "_" + force_state;
 
-    this->setIcon(QIcon("resources/images/" + icon_state + ".png"));
-
-    if (button)
-        qt::set_icon(button, icon_state, icon_size);
+    if (icon_name.contains("/"))
+    {
+        this->setIcon(QIcon(icon_name));
+        if (button)
+            qt::set_icon(button, icon_name, icon_size);
+    }
+    else
+    {
+        this->setIcon(QIcon("resources/images/" + icon_state + ".png"));
+        if (button)
+            qt::set_icon(button, icon_state, icon_size);
+    }
 }
 
 void action::set_checkable(bool _checkable, QString checked_icon)
