@@ -12,7 +12,7 @@
 class general_settings : public settings
 {
 private:
-    QJsonObject data;
+    QJsonObject *data;
 
     void setup_general();
     void setup_auto_save();

@@ -9,6 +9,7 @@
 
 general_settings::general_settings(QWidget *_vinacomp)
     : settings(true, _vinacomp)
+    , data(new QJsonObject)
 {
     setup_general();
     setup_auto_save();
@@ -18,7 +19,10 @@ general_settings::general_settings(QWidget *_vinacomp)
     set_content("AutoSave");
 }
 
-general_settings::~general_settings() {}
+general_settings::~general_settings()
+{
+    delete data;
+}
 
 void general_settings::setup_general()
 {
@@ -32,12 +36,12 @@ void general_settings::setup_auto_save()
     setup_knobs_props props;
 
     QJsonObject enable_knob = {{"type", "check_box"},
-                               {"name", "enable_autosave"},
+                               {"name", "auto_save_enable"},
                                {"label", "Enable AutoSave"},
                                {"default", true}};
 
     QJsonObject delay_knob = {{"type", "integer"},
-                              {"name", "delay_autosave"},
+                              {"name", "auto_save_delay"},
                               {"label", "Delay: Seconds"},
                               {"minimum", 1},
                               {"maximum", 30},
@@ -48,16 +52,9 @@ void general_settings::setup_auto_save()
 
     props.layout = layout;
     props.knobs = knobs;
+    props.params = data;
 
     setup_knobs(props);
-
-    connect(static_cast<knob_check_box *>(get_knob("enable_autosave")),
-            &knob_check_box::changed, this,
-            [this](bool checked) { data.insert("auto_save_enable", checked); });
-
-    connect(static_cast<knob_integer *>(get_knob("delay_autosave")),
-            &knob_integer::changed, this,
-            [this](float value) { data.insert("auto_save_delay", value); });
 }
 
 void general_settings::setup_plugins()
@@ -72,7 +69,7 @@ void general_settings::setup_appearance()
 
 void general_settings::save_settings()
 {
-    jwrite(VINACOMP_CONF_PATH + "/settings.json", data);
+    jwrite(VINACOMP_CONF_PATH + "/settings.json", *data);
 }
 
 void general_settings::showEvent(QShowEvent *event)
@@ -84,11 +81,8 @@ QWidget *get_knob(QString name);
 
 void general_settings::restore_settings()
 {
-    data = jread(VINACOMP_CONF_PATH + "/settings.json");
+    *data = jread(VINACOMP_CONF_PATH + "/settings.json");
 
-    static_cast<knob_check_box *>(get_knob("enable_autosave"))
-        ->set_check(data.value("auto_save_enable").toBool());
-
-    static_cast<knob_integer *>(get_knob("delay_autosave"))
-        ->set_value(data.value("auto_save_delay").toDouble());
+    for (knob *_knob : *knobs)
+        _knob->restore_param();
 }

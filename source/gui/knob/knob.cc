@@ -264,7 +264,7 @@ void knob::restore_param()
 
 void knob::update_value(QJsonValue value)
 {
-    if (!params || !_vinacomp)
+    if (!params)
         return;
 
     if (!animated)
@@ -289,7 +289,8 @@ void knob::update_value(QJsonValue value)
         // project->frame));
     }
 
-    static_cast<vinacomp *>(_vinacomp)->update_render_all_viewer();
+    if (_vinacomp)
+        static_cast<vinacomp *>(_vinacomp)->update_render_all_viewer();
 }
 
 void knob::enable_animation()
