@@ -9,6 +9,7 @@ color_picker::color_picker()
     rainbow->setMaximumHeight(50);
 
     connect(rainbow, &rainbow_box::changed, _color_box, &color_box::set_color);
+    connect(_color_box, &color_box::changed, this, &color_picker::changed);
 
     layout->addWidget(_color_box);
     layout->addWidget(rainbow);
@@ -41,6 +42,47 @@ void color_box::paintEvent(QPaintEvent *event)
     painter.fillRect(0, 0, width(), height(), brush_x);
     painter.setCompositionMode(QPainter::CompositionMode_Multiply);
     painter.fillRect(0, 0, width(), height(), brush_y);
+
+    painter.setCompositionMode(QPainter::CompositionMode_Source);
+    float radius = 30;
+    painter.setPen(Qt::white);
+    painter.drawEllipse(current_position, radius, radius);
+}
+
+void color_box::update_picker()
+{
+    QPointF pos = current_position;
+
+    if (pos.x() < 0)
+        pos.setX(0);
+
+    if (pos.x() >= width() - 1)
+        pos.setX(width() - 1);
+
+    if (pos.y() < 0)
+        pos.setY(0);
+
+    if (pos.y() >= height() - 1)
+        pos.setY(height() - 1);
+
+    QPixmap qPix = this->grab();
+    QImage image(qPix.toImage());
+    QColor color = image.pixel(pos.x(), pos.y());
+
+    changed(color);
+    update();
+}
+
+void color_box::mousePressEvent(QMouseEvent *event)
+{
+    current_position = event->pos();
+    update_picker();
+}
+
+void color_box::mouseMoveEvent(QMouseEvent *event)
+{
+    current_position = event->pos();
+    update_picker();
 }
 
 void rainbow_box::paintEvent(QPaintEvent *event)
