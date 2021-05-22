@@ -19,7 +19,6 @@
 #include <nodes_load.h>
 #include <properties.h>
 #include <trim_panel.h>
-#include <viewer.h>
 
 // Engine
 #include <project_struct.h>
@@ -46,10 +45,7 @@ class node : public QGraphicsPathItem
 {
 private:
     trim_panel *_trim_panel;
-    viewer *_viewer;
     QWidget *_node_view;
-
-    node_props props;
 
     QMap<QString, node *> *nodes_connected_to_the_inputs;
     QMap<QString, node *> *nodes_connected_to_the_output;
@@ -80,6 +76,7 @@ private:
 protected:
     nodes_load *nodes_loaded;
     QPointF click_position;
+    node_props props;
 
     int minimum_width;
     int minimum_height;
@@ -145,7 +142,6 @@ public:
     inline bool output_is_connected() const;
     QList<node_link*> get_output_links() const;
     inline QString get_tips() const;
-    inline viewer *get_viewer() const;
     inline node *get_linked_node() const;
     inline QString get_linked_node_name() const;
     inline expression_link *get_expression_link() const;
@@ -161,11 +157,6 @@ inline QString node::get_group_name() const
 inline expression_link *node::get_expression_link() const
 {
     return _expression_link;
-}
-
-inline viewer *node::get_viewer() const
-{
-    return _viewer;
 }
 
 inline QString node::get_linked_node_name() const

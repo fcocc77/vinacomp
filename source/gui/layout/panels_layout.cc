@@ -88,14 +88,13 @@ void panels_layout::add_viewer(viewer *_viewer)
             return;
         }
     }
-    //
 
     panel *empty_panel = get_some_empty_panel();
     panel *viewer_panel = get_panel("Viewer");
 
     // panel a insertar el nuevo 'viewer'
-    // primero busca donde hay algun panel con algun 'viewer' si no, busca un panel vacio,
-    // si no lo inserte en el primer panel de la lista
+    // primero busca donde hay algun panel con algun 'viewer' si no, busca un
+    // panel vacio, si no lo inserte en el primer panel de la lista
     if (viewer_panel)
         viewer_panel->add_viewer(_viewer);
     else if (empty_panel)

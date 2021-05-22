@@ -1,13 +1,14 @@
-#include <maker.h>
-#include <panels_layout.h>
-#include <vinacomp.h>
-#include <os.h>
-#include <util.h>
-#include <qt.h>
 #include "../node_graph/node.h"
-#include <trim_panel.h>
-#include <viewer.h>
+#include <maker.h>
+#include <node_viewer.h>
+#include <os.h>
+#include <panels_layout.h>
 #include <project_struct.h>
+#include <qt.h>
+#include <trim_panel.h>
+#include <util.h>
+#include <viewer.h>
+#include <vinacomp.h>
 
 maker::maker(QWidget *__vinacomp, properties *__properties,
              nodes_load *_nodes_loaded, node_view *__node_view,
@@ -29,7 +30,7 @@ maker::~maker() {}
 
 QString maker::get_available_name(QString name) const
 {
-    QString available_name = name;
+    QString available_name = name + "1";
 
     int number = 0;
     while (true)
@@ -71,10 +72,13 @@ node *maker::create_fx(QString id, bool basic_creation)
     node *_node = _node_view->create_node(node_data, basic_creation);
     if (id != "backdrop")
         _node->make_panel();
-    //
+
+    node_viewer *_node_viewer = dynamic_cast<node_viewer *>(_node);
+    if (_node_viewer)
+        _node_viewer->make_viewer();
     //
 
-    return _node;;
+    return _node;
 }
 
 QColor maker::default_color(QString effect_group)

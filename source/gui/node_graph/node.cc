@@ -10,9 +10,7 @@ node::node(node_props _props, QMap<QString, node *> *_selected_nodes,
            QWidget *_node_graph)
 
     : _trim_panel(nullptr)
-    , _viewer(nullptr)
     , _node_view(nullptr)
-    , props(_props)
     , nodes_connected_to_the_inputs(new QMap<QString, node *>)
     , nodes_connected_to_the_output(new QMap<QString, node *>)
     , selected_nodes(_selected_nodes)
@@ -22,6 +20,7 @@ node::node(node_props _props, QMap<QString, node *> *_selected_nodes,
     , linked_node(nullptr)
     , center_position(new QPointF)
     , nodes_loaded(_props.nodes_loaded)
+    , props(_props)
 
 {
     if (_node_graph)
@@ -91,20 +90,10 @@ node::~node()
     delete nodes_connected_to_the_output;
     delete center_position;
 
-    vinacomp *__vinacomp = static_cast<vinacomp *>(props.vinacomp);
     if (_trim_panel)
         delete _trim_panel;
 
-    if (_viewer)
-    {
-        __vinacomp->get_viewers()->remove(_viewer->get_name());
-        __vinacomp->get_panels_layout()->delete_viewer(_viewer);
-        delete _viewer;
-    }
-
     // falta borrar el panel de properties si es que esta
-    // falta borrar del viewer de la lista de viewer de vinacomp
-    // borrar viewer del panels_layout y de la lista del panel
 }
 
 void node::make_panel(bool float_panel)
@@ -125,23 +114,6 @@ void node::make_panel(bool float_panel)
         else
             props._properties->add_trim_panel(_trim_panel);
     }
-    //
-    //
-
-    // Viewer
-    vinacomp *__vinacomp = static_cast<vinacomp *>(props.vinacomp);
-    if (type == "viewer")
-    {
-        if (!_viewer)
-        {
-            _viewer =
-                new viewer(name, props.project, __vinacomp->get_renderer(), props.vinacomp);
-
-            __vinacomp->get_viewers()->insert(name, _viewer);
-        }
-        __vinacomp->get_panels_layout()->add_viewer(_viewer);
-    }
-    //
 }
 
 void node::refresh()

@@ -1,5 +1,6 @@
 #include "node_backdrop.h"
 #include "node_dot.h"
+#include <node_viewer.h>
 #include <knob_check_box.h>
 #include <node_view.h>
 #include <vinacomp.h>
@@ -51,6 +52,8 @@ node *node_view::create_node(node_struct node_data, bool basic_creation,
     }
     else if (type == "group")
         _node = new node_group(props, selected_nodes, _node_graph);
+    else if (type == "viewer")
+        _node = new node_viewer(props, selected_nodes, _node_graph);
     else
         _node = new node_rect(props, selected_nodes, _node_graph);
     //

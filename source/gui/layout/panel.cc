@@ -1,6 +1,7 @@
 #include <panel.h>
 #include <panels_layout.h>
 #include <vinacomp.h>
+#include <node_viewer.h>
 
 panel::panel(QWidget *__panels_layout, QWidget *__vinacomp, QList<QSplitter *> *_splitters,
              node_graph *__node_graph, QLabel *_empty_viewer, script_editor *__script_editor,
@@ -92,7 +93,7 @@ QPushButton *panel::setup_cornel_buttons()
     QAction *new_viewer_action = new QAction("New Viewer");
     connect(new_viewer_action, &QAction::triggered, this, [this]() {
         node *viewer_node = _node_graph->get_maker()->create_fx("viewer");
-        add_viewer(viewer_node->get_viewer());
+        add_viewer(static_cast<node_viewer *>(viewer_node)->get_viewer());
     });
     new_viewer_action->setIcon(QIcon("resources/images/viewer_normal.png"));
     //
