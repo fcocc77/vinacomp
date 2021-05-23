@@ -105,8 +105,6 @@ bool vinacomp::close_project()
     if (!project_opened)
         return true;
 
-    project_opened = false;
-
     QMessageBox msgBox(this);
     msgBox.setText("There is a project open");
     msgBox.setInformativeText(
@@ -120,11 +118,13 @@ bool vinacomp::close_project()
     {
         to_save_project();
         _node_graph->clear_tree();
+        project_opened = false;
         return true;
     }
     else if (ret == QMessageBox::Discard)
     {
         _node_graph->clear_tree();
+        project_opened = false;
         return true;
     }
     else
