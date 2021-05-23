@@ -10,8 +10,12 @@ class roto_gui : public node_gui
 {
 private:
     QTreeWidget *tree;
+    QVBoxLayout *layout;
+
+    QWidget *buttons;
 
     button *add_button, *remove_button;
+    void setup_knobs() override;
 
 public:
     roto_gui(QVBoxLayout *layout);

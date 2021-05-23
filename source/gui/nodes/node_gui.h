@@ -21,10 +21,10 @@ public:
     node_gui();
     ~node_gui();
 
-    void setup(QWidget *_trim_panel, QWidget *_vinacomp, QJsonObject *params,
+    void setup_env(QWidget *_trim_panel, QWidget *_vinacomp, QJsonObject *params,
                QJsonObject knob_data, QString name);
 
-    virtual void restore_param();
+    virtual void setup_knobs();
     virtual void changed(knob *_knob);
 
 protected:

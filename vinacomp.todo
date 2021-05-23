@@ -50,6 +50,7 @@ gui__trim_panel:
     ✔ knob_editor: conservar el valor del params en el proyecto al mover o editar un knob, ya que al borrar el knob se elimina el params tambien @done(2021-05-12 12:32) @project(gui__trim_panel)
     ✔ knob_editor: guradar custom knobs en el proyecto @done(2021-05-13 11:39) @project(gui__trim_panel)
     ✔ knob_editor: considerar tambien los knobs que vienen en el nodo, para que no queden con algun nombre que ya exista @done(2021-05-07 18:30) @project(gui__trim_panel)
+    ☐ los knobs de texto y file quedan sin estilo cuando el panel es flotante
 gui__node_graph:
 	☐ crear grilla que switchee con el boton de 'grid'
 	✔ crear backdrop @done(2021-04-26 12:32) @project(gui__node_graph)

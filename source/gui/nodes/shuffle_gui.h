@@ -122,7 +122,8 @@ private:
     in_connector *get_in_connector(QPoint position) const;
     out_connector *get_out_connector(QPoint position) const;
     void to_connect(in_connector *in_conn, out_connector *out_conn);
-    void restore_param() override;
+    void restore_param();
+    void setup_knobs() override;
 
 public:
     shuffle_gui(QVBoxLayout *controls_layout);

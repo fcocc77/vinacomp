@@ -13,7 +13,7 @@ node_gui::node_gui()
 
 node_gui::~node_gui() {}
 
-void node_gui::setup(QWidget *__trim_panel, QWidget *_vinacomp,
+void node_gui::setup_env(QWidget *__trim_panel, QWidget *_vinacomp,
                      QJsonObject *_params, QJsonObject _knob_data,
                      QString _name)
 {
@@ -42,7 +42,7 @@ QJsonValue node_gui::get_param_value() const
         return get_default();
 }
 
-void node_gui::restore_param() {}
+void node_gui::setup_knobs() {}
 
 void node_gui::changed(knob *_knob) {}
 

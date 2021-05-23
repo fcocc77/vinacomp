@@ -66,7 +66,7 @@ private:
 
     QWidget *dividing_line_v, *dividing_line_h;
 
-    void setup_gui_panels(QJsonArray _knobs, QVBoxLayout *_layout);
+    node_gui *setup_gui_panels(QJsonArray _knobs, QVBoxLayout *_layout);
     QWidget *setup_tool_bar();
     void setup_shared_params();
     void update_render();

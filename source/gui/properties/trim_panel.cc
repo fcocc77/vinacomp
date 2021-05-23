@@ -33,7 +33,7 @@ trim_panel::trim_panel(properties *__properties, QString _name, QString _type,
 
     , is_maximize(true)
     , _properties(__properties)
-    , _node_gui(nullptr)
+    , _node_gui(0)
     , name(_name)
     , type(_type)
     , icon_name(_icon_name)
@@ -272,12 +272,14 @@ void trim_panel::setup_shared_params()
         get_knob("disable_node")->set_visible(false);
 }
 
-void trim_panel::setup_gui_panels(QJsonArray _knobs, QVBoxLayout *_layout)
+node_gui *trim_panel::setup_gui_panels(QJsonArray _knobs, QVBoxLayout *_layout)
 {
     // todos estos nodo gui son solo si el nodo efecto tiene algun boton
     // u otra interface adicional a las que se generan en 'setup_knobs'
     // por eso solo son algunos nodos y no todos
     QJsonObject knob_data;
+
+    node_gui *_node_gui = nullptr;
 
     if (type == "frame_range")
         _node_gui = new frame_range_gui();
@@ -296,10 +298,9 @@ void trim_panel::setup_gui_panels(QJsonArray _knobs, QVBoxLayout *_layout)
     }
 
     if (_node_gui)
-    {
-        _node_gui->setup(this, _vinacomp, params, knob_data, name);
-        _node_gui->restore_param();
-    }
+        _node_gui->setup_env(this, _vinacomp, params, knob_data, name);
+
+    return _node_gui;
 }
 
 QWidget *trim_panel::setup_tool_bar()
@@ -381,7 +382,6 @@ void trim_panel::add_tab(QString tab_name, int index)
 {
     setup_knobs_props props;
 
-    props._node_gui = _node_gui;
     props.knob_editor = _knob_editor;
     props.viewers_gl = viewers_gl;
     props.knobs = knobs;
@@ -454,11 +454,14 @@ void trim_panel::add_tab(QString tab_name, int index)
             this_tab_knobs.push_back(knob);
     }
 
-    props.knobs_array = this_tab_knobs;
-    setup_knobs(props);
+    _node_gui = setup_gui_panels(this_tab_knobs, tab_layout);
 
-    if (tab_name == "Controls")
-        setup_gui_panels(this_tab_knobs, tab_layout);
+    props.knobs_array = this_tab_knobs;
+    props._node_gui = _node_gui;
+
+    setup_knobs(props);
+    if (_node_gui)
+        _node_gui->setup_knobs();
 }
 
 void trim_panel::delete_tab(QString tab_name)

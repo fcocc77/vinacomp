@@ -51,6 +51,11 @@ shuffle_gui::shuffle_gui(QVBoxLayout *controls_layout)
 
 shuffle_gui::~shuffle_gui() {}
 
+void shuffle_gui::setup_knobs()
+{
+    restore_param();
+}
+
 void shuffle_gui::restore_param()
 {
     QJsonValue value = get_param_value();
