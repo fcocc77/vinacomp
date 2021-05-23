@@ -5,8 +5,6 @@
 #include <global.h>
 #include <knob_check_box.h>
 #include <knob_integer.h>
-#include <os.h>
-#include <path_utils.h>
 #include <setup_knobs.h>
 #include <util.h>
 
@@ -60,72 +58,6 @@ void general_settings::setup_auto_save()
     setup_knobs(props);
 }
 
-void general_settings::setup_plugins()
-{
-    QVBoxLayout *layout = add_item("Plugins");
-
-    plugin_tree = new QTreeWidget;
-    plugin_tree->setObjectName("plugin_tree");
-    plugin_tree->setAlternatingRowColors(true);
-    QStringList columns{"Plugin Name", "Label", "Group"};
-    plugin_tree->setHeaderLabels(columns);
-    plugin_tree->setColumnWidth(0, 100);
-    plugin_tree->setColumnWidth(1, 100);
-    plugin_tree->setColumnWidth(2, 100);
-
-    QWidget *buttons = new QWidget;
-    buttons->setObjectName("plugin_buttons");
-    QHBoxLayout *buttons_layout = new QHBoxLayout(buttons);
-    buttons_layout->setMargin(0);
-
-    button *remove_button = new button();
-    button *edit_button = new button();
-
-    remove_button->set_icon("delete");
-    edit_button->set_icon("edit");
-
-    buttons_layout->addWidget(edit_button);
-    buttons_layout->addWidget(remove_button);
-    buttons_layout->addStretch();
-
-    layout->addWidget(plugin_tree);
-    layout->addWidget(buttons);
-
-    load_plugins();
-}
-
-void general_settings::load_plugins()
-{
-    QString base_path = "plugins/py_plugins/";
-    for (QString plugin_path : os::listdir(base_path))
-    {
-        if (path_util::get_ext(plugin_path) != "json")
-            continue;
-
-        QJsonObject plugin = jread(plugin_path);
-
-        QString name = plugin.value("id").toString();
-        QString icon = plugin.value("icon").toString();
-        QString label = plugin.value("label").toString();
-        QString group = plugin.value("group").toString();
-
-        QString icon_group = base_path + "/" + group + ".png";
-
-        QTreeWidgetItem *item = new QTreeWidgetItem;
-
-        item->setText(0, name);
-        item->setText(1, label);
-        item->setText(2, group);
-
-        item->setIcon(0, QIcon(icon));
-
-        if (os::isfile(icon_group))
-            item->setIcon(2, QIcon(icon_group));
-
-        plugin_tree->addTopLevelItem(item);
-    }
-}
-
 void general_settings::setup_appearance()
 {
     QVBoxLayout *layout = add_item("Appearance");
@@ -140,8 +72,6 @@ void general_settings::showEvent(QShowEvent *event)
 {
     restore_settings();
 }
-
-QWidget *get_knob(QString name);
 
 void general_settings::restore_settings()
 {

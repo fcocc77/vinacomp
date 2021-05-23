@@ -13,8 +13,6 @@
 class settings : public QWidget
 {
 private:
-    QWidget *_vinacomp;
-
     struct item_struct
     {
         QString name;
@@ -28,6 +26,7 @@ private:
     QTreeWidget *tree;
 
 protected:
+    QWidget *_vinacomp;
     QMap<QString, knob *> *knobs;
 
     virtual void save_settings();

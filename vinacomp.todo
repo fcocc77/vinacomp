@@ -45,6 +45,7 @@ gui__trim_panel:
     ☐ knob_editor: en el botton de arrastre del knob, al arrastra y soltarlo en el mismo boton, la linea de divicion de queda pegada
     ☐ knob_editor: el knob de color al editar el default queda en 0 en la caja de edicion
     ☐ knob_editor: con la tecla tab que se valla cambiando el foco al siguiente QLineEdit
+    ☐ knob_editor: la linea de divicion queda pegada cuando el panel es flotante
     ✔ knob_editor: al arrastrar un knob de un nodo a otro, el index no se mantiene @done(2021-05-12 11:44) @project(gui__trim_panel)
     ✔ knob_editor: conservar el valor del params en el proyecto al mover o editar un knob, ya que al borrar el knob se elimina el params tambien @done(2021-05-12 12:32) @project(gui__trim_panel)
     ✔ knob_editor: guradar custom knobs en el proyecto @done(2021-05-13 11:39) @project(gui__trim_panel)
@@ -106,7 +107,7 @@ nodes:
 engine:
     ☐ renderer: si el frame demora mas de 1 segundo en renderizar, comienza a renderizar por linea de abajo hacia arriba
 	☐ project_struct: Una vez tengamos las entrada de los nodos ok, cambiar el tipo de los 'inputs' de QJsonObject a QJsonArray
-	☐ grade: hacer que todos los nodos de color solo iteren lo pixel una sola vez, para no gastar recursos inecesasios
+	☐ grade: hacer que todos los nodos de color solo iteren los pixel una sola vez, para no gastar recursos inecesasios
 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
 Archive:
     ✔ cambiar la barra por la propia 'tools' @done(2021-04-06 22:15) @project(gui__script_editor)

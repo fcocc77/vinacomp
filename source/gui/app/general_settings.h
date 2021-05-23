@@ -14,17 +14,21 @@ class general_settings : public settings
 {
 private:
     QJsonObject *data;
-    QTreeWidget *plugin_tree;
 
     void setup_general();
     void setup_auto_save();
-    void setup_plugins();
     void setup_appearance();
 
     void save_settings() override;
     void restore_settings();
 
+    // Plugins
+    QList<QTreeWidgetItem *> plugin_items;
+    QTreeWidget *plugin_tree;
+    void setup_plugins();
     void load_plugins();
+    void update_plugin_tree();
+    void delete_plugin();
 
     void showEvent(QShowEvent *event) override;
 

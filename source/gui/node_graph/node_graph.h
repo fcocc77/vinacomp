@@ -58,7 +58,13 @@ public:
     inline void set_group_name(QString group_name);
     inline node_group *get_node_group() const;
     inline nodes_bar *get_nodes_bar() const;
+    inline nodes_load *get_nodes_loaded() const;
 };
+
+inline nodes_load *node_graph::get_nodes_loaded() const
+{
+    return nodes_loaded;
+}
 
 inline nodes_bar *node_graph::get_nodes_bar() const
 {
