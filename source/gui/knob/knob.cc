@@ -209,6 +209,7 @@ void knob::set_animatable(bool _animatable)
 
     animation_button = new button();
     animation_button->setObjectName("small_button");
+    animation_button->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
     animation_button->set_icon("key", icon_size);
     knob_layout->addWidget(animation_button);
 

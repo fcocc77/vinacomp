@@ -17,8 +17,14 @@ knob_color::knob_color(knob_props props, float min, float max, float r, float g,
 {
     this->setObjectName("knob_color");
 
-    layout = new QHBoxLayout(this);
-    this->set_knob_layout(layout);
+    main_layout = new QHBoxLayout(this);
+
+    top_widget = new QWidget(this);
+    top_layout = new QHBoxLayout(top_widget);
+    this->set_knob_layout(top_layout);
+
+    content_widget = new QWidget(this);
+    content_layout = new QVBoxLayout(content_widget);
 
     separate_colors_box = new QWidget(this);
     separate_colors_slider = new QWidget(this);
@@ -52,9 +58,13 @@ knob_color::knob_color(knob_props props, float min, float max, float r, float g,
     blue_slider = new slider(min, max, default_blue, true, centered_handler);
     alpha_slider = new slider(min, max, default_alpha, true, centered_handler);
 
-    picker_button = new QPushButton(this);
+    color_sample_button = new QPushButton(this);
     palette_button = new QPushButton(this);
     mono_color_button = new QPushButton(this);
+    hue_button = new QPushButton(this);
+    rgb_button = new QPushButton(this);
+    hsl_button = new QPushButton(this);
+    picker_button = new QPushButton(this);
 
     connections();
     setup_ui();
@@ -90,16 +100,20 @@ knob_color::~knob_color()
     delete blue_widget;
     delete alpha_widget;
 
-    delete picker_button;
+    delete color_sample_button;
     delete palette_button;
     delete mono_color_button;
+    delete hue_button;
+    delete rgb_button;
+    delete hsl_button;
+    delete picker_button;
 
     delete separate_colors_box_layout;
     delete separate_colors_slider_layout;
     delete separate_colors_box;
     delete separate_colors_slider;
 
-    delete layout;
+    delete main_layout;
 }
 
 void knob_color::set_init_color(float red, float green, float blue,
@@ -204,6 +218,7 @@ void knob_color::set_visible_sliders_colors(bool visible)
     set_visible_mono_color(false);
     //
 
+
     qt::set_property(palette_button, "active", visible);
     qt::set_property(mono_color_button, "disable", visible);
     update();
@@ -276,8 +291,8 @@ void knob_color::set_color(float _red, float _green, float _blue, float _alpha,
     QString __green = QString::number(_green * 255);
     QString __blue = QString::number(_blue * 255);
 
-    picker_button->setStyleSheet("background: rgb(" + __red + "," + __green + "," + __blue + ");");
-    picker_button->update();
+    color_sample_button->setStyleSheet("background: rgb(" + __red + "," + __green + "," + __blue + ");");
+    color_sample_button->update();
 }
 
 void knob_color::disable_alpha()

@@ -17,7 +17,11 @@ class knob_color : public knob
 {
     Q_OBJECT
 private:
-    QHBoxLayout *layout;
+    QHBoxLayout *main_layout;
+    QVBoxLayout *content_layout;
+    QHBoxLayout *top_layout;
+
+    QWidget *content_widget, *top_widget;
 
     QWidget *separate_colors_box;
     QWidget *separate_colors_slider;
@@ -27,9 +31,13 @@ private:
     QLineEdit *mono_edit;
     slider *mono_slider;
 
-    QPushButton *picker_button;
+    QPushButton *color_sample_button;
     QPushButton *palette_button;
     QPushButton *mono_color_button;
+    QPushButton *hue_button;
+    QPushButton *rgb_button;
+    QPushButton *hsl_button;
+    QPushButton *picker_button;
 
     QWidget *red_widget;
     QWidget *green_widget;
