@@ -204,7 +204,7 @@ void knob::set_animatable(bool _animatable)
     if (!_animatable)
         return;
 
-    if (animation_button || !knob_layout)
+    if (animation_button || !knob_layout || !panel)
         return;
 
     animation_button = new button();
