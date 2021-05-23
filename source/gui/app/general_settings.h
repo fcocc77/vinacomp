@@ -27,7 +27,6 @@ private:
     QTreeWidget *plugin_tree;
     void setup_plugins();
     void load_plugins();
-    void update_plugin_tree();
     void delete_plugin();
 
     void showEvent(QShowEvent *event) override;
@@ -35,6 +34,9 @@ private:
 public:
     general_settings(QWidget *_vinacomp);
     ~general_settings();
+
+    // Plugins
+    void update_plugin_tree();
 };
 
 #endif // GENERAL_SETTINGS_H

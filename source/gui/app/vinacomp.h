@@ -73,7 +73,6 @@ private:
     bool close_project();
     void new_project();
     void open_project_dialog();
-    void setup_ui();
     void setup_style();
     void main_menu();
     void tool_bar();
@@ -113,7 +112,13 @@ public:
     inline QMap<QString, node_graph*> *get_groups_node_graph() const;
     inline node_graph *get_node_graph() const;
     inline file_dialog *get_file_dialog() const;
+    inline general_settings *get_general_settings() const;
 };
+
+inline general_settings *vinacomp::get_general_settings() const
+{
+    return _settings;
+}
 
 inline file_dialog *vinacomp::get_file_dialog() const
 {

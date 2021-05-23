@@ -1,3 +1,4 @@
+#include <general_settings.h>
 #include <group_gui.h>
 #include <knob_choice.h>
 #include <knob_file.h>
@@ -5,6 +6,7 @@
 #include <os.h>
 #include <trim_panel.h>
 #include <util.h>
+#include <vinacomp.h>
 
 group_gui::group_gui(nodes_load *_nodes_loaded)
     : nodes_loaded(_nodes_loaded)
@@ -36,7 +38,7 @@ void group_gui::export_plugin()
 
     QString base_path = "plugins/py_plugins/";
 
-        // copiado de icono
+    // copiado de icono
     QString plugin_icon = base_path + name + ".png";
     os::copy(icon_path, plugin_icon);
 
@@ -56,4 +58,8 @@ void group_gui::export_plugin()
     fwrite(base_path + name + ".py", {});
 
     nodes_loaded->update_py_plugins();
+
+    static_cast<vinacomp *>(_vinacomp)
+        ->get_general_settings()
+        ->update_plugin_tree();
 }

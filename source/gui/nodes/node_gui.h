@@ -15,7 +15,18 @@ private:
     QWidget *_trim_panel;
     QJsonObject knob_data;
     QJsonObject *params;
+
+protected:
     QWidget *_vinacomp;
+    renderer *_renderer;
+    project_struct *project;
+    project_settings *_project_settings;
+    QString name;
+
+    knob *get_knob(QString name) const;
+    void update_value(QJsonValue value);
+    QJsonValue get_param_value() const;
+    inline QJsonValue get_default() const;
 
 public:
     node_gui();
@@ -26,17 +37,6 @@ public:
 
     virtual void setup_knobs();
     virtual void changed(knob *_knob);
-
-protected:
-    renderer *_renderer;
-    project_struct *project;
-    project_settings *_project_settings;
-    QString name;
-
-    knob *get_knob(QString name) const;
-    void update_value(QJsonValue value);
-    QJsonValue get_param_value() const;
-    inline QJsonValue get_default() const;
 };
 
 inline QJsonValue node_gui::get_default() const

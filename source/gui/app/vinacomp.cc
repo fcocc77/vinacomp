@@ -1,5 +1,5 @@
-#include <vinacomp.h>
 #include <util.h>
+#include <vinacomp.h>
 
 vinacomp::vinacomp()
     : fullscreen(false)
@@ -7,17 +7,12 @@ vinacomp::vinacomp()
     , settings_visible(false)
     , project_opened(false)
     , current_project("")
+    , _settings(0)
 {
     this->setObjectName("vinacomp");
     project_old = new QJsonObject();
     project = new project_struct();
-    setup_ui();
-}
 
-vinacomp::~vinacomp() {}
-
-void vinacomp::setup_ui()
-{
     // Viewer Vacio
     QLabel *empty_viewer = new QLabel("( Viewer1 )");
     empty_viewer->setAlignment(Qt::AlignCenter);
@@ -77,6 +72,8 @@ void vinacomp::setup_ui()
 
     _renderer = new renderer(project);
 }
+
+vinacomp::~vinacomp() {}
 
 void vinacomp::setup_style()
 {
@@ -223,4 +220,3 @@ void vinacomp::update_render_all_viewer(bool clear_init_image) const
     for (viewer *_viewer : *viewers)
         _viewer->update_render(clear_init_image);
 }
-

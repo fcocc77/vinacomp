@@ -13,10 +13,12 @@ node_gui::node_gui()
 
 node_gui::~node_gui() {}
 
-void node_gui::setup_env(QWidget *__trim_panel, QWidget *_vinacomp,
-                     QJsonObject *_params, QJsonObject _knob_data,
-                     QString _name)
+void node_gui::setup_env(QWidget *__trim_panel, QWidget *___vinacomp,
+                         QJsonObject *_params, QJsonObject _knob_data,
+                         QString _name)
 {
+    _vinacomp = ___vinacomp;
+
     _trim_panel = __trim_panel;
     name = _name;
     params = _params;
