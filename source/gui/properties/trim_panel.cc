@@ -86,8 +86,6 @@ trim_panel::trim_panel(properties *__properties, QString _name, QString _type,
 
     if (type == "group")
         add_tab("Custom");
-    else
-        add_tab("Controls");
 
     for (QString tab_name : finded_tabs)
         add_tab(tab_name);
@@ -150,7 +148,11 @@ QStringList trim_panel::get_tabs_from_knobs(QJsonArray _knobs)
     for (QJsonValue value : _knobs)
     {
         QString tab_name = value.toObject().value("tab").toString();
-        if (!tab_name.isEmpty() && !finded_tabs.contains(tab_name))
+
+        if (tab_name.isEmpty())
+            tab_name = "Controls";
+
+        if (!finded_tabs.contains(tab_name))
             finded_tabs.push_back(tab_name);
     }
 

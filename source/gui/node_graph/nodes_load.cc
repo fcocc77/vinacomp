@@ -45,6 +45,13 @@ void nodes_load::load_py_plugins()
 
         if (ext == "png")
             icons.push_back(name);
+    }
+
+    for (QString file : os::listdir(py_plugins_dir))
+    {
+        QString basename = os::basename(file);
+        QString ext = basename.split(".").last();
+        QString name = basename.split(".").first();
 
         if (ext != "json")
             continue;
@@ -53,20 +60,14 @@ void nodes_load::load_py_plugins()
         QString effect_id = effect.value("id").toString();
         QString group = effect.value("group").toString();
 
-        py_plugins_groups.insert(group, {group, ""});
+        QString group_icon = "default_icon";
+        if (icons.contains(group))
+            group_icon = py_plugins_dir + "/" + name + ".png";
+
+        py_plugins_groups.insert(group, {group, group_icon});
 
         effects.insert(effect_id, effect);
         py_plugins.push_back(effect_id);
-    }
-    //
-
-    // agrea el icono a los grupos de py_plugins si es que existe algun png con
-    // el mismo nombre
-    for (QString icon_name : icons)
-    {
-        if (py_plugins_groups.contains(icon_name))
-            py_plugins_groups[icon_name].icon =
-                py_plugins_dir + "/" + icon_name + ".png";
     }
 }
 

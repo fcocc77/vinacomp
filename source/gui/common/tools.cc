@@ -13,12 +13,14 @@ tools::tools(int _icon_size, bool _vertical)
     {
         this->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
         layout = new QBoxLayout(QBoxLayout::TopToBottom, this);
+        layout->setAlignment(Qt::AlignCenter | Qt::AlignTop);
         layout->setContentsMargins(5, 15, 5, 15);
     }
     else
     {
         this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
         layout = new QBoxLayout(QBoxLayout::LeftToRight, this);
+        layout->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
         layout->setContentsMargins(15, 5, 15, 5);
     }
     layout->setSpacing(2);

@@ -14,6 +14,7 @@ nodes_bar::nodes_bar(QWidget *__node_graph, maker *__maker, nodes_load *_nodes)
     QWidget *nodes_widget = new QWidget;
     nodes_widget->setObjectName("nodes_widget");
     nodes_layout = new QHBoxLayout(nodes_widget);
+    nodes_layout->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     nodes_layout->setMargin(0);
 
     add_menu("image", "image");

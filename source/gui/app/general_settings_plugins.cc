@@ -56,7 +56,6 @@ void general_settings::load_plugins()
         QString label = plugin.value("label").toString();
         QString group = plugin.value("group").toString();
 
-        QString icon_group = base_path + "/" + group + ".png";
 
         QTreeWidgetItem *item = new QTreeWidgetItem;
 
@@ -64,10 +63,19 @@ void general_settings::load_plugins()
         item->setText(1, label);
         item->setText(2, group);
 
+        QString default_icon = "resources/images/default_icon_normal.png";
+
+        if (!os::isfile(icon))
+            icon = default_icon;
+
         item->setIcon(0, QIcon(icon));
 
-        if (os::isfile(icon_group))
-            item->setIcon(2, QIcon(icon_group));
+        QString icon_group = base_path + "/" + group + ".png";
+
+        if (!os::isfile(icon_group))
+            icon_group = default_icon;
+
+        item->setIcon(2, QIcon(icon_group));
 
         plugin_tree->addTopLevelItem(item);
         plugin_items.push_back(item);

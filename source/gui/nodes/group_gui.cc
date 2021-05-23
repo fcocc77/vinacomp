@@ -28,19 +28,35 @@ void group_gui::export_plugin()
     knob_text *name_knob = static_cast<knob_text *>(get_knob("name"));
     trim_panel *panel = static_cast<trim_panel *>(name_knob->get_panel());
 
-    QString name = name_knob->get_value();
+    QString name = name_knob->get_value().simplified();
     QString icon_path = static_cast<knob_file *>(get_knob("icon"))->get_value();
 
     QString group_name =
-        static_cast<knob_text *>(get_knob("group"))->get_value();
+        static_cast<knob_text *>(get_knob("group"))->get_value().simplified();
     QString group_icon_path =
         static_cast<knob_file *>(get_knob("group_icon"))->get_value();
 
     QString base_path = "plugins/py_plugins/";
 
+    if (name.isEmpty())
+    {
+        QMessageBox::warning(_vinacomp, "Plugin Exporter",
+                             "! Plugin Name is empty", QMessageBox::Ok);
+        return;
+    }
+    else if (group_name.isEmpty())
+    {
+        QMessageBox::warning(_vinacomp, "Plugin Exporter",
+                             "! Group Name is empty", QMessageBox::Ok);
+        return;
+    }
+
     // copiado de icono
     QString plugin_icon = base_path + name + ".png";
     os::copy(icon_path, plugin_icon);
+
+    if (!os::isfile(plugin_icon))
+        plugin_icon = "default_icon";
 
     os::copy(group_icon_path, base_path + group_name + ".png");
 
