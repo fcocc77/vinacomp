@@ -26,6 +26,10 @@
 #include <QCodeEditor.h>
 #include <QPythonHighlighter.h>
 
+#include <action.h>
+#include <button.h>
+
+
 class script_editor : public QWidget
 {
 private:
@@ -37,6 +41,7 @@ private:
     QJsonObject *project;
     QTextEdit *output;
     QWidget *node_graph;
+    QString script;
 
     // expression
     bool expression_editor;
@@ -47,7 +52,20 @@ private:
     void expression_ok();
     void expression_cancel();
     void finish_expression_edit();
-    //
+
+    // Acciones
+    action *run_script_action, *save_action, *exit_action;
+
+    // Group Edit
+    QWidget *current_group;
+    QWidget *group_box;
+    QLabel *current_group_label;
+    button *save_exit_button, *cancel_exit_button;
+    QWidget *group_separator_1, *group_separator_2;
+    void save_script();
+    void exit_script();
+    void save_and_exit();
+    void cancel_and_exit();
 
     void run_script();
     void run_expression();
@@ -68,6 +86,7 @@ public:
 
     void open_script_from_project();
     void set_knob(QWidget *knob);
+    void set_group_edit(QWidget *_group_gui);
 };
 
 #endif // SCRIPT_EDITOR_HPP

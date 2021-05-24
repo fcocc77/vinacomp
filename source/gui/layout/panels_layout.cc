@@ -190,6 +190,22 @@ panel *panels_layout::get_some_empty_panel() const
     return nullptr;
 }
 
+void panels_layout::open_script_editor()
+{
+    panel *script_panel = get_panel("Script Editor");
+    if (script_panel)
+    {
+        script_panel->get_tab_widget()->set_tab("Script Editor");
+        return;
+    }
+
+    script_panel = get_all_panels().first();
+    if (!script_panel)
+        return;
+
+    script_panel->add_fixed_panel("Script Editor");
+}
+
 void panels_layout::isolate_panel()
 {
     set_visible_panels(true);

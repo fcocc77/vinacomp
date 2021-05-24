@@ -22,7 +22,7 @@ public:
     ~tools();
 
     void add_action(action *_action);
-    void add_separator();
+    QWidget *add_separator();
     void add_stretch();
     void add_widget(QWidget *widget);
     void set_checked_all(bool checked);

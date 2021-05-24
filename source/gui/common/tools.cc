@@ -53,7 +53,7 @@ void tools::set_checked_all(bool checked)
         _action->set_checked(checked);
 }
 
-void tools::add_separator()
+QWidget *tools::add_separator()
 {
     int width = 20;
     QWidget *separator = new QWidget();
@@ -69,6 +69,8 @@ void tools::add_separator()
     }
 
     layout->addWidget(separator);
+
+    return separator;
 }
 
 void tools::add_stretch()

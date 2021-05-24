@@ -1,3 +1,4 @@
+#include <button.h>
 #include <knob_integer.h>
 #include <qt.h>
 #include <script_editor.h>
@@ -26,7 +27,6 @@ void script_editor::setup_ui()
     output->setObjectName("output");
     QCodeEditor *input = code_editor();
 
-
     QSplitter *splitter = new QSplitter();
     splitter->setOrientation(Qt::Vertical);
 
@@ -42,28 +42,80 @@ QWidget *script_editor::tools_setup_ui()
 {
     tools *_tools = new tools();
 
-    action *clear_action = new action("Clear", "", "clear_script");
-    action *run_script_action = new action("Run Script", "", "run_script");
-
-    clear_action->connect_to(this, [=]() { output->clear(); });
-    run_script_action->connect_to(this, [=]() { run_script(); });
-
+    // Creacion
+    action *clear_action = new action("Clear Output", "", "clear_script");
+    run_script_action = new action("Run Script", "", "run_script");
+    save_action = new action("Save Script", "", "save");
+    exit_action = new action("Exit Script", "", "exit");
     knob_integer *font_size_slider = new knob_integer({}, 7, 50, 14);
+    group_box = new QWidget;
+    QHBoxLayout *group_box_layout = new QHBoxLayout(group_box);
+    QLabel *group_label = new QLabel("Editing Group Script: ");
+    current_group_label = new QLabel();
+    save_exit_button = new button();
+    cancel_exit_button = new button();
+
+    // Opciones
+    font_size_slider->set_animatable(false);
+    font_size_slider->set_init_space(100);
+    font_size_slider->set_init_label_text("Font Size");
+    font_size_slider->setMaximumWidth(500);
+
+    save_action->set_visible(false);
+    exit_action->set_visible(false);
+
+    group_box_layout->setMargin(0);
+    group_box->hide();
+    group_box->setObjectName("group_box");
+    save_exit_button->hide();
+    cancel_exit_button->hide();
+    current_group_label->setObjectName("current_group_label");
+    save_exit_button->setText("Save and Exit");
+    cancel_exit_button->setText("Exit");
+
+    // Conecciones
     connect(font_size_slider, &knob_integer::changed, this, [=](int value) {
         QString style = "font-size: " + QString::number(value) + "px;";
         output->setStyleSheet(style);
         editor->setStyleSheet(style);
     });
-    font_size_slider->set_animatable(false);
-    font_size_slider->set_init_space(100);
-    font_size_slider->set_init_label_text("Font Size");
+
+    clear_action->connect_to(this, [=]() { output->clear(); });
+    run_script_action->connect_to(this, [=]() { run_script(); });
+
+    save_action->connect_to(this, [=]() { save_script(); });
+    exit_action->connect_to(this, [=]() { exit_script(); });
+
+    connect(save_exit_button, &button::clicked, this,
+            &script_editor::save_and_exit);
+
+    connect(cancel_exit_button, &button::clicked, this,
+            &script_editor::cancel_and_exit);
+
+    // Layout
+    group_box_layout->addWidget(save_exit_button);
+    group_box_layout->addWidget(cancel_exit_button);
+    group_box_layout->addWidget(group_label);
+    group_box_layout->addWidget(current_group_label);
 
     _tools->add_action(clear_action);
     _tools->add_action(run_script_action);
 
+    group_separator_1 = _tools->add_separator();
+
+    _tools->add_action(save_action);
+    _tools->add_action(exit_action);
+
+    group_separator_2 = _tools->add_separator();
+
+    _tools->add_widget(group_box);
+
     _tools->add_stretch();
 
     _tools->add_widget(font_size_slider);
+
+    group_separator_1->hide();
+    group_separator_2->hide();
 
     return _tools;
 }
@@ -79,9 +131,14 @@ QCodeEditor *script_editor::code_editor()
     connect(editor, &QTextEdit::textChanged, this, [this]() {
         if (expression_editor)
             run_expression();
+        else if (current_group)
+            save_action->set_icon("save", "checked");
         else if (project)
+        {
             // guarda el script escrito en el proyecto
-            project->insert("script_editor", editor->toPlainText());
+            script = editor->toPlainText();
+            project->insert("script_editor", script);
+        }
     });
 
     return editor;

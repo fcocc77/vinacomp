@@ -9,6 +9,7 @@ script_editor::script_editor(QJsonObject *_project, QWidget *_node_graph,
     , expression_editor_bar(nullptr)
     , exp_label(nullptr)
     , current_knob(nullptr)
+    , current_group(nullptr)
 {
 
     this->setObjectName("script_editor");

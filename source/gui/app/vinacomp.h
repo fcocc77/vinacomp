@@ -113,7 +113,13 @@ public:
     inline node_graph *get_node_graph() const;
     inline file_dialog *get_file_dialog() const;
     inline general_settings *get_general_settings() const;
+    inline script_editor *get_script_editor() const;
 };
+
+inline script_editor *vinacomp::get_script_editor() const
+{
+    return _script_editor;
+}
 
 inline general_settings *vinacomp::get_general_settings() const
 {

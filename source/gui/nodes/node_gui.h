@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QJsonObject>
+#include <QString>
 
 #include <knob.h>
 #include <project_struct.h>
@@ -37,11 +38,17 @@ public:
 
     virtual void setup_knobs();
     virtual void changed(knob *_knob);
+    inline QString get_name() const;
 };
 
 inline QJsonValue node_gui::get_default() const
 {
     return knob_data.value("default");
+}
+
+inline QString node_gui::get_name() const
+{
+    return name;
 }
 
 #endif // NODE_GUI_H
