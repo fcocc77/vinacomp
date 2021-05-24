@@ -12,6 +12,7 @@
 #include <knob.h>
 #include <qt.h>
 #include <slider.h>
+#include <color_picker.h>
 
 class knob_color : public knob
 {
@@ -30,6 +31,7 @@ private:
 
     QLineEdit *mono_edit;
     slider *mono_slider;
+    color_picker *_color_picker;
 
     QPushButton *color_sample_button;
     QPushButton *palette_button;
@@ -65,15 +67,25 @@ private:
 
     float red, green, blue, alpha;
     float default_red, default_green, default_blue, default_alpha;
+
     bool mono_color;
-    bool sliders_colors;
+    bool advanced_options;
+    bool hsl_option;
+    bool rgb_option;
+    bool hue_option;
+    bool color_picker_option;
 
     void setup_ui();
     void connections();
-
     void update();
+
     void toggle_mono_color();
-    void toggle_sliders_colors();
+    void toogle_advanced_options();
+    void toogle_rgb_option();
+    void toogle_hsl_option();
+    void toogle_hue_option();
+    void toogle_color_picker_option();
+
     void set_visible_mono_color(bool visible, bool emmit_signal = true);
     void set_visible_sliders_colors(bool visible);
 

@@ -13,7 +13,11 @@ knob_color::knob_color(knob_props props, float min, float max, float r, float g,
     , default_alpha(a)
 
     , mono_color(false)
-    , sliders_colors(false)
+    , advanced_options(false)
+    , hsl_option(false)
+    , rgb_option(true)
+    , hue_option(false)
+    , color_picker_option(false)
 {
     this->setObjectName("knob_color");
 
@@ -25,6 +29,8 @@ knob_color::knob_color(knob_props props, float min, float max, float r, float g,
 
     content_widget = new QWidget(this);
     content_layout = new QVBoxLayout(content_widget);
+
+    _color_picker = new color_picker;
 
     separate_colors_box = new QWidget(this);
     separate_colors_slider = new QWidget(this);
@@ -113,11 +119,12 @@ knob_color::~knob_color()
     delete separate_colors_box;
     delete separate_colors_slider;
 
+    delete _color_picker;
+
     delete main_layout;
 }
 
-void knob_color::set_init_color(float red, float green, float blue,
-                                 float alpha)
+void knob_color::set_init_color(float red, float green, float blue, float alpha)
 {
     // si los colores son todos iguale activa el 'knob' mono cromatico
     if (red == green && red == blue && red == alpha)
@@ -145,7 +152,8 @@ void knob_color::restore_default()
 void knob_color::restore_param()
 {
     QJsonArray param_value = get_param_value().toArray();
-    QJsonArray _default = get_default().toArray();;
+    QJsonArray _default = get_default().toArray();
+    ;
 
     default_red = _default.at(0).toDouble();
     default_green = _default.at(1).toDouble();
@@ -174,7 +182,7 @@ void knob_color::update()
 
 void knob_color::set_visible_mono_color(bool visible, bool emmit_signal)
 {
-    if (sliders_colors)
+    if (advanced_options)
     {
         visible = false;
         separate_colors_box->setVisible(false);
@@ -218,16 +226,52 @@ void knob_color::set_visible_sliders_colors(bool visible)
     set_visible_mono_color(false);
     //
 
-
     qt::set_property(palette_button, "active", visible);
     qt::set_property(mono_color_button, "disable", visible);
     update();
 }
 
-void knob_color::toggle_sliders_colors()
+void knob_color::toogle_advanced_options()
 {
-    sliders_colors = !sliders_colors;
-    set_visible_sliders_colors(sliders_colors);
+    advanced_options = !advanced_options;
+
+    hue_button->setVisible(advanced_options);
+    rgb_button->setVisible(advanced_options);
+    hsl_button->setVisible(advanced_options);
+    picker_button->setVisible(advanced_options);
+
+    if (!advanced_options)
+    {
+        set_visible_sliders_colors(false);
+        _color_picker->setVisible(false);
+    }
+    else
+    {
+        _color_picker->setVisible(color_picker_option);
+        set_visible_sliders_colors(rgb_option);
+    }
+}
+
+void knob_color::toogle_rgb_option()
+{
+    rgb_option = !rgb_option;
+    set_visible_sliders_colors(rgb_option);
+}
+
+void knob_color::toogle_hsl_option()
+{
+    hsl_option = !hsl_option;
+}
+
+void knob_color::toogle_hue_option()
+{
+    hue_option = !hue_option;
+}
+
+void knob_color::toogle_color_picker_option()
+{
+    color_picker_option = !color_picker_option;
+    _color_picker->setVisible(color_picker_option);
 }
 
 void knob_color::set_color(float _red, float _green, float _blue, float _alpha,
@@ -291,7 +335,8 @@ void knob_color::set_color(float _red, float _green, float _blue, float _alpha,
     QString __green = QString::number(_green * 255);
     QString __blue = QString::number(_blue * 255);
 
-    color_sample_button->setStyleSheet("background: rgb(" + __red + "," + __green + "," + __blue + ");");
+    color_sample_button->setStyleSheet("background: rgb(" + __red + "," +
+                                       __green + "," + __blue + ");");
     color_sample_button->update();
 }
 

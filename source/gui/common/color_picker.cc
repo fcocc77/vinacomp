@@ -4,6 +4,11 @@
 color_picker::color_picker()
     : layout(new QVBoxLayout(this))
 {
+    layout->setMargin(0);
+
+    setMinimumHeight(100);
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
     color_box *_color_box = new color_box;
     rainbow_box *rainbow = new rainbow_box;
     rainbow->setMaximumHeight(50);

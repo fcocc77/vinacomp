@@ -6,8 +6,6 @@ void knob_color::setup_ui()
     content_layout->setMargin(0);
     main_layout->setMargin(0);
 
-    content_layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
-
     mono_edit->setMaximumWidth(50);
     mono_edit->setText(QString::number(red));
 
@@ -18,8 +16,6 @@ void knob_color::setup_ui()
     green_hedit->setObjectName("green_edit");
     blue_hedit->setObjectName("blue_edit");
     alpha_hedit->setObjectName("alpha_edit");
-
-    separate_colors_box->hide();
 
     // Caja de sliders de rgb
     separate_colors_slider_layout->setMargin(0);
@@ -52,10 +48,6 @@ void knob_color::setup_ui()
     alpha_vedit->setObjectName("alpha_edit");
     alpha_slider->setObjectName("alpha_slider");
     //
-    separate_colors_slider->hide();
-
-    //
-    //
 
     // Opciones de botones
     color_sample_button->setObjectName("small_button");
@@ -84,6 +76,21 @@ void knob_color::setup_ui()
     picker_button->setObjectName("small_button");
     picker_button->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
     qt::set_icon(picker_button, "picker_normal", icon_size);
+
+    // Visibilidad Inicial
+    hue_button->hide();
+    rgb_button->hide();
+    hsl_button->hide();
+    picker_button->hide();
+    _color_picker->hide();
+    separate_colors_box->hide();
+    separate_colors_slider->hide();
+
+    // Aliniamiento de Layouts
+    content_layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
+    top_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    separate_colors_slider->setSizePolicy(QSizePolicy::Expanding,
+                                          QSizePolicy::Fixed);
 
     // Layout
     separate_colors_box_layout->addWidget(red_hedit);
@@ -121,6 +128,7 @@ void knob_color::setup_ui()
 
     content_layout->addWidget(top_widget);
     content_layout->addWidget(separate_colors_slider);
+    content_layout->addWidget(_color_picker);
 
     main_layout->addWidget(init_space);
     main_layout->addWidget(content_widget);
@@ -191,8 +199,20 @@ void knob_color::connections()
     //
 
     connect(palette_button, &QPushButton::clicked, this,
-            [this]() { toggle_sliders_colors(); });
+            [this]() { toogle_advanced_options(); });
 
     connect(mono_color_button, &QPushButton::clicked, this,
             [this]() { toggle_mono_color(); });
+
+    connect(picker_button, &QPushButton::clicked, this,
+            [this]() { toogle_color_picker_option(); });
+
+    connect(rgb_button, &QPushButton::clicked, this,
+            [this]() { toogle_rgb_option(); });
+
+    connect(hsl_button, &QPushButton::clicked, this,
+            [this]() { toogle_hsl_option(); });
+
+    connect(hue_button, &QPushButton::clicked, this,
+            [this]() { toogle_hue_option(); });
 }
