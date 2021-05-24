@@ -54,6 +54,7 @@ QWidget *script_editor::tools_setup_ui()
     current_group_label = new QLabel();
     save_exit_button = new button();
     cancel_exit_button = new button();
+    group_cancel_button = new button();
 
     // Opciones
     font_size_slider->set_animatable(false);
@@ -70,6 +71,7 @@ QWidget *script_editor::tools_setup_ui()
     save_exit_button->hide();
     cancel_exit_button->hide();
     current_group_label->setObjectName("current_group_label");
+    group_cancel_button->setText("Cancel");
     save_exit_button->setText("Save and Exit");
     cancel_exit_button->setText("Exit");
 
@@ -90,9 +92,13 @@ QWidget *script_editor::tools_setup_ui()
             &script_editor::save_and_exit);
 
     connect(cancel_exit_button, &button::clicked, this,
-            &script_editor::cancel_and_exit);
+            &script_editor::exit_group_edit);
+
+    connect(group_cancel_button, &button::clicked, this,
+            &script_editor::cancel_exit);
 
     // Layout
+    group_box_layout->addWidget(group_cancel_button);
     group_box_layout->addWidget(save_exit_button);
     group_box_layout->addWidget(cancel_exit_button);
     group_box_layout->addWidget(group_label);

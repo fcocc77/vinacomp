@@ -60,12 +60,13 @@ private:
     QWidget *current_group;
     QWidget *group_box;
     QLabel *current_group_label;
-    button *save_exit_button, *cancel_exit_button;
+    button *save_exit_button, *cancel_exit_button, *group_cancel_button;
     QWidget *group_separator_1, *group_separator_2;
     void save_script();
     void exit_script();
     void save_and_exit();
-    void cancel_and_exit();
+    void exit_group_edit();
+    void cancel_exit();
 
     void run_script();
     void run_expression();

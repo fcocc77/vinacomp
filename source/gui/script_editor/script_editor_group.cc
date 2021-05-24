@@ -16,10 +16,11 @@ void script_editor::set_group_edit(QWidget *_group_gui)
     save_action->set_visible(true);
     exit_action->set_visible(true);
     group_box->setVisible(true);
-    save_exit_button->setVisible(false);
-    cancel_exit_button->setVisible(false);
+
     group_separator_1->setVisible(true);
     group_separator_2->setVisible(true);
+
+    cancel_exit();
 }
 
 void script_editor::save_script()
@@ -37,12 +38,13 @@ void script_editor::exit_script()
 
     if (editor->toPlainText() != group->get_script())
     {
+        group_cancel_button->setVisible(true);
         save_exit_button->setVisible(true);
         cancel_exit_button->setVisible(true);
         return;
     }
 
-    cancel_and_exit();
+    exit_group_edit();
 }
 
 void script_editor::save_and_exit()
@@ -51,7 +53,7 @@ void script_editor::save_and_exit()
     exit_script();
 }
 
-void script_editor::cancel_and_exit()
+void script_editor::exit_group_edit()
 {
     current_group = nullptr;
 
@@ -63,4 +65,11 @@ void script_editor::cancel_and_exit()
     group_separator_2->setVisible(false);
 
     editor->setPlainText(script);
+}
+
+void script_editor::cancel_exit()
+{
+    group_cancel_button->setVisible(false);
+    save_exit_button->setVisible(false);
+    cancel_exit_button->setVisible(false);
 }
