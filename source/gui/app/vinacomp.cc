@@ -90,99 +90,55 @@ void vinacomp::main_menu()
     QMenuBar *menu_bar = new QMenuBar();
 
     QMenu *file_menu = new QMenu("File", menu_bar);
-    menu_bar->addMenu(file_menu);
-
-    new_project_action = new action("New Project", "Ctrl+N", "add");
-    new_project_action->connect_to(this, [this]() { new_project(); });
-    file_menu->addAction(new_project_action);
-
-    open_project_action = new action("Open Project", "Ctrl+O", "folder");
-    open_project_action->connect_to(this, [this]() { open_project_dialog(); });
-
-    file_menu->addAction(open_project_action);
-
     recent_projects_menu = new QMenu("Recent Projects", this);
-    update_recent_projects();
-    file_menu->addMenu(recent_projects_menu);
-
-    file_menu->addSeparator();
-
-    action *save_project_action = new action("Save Project", "Ctrl+S", "save");
-    save_project_action->connect_to(this, [this]() { to_save_project(); });
-    file_menu->addAction(save_project_action);
-
-    action *save_project_as = new action("Save Project As...", "Ctrl+Shift+S");
-    save_project_as->connect_to(this, [this]() { save_as(); });
-    file_menu->addAction(save_project_as);
-
-    file_menu->addSeparator();
-
-    action *quit = new action("Quit", "Ctrl+Q", "quit");
-    quit->connect_to(this, [this]() { this->close(); });
-    file_menu->addAction(quit);
-    //
-    //
-
-    //
     QMenu *edit_menu = new QMenu("Edit", menu_bar);
-    menu_bar->addMenu(edit_menu);
+    QMenu *layout_menu = new QMenu("Layout", menu_bar);
+    QMenu *display = new QMenu("Display", menu_bar);
 
+    // Acciones
+    new_project_action = new action("New Project", "Ctrl+N", "add");
+    open_project_action = new action("Open Project", "Ctrl+O", "folder");
+    action *save_project_action = new action("Save Project", "Ctrl+S", "save");
+    action *save_project_as = new action("Save Project As...", "Ctrl+Shift+S");
+    action *quit = new action("Quit", "Ctrl+Q", "quit");
     settings_action = new action("Settings...", "Shift+S", "settings");
+    project_settings_action =
+        new action("Project Settings", "S", "project_settings");
+    action *undo_action = new action("Undo", "Ctrl+Z", "");
+    action *redo_action = new action("Redo", "Ctrl+Shift+Z", "");
+    action *full_screen = new action("Full Screen", "Alt+S", "fullscreen");
+
+    // Opciones
     settings_action->set_checkable(true);
+    project_settings_action->set_checkable(true);
+    _panels_layout->restore_default_action->setIcon(
+        QIcon("resources/images/layout_a.png"));
+
+    _panels_layout->save_current_action->setIcon(
+        QIcon("resources/images/save_a.png"));
+
+    update_recent_projects();
+
+    // Conecciones
+    new_project_action->connect_to(this, [this]() { new_project(); });
+    open_project_action->connect_to(this, [this]() { open_project_dialog(); });
+    save_project_action->connect_to(this, [this]() { to_save_project(); });
+    save_project_as->connect_to(this, [this]() { save_as(); });
+    quit->connect_to(this, [this]() { this->close(); });
+
     settings_action->connect_to(this, [this]() {
         settings_visible = !settings_visible; // Toggle
         _settings->setVisible(settings_visible);
     });
 
-    project_settings_action =
-        new action("Project Settings", "S", "project_settings");
-    project_settings_action->set_checkable(true);
     project_settings_action->connect_to(this, [this]() {
         project_settings_visible = !project_settings_visible; // Toggle
         _project_settings->setVisible(project_settings_visible);
     });
 
-    action *undo_action = new action("Undo", "Ctrl+Z", "");
     undo_action->connect_to(this, [this]() { undo(); });
-    action *redo_action = new action("Redo", "Ctrl+Shift+Z", "");
     redo_action->connect_to(this, [this]() { redo(); });
 
-    edit_menu->addAction(settings_action);
-    edit_menu->addAction(project_settings_action);
-    edit_menu->addAction(update_sylesheet_action);
-    edit_menu->addSeparator();
-    edit_menu->addAction(undo_action);
-    edit_menu->addAction(redo_action);
-    //
-    //
-
-    //
-    QMenu *layout_menu = new QMenu("Layout", menu_bar);
-    menu_bar->addMenu(layout_menu);
-
-    script_layout_action = new action("Script Layout", "", "view_compact");
-    layout_menu->addAction(script_layout_action);
-
-    comp_layout_action = new action("Comp Layout", "", "vertical_split");
-    layout_menu->addAction(comp_layout_action);
-
-    layout_menu->addSeparator();
-
-    layout_menu->addAction(_panels_layout->restore_default_action);
-    _panels_layout->restore_default_action->setIcon(
-        QIcon("resources/images/layout_a.png"));
-
-    layout_menu->addAction(_panels_layout->save_current_action);
-    _panels_layout->save_current_action->setIcon(
-        QIcon("resources/images/save_a.png"));
-
-    //
-    //
-
-    QMenu *display = new QMenu("Display", menu_bar);
-    menu_bar->addMenu(display);
-
-    action *full_screen = new action("Full Screen", "Alt+S", "fullscreen");
     full_screen->connect_to(this, [this]() {
         if (!fullscreen)
             this->setWindowState(Qt::WindowFullScreen);
@@ -191,9 +147,36 @@ void vinacomp::main_menu()
         fullscreen = !fullscreen;
     });
 
-    display->addAction(full_screen);
+    // Layout
+    menu_bar->addMenu(file_menu);
+    menu_bar->addMenu(edit_menu);
+    menu_bar->addMenu(layout_menu);
+    menu_bar->addMenu(display);
 
-    //
+    file_menu->addAction(new_project_action);
+    file_menu->addAction(open_project_action);
+    file_menu->addMenu(recent_projects_menu);
+    file_menu->addSeparator();
+    file_menu->addAction(save_project_action);
+    file_menu->addAction(save_project_as);
+    file_menu->addSeparator();
+    file_menu->addAction(quit);
+
+    edit_menu->addAction(settings_action);
+    edit_menu->addAction(project_settings_action);
+    edit_menu->addAction(update_sylesheet_action);
+    edit_menu->addSeparator();
+    edit_menu->addAction(undo_action);
+    edit_menu->addAction(redo_action);
+
+    layout_menu->addAction(_panels_layout->script_layout_action);
+    layout_menu->addAction(_panels_layout->comp_layout_action);
+    layout_menu->addAction(_panels_layout->all_visible_layout_action);
+    layout_menu->addSeparator();
+    layout_menu->addAction(_panels_layout->restore_default_action);
+    layout_menu->addAction(_panels_layout->save_current_action);
+
+    display->addAction(full_screen);
 
     this->setMenuBar(menu_bar);
 }
@@ -211,8 +194,10 @@ void vinacomp::tool_bar()
 
     _tool_bar->add_stretch();
 
-    _tool_bar->add_action(script_layout_action);
-    _tool_bar->add_action(comp_layout_action);
+    _tool_bar->add_action(_panels_layout->restore_default_action);
+    _tool_bar->add_action(_panels_layout->script_layout_action);
+    _tool_bar->add_action(_panels_layout->comp_layout_action);
+    _tool_bar->add_action(_panels_layout->all_visible_layout_action);
 }
 
 void vinacomp::update_render_all_viewer(bool clear_init_image) const

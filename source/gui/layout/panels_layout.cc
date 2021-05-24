@@ -19,11 +19,23 @@ panels_layout::panels_layout(QWidget *__vinacomp, node_graph *_node_graph, QLabe
 
     qt::add_widget(this, first_panel);
 
-    restore_default_action = new QAction("Restore Default Layout");
-    save_current_action = new QAction("Save Current Layout");
+    restore_default_action =
+        new action("Restore Default Layout", "", "restart");
+    save_current_action = new action("Save Current Layout", "", "save");
+    script_layout_action = new action("Script Layout", "", "code");
+    comp_layout_action = new action("Comp Layout", "", "image");
+    all_visible_layout_action = new action("All Visible Layout", "", "layout");
 
-    connect(save_current_action, &QAction::triggered, this, &panels_layout::save_layout);
-    connect(restore_default_action, &QAction::triggered, this, &panels_layout::restore_default);
+    connect(save_current_action, &QAction::triggered, this,
+            &panels_layout::save_layout);
+    connect(restore_default_action, &QAction::triggered, this,
+            &panels_layout::restore_default);
+    script_layout_action->connect_to(this,
+                                     [this]() { set_layout("script_layout"); });
+    comp_layout_action->connect_to(this,
+                                   [this]() { set_layout("comp_layout"); });
+    all_visible_layout_action->connect_to(
+        this, [this]() { set_layout("all_layout"); });
 
     load_layout();
 
@@ -392,13 +404,22 @@ void panels_layout::load_layout()
 
 void panels_layout::restore_default()
 {
+    set_layout("default_layout");
+}
+
+void panels_layout::set_layout(QString layout_name)
+{
+    QString layout_path = "resources/data/" + layout_name + ".json";
+    if (!os::isfile(layout_path))
+        return;
+
     for (panel *_panel : get_all_panels())
     {
         _panel->remove_all_tab();
         _panel->close_panel();
     }
 
-    QJsonObject layout = jread("resources/data/default_layout.json");
+    QJsonObject layout = jread(layout_path);
     QJsonObject main = layout["splitter"].toObject();
 
     // encuentra el unico papel que queda después de eliminarlos todos,

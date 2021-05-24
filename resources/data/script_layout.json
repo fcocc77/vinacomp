@@ -1,0 +1,47 @@
+{
+    "splitter": {
+        "distribution": [
+            542,
+            1978
+        ],
+        "orientation": 1,
+        "panel_a": {
+            "current_index": 0,
+            "tabs": [
+                "Properties"
+            ]
+        },
+        "splitter_b": {
+            "distribution": [
+                685,
+                1292
+            ],
+            "orientation": 1,
+            "panel_b": {
+                "current_index": 0,
+                "tabs": [
+                    "Script Editor"
+                ]
+            },
+            "splitter_a": {
+                "distribution": [
+                    692,
+                    691
+                ],
+                "orientation": 2,
+                "panel_a": {
+                    "current_index": 0,
+                    "tabs": [
+                        "Viewer"
+                    ]
+                },
+                "panel_b": {
+                    "current_index": 0,
+                    "tabs": [
+                        "Node Graph"
+                    ]
+                }
+            }
+        }
+    }
+}

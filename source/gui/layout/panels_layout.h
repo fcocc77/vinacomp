@@ -30,6 +30,7 @@ private:
 
     panel *get_some_empty_panel() const;
     panel *get_panel(QString name) const;
+    void set_layout(QString layout_name);
 
     bool isolate;
     panel *first_panel;
@@ -43,8 +44,11 @@ public:
 
     QList<QSplitter *> *splitters;
 
-    QAction *restore_default_action;
-    QAction *save_current_action;
+    action *restore_default_action;
+    action *save_current_action;
+    action *script_layout_action;
+    action *comp_layout_action;
+    action *all_visible_layout_action;
 
     QList<panel *> get_all_panels() const;
     void add_viewer(viewer *_viewer);

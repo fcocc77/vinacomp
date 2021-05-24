@@ -1,0 +1,35 @@
+{
+    "splitter": {
+        "distribution": [
+            482,
+            2026
+        ],
+        "orientation": 1,
+        "panel_a": {
+            "current_index": 0,
+            "tabs": [
+                "Properties"
+            ]
+        },
+        "splitter_b": {
+            "distribution": [
+                419,
+                389
+            ],
+            "orientation": 2,
+            "panel_a": {
+                "current_index": 0,
+                "tabs": [
+                    "Viewer"
+                ]
+            },
+            "panel_b": {
+                "current_index": 0,
+                "tabs": [
+                    "Node Graph",
+                    "Curve Editor"
+                ]
+            }
+        }
+    }
+}

@@ -52,8 +52,6 @@ private:
     QAction *update_sylesheet_action;
     action *new_project_action;
     action *open_project_action;
-    action *script_layout_action;
-    action *comp_layout_action;
     //
 
     // en este json estara todo el proyecto actual, aqui se guardara todo,
