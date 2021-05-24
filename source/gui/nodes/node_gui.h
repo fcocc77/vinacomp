@@ -38,6 +38,7 @@ public:
 
     virtual void setup_knobs();
     virtual void changed(knob *_knob);
+    virtual void close();
     inline QString get_name() const;
 };
 

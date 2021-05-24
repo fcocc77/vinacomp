@@ -13,6 +13,8 @@ private:
     void export_plugin();
     void edit_script();
 
+    void close() override;
+
 public:
     group_gui(nodes_load *nodes_loaded);
     ~group_gui();

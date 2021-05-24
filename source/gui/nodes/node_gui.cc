@@ -46,6 +46,8 @@ QJsonValue node_gui::get_param_value() const
 
 void node_gui::setup_knobs() {}
 
+void node_gui::close() {}
+
 void node_gui::changed(knob *_knob) {}
 
 void node_gui::update_value(QJsonValue value)

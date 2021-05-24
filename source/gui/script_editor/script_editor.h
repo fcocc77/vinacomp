@@ -65,7 +65,6 @@ private:
     void save_script();
     void exit_script();
     void save_and_exit();
-    void exit_group_edit();
     void cancel_exit();
 
     void run_script();
@@ -88,6 +87,7 @@ public:
     void open_script_from_project();
     void set_knob(QWidget *knob);
     void set_group_edit(QWidget *_group_gui);
+    void exit_group_edit();
 };
 
 #endif // SCRIPT_EDITOR_HPP

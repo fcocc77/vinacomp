@@ -28,6 +28,14 @@ void group_gui::changed(knob *_knob)
         edit_script();
 }
 
+void group_gui::close()
+{
+    script_editor *_script_editor =
+        static_cast<vinacomp *>(_vinacomp)->get_script_editor();
+
+    _script_editor->exit_group_edit();
+}
+
 void group_gui::edit_script()
 {
     vinacomp *vina = static_cast<vinacomp *>(_vinacomp);
