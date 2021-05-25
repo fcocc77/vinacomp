@@ -24,10 +24,9 @@ private:
 
     QWidget *content_widget, *top_widget;
 
-    QWidget *separate_colors_box;
-    QWidget *separate_colors_slider;
+    QWidget *separate_colors_box, *rgba_box, *hsl_box;
     QHBoxLayout *separate_colors_box_layout;
-    QVBoxLayout *separate_colors_slider_layout;
+    QVBoxLayout *rgba_box_layout, *hsl_box_layout;
 
     color_picker *_color_picker;
 
@@ -41,6 +40,7 @@ private:
 
     knob_color_slider *red_slider, *green_slider, *blue_slider, *alpha_slider;
     knob_color_slider *mono_slider;
+    knob_color_slider *hue_slider, *sat_slider, *level_slider;
     QLineEdit *red_hedit, *green_hedit, *blue_hedit, *alpha_hedit;
 
     float red, green, blue, alpha;
@@ -65,7 +65,7 @@ private:
     void toogle_color_picker_option();
 
     void set_visible_mono_color(bool visible, bool emmit_signal = true);
-    void set_visible_sliders_colors(bool visible);
+    void set_visible_rgba_box(bool visible);
 
     void restore_default() override;
     void restore_param() override;

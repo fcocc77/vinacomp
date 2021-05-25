@@ -33,9 +33,11 @@ knob_color::knob_color(knob_props props, float min, float max, float r, float g,
     _color_picker = new color_picker;
 
     separate_colors_box = new QWidget(this);
-    separate_colors_slider = new QWidget(this);
     separate_colors_box_layout = new QHBoxLayout(separate_colors_box);
-    separate_colors_slider_layout = new QVBoxLayout(separate_colors_slider);
+    rgba_box = new QWidget(this);
+    rgba_box_layout = new QVBoxLayout(rgba_box);
+    hsl_box = new QWidget(this);
+    hsl_box_layout = new QVBoxLayout(hsl_box);
 
     red_hedit = new QLineEdit(this);
     green_hedit = new QLineEdit(this);
@@ -51,6 +53,10 @@ knob_color::knob_color(knob_props props, float min, float max, float r, float g,
         new knob_color_slider(min, max, default_blue, centered_handler);
     alpha_slider =
         new knob_color_slider(min, max, default_alpha, centered_handler);
+
+    hue_slider = new knob_color_slider(0, 360, 0, centered_handler);
+    sat_slider = new knob_color_slider(0, 1, 1, centered_handler);
+    level_slider = new knob_color_slider(0, 1, 1, centered_handler);
 
     color_sample_button = new QPushButton(this);
     palette_button = new QPushButton(this);
@@ -79,6 +85,10 @@ knob_color::~knob_color()
     delete blue_slider;
     delete alpha_slider;
 
+    delete hue_slider;
+    delete sat_slider;
+    delete level_slider;
+
     delete color_sample_button;
     delete palette_button;
     delete mono_color_button;
@@ -88,9 +98,11 @@ knob_color::~knob_color()
     delete picker_button;
 
     delete separate_colors_box_layout;
-    delete separate_colors_slider_layout;
+    delete rgba_box_layout;
     delete separate_colors_box;
-    delete separate_colors_slider;
+    delete rgba_box;
+    delete hsl_box_layout;
+    delete hsl_box;
 
     delete _color_picker;
 
@@ -186,9 +198,9 @@ void knob_color::toggle_mono_color()
     set_visible_mono_color(!mono_color);
 }
 
-void knob_color::set_visible_sliders_colors(bool visible)
+void knob_color::set_visible_rgba_box(bool visible)
 {
-    separate_colors_slider->setVisible(visible);
+    rgba_box->setVisible(visible);
 
     // al activar el cuadro se colors sliders se desabilita el mono color
     mono_color = !visible;
@@ -211,25 +223,28 @@ void knob_color::toogle_advanced_options()
 
     if (!advanced_options)
     {
-        set_visible_sliders_colors(false);
+        set_visible_rgba_box(false);
+        hsl_box->setVisible(false);
         _color_picker->setVisible(false);
     }
     else
     {
         _color_picker->setVisible(color_picker_option);
-        set_visible_sliders_colors(rgb_option);
+        set_visible_rgba_box(rgb_option);
+        hsl_box->setVisible(hsl_option);
     }
 }
 
 void knob_color::toogle_rgb_option()
 {
     rgb_option = !rgb_option;
-    set_visible_sliders_colors(rgb_option);
+    set_visible_rgba_box(rgb_option);
 }
 
 void knob_color::toogle_hsl_option()
 {
     hsl_option = !hsl_option;
+    hsl_box->setVisible(hsl_option);
 }
 
 void knob_color::toogle_hue_option()

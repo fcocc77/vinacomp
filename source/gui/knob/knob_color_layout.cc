@@ -14,15 +14,15 @@ void knob_color::setup_ui()
     blue_hedit->setObjectName("blue_edit");
     alpha_hedit->setObjectName("alpha_edit");
 
-    // Caja de sliders de rgb
-    separate_colors_slider_layout->setMargin(0);
-    separate_colors_slider_layout->setSpacing(5);
+    rgba_box_layout->setMargin(0);
+    rgba_box_layout->setSpacing(5);
+
+    hsl_box_layout->setMargin(0);
 
     red_slider->setObjectName("red_slider");
     green_slider->setObjectName("green_slider");
     blue_slider->setObjectName("blue_slider");
     alpha_slider->setObjectName("alpha_slider");
-    //
 
     // Opciones de botones
     color_sample_button->setObjectName("small_button");
@@ -59,13 +59,15 @@ void knob_color::setup_ui()
     picker_button->hide();
     _color_picker->hide();
     separate_colors_box->hide();
-    separate_colors_slider->hide();
+    rgba_box->hide();
+    hsl_box->hide();
 
     // Aliniamiento de Layouts
     content_layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
     top_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    separate_colors_slider->setSizePolicy(QSizePolicy::Expanding,
+    rgba_box->setSizePolicy(QSizePolicy::Expanding,
                                           QSizePolicy::Fixed);
+    hsl_box->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
     // Layout
     separate_colors_box_layout->addWidget(red_hedit);
@@ -73,10 +75,14 @@ void knob_color::setup_ui()
     separate_colors_box_layout->addWidget(blue_hedit);
     separate_colors_box_layout->addWidget(alpha_hedit);
 
-    separate_colors_slider_layout->addWidget(red_slider);
-    separate_colors_slider_layout->addWidget(green_slider);
-    separate_colors_slider_layout->addWidget(blue_slider);
-    separate_colors_slider_layout->addWidget(alpha_slider);
+    rgba_box_layout->addWidget(red_slider);
+    rgba_box_layout->addWidget(green_slider);
+    rgba_box_layout->addWidget(blue_slider);
+    rgba_box_layout->addWidget(alpha_slider);
+
+    hsl_box_layout->addWidget(hue_slider);
+    hsl_box_layout->addWidget(sat_slider);
+    hsl_box_layout->addWidget(level_slider);
 
     top_layout->addWidget(mono_slider);
     top_layout->addWidget(separate_colors_box);
@@ -89,7 +95,8 @@ void knob_color::setup_ui()
     top_layout->addWidget(mono_color_button);
 
     content_layout->addWidget(top_widget);
-    content_layout->addWidget(separate_colors_slider);
+    content_layout->addWidget(rgba_box);
+    content_layout->addWidget(hsl_box);
     content_layout->addWidget(_color_picker);
 
     main_layout->addWidget(init_space);
