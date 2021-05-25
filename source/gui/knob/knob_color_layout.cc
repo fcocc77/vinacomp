@@ -39,9 +39,6 @@ void knob_color::setup_ui()
                                      QSizePolicy::Expanding);
     mono_color_button->setText("4");
 
-    hue_button->setObjectName("small_button");
-    hue_button->setText("HUE");
-
     rgb_button->setObjectName("small_button");
     rgb_button->setText("RGB");
 
@@ -53,7 +50,6 @@ void knob_color::setup_ui()
     qt::set_icon(picker_button, "picker_normal", icon_size);
 
     // Visibilidad Inicial
-    hue_button->hide();
     rgb_button->hide();
     hsl_button->hide();
     picker_button->hide();
@@ -88,7 +84,6 @@ void knob_color::setup_ui()
     top_layout->addWidget(separate_colors_box);
     top_layout->addWidget(color_sample_button);
     top_layout->addWidget(picker_button);
-    top_layout->addWidget(hue_button);
     top_layout->addWidget(rgb_button);
     top_layout->addWidget(hsl_button);
     top_layout->addWidget(palette_button);
@@ -155,7 +150,4 @@ void knob_color::connections()
 
     connect(hsl_button, &QPushButton::clicked, this,
             [this]() { toogle_hsl_option(); });
-
-    connect(hue_button, &QPushButton::clicked, this,
-            [this]() { toogle_hue_option(); });
 }

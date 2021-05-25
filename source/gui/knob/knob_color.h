@@ -33,7 +33,6 @@ private:
     QPushButton *color_sample_button;
     QPushButton *palette_button;
     QPushButton *mono_color_button;
-    QPushButton *hue_button;
     QPushButton *rgb_button;
     QPushButton *hsl_button;
     QPushButton *picker_button;
@@ -61,7 +60,6 @@ private:
     void toogle_advanced_options();
     void toogle_rgb_option();
     void toogle_hsl_option();
-    void toogle_hue_option();
     void toogle_color_picker_option();
 
     void set_visible_mono_color(bool visible, bool emmit_signal = true);

@@ -61,7 +61,6 @@ knob_color::knob_color(knob_props props, float min, float max, float r, float g,
     color_sample_button = new QPushButton(this);
     palette_button = new QPushButton(this);
     mono_color_button = new QPushButton(this);
-    hue_button = new QPushButton(this);
     rgb_button = new QPushButton(this);
     hsl_button = new QPushButton(this);
     picker_button = new QPushButton(this);
@@ -92,7 +91,6 @@ knob_color::~knob_color()
     delete color_sample_button;
     delete palette_button;
     delete mono_color_button;
-    delete hue_button;
     delete rgb_button;
     delete hsl_button;
     delete picker_button;
@@ -216,7 +214,6 @@ void knob_color::toogle_advanced_options()
 {
     advanced_options = !advanced_options;
 
-    hue_button->setVisible(advanced_options);
     rgb_button->setVisible(advanced_options);
     hsl_button->setVisible(advanced_options);
     picker_button->setVisible(advanced_options);
@@ -245,11 +242,6 @@ void knob_color::toogle_hsl_option()
 {
     hsl_option = !hsl_option;
     hsl_box->setVisible(hsl_option);
-}
-
-void knob_color::toogle_hue_option()
-{
-    hue_option = !hue_option;
 }
 
 void knob_color::toogle_color_picker_option()
