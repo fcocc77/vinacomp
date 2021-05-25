@@ -71,12 +71,20 @@ void node_graph::save_nodes_attributes_to_project()
     for (node *_node : all_nodes)
     {
         node_struct &__node = project->nodes[_node->get_name()];
+        trim_panel *panel = _node->get_trim_panel();
 
         __node.pos = {_node->x(), _node->y()};
         __node.color = _node->get_color();
         __node.size = _node->get_size();
         __node.z_value = _node->zValue();
         __node.linked = _node->get_linked_node_name();
+
+        if (panel)
+        {
+            node_gui *_node_gui = panel->get_node_gui();
+            if (_node_gui)
+                __node.script = _node_gui->get_script();
+        }
     }
 }
 

@@ -64,7 +64,10 @@ void script_editor::run_script(QString script, bool input_script_log)
         append_output(out, {200, 0, 0});
     else
     {
-        append_output("\nResult:", {50, 150, 80});
+        if (out.isEmpty())
+            append_output("...", {50, 150, 80});
+        else
+            append_output("Result:", {50, 150, 80});
         append_output(out, {100, 150, 200});
     }
 

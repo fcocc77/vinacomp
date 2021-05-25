@@ -115,7 +115,13 @@ public:
     void enter_to_properties();
     void leave_properties(bool disable_edit_mode = true);
     void unlink_all();
+    inline node_gui *get_node_gui() const;
 };
+
+inline node_gui *trim_panel::get_node_gui() const
+{
+    return _node_gui;
+}
 
 inline knob_curve_menu *trim_panel::get_curve_menu() const
 {

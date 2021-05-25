@@ -14,10 +14,17 @@ group_gui::group_gui(nodes_load *_nodes_loaded)
     : nodes_loaded(_nodes_loaded)
     , open_script(false)
 {
-    script = "def callback(node, param):\n    print(node);print(param)";
+    script = "def callback(node, param):\n    None";
 }
 
 group_gui::~group_gui() {}
+
+void group_gui::setup_knobs(QMap<QString, QVBoxLayout *> layouts)
+{
+    QString _script = project->nodes.value(name).script;
+    if (!_script.isEmpty())
+        script = _script;
+}
 
 void group_gui::changed(knob *_knob)
 {
@@ -28,7 +35,8 @@ void group_gui::changed(knob *_knob)
     else if (name == "edit_script")
         edit_script();
 
-    run_script(_knob->get_node_name(), name);
+    if (name != "edit_script")
+        run_script(_knob->get_node_name(), name);
 }
 
 void group_gui::close()

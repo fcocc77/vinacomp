@@ -16,12 +16,13 @@ private:
     void run_script(QString node_name, QString param_name);
 
     void close() override;
+    void setup_knobs(QMap<QString, QVBoxLayout *> layouts) override;
 
 public:
     group_gui(nodes_load *nodes_loaded);
     ~group_gui();
 
-    inline QString get_script() const;
+    inline QString get_script() const override;
     void save_script(QString script);
     void changed(knob *_knob) override;
     inline void set_open_script(bool open);

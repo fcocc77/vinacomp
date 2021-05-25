@@ -39,6 +39,7 @@ public:
     virtual void setup_knobs(QMap<QString, QVBoxLayout *> layouts);
     virtual void changed(knob *_knob);
     virtual void close();
+    virtual QString get_script() const;
     inline QString get_name() const;
 };
 

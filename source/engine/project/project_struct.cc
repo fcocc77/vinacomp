@@ -84,6 +84,9 @@ QJsonObject project_struct::get_project_json() const
         if (!node.linked.isEmpty())
             _node["linked"] = node.linked;
 
+        if (!node.script.isEmpty())
+            _node["script"] = node.script;
+
         _nodes.insert(name, _node);
     }
     //
@@ -140,6 +143,7 @@ void project_struct::load_from_json(QJsonObject project)
         node.size = {size[0].toInt(), size[1].toInt()};
         node.z_value = node_obj.value("z_value").toInt();
         node.linked = node_obj.value("linked").toString();
+        node.script = node_obj.value("script").toString();
 
         // extrae el tips del parametro de label que esta el tab 'node'
         node.tips = params.value("label").toString();

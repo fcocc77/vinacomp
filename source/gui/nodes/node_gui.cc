@@ -50,6 +50,11 @@ void node_gui::close() {}
 
 void node_gui::changed(knob *_knob) {}
 
+QString node_gui::get_script() const
+{
+    return "";
+}
+
 void node_gui::update_value(QJsonValue value)
 {
     if (!params || !_vinacomp)

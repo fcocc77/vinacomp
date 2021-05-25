@@ -20,6 +20,7 @@ struct node_struct
     QJsonObject inputs;
     QJsonArray *custom_knobs;
     QString linked;
+    QString script;
 
     // estos 2 atributos son solo para el backdrop
     QSize size;
