@@ -12,6 +12,7 @@
 
 group_gui::group_gui(nodes_load *_nodes_loaded)
     : nodes_loaded(_nodes_loaded)
+    , open_script(false)
 {
     script = "def callback(node, param):\n    print(node);print(param)";
 }
@@ -59,11 +60,20 @@ void group_gui::run_script(QString node_name, QString param_name)
     script_editor *_script_editor =
         static_cast<vinacomp *>(_vinacomp)->get_script_editor();
 
-    _script_editor->run_script_from_editor(false);
-    _script_editor->run_script("___node = vina.get_node(\"" + node_name +
-                                   "\");\ncallback(___node, ___node.get_param(\"" +
-                                   param_name + "\") )",
-                               false);
+    QString exec = "___node = vina.get_node(\"" + node_name +
+                   "\");\ncallback(___node, ___node.get_param(\"" + param_name +
+                   "\") )";
+
+    if (open_script)
+    {
+        _script_editor->run_script_from_editor(false);
+        _script_editor->run_script(exec, false);
+    }
+    else
+    {
+        _script_editor->python_run(script);
+        _script_editor->python_run(exec);
+    }
 }
 
 void group_gui::export_plugin()

@@ -7,6 +7,8 @@ void script_editor::set_group_edit(QWidget *_group_gui)
     current_group = _group_gui;
     group_gui *group = static_cast<group_gui *>(current_group);
 
+    group->set_open_script(true);
+
     editor->setPlainText(group->get_script());
     current_group_label->setText(group->get_name());
 
@@ -55,6 +57,9 @@ void script_editor::save_and_exit()
 
 void script_editor::exit_group_edit()
 {
+    group_gui *group = static_cast<group_gui *>(current_group);
+    group->set_open_script(false);
+
     current_group = nullptr;
 
     run_script_action->set_visible(true);

@@ -75,7 +75,6 @@ private:
     void python_initialize();
     std::string std_out_err;
     PyObject *python_module;
-    QString python_run(QString command);
 
 public:
     script_editor(QJsonObject *_project, QWidget *_node_graph,
@@ -84,6 +83,7 @@ public:
 
     void run_script(QString script, bool output_log = true);
     void run_script_from_editor(bool input_script_log = true);
+    QString python_run(QString command);
 
     void open_script_from_project();
     void set_knob(QWidget *knob);

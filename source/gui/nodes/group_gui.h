@@ -9,6 +9,7 @@ class group_gui : public node_gui
 private:
     nodes_load *nodes_loaded;
     QString script;
+    bool open_script;
 
     void export_plugin();
     void edit_script();
@@ -23,7 +24,13 @@ public:
     inline QString get_script() const;
     void save_script(QString script);
     void changed(knob *_knob) override;
+    inline void set_open_script(bool open);
 };
+
+inline void group_gui::set_open_script(bool open)
+{
+    open_script = open;
+}
 
 inline QString group_gui::get_script() const
 {
