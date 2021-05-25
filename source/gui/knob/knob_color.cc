@@ -37,32 +37,20 @@ knob_color::knob_color(knob_props props, float min, float max, float r, float g,
     separate_colors_box_layout = new QHBoxLayout(separate_colors_box);
     separate_colors_slider_layout = new QVBoxLayout(separate_colors_slider);
 
-    mono_edit = new QLineEdit(this);
-    mono_slider = new slider(min, max, default_red, true, centered_handler);
-
-    red_widget = new QWidget(this);
-    green_widget = new QWidget(this);
-    blue_widget = new QWidget(this);
-    alpha_widget = new QWidget(this);
-    red_layout = new QHBoxLayout(red_widget);
-    green_layout = new QHBoxLayout(green_widget);
-    blue_layout = new QHBoxLayout(blue_widget);
-    alpha_layout = new QHBoxLayout(alpha_widget);
-
     red_hedit = new QLineEdit(this);
     green_hedit = new QLineEdit(this);
     blue_hedit = new QLineEdit(this);
     alpha_hedit = new QLineEdit(this);
 
-    red_vedit = new QLineEdit(this);
-    green_vedit = new QLineEdit(this);
-    blue_vedit = new QLineEdit(this);
-    alpha_vedit = new QLineEdit(this);
-
-    red_slider = new slider(min, max, default_red, true, centered_handler);
-    green_slider = new slider(min, max, default_green, true, centered_handler);
-    blue_slider = new slider(min, max, default_blue, true, centered_handler);
-    alpha_slider = new slider(min, max, default_alpha, true, centered_handler);
+    mono_slider =
+        new knob_color_slider(min, max, default_red, centered_handler);
+    red_slider = new knob_color_slider(min, max, default_red, centered_handler);
+    green_slider =
+        new knob_color_slider(min, max, default_green, centered_handler);
+    blue_slider =
+        new knob_color_slider(min, max, default_blue, centered_handler);
+    alpha_slider =
+        new knob_color_slider(min, max, default_alpha, centered_handler);
 
     color_sample_button = new QPushButton(this);
     palette_button = new QPushButton(this);
@@ -79,13 +67,7 @@ knob_color::knob_color(knob_props props, float min, float max, float r, float g,
 
 knob_color::~knob_color()
 {
-    delete mono_edit;
     delete mono_slider;
-
-    delete red_vedit;
-    delete green_vedit;
-    delete blue_vedit;
-    delete alpha_vedit;
 
     delete red_hedit;
     delete green_hedit;
@@ -96,15 +78,6 @@ knob_color::~knob_color()
     delete green_slider;
     delete blue_slider;
     delete alpha_slider;
-
-    delete red_layout;
-    delete green_layout;
-    delete blue_layout;
-    delete alpha_layout;
-    delete red_widget;
-    delete green_widget;
-    delete blue_widget;
-    delete alpha_widget;
 
     delete color_sample_button;
     delete palette_button;
@@ -139,21 +112,19 @@ void knob_color::set_init_color(float red, float green, float blue, float alpha)
     }
     //
     //
-    set_color(red, green, blue, alpha, true, false);
+    set_color(red, green, blue, alpha, false);
 }
 
 void knob_color::restore_default()
 {
     knob::restore_default();
-    set_color(default_red, default_green, default_blue, default_alpha, true,
-              false);
+    set_color(default_red, default_green, default_blue, default_alpha, false);
 }
 
 void knob_color::restore_param()
 {
     QJsonArray param_value = get_param_value().toArray();
     QJsonArray _default = get_default().toArray();
-    ;
 
     default_red = _default.at(0).toDouble();
     default_green = _default.at(1).toDouble();
@@ -193,17 +164,15 @@ void knob_color::set_visible_mono_color(bool visible, bool emmit_signal)
     }
 
     mono_slider->setVisible(visible);
-    mono_edit->setVisible(visible);
 
     if (visible)
     {
         // promedia todos los colores para el mono color
         float color = (red + green + blue) / 3.0;
 
-        mono_edit->setText(QString::number(color));
         mono_slider->set_value(color);
 
-        set_color(color, color, color, color, true, emmit_signal);
+        set_color(color, color, color, color, emmit_signal);
     }
 
     qt::set_property(mono_color_button, "active", !visible);
@@ -275,7 +244,7 @@ void knob_color::toogle_color_picker_option()
 }
 
 void knob_color::set_color(float _red, float _green, float _blue, float _alpha,
-                           bool set_sliders, bool emmit_signal)
+                           bool emmit_signal)
 {
     red = _red;
     green = _green;
@@ -283,31 +252,19 @@ void knob_color::set_color(float _red, float _green, float _blue, float _alpha,
     alpha = _alpha;
 
     if (red == green && red == blue && red == alpha)
-    {
-        mono_edit->setText(QString::number(red));
-        if (set_sliders)
-            mono_slider->set_value(red);
-    }
+        mono_slider->set_value(red);
 
-    red_vedit->setText(QString::number(red));
     red_hedit->setText(QString::number(red));
+    red_slider->set_value(red);
 
-    green_vedit->setText(QString::number(green));
     green_hedit->setText(QString::number(green));
+    green_slider->set_value(green);
 
-    blue_vedit->setText(QString::number(blue));
     blue_hedit->setText(QString::number(blue));
+    blue_slider->set_value(blue);
 
-    alpha_vedit->setText(QString::number(alpha));
     alpha_hedit->setText(QString::number(alpha));
-
-    if (set_sliders)
-    {
-        red_slider->set_value(red);
-        green_slider->set_value(green);
-        blue_slider->set_value(blue);
-        alpha_slider->set_value(alpha);
-    }
+    alpha_slider->set_value(alpha);
 
     if (emmit_signal)
     {
@@ -342,7 +299,7 @@ void knob_color::set_color(float _red, float _green, float _blue, float _alpha,
 
 void knob_color::disable_alpha()
 {
-    alpha_widget->hide();
+    alpha_slider->hide();
     alpha_hedit->hide();
     mono_color_button->setText("3");
 }

@@ -376,105 +376,105 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left
   #knob_color QPushButton[disable=true] {
     color: #474d57; }
 
-#knob_color #red_edit {
-  border-bottom-color: red; }
-  #knob_color #red_edit::focus {
-    border-color: red; }
-
-#knob_color #green_edit {
-  border-bottom-color: green; }
-  #knob_color #green_edit::focus {
-    border-color: green; }
-
-#knob_color #blue_edit {
-  border-bottom-color: blue; }
-  #knob_color #blue_edit::focus {
-    border-color: blue; }
-
-#knob_color #alpha_edit {
-  border-bottom-color: white; }
-  #knob_color #alpha_edit::focus {
-    border-color: white; }
-
-#knob_color #red_slider #slider_center {
+#knob_color #red_slider #slider #slider_center {
   background: #1e2024;
   border-radius: 2px; }
-  #knob_color #red_slider #slider_center[disable=true] {
+  #knob_color #red_slider #slider #slider_center[disable=true] {
     background: #25282d; }
 
-#knob_color #red_slider #slider_handler {
+#knob_color #red_slider #slider #slider_handler {
   background: #5e6673;
   border-radius: 7px; }
-  #knob_color #red_slider #slider_handler[disable=true] {
+  #knob_color #red_slider #slider #slider_handler[disable=true] {
     background: #474d57; }
-  #knob_color #red_slider #slider_handler[disable=false]:hover {
+  #knob_color #red_slider #slider #slider_handler[disable=false]:hover {
     background: #ffcc00; }
 
-#knob_color #red_slider #slider_center {
+#knob_color #red_slider #slider #slider_center {
   border-bottom: 1px solid #8f1012; }
 
-#knob_color #red_slider #slider_handler {
+#knob_color #red_slider #slider #slider_handler {
   background: red; }
 
-#knob_color #green_slider #slider_center {
+#knob_color #red_slider QLineEdit {
+  border-bottom-color: red; }
+  #knob_color #red_slider QLineEdit::focus {
+    border-color: red; }
+
+#knob_color #green_slider #slider #slider_center {
   background: #1e2024;
   border-radius: 2px; }
-  #knob_color #green_slider #slider_center[disable=true] {
+  #knob_color #green_slider #slider #slider_center[disable=true] {
     background: #25282d; }
 
-#knob_color #green_slider #slider_handler {
+#knob_color #green_slider #slider #slider_handler {
   background: #5e6673;
   border-radius: 7px; }
-  #knob_color #green_slider #slider_handler[disable=true] {
+  #knob_color #green_slider #slider #slider_handler[disable=true] {
     background: #474d57; }
-  #knob_color #green_slider #slider_handler[disable=false]:hover {
+  #knob_color #green_slider #slider #slider_handler[disable=false]:hover {
     background: #ffcc00; }
 
-#knob_color #green_slider #slider_center {
+#knob_color #green_slider #slider #slider_center {
   border-bottom: 1px solid #0f5012; }
 
-#knob_color #green_slider #slider_handler {
+#knob_color #green_slider #slider #slider_handler {
   background: green; }
 
-#knob_color #blue_slider #slider_center {
+#knob_color #green_slider QLineEdit {
+  border-bottom-color: green; }
+  #knob_color #green_slider QLineEdit::focus {
+    border-color: green; }
+
+#knob_color #blue_slider #slider #slider_center {
   background: #1e2024;
   border-radius: 2px; }
-  #knob_color #blue_slider #slider_center[disable=true] {
+  #knob_color #blue_slider #slider #slider_center[disable=true] {
     background: #25282d; }
 
-#knob_color #blue_slider #slider_handler {
+#knob_color #blue_slider #slider #slider_handler {
   background: #5e6673;
   border-radius: 7px; }
-  #knob_color #blue_slider #slider_handler[disable=true] {
+  #knob_color #blue_slider #slider #slider_handler[disable=true] {
     background: #474d57; }
-  #knob_color #blue_slider #slider_handler[disable=false]:hover {
+  #knob_color #blue_slider #slider #slider_handler[disable=false]:hover {
     background: #ffcc00; }
 
-#knob_color #blue_slider #slider_center {
+#knob_color #blue_slider #slider #slider_center {
   border-bottom: 1px solid #090abd; }
 
-#knob_color #blue_slider #slider_handler {
+#knob_color #blue_slider #slider #slider_handler {
   background: blue; }
 
-#knob_color #alpha_slider #slider_center {
+#knob_color #blue_slider QLineEdit {
+  border-bottom-color: blue; }
+  #knob_color #blue_slider QLineEdit::focus {
+    border-color: blue; }
+
+#knob_color #alpha_slider #slider #slider_center {
   background: #1e2024;
   border-radius: 2px; }
-  #knob_color #alpha_slider #slider_center[disable=true] {
+  #knob_color #alpha_slider #slider #slider_center[disable=true] {
     background: #25282d; }
 
-#knob_color #alpha_slider #slider_handler {
+#knob_color #alpha_slider #slider #slider_handler {
   background: #5e6673;
   border-radius: 7px; }
-  #knob_color #alpha_slider #slider_handler[disable=true] {
+  #knob_color #alpha_slider #slider #slider_handler[disable=true] {
     background: #474d57; }
-  #knob_color #alpha_slider #slider_handler[disable=false]:hover {
+  #knob_color #alpha_slider #slider #slider_handler[disable=false]:hover {
     background: #ffcc00; }
 
-#knob_color #alpha_slider #slider_center {
+#knob_color #alpha_slider #slider #slider_center {
   border-bottom: 1px solid #8f9092; }
 
-#knob_color #alpha_slider #slider_handler {
+#knob_color #alpha_slider #slider #slider_handler {
   background: white; }
+
+#knob_color #alpha_slider QLineEdit {
+  border-bottom-color: white; }
+  #knob_color #alpha_slider QLineEdit::focus {
+    border-color: white; }
 
 #knob_group QWidget {
   padding: 0px;

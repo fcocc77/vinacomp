@@ -11,8 +11,8 @@
 // VINACOMP
 #include <knob.h>
 #include <qt.h>
-#include <slider.h>
 #include <color_picker.h>
+#include <knob_color_slider.h>
 
 class knob_color : public knob
 {
@@ -29,8 +29,6 @@ private:
     QHBoxLayout *separate_colors_box_layout;
     QVBoxLayout *separate_colors_slider_layout;
 
-    QLineEdit *mono_edit;
-    slider *mono_slider;
     color_picker *_color_picker;
 
     QPushButton *color_sample_button;
@@ -41,29 +39,9 @@ private:
     QPushButton *hsl_button;
     QPushButton *picker_button;
 
-    QWidget *red_widget;
-    QWidget *green_widget;
-    QWidget *blue_widget;
-    QWidget *alpha_widget;
-    QHBoxLayout *red_layout;
-    QHBoxLayout *green_layout;
-    QHBoxLayout *blue_layout;
-    QHBoxLayout *alpha_layout;
-
-    QLineEdit *red_vedit;
-    QLineEdit *green_vedit;
-    QLineEdit *blue_vedit;
-    QLineEdit *alpha_vedit;
-
-    QLineEdit *red_hedit;
-    QLineEdit *green_hedit;
-    QLineEdit *blue_hedit;
-    QLineEdit *alpha_hedit;
-
-    slider *red_slider;
-    slider *green_slider;
-    slider *blue_slider;
-    slider *alpha_slider;
+    knob_color_slider *red_slider, *green_slider, *blue_slider, *alpha_slider;
+    knob_color_slider *mono_slider;
+    QLineEdit *red_hedit, *green_hedit, *blue_hedit, *alpha_hedit;
 
     float red, green, blue, alpha;
     float default_red, default_green, default_blue, default_alpha;
@@ -101,7 +79,7 @@ public:
     void set_init_color(float red, float green, float blue, float alpha = 1);
 
     void set_color(float red, float green, float blue, float alpha = 1,
-                   bool set_sliders = true, bool emmit_signal = true);
+                   bool emmit_signal = true);
 
     void disable_alpha();
 signals:

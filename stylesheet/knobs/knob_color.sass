@@ -7,43 +7,26 @@
     QLineEdit
         background: $b13
     @include small_button
-    #red_edit
-        border-bottom-color: red
-        &::focus
-            border-color: red
-    #green_edit
-        border-bottom-color: green
-        &::focus
-            border-color: green
-    #blue_edit
-        border-bottom-color: blue
-        &::focus
-            border-color: blue
-    #alpha_edit
-        border-bottom-color: white
-        &::focus
-            border-color: white
+
+    @mixin slider_color($color, $percent)
+        #slider
+            @include slider_base
+            #slider_center
+                border-bottom: 1px solid mix($color, $b12, $percent)
+            #slider_handler
+                background: $color
+        QLineEdit
+            border-bottom-color: $color
+            &::focus
+                border-color: $color
     #red_slider
-        @include slider_base
-        #slider_center
-            border-bottom: 1px solid mix(red, $b12, 50%)
-        #slider_handler
-            background: red
+        @include slider_color(red, 50%)
+
     #green_slider
-        @include slider_base
-        #slider_center
-            border-bottom: 1px solid mix(green, $b12, 50%)
-        #slider_handler
-            background: green
+        @include slider_color(green, 50%)
+
     #blue_slider
-        @include slider_base
-        #slider_center
-            border-bottom: 1px solid mix(blue, $b12, 70%)
-        #slider_handler
-            background: blue
+        @include slider_color(blue, 70%)
+
     #alpha_slider
-        @include slider_base
-        #slider_center
-            border-bottom: 1px solid mix(white, $b12, 50%)
-        #slider_handler
-            background: white
+        @include slider_color(white, 50%)
