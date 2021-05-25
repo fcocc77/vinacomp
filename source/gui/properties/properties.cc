@@ -43,7 +43,6 @@ void properties::setup_ui()
     trim_panels_layout->setDirection(QBoxLayout::BottomToTop);
 
     QScrollArea *scrollArea = new QScrollArea(this);
-    scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     scrollArea->setWidgetResizable(true);
     scrollArea->setWidget(trim_panels);
 

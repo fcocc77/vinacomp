@@ -60,7 +60,7 @@ QWidget *script_editor::tools_setup_ui()
     font_size_slider->set_animatable(false);
     font_size_slider->set_init_space(100);
     font_size_slider->set_init_label_text("Font Size");
-    font_size_slider->setMaximumWidth(500);
+    font_size_slider->setFixedWidth(300);
 
     save_action->set_visible(false);
     exit_action->set_visible(false);

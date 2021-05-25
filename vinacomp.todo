@@ -70,6 +70,7 @@ gui__node_graph:
     ☐ ordenado de nodos
     ✔ conectar los nodos extraidos cuando son mas que 1 nodos @done(2021-04-28 22:21) @project(gui__node_graph)
     ✔ desaparecen los link fantasmas al activar el 'allow_insertion_between_nodes' en false, hay que activarlo otra vez sin afectar en la creacion de dot que tambien se usa @done(2021-04-28 22:40) @project(gui__node_graph)
+    ☐ node_finder: buscar forma para que siempre quede dentro del node view, y el line edit siempre quede en la parte superior
     ☐ terminal undo redo
     ✔ al crear un nodo desde el menu y no hay ningun otro nodo seleccionado, que el nuevo nodo quede en el centro @done(2021-05-03 12:26) @project(gui__node_graph)
     ☐ el node finder ni el rename dialog funcionan cuando hay 2 o mas node_graph abiertos al mismo tiempo
