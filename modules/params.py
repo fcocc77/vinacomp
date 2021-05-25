@@ -11,6 +11,9 @@ class params:
     def get_value(self) -> float:
         return __py_params__.get_value(self.node_name, self.param_name);
 
+    def set_value(self, value: float) -> float:
+        return __py_params__.set_value(self.node_name, self.param_name, value);
+
 
 def get_param(node_name: str, param_name: str):
     if __py_params__.param_exists(node_name, param_name):
