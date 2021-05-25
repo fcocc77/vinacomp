@@ -10,15 +10,14 @@ class roto_gui : public node_gui
 {
 private:
     QTreeWidget *tree;
-    QVBoxLayout *layout;
 
     QWidget *buttons;
 
     button *add_button, *remove_button;
-    void setup_knobs() override;
+    void setup_knobs(QMap<QString, QVBoxLayout *> layouts) override;
 
 public:
-    roto_gui(QVBoxLayout *layout);
+    roto_gui();
     ~roto_gui();
 
     void changed(knob *_knob) override;

@@ -13,7 +13,6 @@
 class node_gui : public QWidget
 {
 private:
-    QWidget *_trim_panel;
     QJsonObject knob_data;
     QJsonObject *params;
 
@@ -23,6 +22,7 @@ protected:
     project_struct *project;
     project_settings *_project_settings;
     QString name;
+    QWidget *_trim_panel;
 
     knob *get_knob(QString name) const;
     void update_value(QJsonValue value);
@@ -36,7 +36,7 @@ public:
     void setup_env(QWidget *_trim_panel, QWidget *_vinacomp, QJsonObject *params,
                QJsonObject knob_data, QString name);
 
-    virtual void setup_knobs();
+    virtual void setup_knobs(QMap<QString, QVBoxLayout *> layouts);
     virtual void changed(knob *_knob);
     virtual void close();
     inline QString get_name() const;

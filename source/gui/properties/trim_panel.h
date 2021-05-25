@@ -66,7 +66,7 @@ private:
 
     QWidget *dividing_line_v, *dividing_line_h;
 
-    node_gui *setup_gui_panels(QJsonArray _knobs, QVBoxLayout *_layout);
+    void setup_gui_panels();
     QWidget *setup_tool_bar();
     void setup_shared_params();
     void update_render();
@@ -95,7 +95,7 @@ public:
     void float_panel(bool enable, bool relocate = true);
     void update_custom_knobs();
     void maximize(bool _maximize);
-    void add_tab(QString tab_name, int index = -1);
+    QVBoxLayout *add_tab(QString tab_name, int index = -1);
     void set_edit_mode(bool enable);
     void remove_custom_knob(QString knob_name);
     inline QWidget *get_dividing_line_v() const;

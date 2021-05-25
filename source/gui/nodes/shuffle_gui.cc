@@ -1,7 +1,7 @@
 #include <shuffle_gui.h>
 #include <qt.h>
 
-shuffle_gui::shuffle_gui(QVBoxLayout *controls_layout)
+shuffle_gui::shuffle_gui()
     : dragging_input(nullptr)
     , dragging(false)
 {
@@ -45,14 +45,15 @@ shuffle_gui::shuffle_gui(QVBoxLayout *controls_layout)
     main_layout->addWidget(input_layer);
     main_layout->addWidget(connection_viewer);
     main_layout->addWidget(output_layer);
-
-    controls_layout->addWidget(this);
 }
 
 shuffle_gui::~shuffle_gui() {}
 
-void shuffle_gui::setup_knobs()
+void shuffle_gui::setup_knobs(QMap<QString, QVBoxLayout *> layouts)
 {
+    QVBoxLayout *controls_layout = layouts.value("Controls");
+
+    controls_layout->addWidget(this);
     restore_param();
 }
 

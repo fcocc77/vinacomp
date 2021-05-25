@@ -1,8 +1,7 @@
 #include <roto_gui.h>
 
-roto_gui::roto_gui(QVBoxLayout *_layout)
+roto_gui::roto_gui()
     : tree(new QTreeWidget)
-    , layout(_layout)
 {
     tree->setAlternatingRowColors(true);
     QStringList columns{"Label", "Visibility", "Lock"};
@@ -32,10 +31,12 @@ roto_gui::~roto_gui()
     delete remove_button;
 }
 
-void roto_gui::setup_knobs()
+void roto_gui::setup_knobs(QMap<QString, QVBoxLayout *> layouts)
 {
-    layout->addWidget(tree);
-    layout->addWidget(buttons);
+    QVBoxLayout *controls_layout = layouts.value("Controls");
+
+    controls_layout->addWidget(tree);
+    controls_layout->addWidget(buttons);
 }
 
 void roto_gui::changed(knob *_knob) {}

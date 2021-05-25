@@ -44,7 +44,7 @@ QJsonValue node_gui::get_param_value() const
         return get_default();
 }
 
-void node_gui::setup_knobs() {}
+void node_gui::setup_knobs(QMap<QString, QVBoxLayout *> layouts) {}
 
 void node_gui::close() {}
 

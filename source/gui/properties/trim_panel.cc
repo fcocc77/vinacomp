@@ -84,14 +84,19 @@ trim_panel::trim_panel(properties *__properties, QString _name, QString _type,
     tabs_only_read.push_back("Controls");
     tabs_only_read.push_back("Node");
 
+    setup_gui_panels();
+    QMap<QString, QVBoxLayout *> knobs_layouts;
+
     if (type == "group")
-        add_tab("Custom");
+        knobs_layouts["Custom"] = add_tab("Custom");
 
     for (QString tab_name : finded_tabs)
-        add_tab(tab_name);
+        knobs_layouts[tab_name] = add_tab(tab_name);
 
-    add_tab("Node");
-    //
+    knobs_layouts["Node"] = add_tab("Node");
+
+    if (_node_gui)
+        _node_gui->setup_knobs(knobs_layouts);
 
     update_custom_knobs();
 
@@ -274,14 +279,14 @@ void trim_panel::setup_shared_params()
         get_knob("disable_node")->set_visible(false);
 }
 
-node_gui *trim_panel::setup_gui_panels(QJsonArray _knobs, QVBoxLayout *_layout)
+void trim_panel::setup_gui_panels()
 {
     // todos estos nodo gui son solo si el nodo efecto tiene algun boton
     // u otra interface adicional a las que se generan en 'setup_knobs'
     // por eso solo son algunos nodos y no todos
     QJsonObject knob_data;
 
-    node_gui *_node_gui = nullptr;
+    _node_gui = nullptr;
 
     if (type == "frame_range")
         _node_gui = new frame_range_gui();
@@ -292,17 +297,15 @@ node_gui *trim_panel::setup_gui_panels(QJsonArray _knobs, QVBoxLayout *_layout)
     else if (type == "group")
         _node_gui = new group_gui(nodes_loaded);
     else if (type == "roto")
-        _node_gui = new roto_gui(_layout);
+        _node_gui = new roto_gui();
     else if (type == "shuffle")
     {
-        knob_data = _knobs[0].toObject();
-        _node_gui = new shuffle_gui(_layout);
+        // knob_data = _knobs[0].toObject();
+        _node_gui = new shuffle_gui();
     }
 
     if (_node_gui)
         _node_gui->setup_env(this, _vinacomp, params, knob_data, name);
-
-    return _node_gui;
 }
 
 QWidget *trim_panel::setup_tool_bar()
@@ -380,7 +383,7 @@ QWidget *trim_panel::setup_tool_bar()
     return tool_bar;
 }
 
-void trim_panel::add_tab(QString tab_name, int index)
+QVBoxLayout *trim_panel::add_tab(QString tab_name, int index)
 {
     setup_knobs_props props;
 
@@ -392,6 +395,7 @@ void trim_panel::add_tab(QString tab_name, int index)
     props.project = project;
     props.this_node = this_node;
     props.vinacomp = _vinacomp;
+    props._node_gui = _node_gui;
 
     // si el tab no existe lo crea
     tab *_tab = tabs->get_tab(tab_name);
@@ -427,7 +431,7 @@ void trim_panel::add_tab(QString tab_name, int index)
 
         props.knobs_array = this_tab_custom_knobs;
         setup_knobs(props);
-        return;
+        return tab_layout;
     }
     //
 
@@ -437,7 +441,7 @@ void trim_panel::add_tab(QString tab_name, int index)
         setup_knobs(props);
         setup_shared_params();
 
-        return;
+        return tab_layout;
     }
 
     QJsonArray this_tab_knobs;
@@ -456,14 +460,10 @@ void trim_panel::add_tab(QString tab_name, int index)
             this_tab_knobs.push_back(knob);
     }
 
-    _node_gui = setup_gui_panels(this_tab_knobs, tab_layout);
-
     props.knobs_array = this_tab_knobs;
-    props._node_gui = _node_gui;
-
     setup_knobs(props);
-    if (_node_gui)
-        _node_gui->setup_knobs();
+
+    return tab_layout;
 }
 
 void trim_panel::delete_tab(QString tab_name)

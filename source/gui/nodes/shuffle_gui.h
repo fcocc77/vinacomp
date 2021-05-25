@@ -123,10 +123,10 @@ private:
     out_connector *get_out_connector(QPoint position) const;
     void to_connect(in_connector *in_conn, out_connector *out_conn);
     void restore_param();
-    void setup_knobs() override;
+    void setup_knobs(QMap<QString, QVBoxLayout *> layouts) override;
 
 public:
-    shuffle_gui(QVBoxLayout *controls_layout);
+    shuffle_gui();
     ~shuffle_gui();
 
     void emmit_signal();
