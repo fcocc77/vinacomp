@@ -16,7 +16,7 @@ script_editor::script_editor(QJsonObject *_project, QWidget *_node_graph,
     setup_ui();
 
     action *run = new action("Run Script", "Ctrl+Return", "");
-    run->connect_to(editor, [this]() { run_script(); });
+    run->connect_to(editor, [this]() { run_script_from_editor(); });
 
     python_initialize();
 }
@@ -43,11 +43,22 @@ void script_editor::append_output(QString text, QColor color)
     output->setTextColor(text_color);
 }
 
-void script_editor::run_script()
+void script_editor::run_script_from_editor(bool output_log)
 {
-    QString out = python_run(editor->toPlainText());
+    QString script = editor->toPlainText();
 
-    append_output(editor->toPlainText(), {100, 100, 100});
+    if (output_log)
+        run_script(script);
+    else
+        python_run(script);
+}
+
+void script_editor::run_script(QString script, bool input_script_log)
+{
+    QString out = python_run(script);
+
+    if (input_script_log)
+        append_output(editor->toPlainText(), {100, 100, 100});
 
     if (out.contains("Error:"))
         append_output(out, {200, 0, 0});

@@ -1,11 +1,13 @@
 #include <script_editor.h>
 #include <py_app.h>
 #include <py_nodes.h>
+#include <py_params.h>
 
 void script_editor::python_initialize()
 {
     py_app::init_module();
     py_nodes::init_module(node_graph);
+    py_params::init_module(node_graph);
 
     Py_Initialize();
     python_module = PyImport_AddModule("__main__");

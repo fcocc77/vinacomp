@@ -67,22 +67,23 @@ private:
     void save_and_exit();
     void cancel_exit();
 
-    void run_script();
     void run_expression();
     void append_output(QString text, QColor color = Qt::white);
     QWidget *set_expression_editor_bar();
 
     // python
     void python_initialize();
-    QString python_run(QString command);
     std::string std_out_err;
     PyObject *python_module;
-    //
+    QString python_run(QString command);
 
 public:
     script_editor(QJsonObject *_project, QWidget *_node_graph,
                   bool expression_editor = false);
     ~script_editor();
+
+    void run_script(QString script, bool output_log = true);
+    void run_script_from_editor(bool input_script_log = true);
 
     void open_script_from_project();
     void set_knob(QWidget *knob);

@@ -65,6 +65,7 @@ void script_editor::exit_group_edit()
     group_separator_2->setVisible(false);
 
     editor->setPlainText(script);
+    output->clear();
 }
 
 void script_editor::cancel_exit()

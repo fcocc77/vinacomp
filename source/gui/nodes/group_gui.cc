@@ -13,7 +13,7 @@
 group_gui::group_gui(nodes_load *_nodes_loaded)
     : nodes_loaded(_nodes_loaded)
 {
-    script = "def callback(node: str, param: str):";
+    script = "def callback(node, param):\n    print(node);print(param)";
 }
 
 group_gui::~group_gui() {}
@@ -26,6 +26,8 @@ void group_gui::changed(knob *_knob)
         export_plugin();
     else if (name == "edit_script")
         edit_script();
+
+    run_script(_knob->get_node_name(), name);
 }
 
 void group_gui::close()
@@ -50,6 +52,18 @@ void group_gui::edit_script()
 void group_gui::save_script(QString _script)
 {
     script = _script;
+}
+
+void group_gui::run_script(QString node_name, QString param_name)
+{
+    script_editor *_script_editor =
+        static_cast<vinacomp *>(_vinacomp)->get_script_editor();
+
+    _script_editor->run_script_from_editor(false);
+    _script_editor->run_script("___node = vina.get_node(\"" + node_name +
+                                   "\");\ncallback(___node, ___node.get_param(\"" +
+                                   param_name + "\") )",
+                               false);
 }
 
 void group_gui::export_plugin()

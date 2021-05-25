@@ -83,7 +83,7 @@ QWidget *script_editor::tools_setup_ui()
     });
 
     clear_action->connect_to(this, [=]() { output->clear(); });
-    run_script_action->connect_to(this, [=]() { run_script(); });
+    run_script_action->connect_to(this, [=]() { run_script_from_editor(); });
 
     save_action->connect_to(this, [=]() { save_script(); });
     exit_action->connect_to(this, [=]() { exit_script(); });

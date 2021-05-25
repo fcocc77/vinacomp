@@ -12,6 +12,7 @@ private:
 
     void export_plugin();
     void edit_script();
+    void run_script(QString node_name, QString param_name);
 
     void close() override;
 

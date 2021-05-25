@@ -1,5 +1,5 @@
 import __py_nodes__
-
+import params
 
 class node:
 
@@ -13,7 +13,10 @@ class node:
         return __py_nodes__.set_position(self.name, x, y)
 
     def get_param(self, param_name):
-        return ""
+        return params.get_param(self.name, param_name)
+
+    def get_name(self):
+        return self.name
 
     def rename(self, name):
         __py_nodes__.rename(self.name, name)
