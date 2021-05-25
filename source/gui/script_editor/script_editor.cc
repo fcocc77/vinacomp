@@ -1,5 +1,6 @@
 #include <script_editor.h>
 #include <action.h>
+#include <util.h>
 
 script_editor::script_editor(QJsonObject *_project, QWidget *_node_graph,
                              bool _expression_editor)
@@ -53,21 +54,25 @@ void script_editor::run_script_from_editor(bool output_log)
         python_run(script);
 }
 
-void script_editor::run_script(QString script, bool input_script_log)
+void script_editor::run_script(QString script, bool only_output,
+                               bool input_script_log)
 {
     QString out = python_run(script);
 
-    if (input_script_log)
+    if (input_script_log && !only_output)
         append_output(editor->toPlainText(), {100, 100, 100});
 
     if (out.contains("Error:"))
         append_output(out, {200, 0, 0});
     else
     {
-        if (out.isEmpty())
-            append_output("...", {50, 150, 80});
-        else
-            append_output("Result:", {50, 150, 80});
+        if (!only_output)
+        {
+            if (out.isEmpty())
+                append_output("...", {50, 150, 80});
+            else
+                append_output("Result:", {50, 150, 80});
+        }
         append_output(out, {100, 150, 200});
     }
 

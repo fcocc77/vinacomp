@@ -81,8 +81,9 @@ public:
                   bool expression_editor = false);
     ~script_editor();
 
-    void run_script(QString script, bool output_log = true);
-    void run_script_from_editor(bool input_script_log = true);
+    void run_script_from_editor(bool output_log = true);
+    void run_script(QString script, bool only_output = false,
+                    bool input_script_log = true);
     QString python_run(QString command);
 
     void open_script_from_project();
