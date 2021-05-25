@@ -6,6 +6,7 @@
 #include <group_gui.h>
 #include <write_gui.h>
 #include <roto_gui.h>
+#include <node_plugin_gui.h>
 #include <knob_text.h>
 #include <knob_color.h>
 #include <knob_check_box.h>
@@ -303,6 +304,11 @@ void trim_panel::setup_gui_panels()
         // knob_data = _knobs[0].toObject();
         _node_gui = new shuffle_gui();
     }
+
+    QString script_path =
+        nodes_loaded->get_effect(type).value("script").toString();
+    if (!script_path.isEmpty())
+        _node_gui = new node_plugin_gui(script_path);
 
     if (_node_gui)
         _node_gui->setup_env(this, _vinacomp, params, knob_data, name);

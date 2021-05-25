@@ -12,11 +12,10 @@
 
 class node_gui : public QWidget
 {
-private:
+protected:
     QJsonObject knob_data;
     QJsonObject *params;
 
-protected:
     QWidget *_vinacomp;
     renderer *_renderer;
     project_struct *project;

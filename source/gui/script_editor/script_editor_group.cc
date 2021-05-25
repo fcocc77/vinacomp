@@ -58,7 +58,8 @@ void script_editor::save_and_exit()
 void script_editor::exit_group_edit()
 {
     group_gui *group = static_cast<group_gui *>(current_group);
-    group->set_open_script(false);
+    if (group)
+        group->set_open_script(false);
 
     current_group = nullptr;
 

@@ -64,6 +64,8 @@ void nodes_load::load_py_plugins()
         if (icons.contains(group))
             group_icon = py_plugins_dir + "/" + name + ".png";
 
+        effect.insert("script", py_plugins_dir + "/" + name + ".py");
+
         py_plugins_groups.insert(group, {group, group_icon});
 
         effects.insert(effect_id, effect);
