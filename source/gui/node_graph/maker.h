@@ -21,7 +21,6 @@ private:
     QWidget *_vinacomp;
 
     QColor default_color(QString effect_group);
-    QString get_available_name(QString name) const;
 
 public:
     maker(QWidget *_vinacomp, properties *_properties,
@@ -29,6 +28,7 @@ public:
           QWidget *_node_graph);
     ~maker();
 
+    static QString get_available_name(node_view *_node_view, QString name);
     node *create_fx(QString id, bool basic_creation = false);
     inline node_finder *get_finder() const;
 };

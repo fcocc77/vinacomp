@@ -28,7 +28,7 @@ maker::maker(QWidget *__vinacomp, properties *__properties,
 
 maker::~maker() {}
 
-QString maker::get_available_name(QString name) const
+QString maker::get_available_name(node_view *_node_view, QString name)
 {
     QString available_name = name + "1";
 
@@ -64,7 +64,7 @@ node *maker::create_fx(QString id, bool basic_creation)
 
     // Creación del nodo, con un nombre que no se ha utilizado.
     node_struct node_data;
-    node_data.name = get_available_name(name);
+    node_data.name = get_available_name(_node_view, name);
     node_data.color = color;
     node_data.type = id;
     node_data.params = nullptr;

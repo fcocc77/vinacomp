@@ -72,8 +72,10 @@ void node_plugin_gui::convert_to_group()
     node *_node = static_cast<node *>(this_node);
     trim_panel *panel = static_cast<trim_panel *>(_trim_panel);
 
+    QString group_name = name + "_group";
+
     node_struct props;
-    props.name = name + "_group";
+    props.name = maker::get_available_name(__node_view, group_name);
     props.type = "group";
     props.color = _node->get_color();
     props.params = nullptr;
