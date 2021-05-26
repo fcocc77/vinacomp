@@ -1,0 +1,7 @@
+{
+    "group": "other",
+    "id": "output",
+    "label": "Output",
+    "icon": "output_node",
+    "knobs": []
+}

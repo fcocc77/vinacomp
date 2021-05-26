@@ -148,7 +148,13 @@ public:
     void set_visible_expression_link(bool visible);
     inline QString get_group_name() const;
     inline QWidget *get_node_view() const;
+    inline output_link *get_output_link() const;
 };
+
+inline output_link *node::get_output_link() const
+{
+    return _output_link;
+}
 
 inline QWidget *node::get_node_view() const
 {

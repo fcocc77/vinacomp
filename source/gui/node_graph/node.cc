@@ -39,7 +39,12 @@ node::node(node_props _props, QMap<QString, node *> *_selected_nodes,
 
     props.scene->addItem(this);
 
-    if (type != "backdrop")
+    if (type == "backdrop")
+        return;
+
+    this->setZValue((*props.current_z_value) + 1);
+
+    if (type != "input")
     {
         QJsonObject node_fx = nodes_loaded->get_effect(props.type);
         // carga las entradas del efecto
@@ -66,13 +71,12 @@ node::node(node_props _props, QMap<QString, node *> *_selected_nodes,
             links->push_back(link);
             connected_indexs.push_back(false);
         }
-        //
-
-        this->setZValue((*props.current_z_value) + 1);
-
-        _output_link = new output_link(props.scene, _node_view, this);
-        _expression_link = new expression_link(props.scene, _node_view, this);
     }
+
+    _expression_link = new expression_link(props.scene, _node_view, this);
+
+    if (type != "output")
+        _output_link = new output_link(props.scene, _node_view, this);
 }
 
 node::~node()
@@ -101,7 +105,7 @@ void node::make_panel(bool float_panel)
     QString name = get_name();
 
     // Crear panel de 'knobs'
-    QStringList nodes_without_panel = {"viewer", "dot"};
+    QStringList nodes_without_panel = {"viewer", "dot", "input", "output"};
 
     if (!nodes_without_panel.contains(type))
     {
@@ -118,28 +122,28 @@ void node::make_panel(bool float_panel)
 
 void node::refresh()
 {
-    if (!links)
-        return;
-
     // Actualizacion de todos los links conectados al nodo
     auto refresh_links = [](node *_node) {
-        for (node_link *_node_link : *_node->get_links())
-            _node_link->refresh();
+        auto *links = _node->get_links();
+        if (links)
+            for (node_link *_node_link : *links)
+                _node_link->refresh();
+
+        if (_node->get_output_link())
+            _node->get_output_link()->refresh();
     };
 
     refresh_links(this);
+
     // refresca los link de cada nodo seleccionado y los
     // link de los nodos que estan conectados a la salida.
     for (node *output_node : *this->get_output_nodes())
         if (output_node)
             refresh_links(output_node);
-    //
-    //
 
     for (node *linked_node : linked_nodes)
         linked_node->get_expression_link()->refresh();
 
-    _output_link->refresh();
     _expression_link->refresh();
 }
 
