@@ -221,8 +221,9 @@ void node_view::extract_node(node *_node)
     if (link_1)
         node_from_input_1 = link_1->get_connected_node();
 
-    for (node_link *link : *_node->get_links())
-        link->disconnect_node();
+    if (_node->get_links())
+        for (node_link *link : *_node->get_links())
+            link->disconnect_node();
 
     for (node_link *output_link : _node->get_output_links())
     {
