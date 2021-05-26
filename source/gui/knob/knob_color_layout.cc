@@ -123,20 +123,29 @@ void knob_color::connections()
                                                 level_slider->get_value());
         set_color(color);
 
-        _color_picker->set_hsl(value);
+        _color_picker->set_hsl(hue_slider->get_value(), sat_slider->get_value(),
+                               level_slider->get_value());
     });
 
     connect(sat_slider, &knob_color_slider::changed, this, [this](float value) {
         QColor color = color_picker::hsl_to_rgb(hue_slider->get_value(), value,
                                                 level_slider->get_value());
         set_color(color);
+
+        _color_picker->set_hsl(hue_slider->get_value(), sat_slider->get_value(),
+                               level_slider->get_value());
     });
 
     connect(level_slider, &knob_color_slider::changed, this,
             [this](float value) {
                 QColor color = color_picker::hsl_to_rgb(
                     hue_slider->get_value(), sat_slider->get_value(), value);
+
                 set_color(color);
+
+                _color_picker->set_hsl(hue_slider->get_value(),
+                                       sat_slider->get_value(),
+                                       level_slider->get_value());
             });
 
     // Edits Horizontales
@@ -176,5 +185,9 @@ void knob_color::connections()
     //
 
     connect(_color_picker, &color_picker::changed, this,
-            [this](QColor color) { set_color(color); });
+            [this](QColor color, float hue, float sat, float level) {
+                sat_slider->set_value(sat);
+                level_slider->set_value(level);
+                set_color(color);
+            });
 }

@@ -40,7 +40,12 @@ knob_color_slider::~knob_color_slider()
     delete _slider;
 }
 
-void knob_color_slider::set_value(float value, bool emmit_signal) {}
+void knob_color_slider::set_value(float _value, bool emmit_signal)
+{
+    value = _value;
+    _slider->set_value(value);
+    edit->setText(QString::number(value));
+}
 
 void knob_color_slider::set_default_value(float _default_value)
 {
