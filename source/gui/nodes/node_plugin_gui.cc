@@ -12,7 +12,7 @@ node_plugin_gui::node_plugin_gui(QString script_path)
     if (is_plugin)
         script = fread(script_path);
     else
-        script = "def callback(node, param):\n    None";
+        script = "def main(node, param):\n    None";
 }
 
 node_plugin_gui::~node_plugin_gui() {}
@@ -49,12 +49,12 @@ void node_plugin_gui::run_script(QString node_name, QString param_name)
         static_cast<vinacomp *>(_vinacomp)->get_script_editor();
 
     QString exec = "___node = vina.get_node(\"" + node_name +
-                   "\");\ncallback(___node, ___node.get_param(\"" + param_name +
+                   "\");\nmain(___node, ___node.get_param(\"" + param_name +
                    "\") )";
 
     if (open_script)
     {
-        _script_editor->python_run("del ___node; del callback");
+        _script_editor->python_run("del ___node; del main");
         _script_editor->run_script_from_editor(false);
         _script_editor->run_script(exec, false, false);
     }
