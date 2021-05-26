@@ -107,10 +107,17 @@ public:
     inline QMap<QString, node *> *get_selected_nodes() const;
     inline bool is_expression_link_visible() const;
     void set_visible_expression_link(bool visible);
+    inline QWidget *get_node_graph() const;
+
 signals:
     void right_click();
     void clicked();
 };
+
+inline QWidget *node_view::get_node_graph() const
+{
+    return _node_graph;
+}
 
 inline bool node_view::is_expression_link_visible() const
 {

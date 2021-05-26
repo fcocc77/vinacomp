@@ -110,6 +110,7 @@ public:
     void set_animatable(bool _animatable = true);
     inline QJsonObject get_knob_data() const;
     inline int get_init_space_width() const;
+    QWidget *get_node_view() const;
 
     virtual void update_animated();
     virtual void restore_param();

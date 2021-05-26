@@ -116,7 +116,13 @@ public:
     void leave_properties(bool disable_edit_mode = true);
     void unlink_all();
     inline node_gui *get_node_gui() const;
+    inline QWidget *get_node_view() const;
 };
+
+inline QWidget *trim_panel::get_node_view() const
+{
+    return _node_view;
+}
 
 inline node_gui *trim_panel::get_node_gui() const
 {

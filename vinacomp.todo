@@ -45,7 +45,7 @@ gui__trim_panel:
     ☐ knob_editor: crear un nuevo tab cuando el nodo no es un grupo
     ☐ knob_editor: en el botton de arrastre del knob, al arrastra y soltarlo en el mismo boton, la linea de divicion de queda pegada
     ☐ knob_editor: el knob de color al editar el default queda en 0 en la caja de edicion
-    ☐ knob_editor: con la tecla tab que se valla cambiando el foco al siguiente QLineEdit
+    ☐ knob_editor: con la tecla tab que se valla cambiando el foco al siguiente QLineEdit y cuando de la vuelta que el foco quede en el primer line edit
     ☐ knob_editor: la linea de divicion queda pegada cuando el panel es flotante
     ✔ knob_editor: al arrastrar un knob de un nodo a otro, el index no se mantiene @done(2021-05-12 11:44) @project(gui__trim_panel)
     ✔ knob_editor: conservar el valor del params en el proyecto al mover o editar un knob, ya que al borrar el knob se elimina el params tambien @done(2021-05-12 12:32) @project(gui__trim_panel)
@@ -98,6 +98,7 @@ gui__knobs:
     ☐ knob_color: con la opcion de paleta activada, añadirle 2 opciones mas: hue correct en rgb, y hue correct con hsl
     ✔ knob_color: el menu de animacion tiene otro color @done(2021-05-20 21:51) @project(gui__knobs)
     ☐ knob_color: falta un picker, gotero
+    ☐ knob_color_slider: limitar decimal
 	☐ terminar button knob'
 	☐ terminar button knob'
 	☐ terminar choice knob'

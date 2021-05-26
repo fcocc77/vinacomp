@@ -481,3 +481,8 @@ void knob::restore_default()
     params->remove(linked_name);
     params->remove(linked_list_name);
 }
+
+QWidget *knob::get_node_view() const
+{
+    return static_cast<node *>(this_node)->get_node_view();
+}

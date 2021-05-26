@@ -5,6 +5,9 @@
 
 class node_plugin_gui : public node_gui
 {
+private:
+    void convert_to_group();
+
 protected:
     QString script;
     bool open_script;

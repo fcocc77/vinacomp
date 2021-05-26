@@ -311,7 +311,8 @@ void trim_panel::setup_gui_panels()
         _node_gui = new node_plugin_gui(script_path);
 
     if (_node_gui)
-        _node_gui->setup_env(this, _vinacomp, params, knob_data, name);
+        _node_gui->setup_env(this, _vinacomp, params, knob_data, name,
+                             _node_view, this_node);
 }
 
 QWidget *trim_panel::setup_tool_bar()

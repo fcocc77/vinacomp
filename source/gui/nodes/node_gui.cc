@@ -15,7 +15,8 @@ node_gui::~node_gui() {}
 
 void node_gui::setup_env(QWidget *__trim_panel, QWidget *___vinacomp,
                          QJsonObject *_params, QJsonObject _knob_data,
-                         QString _name)
+                         QString _name, QWidget *__node_view,
+                         QGraphicsItem *_this_node)
 {
     _vinacomp = ___vinacomp;
 
@@ -24,6 +25,8 @@ void node_gui::setup_env(QWidget *__trim_panel, QWidget *___vinacomp,
     params = _params;
     knob_data = _knob_data;
     vinacomp *__vinacomp = static_cast<vinacomp *>(_vinacomp);
+    _node_view = __node_view;
+    this_node = _this_node;
 
     _renderer = __vinacomp->get_renderer();
     project = __vinacomp->get_project();

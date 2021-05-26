@@ -29,6 +29,13 @@
 			"label": "Disable",
 			"tooltip": "disable_node",
 			"default": false
-		}
-	]
+		},
+        {
+            "name": "convert_to_group",
+            "label": "Convert to Group",
+            "type": "button",
+            "tooltip": "Turn the plugin into a group so you can edit its knobs",
+            "visible": false
+        }
+    ]
 }
