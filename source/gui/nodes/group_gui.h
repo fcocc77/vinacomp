@@ -14,6 +14,7 @@ private:
     void edit_script();
 
     void close() override;
+    QJsonObject get_child_nodes() const;
 
 public:
     group_gui(nodes_load *nodes_loaded);

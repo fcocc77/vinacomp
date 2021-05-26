@@ -48,6 +48,25 @@ void group_gui::edit_script()
     _panels_layout->open_script_editor();
 }
 
+QJsonObject group_gui::get_child_nodes() const
+{
+    QJsonObject child_nodes;
+    QJsonObject nodes = project->get_project_json().value("nodes").toObject();
+
+    for (QString node_name : nodes.keys())
+    {
+        QJsonObject node_obj = nodes.value(node_name).toObject();
+
+        QString group_name = name + '.';
+        QString basename = node_name.section(group_name, 1);
+
+        if (node_name.contains(group_name) && !basename.isEmpty())
+            child_nodes.insert(basename, node_obj);
+    }
+
+    return child_nodes;
+}
+
 void group_gui::export_plugin()
 {
     knob_text *name_knob = static_cast<knob_text *>(get_knob("name"));
@@ -92,6 +111,7 @@ void group_gui::export_plugin()
     plugin["label"] = name;
     plugin["icon"] = plugin_icon;
     plugin["knobs"] = *panel->custom_knobs;
+    plugin["nodes"] = get_child_nodes();
 
     jwrite(base_path + name + ".json", plugin);
 
