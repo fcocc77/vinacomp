@@ -1,7 +1,6 @@
 general:
-    ☐ depurar memoria con 'delete' usando 'valgrind' @high
+    ☐ depurar memoria con 'delete' usando 'valgrind' 
     ☐ crear api para plugins 'G`mic' con su libreria 'https://gmic.eu/libgmic.html' solo los efectos mas necesarios
-    ✔ crear ventana de archivos, para importar y exportar archivos, con un arbol de directorios y previsualizador de imagenes, y para guardar tags @done(2021-05-16 15:01) @project(general)
     ☐ crear un checklist con todas las partes del software, y con esa lista ir manualmente verificando si funciona
     ☐ file_dialog: iniciar con ruta por defecto
     ☐ panels_layout: la interface parpadea al cambiar de layout 'set_layout'
@@ -57,70 +56,46 @@ gui__trim_panel:
     ☐ knob_editor: el knob de color al editar el default queda en 0 en la caja de edicion
     ☐ knob_editor: con la tecla tab que se valla cambiando el foco al siguiente QLineEdit y cuando de la vuelta que el foco quede en el primer line edit
     ☐ knob_editor: la linea de divicion queda pegada cuando el panel es flotante
-    ✔ knob_editor: al arrastrar un knob de un nodo a otro, el index no se mantiene @done(2021-05-12 11:44) @project(gui__trim_panel)
-    ✔ knob_editor: conservar el valor del params en el proyecto al mover o editar un knob, ya que al borrar el knob se elimina el params tambien @done(2021-05-12 12:32) @project(gui__trim_panel)
-    ✔ knob_editor: guradar custom knobs en el proyecto @done(2021-05-13 11:39) @project(gui__trim_panel)
-    ✔ knob_editor: considerar tambien los knobs que vienen en el nodo, para que no queden con algun nombre que ya exista @done(2021-05-07 18:30) @project(gui__trim_panel)
     ☐ los knobs de texto y file quedan sin estilo cuando el panel es flotante
 
 gui__node_graph:
 	☐ crear grilla que switchee con el boton de 'grid'
-	✔ crear backdrop @done(2021-04-26 12:32) @project(gui__node_graph)
 	☐ el paneo y zoom van lento cuando hay un widget openGL visible, y si no hay un widget openGL visible, al arrastrar un nodo deja una estela
-    ✔ no permitir crear nombres de nodos cono punto '.' ya que estos se usan para la profundidad de donde esta el nodo en un grupo @done(2021-05-21 14:19) @project(gui__node_graph)
     ☐ la creacion de dot con control se queda pegado, al dejar presionado control cuando creamos un nodo con el 'node_finder'
-    ✔ en los grupos al crear 2 nodos del mismo tipo quedan con el mismo nombre @done(2021-05-21 14:33) @project(gui__node_graph)
-    ✔ al crear el nodo: que el nodo se conecte a los nodos de salida del nodo seleccionado @done(2021-04-26 12:32) @project(gui__node_graph)
-    ✔ snap a nodo superior e inferior @done(2021-04-27 11:57) @project(gui__node_graph)
     ☐ snap de todos los nodos que esten dentro de un backdrop con los que esten fuera, al mover el backdrop
-    ✔ guardad el 'zValue' de los backdrop al proyecto @done(2021-04-26 12:32) @project(gui__node_graph)
     ☐ al usar 'fit_view_to_nodes' y el nodo esta presionado, el nodo se mueve con el puntero del mouse
-    ✔ permutar entradas a y b de nodos con mas de un link con shft-x @done(2021-04-27 21:38) @project(gui__node_graph)
-    ✔ arrastrar todos los nodos conectados a un nodo, cuando esta presionado el control @done(2021-04-27 21:29) @project(gui__node_graph)
     ☐ calcular el backdrop con la profundidad mas cercana, al restaurar el proyecto y ponerla en 'current_z_value'
     ☐ ordenado de nodos
-    ✔ conectar los nodos extraidos cuando son mas que 1 nodos @done(2021-04-28 22:21) @project(gui__node_graph)
-    ✔ desaparecen los link fantasmas al activar el 'allow_insertion_between_nodes' en false, hay que activarlo otra vez sin afectar en la creacion de dot que tambien se usa @done(2021-04-28 22:40) @project(gui__node_graph)
     ☐ node_finder: buscar forma para que siempre quede dentro del node view, y el line edit siempre quede en la parte superior
     ☐ terminal undo redo
-    ✔ al crear un nodo desde el menu y no hay ningun otro nodo seleccionado, que el nuevo nodo quede en el centro @done(2021-05-03 12:26) @project(gui__node_graph)
     ☐ el node finder ni el rename dialog funcionan cuando hay 2 o mas node_graph abiertos al mismo tiempo
 
 gui__node:
-    ✔ agregar otro rectangulo en la parte inferior del nodos con iconos los diferentes atributor "animated", "cloned", "cuda" @done(2021-04-30 10:47) @project(gui__node)
     ☐ que el nodo contenga el tamaño adicional provocado por la caja de atributos.
     ☐ la caja de atributo que tenga el mismo valor de zValue que el nodo.
     ☐ si agarramos el link y pesionamos el click derecho, el texto queda mal posicionado
     ☐ cambiar la position del rectangulo de atributos, dividirlo en 2 cuadros uno arriba y el otro abajo en la parte del icono del nodo
     ☐ el snap a icono verticalmente no funciona si el nodo es ancho ancho
-    ☐ el texto del link no desaparece cuando el nodo es muy ancho, al ocultar el texto hay que medirlo desde el borde del nodo y no del centro
     ☐ el nodo tenga un ancho maximo y cuando cumpla ese tamaño maximo el nombre del nodo que quede con 3 puntos ...
     ☐ node_group: al exportar un plugin, verificar si el nombre ya existe en algun nodo, si no, enviar un mensaje
     ☐ node_gui: el nombre del node gui no cambia cuando el nodo cambia de nombre
-    ✔ en el panel de node en el trim_panel poner un knob de color para cambiar el color del nodo @done(2021-05-20 21:53) @project(gui__node)
     ☐ que los nodes de py_plugins tengan un boton para convertir a grupo y biseversa
 
 gui__knobs:
-	✔ slider: rehacer el slider con QPainter para tener mas control de todo @today @done(2021-05-01 15:03) @project(gui__knobs)
-	✔ slider: mover el manejador en la posicion del click @done(2021-05-01 15:03) @project(gui__knobs)
-	✔ slider: cuando el valor sea mayor o menor al limite, cambiar la forma del manejador a una flecha @done(2021-05-01 15:04) @project(gui__knobs)
-	✔ slider: opcion para mantener el 'handler' siempre al centro independiente del valor minimo y maximo @done(2021-05-01 15:04) @project(gui__knobs)
 	☐ que los qlineedit con boton derecho despliegue el menu de animacion
-    ✔ qlineedit: que al dar foco se seleccione todo el contenido @done(2021-05-20 21:50) @project(gui__knobs)
     ☐ en los knob linkeados ponerle otro color al label
     ☐ knob_color: con la opcion de paleta activada, añadirle 2 opciones mas: hue correct en rgb, y hue correct con hsl
-    ✔ knob_color: el menu de animacion tiene otro color @done(2021-05-20 21:51) @project(gui__knobs)
     ☐ knob_color: falta un picker, gotero
     ☐ knob_color_slider: limitar decimal
 	☐ terminar button knob'
 	☐ terminar button knob'
 	☐ terminar choice knob'
 	☐ terminar file knob'
-	☐ terminar integer knob' @today
-	☐ terminar position knob' @today
+	☐ terminar integer knob' 
+	☐ terminar position knob' 
 	☐ terminar text knob'
     ☐ node_gui queda nulo ya que se pasa como parametro antes de setup_gui_panels, corregirlo sin cambiar el orden de los knob gui
-    ✔ el munu del knob dejarlo por fuera, en el trim_panel, por que tenerlo en cada 'knob' gasta mucha ram @done(2021-05-19 15:35) @project(gui__knobs)
+    ☐ node_plugin_gui: crear los nodos hijos del plugin al grupo @hi
 
 nodes:
 	☐ crear nodo de speed, para que cambie todas las velocidades como 'videovina' y asi no lo tenemos que hacer en videovina
@@ -130,8 +105,37 @@ engine:
 	☐ project_struct: Una vez tengamos las entrada de los nodos ok, cambiar el tipo de los 'inputs' de QJsonObject a QJsonArray
 	☐ grade: hacer que todos los nodos de color solo iteren los pixel una sola vez, para no gastar recursos inecesasios
 
+project_struct:
+    ☐ en el metodo delete nodo, borrar tambien los hijos de los nodos de plugins y grupo @hi
+
 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
 Archive:
+    ✔ crear ventana de archivos, para importar y exportar archivos, con un arbol de directorios y previsualizador de imagenes, y para guardar tags @done(2021-05-16 15:01) @project(general)
+    ✔ knob_editor: al arrastrar un knob de un nodo a otro, el index no se mantiene @done(2021-05-12 11:44) @project(gui__trim_panel)
+    ✔ knob_editor: conservar el valor del params en el proyecto al mover o editar un knob, ya que al borrar el knob se elimina el params tambien @done(2021-05-12 12:32) @project(gui__trim_panel)
+    ✔ knob_editor: guradar custom knobs en el proyecto @done(2021-05-13 11:39) @project(gui__trim_panel)
+    ✔ knob_editor: considerar tambien los knobs que vienen en el nodo, para que no queden con algun nombre que ya exista @done(2021-05-07 18:30) @project(gui__trim_panel)
+    ✔ crear backdrop @done(2021-04-26 12:32) @project(gui__node_graph)
+    ✔ no permitir crear nombres de nodos cono punto '.' ya que estos se usan para la profundidad de donde esta el nodo en un grupo @done(2021-05-21 14:19) @project(gui__node_graph)
+    ✔ en los grupos al crear 2 nodos del mismo tipo quedan con el mismo nombre @done(2021-05-21 14:33) @project(gui__node_graph)
+    ✔ al crear el nodo: que el nodo se conecte a los nodos de salida del nodo seleccionado @done(2021-04-26 12:32) @project(gui__node_graph)
+    ✔ snap a nodo superior e inferior @done(2021-04-27 11:57) @project(gui__node_graph)
+    ✔ guardad el 'zValue' de los backdrop al proyecto @done(2021-04-26 12:32) @project(gui__node_graph)
+    ✔ permutar entradas a y b de nodos con mas de un link con shft-x @done(2021-04-27 21:38) @project(gui__node_graph)
+    ✔ arrastrar todos los nodos conectados a un nodo, cuando esta presionado el control @done(2021-04-27 21:29) @project(gui__node_graph)
+    ✔ conectar los nodos extraidos cuando son mas que 1 nodos @done(2021-04-28 22:21) @project(gui__node_graph)
+    ✔ desaparecen los link fantasmas al activar el 'allow_insertion_between_nodes' en false, hay que activarlo otra vez sin afectar en la creacion de dot que tambien se usa @done(2021-04-28 22:40) @project(gui__node_graph)
+    ✔ al crear un nodo desde el menu y no hay ningun otro nodo seleccionado, que el nuevo nodo quede en el centro @done(2021-05-03 12:26) @project(gui__node_graph)
+    ✔ agregar otro rectangulo en la parte inferior del nodos con iconos los diferentes atributor "animated", "cloned", "cuda" @done(2021-04-30 10:47) @project(gui__node)
+    ✔ el texto del link no desaparece cuando el nodo es muy ancho, al ocultar el texto hay que medirlo desde el borde del nodo y no del centro @done(2021-05-26 17:42) @project(gui__node)
+    ✔ en el panel de node en el trim_panel poner un knob de color para cambiar el color del nodo @done(2021-05-20 21:53) @project(gui__node)
+    ✔ slider: rehacer el slider con QPainter para tener mas control de todo @today @done(2021-05-01 15:03) @project(gui__knobs)
+    ✔ slider: mover el manejador en la posicion del click @done(2021-05-01 15:03) @project(gui__knobs)
+    ✔ slider: cuando el valor sea mayor o menor al limite, cambiar la forma del manejador a una flecha @done(2021-05-01 15:04) @project(gui__knobs)
+    ✔ slider: opcion para mantener el 'handler' siempre al centro independiente del valor minimo y maximo @done(2021-05-01 15:04) @project(gui__knobs)
+    ✔ qlineedit: que al dar foco se seleccione todo el contenido @done(2021-05-20 21:50) @project(gui__knobs)
+    ✔ knob_color: el menu de animacion tiene otro color @done(2021-05-20 21:51) @project(gui__knobs)
+    ✔ el munu del knob dejarlo por fuera, en el trim_panel, por que tenerlo en cada 'knob' gasta mucha ram @done(2021-05-19 15:35) @project(gui__knobs)
     ✔ cambiar la barra por la propia 'tools' @done(2021-04-06 22:15) @project(gui__script_editor)
     ✔ que funcione el font-size @done(2021-04-06 22:15) @project(gui__script_editor)
     ✔ cambiar la barra por la propia 'tools' @done(2021-02-17 16:43) @project(gui__viewer_controls)
