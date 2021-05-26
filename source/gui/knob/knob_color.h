@@ -78,6 +78,7 @@ public:
 
     void set_color(float red, float green, float blue, float alpha = 1,
                    bool emmit_signal = true);
+    void set_color(QColor color, bool emmit_signal = true);
 
     void disable_alpha();
 signals:

@@ -476,6 +476,9 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left
   #knob_color #alpha_slider QLineEdit::focus {
     border-color: white; }
 
+#knob_color #color_picker {
+  border-radius: 5px; }
+
 #knob_group QWidget {
   padding: 0px;
   background: #25282d;

@@ -8,27 +8,17 @@ color_picker::color_picker()
 
     setMinimumHeight(100);
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
-    color_box *_color_box = new color_box;
-    rainbow_box *rainbow = new rainbow_box;
-    rainbow->setMaximumHeight(50);
-
-    connect(rainbow, &rainbow_box::changed, _color_box, &color_box::set_color);
-    connect(_color_box, &color_box::changed, this, &color_picker::changed);
-
-    layout->addWidget(_color_box);
-    layout->addWidget(rainbow);
 }
 
 color_picker::~color_picker() {}
 
-void color_box::set_color(QColor _color)
+void color_picker::set_color(QColor _color)
 {
     color = _color;
     update();
 }
 
-void color_box::paintEvent(QPaintEvent *event)
+void color_picker::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
 
@@ -49,12 +39,12 @@ void color_box::paintEvent(QPaintEvent *event)
     painter.fillRect(0, 0, width(), height(), brush_y);
 
     painter.setCompositionMode(QPainter::CompositionMode_Source);
-    float radius = 30;
+    float radius = 10;
     painter.setPen(Qt::white);
     painter.drawEllipse(current_position, radius, radius);
 }
 
-void color_box::update_picker()
+void color_picker::update_picker()
 {
     QPointF pos = current_position;
 
@@ -78,57 +68,48 @@ void color_box::update_picker()
     update();
 }
 
-void color_box::mousePressEvent(QMouseEvent *event)
+void color_picker::mousePressEvent(QMouseEvent *event)
 {
     current_position = event->pos();
     update_picker();
 }
 
-void color_box::mouseMoveEvent(QMouseEvent *event)
+void color_picker::mouseMoveEvent(QMouseEvent *event)
 {
     current_position = event->pos();
     update_picker();
 }
 
-void rainbow_box::paintEvent(QPaintEvent *event)
+void color_picker::set_hsl(float hue, float sat, float level)
 {
-    QPainter painter(this);
-
-    QLinearGradient ramp(0, 0, width(), 0);
-    float section = 1.0 / 6;
-
-    ramp.setColorAt(0.0, Qt::red);
-    ramp.setColorAt(section, Qt::magenta);
-    ramp.setColorAt(section * 2, Qt::blue);
-    ramp.setColorAt(section * 3, Qt::cyan);
-    ramp.setColorAt(section * 4, Qt::green);
-    ramp.setColorAt(section * 5, Qt::yellow);
-    ramp.setColorAt(1.0, Qt::red);
-
-    painter.fillRect(0, 0, width(), height(), QBrush(ramp));
+    set_color(hsl_to_rgb(hue, 1, 1));
 }
 
-void rainbow_box::emmit_signal(float pos_x)
+QColor color_picker::hsl_to_rgb(float H, float S, float L)
 {
-    if (pos_x < 0)
-        pos_x = 0;
+    float s = S;
+    float v = L;
+    float C = s * v;
+    float X = C * (1 - abs(fmod(H / 60.0, 2) - 1));
+    float m = v - C;
+    float r, g, b;
 
-    if (pos_x >= width() - 1)
-        pos_x = width() - 1;
+    if (H >= 0 && H < 60)
+        r = C, g = X, b = 0;
+    else if (H >= 60 && H < 120)
+        r = X, g = C, b = 0;
+    else if (H >= 120 && H < 180)
+        r = 0, g = C, b = X;
+    else if (H >= 180 && H < 240)
+        r = 0, g = X, b = C;
+    else if (H >= 240 && H < 300)
+        r = X, g = 0, b = C;
+    else
+        r = C, g = 0, b = X;
 
-    QPixmap qPix = this->grab();
-    QImage image(qPix.toImage());
-    QColor color(image.pixel(pos_x, 0));
+    int R = (r + m) * 255;
+    int G = (g + m) * 255;
+    int B = (b + m) * 255;
 
-    changed(color);
-}
-
-void rainbow_box::mousePressEvent(QMouseEvent *event)
-{
-    emmit_signal(event->pos().x());
-}
-
-void rainbow_box::mouseMoveEvent(QMouseEvent *event)
-{
-    emmit_signal(event->pos().x());
+    return {R, G, B};
 }

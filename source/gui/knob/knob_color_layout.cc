@@ -4,6 +4,7 @@ void knob_color::setup_ui()
 {
     top_layout->setMargin(0);
     content_layout->setMargin(0);
+    content_layout->setSpacing(15);
     main_layout->setMargin(0);
 
     // Caja de colores separados
@@ -38,6 +39,8 @@ void knob_color::setup_ui()
     mono_color_button->setSizePolicy(QSizePolicy::Fixed,
                                      QSizePolicy::Expanding);
     mono_color_button->setText("4");
+
+    _color_picker->setObjectName("color_picker");
 
     rgb_button->setObjectName("small_button");
     rgb_button->setText("RGB");
@@ -115,6 +118,26 @@ void knob_color::connections()
     connect(alpha_slider, &knob_color_slider::changed, this,
             [=](float value) { set_color(red, green, blue, value); });
 
+    connect(hue_slider, &knob_color_slider::changed, this, [this](float value) {
+        QColor color = color_picker::hsl_to_rgb(value, sat_slider->get_value(),
+                                                level_slider->get_value());
+        set_color(color);
+
+        _color_picker->set_hsl(value);
+    });
+
+    connect(sat_slider, &knob_color_slider::changed, this, [this](float value) {
+        QColor color = color_picker::hsl_to_rgb(hue_slider->get_value(), value,
+                                                level_slider->get_value());
+        set_color(color);
+    });
+
+    connect(level_slider, &knob_color_slider::changed, this,
+            [this](float value) {
+                QColor color = color_picker::hsl_to_rgb(
+                    hue_slider->get_value(), sat_slider->get_value(), value);
+                set_color(color);
+            });
 
     // Edits Horizontales
     connect(red_hedit, &QLineEdit::editingFinished, this, [=]() {
@@ -150,4 +173,8 @@ void knob_color::connections()
 
     connect(hsl_button, &QPushButton::clicked, this,
             [this]() { toogle_hsl_option(); });
+    //
+
+    connect(_color_picker, &color_picker::changed, this,
+            [this](QColor color) { set_color(color); });
 }

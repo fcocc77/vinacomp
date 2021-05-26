@@ -45,18 +45,18 @@ knob_color::knob_color(knob_props props, float min, float max, float r, float g,
     alpha_hedit = new QLineEdit(this);
 
     mono_slider =
-        new knob_color_slider(min, max, default_red, centered_handler);
-    red_slider = new knob_color_slider(min, max, default_red, centered_handler);
+        new knob_color_slider(min, max, default_red, centered_handler, "M");
+    red_slider = new knob_color_slider(min, max, default_red, centered_handler, "R");
     green_slider =
-        new knob_color_slider(min, max, default_green, centered_handler);
+        new knob_color_slider(min, max, default_green, centered_handler, "G");
     blue_slider =
-        new knob_color_slider(min, max, default_blue, centered_handler);
+        new knob_color_slider(min, max, default_blue, centered_handler, "B");
     alpha_slider =
-        new knob_color_slider(min, max, default_alpha, centered_handler);
+        new knob_color_slider(min, max, default_alpha, centered_handler, "A");
 
-    hue_slider = new knob_color_slider(0, 360, 0, centered_handler);
-    sat_slider = new knob_color_slider(0, 1, 1, centered_handler);
-    level_slider = new knob_color_slider(0, 1, 1, centered_handler);
+    hue_slider = new knob_color_slider(0, 360, 0, centered_handler, "H º");
+    sat_slider = new knob_color_slider(0, 1, 1, centered_handler, "S %");
+    level_slider = new knob_color_slider(0, 1, 1, centered_handler, "L %");
 
     color_sample_button = new QPushButton(this);
     palette_button = new QPushButton(this);
@@ -248,6 +248,12 @@ void knob_color::toogle_color_picker_option()
 {
     color_picker_option = !color_picker_option;
     _color_picker->setVisible(color_picker_option);
+}
+
+void knob_color::set_color(QColor color, bool emmit_signal)
+{
+    set_color((float)color.red() / 255.0, (float)color.green() / 255.0,
+              (float)color.blue() / 255.0, color.alpha() / 255.0, emmit_signal);
 }
 
 void knob_color::set_color(float _red, float _green, float _blue, float _alpha,
