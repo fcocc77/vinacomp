@@ -10,6 +10,21 @@ node_group::node_group(node_props _props,
     , props(_props)
     , group_node_graph(nullptr)
 {
+
+    node_struct input_props;
+    input_props.type = "input";
+    input_props.name = get_name() + ".Input";
+    input_props.color = get_color();
+    input_props.pos = {0, 0};
+
+    node_struct output_props;
+    output_props.type = "output";
+    output_props.name = get_name() + ".Output";
+    output_props.color = get_color();
+    output_props.pos = {0, 200};
+
+    props.project->insert_node(input_props, {});
+    props.project->insert_node(output_props, {});
 }
 
 node_group::~node_group()
