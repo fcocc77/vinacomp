@@ -79,7 +79,7 @@ gui__node:
     ☐ el nodo tenga un ancho maximo y cuando cumpla ese tamaño maximo el nombre del nodo que quede con 3 puntos ...
     ☐ node_group: al exportar un plugin, verificar si el nombre ya existe en algun nodo, si no, enviar un mensaje
     ☐ node_gui: el nombre del node gui no cambia cuando el nodo cambia de nombre
-    ☐ que los nodes de py_plugins tengan un boton para convertir a grupo y biseversa
+    ☐ node_group: al crear nodos input y output que afecten a las entradas y salida del grupo en el nodo @hi
 
 gui__knobs:
 	☐ que los qlineedit con boton derecho despliegue el menu de animacion
@@ -184,3 +184,4 @@ Archive:
 	✔ no tiene que cambiar el frame cuando presionamos el alt con el boton central  @done(2020-12-03 19:37) @project(gui__time_line)
 	✔ con el control click cambiar la entrada y la salida  @done(2020-12-03 19:37) @project(gui__time_line)
 	✔ poder arrastrar el input y la salida, y con el control presionado arrastrar los 2  @done(2020-12-03 19:37) @project(gui__time_line)
+    ✔ que los nodes de py_plugins tengan un boton para convertir a grupo y biseversa @done(2021-05-26 17:48) @project(gui__node)
