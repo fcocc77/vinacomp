@@ -21,6 +21,7 @@ struct node_struct
     QJsonArray *custom_knobs;
     QString linked;
     QString script;
+    bool plugin;
 
     // estos 2 atributos son solo para el backdrop
     QSize size;
@@ -43,6 +44,12 @@ struct global_struct
 
 class project_struct
 {
+private:
+    void create_base_children_for_group(node_struct node);
+    void create_children_plugin(node_struct node);
+
+    node_struct get_node_from_object(QString name, QJsonObject node_obj) const;
+
 public:
     project_struct();
     ~project_struct();

@@ -53,6 +53,7 @@ node *maker::create_fx(QString id, bool basic_creation)
 
     QString group = effect["group"].toString();
     QString label = effect["label"].toString();
+    bool plugin = effect["plugin"].toBool();
     QColor color = default_color(group);
     QString name = label;
 
@@ -68,6 +69,7 @@ node *maker::create_fx(QString id, bool basic_creation)
     node_data.color = color;
     node_data.type = id;
     node_data.params = nullptr;
+    node_data.plugin = plugin;
 
     node *_node = _node_view->create_node(node_data, basic_creation);
     if (id != "backdrop")

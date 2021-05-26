@@ -2,6 +2,7 @@
 #include <nodes_bar.h>
 #include <nodes_load.h>
 #include <os.h>
+#include <global.h>
 
 nodes_load::nodes_load(QWidget *__node_graph)
     : _node_graph(__node_graph)
@@ -34,7 +35,7 @@ nodes_load::~nodes_load() {}
 void nodes_load::load_py_plugins()
 {
     // cargar nodos py_plugins
-    QString py_plugins_dir = "plugins/py_plugins";
+    QString py_plugins_dir = PY_PLUGINS_PATH;
 
     QStringList icons;
     for (QString file : os::listdir(py_plugins_dir))
@@ -63,8 +64,6 @@ void nodes_load::load_py_plugins()
         QString group_icon = "default_icon";
         if (icons.contains(group))
             group_icon = py_plugins_dir + "/" + name + ".png";
-
-        effect.insert("script", py_plugins_dir + "/" + name + ".py");
 
         py_plugins_groups.insert(group, {group, group_icon});
 

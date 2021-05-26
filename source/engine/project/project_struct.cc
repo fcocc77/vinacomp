@@ -1,5 +1,6 @@
 #include <project_struct.h>
 #include <util.h>
+#include <global.h>
 
 project_struct::project_struct()
     : frame(0)
@@ -18,10 +19,51 @@ void project_struct::insert_node(node_struct node, QJsonObject _params,
     node.custom_knobs = new QJsonArray(custom_knobs);
 
     nodes.insert(node.name, node);
+
+    if (node.type == "group")
+        create_base_children_for_group(node);
+
+    if (node.plugin)
+        create_children_plugin(node);
+}
+
+void project_struct::create_base_children_for_group(node_struct node)
+{
+    node_struct input_props;
+    input_props.type = "input";
+    input_props.name = node.name + ".Input";
+    input_props.color = node.color;
+    input_props.pos = {0, 0};
+
+    node_struct output_props;
+    output_props.type = "output";
+    output_props.name = node.name + ".Output";
+    output_props.color = node.color;
+    output_props.pos = {0, 200};
+
+    insert_node(input_props, {});
+    insert_node(output_props, {});
+}
+
+void project_struct::create_children_plugin(node_struct node)
+{
+    QJsonObject plugin_nodes =
+        jread(PY_PLUGINS_PATH + '/' + node.type + ".json")
+            .value("nodes")
+            .toObject();
+
+    for (QString relative_name : plugin_nodes.keys())
+    {
+        QString new_name = node.name + '.' + relative_name;
+        QJsonObject node_obj = plugin_nodes.value(relative_name).toObject();
+
+        insert_node(get_node_from_object(new_name, node_obj));
+    }
 }
 
 void project_struct::delete_node(QString name)
 {
+    // ! borrar aqui los hijos de los nodos si es que tienen
     if (!nodes.contains(name))
         return;
 
@@ -87,6 +129,9 @@ QJsonObject project_struct::get_project_json() const
         if (!node.script.isEmpty())
             _node["script"] = node.script;
 
+        if (node.plugin)
+            _node["plugin"] = node.plugin;
+
         _nodes.insert(name, _node);
     }
     //
@@ -119,6 +164,34 @@ void project_struct::load(QString project_path)
     load_from_json(jread(project_path));
 }
 
+node_struct project_struct::get_node_from_object(QString name,
+                                                 QJsonObject node_obj) const
+{
+    QJsonArray color = node_obj.value("color").toArray();
+    QJsonArray position = node_obj.value("pos").toArray();
+    QJsonObject params = node_obj.value("params").toObject();
+    QJsonArray custom_knobs = node_obj.value("knobs").toArray();
+    QJsonArray size = node_obj.value("size").toArray();
+
+    node_struct node;
+
+    node.name = name;
+    node.type = node_obj.value("type").toString();
+    node.color = {color[0].toInt(), color[1].toInt(), color[2].toInt()};
+    node.pos = {position[0].toDouble(), position[1].toDouble()};
+    node.inputs = node_obj.value("inputs").toObject();
+    node.size = {size[0].toInt(), size[1].toInt()};
+    node.z_value = node_obj.value("z_value").toInt();
+    node.linked = node_obj.value("linked").toString();
+    node.script = node_obj.value("script").toString();
+    node.plugin = node_obj.value("plugin").toBool();
+
+    // extrae el tips del parametro de label que esta el tab 'node'
+    node.tips = params.value("label").toString();
+
+    return node;
+}
+
 void project_struct::load_from_json(QJsonObject project)
 {
     // Nodos
@@ -127,28 +200,10 @@ void project_struct::load_from_json(QJsonObject project)
     {
         QJsonObject node_obj = _nodes.value(name).toObject();
 
-        QJsonArray color = node_obj.value("color").toArray();
-        QJsonArray position = node_obj.value("pos").toArray();
         QJsonObject params = node_obj.value("params").toObject();
         QJsonArray custom_knobs = node_obj.value("knobs").toArray();
-        QJsonArray size = node_obj.value("size").toArray();
 
-        node_struct node;
-
-        node.name = name;
-        node.type = node_obj.value("type").toString();
-        node.color = {color[0].toInt(), color[1].toInt(), color[2].toInt()};
-        node.pos = {position[0].toDouble(), position[1].toDouble()};
-        node.inputs = node_obj.value("inputs").toObject();
-        node.size = {size[0].toInt(), size[1].toInt()};
-        node.z_value = node_obj.value("z_value").toInt();
-        node.linked = node_obj.value("linked").toString();
-        node.script = node_obj.value("script").toString();
-
-        // extrae el tips del parametro de label que esta el tab 'node'
-        node.tips = params.value("label").toString();
-
-        insert_node(node, params, custom_knobs);
+        insert_node(get_node_from_object(name, node_obj), params, custom_knobs);
     }
     //
 

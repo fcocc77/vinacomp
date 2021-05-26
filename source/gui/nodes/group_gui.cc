@@ -9,6 +9,7 @@
 #include <trim_panel.h>
 #include <util.h>
 #include <vinacomp.h>
+#include <global.h>
 
 group_gui::group_gui(nodes_load *_nodes_loaded)
     : nodes_loaded(_nodes_loaded)
@@ -80,7 +81,7 @@ void group_gui::export_plugin()
     QString group_icon_path =
         static_cast<knob_file *>(get_knob("group_icon"))->get_value();
 
-    QString base_path = "plugins/py_plugins/";
+    QString base_path = PY_PLUGINS_PATH + "/";
 
     if (name.isEmpty())
     {
@@ -108,6 +109,8 @@ void group_gui::export_plugin()
     QJsonObject plugin;
     plugin["group"] = group_name;
     plugin["id"] = name;
+    plugin["plugin"] = true;
+    plugin["script"] = base_path + name + ".py";
     plugin["label"] = name;
     plugin["icon"] = plugin_icon;
     plugin["knobs"] = *panel->custom_knobs;
