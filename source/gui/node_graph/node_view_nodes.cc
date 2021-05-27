@@ -158,9 +158,10 @@ void node_view::delete_node(node *_node)
     selected_nodes->remove(name);
     nodes->remove(name);
     copied_nodes.remove(name);
-    project->delete_node(name);
 
     delete _node;
+
+    project->delete_node(name);
 }
 
 void node_view::extract_selected_nodes()
