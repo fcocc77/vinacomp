@@ -27,12 +27,7 @@
     #alpha
         @include variant_color(rgb(200, 200, 200))
     QPushButton
-        background: $b15
-        border: 1px solid $b13
-        padding: 1px
-        padding-left: 3px
-        padding-right: 3px
-        border-radius: 2px
-        &:hover
-            border-color: mix($base, $b15, 50)
-            color: $base
+        @include button($b25)
+        padding: 2px
+        padding-left: 4px
+        padding-right: 4px
