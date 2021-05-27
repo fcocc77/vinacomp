@@ -6,9 +6,6 @@
 class node_group : public node_rect
 {
 private:
-    QString icon_name;
-    QGraphicsTextItem *tips_text;
-
     node_props props;
 
     QWidget *group_node_graph;

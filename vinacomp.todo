@@ -1,5 +1,5 @@
 general:
-    ☐ depurar memoria con 'delete' usando 'valgrind' 
+    ☐ depurar memoria con 'delete' usando 'valgrind'
     ☐ crear api para plugins 'G`mic' con su libreria 'https://gmic.eu/libgmic.html' solo los efectos mas necesarios
     ☐ crear un checklist con todas las partes del software, y con esa lista ir manualmente verificando si funciona
     ☐ file_dialog: iniciar con ruta por defecto
@@ -92,7 +92,7 @@ gui__knobs:
 	☐ terminar choice knob'
 	☐ terminar file knob'
 	☐ terminar integer knob' 
-	☐ terminar position knob' 
+	☐ terminar position knob'
 	☐ terminar text knob'
     ☐ node_gui queda nulo ya que se pasa como parametro antes de setup_gui_panels, corregirlo sin cambiar el orden de los knob gui
     ☐ node_plugin_gui: crear los nodos hijos del plugin al grupo @hi
