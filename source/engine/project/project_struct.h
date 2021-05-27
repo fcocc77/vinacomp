@@ -47,7 +47,8 @@ class project_struct
 private:
     void create_base_children_for_group(node_struct node);
     void create_children_plugin(node_struct node);
-    QList<node_struct> get_children_nodes(node_struct parent) const;
+    QList<node_struct> get_children_nodes(QString parent_name,
+                                          bool recursive = false) const;
 
     node_struct get_node_from_object(QString name, QJsonObject node_obj) const;
 

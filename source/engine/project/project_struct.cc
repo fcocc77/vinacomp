@@ -61,13 +61,28 @@ void project_struct::create_children_plugin(node_struct node)
     }
 }
 
-QList<node_struct> project_struct::get_children_nodes(node_struct parent) const
+QList<node_struct> project_struct::get_children_nodes(QString parent_name,
+                                                      bool recursive) const
 {
     QList<node_struct> children;
+    parent_name += ".";
 
     for (node_struct node : nodes)
-        if (node.name.indexOf(parent.name + '.') == 0)
-            children.push_back(node);
+    {
+        if (recursive)
+        {
+            if (node.name.indexOf(parent_name) == 0)
+                children.push_back(node);
+        }
+        else
+        {
+            QString parent_of_node =
+                node.name.left(node.name.lastIndexOf('.') + 1);
+
+            if (parent_of_node == parent_name)
+                children.push_back(node);
+        }
+    }
 
     return children;
 }
@@ -81,7 +96,7 @@ void project_struct::delete_node(QString name)
     node_struct node = nodes.value(name);
 
     if (node.type == "group" || node.plugin)
-        for (node_struct child_node : get_children_nodes(node))
+        for (node_struct child_node : get_children_nodes(node.name, true))
             delete_node(child_node.name);
 
     delete nodes[name].params;
@@ -284,15 +299,5 @@ project_struct::get_nodes_from_group(QString group_name) const
         return main_nodes;
     }
 
-    // obtiene todos los nodos que pertenecen a un grupo especifico
-    group_name += ".";
-    QList<node_struct> nodes_from_group;
-    for (QString name : nodes.keys())
-    {
-        QString group_of_node = name.left(name.lastIndexOf('.') + 1);
-        if (group_of_node == group_name)
-            nodes_from_group.push_back(nodes.value(name));
-    }
-
-    return nodes_from_group;
+    return get_children_nodes(group_name);
 }
