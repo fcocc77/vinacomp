@@ -250,14 +250,64 @@ void knob_color::toogle_color_picker_option()
     _color_picker->setVisible(color_picker_option);
 }
 
-void knob_color::set_color(QColor color, bool emmit_signal)
+QColor knob_color::qcolor_from_rgb(float r, float g, float b, float a)
 {
-    set_color((float)color.red() / 255.0, (float)color.green() / 255.0,
-              (float)color.blue() / 255.0, color.alpha() / 255.0, emmit_signal);
+    return QColor{int(r * 255.0), int(g * 255.0), int(b * 255.0),
+                  int(a * 255.0)};
+}
+
+void knob_color::rgb_from_qcolor(QColor color, float *r, float *g, float *b,
+                                 float *a)
+{
+    *r = (float)color.red() / 255.0;
+    *g = (float)color.green() / 255.0;
+    *b = (float)color.blue() / 255.0;
+
+    if (a)
+        *a = (float)color.alpha() / 255.0;
+}
+
+void knob_color::update_hsl_sliders()
+{
+    float h, s, l;
+
+    color_picker::rgb_to_hsl(qcolor_from_rgb(red, green, blue), h, s, l);
+
+    hue_slider->set_value(h, false);
+    sat_slider->set_value(s, false);
+    level_slider->set_value(l, false);
+}
+
+void knob_color::update_color_picker()
+{
+    _color_picker->set_hsl(hue_slider->get_value(), sat_slider->get_value(),
+                           level_slider->get_value());
+}
+
+void knob_color::update_rgb_sliders()
+{
+    red_slider->set_value(red, false);
+    green_slider->set_value(green, false);
+    blue_slider->set_value(blue, false);
+    alpha_slider->set_value(alpha, false);
+}
+
+void knob_color::set_color(QColor color, bool emmit_signal, bool update_sliders)
+{
+    float r, g, b, a;
+    rgb_from_qcolor(color, &r, &g, &b, &a);
+    set_color(r, g, b, a, emmit_signal, update_sliders);
+}
+
+void knob_color::set_hsl(float hue, float sat, float level, bool emmit_signal,
+                         bool update_sliders)
+{
+    set_color(color_picker::hsl_to_rgb(hue, sat, level), emmit_signal,
+              update_sliders);
 }
 
 void knob_color::set_color(float _red, float _green, float _blue, float _alpha,
-                           bool emmit_signal)
+                           bool emmit_signal, bool update_sliders)
 {
     red = _red;
     green = _green;
@@ -268,16 +318,16 @@ void knob_color::set_color(float _red, float _green, float _blue, float _alpha,
         mono_slider->set_value(red);
 
     red_hedit->setText(QString::number(red));
-    red_slider->set_value(red);
-
     green_hedit->setText(QString::number(green));
-    green_slider->set_value(green);
-
     blue_hedit->setText(QString::number(blue));
-    blue_slider->set_value(blue);
-
     alpha_hedit->setText(QString::number(alpha));
-    alpha_slider->set_value(alpha);
+
+    if (update_sliders)
+    {
+        update_hsl_sliders();
+        update_rgb_sliders();
+        update_color_picker();
+    }
 
     if (emmit_signal)
     {

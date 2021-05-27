@@ -106,46 +106,53 @@ void knob_color::connections()
     connect(mono_slider, &knob_color_slider::changed, this,
             [=](float value) { set_color(value, value, value, value); });
 
-    connect(red_slider, &knob_color_slider::changed, this,
-            [=](float value) { set_color(value, green, blue, alpha); });
+    connect(red_slider, &knob_color_slider::changed, this, [=](float value) {
+        set_color(value, green, blue, alpha, true, false);
+        update_hsl_sliders();
+        update_color_picker();
+    });
 
-    connect(green_slider, &knob_color_slider::changed, this,
-            [=](float value) { set_color(red, value, blue, alpha); });
+    connect(green_slider, &knob_color_slider::changed, this, [=](float value) {
+        set_color(red, value, blue, alpha, true, false);
+        update_hsl_sliders();
+        update_color_picker();
+    });
 
-    connect(blue_slider, &knob_color_slider::changed, this,
-            [=](float value) { set_color(red, green, value, alpha); });
+    connect(blue_slider, &knob_color_slider::changed, this, [=](float value) {
+        set_color(red, green, value, alpha, true, false);
+        update_hsl_sliders();
+        update_color_picker();
+    });
 
-    connect(alpha_slider, &knob_color_slider::changed, this,
-            [=](float value) { set_color(red, green, blue, value); });
+    connect(alpha_slider, &knob_color_slider::changed, this, [=](float value) {
+        set_color(red, green, blue, value, true, false);
+        update_hsl_sliders();
+        update_color_picker();
+    });
 
     connect(hue_slider, &knob_color_slider::changed, this, [this](float value) {
-        QColor color = color_picker::hsl_to_rgb(value, sat_slider->get_value(),
-                                                level_slider->get_value());
-        set_color(color);
+        set_hsl(value, sat_slider->get_value(), level_slider->get_value(), true,
+                false);
 
-        _color_picker->set_hsl(hue_slider->get_value(), sat_slider->get_value(),
-                               level_slider->get_value());
+        update_rgb_sliders();
+        update_color_picker();
     });
 
     connect(sat_slider, &knob_color_slider::changed, this, [this](float value) {
-        QColor color = color_picker::hsl_to_rgb(hue_slider->get_value(), value,
-                                                level_slider->get_value());
-        set_color(color);
+        set_hsl(hue_slider->get_value(), value, level_slider->get_value(), true,
+                false);
 
-        _color_picker->set_hsl(hue_slider->get_value(), sat_slider->get_value(),
-                               level_slider->get_value());
+        update_rgb_sliders();
+        update_color_picker();
     });
 
     connect(level_slider, &knob_color_slider::changed, this,
             [this](float value) {
-                QColor color = color_picker::hsl_to_rgb(
-                    hue_slider->get_value(), sat_slider->get_value(), value);
+                set_hsl(hue_slider->get_value(), sat_slider->get_value(), value,
+                        true, false);
 
-                set_color(color);
-
-                _color_picker->set_hsl(hue_slider->get_value(),
-                                       sat_slider->get_value(),
-                                       level_slider->get_value());
+                update_rgb_sliders();
+                update_color_picker();
             });
 
     // Edits Horizontales
@@ -188,6 +195,7 @@ void knob_color::connections()
             [this](QColor color, float hue, float sat, float level) {
                 sat_slider->set_value(sat);
                 level_slider->set_value(level);
-                set_color(color);
+                set_color(color, true, false);
+                update_rgb_sliders();
             });
 }

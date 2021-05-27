@@ -68,17 +68,30 @@ private:
     void restore_default() override;
     void restore_param() override;
 
+    void update_hsl_sliders();
+    void update_rgb_sliders();
+    void update_color_picker();
+
 public:
     knob_color(knob_props, float min = 0, float max = 100, float r = 1,
                float g = 1, float b = 1, float a = 1,
                bool centered_handler = false);
     ~knob_color();
 
+    static QColor qcolor_from_rgb(float r, float g, float b, float a = 0);
+    static void rgb_from_qcolor(QColor color, float *r, float *g, float *b,
+                                float *a = nullptr);
+
     void set_init_color(float red, float green, float blue, float alpha = 1);
 
     void set_color(float red, float green, float blue, float alpha = 1,
-                   bool emmit_signal = true);
-    void set_color(QColor color, bool emmit_signal = true);
+                   bool emmit_signal = true, bool update_sliders = true);
+
+    void set_color(QColor color, bool emmit_signal = true,
+                   bool update_sliders = true);
+
+    void set_hsl(float hue, float sat, float level, bool emmit_signal = true,
+                 bool update_sliders = true);
 
     void disable_alpha();
 signals:
