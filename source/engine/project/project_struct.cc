@@ -104,17 +104,19 @@ void project_struct::delete_node(QString name)
     nodes.remove(name);
 }
 
+QString project_struct::replace_parent_name(QString node_name,
+                                            QString new_parent_name)
+{
+    return new_parent_name +
+           node_name.right(node_name.length() - node_name.indexOf('.', 1));
+}
+
 void project_struct::replace_parent_name_to_children(QString parent_name,
                                                      QString new_parent_name)
 {
     for (node_struct child : get_children_nodes(parent_name, true))
-    {
-        QString new_child_name =
-            new_parent_name +
-            child.name.right(child.name.length() - child.name.indexOf('.', 1));
-
-        rename_node(child.name, new_child_name, false);
-    }
+        rename_node(child.name,
+                    replace_parent_name(child.name, new_parent_name), false);
 }
 
 void project_struct::rename_node(QString name, QString new_name,

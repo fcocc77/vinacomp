@@ -89,4 +89,14 @@ void node_plugin_gui::convert_to_group()
     node_struct &__node = project->nodes[group->get_name()];
     *__node.custom_knobs = panel->base_knobs;
     *__node.params = *panel->get_params();
+
+    // Copia los nodos hijos del plugin al grupo
+    for (node_struct _node_ : project->get_children_nodes(name, true))
+    {
+        _node_.name =
+            group->get_name() + _node_.name.right(_node_.name.length() -
+                                                  _node_.name.indexOf('.', 1));
+
+        project->insert_node(_node_, *_node_.params, *_node_.custom_knobs);
+    }
 }
