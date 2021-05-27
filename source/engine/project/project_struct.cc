@@ -61,11 +61,28 @@ void project_struct::create_children_plugin(node_struct node)
     }
 }
 
+QList<node_struct> project_struct::get_children_nodes(node_struct parent) const
+{
+    QList<node_struct> children;
+
+    for (node_struct node : nodes)
+        if (node.name.indexOf(parent.name + '.') == 0)
+            children.push_back(node);
+
+    return children;
+}
+
 void project_struct::delete_node(QString name)
 {
     // ! borrar aqui los hijos de los nodos si es que tienen
     if (!nodes.contains(name))
         return;
+
+    node_struct node = nodes.value(name);
+
+    if (node.type == "group" || node.plugin)
+        for (node_struct child_node : get_children_nodes(node))
+            delete_node(child_node.name);
 
     delete nodes[name].params;
     delete nodes[name].custom_knobs;

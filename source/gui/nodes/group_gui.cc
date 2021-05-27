@@ -61,7 +61,7 @@ QJsonObject group_gui::get_child_nodes() const
         QString group_name = name + '.';
         QString basename = node_name.section(group_name, 1);
 
-        if (node_name.contains(group_name) && !basename.isEmpty())
+        if (node_name.indexOf(group_name) == 0)
             child_nodes.insert(basename, node_obj);
     }
 
