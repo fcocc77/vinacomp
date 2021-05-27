@@ -105,18 +105,23 @@ void project_struct::delete_node(QString name)
 }
 
 QString project_struct::replace_parent_name(QString node_name,
+                                            QString parent_name,
                                             QString new_parent_name)
 {
     if (!node_name.contains('.'))
         return node_name;
 
     return new_parent_name +
-           node_name.right(node_name.length() - node_name.indexOf('.', 1));
+           node_name.right(node_name.length() - parent_name.length());
 }
 
 void project_struct::replace_parent_name_to_children(QString parent_name,
                                                      QString new_parent_name)
 {
+    auto get_node_name = [=](QString node_name) {
+        return replace_parent_name(node_name, parent_name, new_parent_name);
+    };
+
     for (node_struct child : get_children_nodes(parent_name, true))
     {
         node_struct &_child = nodes[child.name];
@@ -126,13 +131,13 @@ void project_struct::replace_parent_name_to_children(QString parent_name,
         for (QString key : child.inputs.keys())
         {
             QString input = child.inputs.value(key).toString();
-            inputs.insert(key, replace_parent_name(input, new_parent_name));
+            inputs.insert(key, get_node_name(input));
         }
 
         _child.inputs = inputs;
         //
 
-        _child.linked = replace_parent_name(_child.linked, new_parent_name);
+        _child.linked = get_node_name(_child.linked);
 
         // Params
         QJsonObject params;
@@ -150,8 +155,10 @@ void project_struct::replace_parent_name_to_children(QString parent_name,
                         QJsonArray linked;
                         for (QJsonValue linked_value :
                              linked_list_value.toArray())
-                            linked.push_back(replace_parent_name(
-                                linked_value.toString(), new_parent_name));
+                        {
+                            linked.push_back(
+                                get_node_name(linked_value.toString()));
+                        }
 
                         linked_list.push_back(linked);
                     }
@@ -162,8 +169,8 @@ void project_struct::replace_parent_name_to_children(QString parent_name,
                 {
                     QJsonArray linked;
                     for (QJsonValue linked_value : value.toArray())
-                        linked.push_back(replace_parent_name(
-                            linked_value.toString(), new_parent_name));
+                        linked.push_back(
+                            get_node_name(linked_value.toString()));
 
                     params.insert(key, linked);
                 }
@@ -174,8 +181,7 @@ void project_struct::replace_parent_name_to_children(QString parent_name,
 
         *_child.params = params;
 
-        rename_node(child.name,
-                    replace_parent_name(child.name, new_parent_name), false);
+        rename_node(child.name, get_node_name(child.name), false);
     }
 }
 

@@ -63,7 +63,7 @@ public:
 
     void delete_node(QString name);
 
-    static QString replace_parent_name(QString node_name,
+    static QString replace_parent_name(QString node_name, QString parent_name,
                                        QString new_group_name);
 
     void replace_parent_name_to_children(QString parent_name,
