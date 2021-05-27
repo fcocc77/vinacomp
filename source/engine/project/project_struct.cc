@@ -1,6 +1,6 @@
+#include <global.h>
 #include <project_struct.h>
 #include <util.h>
-#include <global.h>
 
 project_struct::project_struct()
     : frame(0)
@@ -107,6 +107,9 @@ void project_struct::delete_node(QString name)
 QString project_struct::replace_parent_name(QString node_name,
                                             QString new_parent_name)
 {
+    if (!node_name.contains('.'))
+        return node_name;
+
     return new_parent_name +
            node_name.right(node_name.length() - node_name.indexOf('.', 1));
 }
@@ -115,8 +118,65 @@ void project_struct::replace_parent_name_to_children(QString parent_name,
                                                      QString new_parent_name)
 {
     for (node_struct child : get_children_nodes(parent_name, true))
+    {
+        node_struct &_child = nodes[child.name];
+
+        // Inputs
+        QJsonObject inputs;
+        for (QString key : child.inputs.keys())
+        {
+            QString input = child.inputs.value(key).toString();
+            inputs.insert(key, replace_parent_name(input, new_parent_name));
+        }
+
+        _child.inputs = inputs;
+        //
+
+        _child.linked = replace_parent_name(_child.linked, new_parent_name);
+
+        // Params
+        QJsonObject params;
+        for (QString key : _child.params->keys())
+        {
+            QJsonValue value = _child.params->value(key);
+
+            if (key.contains("linked"))
+            {
+                if (key.contains("linked_list"))
+                {
+                    QJsonArray linked_list;
+                    for (QJsonValue linked_list_value : value.toArray())
+                    {
+                        QJsonArray linked;
+                        for (QJsonValue linked_value :
+                             linked_list_value.toArray())
+                            linked.push_back(replace_parent_name(
+                                linked_value.toString(), new_parent_name));
+
+                        linked_list.push_back(linked);
+                    }
+
+                    params.insert(key, linked_list);
+                }
+                else
+                {
+                    QJsonArray linked;
+                    for (QJsonValue linked_value : value.toArray())
+                        linked.push_back(replace_parent_name(
+                            linked_value.toString(), new_parent_name));
+
+                    params.insert(key, linked);
+                }
+            }
+            else
+                params.insert(key, value);
+        }
+
+        *_child.params = params;
+
         rename_node(child.name,
                     replace_parent_name(child.name, new_parent_name), false);
+    }
 }
 
 void project_struct::rename_node(QString name, QString new_name,
@@ -161,7 +221,8 @@ QJsonObject project_struct::get_project_json() const
         node_struct node = nodes.value(name);
 
         QJsonObject _node;
-        _node["color"] = QJsonArray({node.color.red(), node.color.green(), node.color.blue()});
+        _node["color"] = QJsonArray(
+            {node.color.red(), node.color.green(), node.color.blue()});
         _node["type"] = node.type;
         _node["params"] = *node.params;
         _node["inputs"] = node.inputs;
@@ -278,7 +339,6 @@ void project_struct::load_from_json(QJsonObject project)
     }
     //
 
-
     // NodeView Rect
     QJsonArray _rect = _global.value("node_view_rect").toArray();
     global.node_view_rect.setRect(_rect[0].toDouble(), _rect[1].toDouble(),
@@ -291,7 +351,8 @@ void project_struct::save(QString project_path) const
     jwrite(project_path, get_project_json());
 }
 
-QJsonValue project_struct::get_value_frame(QJsonObject *params, QString param_name, int frame)
+QJsonValue project_struct::get_value_frame(QJsonObject *params,
+                                           QString param_name, int frame)
 {
     return params->value(param_name)
         .toObject()
