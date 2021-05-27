@@ -28,9 +28,17 @@ knob_color_slider::knob_color_slider(float min, float max, float default_value,
     });
 
     // Layout
-    layout->addWidget(label);
-    layout->addWidget(_slider);
-    layout->addWidget(edit);
+    if (_label.isEmpty())
+    {
+        layout->addWidget(edit);
+        layout->addWidget(_slider);
+    }
+    else
+    {
+        layout->addWidget(label);
+        layout->addWidget(_slider);
+        layout->addWidget(edit);
+    }
 }
 
 knob_color_slider::~knob_color_slider()

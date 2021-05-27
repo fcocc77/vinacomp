@@ -20,7 +20,7 @@ private:
 
 public:
     knob_color_slider(float min, float max, float default_value,
-                      bool centered_handler, QString label);
+                      bool centered_handler, QString label = "");
     ~knob_color_slider();
 
     void set_value(float value, bool emmit_signal = true);

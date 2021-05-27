@@ -45,7 +45,7 @@ knob_color::knob_color(knob_props props, float min, float max, float r, float g,
     alpha_hedit = new QLineEdit(this);
 
     mono_slider =
-        new knob_color_slider(min, max, default_red, centered_handler, "M");
+        new knob_color_slider(min, max, default_red, centered_handler);
     red_slider = new knob_color_slider(min, max, default_red, centered_handler, "R");
     green_slider =
         new knob_color_slider(min, max, default_green, centered_handler, "G");
@@ -252,6 +252,26 @@ void knob_color::toogle_color_picker_option()
 
 QColor knob_color::qcolor_from_rgb(float r, float g, float b, float a)
 {
+    if (r < 0)
+        r = 0;
+    else if (r > 1)
+        r = 1;
+
+    if (g < 0)
+        g = 0;
+    else if (g > 1)
+        g = 1;
+
+    if (b < 0)
+        b = 0;
+    else if (b > 1)
+        b = 1;
+
+    else if (a < 0)
+        a = 0;
+    if (a > 1)
+        a = 1;
+
     return QColor{int(r * 255.0), int(g * 255.0), int(b * 255.0),
                   int(a * 255.0)};
 }

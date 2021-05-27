@@ -136,7 +136,20 @@ void color_picker::mousePressEvent(QMouseEvent *event)
 
 void color_picker::mouseMoveEvent(QMouseEvent *event)
 {
-    circle_position = event->pos();
+    float x = event->x();
+    float y = event->y();
+
+    if (x > width())
+        x = width();
+    else if (x < 0)
+        x = 0;
+
+    if (y > height())
+        y = height();
+    else if (y < 0)
+        y = 0;
+
+    circle_position = {x, y};
     update_picker();
 }
 
