@@ -47,8 +47,6 @@ class project_struct
 private:
     void create_base_children_for_group(node_struct node);
     void create_children_plugin(node_struct node);
-    QList<node_struct> get_children_nodes(QString parent_name,
-                                          bool recursive = false) const;
 
     node_struct get_node_from_object(QString name, QJsonObject node_obj) const;
 
@@ -64,7 +62,12 @@ public:
                      QJsonArray custom_knobs = {});
 
     void delete_node(QString name);
-    void rename_node(QString name, QString new_name);
+
+    void replace_parent_name_to_children(QString parent_name,
+                                         QString new_parent_name);
+
+    void rename_node(QString name, QString new_name,
+                     bool rename_children = true);
 
     void insert_input(QString src, QString dst, int index);
     void delete_input(QString node, int index);
@@ -79,6 +82,9 @@ public:
                                       int frame);
 
     QList<node_struct> get_nodes_from_group(QString group_name) const;
+
+    QList<node_struct> get_children_nodes(QString parent_name,
+                                          bool recursive = false) const;
 };
 
 #endif // PROJECT_STRUCT_H

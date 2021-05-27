@@ -202,7 +202,7 @@ void node::rename(QString _name)
     //
     //
 
-    props.project->rename_node(get_name(), _name);
+    props.project->rename_node(get_name(), _name, false);
     set_name(_name);
 
     // vuelve a conectar los nodos

@@ -96,7 +96,7 @@ void project_struct::delete_node(QString name)
     node_struct node = nodes.value(name);
 
     if (node.type == "group" || node.plugin)
-        for (node_struct child_node : get_children_nodes(node.name, true))
+        for (node_struct child_node : get_children_nodes(node.name))
             delete_node(child_node.name);
 
     delete nodes[name].params;
@@ -104,12 +104,30 @@ void project_struct::delete_node(QString name)
     nodes.remove(name);
 }
 
-void project_struct::rename_node(QString name, QString new_name)
+void project_struct::replace_parent_name_to_children(QString parent_name,
+                                                     QString new_parent_name)
+{
+    for (node_struct child : get_children_nodes(parent_name, true))
+    {
+        QString new_child_name =
+            new_parent_name +
+            child.name.right(child.name.length() - child.name.indexOf('.', 1));
+
+        rename_node(child.name, new_child_name, false);
+    }
+}
+
+void project_struct::rename_node(QString name, QString new_name,
+                                 bool rename_children)
 {
     if (!nodes.contains(name))
         return;
 
     node_struct aux = nodes[name];
+
+    if (rename_children && (aux.type == "group" || aux.plugin))
+        replace_parent_name_to_children(name, new_name);
+
     aux.name = new_name;
 
     // no se usa el 'delete_node' porque elimina el puntero de 'params'

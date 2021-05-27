@@ -60,11 +60,7 @@ void node_group::set_name(QString name)
     }
     else
     {
-        for (node_struct node : props.project->get_nodes_from_group(get_name()))
-        {
-            QString new_name = name + '.' + node.name.split('.').last();
-            props.project->rename_node(node.name, new_name);
-        }
+        props.project->replace_parent_name_to_children(get_name(), name);
     }
 
     node_rect::set_name(name);
