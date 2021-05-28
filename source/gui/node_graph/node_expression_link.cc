@@ -56,13 +56,13 @@ void expression_link::refresh()
         return;
 
     node *_this_node = static_cast<node *>(this_node);
-    node *linked_node = _this_node->get_linked_node();
+    node *handler_node = _this_node->get_handler_node();
 
-    if (!linked_node)
+    if (!handler_node)
         return;
 
     QPointF src_pos = _this_node->get_center_position();
-    QPointF dst_pos = linked_node->get_center_position();
+    QPointF dst_pos = handler_node->get_center_position();
 
     refresh_arrow(src_pos, dst_pos);
     setLine({src_pos, dst_pos});

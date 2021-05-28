@@ -146,8 +146,8 @@ QJsonObject project_struct::get_project_json() const
         if (!node.custom_knobs->empty())
             _node["knobs"] = *node.custom_knobs;
 
-        if (!node.linked.isEmpty())
-            _node["linked"] = node.linked;
+        if (!node.handler_node.isEmpty())
+            _node["handler_node"] = node.handler_node;
 
         if (!node.script.isEmpty())
             _node["script"] = node.script;
@@ -205,7 +205,7 @@ node_struct project_struct::get_node_from_object(QString name,
     node.inputs = node_obj.value("inputs").toObject();
     node.size = {size[0].toInt(), size[1].toInt()};
     node.z_value = node_obj.value("z_value").toInt();
-    node.linked = node_obj.value("linked").toString();
+    node.handler_node = node_obj.value("handler_node").toString();
     node.script = node_obj.value("script").toString();
     node.plugin = node_obj.value("plugin").toBool();
 

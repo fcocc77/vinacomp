@@ -34,8 +34,8 @@ knob::knob(knob_props props)
     tips = knob_data.value("tooltip").toString();
     curve_name = name + "_curve";
     exp_name = name + "_exp";
-    linked_name = name + "_linked";
-    linked_list_name = name + "_linked_list";
+    handler_name = name + "_handler_node";
+    slaves_name = name + "_slaves_nodes";
     //
 
     // Espacio inicial
@@ -251,15 +251,15 @@ void knob::restore_param()
 
     set_expression(params->value(exp_name).toString());
 
-    if (params->contains(linked_name))
+    if (params->contains(handler_name))
     {
-        QJsonArray linked = params->value(linked_name).toArray();
-        set_linked(linked.at(0).toString(), linked.at(1).toString());
+        QJsonArray linked = params->value(handler_name).toArray();
+        set_linked_handler(linked.at(0).toString(), linked.at(1).toString());
     }
 
-    if (params->contains(linked_list_name))
+    if (params->contains(slaves_name))
     {
-        linked_knobs = params->value(linked_list_name).toArray();
+        slaves_knobs = params->value(slaves_name).toArray();
     }
 }
 
@@ -358,19 +358,19 @@ void knob::set_expression(QString expression)
     }
 }
 
-void knob::add_link_knob(QString node_name, QString param_name)
+void knob::add_slave_knob(QString node_name, QString param_name)
 {
     // lista de knobs que son manejados por este knob
-    linked_knobs.push_back(QJsonArray{node_name, param_name});
-    params->insert(linked_list_name, linked_knobs);
+    slaves_knobs.push_back(QJsonArray{node_name, param_name});
+    params->insert(slaves_name, slaves_knobs);
 }
 
-void knob::remove_link_knob(QString node_name, QString param_name)
+void knob::remove_slave_knob(QString node_name, QString param_name)
 {
     int index = 0;
     bool finded = false;
 
-    for (knob *_knob : get_linked_knobs())
+    for (knob *_knob : get_slaves_knobs())
     {
         if (_knob->get_node_name() == node_name &&
             _knob->get_name() == param_name)
@@ -383,10 +383,10 @@ void knob::remove_link_knob(QString node_name, QString param_name)
     }
 
     if (finded)
-        linked_knobs.removeAt(index);
+        slaves_knobs.removeAt(index);
 }
 
-void knob::set_linked(QString node_name, QString param_name)
+void knob::set_linked_handler(QString node_name, QString param_name)
 {
     // si este knob es manejado por otro knob
     linked = true;
@@ -394,7 +394,7 @@ void knob::set_linked(QString node_name, QString param_name)
     handler_knob_node_name = node_name;
     handler_knob_name = param_name;
 
-    params->insert(linked_name, QJsonArray{node_name, param_name});
+    params->insert(handler_name, QJsonArray{node_name, param_name});
     set_disable(linked);
 
     static_cast<node_rect *>(this_node)->set_link_item(true);
@@ -426,10 +426,10 @@ knob *knob::get_knob(QString node_name, QString param_name) const
     return _knob;
 }
 
-QList<knob *> knob::get_linked_knobs() const
+QList<knob *> knob::get_slaves_knobs() const
 {
     QList<knob *> knobs;
-    for (QJsonValue value : linked_knobs)
+    for (QJsonValue value : slaves_knobs)
     {
         QString node_name = value.toArray().at(0).toString();
         QString param_name = value.toArray().at(1).toString();
@@ -450,9 +450,9 @@ void knob::remove_link()
     // elimina este knob en el manejador
     knob *handler_knob = get_knob(handler_knob_node_name, handler_knob_name);
     if (handler_knob)
-        handler_knob->remove_link_knob(get_node_name(), get_name());
+        handler_knob->remove_slave_knob(get_node_name(), get_name());
 
-    params->remove(linked_name);
+    params->remove(handler_name);
     linked = false;
     set_disable(false);
 
@@ -478,8 +478,8 @@ void knob::restore_default()
     params->remove(name);
     params->remove(curve_name);
     params->remove(exp_name);
-    params->remove(linked_name);
-    params->remove(linked_list_name);
+    params->remove(handler_name);
+    params->remove(slaves_name);
 }
 
 QWidget *knob::get_node_view() const

@@ -20,25 +20,25 @@ QJsonObject project_struct::replace_parent_name_to_params(
     {
         QJsonValue value = params.value(key);
 
-        if (key.contains("linked"))
+        if (key.contains("handler_node") || key.contains("slaves_nodes"))
         {
-            if (key.contains("linked_list"))
+            if (key.contains("slaves_nodes"))
             {
-                QJsonArray linked_list;
-                for (QJsonValue linked_list_value : value.toArray())
+                QJsonArray slaves_nodes;
+                for (QJsonValue slaves_nodes_value : value.toArray())
                 {
-                    QJsonArray linked;
-                    for (QJsonValue linked_value : linked_list_value.toArray())
+                    QJsonArray slave;
+                    for (QJsonValue slave_value : slaves_nodes_value.toArray())
                     {
-                        linked.push_back(
-                            replace_parent_name(linked_value.toString(),
+                        slave.push_back(
+                            replace_parent_name(slave_value.toString(),
                                                 parent_name, new_parent_name));
                     }
 
-                    linked_list.push_back(linked);
+                    slaves_nodes.push_back(slave);
                 }
 
-                new_params.insert(key, linked_list);
+                new_params.insert(key, slaves_nodes);
             }
             else
             {
@@ -83,8 +83,8 @@ void project_struct::replace_parent_name_to_node(node_struct *node,
     node->inputs = replace_parent_name_to_inputs(node->inputs, parent_name,
                                                   new_parent_name);
 
-    node->linked =
-        replace_parent_name(node->linked, parent_name, new_parent_name);
+    node->handler_node =
+        replace_parent_name(node->handler_node, parent_name, new_parent_name);
 
     *node->params = replace_parent_name_to_params(*node->params, parent_name,
                                                   new_parent_name);

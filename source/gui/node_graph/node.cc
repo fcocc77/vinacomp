@@ -19,7 +19,7 @@ node::node(node_props _props, QMap<QString, node *> *_selected_nodes,
     , is_backdrop(_props.type == "backdrop")
     , _output_link(nullptr)
     , _expression_link(nullptr)
-    , linked_node(nullptr)
+    , handler_node(nullptr)
     , center_position(new QPointF)
     , nodes_loaded(_props.nodes_loaded)
     , props(_props)
@@ -146,8 +146,8 @@ void node::refresh()
         if (output_node)
             refresh_links(output_node);
 
-    for (node *linked_node : linked_nodes)
-        linked_node->get_expression_link()->refresh();
+    for (node *slave_node : slaves_nodes)
+        slave_node->get_expression_link()->refresh();
 
     _expression_link->refresh();
 }
@@ -447,11 +447,11 @@ void node::set_center_position(float x, float y)
     set_position(x - (get_size().width() / 2), y - (get_size().height() / 2));
 }
 
-void node::set_linked(node *new_linked_node)
+void node::set_linked(node *new_handler_node)
 {
-    if (new_linked_node)
+    if (new_handler_node)
     {
-        new_linked_node->add_linked_node(this);
+        new_handler_node->add_slave_node(this);
         _expression_link->set_disable(false);
 
         if (static_cast<node_view *>(_node_view)->is_expression_link_visible())
@@ -459,13 +459,13 @@ void node::set_linked(node *new_linked_node)
     }
     else
     {
-        if (linked_node)
-            linked_node->remove_linked_node(this);
+        if (handler_node)
+            handler_node->remove_slave_node(this);
 
         _expression_link->set_disable(true);
     }
 
-    linked_node = new_linked_node;
+    handler_node = new_handler_node;
     _expression_link->refresh();
 }
 
@@ -495,21 +495,21 @@ void node::unlink_all()
             params->remove(param);
     };
 
-    for (node *linked_node : linked_nodes)
-        unlink(linked_node);
+    for (node *slave_node : slaves_nodes)
+        unlink(slave_node);
 
     unlink(this);
 }
 
-void node::add_linked_node(node *_node)
+void node::add_slave_node(node *_node)
 {
-    if (!linked_nodes.contains(_node))
-        linked_nodes.push_back(_node);
+    if (!slaves_nodes.contains(_node))
+        slaves_nodes.push_back(_node);
 }
 
-void node::remove_linked_node(node *_node)
+void node::remove_slave_node(node *_node)
 {
-    linked_nodes.removeOne(_node);
+    slaves_nodes.removeOne(_node);
 }
 
 void node::set_visible_expression_link(bool visible)

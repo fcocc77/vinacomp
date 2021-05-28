@@ -49,10 +49,10 @@ protected:
     QWidget *_vinacomp;
 
     QString name, label, tips, type;
-    QString curve_name, exp_name, linked_name, linked_list_name;
+    QString curve_name, exp_name, handler_name, slaves_name;
     QWidget *over_line_widget;
 
-    QJsonArray linked_knobs;
+    QJsonArray slaves_knobs;
 
     QJsonObject knob_data;
     QJsonObject *params;
@@ -73,11 +73,11 @@ public:
     virtual void set_error(bool error);
     virtual void set_animated(bool _animated);
     virtual void set_disable(bool disable);
-    void add_link_knob(QString node_name, QString param_name);
-    void remove_link_knob(QString node_name, QString param_name);
-    QList<knob *> get_linked_knobs() const;
+    void add_slave_knob(QString node_name, QString param_name);
+    void remove_slave_knob(QString node_name, QString param_name);
+    QList<knob *> get_slaves_knobs() const;
     knob *get_knob(QString node_name, QString param_name) const;
-    void set_linked(QString node_name, QString param_name);
+    void set_linked_handler(QString node_name, QString param_name);
     void remove_link();
     void enable_animation();
     void disable_animation();

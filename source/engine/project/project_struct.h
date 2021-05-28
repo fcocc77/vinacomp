@@ -19,7 +19,7 @@ struct node_struct
     QJsonObject *params;
     QJsonObject inputs;
     QJsonArray *custom_knobs;
-    QString linked;
+    QString handler_node;
     QString script;
     bool plugin;
 

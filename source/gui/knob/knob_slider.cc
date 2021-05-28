@@ -174,7 +174,7 @@ void knob_slider::to_emmit_signal()
 void knob_slider::update_linked_knobs()
 {
     // actualiza los knob linkeados
-    for (knob *_knob : get_linked_knobs())
+    for (knob *_knob : get_slaves_knobs())
     {
         knob_slider *_knob_slider = static_cast<knob_slider *>(_knob);
         _knob_slider->set_values(values, false);
