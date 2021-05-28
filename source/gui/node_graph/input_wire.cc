@@ -218,7 +218,7 @@ void input_wire::insert_node_in_between(QGraphicsItem *_node)
     this->disconnect_node();
     this->connect_node(between_node);
 
-    between_node->get_link()->connect_node(_connected_node);
+    between_node->get_input()->connect_node(_connected_node);
 }
 
 float input_wire::get_rotation(QPointF point_a, QPointF point_b)

@@ -55,7 +55,7 @@ node_view::node_view(QWidget *__vinacomp, properties *__properties,
 
     nodes = new QMap<QString, node *>;
     selected_nodes = new QMap<QString, node *>;
-    link_connecting = new QJsonObject();
+    input_connecting = new QJsonObject();
 
     current_z_value = new int();
 
@@ -104,7 +104,7 @@ void node_view::connect_to_viewer()
     if (_viewer == _node)
         return;
 
-    _viewer->get_link(1)->connect_node(_node);
+    _viewer->get_input(1)->connect_node(_node);
 }
 
 node *node_view::get_main_viewer() const
@@ -278,7 +278,7 @@ void node_view::switch_inputs_a_and_b()
     if (!selected_node)
         return;
 
-    auto *links = selected_node->get_links();
+    auto *links = selected_node->get_inputs();
     if (links->count() < 3)
         return;
 
@@ -325,7 +325,7 @@ void node_view::connect_output_wire(QPoint position_node)
     if (!node_to_connect)
         return;
 
-    node_to_connect->get_link()->connect_node(node_output);
+    node_to_connect->get_input()->connect_node(node_output);
 }
 
 void node_view::set_visible_ghost_dots(bool visible)
@@ -333,7 +333,7 @@ void node_view::set_visible_ghost_dots(bool visible)
     // visibilidad para los ghost dots
     for (node *_node : *nodes)
     {
-        auto *links = _node->get_links();
+        auto *links = _node->get_inputs();
         if (!links)
             continue;
 

@@ -27,7 +27,7 @@ struct node_props
 {
     QGraphicsScene *scene;
     int *current_z_value;
-    QJsonObject *link_connecting;
+    QJsonObject *input_connecting;
     QColor color;
     QString type;
     QString name;
@@ -50,7 +50,8 @@ private:
     QMap<QString, node *> *nodes_connected_to_the_inputs;
     QMap<QString, node *> *nodes_connected_to_the_output;
     QMap<QString, node *> *selected_nodes;
-    QList<input_wire *> *links;
+    QList<input_wire *> *inputs;
+
     QList<bool> connected_indexs;
 
     QMap<QString, QPointF> selected_nodes_start_position;
@@ -66,9 +67,9 @@ private:
 
     QPointF *center_position;
 
-    input_wire *get_close_link() const;
+    input_wire *get_close_input() const;
     void insert_in_between();
-    void show_close_link();
+    void show_close_input_wire();
     void snap_to_node(node *_node, QPointF this_node_pos, float &x_snap,
                       float &y_snap);
     void add_slave_node(node *_node);
@@ -127,8 +128,8 @@ public:
     inline QColor get_color() const;
     virtual inline void set_color(QColor color);
     void refresh();
-    inline QList<input_wire *> *get_links() const;
-    input_wire *get_link(int index = -1) const;
+    inline QList<input_wire *> *get_inputs() const;
+    input_wire *get_input(int index = -1) const;
     inline trim_panel *get_trim_panel() const;
     QString get_type() const;
     inline QSize get_size() const;
@@ -141,7 +142,7 @@ public:
     inline QList<bool> get_connected_indexs();
     inline QMap<QString, node *> *get_input_nodes() const;
     inline bool output_is_connected() const;
-    QList<input_wire*> get_output_links() const;
+    QList<input_wire*> get_inputs_connected_to_this() const;
     inline QString get_tips() const;
     inline node *get_handler_node() const;
     inline QString get_handler_node_name() const;
@@ -309,9 +310,9 @@ inline void node::remove_input_node(node *_node)
     nodes_connected_to_the_inputs->remove(_node->get_name());
 }
 
-inline QList<input_wire *> *node::get_links() const
+inline QList<input_wire *> *node::get_inputs() const
 {
-    return links;
+    return inputs;
 }
 
 inline QString node::get_type() const

@@ -4,7 +4,6 @@
 #include <util.h>
 #include <node_graph.h>
 #include <node_view.h>
-#include <link.h>
 
 node::node(node_props _props, QMap<QString, node *> *_selected_nodes,
            QWidget *_node_graph)
@@ -14,7 +13,7 @@ node::node(node_props _props, QMap<QString, node *> *_selected_nodes,
     , nodes_connected_to_the_inputs(new QMap<QString, node *>)
     , nodes_connected_to_the_output(new QMap<QString, node *>)
     , selected_nodes(_selected_nodes)
-    , links(nullptr)
+    , inputs(nullptr)
     , selected(false)
     , is_backdrop(_props.type == "backdrop")
     , _output_wire(nullptr)
@@ -50,27 +49,27 @@ node::node(node_props _props, QMap<QString, node *> *_selected_nodes,
     {
         QJsonObject node_fx = nodes_loaded->get_effect(props.type);
         // carga las entradas del efecto
-        QJsonArray inputs = node_fx.value("inputs").toArray();
+        QJsonArray _inputs = node_fx.value("inputs").toArray();
 
         // si esta vacia o no exite, crea una entrada
-        if (inputs.isEmpty())
-            inputs.push_back("Input-1");
+        if (_inputs.isEmpty())
+            _inputs.push_back("Input-1");
 
         // sumamos la mascara, que index 0
-        inputs.push_front("mask");
+        _inputs.push_front("mask");
         bool has_mask = node_fx.value("mask").toBool();
 
-        // Crea los links para el nodo
-        links = new QList<input_wire *>;
-        for (int i = 0; i < inputs.count(); i++)
+        // Crea los inputs para el nodo
+        inputs = new QList<input_wire *>;
+        for (int i = 0; i < _inputs.count(); i++)
         {
-            QString label = inputs[i].toString();
+            QString label = _inputs[i].toString();
 
-            input_wire *link = new input_wire(
-                label, has_mask, i, props.scene, this, props.link_connecting,
+            input_wire *input = new input_wire(
+                label, has_mask, i, props.scene, this, props.input_connecting,
                 props.project, props.vinacomp, _node_graph);
 
-            links->push_back(link);
+            inputs->push_back(input);
             connected_indexs.push_back(false);
         }
     }
@@ -83,12 +82,12 @@ node::node(node_props _props, QMap<QString, node *> *_selected_nodes,
 
 node::~node()
 {
-    if (links)
+    if (inputs)
     {
-        for (input_wire *link : *links)
-            delete link;
+        for (input_wire *input : *inputs)
+            delete input;
 
-        delete links;
+        delete inputs;
     }
     delete _output_wire;
     delete _expression_link;
@@ -127,24 +126,24 @@ void node::refresh()
     if (is_backdrop)
         return;
 
-    // Actualizacion de todos los links conectados al nodo
-    auto refresh_links = [](node *_node) {
-        auto *links = _node->get_links();
-        if (links)
-            for (input_wire *_input_wire : *links)
+    // Actualizacion de todos los inputs conectados al nodo
+    auto refresh_wires = [](node *_node) {
+        auto *_inputs = _node->get_inputs();
+        if (_inputs)
+            for (input_wire *_input_wire : *_inputs)
                 _input_wire->refresh();
 
         if (_node->get_output_wire())
             _node->get_output_wire()->refresh();
     };
 
-    refresh_links(this);
+    refresh_wires(this);
 
-    // refresca los link de cada nodo seleccionado y los
-    // link de los nodos que estan conectados a la salida.
+    // refresca los input de cada nodo seleccionado y los
+    // input de los nodos que estan conectados a la salida.
     for (node *output_node : *this->get_output_nodes())
         if (output_node)
-            refresh_links(output_node);
+            refresh_wires(output_node);
 
     for (node *slave_node : slaves_nodes)
         slave_node->get_expression_link()->refresh();
@@ -168,9 +167,9 @@ void node::set_selected(bool enable)
         this->setPen(pen);
     }
 
-    if (links)
-        for (input_wire *link : *links)
-            link->set_selected(enable);
+    if (inputs)
+        for (input_wire *input : *inputs)
+            input->set_selected(enable);
 
     if (_output_wire)
         _output_wire->set_selected(enable);
@@ -189,21 +188,21 @@ void node::set_name(QString _name)
 
 void node::rename(QString new_name)
 {
-    // crea lista auxiliar de los nodos conectados, desconecta todos los link y
+    // crea lista auxiliar de los nodos conectados, desconecta todos los input y
     // los conecta despues de cambiar el nombre de este nodo
     QList<QGraphicsItem *> aux_connected_nodes;
-    if (links)
+    if (inputs)
     {
-        for (input_wire *link : *links)
+        for (input_wire *input : *inputs)
         {
-            aux_connected_nodes.push_back(link->get_connected_node());
-            link->disconnect_node();
+            aux_connected_nodes.push_back(input->get_connected_node());
+            input->disconnect_node();
         }
     }
 
-    auto aux_output_links = get_output_links();
-    for (input_wire *output_link : aux_output_links)
-        output_link->disconnect_node();
+    auto aux_output_wires = get_inputs_connected_to_this();
+    for (input_wire *output_wire : aux_output_wires)
+        output_wire->disconnect_node();
     //
     //
 
@@ -211,17 +210,17 @@ void node::rename(QString new_name)
     set_name(new_name);
 
     // vuelve a conectar los nodos
-    if (links)
+    if (inputs)
     {
         for (int i = 0; i < aux_connected_nodes.count(); i++)
         {
             auto *_node = aux_connected_nodes.at(i);
-            links->at(i)->connect_node(_node);
+            inputs->at(i)->connect_node(_node);
         }
     }
 
-    for (input_wire *output_link : aux_output_links)
-        output_link->connect_node(this);
+    for (input_wire *output_wire : aux_output_wires)
+        output_wire->connect_node(this);
 }
 
 void node::set_group_name(QString _group_name)
@@ -246,7 +245,7 @@ QPointF node::get_center_position() const
     return *center_position;
 }
 
-input_wire *node::get_close_link() const
+input_wire *node::get_close_input() const
 {
     if (!_node_view)
         return nullptr;
@@ -254,42 +253,42 @@ input_wire *node::get_close_link() const
     node_view *__node_view = static_cast<node_view *>(_node_view);
 
     int grip_distance = 150;
-    input_wire *close_link = nullptr;
+    input_wire *close_input = nullptr;
 
     bool finded = false;
     for (node *_node : *__node_view->get_nodes())
     {
-        auto *links = _node->get_links();
-        if (!links)
+        auto *_inputs = _node->get_inputs();
+        if (!_inputs)
             continue;
 
-        for (input_wire *link : *links)
+        for (input_wire *input : *_inputs)
         {
-            if (!link->is_connected())
+            if (!input->is_connected())
                 continue;
 
-            link->set_ghost_link(false);
+            input->set_ghost_link(false);
 
-            // si ya encontro el link cercano, no hace lo siguiente, asi
+            // si ya encontro el input cercano, no hace lo siguiente, asi
             // ahorramos recursos ya que no se puede hacer 'break' al for, ya
-            // que tiene que ir apagando los link fantasmas que quedaron
+            // que tiene que ir apagando los input fantasmas que quedaron
             // prendidos
             if (finded)
                 continue;
 
-            QPointF center_link = link->get_center_position();
-            float distance = qt::distance_points(*center_position, center_link);
+            QPointF center_input = input->get_center_position();
+            float distance = qt::distance_points(*center_position, center_input);
 
             if (distance < grip_distance)
             {
-                close_link = link;
+                close_input = input;
                 finded = true;
                 break;
             }
         }
     }
 
-    return close_link;
+    return close_input;
 }
 
 void node::insert_in_between()
@@ -297,38 +296,38 @@ void node::insert_in_between()
     if (!_node_view)
         return;
 
-    // tiene que ser antes que el qt::control para que se oculte el 'ghost link'
-    input_wire *close_link = get_close_link();
-    if (!close_link)
+    // tiene que ser antes que el qt::control para que se oculte el 'ghost input'
+    input_wire *close_input = get_close_input();
+    if (!close_input)
         return;
 
     if (!qt::control() || !qt::shift() || !_node_view)
         return;
 
-    close_link->set_ghost_link(false);
-    close_link->insert_node_in_between(this);
+    close_input->set_ghost_link(false);
+    close_input->insert_node_in_between(this);
 }
 
-void node::show_close_link()
+void node::show_close_input_wire()
 {
     if (!_node_view)
         return;
 
-    input_wire *link_to_insert = get_close_link();
-    if (!link_to_insert)
+    input_wire *input_to_insert = get_close_input();
+    if (!input_to_insert)
         return;
 
     if (!qt::control() || !qt::shift() || !_node_view)
         return;
 
-    link_to_insert->set_ghost_link(true, *center_position);
+    input_to_insert->set_ghost_link(true, *center_position);
 }
 
-input_wire *node::get_link(int index) const
+input_wire *node::get_input(int index) const
 {
-    if (!links)
+    if (!inputs)
         return nullptr;
-    if (links->count() < 2)
+    if (inputs->count() < 2)
         return nullptr;
 
     if (index == -1)
@@ -347,27 +346,27 @@ input_wire *node::get_link(int index) const
         if (_index == 0) // mask
             _index = 1;
 
-        return links->value(_index);
+        return inputs->value(_index);
     }
-    return links->value(index);
+    return inputs->value(index);
 }
 
-QList<input_wire *> node::get_output_links() const
+QList<input_wire *> node::get_inputs_connected_to_this() const
 {
-    // obtiene todos los links conectados a este nodo
-    QList<input_wire *> links;
+    // obtiene todos los inputs conectados a este nodo
+    QList<input_wire *> inputs;
 
     for (node *out_node : *nodes_connected_to_the_output)
     {
-        for (input_wire *link : *out_node->get_links())
+        for (input_wire *input : *out_node->get_inputs())
         {
-            QGraphicsItem *connected_node = link->get_connected_node();
+            QGraphicsItem *connected_node = input->get_connected_node();
             if (connected_node == this)
-                links.push_back(link);
+                inputs.push_back(input);
         }
     }
 
-    return links;
+    return inputs;
 }
 
 void node::snap_to_node(node *_node, QPointF this_node_pos, float &x_snap,
@@ -580,7 +579,7 @@ void node::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         position_with_snap = {this_node_x, this_node_y};
 
     this->set_position(position_with_snap.x(), position_with_snap.y());
-    show_close_link();
+    show_close_input_wire();
     //
     //
 

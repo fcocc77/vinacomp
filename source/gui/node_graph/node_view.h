@@ -36,7 +36,7 @@ private:
     QMap<QString, node *> *selected_nodes;
     QMap<QString, node *> copied_nodes;
 
-    QJsonObject *link_connecting;
+    QJsonObject *input_connecting;
     node *output_wire_node;
     bool selecting = false;
     QPoint click_position;
@@ -100,7 +100,7 @@ public:
     void paste_nodes();
     node *get_node(QString name);
     inline QMap<QString, node *> *get_nodes();
-    input_wire *get_node_link(node *_node, int link_index);
+    input_wire *get_input_wire(node *_node, int input_index);
     void set_visible_ghost_dots(bool visible);
     void find_nodes(QString key);
     inline void set_output_wire_node(node *_node);
