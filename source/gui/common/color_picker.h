@@ -28,7 +28,7 @@ public:
     color_picker();
     ~color_picker();
 
-    static QColor hsl_to_rgb(float H, float S, float L);
+    static QColor hsl_to_rgb(float H, float S = 1, float L = 1);
     static void rgb_to_hsl(QColor rgb, float &H, float &S, float &L);
 
     void set_color(QColor color);

@@ -21,7 +21,7 @@ slider::slider(float _min, float _max, float _default_value, bool _floating,
     slider_center->move(0, 8);
 
     slider_center->setObjectName("slider_center");
-    slider_center->setMaximumHeight(6);
+    slider_center->setFixedHeight(6);
 
     handler = new QLabel(this);
     int handler_size = 15;

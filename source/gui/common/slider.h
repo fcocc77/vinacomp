@@ -1,12 +1,11 @@
 #ifndef SLIDER_HPP
 #define SLIDER_HPP
 
-// #include <QSlider>
-#include <QWidget>
-#include <QPainter>
-#include <QStyleOption>
-#include <QResizeEvent>
 #include <QLabel>
+#include <QPainter>
+#include <QResizeEvent>
+#include <QStyleOption>
+#include <QWidget>
 
 class slider : public QWidget
 {
@@ -22,7 +21,7 @@ private:
     bool out_range;
     bool disable;
 
-    QWidget *slider_center ;
+    QWidget *slider_center;
     QLabel *handler;
     QLabel *handler_left;
     QLabel *handler_right;
@@ -44,9 +43,21 @@ public:
     void set_value(float value);
     void set_default_value(float _default_value);
     void set_disable(bool disable);
+    inline QWidget *get_slider_center() const;
+    inline QWidget *get_handler() const;
 
 signals:
     void moved(float value);
 };
+
+inline QWidget *slider::get_handler() const
+{
+    return handler;
+}
+
+inline QWidget *slider::get_slider_center() const
+{
+    return slider_center;
+}
 
 #endif // SLIDER_HPP

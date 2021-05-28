@@ -55,6 +55,7 @@ knob_color::knob_color(knob_props props, float min, float max, float r, float g,
         new knob_color_slider(min, max, default_alpha, centered_handler, "A");
 
     hue_slider = new knob_color_slider(0, 360, 0, centered_handler, "H º");
+    hue_slider->set_hue_slider();
     sat_slider = new knob_color_slider(0, 1, 1, centered_handler, "S %");
     level_slider = new knob_color_slider(0, 1, 1, centered_handler, "L %");
 
@@ -296,12 +297,22 @@ void knob_color::update_hsl_sliders()
     hue_slider->set_value(h, false);
     sat_slider->set_value(s, false);
     level_slider->set_value(l, false);
+
+    hue_slider->set_hue_color(h);
+    sat_slider->set_hue_color(h);
+    level_slider->set_hue_color(h);
 }
 
 void knob_color::update_color_picker()
 {
     _color_picker->set_hsl(hue_slider->get_value(), sat_slider->get_value(),
                            level_slider->get_value());
+
+    float h = hue_slider->get_value();
+
+    hue_slider->set_hue_color(h);
+    sat_slider->set_hue_color(h);
+    level_slider->set_hue_color(h);
 }
 
 void knob_color::update_rgb_sliders()

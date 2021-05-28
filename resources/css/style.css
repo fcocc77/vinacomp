@@ -766,11 +766,19 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left
     border-bottom: 1px solid #1e2024;
     background: #2c2f35; }
   #properties #knob_editor #edit_tools QPushButton {
-    border-radius: 3px;
-    padding: 4px 7px 4px 7px;
-    background: #353941; }
-    #properties #knob_editor #edit_tools QPushButton:hover {
-      color: #ffcc00; }
+    padding: 7px;
+    border-radius: 2px;
+    background: #353941;
+    border: 1px solid #353941;
+    padding: 4px 7px 4px 7px; }
+    #properties #knob_editor #edit_tools QPushButton::hover {
+      color: white;
+      border-color: #3d4149;
+      background: #3d4149; }
+    #properties #knob_editor #edit_tools QPushButton::pressed {
+      background: #2f333a;
+      color: #ffcc00;
+      border-color: #5d5634; }
   #properties #knob_editor #edit_tools #edit_label {
     color: #ffcc00; }
   #properties #knob_editor #edit_tools #edit_icon {
