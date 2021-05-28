@@ -4,6 +4,7 @@ general:
     ☐ crear un checklist con todas las partes del software, y con esa lista ir manualmente verificando si funciona
     ☐ file_dialog: iniciar con ruta por defecto
     ☐ panels_layout: la interface parpadea al cambiar de layout 'set_layout'
+    ☐ file_dialog: al abrir un proyecto y luego cerrarlo, el nuevo proyecto no se puede guardar con otro nombre
 
 gui__settings_projects:
 	☐ el proxy va a remplazar el rscale de videovina

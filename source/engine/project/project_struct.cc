@@ -47,44 +47,21 @@ void project_struct::create_base_children_for_group(node_struct node)
 
 void project_struct::create_children_plugin(node_struct node)
 {
-    QJsonObject plugin_nodes =
-        jread(PY_PLUGINS_PATH + '/' + node.type + ".json")
-            .value("nodes")
-            .toObject();
+    QString plugin_path = PY_PLUGINS_PATH + '/' + node.type + ".json";
+    QString plugin_text = fread(plugin_path);
 
-    for (QString relative_name : plugin_nodes.keys())
+    plugin_text.replace("{{group_name}}", node.name);
+
+    QJsonObject plugin_nodes = QJsonDocument::fromJson(plugin_text.toUtf8())
+                                   .object()
+                                   .value("nodes")
+                                   .toObject();
+
+    for (QString node_name : plugin_nodes.keys())
     {
-        QString new_name = node.name + '.' + relative_name;
-        QJsonObject node_obj = plugin_nodes.value(relative_name).toObject();
-
-        insert_node(get_node_from_object(new_name, node_obj));
+        QJsonObject node_obj = plugin_nodes.value(node_name).toObject();
+        insert_node(get_node_from_object(node_name, node_obj));
     }
-}
-
-QList<node_struct> project_struct::get_children_nodes(QString parent_name,
-                                                      bool recursive) const
-{
-    QList<node_struct> children;
-    parent_name += ".";
-
-    for (node_struct node : nodes)
-    {
-        if (recursive)
-        {
-            if (node.name.indexOf(parent_name) == 0)
-                children.push_back(node);
-        }
-        else
-        {
-            QString parent_of_node =
-                node.name.left(node.name.lastIndexOf('.') + 1);
-
-            if (parent_of_node == parent_name)
-                children.push_back(node);
-        }
-    }
-
-    return children;
 }
 
 void project_struct::delete_node(QString name)
@@ -104,86 +81,6 @@ void project_struct::delete_node(QString name)
     nodes.remove(name);
 }
 
-QString project_struct::replace_parent_name(QString node_name,
-                                            QString parent_name,
-                                            QString new_parent_name)
-{
-    if (!node_name.contains('.'))
-        return node_name;
-
-    return new_parent_name +
-           node_name.right(node_name.length() - parent_name.length());
-}
-
-void project_struct::replace_parent_name_to_children(QString parent_name,
-                                                     QString new_parent_name)
-{
-    auto get_node_name = [=](QString node_name) {
-        return replace_parent_name(node_name, parent_name, new_parent_name);
-    };
-
-    for (node_struct child : get_children_nodes(parent_name, true))
-    {
-        node_struct &_child = nodes[child.name];
-
-        // Inputs
-        QJsonObject inputs;
-        for (QString key : child.inputs.keys())
-        {
-            QString input = child.inputs.value(key).toString();
-            inputs.insert(key, get_node_name(input));
-        }
-
-        _child.inputs = inputs;
-        //
-
-        _child.linked = get_node_name(_child.linked);
-
-        // Params
-        QJsonObject params;
-        for (QString key : _child.params->keys())
-        {
-            QJsonValue value = _child.params->value(key);
-
-            if (key.contains("linked"))
-            {
-                if (key.contains("linked_list"))
-                {
-                    QJsonArray linked_list;
-                    for (QJsonValue linked_list_value : value.toArray())
-                    {
-                        QJsonArray linked;
-                        for (QJsonValue linked_value :
-                             linked_list_value.toArray())
-                        {
-                            linked.push_back(
-                                get_node_name(linked_value.toString()));
-                        }
-
-                        linked_list.push_back(linked);
-                    }
-
-                    params.insert(key, linked_list);
-                }
-                else
-                {
-                    QJsonArray linked;
-                    for (QJsonValue linked_value : value.toArray())
-                        linked.push_back(
-                            get_node_name(linked_value.toString()));
-
-                    params.insert(key, linked);
-                }
-            }
-            else
-                params.insert(key, value);
-        }
-
-        *_child.params = params;
-
-        rename_node(child.name, get_node_name(child.name), false);
-    }
-}
 
 void project_struct::rename_node(QString name, QString new_name,
                                  bool rename_children)
@@ -368,23 +265,3 @@ QJsonValue project_struct::get_value_frame(QJsonObject *params,
         .toArray()[0];
 }
 
-QList<node_struct>
-project_struct::get_nodes_from_group(QString group_name) const
-{
-    if (group_name.isEmpty())
-    {
-        // crea lista con los nodos principales ya que no son grupos al no tener
-        // punto
-        QList<node_struct> main_nodes;
-        for (QString name : nodes.keys())
-        {
-            auto node = nodes.value(name);
-            if (!name.contains('.'))
-                main_nodes.push_back(node);
-        }
-
-        return main_nodes;
-    }
-
-    return get_children_nodes(group_name);
-}

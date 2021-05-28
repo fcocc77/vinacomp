@@ -66,6 +66,14 @@ public:
     static QString replace_parent_name(QString node_name, QString parent_name,
                                        QString new_group_name);
 
+    static QJsonObject replace_parent_name_to_params(QJsonObject params,
+                                                     QString parent_name,
+                                                     QString new_parent_name);
+
+    static QJsonObject replace_parent_name_to_inputs(QJsonObject inputs,
+                                                     QString parent_name,
+                                                     QString new_parent_name);
+
     void replace_parent_name_to_children(QString parent_name,
                                          QString new_parent_name);
 

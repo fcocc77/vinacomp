@@ -56,13 +56,29 @@ QJsonObject group_gui::get_child_nodes() const
 
     for (QString node_name : nodes.keys())
     {
-        QJsonObject node_obj = nodes.value(node_name).toObject();
-
         QString group_name = name + '.';
-        QString basename = node_name.section(group_name, 1);
 
         if (node_name.indexOf(group_name) == 0)
-            child_nodes.insert(basename, node_obj);
+        {
+            QJsonObject node_obj = nodes.value(node_name).toObject();
+
+            QString tmp_group_name = "{{group_name}}";
+
+            QString new_node_name =
+                tmp_group_name + "." + node_name.section(group_name, 1);
+
+            node_obj["inputs"] = project->replace_parent_name_to_inputs(
+                node_obj["inputs"].toObject(), name, tmp_group_name);
+
+            node_obj["params"] = project->replace_parent_name_to_params(
+                node_obj["params"].toObject(), name, tmp_group_name);
+
+            if (node_obj.contains("linked"))
+                node_obj["linked"] = project->replace_parent_name(
+                    node_obj["linked"].toString(), name, tmp_group_name);
+
+            child_nodes.insert(new_node_name, node_obj);
+        }
     }
 
     return child_nodes;
