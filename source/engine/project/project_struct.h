@@ -19,7 +19,7 @@ struct node_struct
     QJsonObject *params;
     QJsonObject inputs;
     QJsonArray *custom_knobs;
-    QString handler_node;
+    QJsonArray handler_nodes;
     QString script;
     bool plugin;
 
@@ -72,6 +72,10 @@ public:
                                                      QString new_parent_name);
 
     static QJsonObject replace_parent_name_to_inputs(QJsonObject inputs,
+                                                     QString parent_name,
+                                                     QString new_parent_name);
+
+    static QJsonArray replace_parent_name_to_handlers(QJsonArray handler_nodes,
                                                      QString parent_name,
                                                      QString new_parent_name);
 

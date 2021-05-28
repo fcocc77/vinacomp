@@ -62,7 +62,7 @@ private:
     output_wire *_output_wire;
 
     expression_link *_expression_link;
-    node *handler_node;
+    QList<node *> handler_nodes;
     QList<node *> slaves_nodes;
 
     QPointF *center_position;
@@ -113,6 +113,7 @@ public:
     void set_group_name(QString group_name);
     void add_handler_node(node *linked_node);
     void add_handler_node(QString node_name);
+    void remove_handler_node(node *handler_node);
     void set_icon_name(QString name);
     virtual inline void set_tips(QString tips);
     inline QString get_name() const;
@@ -144,8 +145,8 @@ public:
     inline bool output_is_connected() const;
     QList<input_wire*> get_inputs_connected_to_this() const;
     inline QString get_tips() const;
-    inline node *get_handler_node() const;
-    inline QString get_handler_node_name() const;
+    inline QList<node *> get_handler_nodes() const;
+    inline QJsonArray get_handler_nodes_name() const;
     inline expression_link *get_expression_link() const;
     void set_visible_expression_link(bool visible);
     inline QString get_group_name() const;
@@ -173,17 +174,19 @@ inline expression_link *node::get_expression_link() const
     return _expression_link;
 }
 
-inline QString node::get_handler_node_name() const
+inline QJsonArray node::get_handler_nodes_name() const
 {
-    if (handler_node)
-        return handler_node->get_name();
+    QJsonArray handler_nodes_name;
 
-    return "";
+    for (node *handler_node : handler_nodes)
+        handler_nodes_name.push_back(handler_node->get_name());
+
+    return handler_nodes_name;
 }
 
-inline node *node::get_handler_node() const
+inline QList<node *> node::get_handler_nodes() const
 {
-    return handler_node;
+    return handler_nodes;
 }
 
 inline QJsonObject *node::get_params() const

@@ -18,7 +18,6 @@ node::node(node_props _props, QMap<QString, node *> *_selected_nodes,
     , is_backdrop(_props.type == "backdrop")
     , _output_wire(nullptr)
     , _expression_link(nullptr)
-    , handler_node(nullptr)
     , center_position(new QPointF)
     , nodes_loaded(_props.nodes_loaded)
     , props(_props)
@@ -448,23 +447,25 @@ void node::set_center_position(float x, float y)
 
 void node::add_handler_node(node *new_handler_node)
 {
-    if (new_handler_node)
-    {
-        new_handler_node->add_slave_node(this);
-        _expression_link->set_disable(false);
+    if (!new_handler_node)
+        return;
 
-        if (static_cast<node_view *>(_node_view)->is_expression_link_visible())
-            _expression_link->set_visible(true);
-    }
-    else
-    {
-        if (handler_node)
-            handler_node->remove_slave_node(this);
+    new_handler_node->add_slave_node(this);
+    _expression_link->set_disable(false);
 
-        _expression_link->set_disable(true);
-    }
+    if (static_cast<node_view *>(_node_view)->is_expression_link_visible())
+        _expression_link->set_visible(true);
 
-    handler_node = new_handler_node;
+    handler_nodes.push_back(new_handler_node);
+    _expression_link->refresh();
+}
+
+void node::remove_handler_node(node *handler_node)
+{
+    handler_node->remove_slave_node(this);
+    handler_nodes.removeOne(handler_node);
+
+    _expression_link->set_disable(true);
     _expression_link->refresh();
 }
 

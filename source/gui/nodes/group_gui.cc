@@ -73,9 +73,11 @@ QJsonObject group_gui::get_child_nodes() const
             node_obj["params"] = project->replace_parent_name_to_params(
                 node_obj["params"].toObject(), name, tmp_group_name);
 
-            if (node_obj.contains("handler_node"))
-                node_obj["handler_node"] = project->replace_parent_name(
-                    node_obj["handler_node"].toString(), name, tmp_group_name);
+            if (node_obj.contains("handler_nodes"))
+                node_obj["handler_nodes"] =
+                    project->replace_parent_name_to_handlers(
+                        node_obj["handler_nodes"].toArray(), name,
+                        tmp_group_name);
 
             child_nodes.insert(new_node_name, node_obj);
         }

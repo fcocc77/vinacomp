@@ -57,6 +57,20 @@ QJsonObject project_struct::replace_parent_name_to_params(
     return new_params;
 }
 
+QJsonArray project_struct::replace_parent_name_to_handlers(
+    QJsonArray handler_nodes, QString parent_name, QString new_parent_name)
+{
+
+    QJsonArray new_handler_nodes;
+    for (QJsonValue value : handler_nodes)
+    {
+        new_handler_nodes.push_back(replace_parent_name(
+            value.toString(), parent_name, new_parent_name));
+    }
+
+    return new_handler_nodes;
+}
+
 QJsonObject project_struct::replace_parent_name_to_inputs(
     QJsonObject inputs, QString parent_name, QString new_parent_name)
 {
@@ -83,8 +97,8 @@ void project_struct::replace_parent_name_to_node(node_struct *node,
     node->inputs = replace_parent_name_to_inputs(node->inputs, parent_name,
                                                   new_parent_name);
 
-    node->handler_node =
-        replace_parent_name(node->handler_node, parent_name, new_parent_name);
+    node->handler_nodes = replace_parent_name_to_handlers(
+        node->handler_nodes, parent_name, new_parent_name);
 
     *node->params = replace_parent_name_to_params(*node->params, parent_name,
                                                   new_parent_name);

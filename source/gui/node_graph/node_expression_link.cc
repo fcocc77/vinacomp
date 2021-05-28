@@ -56,16 +56,16 @@ void expression_link::refresh()
         return;
 
     node *_this_node = static_cast<node *>(this_node);
-    node *handler_node = _this_node->get_handler_node();
+    // node *handler_node = _this_node->get_handler_node();
 
-    if (!handler_node)
-        return;
+    // if (!handler_node)
+        // return;
 
-    QPointF src_pos = _this_node->get_center_position();
-    QPointF dst_pos = handler_node->get_center_position();
+    // QPointF src_pos = _this_node->get_center_position();
+    // QPointF dst_pos = handler_node->get_center_position();
 
-    refresh_arrow(src_pos, dst_pos);
-    setLine({src_pos, dst_pos});
+    // refresh_arrow(src_pos, dst_pos);
+    // setLine({src_pos, dst_pos});
 }
 
 void expression_link::refresh_arrow(QPointF src, QPointF dst)

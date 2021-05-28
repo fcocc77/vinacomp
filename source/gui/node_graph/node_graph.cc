@@ -77,7 +77,7 @@ void node_graph::save_nodes_attributes_to_project()
         __node.color = _node->get_color();
         __node.size = _node->get_size();
         __node.z_value = _node->zValue();
-        __node.handler_node = _node->get_handler_node_name();
+        __node.handler_nodes = _node->get_handler_nodes_name();
 
         if (panel)
         {
@@ -115,7 +115,8 @@ void node_graph::restore_tree()
                 input->connect_node(node_to_connect, false);
         }
 
-        _node->add_handler_node(node_data.handler_node);
+        for (QJsonValue value : node_data.handler_nodes)
+            _node->add_handler_node(value.toString());
     }
 }
 
