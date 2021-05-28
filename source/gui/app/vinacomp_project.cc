@@ -118,12 +118,14 @@ bool vinacomp::close_project()
     {
         to_save_project();
         _node_graph->clear_tree();
+        project->clear_nodes();
         project_opened = false;
         return true;
     }
     else if (ret == QMessageBox::Discard)
     {
         _node_graph->clear_tree();
+        project->clear_nodes();
         project_opened = false;
         return true;
     }

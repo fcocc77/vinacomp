@@ -60,7 +60,8 @@ void project_struct::create_children_plugin(node_struct node)
     for (QString node_name : plugin_nodes.keys())
     {
         QJsonObject node_obj = plugin_nodes.value(node_name).toObject();
-        insert_node(get_node_from_object(node_name, node_obj));
+        insert_node(get_node_from_object(node_name, node_obj),
+                    node_obj["params"].toObject());
     }
 }
 
@@ -265,3 +266,13 @@ QJsonValue project_struct::get_value_frame(QJsonObject *params,
         .toArray()[0];
 }
 
+void project_struct::clear_nodes()
+{
+    for (node_struct node : nodes)
+    {
+        delete node.params;
+        delete node.custom_knobs;
+    }
+
+    nodes.clear();
+}

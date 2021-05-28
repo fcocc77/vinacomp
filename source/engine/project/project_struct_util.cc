@@ -71,26 +71,39 @@ QJsonObject project_struct::replace_parent_name_to_inputs(
     return new_inputs;
 }
 
+void project_struct::replace_parent_name_to_node(node_struct *node,
+                                                 QString parent_name,
+                                                 QString new_parent_name,
+                                                 bool replace_to_name)
+{
+    if (replace_to_name)
+        node->name =
+            replace_parent_name(node->name, parent_name, new_parent_name);
+
+    node->inputs = replace_parent_name_to_inputs(node->inputs, parent_name,
+                                                  new_parent_name);
+
+    node->linked =
+        replace_parent_name(node->linked, parent_name, new_parent_name);
+
+    *node->params = replace_parent_name_to_params(*node->params, parent_name,
+                                                  new_parent_name);
+}
+
 void project_struct::replace_parent_name_to_children(QString parent_name,
                                                      QString new_parent_name)
 {
-    auto get_node_name = [=](QString node_name) {
-        return replace_parent_name(node_name, parent_name, new_parent_name);
-    };
-
     for (node_struct child : get_children_nodes(parent_name, true))
     {
         node_struct &_child = nodes[child.name];
 
-        _child.inputs = replace_parent_name_to_inputs(child.inputs, parent_name,
-                                                      new_parent_name);
+        replace_parent_name_to_node(&_child, parent_name, new_parent_name,
+                                    false);
 
-        _child.linked = get_node_name(_child.linked);
+        QString new_node_name =
+            replace_parent_name(child.name, parent_name, new_parent_name);
 
-        *_child.params = replace_parent_name_to_params(
-            *_child.params, parent_name, new_parent_name);
-
-        rename_node(child.name, get_node_name(child.name), false);
+        rename_node(child.name, new_node_name, false);
     }
 }
 

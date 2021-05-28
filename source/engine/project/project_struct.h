@@ -74,6 +74,10 @@ public:
                                                      QString parent_name,
                                                      QString new_parent_name);
 
+    void replace_parent_name_to_node(node_struct *node, QString parent_name,
+                                     QString new_parent_name,
+                                     bool replace_to_name = true);
+
     void replace_parent_name_to_children(QString parent_name,
                                          QString new_parent_name);
 
@@ -96,6 +100,8 @@ public:
 
     QList<node_struct> get_children_nodes(QString parent_name,
                                           bool recursive = false) const;
+
+    void clear_nodes();
 };
 
 #endif // PROJECT_STRUCT_H
