@@ -41,7 +41,7 @@ void node_dot::set_size(int _width, int _height)
 
 void node_dot::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    // desabilita el 'grabMouse' que se inicio en 'node_link_ghost_dot'
+    // desabilita el 'grabMouse' que se inicio en 'input_wire_ghost_dot'
     this->ungrabMouse();
 
     node::mouseReleaseEvent(event);

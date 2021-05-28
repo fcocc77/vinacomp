@@ -267,7 +267,7 @@ input_wire *node::get_close_input() const
             if (!input->is_connected())
                 continue;
 
-            input->set_ghost_link(false);
+            input->set_ghost_wire(false);
 
             // si ya encontro el input cercano, no hace lo siguiente, asi
             // ahorramos recursos ya que no se puede hacer 'break' al for, ya
@@ -304,7 +304,7 @@ void node::insert_in_between()
     if (!qt::control() || !qt::shift() || !_node_view)
         return;
 
-    close_input->set_ghost_link(false);
+    close_input->set_ghost_wire(false);
     close_input->insert_node_in_between(this);
 }
 
@@ -320,7 +320,7 @@ void node::show_close_input_wire()
     if (!qt::control() || !qt::shift() || !_node_view)
         return;
 
-    input_to_insert->set_ghost_link(true, *center_position);
+    input_to_insert->set_ghost_wire(true, *center_position);
 }
 
 input_wire *node::get_input(int index) const

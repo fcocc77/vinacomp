@@ -278,21 +278,21 @@ void node_view::switch_inputs_a_and_b()
     if (!selected_node)
         return;
 
-    auto *links = selected_node->get_inputs();
-    if (links->count() < 3)
+    auto *inputs = selected_node->get_inputs();
+    if (inputs->count() < 3)
         return;
 
-    input_wire *link_1 = links->value(1);
-    input_wire *link_2 = links->value(2);
+    input_wire *input_1 = inputs->value(1);
+    input_wire *input_2 = inputs->value(2);
 
-    auto *node_1 = link_1->get_connected_node();
-    auto *node_2 = link_2->get_connected_node();
+    auto *node_1 = input_1->get_connected_node();
+    auto *node_2 = input_2->get_connected_node();
 
-    link_1->disconnect_node();
-    link_2->disconnect_node();
+    input_1->disconnect_node();
+    input_2->disconnect_node();
 
-    link_1->connect_node(node_2);
-    link_2->connect_node(node_1);
+    input_1->connect_node(node_2);
+    input_2->connect_node(node_1);
 }
 
 QPointF node_view::get_min_node_separation(node *node_a, node *node_b) const
@@ -333,12 +333,12 @@ void node_view::set_visible_ghost_dots(bool visible)
     // visibilidad para los ghost dots
     for (node *_node : *nodes)
     {
-        auto *links = _node->get_inputs();
-        if (!links)
+        auto *inputs = _node->get_inputs();
+        if (!inputs)
             continue;
 
-        for (input_wire *link : *links)
-            link->set_visible_ghost_dot(visible);
+        for (input_wire *input : *inputs)
+            input->set_visible_ghost_dot(visible);
     }
 }
 

@@ -22,11 +22,11 @@ private:
     QGraphicsItem *this_node;
     QGraphicsItem *connected_node;
     ghost_dot *_ghost_dot;
-    QJsonObject *link_connecting;
+    QJsonObject *input_connecting;
     project_struct *project;
     QWidget *_vinacomp;
 
-    int link_size;
+    int wire_size;
     int index;
     bool dragging;
     bool visible;
@@ -35,12 +35,12 @@ private:
     bool ghost_dot_visible;
     int ghost_dot_size;
 
-    QGraphicsLineItem *link, *ghost_link_a, *ghost_link_b;
+    QGraphicsLineItem *wire, *ghost_wire_a, *ghost_wire_b;
     QGraphicsPolygonItem *arrow;
     QGraphicsTextItem *text;
 
     float arrow_refresh(QPointF point_a, QPointF point_b);
-    void link_refresh(QPointF point_a, QPointF point_b);
+    void wire_refresh(QPointF point_a, QPointF point_b);
     void bbox_refresh(QPointF point_a, QPointF point_b);
     void text_refresh(QPointF point_a, QPointF point_b);
 
@@ -60,7 +60,7 @@ private:
 public:
     input_wire(QString input_label, bool has_mask, int _index,
               QGraphicsScene *_scene, QGraphicsItem *_node,
-              QJsonObject *_link_connecting, project_struct *_project,
+              QJsonObject *_input_connecting, project_struct *_project,
               QWidget *_vinacomp, QWidget *_node_graph);
     ~input_wire();
 
@@ -71,7 +71,7 @@ public:
     void connect_node(QGraphicsItem *_node, bool prevent_loop = true);
     void disconnect_node();
     void set_selected(bool enable);
-    void set_ghost_link(bool visible, QPointF break_point = {});
+    void set_ghost_wire(bool visible, QPointF break_point = {});
     inline QGraphicsItem *get_connected_node() const;
     inline QGraphicsItem *get_this_node() const;
     inline void set_visible_ghost_dot(bool visible);
@@ -111,7 +111,7 @@ inline void input_wire::set_visible(bool _visible)
 {
     visible = _visible;
     this->setVisible(visible);
-    link->setVisible(visible);
+    wire->setVisible(visible);
     arrow->setVisible(visible);
 }
 

@@ -18,11 +18,11 @@ output_wire::output_wire(QGraphicsScene *_scene, QWidget *__node_view,
     scene->addItem(this);
 
     // Wire
-    link = new QGraphicsLineItem();
+    wire = new QGraphicsLineItem();
     QPen pen(Qt::black);
     pen.setWidth(2);
-    link->setPen(pen);
-    scene->addItem(link);
+    wire->setPen(pen);
+    scene->addItem(wire);
     //
     //
 
@@ -33,15 +33,15 @@ output_wire::output_wire(QGraphicsScene *_scene, QWidget *__node_view,
     scene->addItem(arrow);
     //
 
-    this->setData(0, "link");
-    arrow->setData(0, "link");
+    this->setData(0, "wire");
+    arrow->setData(0, "wire");
 
     refresh();
 }
 
 output_wire::~output_wire()
 {
-    delete link;
+    delete wire;
     delete arrow;
 }
 
@@ -51,13 +51,13 @@ void output_wire::set_selected(bool enable)
     {
         arrow->setPen(QPen(Qt::white));
         arrow->setBrush(QBrush(Qt::white));
-        link->setPen(QPen(Qt::white, 4));
+        wire->setPen(QPen(Qt::white, 4));
     }
     else
     {
         arrow->setPen(QPen(Qt::black));
         arrow->setBrush(QBrush(Qt::black));
-        link->setPen(QPen(Qt::black, 2));
+        wire->setPen(QPen(Qt::black, 2));
     }
 }
 
@@ -81,11 +81,11 @@ void output_wire::refresh_arrow(QPointF dst_pos)
     arrow->setPos(dst_pos);
 }
 
-void output_wire::link_refresh(QPointF dst_pos)
+void output_wire::wire_refresh(QPointF dst_pos)
 {
     QPointF src = static_cast<node *>(this_node)->get_center_position();
     QLineF line = {src, dst_pos};
-    link->setLine(line);
+    wire->setLine(line);
 }
 
 void output_wire::refresh()
@@ -98,15 +98,15 @@ void output_wire::refresh()
         return;
     }
 
-    int link_size = 0;
+    int wire_size = 0;
     if (_this_node->get_type() == "dot")
-        link_size = 10;
+        wire_size = 10;
     int height_node = _this_node->get_size().height() / 2;
     QPointF src_pos = _this_node->get_center_position();
-    QPointF dst_pos = {src_pos.x(), src_pos.y() + height_node + link_size};
+    QPointF dst_pos = {src_pos.x(), src_pos.y() + height_node + wire_size};
 
     refresh_arrow(dst_pos);
-    link_refresh(dst_pos);
+    wire_refresh(dst_pos);
     set_visible(true);
 
     // bounding box
@@ -123,7 +123,7 @@ void output_wire::set_visible(bool visible)
 {
     this->setVisible(visible);
     arrow->setVisible(visible);
-    link->setVisible(visible);
+    wire->setVisible(visible);
 }
 
 void output_wire::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -132,7 +132,7 @@ void output_wire::mousePressEvent(QGraphicsSceneMouseEvent *event)
     // 'mouseMoveEvent'
 
     QPointF pos = mapToScene(event->pos());
-    link_refresh(pos);
+    wire_refresh(pos);
 
     node *_this_node = static_cast<node *>(this_node);
     static_cast<node_view *>(_node_view)->set_output_wire_node(_this_node);
@@ -146,6 +146,6 @@ void output_wire::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 void output_wire::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     QPointF pos = mapToScene(event->pos());
-    link_refresh(pos);
+    wire_refresh(pos);
     refresh_arrow(pos);
 }

@@ -13,13 +13,13 @@ class output_wire : public QGraphicsRectItem
 private:
     QGraphicsPolygonItem *arrow;
     QGraphicsItem *this_node;
-    QGraphicsLineItem *link;
+    QGraphicsLineItem *wire;
     QGraphicsScene *scene;
 
     QWidget *_node_view;
 
     void refresh_arrow(QPointF dst_pos);
-    void link_refresh(QPointF dst_pos);
+    void wire_refresh(QPointF dst_pos);
     void set_visible(bool visible);
 
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;

@@ -6,16 +6,16 @@
 
 input_wire::input_wire(QString input_label, bool _has_mask, int _index,
                      QGraphicsScene *_scene, QGraphicsItem *__node,
-                     QJsonObject *_link_connecting, project_struct *_project,
+                     QJsonObject *_input_connecting, project_struct *_project,
                      QWidget *__vinacomp, QWidget *_node_graph)
 
     : scene(_scene)
     , this_node(__node)
     , connected_node(nullptr)
-    , link_connecting(_link_connecting)
+    , input_connecting(_input_connecting)
     , project(_project)
     , _vinacomp(__vinacomp)
-    , link_size(50)
+    , wire_size(50)
     , index(_index)
     , dragging(false)
     , visible(true)
@@ -26,29 +26,29 @@ input_wire::input_wire(QString input_label, bool _has_mask, int _index,
 {
 
     // Link
-    link = new QGraphicsLineItem();
+    wire = new QGraphicsLineItem();
     QPen pen(Qt::black);
     pen.setWidth(2);
     if (index == 0) // mask
         pen.setStyle(Qt::DashLine);
-    link->setPen(pen);
-    link->setLine(0, 0, 0, link_size);
-    scene->addItem(link);
+    wire->setPen(pen);
+    wire->setLine(0, 0, 0, wire_size);
+    scene->addItem(wire);
     //
     //
 
     // Links fantasmas, para la insercion de nodos
-    ghost_link_a = new QGraphicsLineItem();
-    ghost_link_b = new QGraphicsLineItem();
-    QPen ghost_link_pen(Qt::green, 3);
-    ghost_link_pen.setStyle(Qt::DashLine);
-    ghost_link_a->setPen(ghost_link_pen);
-    ghost_link_b->setPen(ghost_link_pen);
-    ghost_link_a->setLine(0, 0, 0, link_size);
-    ghost_link_b->setLine(0, 0, 0, link_size);
-    scene->addItem(ghost_link_a);
-    scene->addItem(ghost_link_b);
-    set_ghost_link(false);
+    ghost_wire_a = new QGraphicsLineItem();
+    ghost_wire_b = new QGraphicsLineItem();
+    QPen ghost_wire_pen(Qt::green, 3);
+    ghost_wire_pen.setStyle(Qt::DashLine);
+    ghost_wire_a->setPen(ghost_wire_pen);
+    ghost_wire_b->setPen(ghost_wire_pen);
+    ghost_wire_a->setLine(0, 0, 0, wire_size);
+    ghost_wire_b->setLine(0, 0, 0, wire_size);
+    scene->addItem(ghost_wire_a);
+    scene->addItem(ghost_wire_b);
+    set_ghost_wire(false);
     //
     //
 
@@ -87,11 +87,11 @@ input_wire::input_wire(QString input_label, bool _has_mask, int _index,
     scene->addItem(_ghost_dot);
     //
 
-    // nombre para identificar que es un link
-    this->setData(0, "link");
-    link->setData(0, "link");
-    arrow->setData(0, "link");
-    text->setData(0, "link");
+    // nombre para identificar que es un wire
+    this->setData(0, "wire");
+    wire->setData(0, "wire");
+    arrow->setData(0, "wire");
+    text->setData(0, "wire");
     //
 
     refresh();
@@ -99,19 +99,19 @@ input_wire::input_wire(QString input_label, bool _has_mask, int _index,
 
 input_wire::~input_wire()
 {
-    delete link;
-    delete ghost_link_a;
-    delete ghost_link_b;
+    delete wire;
+    delete ghost_wire_a;
+    delete ghost_wire_b;
 
     delete arrow;
     delete text;
     delete _ghost_dot;
 }
 
-void input_wire::set_ghost_link(bool visible, QPointF break_point)
+void input_wire::set_ghost_wire(bool visible, QPointF break_point)
 {
-    ghost_link_a->setVisible(visible);
-    ghost_link_b->setVisible(visible);
+    ghost_wire_a->setVisible(visible);
+    ghost_wire_b->setVisible(visible);
 
     if (!connected_node || !visible)
         return;
@@ -122,16 +122,16 @@ void input_wire::set_ghost_link(bool visible, QPointF break_point)
     QPointF src_pos = _this_node->get_center_position();
     QPointF dst_pos = _connected_node->get_center_position();
 
-    ghost_link_a->setLine({src_pos, break_point});
-    ghost_link_b->setLine({dst_pos, break_point});
+    ghost_wire_a->setLine({src_pos, break_point});
+    ghost_wire_b->setLine({dst_pos, break_point});
 }
 
 void input_wire::update_visibility()
 {
     // establece visibilidad tomando en cuenta
-    // cada link conectado y la cantidad de indexs
+    // cada wire conectado y la cantidad de indexs
 
-    // si el link es el 0 que mascara, y el nodo no tiene mascara, no sera
+    // si el wire es el 0 que mascara, y el nodo no tiene mascara, no sera
     // visible
     if (index == 0 && !has_mask)
     {
@@ -144,7 +144,7 @@ void input_wire::update_visibility()
 
     if (connected[index] || index == 1 || index == 2)
     {
-        // si el link es el 1 o 2 o si este link esta conectado, sera visible
+        // si el wire es el 1 o 2 o si este wire esta conectado, sera visible
         set_visible(true);
         return;
     }
@@ -155,8 +155,8 @@ void input_wire::update_visibility()
         return;
     }
 
-    // verifica si todos los links superiores a 2 e inferiores al index actual
-    // esten conectados, si estan todos conectados, el link actual sera visible
+    // verifica si todos los inputs superiores a 2 e inferiores al index actual
+    // esten conectados, si estan todos conectados, el wire actual sera visible
     bool visible = true;
     for (int i = 2; i < index; i++)
     {
@@ -187,11 +187,11 @@ QLineF input_wire::get_line_from_node() const
         int height = _this_node->get_size().height() / 2;
 
         if (index == 0) // index 0 es 'mask'
-            dst_pos = {src_pos.x() + width + link_size, src_pos.y()};
+            dst_pos = {src_pos.x() + width + wire_size, src_pos.y()};
         else if (index == 1)
-            dst_pos = {src_pos.x(), src_pos.y() - height - link_size};
+            dst_pos = {src_pos.x(), src_pos.y() - height - wire_size};
         else
-            dst_pos = {src_pos.x() - width - link_size, src_pos.y()};
+            dst_pos = {src_pos.x() - width - wire_size, src_pos.y()};
     }
 
     return {src_pos, dst_pos};
@@ -201,7 +201,7 @@ void input_wire::refresh()
 {
     QLineF line = get_line_from_node();
     update_visibility();
-    link_refresh(line.p1(), line.p2());
+    wire_refresh(line.p1(), line.p2());
 }
 
 void input_wire::insert_node_in_between(QGraphicsItem *_node)
@@ -250,12 +250,12 @@ void input_wire::set_selected(bool enable)
 {
     if (enable)
     {
-        QPen link_pen(Qt::white);
+        QPen wire_pen(Qt::white);
         if (index == 0) // mask
-            link_pen.setStyle(Qt::DashLine);
+            wire_pen.setStyle(Qt::DashLine);
 
-        link_pen.setWidth(4);
-        link->setPen(link_pen);
+        wire_pen.setWidth(4);
+        wire->setPen(wire_pen);
 
         QBrush arrow_brush(Qt::white);
         QPen arrow_pen(Qt::white);
@@ -264,11 +264,11 @@ void input_wire::set_selected(bool enable)
     }
     else
     {
-        QPen link_pen(Qt::black);
+        QPen wire_pen(Qt::black);
         if (index == 0) // mask
-            link_pen.setStyle(Qt::DashLine);
-        link_pen.setWidth(2);
-        link->setPen(link_pen);
+            wire_pen.setStyle(Qt::DashLine);
+        wire_pen.setWidth(2);
+        wire->setPen(wire_pen);
 
         QBrush arrow_brush(Qt::black);
         QPen arrow_pen(Qt::black);
@@ -378,13 +378,13 @@ void input_wire::bbox_refresh(QPointF point_a, QPointF point_b)
     this->setRotation(rotation);
 }
 
-void input_wire::link_refresh(QPointF point_a, QPointF point_b)
+void input_wire::wire_refresh(QPointF point_a, QPointF point_b)
 {
     float diagonal = arrow_refresh(point_a, point_b);
 
     QLineF line =
         subtract_distance_line(QLineF(point_a, point_b), diagonal + 20);
-    link->setLine(line);
+    wire->setLine(line);
 
     bbox_refresh(point_a, point_b);
     text_refresh(point_a, point_b);
@@ -419,7 +419,7 @@ QLineF input_wire::subtract_distance_line(QLineF line, float distance)
 
 bool input_wire::safe_connection(QGraphicsItem *node_to_connect) const
 {
-    // previene que el link a conectar vuelva al mismo nodo
+    // previene que el wire a conectar vuelva al mismo nodo
     // y provoque un bucle infinito
     node *_this_node = static_cast<node *>(this_node);
     node *_to_node = static_cast<node *>(node_to_connect);
@@ -526,7 +526,7 @@ void input_wire::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     QPointF pos = mapToScene(event->pos());
     QPointF node_position = _this_node->get_center_position();
 
-    link_refresh(node_position, pos);
+    wire_refresh(node_position, pos);
 
-    *link_connecting = {{"name", _this_node->get_name()}, {"index", index}};
+    *input_connecting = {{"name", _this_node->get_name()}, {"index", index}};
 }

@@ -178,9 +178,9 @@ void node_view::extract_selected_nodes()
             continue;
 
         QList<node *> connecteds;
-        for (input_wire *link : *selected_node->get_inputs())
+        for (input_wire *input : *selected_node->get_inputs())
             connecteds.push_back(
-                static_cast<node *>(link->get_connected_node()));
+                static_cast<node *>(input->get_connected_node()));
 
         extracted_nodes.insert(selected_node, connecteds);
     }
@@ -221,20 +221,20 @@ void node_view::extract_node(node *_node)
         return;
 
     QGraphicsItem *node_from_input_1 = nullptr;
-    input_wire *link_1 = _node->get_input(1);
-    if (link_1)
-        node_from_input_1 = link_1->get_connected_node();
+    input_wire *input_1 = _node->get_input(1);
+    if (input_1)
+        node_from_input_1 = input_1->get_connected_node();
 
     if (_node->get_inputs())
-        for (input_wire *link : *_node->get_inputs())
-            link->disconnect_node();
+        for (input_wire *input : *_node->get_inputs())
+            input->disconnect_node();
 
-    for (input_wire *output_link : _node->get_inputs_connected_to_this())
+    for (input_wire *output_input : _node->get_inputs_connected_to_this())
     {
         if (node_from_input_1)
-            output_link->connect_node(node_from_input_1);
+            output_input->connect_node(node_from_input_1);
         else
-            output_link->disconnect_node();
+            output_input->disconnect_node();
     }
 }
 
@@ -327,18 +327,18 @@ void node_view::paste_nodes()
 
         for (int i = 0; i < copied_node->get_inputs()->count(); i++)
         {
-            input_wire *copied_link = copied_node->get_input(i);
-            input_wire *pasted_link = pasted_node->get_input(i);
+            input_wire *copied_input = copied_node->get_input(i);
+            input_wire *pasted_input = pasted_node->get_input(i);
 
             node *connected_node_from_copied =
-                static_cast<node *>(copied_link->get_connected_node());
+                static_cast<node *>(copied_input->get_connected_node());
 
             if (connected_node_from_copied)
             {
                 node *connected_node_from_pasted =
                     map_copies_nodes.value(connected_node_from_copied);
 
-                pasted_link->connect_node(connected_node_from_pasted);
+                pasted_input->connect_node(connected_node_from_pasted);
             }
         }
     }
@@ -423,35 +423,35 @@ void node_view::connect_node_to_selected_nodes(node *_node)
     if (selected_nodes->empty())
         return;
 
-    auto *links = _node->get_inputs();
+    auto *inputs = _node->get_inputs();
 
-    // crea una lista con los link y nodos seleccionados que se van a conectar
+    // crea una lista con los input y nodos seleccionados que se van a conectar
     QList<std::pair<input_wire *, node *>> items_to_connect;
-    for (int i = 1; i < links->count(); i++)
+    for (int i = 1; i < inputs->count(); i++)
     {
-        input_wire *link = links->value(i);
+        input_wire *input = inputs->value(i);
 
         node *selected_node = selected_nodes->values().value(i - 1);
         if (!selected_node)
             break;
 
-        items_to_connect.push_back({link, selected_node});
+        items_to_connect.push_back({input, selected_node});
     }
     //
     //
 
-    auto connect_link = [=](input_wire *link, node *to_node) {
-        link->connect_node(to_node);
+    auto connect_input = [=](input_wire *input, node *to_node) {
+        input->connect_node(to_node);
 
         // conecta los nodos conectado al nodo seleccionado, al nuevo nodo
-        for (input_wire *sel_link : to_node->get_inputs_connected_to_this())
-            sel_link->connect_node(_node);
+        for (input_wire *sel_input : to_node->get_inputs_connected_to_this())
+            sel_input->connect_node(_node);
     };
 
     int count = items_to_connect.count();
 
     // si hay 2 nodos que se pueden conectar, deja el nodo esquinado entre los 2
-    // y conecta el nodo de mas arriba al link 1
+    // y conecta el nodo de mas arriba al input 1
     if (count == 2)
     {
         node *node_a = items_to_connect.first().second;
@@ -460,15 +460,15 @@ void node_view::connect_node_to_selected_nodes(node *_node)
         QPointF position;
         if (node_a->y() < node_b->y())
         {
-            connect_link(links->value(1), node_a);
-            connect_link(links->value(2), node_b);
+            connect_input(inputs->value(1), node_a);
+            connect_input(inputs->value(2), node_b);
             position = {node_a->get_center_position().x(),
                         node_b->get_center_position().y()};
         }
         else
         {
-            connect_link(links->value(1), node_b);
-            connect_link(links->value(2), node_a);
+            connect_input(inputs->value(1), node_b);
+            connect_input(inputs->value(2), node_a);
             position = {node_b->get_center_position().x(),
                         node_a->get_center_position().y()};
         }
@@ -478,7 +478,7 @@ void node_view::connect_node_to_selected_nodes(node *_node)
     else
     {
         for (auto item : items_to_connect)
-            connect_link(item.first, item.second);
+            connect_input(item.first, item.second);
 
         // si los nodos seleccionados no son 2, deja el primer nodo bajo el otro
         node *first_node = items_to_connect.first().second;
@@ -568,9 +568,9 @@ input_wire *node_view::get_input_wire(node *_node, int input_index)
     if (!_node)
         return NULL;
 
-    input_wire *link = _node->get_inputs()->value(input_index);
+    input_wire *input = _node->get_inputs()->value(input_index);
 
-    return link;
+    return input;
 }
 
 node *node_view::get_node_from_position(QPoint position)
@@ -601,21 +601,21 @@ void node_view::connect_node(QPoint position_node)
         return;
 
     QString node_name = input_connecting->value("name").toString();
-    int link_index = input_connecting->value("index").toInt();
+    int input_index = input_connecting->value("index").toInt();
 
     node *from_node = get_node(node_name);
-    input_wire *link = get_input_wire(from_node, link_index);
+    input_wire *input = get_input_wire(from_node, input_index);
 
     node *to_node = get_node_from_position(position_node);
     if (!to_node)
-        link->disconnect_node();
+        input->disconnect_node();
     else
     {
         // evita que se conecte asi mismo
         if (from_node != to_node)
-            link->connect_node(to_node);
+            input->connect_node(to_node);
         else
-            link->disconnect_node();
+            input->disconnect_node();
     }
     *input_connecting = {};
     //

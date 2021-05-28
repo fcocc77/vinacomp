@@ -22,8 +22,8 @@ void node_view::mousePressEvent(QMouseEvent *event)
             graphics_view::mousePressEvent(event);
         //
 
-        // impide la seleccion de nodos si se hizo el click en un link
-        if (item_name != "link")
+        // impide la seleccion de nodos si se hizo el click en un wire
+        if (item_name != "wire")
         {
             node *_node = get_node_from_position(event->pos());
             if (_node)
