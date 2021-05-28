@@ -67,6 +67,7 @@ void knob_color::setup_ui()
     rgba_box->setSizePolicy(QSizePolicy::Expanding,
                                           QSizePolicy::Fixed);
     hsl_box->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    _color_picker->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
     // Layout
     separate_colors_box_layout->addWidget(red_hedit);
@@ -87,15 +88,15 @@ void knob_color::setup_ui()
     top_layout->addWidget(separate_colors_box);
     top_layout->addWidget(color_sample_button);
     top_layout->addWidget(picker_button);
-    top_layout->addWidget(rgb_button);
     top_layout->addWidget(hsl_button);
+    top_layout->addWidget(rgb_button);
     top_layout->addWidget(palette_button);
     top_layout->addWidget(mono_color_button);
 
     content_layout->addWidget(top_widget);
-    content_layout->addWidget(rgba_box);
-    content_layout->addWidget(hsl_box);
     content_layout->addWidget(_color_picker);
+    content_layout->addWidget(hsl_box);
+    content_layout->addWidget(rgba_box);
 
     main_layout->addWidget(init_space);
     main_layout->addWidget(content_widget);
