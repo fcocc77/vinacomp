@@ -115,7 +115,7 @@ void node_graph::restore_tree()
                 link->connect_node(node_to_connect, false);
         }
 
-        _node->set_linked(node_data.handler_node);
+        _node->add_handler_node(node_data.handler_node);
     }
 }
 

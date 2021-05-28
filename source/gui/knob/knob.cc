@@ -398,7 +398,7 @@ void knob::set_linked_handler(QString node_name, QString param_name)
     set_disable(linked);
 
     static_cast<node_rect *>(this_node)->set_link_item(true);
-    static_cast<node *>(this_node)->set_linked(node_name);
+    static_cast<node *>(this_node)->add_handler_node(node_name);
 }
 
 knob *knob::get_knob(QString node_name, QString param_name) const
@@ -457,7 +457,7 @@ void knob::remove_link()
     set_disable(false);
 
     static_cast<node_rect *>(this_node)->set_link_item(false);
-    static_cast<node *>(this_node)->set_linked(0);
+    static_cast<node *>(this_node)->add_handler_node(0);
 }
 
 void knob::set_disable(bool disable)

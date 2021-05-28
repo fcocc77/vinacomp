@@ -447,7 +447,7 @@ void node::set_center_position(float x, float y)
     set_position(x - (get_size().width() / 2), y - (get_size().height() / 2));
 }
 
-void node::set_linked(node *new_handler_node)
+void node::add_handler_node(node *new_handler_node)
 {
     if (new_handler_node)
     {
@@ -469,18 +469,18 @@ void node::set_linked(node *new_handler_node)
     _expression_link->refresh();
 }
 
-void node::set_linked(QString node_name)
+void node::add_handler_node(QString node_name)
 {
     if (node_name.isEmpty())
         return;
 
-    set_linked(static_cast<node_view *>(_node_view)->get_node(node_name));
+    add_handler_node(static_cast<node_view *>(_node_view)->get_node(node_name));
 }
 
 void node::unlink_all()
 {
     auto unlink = [=](node *_node) {
-        _node->set_linked(0);
+        _node->add_handler_node(0);
         if (_node->get_trim_panel())
             _node->get_trim_panel()->unlink_all();
 
@@ -488,7 +488,8 @@ void node::unlink_all()
         QStringList params_to_delete;
 
         for (QString param_key : params->keys())
-            if (param_key.contains("linked"))
+            if (param_key.contains("slaves_nodes") ||
+                param_key.contains("handler_node"))
                 params_to_delete.push_back(param_key);
 
         for (QString param : params_to_delete)
