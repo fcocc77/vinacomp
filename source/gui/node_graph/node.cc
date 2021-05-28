@@ -187,7 +187,7 @@ void node::set_name(QString _name)
         _trim_panel->set_name(_name);
 }
 
-void node::rename(QString _name)
+void node::rename(QString new_name)
 {
     // crea lista auxiliar de los nodos conectados, desconecta todos los link y
     // los conecta despues de cambiar el nombre de este nodo
@@ -207,8 +207,8 @@ void node::rename(QString _name)
     //
     //
 
-    props.project->rename_node(get_name(), _name, false);
-    set_name(_name);
+    props.project->rename_node(get_name(), new_name, false);
+    set_name(new_name);
 
     // vuelve a conectar los nodos
     if (links)

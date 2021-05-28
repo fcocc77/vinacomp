@@ -37,7 +37,7 @@ QMap<QString, node *> node_group::get_nodes() const
                 ->get_nodes();
 }
 
-void node_group::set_name(QString name)
+void node_group::set_name(QString new_name)
 {
     vinacomp *_vinacomp = static_cast<vinacomp *>(props.vinacomp);
 
@@ -47,23 +47,23 @@ void node_group::set_name(QString name)
     if (group_node_graph)
     {
         for (node *_node : get_nodes())
-            _node->set_group_name(name);
+            _node->set_group_name(new_name);
 
         node_graph *_node_graph = static_cast<node_graph *>(group_node_graph);
 
         _vinacomp->get_groups_node_graph()->remove(get_name());
-        _vinacomp->get_groups_node_graph()->insert(name, _node_graph);
+        _vinacomp->get_groups_node_graph()->insert(new_name, _node_graph);
 
         _vinacomp->get_panels_layout()->rename_node_graph_group(get_name(),
-                                                                name);
-        _node_graph->set_group_name(name);
+                                                                new_name);
+        _node_graph->set_group_name(new_name);
     }
     else
     {
-        props.project->replace_parent_name_to_children(get_name(), name);
+        props.project->replace_parent_name_to_children(get_name(), new_name);
     }
 
-    node_rect::set_name(name);
+    node_rect::set_name(new_name);
 }
 
 void node_group::open_group(bool add_to_panel)

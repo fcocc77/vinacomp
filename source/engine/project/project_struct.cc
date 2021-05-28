@@ -10,7 +10,8 @@ project_struct::project_struct()
 project_struct::~project_struct() {}
 
 void project_struct::insert_node(node_struct node, QJsonObject _params,
-                                 QJsonArray custom_knobs)
+                                 QJsonArray custom_knobs,
+                                 bool base_children_for_group)
 {
     if (nodes.contains(node.name))
         return;
@@ -20,7 +21,7 @@ void project_struct::insert_node(node_struct node, QJsonObject _params,
 
     nodes.insert(node.name, node);
 
-    if (node.type == "group")
+    if (node.type == "group" && base_children_for_group)
         create_base_children_for_group(node);
 
     if (node.plugin)
@@ -128,9 +129,14 @@ QJsonObject project_struct::get_project_json() const
         _node["color"] = QJsonArray(
             {node.color.red(), node.color.green(), node.color.blue()});
         _node["type"] = node.type;
-        _node["params"] = *node.params;
-        _node["inputs"] = node.inputs;
         _node["pos"] = QJsonArray({node.pos.x(), node.pos.y()});
+
+        if (!node.params->isEmpty())
+            _node["params"] = *node.params;
+
+        if (!node.inputs.isEmpty())
+            _node["inputs"] = node.inputs;
+
         if (node.type == "backdrop")
         {
             _node["size"] = QJsonArray({node.size.width(), node.size.height()});

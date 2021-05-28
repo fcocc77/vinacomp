@@ -59,7 +59,8 @@ public:
     int frame;
 
     void insert_node(node_struct node, QJsonObject _params = {},
-                     QJsonArray custom_knobs = {});
+                     QJsonArray custom_knobs = {},
+                     bool base_children_for_group = false);
 
     void delete_node(QString name);
 
