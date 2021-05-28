@@ -55,9 +55,12 @@ knob_color::knob_color(knob_props props, float min, float max, float r, float g,
         new knob_color_slider(min, max, default_alpha, centered_handler, "A");
 
     hue_slider = new knob_color_slider(0, 360, 0, centered_handler, "H º");
-    hue_slider->set_hue_slider();
     sat_slider = new knob_color_slider(0, 1, 1, centered_handler, "S %");
     level_slider = new knob_color_slider(0, 1, 1, centered_handler, "L %");
+
+    hue_slider->set_colored_slider("hue");
+    sat_slider->set_colored_slider("sat");
+    level_slider->set_colored_slider("level");
 
     color_sample_button = new QPushButton(this);
     palette_button = new QPushButton(this);

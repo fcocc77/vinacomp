@@ -10,13 +10,19 @@
 class colored_slider : public QWidget
 {
 private:
-    QColor color;
     slider *_slider;
+    bool hue, sat, level;
+    QColor color;
+
+    float hue_value, sat_value;
+
     void paintEvent(QPaintEvent *event) override;
+    void update_handler_color(float _hue, float _sat);
 
 public:
-    colored_slider(slider *_slider);
+    colored_slider(slider *_slider, QString hsl_type);
     void set_hue_color(float hue);
+    void set_value(float value);
 };
 
 class knob_color_slider : public QWidget
@@ -39,8 +45,9 @@ public:
     void set_value(float value, bool emmit_signal = true);
     void set_default_value(float _default_value);
     inline float get_value() const;
-    void set_hue_slider();
     void set_hue_color(float hue);
+
+    void set_colored_slider(QString hsl_type);
 
 signals:
     void changed(float value);
