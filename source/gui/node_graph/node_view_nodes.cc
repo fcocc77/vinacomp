@@ -178,7 +178,7 @@ void node_view::extract_selected_nodes()
             continue;
 
         QList<node *> connecteds;
-        for (node_link *link : *selected_node->get_links())
+        for (input_wire *link : *selected_node->get_links())
             connecteds.push_back(
                 static_cast<node *>(link->get_connected_node()));
 
@@ -221,15 +221,15 @@ void node_view::extract_node(node *_node)
         return;
 
     QGraphicsItem *node_from_input_1 = nullptr;
-    node_link *link_1 = _node->get_link(1);
+    input_wire *link_1 = _node->get_link(1);
     if (link_1)
         node_from_input_1 = link_1->get_connected_node();
 
     if (_node->get_links())
-        for (node_link *link : *_node->get_links())
+        for (input_wire *link : *_node->get_links())
             link->disconnect_node();
 
-    for (node_link *output_link : _node->get_output_links())
+    for (input_wire *output_link : _node->get_output_links())
     {
         if (node_from_input_1)
             output_link->connect_node(node_from_input_1);
@@ -327,8 +327,8 @@ void node_view::paste_nodes()
 
         for (int i = 0; i < copied_node->get_links()->count(); i++)
         {
-            node_link *copied_link = copied_node->get_link(i);
-            node_link *pasted_link = pasted_node->get_link(i);
+            input_wire *copied_link = copied_node->get_link(i);
+            input_wire *pasted_link = pasted_node->get_link(i);
 
             node *connected_node_from_copied =
                 static_cast<node *>(copied_link->get_connected_node());
@@ -426,10 +426,10 @@ void node_view::connect_node_to_selected_nodes(node *_node)
     auto *links = _node->get_links();
 
     // crea una lista con los link y nodos seleccionados que se van a conectar
-    QList<std::pair<node_link *, node *>> items_to_connect;
+    QList<std::pair<input_wire *, node *>> items_to_connect;
     for (int i = 1; i < links->count(); i++)
     {
-        node_link *link = links->value(i);
+        input_wire *link = links->value(i);
 
         node *selected_node = selected_nodes->values().value(i - 1);
         if (!selected_node)
@@ -440,11 +440,11 @@ void node_view::connect_node_to_selected_nodes(node *_node)
     //
     //
 
-    auto connect_link = [=](node_link *link, node *to_node) {
+    auto connect_link = [=](input_wire *link, node *to_node) {
         link->connect_node(to_node);
 
         // conecta los nodos conectado al nodo seleccionado, al nuevo nodo
-        for (node_link *sel_link : to_node->get_output_links())
+        for (input_wire *sel_link : to_node->get_output_links())
             sel_link->connect_node(_node);
     };
 
@@ -563,12 +563,12 @@ void node_view::disable_selected_nodes()
     static_cast<vinacomp *>(_vinacomp)->update_render_all_viewer(true);
 }
 
-node_link *node_view::get_node_link(node *_node, int link_index)
+input_wire *node_view::get_node_link(node *_node, int link_index)
 {
     if (!_node)
         return NULL;
 
-    node_link *link = _node->get_links()->value(link_index);
+    input_wire *link = _node->get_links()->value(link_index);
 
     return link;
 }
@@ -604,7 +604,7 @@ void node_view::connect_node(QPoint position_node)
     int link_index = link_connecting->value("index").toInt();
 
     node *from_node = get_node(node_name);
-    node_link *link = get_node_link(from_node, link_index);
+    input_wire *link = get_node_link(from_node, link_index);
 
     node *to_node = get_node_from_position(position_node);
     if (!to_node)

@@ -110,7 +110,7 @@ void node_graph::restore_tree()
 
             int index = index_name.replace("in", "").toInt();
 
-            node_link *link = _node_view->get_node_link(_node, index);
+            input_wire *link = _node_view->get_node_link(_node, index);
             if (link)
                 link->connect_node(node_to_connect, false);
         }

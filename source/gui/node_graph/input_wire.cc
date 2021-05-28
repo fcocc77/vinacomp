@@ -1,10 +1,10 @@
 #include "../node_graph/node.h"
 #include <math.h>
-#include <node_link.h>
+#include <input_wire.h>
 #include <util.h>
 #include <vinacomp.h>
 
-node_link::node_link(QString input_label, bool _has_mask, int _index,
+input_wire::input_wire(QString input_label, bool _has_mask, int _index,
                      QGraphicsScene *_scene, QGraphicsItem *__node,
                      QJsonObject *_link_connecting, project_struct *_project,
                      QWidget *__vinacomp, QWidget *_node_graph)
@@ -97,7 +97,7 @@ node_link::node_link(QString input_label, bool _has_mask, int _index,
     refresh();
 }
 
-node_link::~node_link()
+input_wire::~input_wire()
 {
     delete link;
     delete ghost_link_a;
@@ -108,7 +108,7 @@ node_link::~node_link()
     delete _ghost_dot;
 }
 
-void node_link::set_ghost_link(bool visible, QPointF break_point)
+void input_wire::set_ghost_link(bool visible, QPointF break_point)
 {
     ghost_link_a->setVisible(visible);
     ghost_link_b->setVisible(visible);
@@ -126,7 +126,7 @@ void node_link::set_ghost_link(bool visible, QPointF break_point)
     ghost_link_b->setLine({dst_pos, break_point});
 }
 
-void node_link::update_visibility()
+void input_wire::update_visibility()
 {
     // establece visibilidad tomando en cuenta
     // cada link conectado y la cantidad de indexs
@@ -170,7 +170,7 @@ void node_link::update_visibility()
     set_visible(visible);
 }
 
-QLineF node_link::get_line_from_node() const
+QLineF input_wire::get_line_from_node() const
 {
     node *_this_node = static_cast<node *>(this_node);
     QPointF src_pos, dst_pos;
@@ -197,14 +197,14 @@ QLineF node_link::get_line_from_node() const
     return {src_pos, dst_pos};
 }
 
-void node_link::refresh()
+void input_wire::refresh()
 {
     QLineF line = get_line_from_node();
     update_visibility();
     link_refresh(line.p1(), line.p2());
 }
 
-void node_link::insert_node_in_between(QGraphicsItem *_node)
+void input_wire::insert_node_in_between(QGraphicsItem *_node)
 {
     if (!connected_node)
         return;
@@ -221,7 +221,7 @@ void node_link::insert_node_in_between(QGraphicsItem *_node)
     between_node->get_link()->connect_node(_connected_node);
 }
 
-float node_link::get_rotation(QPointF point_a, QPointF point_b)
+float input_wire::get_rotation(QPointF point_a, QPointF point_b)
 {
     // calcular la rotacion a partir de 2 puntos
     double delta_y = (point_a.y() - point_b.y());
@@ -230,7 +230,7 @@ float node_link::get_rotation(QPointF point_a, QPointF point_b)
     return atan2(delta_x, delta_y) * 180 / M_PI;
 }
 
-float node_link::get_long(QPointF point_a, QPointF point_b)
+float input_wire::get_long(QPointF point_a, QPointF point_b)
 {
     float x = pow(point_b.x() - point_a.x(), 2);
     float y = pow(point_b.y() - point_a.y(), 2);
@@ -238,7 +238,7 @@ float node_link::get_long(QPointF point_a, QPointF point_b)
     return sqrt(x + y);
 }
 
-QPointF node_link::get_center(QPointF point_a, QPointF point_b) const
+QPointF input_wire::get_center(QPointF point_a, QPointF point_b) const
 {
     float x = (point_a.x() + point_b.x()) / 2;
     float y = (point_a.y() + point_b.y()) / 2;
@@ -246,7 +246,7 @@ QPointF node_link::get_center(QPointF point_a, QPointF point_b) const
     return {x, y};
 }
 
-void node_link::set_selected(bool enable)
+void input_wire::set_selected(bool enable)
 {
     if (enable)
     {
@@ -279,7 +279,7 @@ void node_link::set_selected(bool enable)
     refresh();
 }
 
-void node_link::text_refresh(QPointF point_a, QPointF point_b)
+void input_wire::text_refresh(QPointF point_a, QPointF point_b)
 {
     if (!visible)
     {
@@ -316,7 +316,7 @@ void node_link::text_refresh(QPointF point_a, QPointF point_b)
     }
 }
 
-float node_link::arrow_refresh(QPointF point_a, QPointF point_b)
+float input_wire::arrow_refresh(QPointF point_a, QPointF point_b)
 {
     float width = 7;
     float height = 25;
@@ -364,7 +364,7 @@ float node_link::arrow_refresh(QPointF point_a, QPointF point_b)
     return diagonal;
 }
 
-void node_link::bbox_refresh(QPointF point_a, QPointF point_b)
+void input_wire::bbox_refresh(QPointF point_a, QPointF point_b)
 {
     int width = 40;
     int height = get_long(point_a, point_b);
@@ -378,7 +378,7 @@ void node_link::bbox_refresh(QPointF point_a, QPointF point_b)
     this->setRotation(rotation);
 }
 
-void node_link::link_refresh(QPointF point_a, QPointF point_b)
+void input_wire::link_refresh(QPointF point_a, QPointF point_b)
 {
     float diagonal = arrow_refresh(point_a, point_b);
 
@@ -405,7 +405,7 @@ void node_link::link_refresh(QPointF point_a, QPointF point_b)
     _ghost_dot->setVisible(true);
 }
 
-QLineF node_link::subtract_distance_line(QLineF line, float distance)
+QLineF input_wire::subtract_distance_line(QLineF line, float distance)
 {
     // le resta una distancia a una linea
     float mag =
@@ -417,7 +417,7 @@ QLineF node_link::subtract_distance_line(QLineF line, float distance)
     return {line.p2(), {px, py}};
 }
 
-bool node_link::safe_connection(QGraphicsItem *node_to_connect) const
+bool input_wire::safe_connection(QGraphicsItem *node_to_connect) const
 {
     // previene que el link a conectar vuelva al mismo nodo
     // y provoque un bucle infinito
@@ -437,7 +437,7 @@ bool node_link::safe_connection(QGraphicsItem *node_to_connect) const
     return true;
 }
 
-void node_link::connect_node(QGraphicsItem *to_node, bool prevent_loop)
+void input_wire::connect_node(QGraphicsItem *to_node, bool prevent_loop)
 {
     if (!to_node)
         return;
@@ -481,7 +481,7 @@ void node_link::connect_node(QGraphicsItem *to_node, bool prevent_loop)
     _this_node->refresh();
 }
 
-void node_link::disconnect_node()
+void input_wire::disconnect_node()
 {
     if (!connected_node)
         return;
@@ -506,19 +506,19 @@ void node_link::disconnect_node()
     _this_node->refresh();
 }
 
-void node_link::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void input_wire::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     // tiene que existir el 'mousePressEvent' para que funcione el
     // 'mouseMoveEvent'
 }
 
-void node_link::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+void input_wire::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     dragging = false;
     refresh();
 }
 
-void node_link::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+void input_wire::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     node *_this_node = static_cast<node *>(this_node);
     dragging = true;

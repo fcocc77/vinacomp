@@ -81,7 +81,7 @@ void expression_link::refresh_arrow(QPointF src, QPointF dst)
 
     arrow->setPolygon(triangle);
 
-    float rotation = node_link::get_rotation(src, dst);
+    float rotation = input_wire::get_rotation(src, dst);
 
     arrow->setRotation(rotation);
 

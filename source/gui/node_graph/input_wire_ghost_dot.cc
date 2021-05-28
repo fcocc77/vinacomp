@@ -2,7 +2,7 @@
 #include <maker.h>
 #include <node.h>
 #include <node_graph.h>
-#include <node_link_ghost_dot.h>
+#include <input_wire_ghost_dot.h>
 #include <node_view.h>
 #include <util.h>
 
@@ -22,7 +22,7 @@ void ghost_dot::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
     node_view *__node_view = graph->get_node_view();
     maker *_maker = graph->get_maker();
-    node_link *_link = static_cast<node_link *>(link);
+    input_wire *_link = static_cast<input_wire *>(link);
 
     __node_view->set_visible_ghost_dots(false);
     node *dot = _maker->create_fx("dot", true);

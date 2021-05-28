@@ -1,7 +1,7 @@
 #include "node_group.h"
 #include "node_rect.h"
 #include <maker.h>
-#include <node_link.h>
+#include <input_wire.h>
 #include <node_view.h>
 #include <qt.h>
 #include <util.h>
@@ -282,8 +282,8 @@ void node_view::switch_inputs_a_and_b()
     if (links->count() < 3)
         return;
 
-    node_link *link_1 = links->value(1);
-    node_link *link_2 = links->value(2);
+    input_wire *link_1 = links->value(1);
+    input_wire *link_2 = links->value(2);
 
     auto *node_1 = link_1->get_connected_node();
     auto *node_2 = link_2->get_connected_node();
@@ -337,7 +337,7 @@ void node_view::set_visible_ghost_dots(bool visible)
         if (!links)
             continue;
 
-        for (node_link *link : *links)
+        for (input_wire *link : *links)
             link->set_visible_ghost_dot(visible);
     }
 }

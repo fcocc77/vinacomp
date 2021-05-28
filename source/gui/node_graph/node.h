@@ -13,7 +13,7 @@
 #include <QWidget>
 
 // Gui
-#include <node_link.h>
+#include <input_wire.h>
 #include <output_wire.h>
 #include <node_expression_link.h>
 #include <nodes_load.h>
@@ -50,7 +50,7 @@ private:
     QMap<QString, node *> *nodes_connected_to_the_inputs;
     QMap<QString, node *> *nodes_connected_to_the_output;
     QMap<QString, node *> *selected_nodes;
-    QList<node_link *> *links;
+    QList<input_wire *> *links;
     QList<bool> connected_indexs;
 
     QMap<QString, QPointF> selected_nodes_start_position;
@@ -66,7 +66,7 @@ private:
 
     QPointF *center_position;
 
-    node_link *get_close_link() const;
+    input_wire *get_close_link() const;
     void insert_in_between();
     void show_close_link();
     void snap_to_node(node *_node, QPointF this_node_pos, float &x_snap,
@@ -127,8 +127,8 @@ public:
     inline QColor get_color() const;
     virtual inline void set_color(QColor color);
     void refresh();
-    inline QList<node_link *> *get_links() const;
-    node_link *get_link(int index = -1) const;
+    inline QList<input_wire *> *get_links() const;
+    input_wire *get_link(int index = -1) const;
     inline trim_panel *get_trim_panel() const;
     QString get_type() const;
     inline QSize get_size() const;
@@ -141,7 +141,7 @@ public:
     inline QList<bool> get_connected_indexs();
     inline QMap<QString, node *> *get_input_nodes() const;
     inline bool output_is_connected() const;
-    QList<node_link*> get_output_links() const;
+    QList<input_wire*> get_output_links() const;
     inline QString get_tips() const;
     inline node *get_handler_node() const;
     inline QString get_handler_node_name() const;
@@ -309,7 +309,7 @@ inline void node::remove_input_node(node *_node)
     nodes_connected_to_the_inputs->remove(_node->get_name());
 }
 
-inline QList<node_link *> *node::get_links() const
+inline QList<input_wire *> *node::get_links() const
 {
     return links;
 }

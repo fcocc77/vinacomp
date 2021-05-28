@@ -1,5 +1,5 @@
 #include "node.h"
-#include <node_link.h>
+#include <input_wire.h>
 #include <output_wire.h>
 #include <node_view.h>
 #include <util.h>
@@ -75,7 +75,7 @@ void output_wire::refresh_arrow(QPointF dst_pos)
     arrow->setPolygon(triangle);
 
     QPointF src = static_cast<node *>(this_node)->get_center_position();
-    float rotation = node_link::get_rotation(src, dst_pos);
+    float rotation = input_wire::get_rotation(src, dst_pos);
 
     arrow->setRotation(rotation);
     arrow->setPos(dst_pos);

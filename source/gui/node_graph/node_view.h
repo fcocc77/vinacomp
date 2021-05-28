@@ -100,7 +100,7 @@ public:
     void paste_nodes();
     node *get_node(QString name);
     inline QMap<QString, node *> *get_nodes();
-    node_link *get_node_link(node *_node, int link_index);
+    input_wire *get_node_link(node *_node, int link_index);
     void set_visible_ghost_dots(bool visible);
     void find_nodes(QString key);
     inline void set_output_wire_node(node *_node);

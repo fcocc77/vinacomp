@@ -1,5 +1,5 @@
-#ifndef NODE_LINK_H
-#define NODE_LINK_H
+#ifndef NODE_WIRE_H
+#define NODE_WIRE_H
 
 #include <QGraphicsLineItem>
 #include <QGraphicsPolygonItem>
@@ -10,12 +10,12 @@
 #include <QPoint>
 #include <QString>
 
-#include <node_link_ghost_dot.h>
+#include <input_wire_ghost_dot.h>
 
 // Engine
 #include <project_struct.h>
 
-class node_link : public QGraphicsRectItem
+class input_wire : public QGraphicsRectItem
 {
 private:
     QGraphicsScene *scene;
@@ -58,11 +58,11 @@ private:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
 
 public:
-    node_link(QString input_label, bool has_mask, int _index,
+    input_wire(QString input_label, bool has_mask, int _index,
               QGraphicsScene *_scene, QGraphicsItem *_node,
               QJsonObject *_link_connecting, project_struct *_project,
               QWidget *_vinacomp, QWidget *_node_graph);
-    ~node_link();
+    ~input_wire();
 
     static float get_rotation(QPointF point_a, QPointF point_b);
 
@@ -80,34 +80,34 @@ public:
     void insert_node_in_between(QGraphicsItem *_node);
 };
 
-inline QGraphicsItem *node_link::get_this_node() const
+inline QGraphicsItem *input_wire::get_this_node() const
 {
     return this_node;
 }
 
-inline QPointF node_link::get_center_position() const
+inline QPointF input_wire::get_center_position() const
 {
     QLineF line = get_line_from_node();
     return get_center(line.p1(), line.p2());
 }
 
-inline bool node_link::is_connected() const
+inline bool input_wire::is_connected() const
 {
     return connected_node;
 }
 
-inline void node_link::set_visible_ghost_dot(bool visible)
+inline void input_wire::set_visible_ghost_dot(bool visible)
 {
     ghost_dot_visible = visible;
     refresh();
 }
 
-inline QGraphicsItem *node_link::get_connected_node() const
+inline QGraphicsItem *input_wire::get_connected_node() const
 {
     return connected_node;
 }
 
-inline void node_link::set_visible(bool _visible)
+inline void input_wire::set_visible(bool _visible)
 {
     visible = _visible;
     this->setVisible(visible);
@@ -115,4 +115,4 @@ inline void node_link::set_visible(bool _visible)
     arrow->setVisible(visible);
 }
 
-#endif // NODE_LINK_H
+#endif // NODE_WIRE_H

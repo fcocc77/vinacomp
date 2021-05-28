@@ -61,12 +61,12 @@ node::node(node_props _props, QMap<QString, node *> *_selected_nodes,
         bool has_mask = node_fx.value("mask").toBool();
 
         // Crea los links para el nodo
-        links = new QList<node_link *>;
+        links = new QList<input_wire *>;
         for (int i = 0; i < inputs.count(); i++)
         {
             QString label = inputs[i].toString();
 
-            node_link *link = new node_link(
+            input_wire *link = new input_wire(
                 label, has_mask, i, props.scene, this, props.link_connecting,
                 props.project, props.vinacomp, _node_graph);
 
@@ -85,7 +85,7 @@ node::~node()
 {
     if (links)
     {
-        for (node_link *link : *links)
+        for (input_wire *link : *links)
             delete link;
 
         delete links;
@@ -131,8 +131,8 @@ void node::refresh()
     auto refresh_links = [](node *_node) {
         auto *links = _node->get_links();
         if (links)
-            for (node_link *_node_link : *links)
-                _node_link->refresh();
+            for (input_wire *_input_wire : *links)
+                _input_wire->refresh();
 
         if (_node->get_output_wire())
             _node->get_output_wire()->refresh();
@@ -169,7 +169,7 @@ void node::set_selected(bool enable)
     }
 
     if (links)
-        for (node_link *link : *links)
+        for (input_wire *link : *links)
             link->set_selected(enable);
 
     if (_output_wire)
@@ -194,7 +194,7 @@ void node::rename(QString new_name)
     QList<QGraphicsItem *> aux_connected_nodes;
     if (links)
     {
-        for (node_link *link : *links)
+        for (input_wire *link : *links)
         {
             aux_connected_nodes.push_back(link->get_connected_node());
             link->disconnect_node();
@@ -202,7 +202,7 @@ void node::rename(QString new_name)
     }
 
     auto aux_output_links = get_output_links();
-    for (node_link *output_link : aux_output_links)
+    for (input_wire *output_link : aux_output_links)
         output_link->disconnect_node();
     //
     //
@@ -220,7 +220,7 @@ void node::rename(QString new_name)
         }
     }
 
-    for (node_link *output_link : aux_output_links)
+    for (input_wire *output_link : aux_output_links)
         output_link->connect_node(this);
 }
 
@@ -246,7 +246,7 @@ QPointF node::get_center_position() const
     return *center_position;
 }
 
-node_link *node::get_close_link() const
+input_wire *node::get_close_link() const
 {
     if (!_node_view)
         return nullptr;
@@ -254,7 +254,7 @@ node_link *node::get_close_link() const
     node_view *__node_view = static_cast<node_view *>(_node_view);
 
     int grip_distance = 150;
-    node_link *close_link = nullptr;
+    input_wire *close_link = nullptr;
 
     bool finded = false;
     for (node *_node : *__node_view->get_nodes())
@@ -263,7 +263,7 @@ node_link *node::get_close_link() const
         if (!links)
             continue;
 
-        for (node_link *link : *links)
+        for (input_wire *link : *links)
         {
             if (!link->is_connected())
                 continue;
@@ -298,7 +298,7 @@ void node::insert_in_between()
         return;
 
     // tiene que ser antes que el qt::control para que se oculte el 'ghost link'
-    node_link *close_link = get_close_link();
+    input_wire *close_link = get_close_link();
     if (!close_link)
         return;
 
@@ -314,7 +314,7 @@ void node::show_close_link()
     if (!_node_view)
         return;
 
-    node_link *link_to_insert = get_close_link();
+    input_wire *link_to_insert = get_close_link();
     if (!link_to_insert)
         return;
 
@@ -324,7 +324,7 @@ void node::show_close_link()
     link_to_insert->set_ghost_link(true, *center_position);
 }
 
-node_link *node::get_link(int index) const
+input_wire *node::get_link(int index) const
 {
     if (!links)
         return nullptr;
@@ -352,14 +352,14 @@ node_link *node::get_link(int index) const
     return links->value(index);
 }
 
-QList<node_link *> node::get_output_links() const
+QList<input_wire *> node::get_output_links() const
 {
     // obtiene todos los links conectados a este nodo
-    QList<node_link *> links;
+    QList<input_wire *> links;
 
     for (node *out_node : *nodes_connected_to_the_output)
     {
-        for (node_link *link : *out_node->get_links())
+        for (input_wire *link : *out_node->get_links())
         {
             QGraphicsItem *connected_node = link->get_connected_node();
             if (connected_node == this)
