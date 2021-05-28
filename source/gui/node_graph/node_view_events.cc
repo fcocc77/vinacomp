@@ -81,7 +81,7 @@ void node_view::mouseReleaseEvent(QMouseEvent *event)
     selection_box->setVisible(false);
 
     connect_node(event->pos());
-    connect_output_link(event->pos());
+    connect_output_wire(event->pos());
 
     graphics_view::mouseReleaseEvent(event);
 }

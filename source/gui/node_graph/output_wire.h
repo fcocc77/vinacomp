@@ -8,7 +8,7 @@
 #include <QPen>
 #include <QWidget>
 
-class output_link : public QGraphicsRectItem
+class output_wire : public QGraphicsRectItem
 {
 private:
     QGraphicsPolygonItem *arrow;
@@ -27,9 +27,9 @@ private:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
 
 public:
-    output_link(QGraphicsScene *scene, QWidget *_node_view,
+    output_wire(QGraphicsScene *scene, QWidget *_node_view,
                 QGraphicsItem *_this_node);
-    ~output_link();
+    ~output_wire();
 
     void refresh();
     void set_selected(bool enable);

@@ -14,7 +14,7 @@
 
 // Gui
 #include <node_link.h>
-#include <node_output_link.h>
+#include <output_wire.h>
 #include <node_expression_link.h>
 #include <nodes_load.h>
 #include <properties.h>
@@ -58,7 +58,7 @@ private:
     bool selected, is_backdrop;
 
     QPointF _freeze_position;
-    output_link *_output_link;
+    output_wire *_output_wire;
 
     expression_link *_expression_link;
     node *handler_node;
@@ -149,12 +149,12 @@ public:
     void set_visible_expression_link(bool visible);
     inline QString get_group_name() const;
     inline QWidget *get_node_view() const;
-    inline output_link *get_output_link() const;
+    inline output_wire *get_output_wire() const;
 };
 
-inline output_link *node::get_output_link() const
+inline output_wire *node::get_output_wire() const
 {
-    return _output_link;
+    return _output_wire;
 }
 
 inline QWidget *node::get_node_view() const

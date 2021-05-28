@@ -17,7 +17,7 @@ node::node(node_props _props, QMap<QString, node *> *_selected_nodes,
     , links(nullptr)
     , selected(false)
     , is_backdrop(_props.type == "backdrop")
-    , _output_link(nullptr)
+    , _output_wire(nullptr)
     , _expression_link(nullptr)
     , handler_node(nullptr)
     , center_position(new QPointF)
@@ -78,7 +78,7 @@ node::node(node_props _props, QMap<QString, node *> *_selected_nodes,
     _expression_link = new expression_link(props.scene, _node_view, this);
 
     if (type != "output")
-        _output_link = new output_link(props.scene, _node_view, this);
+        _output_wire = new output_wire(props.scene, _node_view, this);
 }
 
 node::~node()
@@ -90,7 +90,7 @@ node::~node()
 
         delete links;
     }
-    delete _output_link;
+    delete _output_wire;
     delete _expression_link;
     delete nodes_connected_to_the_inputs;
     delete nodes_connected_to_the_output;
@@ -134,8 +134,8 @@ void node::refresh()
             for (node_link *_node_link : *links)
                 _node_link->refresh();
 
-        if (_node->get_output_link())
-            _node->get_output_link()->refresh();
+        if (_node->get_output_wire())
+            _node->get_output_wire()->refresh();
     };
 
     refresh_links(this);
@@ -172,8 +172,8 @@ void node::set_selected(bool enable)
         for (node_link *link : *links)
             link->set_selected(enable);
 
-    if (_output_link)
-        _output_link->set_selected(enable);
+    if (_output_wire)
+        _output_wire->set_selected(enable);
 }
 
 void node::set_name(QString _name)

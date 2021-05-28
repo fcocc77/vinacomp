@@ -1,10 +1,10 @@
 #include "node.h"
 #include <node_link.h>
-#include <node_output_link.h>
+#include <output_wire.h>
 #include <node_view.h>
 #include <util.h>
 
-output_link::output_link(QGraphicsScene *_scene, QWidget *__node_view,
+output_wire::output_wire(QGraphicsScene *_scene, QWidget *__node_view,
                          QGraphicsItem *_this_node)
     : this_node(_this_node)
     , scene(_scene)
@@ -17,7 +17,7 @@ output_link::output_link(QGraphicsScene *_scene, QWidget *__node_view,
 
     scene->addItem(this);
 
-    // Link
+    // Wire
     link = new QGraphicsLineItem();
     QPen pen(Qt::black);
     pen.setWidth(2);
@@ -39,13 +39,13 @@ output_link::output_link(QGraphicsScene *_scene, QWidget *__node_view,
     refresh();
 }
 
-output_link::~output_link()
+output_wire::~output_wire()
 {
     delete link;
     delete arrow;
 }
 
-void output_link::set_selected(bool enable)
+void output_wire::set_selected(bool enable)
 {
     if (enable)
     {
@@ -61,7 +61,7 @@ void output_link::set_selected(bool enable)
     }
 }
 
-void output_link::refresh_arrow(QPointF dst_pos)
+void output_wire::refresh_arrow(QPointF dst_pos)
 {
     float width = 7;
     float height = 25;
@@ -81,14 +81,14 @@ void output_link::refresh_arrow(QPointF dst_pos)
     arrow->setPos(dst_pos);
 }
 
-void output_link::link_refresh(QPointF dst_pos)
+void output_wire::link_refresh(QPointF dst_pos)
 {
     QPointF src = static_cast<node *>(this_node)->get_center_position();
     QLineF line = {src, dst_pos};
     link->setLine(line);
 }
 
-void output_link::refresh()
+void output_wire::refresh()
 {
     node *_this_node = static_cast<node *>(this_node);
 
@@ -119,14 +119,14 @@ void output_link::refresh()
     //
 }
 
-void output_link::set_visible(bool visible)
+void output_wire::set_visible(bool visible)
 {
     this->setVisible(visible);
     arrow->setVisible(visible);
     link->setVisible(visible);
 }
 
-void output_link::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void output_wire::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     // tiene que existir el 'mousePressEvent' para que funcione el
     // 'mouseMoveEvent'
@@ -135,15 +135,15 @@ void output_link::mousePressEvent(QGraphicsSceneMouseEvent *event)
     link_refresh(pos);
 
     node *_this_node = static_cast<node *>(this_node);
-    static_cast<node_view *>(_node_view)->set_output_link_node(_this_node);
+    static_cast<node_view *>(_node_view)->set_output_wire_node(_this_node);
 }
 
-void output_link::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+void output_wire::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     refresh();
 }
 
-void output_link::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+void output_wire::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     QPointF pos = mapToScene(event->pos());
     link_refresh(pos);

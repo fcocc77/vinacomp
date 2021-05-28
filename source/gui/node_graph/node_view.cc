@@ -19,7 +19,7 @@ node_view::node_view(QWidget *__vinacomp, properties *__properties,
     , nodes_loaded(_nodes_loaded)
     , _node_graph(__node_graph)
     , project(_project)
-    , output_link_node(nullptr)
+    , output_wire_node(nullptr)
     , insertion_between_nodes(true)
     , expression_link_visible(true)
 {
@@ -313,13 +313,13 @@ QPointF node_view::get_min_node_separation(node *node_a, node *node_b) const
     return position;
 }
 
-void node_view::connect_output_link(QPoint position_node)
+void node_view::connect_output_wire(QPoint position_node)
 {
-    if (!output_link_node)
+    if (!output_wire_node)
         return;
 
-    node *node_output = output_link_node;
-    output_link_node = nullptr;
+    node *node_output = output_wire_node;
+    output_wire_node = nullptr;
 
     node *node_to_connect = get_node_from_position(position_node);
     if (!node_to_connect)

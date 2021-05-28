@@ -37,7 +37,7 @@ private:
     QMap<QString, node *> copied_nodes;
 
     QJsonObject *link_connecting;
-    node *output_link_node;
+    node *output_wire_node;
     bool selecting = false;
     QPoint click_position;
     QGraphicsRectItem *selection_box;
@@ -59,7 +59,7 @@ private:
     void connect_to_viewer();
     node *get_main_viewer() const;
     node *get_selected_node() const;
-    void connect_output_link(QPoint position_node);
+    void connect_output_wire(QPoint position_node);
     void select_connected_nodes(node *root_node);
 
     // Events
@@ -103,7 +103,7 @@ public:
     node_link *get_node_link(node *_node, int link_index);
     void set_visible_ghost_dots(bool visible);
     void find_nodes(QString key);
-    inline void set_output_link_node(node *_node);
+    inline void set_output_wire_node(node *_node);
     inline QMap<QString, node *> *get_selected_nodes() const;
     inline bool is_expression_link_visible() const;
     void set_visible_expression_link(bool visible);
@@ -129,9 +129,9 @@ inline QMap<QString, node *> *node_view::get_selected_nodes() const
     return selected_nodes;
 }
 
-inline void node_view::set_output_link_node(node *_node)
+inline void node_view::set_output_wire_node(node *_node)
 {
-    output_link_node = _node;
+    output_wire_node = _node;
 }
 
 inline QMap<QString, node *> *node_view::get_nodes()
