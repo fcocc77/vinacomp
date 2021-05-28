@@ -55,7 +55,8 @@ private:
 
     QMap<QString, QPointF> selected_nodes_start_position;
 
-    bool selected = false;
+    bool selected, is_backdrop;
+
     QPointF _freeze_position;
     output_link *_output_link;
 

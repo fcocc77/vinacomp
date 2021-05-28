@@ -15,6 +15,8 @@ node::node(node_props _props, QMap<QString, node *> *_selected_nodes,
     , nodes_connected_to_the_output(new QMap<QString, node *>)
     , selected_nodes(_selected_nodes)
     , links(nullptr)
+    , selected(false)
+    , is_backdrop(_props.type == "backdrop")
     , _output_link(nullptr)
     , _expression_link(nullptr)
     , linked_node(nullptr)
@@ -39,7 +41,7 @@ node::node(node_props _props, QMap<QString, node *> *_selected_nodes,
 
     props.scene->addItem(this);
 
-    if (type == "backdrop")
+    if (is_backdrop)
         return;
 
     this->setZValue((*props.current_z_value) + 1);
@@ -122,6 +124,9 @@ void node::make_panel(bool float_panel)
 
 void node::refresh()
 {
+    if (is_backdrop)
+        return;
+
     // Actualizacion de todos los links conectados al nodo
     auto refresh_links = [](node *_node) {
         auto *links = _node->get_links();
@@ -520,7 +525,7 @@ void node::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 
 void node::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (type != "backdrop")
+    if (!is_backdrop)
     {
         // con esto se mantiene siempre este nodo sobre los demas
         (*props.current_z_value)++;
