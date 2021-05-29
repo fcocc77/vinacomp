@@ -165,3 +165,46 @@ void viewer::set_in_out(int _input, int _output)
 
     _time_line->update_in_out(input, output);
 }
+
+void viewer::resizeEvent(QResizeEvent *event)
+{
+    int width = event->size().width();
+
+    if (width < 1000)
+    {
+        if (skip_frame_edit->isVisible())
+            skip_frame_edit->hide();
+
+        skip_forward_action->set_visible(false);
+        skip_backward_action->set_visible(false);
+    }
+    else
+    {
+        if (!skip_frame_edit->isVisible())
+            skip_frame_edit->show();
+
+        skip_forward_action->set_visible(true);
+        skip_backward_action->set_visible(true);
+    }
+
+    if (width < 900)
+    {
+        if (output_frame_edit->isVisible())
+            output_frame_edit->hide();
+        if (input_frame_edit->isVisible())
+            input_frame_edit->hide();
+
+        input_action->set_visible(false);
+        output_action->set_visible(false);
+    }
+    else
+    {
+        if (!output_frame_edit->isVisible())
+            output_frame_edit->show();
+        if (!input_frame_edit->isVisible())
+            input_frame_edit->show();
+
+        input_action->set_visible(true);
+        output_action->set_visible(true);
+    }
+}

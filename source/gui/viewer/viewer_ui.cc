@@ -242,18 +242,18 @@ QWidget *viewer::player_setup_ui()
 
     //
     //
-    action *next_key_frame_action = new action("Next key frame", "", "next_key_frame");
+    next_key_frame_action = new action("Next key frame", "", "next_key_frame");
     next_key_frame_action->connect_to(this, [this]() { next_key_frame(); });
-    action *previous_key_frame_action = new action("Previous key frame", "", "previous_key_frame");
+    previous_key_frame_action = new action("Previous key frame", "", "previous_key_frame");
     previous_key_frame_action->connect_to(this, [this]() { previous_key_frame(); });
     //
     //
 
     //
     //
-    action *skip_forward_action = new action("Skip Forward", "", "skip_forward");
+    skip_forward_action = new action("Skip Forward", "", "skip_forward");
     skip_forward_action->connect_to(this, [this]() { skip_forward(); });
-    action *skip_backward_action = new action("Skip Backward", "", "skip_backward");
+    skip_backward_action = new action("Skip Backward", "", "skip_backward");
     skip_backward_action->connect_to(this, [this]() { skip_backward(); });
     //
     //

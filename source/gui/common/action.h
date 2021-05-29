@@ -43,6 +43,7 @@ public:
     void set_object_name(QString name);
     void update();
     void set_visible(bool _visible);
+    inline bool is_visible() const;
     void set_icon(QString icon_name, QString force_state = "");
     void set_disable(bool disable);
     inline QPushButton *get_button() const;
@@ -61,6 +62,11 @@ public:
         obj->addAction(this);
     }
 };
+
+inline bool action::is_visible() const
+{
+    return visible;
+}
 
 inline QPushButton *action::get_button() const
 {

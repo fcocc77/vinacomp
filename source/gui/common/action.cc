@@ -33,6 +33,9 @@ action::~action()
 
 void action::set_visible(bool _visible)
 {
+    if (_visible == visible)
+        return;
+
     visible = _visible;
     if (button)
         button->setVisible(visible);

@@ -71,6 +71,10 @@ private:
     action *refresh_action;
 
     // Acciones Player
+    action *skip_forward_action;
+    action *skip_backward_action;
+    action *next_key_frame_action;
+    action *previous_key_frame_action;
     action *play_forward_action;
     action *stop_forward_action;
     action *play_backward_action;
@@ -125,6 +129,8 @@ private:
     void set_render_area(bool enable);
     void set_proxy(bool enable);
     void set_multi_lines(bool enable);
+
+    void resizeEvent(QResizeEvent *event) override;
 
 public:
     viewer(QString _name, project_struct *_project, renderer *_renderer,
