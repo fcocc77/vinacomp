@@ -25,23 +25,10 @@ void color_picker::update_picker()
 {
     QPointF pos = circle_position;
 
-    if (pos.x() < 0)
-        pos.setX(0);
+    sat = pos.x() / width();
+    level = 1 - (pos.y() / height());
 
-    if (pos.x() >= width() - 1)
-        pos.setX(width() - 1);
-
-    if (pos.y() < 0)
-        pos.setY(0);
-
-    if (pos.y() >= height() - 1)
-        pos.setY(height() - 1);
-
-    QPixmap qPix = this->grab();
-    QImage image(qPix.toImage());
-    QColor color = image.pixel(pos.x(), pos.y());
-
-    rgb_to_hsl(color, hue, sat, level);
+    QColor color = hsl_to_rgb(hue, sat, level);
     changed(color, hue, sat, level);
     update();
 }
@@ -183,10 +170,18 @@ void color_picker::paintEvent(QPaintEvent *event)
     QBrush brush_x(ramp_x);
     QBrush brush_y(ramp_y);
 
+    painter.setRenderHint(QPainter::Antialiasing);
+
+    int border_radius = 4;
+    QPainterPath path;
+    path.addRoundedRect(QRectF(0, 0, width(), height()), border_radius,
+                        border_radius);
+
     painter.setCompositionMode(QPainter::CompositionMode_Source);
-    painter.fillRect(0, 0, width(), height(), brush_x);
+    painter.fillPath(path, brush_x);
+
     painter.setCompositionMode(QPainter::CompositionMode_Multiply);
-    painter.fillRect(0, 0, width(), height(), brush_y);
+    painter.fillPath(path, brush_y);
 
     painter.setCompositionMode(QPainter::CompositionMode_Source);
     float radius = 10;
