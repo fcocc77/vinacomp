@@ -388,7 +388,8 @@ void knob::remove_slave_knob(QString node_name, QString param_name)
 
 void knob::set_linked_handler(QString node_name, QString param_name)
 {
-    // si este knob es manejado por otro knob
+    // si este knob es manejado por otro knob, solo puede ser un solo knob que
+    // maneje este knob
     linked = true;
 
     handler_knob_node_name = node_name;

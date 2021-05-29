@@ -15,7 +15,7 @@
 // Gui
 #include <input_wire.h>
 #include <output_wire.h>
-#include <node_expression_link.h>
+#include <node_links.h>
 #include <nodes_load.h>
 #include <properties.h>
 #include <trim_panel.h>
@@ -61,7 +61,7 @@ private:
     QPointF _freeze_position;
     output_wire *_output_wire;
 
-    expression_link *_expression_link;
+    node_links *links;
     QList<node *> handler_nodes;
     QList<node *> slaves_nodes;
 
@@ -147,7 +147,7 @@ public:
     inline QString get_tips() const;
     inline QList<node *> get_handler_nodes() const;
     inline QJsonArray get_handler_nodes_name() const;
-    inline expression_link *get_expression_link() const;
+    inline node_links *get_expression_link() const;
     void set_visible_expression_link(bool visible);
     inline QString get_group_name() const;
     inline QWidget *get_node_view() const;
@@ -169,9 +169,9 @@ inline QString node::get_group_name() const
     return group_name;
 }
 
-inline expression_link *node::get_expression_link() const
+inline node_links *node::get_expression_link() const
 {
-    return _expression_link;
+    return links;
 }
 
 inline QJsonArray node::get_handler_nodes_name() const

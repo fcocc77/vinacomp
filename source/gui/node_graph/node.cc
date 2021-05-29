@@ -17,7 +17,7 @@ node::node(node_props _props, QMap<QString, node *> *_selected_nodes,
     , selected(false)
     , is_backdrop(_props.type == "backdrop")
     , _output_wire(nullptr)
-    , _expression_link(nullptr)
+    , links(nullptr)
     , center_position(new QPointF)
     , nodes_loaded(_props.nodes_loaded)
     , props(_props)
@@ -73,7 +73,7 @@ node::node(node_props _props, QMap<QString, node *> *_selected_nodes,
         }
     }
 
-    _expression_link = new expression_link(props.scene, _node_view, this);
+    links = new node_links(props.scene, _node_view, this);
 
     if (type != "output")
         _output_wire = new output_wire(props.scene, _node_view, this);
@@ -89,7 +89,7 @@ node::~node()
         delete inputs;
     }
     delete _output_wire;
-    delete _expression_link;
+    delete links;
     delete nodes_connected_to_the_inputs;
     delete nodes_connected_to_the_output;
     delete center_position;
@@ -147,7 +147,7 @@ void node::refresh()
     for (node *slave_node : slaves_nodes)
         slave_node->get_expression_link()->refresh();
 
-    _expression_link->refresh();
+    links->refresh();
 }
 
 void node::set_selected(bool enable)
@@ -451,13 +451,13 @@ void node::add_handler_node(node *new_handler_node)
         return;
 
     new_handler_node->add_slave_node(this);
-    _expression_link->set_disable(false);
+    links->set_disable(false);
 
     if (static_cast<node_view *>(_node_view)->is_expression_link_visible())
-        _expression_link->set_visible(true);
+        links->set_visible(true);
 
     handler_nodes.push_back(new_handler_node);
-    _expression_link->refresh();
+    links->refresh();
 }
 
 void node::remove_handler_node(node *handler_node)
@@ -465,8 +465,8 @@ void node::remove_handler_node(node *handler_node)
     handler_node->remove_slave_node(this);
     handler_nodes.removeOne(handler_node);
 
-    _expression_link->set_disable(true);
-    _expression_link->refresh();
+    links->set_disable(true);
+    links->refresh();
 }
 
 void node::add_handler_node(QString node_name)
@@ -517,8 +517,8 @@ void node::remove_slave_node(node *_node)
 
 void node::set_visible_expression_link(bool visible)
 {
-    if (_expression_link)
-        _expression_link->set_visible(visible);
+    if (links)
+        links->set_visible(visible);
 }
 
 void node::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
