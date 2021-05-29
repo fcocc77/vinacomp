@@ -492,33 +492,55 @@ void node::remove_handler_node(QString node_name)
 
 void node::unlink_all()
 {
-    auto unlink = [=](node *_node) {
-        auto *params = _node->get_params();
-        QStringList params_to_delete;
-
-        for (QString param_key : params->keys())
-            if (param_key.contains("slaves_nodes") ||
-                param_key.contains("handler_node"))
-                params_to_delete.push_back(param_key);
-
-        for (QString param : params_to_delete)
-            params->remove(param);
-    };
-
+    // Slaves
     for (node *slave_node : slaves_nodes)
     {
         if (slave_node->get_trim_panel())
+        {
             slave_node->get_trim_panel()->unlink_node_to_knobs(
                 this->get_name());
+        }
+        else
+        {
+            // si el trim_panel no esta, elimina los nodos handler de 'params'
+            // del esclavo
+            auto *params = slave_node->get_params();
+            QStringList params_to_delete;
+
+            for (QString param_key : params->keys())
+            {
+                if (!param_key.contains("handler_node"))
+                    continue;
+
+                QString handler_node_name =
+                    params->value(param_key).toArray().at(0).toString();
+
+                if (handler_node_name == this->get_name())
+                    params_to_delete.push_back(param_key);
+            }
+
+            for (QString param : params_to_delete)
+                params->remove(param);
+        }
 
         slave_node->remove_handler_node(this);
-        unlink(slave_node);
     }
+    ///
 
+    // Handlers
     for (node *handler_node : this->get_handler_nodes())
         this->remove_handler_node(handler_node);
 
-    unlink(this);
+    auto *params = this->get_params();
+    QStringList params_to_delete;
+
+    for (QString param_key : params->keys())
+        if (param_key.contains("slaves_nodes") ||
+            param_key.contains("handler_node"))
+            params_to_delete.push_back(param_key);
+
+    for (QString param : params_to_delete)
+        params->remove(param);
 }
 
 void node::add_slave_node(node *_node)
