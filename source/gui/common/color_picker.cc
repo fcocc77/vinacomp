@@ -64,6 +64,16 @@ void color_picker::set_hsl(float _hue, float _sat, float _level)
 
 QColor color_picker::hsl_to_rgb(float H, float S, float L)
 {
+    if (S < 0)
+        S = 0;
+    else if (S > 1)
+        S = 1;
+
+    if (L < 0)
+        L = 0;
+    else if (L > 1)
+        L = 1;
+
     float s = S;
     float v = L;
     float C = s * v;

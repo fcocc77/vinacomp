@@ -14,14 +14,14 @@ private:
     bool hue, sat, level;
     QColor color;
 
-    float hue_value, sat_value;
+    float hue_value, sat_value, level_value;
 
     void paintEvent(QPaintEvent *event) override;
-    void update_handler_color(float _hue, float _sat);
+    void update_handler_color(float _hue, float _sat, float _level);
 
 public:
     colored_slider(slider *_slider, QString hsl_type);
-    void set_hue_color(float hue);
+    void set_hsl(float hue, float sat, float level);
     void set_value(float value);
 };
 
@@ -45,7 +45,7 @@ public:
     void set_value(float value, bool emmit_signal = true);
     void set_default_value(float _default_value);
     inline float get_value() const;
-    void set_hue_color(float hue);
+    void set_hsl(float hue, float sat, float level);
 
     void set_colored_slider(QString hsl_type);
 

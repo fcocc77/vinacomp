@@ -73,12 +73,12 @@ void knob_color_slider::set_value(float _value, bool emmit_signal)
         _colored_slider->set_value(value);
 }
 
-void knob_color_slider::set_hue_color(float hue)
+void knob_color_slider::set_hsl(float hue, float sat, float level)
 {
     if (!_colored_slider)
         return;
 
-    _colored_slider->set_hue_color(hue);
+    _colored_slider->set_hsl(hue, sat, level);
 }
 
 void knob_color_slider::set_default_value(float _default_value)
@@ -100,20 +100,26 @@ colored_slider::colored_slider(slider *__slider, QString hsl_type)
     layout->addWidget(this);
 }
 
-void colored_slider::set_hue_color(float _hue)
+void colored_slider::set_hsl(float _hue, float _sat, float _level)
 {
     hue_value = _hue;
+    sat_value = _sat;
+    level_value = _level;
+
     color = color_picker::hsl_to_rgb(hue_value);
 
-    update_handler_color(hue_value, sat_value);
+    update_handler_color(hue_value, sat_value, level_value);
 }
 
 void colored_slider::set_value(float value)
 {
-    update_handler_color(hue_value, value);
+    if (sat)
+        update_handler_color(hue_value, value, level_value);
+    else if (level)
+        update_handler_color(hue_value, sat_value, value);
 }
 
-void colored_slider::update_handler_color(float _hue, float _sat)
+void colored_slider::update_handler_color(float _hue, float _sat, float _level)
 {
     QString style = "background: rgb(%1, %2, %3);";
 
@@ -124,6 +130,13 @@ void colored_slider::update_handler_color(float _hue, float _sat)
     {
         sat_value = _sat;
         handler_color = color_picker::hsl_to_rgb(hue_value, sat_value);
+    }
+    else if (level)
+    {
+        level_value = _level;
+        float sat = sat_value;
+        sat -= level_value - 0.5;
+        handler_color = color_picker::hsl_to_rgb(hue_value, sat, level_value);
     }
 
     _slider->get_handler()->setStyleSheet(style.arg(handler_color.red())
@@ -156,8 +169,9 @@ void colored_slider::paintEvent(QPaintEvent *event)
     }
     else if (level)
     {
+        QColor hue_and_sat = color_picker::hsl_to_rgb(hue_value, sat_value);
         ramp.setColorAt(0.0, Qt::black);
-        ramp.setColorAt(0.5, color);
+        ramp.setColorAt(0.5, hue_and_sat);
         ramp.setColorAt(1.0, Qt::white);
     }
 

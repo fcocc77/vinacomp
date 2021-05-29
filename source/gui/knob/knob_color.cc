@@ -301,21 +301,22 @@ void knob_color::update_hsl_sliders()
     sat_slider->set_value(s, false);
     level_slider->set_value(l, false);
 
-    hue_slider->set_hue_color(h);
-    sat_slider->set_hue_color(h);
-    level_slider->set_hue_color(h);
+    hue_slider->set_hsl(h, s, l);
+    sat_slider->set_hsl(h, s, l);
+    level_slider->set_hsl(h, s, l);
 }
 
 void knob_color::update_color_picker()
 {
-    _color_picker->set_hsl(hue_slider->get_value(), sat_slider->get_value(),
-                           level_slider->get_value());
-
     float h = hue_slider->get_value();
+    float s = sat_slider->get_value();
+    float l = level_slider->get_value();
 
-    hue_slider->set_hue_color(h);
-    sat_slider->set_hue_color(h);
-    level_slider->set_hue_color(h);
+    _color_picker->set_hsl(h, s, l);
+
+    hue_slider->set_hsl(h, s, l);
+    sat_slider->set_hsl(h, s, l);
+    level_slider->set_hsl(h, s, l);
 }
 
 void knob_color::update_rgb_sliders()
