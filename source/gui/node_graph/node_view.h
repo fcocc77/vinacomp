@@ -42,7 +42,7 @@ private:
     QPoint click_position;
     QGraphicsRectItem *selection_box;
     bool insertion_between_nodes;
-    bool expression_link_visible;
+    bool links_visible;
 
     int *current_z_value;
 
@@ -105,8 +105,8 @@ public:
     void find_nodes(QString key);
     inline void set_output_wire_node(node *_node);
     inline QMap<QString, node *> *get_selected_nodes() const;
-    inline bool is_expression_link_visible() const;
-    void set_visible_expression_link(bool visible);
+    inline bool are_visible_links() const;
+    void set_visible_links(bool visible);
     inline QWidget *get_node_graph() const;
 
 signals:
@@ -119,9 +119,9 @@ inline QWidget *node_view::get_node_graph() const
     return _node_graph;
 }
 
-inline bool node_view::is_expression_link_visible() const
+inline bool node_view::are_visible_links() const
 {
-    return expression_link_visible;
+    return links_visible;
 }
 
 inline QMap<QString, node *> *node_view::get_selected_nodes() const

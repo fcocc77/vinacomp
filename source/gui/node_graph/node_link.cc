@@ -4,7 +4,7 @@
 
 node_link::node_link(QGraphicsScene *scene)
     : arrow(new QGraphicsPolygonItem)
-    , disable(true)
+    , disable(false)
     , visible(false)
 {
     QPen pen(Qt::green);

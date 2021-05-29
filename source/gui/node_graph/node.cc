@@ -451,12 +451,13 @@ void node::add_handler_node(node *new_handler_node)
         return;
 
     new_handler_node->add_slave_node(this);
-    links->set_disable(false);
+    handler_nodes.push_back(new_handler_node);
 
-    if (static_cast<node_view *>(_node_view)->is_expression_link_visible())
+    links->enable_links(handler_nodes.count());
+
+    if (static_cast<node_view *>(_node_view)->are_visible_links())
         links->set_visible(true);
 
-    handler_nodes.push_back(new_handler_node);
     links->refresh();
 }
 
@@ -465,7 +466,7 @@ void node::remove_handler_node(node *handler_node)
     handler_node->remove_slave_node(this);
     handler_nodes.removeOne(handler_node);
 
-    links->set_disable(true);
+    links->enable_links(handler_nodes.count());
     links->refresh();
 }
 
@@ -475,6 +476,15 @@ void node::add_handler_node(QString node_name)
         return;
 
     add_handler_node(static_cast<node_view *>(_node_view)->get_node(node_name));
+}
+
+void node::remove_handler_node(QString node_name)
+{
+    if (node_name.isEmpty())
+        return;
+
+    remove_handler_node(
+        static_cast<node_view *>(_node_view)->get_node(node_name));
 }
 
 void node::unlink_all()
@@ -515,7 +525,7 @@ void node::remove_slave_node(node *_node)
     slaves_nodes.removeOne(_node);
 }
 
-void node::set_visible_expression_link(bool visible)
+void node::set_visible_link(bool visible)
 {
     if (links)
         links->set_visible(visible);

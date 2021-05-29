@@ -458,7 +458,7 @@ void knob::remove_link()
     set_disable(false);
 
     static_cast<node_rect *>(this_node)->set_link_item(false);
-    static_cast<node *>(this_node)->add_handler_node(0);
+    static_cast<node *>(this_node)->remove_handler_node(handler_knob_node_name);
 }
 
 void knob::set_disable(bool disable)

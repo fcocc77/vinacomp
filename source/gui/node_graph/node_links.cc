@@ -61,10 +61,21 @@ void node_links::set_visible(bool _visible)
     refresh();
 }
 
-void node_links::set_disable(bool _disable)
+void node_links::enable_links(int links_count)
 {
-    for (node_link *link : links)
-        link->set_disable(_disable);
+    disable_all_links();
+
+    if (links_count > links.count())
+        links_count = links.count();
+
+    for (int i = 0; i < links_count; i++)
+        links.value(i)->set_disable(false);
 
     refresh();
+}
+
+void node_links::disable_all_links()
+{
+    for (node_link *link : links)
+        link->set_disable(true);
 }

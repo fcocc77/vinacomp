@@ -90,6 +90,7 @@ gui__knobs:
     ☐ knob_color: con la opcion de paleta activada, añadirle 2 opciones mas: hue correct en rgb, y hue correct con hsl
     ☐ knob_color: falta un picker, gotero
     ☐ knob_color_slider: limitar decimal
+    ☐ knob_color: el handler flecha no mantiene el color rgb
 	☐ terminar button knob'
 	☐ terminar button knob'
 	☐ terminar choice knob'

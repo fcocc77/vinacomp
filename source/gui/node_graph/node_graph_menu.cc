@@ -21,8 +21,8 @@ void node_graph::init_menu()
     show_expressions_links->set_checked(true);
 
     show_expressions_links->connect_to(this, [=]() {
-        bool visible = _node_view->is_expression_link_visible();
-        _node_view->set_visible_expression_link(!visible);
+        bool visible = _node_view->are_visible_links();
+        _node_view->set_visible_links(!visible);
     });
 
     general_menu->addAction(paste_nodes_action);

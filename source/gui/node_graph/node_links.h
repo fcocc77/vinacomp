@@ -15,6 +15,7 @@ private:
     QGraphicsScene *scene;
 
     void make_links(int count);
+    void disable_all_links();
 
 public:
     node_links(QGraphicsScene *scene, QWidget *_node_view,
@@ -23,7 +24,8 @@ public:
 
     void refresh();
     void set_visible(bool visible);
-    void set_disable(bool disable);
+
+    void enable_links(int links_count);
 };
 
 #endif // NODE_LINKS_H

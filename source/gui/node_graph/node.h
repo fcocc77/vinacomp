@@ -114,6 +114,7 @@ public:
     void add_handler_node(node *linked_node);
     void add_handler_node(QString node_name);
     void remove_handler_node(node *handler_node);
+    void remove_handler_node(QString node_name);
     void set_icon_name(QString name);
     virtual inline void set_tips(QString tips);
     inline QString get_name() const;
@@ -148,7 +149,7 @@ public:
     inline QList<node *> get_handler_nodes() const;
     inline QJsonArray get_handler_nodes_name() const;
     inline node_links *get_expression_link() const;
-    void set_visible_expression_link(bool visible);
+    void set_visible_link(bool visible);
     inline QString get_group_name() const;
     inline QWidget *get_node_view() const;
     inline output_wire *get_output_wire() const;
