@@ -81,6 +81,7 @@ public:
     node *create_node(node_struct node_data, bool basic_creation = false,
                       bool from_project = false);
 
+    void unlink_selected_nodes();
     void fit_view_to_nodes();
     node *get_node_from_position(QPoint position);
     QRectF bbox_nodes(QMap<QString, node *> *_nodes) const;

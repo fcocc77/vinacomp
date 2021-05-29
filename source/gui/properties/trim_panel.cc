@@ -612,10 +612,10 @@ void trim_panel::leave_properties(bool disable_edit_mode)
     //
 }
 
-void trim_panel::unlink_all()
+void trim_panel::unlink_node_to_knobs(QString node_name)
 {
     for (knob *_knob : *knobs)
-        _knob->remove_link();
+        _knob->remove_link(node_name);
 }
 
 void trim_panel::mousePressEvent(QMouseEvent *event)

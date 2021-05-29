@@ -71,6 +71,9 @@ void node_links::enable_links(int links_count)
     for (int i = 0; i < links_count; i++)
         links.value(i)->set_disable(false);
 
+    if (links_count)
+        set_visible(true);
+
     refresh();
 }
 

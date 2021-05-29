@@ -167,6 +167,12 @@ void node_view::delete_node(node *_node)
     project->delete_node(name);
 }
 
+void node_view::unlink_selected_nodes()
+{
+    for (node *selected_node : *selected_nodes)
+        selected_node->unlink_all();
+}
+
 void node_view::extract_selected_nodes()
 {
     QMap<node *, QList<node *>> extracted_nodes;

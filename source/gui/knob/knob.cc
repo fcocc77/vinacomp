@@ -461,6 +461,12 @@ void knob::remove_link()
     static_cast<node *>(this_node)->remove_handler_node(handler_knob_node_name);
 }
 
+void knob::remove_link(QString node_name)
+{
+    if (handler_knob_node_name == node_name)
+        remove_link();
+}
+
 void knob::set_disable(bool disable)
 {
     qt::set_property(label_widget, "disable", disable);

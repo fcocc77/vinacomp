@@ -450,8 +450,11 @@ void node::add_handler_node(node *new_handler_node)
     if (!new_handler_node)
         return;
 
-    new_handler_node->add_slave_node(this);
+    if (handler_nodes.contains(new_handler_node))
+        return;
+
     handler_nodes.push_back(new_handler_node);
+    new_handler_node->add_slave_node(this);
 
     links->enable_links(handler_nodes.count());
 
@@ -490,12 +493,6 @@ void node::remove_handler_node(QString node_name)
 void node::unlink_all()
 {
     auto unlink = [=](node *_node) {
-        for (node *handler_node : _node->get_handler_nodes())
-            _node->remove_handler_node(handler_node);
-
-        if (_node->get_trim_panel())
-            _node->get_trim_panel()->unlink_all();
-
         auto *params = _node->get_params();
         QStringList params_to_delete;
 
@@ -509,7 +506,17 @@ void node::unlink_all()
     };
 
     for (node *slave_node : slaves_nodes)
+    {
+        if (slave_node->get_trim_panel())
+            slave_node->get_trim_panel()->unlink_node_to_knobs(
+                this->get_name());
+
+        slave_node->remove_handler_node(this);
         unlink(slave_node);
+    }
+
+    for (node *handler_node : this->get_handler_nodes())
+        this->remove_handler_node(handler_node);
 
     unlink(this);
 }

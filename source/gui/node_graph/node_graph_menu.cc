@@ -85,6 +85,9 @@ void node_graph::init_menu()
     disable_nodes_action->connect_to(
         this, [this]() { _node_view->disable_selected_nodes(); });
 
+    unlink_nodes_action->connect_to(
+        this, [this]() { _node_view->unlink_selected_nodes(); });
+
     // Layout
     node_menu->addAction(copy_nodes_action);
     node_menu->addAction(cut_nodes_action);
