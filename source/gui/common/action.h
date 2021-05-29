@@ -42,7 +42,7 @@ public:
     QPushButton *make_button(QWidget *_tools, int _icon_size, bool _one_check_at_time);
     void set_object_name(QString name);
     void update();
-    void set_visible(bool _visible);
+    void set_visible(bool _visible, bool force = false);
     inline bool is_visible() const;
     void set_icon(QString icon_name, QString force_state = "");
     void set_disable(bool disable);

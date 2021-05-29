@@ -31,9 +31,9 @@ action::~action()
         delete button;
 }
 
-void action::set_visible(bool _visible)
+void action::set_visible(bool _visible, bool force)
 {
-    if (_visible == visible)
+    if ((_visible == visible) && !force)
         return;
 
     visible = _visible;
@@ -44,7 +44,7 @@ void action::set_visible(bool _visible)
 void action::update()
 {
     // actualiza la actual visibilidad
-    set_visible(visible);
+    set_visible(visible, true);
 }
 
 QPushButton *action::make_button(QWidget *__tools, int _icon_size, bool __one_check_at_time)
