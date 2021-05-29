@@ -89,6 +89,15 @@ public:
     void rename_node(QString name, QString new_name,
                      bool rename_children = true);
 
+    void unlink_node(QString node_name);
+    void unlink_slave(node_struct *handler_node, QString slave_node_name);
+    void unlink_slaves(node_struct *node);
+    void unlink_handler(node_struct *slave_node, QString handler_node_name);
+    void unlink_handlers(node_struct *node);
+
+    QStringList get_handler_nodes(node_struct *node) const;
+    QStringList get_slaves_nodes(node_struct *node) const;
+
     void insert_input(QString src, QString dst, int index);
     void delete_input(QString node, int index);
 
