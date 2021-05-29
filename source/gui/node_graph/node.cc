@@ -480,7 +480,9 @@ void node::add_handler_node(QString node_name)
 void node::unlink_all()
 {
     auto unlink = [=](node *_node) {
-        _node->add_handler_node(0);
+        for (node *handler_node : _node->get_handler_nodes())
+            _node->remove_handler_node(handler_node);
+
         if (_node->get_trim_panel())
             _node->get_trim_panel()->unlink_all();
 
