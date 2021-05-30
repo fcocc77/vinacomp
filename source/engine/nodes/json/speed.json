@@ -1,0 +1,17 @@
+{
+    "group": "time",
+    "id": "speed",
+    "label": "Speed",
+    "icon": "speed",
+    "knobs": [
+        {
+            "name": "speed",
+            "type": "floating",
+            "label": "Speed",
+            "tooltip": "Change the animation speed of the entire incoming pipeline",
+            "min": 0.1,
+            "max": 5,
+            "default": 1
+        }
+    ]
+}
