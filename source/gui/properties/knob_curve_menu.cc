@@ -23,7 +23,8 @@ knob_curve_menu::knob_curve_menu(QWidget *_panel)
 
     action *copy_values_action = new action("Copy Values", "");
     action *copy_animation_action = new action("Copy Animation", "");
-    action *copy_links_action = new action("Copy Links", "", "link");
+    action *copy_link_action = new action("Copy Link", "", "link");
+    action *remove_link_action = new action("Remove Link", "", "link_off");
 
     action *paste_action = new action("Paste", "", "paste");
 
@@ -44,9 +45,10 @@ knob_curve_menu::knob_curve_menu(QWidget *_panel)
     this->addSeparator();
     this->addAction(copy_values_action);
     this->addAction(copy_animation_action);
-    this->addAction(copy_links_action);
+    this->addAction(copy_link_action);
     this->addSeparator();
     this->addAction(paste_action);
+    this->addAction(remove_link_action);
     this->addSeparator();
     this->addAction(generate_keys_action);
     this->addAction(smooth_curve_action);
@@ -72,7 +74,8 @@ knob_curve_menu::knob_curve_menu(QWidget *_panel)
 
     copy_animation_action->connect_to(panel, [this]() { copy("animation"); });
 
-    copy_links_action->connect_to(panel, [this]() { copy("link"); });
+    copy_link_action->connect_to(panel, [this]() { copy("link"); });
+    remove_link_action->connect_to(panel, [this]() { remove_link(); });
 
     paste_action->connect_to(panel, [this]() { paste(); });
 
@@ -133,4 +136,9 @@ void knob_curve_menu::paste()
         current_knob->set_linked_handler(copied_knob->get_node_name(),
                                  copied_knob->get_name());
     }
+}
+
+void knob_curve_menu::remove_link()
+{
+    current_knob->remove_link();
 }

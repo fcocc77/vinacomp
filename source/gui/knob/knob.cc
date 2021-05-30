@@ -453,8 +453,7 @@ void knob::remove_link()
     if (handler_knob)
         handler_knob->remove_slave_knob(get_node_name(), get_name());
 
-    project->unlink_slave(handler_knob_node_name, get_node_name());
-    project->unlink_handler(get_node_name(), handler_knob_node_name);
+    project->unlink_param_from_handler(get_node_name(), get_name());
 
     linked = false;
     set_disable(false);

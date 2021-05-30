@@ -155,3 +155,83 @@ void project_struct::unlink_node(QString node_name)
     unlink_handlers(&node);
     unlink_slaves(&node);
 }
+
+void project_struct::unlink_param_from_slave(QString handler_node_name,
+                                             QString handler_param_name,
+                                             QString slave_node_name,
+                                             QString slave_param_name)
+{
+    node_struct &handler_node = nodes[handler_node_name];
+
+    QString param_key = handler_param_name + "_slaves_nodes";
+
+    QJsonArray slave_nodes = handler_node.params->value(param_key).toArray();
+
+    QJsonArray new_slave_nodes;
+
+    for (QJsonValue value : slave_nodes)
+    {
+        QString _slave_node_name = value.toArray().at(0).toString();
+        QString _slave_param_name = value.toArray().at(1).toString();
+
+        if (_slave_node_name == slave_node_name &&
+            _slave_param_name == slave_param_name)
+            continue;
+
+        new_slave_nodes.push_back(value);
+    }
+
+    if (new_slave_nodes.isEmpty())
+        handler_node.params->remove(param_key);
+    else
+        handler_node.params->insert(param_key, new_slave_nodes);
+}
+
+void project_struct::unlink_param_from_handler(QString slave_node_name,
+                                               QString slave_param_name)
+{
+    if (!nodes.contains(slave_node_name))
+        return;
+
+    node_struct &slave_node = nodes[slave_node_name];
+
+    auto exist_handler_node_in_params = [=](QString node_name) {
+        for (QString key : slave_node.params->keys())
+        {
+            if (!key.contains("handler_node"))
+                continue;
+
+            QString _node_name =
+                slave_node.params->value(key).toArray().at(0).toString();
+
+            if (node_name == _node_name)
+                return true;
+        }
+
+        return false;
+    };
+
+    QString param_key = slave_param_name + "_handler_node";
+    QJsonArray handler_link = slave_node.params->value(param_key).toArray();
+
+    QString handler_node_name = handler_link.at(0).toString();
+    QString handler_param_name = handler_link.at(1).toString();
+
+    slave_node.params->remove(param_key);
+
+    if (!exist_handler_node_in_params(handler_node_name))
+    {
+        QJsonArray new_handler_nodes;
+        for (QJsonValue value : slave_node.handler_nodes)
+        {
+            if (value.toString() == handler_node_name)
+                continue;
+            new_handler_nodes.push_back(value);
+        }
+
+        slave_node.handler_nodes = new_handler_nodes;
+    }
+
+    unlink_param_from_slave(handler_node_name, handler_param_name,
+                            slave_node_name, slave_param_name);
+}

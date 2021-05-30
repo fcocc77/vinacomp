@@ -18,6 +18,7 @@ private:
 
     void copy(QString copy_action);
     void paste();
+    void remove_link();
 
 public:
     knob_curve_menu(QWidget *panel);
