@@ -453,13 +453,20 @@ void knob::remove_link()
     if (handler_knob)
         handler_knob->remove_slave_knob(get_node_name(), get_name());
 
-    project->unlink_param_from_handler(get_node_name(), get_name());
-
     linked = false;
     set_disable(false);
 
-    static_cast<node_rect *>(this_node)->set_link_item(false);
-    static_cast<node *>(this_node)->remove_handler_node(handler_knob_node_name);
+    project->unlink_param_from_handler(get_node_name(), get_name());
+
+    // evita que elimine el link del nodo si es que existen otros parametros
+    // vinculados a este mismo nodo
+    if (!project->exist_handler_node_in_params(get_node_name(),
+                                               handler_knob_node_name))
+    {
+        static_cast<node_rect *>(this_node)->set_link_item(false);
+        static_cast<node *>(this_node)->remove_handler_node(
+            handler_knob_node_name);
+    }
 }
 
 void knob::remove_link(QString node_name)

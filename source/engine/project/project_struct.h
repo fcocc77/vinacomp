@@ -101,6 +101,9 @@ public:
                                  QString slave_node_name,
                                  QString slave_param_name);
 
+    bool exist_handler_node_in_params(QString slave_node_name,
+                                      QString handler_node_name) const;
+
     void unlink_handlers(node_struct *node);
 
     QStringList get_handler_nodes(node_struct *node) const;
