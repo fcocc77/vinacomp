@@ -58,7 +58,7 @@ gui__trim_panel:
     ☐ knob_editor: el knob de color al editar el default queda en 0 en la caja de edicion
     ☐ knob_editor: con la tecla tab que se valla cambiando el foco al siguiente QLineEdit y cuando de la vuelta que el foco quede en el primer line edit
     ☐ knob_editor: la linea de divicion queda pegada cuando el panel es flotante
-    ☐ los knobs de texto y file quedan sin estilo cuando el panel es flotante
+    ✔ los knobs de texto y file quedan sin estilo cuando el panel es flotante @done(2021-05-30 19:14) @project(gui__trim_panel)
 
 gui__node_graph:
 	☐ crear grilla que switchee con el boton de 'grid'

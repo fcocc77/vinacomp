@@ -235,6 +235,15 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left
       color: #ffcc00;
       border-color: #66613f; }
 
+#knob_file QLineEdit, #knob_text QLineEdit {
+  color: #aeb4bc;
+  padding: 3px;
+  border-radius: 2px;
+  background: #1e2024;
+  border: 1px solid #1e2024; }
+  #knob_file QLineEdit:focus, #knob_text QLineEdit:focus {
+    border-color: #8f7612; }
+
 #knob_check_box {
   background: none; }
   #knob_check_box QCheckBox {
