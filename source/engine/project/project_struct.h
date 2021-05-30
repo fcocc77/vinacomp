@@ -91,8 +91,10 @@ public:
 
     void unlink_node(QString node_name);
     void unlink_slave(node_struct *handler_node, QString slave_node_name);
+    void unlink_slave(QString handler_node_name, QString slave_node_name);
     void unlink_slaves(node_struct *node);
     void unlink_handler(node_struct *slave_node, QString handler_node_name);
+    void unlink_handler(QString slave_node_name, QString handler_node_name);
     void unlink_handlers(node_struct *node);
 
     QStringList get_handler_nodes(node_struct *node) const;

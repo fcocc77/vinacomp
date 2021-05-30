@@ -1,10 +1,21 @@
 #include <project_struct.h>
+#include <util.h>
 
 QStringList project_struct::get_handler_nodes(node_struct *node) const
 {
     QStringList handler_nodes;
-    for (QJsonValue value : node->handler_nodes)
-        handler_nodes.push_back(value.toString());
+
+    for (QString param_key : node->params->keys())
+    {
+        if (!param_key.contains("handler_node"))
+            continue;
+
+        QString handler_node_name =
+            node->params->value(param_key).toArray().at(0).toString();
+
+        if (!handler_nodes.contains(handler_node_name))
+            handler_nodes.push_back(handler_node_name);
+    }
 
     return handler_nodes;
 }
@@ -55,6 +66,24 @@ void project_struct::unlink_slave(node_struct *handler_node,
 
     for (QString param : params_to_delete)
         params->remove(param);
+}
+
+void project_struct::unlink_slave(QString handler_node_name,
+                                  QString slave_node_name)
+{
+    if (!nodes.contains(handler_node_name))
+        return;
+
+    unlink_slave(&nodes[handler_node_name], slave_node_name);
+}
+
+void project_struct::unlink_handler(QString slave_node_name,
+                                    QString handler_node_name)
+{
+    if (!nodes.contains(slave_node_name))
+        return;
+
+    unlink_handler(&nodes[slave_node_name], handler_node_name);
 }
 
 void project_struct::unlink_handler(node_struct *slave_node,
