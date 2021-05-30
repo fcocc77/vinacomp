@@ -47,8 +47,8 @@ gui__viewer:
 	☐ timeline: Cambiarle el color a la seleccion
 
 gui__properties:
-    ☐ boton para restablecer el nodo por defecto
-    ☐ incrustar un script editor,tiene que ser un editor para todos los nodos, par ahorrar memoria, el editor tiene que tener un aceptar y cancelar
+    ✔ boton para restablecer el nodo por defecto @done(2021-05-30 19:18) @project(gui__properties)
+    ✔ incrustar un script editor,tiene que ser un editor para todos los nodos, par ahorrar memoria, el editor tiene que tener un aceptar y cancelar @done(2021-05-30 19:19) @project(gui__properties)
 
 gui__trim_panel:
     ☐ poner limite a lo mas chico que puede estar el trim_panel en lo ancho

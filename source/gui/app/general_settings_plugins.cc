@@ -8,6 +8,15 @@ void general_settings::setup_plugins()
 {
     QVBoxLayout *layout = add_item("Plugins");
 
+    plugin_dirs_tree = new QTreeWidget;
+    plugin_dirs_tree->setObjectName("plugin_tree");
+    plugin_dirs_tree->setAlternatingRowColors(true);
+    QStringList plugin_dirs_columns{"Dir Name", "Path", "Plugins Amount"};
+    plugin_dirs_tree->setHeaderLabels(plugin_dirs_columns);
+    plugin_dirs_tree->setColumnWidth(0, 100);
+    plugin_dirs_tree->setColumnWidth(1, 100);
+    plugin_dirs_tree->setColumnWidth(2, 100);
+
     plugin_tree = new QTreeWidget;
     plugin_tree->setObjectName("plugin_tree");
     plugin_tree->setAlternatingRowColors(true);
@@ -17,10 +26,18 @@ void general_settings::setup_plugins()
     plugin_tree->setColumnWidth(1, 100);
     plugin_tree->setColumnWidth(2, 100);
 
-    QWidget *buttons = new QWidget;
-    buttons->setObjectName("plugin_buttons");
-    QHBoxLayout *buttons_layout = new QHBoxLayout(buttons);
+    QWidget *plugin_buttons = new QWidget;
+    plugin_buttons->setObjectName("plugin_buttons");
+    QHBoxLayout *buttons_layout = new QHBoxLayout(plugin_buttons);
     buttons_layout->setMargin(0);
+
+    QWidget *plugin_dirs_buttons = new QWidget;
+    plugin_dirs_buttons->setObjectName("plugin_buttons");
+    QHBoxLayout *plugin_dirs_buttons_layout = new QHBoxLayout(plugin_dirs_buttons);
+    plugin_dirs_buttons_layout->setMargin(0);
+
+    button *remove_dir_button = new button();
+    button *add_dir_button = new button();
 
     button *remove_button = new button();
     button *edit_button = new button();
@@ -28,15 +45,24 @@ void general_settings::setup_plugins()
     connect(remove_button, &button::clicked, this,
             &general_settings::delete_plugin);
 
+    remove_dir_button->set_icon("delete");
+    add_dir_button->set_icon("create_new_folder");
+
     remove_button->set_icon("delete");
     edit_button->set_icon("edit");
 
+    // Layout
     buttons_layout->addWidget(edit_button);
     buttons_layout->addWidget(remove_button);
     buttons_layout->addStretch();
 
+    plugin_dirs_buttons_layout->addWidget(add_dir_button);
+    plugin_dirs_buttons_layout->addWidget(remove_dir_button);
+    plugin_dirs_buttons_layout->addStretch();
+
+    layout->addWidget(plugin_dirs_tree); layout->addWidget(plugin_dirs_buttons);
     layout->addWidget(plugin_tree);
-    layout->addWidget(buttons);
+    layout->addWidget(plugin_buttons);
 
     load_plugins();
 }

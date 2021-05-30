@@ -24,7 +24,7 @@ private:
 
     // Plugins
     QList<QTreeWidgetItem *> plugin_items;
-    QTreeWidget *plugin_tree;
+    QTreeWidget *plugin_tree, *plugin_dirs_tree;
     void setup_plugins();
     void load_plugins();
     void delete_plugin();
