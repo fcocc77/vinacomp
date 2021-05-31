@@ -89,13 +89,8 @@ public:
     void rename_node(QString name, QString new_name,
                      bool rename_children = true);
 
-    void unlink_node(QString node_name);
+    void unlink_all_knobs(QString node_name);
     void unlink_param_from_handler(QString node_name, QString param_name);
-    void unlink_slave(node_struct *handler_node, QString slave_node_name);
-    void unlink_slave(QString handler_node_name, QString slave_node_name);
-    void unlink_slaves(node_struct *node);
-    void unlink_handler(node_struct *slave_node, QString handler_node_name);
-    void unlink_handler(QString slave_node_name, QString handler_node_name);
     void unlink_param_from_slave(QString handler_node_name,
                                  QString handler_param_name,
                                  QString slave_node_name,
@@ -104,9 +99,6 @@ public:
     bool exist_handler_node_in_params(QString slave_node_name,
                                       QString handler_node_name) const;
 
-    void unlink_handlers(node_struct *node);
-
-    QStringList get_handler_nodes(node_struct *node) const;
     QStringList get_slaves_nodes(node_struct *node) const;
 
     void insert_input(QString src, QString dst, int index);

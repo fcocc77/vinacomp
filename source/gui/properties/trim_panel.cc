@@ -618,6 +618,12 @@ void trim_panel::unlink_node_to_knobs(QString node_name)
         _knob->remove_link(node_name);
 }
 
+void trim_panel::unlink_all_knobs()
+{
+    for (knob *_knob : *knobs)
+        _knob->remove_link();
+}
+
 void trim_panel::mousePressEvent(QMouseEvent *event)
 {
     // a veces se queda pegado al presionar otros click cuando se esta

@@ -115,6 +115,7 @@ public:
     void enter_to_properties();
     void leave_properties(bool disable_edit_mode = true);
     void unlink_node_to_knobs(QString node_name);
+    void unlink_all_knobs();
     inline node_gui *get_node_gui() const;
     inline QWidget *get_node_view() const;
 };

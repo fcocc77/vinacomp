@@ -53,6 +53,20 @@ properties:
     knob_editor:
     expression_editor:
     trim_panel:
+        knob:
+            links:
+                test_1:
+                    ✔ link 2 knob del mismo nodo @done(2021-05-31 09:36)
+                    ✔ link 2 knob de 2 nodos diferentes @done(2021-05-31 09:38)
+                    ✔ unlink en 1 knob @done(2021-05-31 09:39)
+                    ✔ unlink en restore node @done(2021-05-31 09:40)
+                test_2:
+                    ✔ link 2 knob de mismo nodo @done(2021-05-31 09:43)
+                    ☐ link 2 knob de 2 nodos diferentes
+                    ☐ unlink en nodo esclavo
+                    ☐ unlink en nodo manejador
+                    ☐ unlink en nodo esclavo sin el panel creado
+                    ☐ unlink en nodo manejador sin el panel creado
 
 panel_layout:
     layout:

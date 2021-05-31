@@ -492,23 +492,26 @@ void node::remove_handler_node(QString node_name)
 
 void node::unlink_all()
 {
-    // Slaves
     for (node *slave_node : slaves_nodes)
     {
         if (slave_node->get_trim_panel())
-        {
             slave_node->get_trim_panel()->unlink_node_to_knobs(
                 this->get_name());
-        }
 
         slave_node->remove_handler_node(this);
     }
 
-    // Handlers
-    for (node *handler_node : this->get_handler_nodes())
-        this->remove_handler_node(handler_node);
+    if (this->get_trim_panel())
+    {
+        this->get_trim_panel()->unlink_all_knobs();
+    }
+    else
+    {
+        for (node *handler_node : this->get_handler_nodes())
+            this->remove_handler_node(handler_node);
 
-    props.project->unlink_node(get_name());
+        props.project->unlink_all_knobs(get_name());
+    }
 }
 
 void node::add_slave_node(node *_node)
