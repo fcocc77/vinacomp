@@ -3,6 +3,7 @@
 #include <os.h>
 #include <path_utils.h>
 #include <vinacomp.h>
+#include <global.h>
 
 void general_settings::setup_plugins()
 {
@@ -69,7 +70,7 @@ void general_settings::setup_plugins()
 
 void general_settings::load_plugins()
 {
-    QString base_path = "plugins/py_plugins/";
+    QString base_path = PY_PLUGINS_PATH + "/";
     for (QString plugin_path : os::listdir(base_path))
     {
         if (path_util::get_ext(plugin_path) != "json")
@@ -127,7 +128,7 @@ void general_settings::delete_plugin()
     auto *item = plugin_tree->selectedItems().first();
 
     QString plugin_name = item->text(0);
-    QString base_plugin_path = "plugins/py_plugins/" + plugin_name;
+    QString base_plugin_path = PY_PLUGINS_PATH + "/" + plugin_name;
 
     os::remove(base_plugin_path + ".json");
     os::remove(base_plugin_path + ".py");
