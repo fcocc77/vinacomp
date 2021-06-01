@@ -502,16 +502,12 @@ void node::unlink_all()
     }
 
     if (this->get_trim_panel())
-    {
         this->get_trim_panel()->unlink_all_knobs();
-    }
     else
-    {
         for (node *handler_node : this->get_handler_nodes())
             this->remove_handler_node(handler_node);
 
-        props.project->unlink_all_knobs(get_name());
-    }
+    props.project->unlink_all_knobs(get_name());
 }
 
 void node::add_slave_node(node *_node)
