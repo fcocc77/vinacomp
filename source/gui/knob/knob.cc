@@ -259,8 +259,13 @@ void knob::restore_param()
 
     if (params->contains(slaves_name))
     {
-        slaves_knobs = params->value(slaves_name).toArray();
+        restore_slaves_konbs();
     }
+}
+
+void knob::restore_slaves_konbs()
+{
+    slaves_knobs = params->value(slaves_name).toArray();
 }
 
 void knob::update_value(QJsonValue value)

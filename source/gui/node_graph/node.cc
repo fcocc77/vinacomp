@@ -208,6 +208,24 @@ void node::rename(QString new_name)
     props.project->rename_node(get_name(), new_name, false);
     set_name(new_name);
 
+    // restaura los link de los 'slaves_nodes' en los nodos manejadores
+    for (node *handler_node : handler_nodes)
+    {
+        trim_panel *handler_panel = handler_node->get_trim_panel();
+        if (handler_panel)
+            for (knob *handler_knob : *handler_panel->get_knobs())
+                handler_knob->restore_slaves_konbs();
+    }
+
+    // renombra el nodo handler en todos los esclavos
+    for (node *slave_node : slaves_nodes)
+    {
+        trim_panel *slave_panel = slave_node->get_trim_panel();
+        if (slave_panel)
+            for (knob *slave_knob : *slave_panel->get_knobs())
+                slave_knob->rename_handler_node_name(new_name);
+    }
+
     // vuelve a conectar los nodos
     if (inputs)
     {
