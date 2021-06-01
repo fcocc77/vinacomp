@@ -1,13 +1,12 @@
-#include <node_view.h>
 #include <node_backdrop.h>
+#include <node_view.h>
 
 void node_view::mousePressEvent(QMouseEvent *event)
 {
     click_position = event->pos();
     clicked();
 
-
-    if (!qt::alt() && event->button() == Qt::LeftButton)
+    if (!qt::alt())
     {
         QGraphicsItem *item =
             scene->itemAt(mapToScene(event->pos()), QTransform());
@@ -58,21 +57,27 @@ void node_view::mousePressEvent(QMouseEvent *event)
             }
         }
 
-        // si el click no fue en un nodo o es un backdrop, comienza el area de seleccion
-        if (item)
+        // si el click no fue en un nodo o es un backdrop, comienza el area de
+        // seleccion
+        if (event->button() == Qt::LeftButton)
         {
-            if (backdrop)
-                if (!backdrop->is_clicked_title_area())
-                    selecting = true;
+            if (item)
+            {
+                if (backdrop)
+                    if (!backdrop->is_clicked_title_area())
+                        selecting = true;
+            }
+            else
+                selecting = true;
         }
-        else
-            selecting = true;
         //
     }
 
     graphics_view::mousePressEvent(event);
     node_rename_edit->hide();
 
+    if (event->button() == Qt::RightButton)
+        right_click();
 }
 
 void node_view::mouseReleaseEvent(QMouseEvent *event)
@@ -101,7 +106,7 @@ void node_view::keyPressEvent(QKeyEvent *event)
         if (!qt::shift())
             set_visible_ghost_dots(true);
     if (event->key() == Qt::Key_Shift)
-            set_visible_ghost_dots(false);
+        set_visible_ghost_dots(false);
     if (event->key() == Qt::Key_F)
         fit_view_to_nodes();
     if (event->key() == Qt::Key_1)
@@ -123,13 +128,7 @@ void node_view::focusOutEvent(QFocusEvent *event)
     set_visible_ghost_dots(false);
 }
 
-void node_view::contextMenuEvent(QContextMenuEvent *event)
-{
-    right_click();
-}
-
 void node_view::resizeEvent(QResizeEvent *event)
 {
     restore_rect(get_last_rect());
 }
-
