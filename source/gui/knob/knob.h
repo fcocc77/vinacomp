@@ -80,7 +80,8 @@ public:
     void set_linked_handler(QString node_name, QString param_name);
     void remove_link();
     void remove_link(QString node_name);
-    inline void rename_handler_node_name(QString handler_name);
+    inline void rename_handler_node_name(QString handler_name,
+                                         QString new_handler_name);
     void restore_slaves_konbs();
     void enable_animation();
     void disable_animation();
@@ -127,9 +128,11 @@ signals:
     void to_node_gui(knob *_knob);
 };
 
-inline void knob::rename_handler_node_name(QString handler_name)
+inline void knob::rename_handler_node_name(QString handler_name,
+                                           QString new_handler_name)
 {
-    handler_knob_node_name = handler_name;
+    if (handler_knob_node_name == handler_name)
+        handler_knob_node_name = new_handler_name;
 }
 
 inline QString knob::get_expression() const
