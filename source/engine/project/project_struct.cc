@@ -90,6 +90,7 @@ void project_struct::rename_node(QString name, QString new_name,
     if (!nodes.contains(name))
         return;
 
+    rename_node_links(name, new_name);
     node_struct aux = nodes[name];
 
     if (rename_children && (aux.type == "group" || aux.plugin))

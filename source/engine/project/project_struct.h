@@ -96,10 +96,19 @@ public:
                                  QString slave_node_name,
                                  QString slave_param_name);
 
+    void rename_slave_link(node_struct *handler_node, QString salve_name,
+                           QString new_slave_name);
+
+    void rename_handler_link(node_struct *slave_node, QString handler_name,
+                             QString new_handler_name);
+
+    void rename_node_links(QString node_name, QString new_name);
+
     bool exist_handler_node_in_params(QString slave_node_name,
                                       QString handler_node_name) const;
 
     QStringList get_slaves_nodes(node_struct *node) const;
+    QStringList get_handler_nodes(node_struct *node) const;
 
     void insert_input(QString src, QString dst, int index);
     void delete_input(QString node, int index);
