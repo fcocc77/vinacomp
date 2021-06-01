@@ -6,6 +6,7 @@ button::button(QWidget *parent, bool _hover)
     , hover(_hover)
     , checkable(false)
     , checked(false)
+    , disable(false)
 {
     if (hover)
     {
@@ -17,11 +18,9 @@ button::button(QWidget *parent, bool _hover)
         if (checkable)
         {
             checked = !checked;
-            if (checked)
-                set_hover_icon();
-            else
-                set_normal_icon();
+            set_checked(checked);
         }
+
         clicked(checked);
     });
 }
@@ -53,6 +52,26 @@ void button::set_icon(QString name, int size)
     }
 
     change_icon(normal_icon);
+}
+
+void button::set_checked(bool _checked)
+{
+    checked = _checked;
+
+    qt::set_property(this, "active", checked);
+    this->setChecked(checked);
+
+    if (checked)
+        set_hover_icon();
+    else
+        set_normal_icon();
+}
+
+void button::set_disable(bool _disable)
+{
+    disable = _disable;
+    qt::set_property(this, "disable", disable);
+    this->setDisabled(_disable);
 }
 
 void button::set_hover_icon()

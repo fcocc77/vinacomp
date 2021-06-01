@@ -26,31 +26,38 @@ void knob_color::setup_ui()
     alpha_slider->setObjectName("alpha_slider");
 
     // Opciones de botones
-    color_sample_button->setObjectName("small_button");
     color_sample_button->setAutoFillBackground(true);
     color_sample_button->setSizePolicy(QSizePolicy::Fixed,
                                        QSizePolicy::Expanding);
 
-    palette_button->setObjectName("small_button");
     palette_button->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
-    qt::set_icon(palette_button, "color_normal", icon_size);
 
-    mono_color_button->setObjectName("small_button");
     mono_color_button->setSizePolicy(QSizePolicy::Fixed,
                                      QSizePolicy::Expanding);
+    picker_button->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+
     mono_color_button->setText("4");
-
-    _color_picker->setObjectName("color_picker");
-
-    rgb_button->setObjectName("small_button");
     rgb_button->setText("RGB");
-
-    hsl_button->setObjectName("small_button");
     hsl_button->setText("HSL");
 
+    palette_button->set_icon("color", icon_size);
+    picker_button->set_icon("picker", icon_size);
+
+    rgb_button->setObjectName("small_button");
+    color_sample_button->setObjectName("color_sample_button");
+    palette_button->setObjectName("small_button");
+    mono_color_button->setObjectName("small_button");
+    _color_picker->setObjectName("color_picker");
+    hsl_button->setObjectName("small_button");
     picker_button->setObjectName("small_button");
-    picker_button->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
-    qt::set_icon(picker_button, "picker_normal", icon_size);
+
+    palette_button->set_checkable();
+    mono_color_button->set_checkable();
+    rgb_button->set_checkable();
+    hsl_button->set_checkable();
+    picker_button->set_checkable();
+
+    rgb_button->set_checked(true);
 
     // Visibilidad Inicial
     rgb_button->hide();

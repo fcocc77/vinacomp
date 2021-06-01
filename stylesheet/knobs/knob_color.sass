@@ -6,7 +6,12 @@
         background: transparent
     QLineEdit
         background: $b13
-    @include small_button
+    #small_button
+        @include small_button
+    #color_sample_button
+        width: 25px
+        height: 22px
+        border-radius: 2px
 
     @mixin slider_color($color, $percent)
         #slider

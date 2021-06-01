@@ -62,12 +62,12 @@ knob_color::knob_color(knob_props props, float min, float max, float r, float g,
     sat_slider->set_colored_slider("sat");
     level_slider->set_colored_slider("level");
 
-    color_sample_button = new QPushButton(this);
-    palette_button = new QPushButton(this);
-    mono_color_button = new QPushButton(this);
-    rgb_button = new QPushButton(this);
-    hsl_button = new QPushButton(this);
-    picker_button = new QPushButton(this);
+    color_sample_button = new button(this);
+    palette_button = new button(this);
+    mono_color_button = new button(this);
+    rgb_button = new button(this);
+    hsl_button = new button(this);
+    picker_button = new button(this);
 
     connections();
     setup_ui();
@@ -126,6 +126,8 @@ void knob_color::set_init_color(float red, float green, float blue, float alpha)
     }
     //
     //
+
+    mono_color_button->set_checked(mono_color);
     set_color(red, green, blue, alpha, false);
 }
 
@@ -189,7 +191,6 @@ void knob_color::set_visible_mono_color(bool visible, bool emmit_signal)
         set_color(color, color, color, color, emmit_signal);
     }
 
-    qt::set_property(mono_color_button, "active", !visible);
     if (emmit_signal)
         update();
 }
@@ -209,8 +210,6 @@ void knob_color::set_visible_rgba_box(bool visible)
     set_visible_mono_color(false);
     //
 
-    qt::set_property(palette_button, "active", visible);
-    qt::set_property(mono_color_button, "disable", visible);
     update();
 }
 
@@ -234,6 +233,8 @@ void knob_color::toogle_advanced_options()
         set_visible_rgba_box(rgb_option);
         hsl_box->setVisible(hsl_option);
     }
+
+    mono_color_button->set_disable(advanced_options);
 }
 
 void knob_color::toogle_rgb_option()

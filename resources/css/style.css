@@ -23,7 +23,7 @@ QPushButton {
     width: 0px; }
 
 QMainWindow {
-  qproperty-windowIcon: url("/home/pancho/Documents/develop/vinacomp/resources/images/vinacomp.png"); }
+  qproperty-windowIcon: url("{{path}}/resources/images/vinacomp.png"); }
 
 QMenu {
   background-color: #292d32;
@@ -73,6 +73,17 @@ QMessageBox {
       background: #353941;
       color: #ffcc00;
       border-color: #635d3a; }
+    QMessageBox QPushButton[active=true] {
+      background: #272a30;
+      border-color: #272a30;
+      color: #ffcc00;
+      border-color: #464845; }
+      QMessageBox QPushButton[active=true]:hover {
+        background: #24262c; }
+    QMessageBox QPushButton[disable=true] {
+      color: #393d45; }
+      QMessageBox QPushButton[disable=true][active=true] {
+        border-color: #272a30; }
 
 QSplitter::handle::horizontal, QSplitter::handle::vertical {
   background: #191b1f; }
@@ -173,32 +184,60 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left
       border-color: #c80000; }
 
 #knob_floating QPushButton, #knob_integer QPushButton, #knob_dimensions QPushButton {
+  padding: 7px;
+  border-radius: 2px;
+  background: #3c4149;
+  border: 1px solid #3c4149;
   width: 25px;
   height: 22px;
-  border-radius: 2px;
-  background: #3c4149; }
-  #knob_floating QPushButton:hover, #knob_integer QPushButton:hover, #knob_dimensions QPushButton:hover {
-    background: #434851; }
+  padding: 0; }
+  #knob_floating QPushButton::hover, #knob_integer QPushButton::hover, #knob_dimensions QPushButton::hover {
+    color: white;
+    border-color: #444950;
+    background: #444950; }
+  #knob_floating QPushButton::pressed, #knob_integer QPushButton::pressed, #knob_dimensions QPushButton::pressed {
+    background: #353941;
+    color: #ffcc00;
+    border-color: #635d3a; }
   #knob_floating QPushButton[active=true], #knob_integer QPushButton[active=true], #knob_dimensions QPushButton[active=true] {
-    background: #25282d; }
+    background: #272a30;
+    border-color: #272a30;
+    color: #ffcc00;
+    border-color: #464845; }
     #knob_floating QPushButton[active=true]:hover, #knob_integer QPushButton[active=true]:hover, #knob_dimensions QPushButton[active=true]:hover {
-      background: #1e2024; }
+      background: #24262c; }
   #knob_floating QPushButton[disable=true], #knob_integer QPushButton[disable=true], #knob_dimensions QPushButton[disable=true] {
-    color: #474d57; }
+    color: #393d45; }
+    #knob_floating QPushButton[disable=true][active=true], #knob_integer QPushButton[disable=true][active=true], #knob_dimensions QPushButton[disable=true][active=true] {
+      border-color: #272a30; }
 
 #knob_check_box QPushButton, #knob_text QPushButton, #knob_choice QPushButton, #knob_file QPushButton, #knob_group QPushButton, #knob_separator QPushButton, #knob_label QPushButton {
+  padding: 7px;
+  border-radius: 2px;
+  background: #3c4149;
+  border: 1px solid #3c4149;
   width: 25px;
   height: 22px;
-  border-radius: 2px;
-  background: #3c4149; }
-  #knob_check_box QPushButton:hover, #knob_text QPushButton:hover, #knob_choice QPushButton:hover, #knob_file QPushButton:hover, #knob_group QPushButton:hover, #knob_separator QPushButton:hover, #knob_label QPushButton:hover {
-    background: #434851; }
+  padding: 0; }
+  #knob_check_box QPushButton::hover, #knob_text QPushButton::hover, #knob_choice QPushButton::hover, #knob_file QPushButton::hover, #knob_group QPushButton::hover, #knob_separator QPushButton::hover, #knob_label QPushButton::hover {
+    color: white;
+    border-color: #444950;
+    background: #444950; }
+  #knob_check_box QPushButton::pressed, #knob_text QPushButton::pressed, #knob_choice QPushButton::pressed, #knob_file QPushButton::pressed, #knob_group QPushButton::pressed, #knob_separator QPushButton::pressed, #knob_label QPushButton::pressed {
+    background: #353941;
+    color: #ffcc00;
+    border-color: #635d3a; }
   #knob_check_box QPushButton[active=true], #knob_text QPushButton[active=true], #knob_choice QPushButton[active=true], #knob_file QPushButton[active=true], #knob_group QPushButton[active=true], #knob_separator QPushButton[active=true], #knob_label QPushButton[active=true] {
-    background: #25282d; }
+    background: #272a30;
+    border-color: #272a30;
+    color: #ffcc00;
+    border-color: #464845; }
     #knob_check_box QPushButton[active=true]:hover, #knob_text QPushButton[active=true]:hover, #knob_choice QPushButton[active=true]:hover, #knob_file QPushButton[active=true]:hover, #knob_group QPushButton[active=true]:hover, #knob_separator QPushButton[active=true]:hover, #knob_label QPushButton[active=true]:hover {
-      background: #1e2024; }
+      background: #24262c; }
   #knob_check_box QPushButton[disable=true], #knob_text QPushButton[disable=true], #knob_choice QPushButton[disable=true], #knob_file QPushButton[disable=true], #knob_group QPushButton[disable=true], #knob_separator QPushButton[disable=true], #knob_label QPushButton[disable=true] {
-    color: #474d57; }
+    color: #393d45; }
+    #knob_check_box QPushButton[disable=true][active=true], #knob_text QPushButton[disable=true][active=true], #knob_choice QPushButton[disable=true][active=true], #knob_file QPushButton[disable=true][active=true], #knob_group QPushButton[disable=true][active=true], #knob_separator QPushButton[disable=true][active=true], #knob_label QPushButton[disable=true][active=true] {
+      border-color: #272a30; }
 
 #knob_choice {
   background: transparent; }
@@ -234,6 +273,17 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left
       background: #383d45;
       color: #ffcc00;
       border-color: #66613f; }
+    #knob_button QPushButton[active=true] {
+      background: #292c32;
+      border-color: #292c32;
+      color: #ffcc00;
+      border-color: #4a4d4b; }
+      #knob_button QPushButton[active=true]:hover {
+        background: #25282d; }
+    #knob_button QPushButton[disable=true] {
+      color: #3c424a; }
+      #knob_button QPushButton[disable=true][active=true] {
+        border-color: #292c32; }
 
 #knob_file QLineEdit, #knob_text QLineEdit {
   color: #aeb4bc;
@@ -340,6 +390,17 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left
     background: #353941;
     color: #ffcc00;
     border-color: #635d3a; }
+  #knob_channels QPushButton[active=true] {
+    background: #272a30;
+    border-color: #272a30;
+    color: #ffcc00;
+    border-color: #464845; }
+    #knob_channels QPushButton[active=true]:hover {
+      background: #24262c; }
+  #knob_channels QPushButton[disable=true] {
+    color: #393d45; }
+    #knob_channels QPushButton[disable=true][active=true] {
+      border-color: #272a30; }
 
 #knob_check_box {
   background: none; }
@@ -377,19 +438,38 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left
 #knob_color QLineEdit {
   background: #202327; }
 
-#knob_color QPushButton {
+#knob_color #small_button {
+  padding: 7px;
+  border-radius: 2px;
+  background: #3c4149;
+  border: 1px solid #3c4149;
   width: 25px;
   height: 22px;
-  border-radius: 2px;
-  background: #3c4149; }
-  #knob_color QPushButton:hover {
-    background: #434851; }
-  #knob_color QPushButton[active=true] {
-    background: #25282d; }
-    #knob_color QPushButton[active=true]:hover {
-      background: #1e2024; }
-  #knob_color QPushButton[disable=true] {
-    color: #474d57; }
+  padding: 0; }
+  #knob_color #small_button::hover {
+    color: white;
+    border-color: #444950;
+    background: #444950; }
+  #knob_color #small_button::pressed {
+    background: #353941;
+    color: #ffcc00;
+    border-color: #635d3a; }
+  #knob_color #small_button[active=true] {
+    background: #272a30;
+    border-color: #272a30;
+    color: #ffcc00;
+    border-color: #464845; }
+    #knob_color #small_button[active=true]:hover {
+      background: #24262c; }
+  #knob_color #small_button[disable=true] {
+    color: #393d45; }
+    #knob_color #small_button[disable=true][active=true] {
+      border-color: #272a30; }
+
+#knob_color #color_sample_button {
+  width: 25px;
+  height: 22px;
+  border-radius: 2px; }
 
 #knob_color #red_slider #slider #slider_center {
   background: #1e2024;
@@ -564,6 +644,17 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left
       background: #2b2f35;
       color: #ffcc00;
       border-color: #59522f; }
+    #file_dialog #bottom_widget QPushButton[active=true] {
+      background: #22252a;
+      border-color: #22252a;
+      color: #ffcc00;
+      border-color: #3a3c38; }
+      #file_dialog #bottom_widget QPushButton[active=true]:hover {
+        background: #202327; }
+    #file_dialog #bottom_widget QPushButton[disable=true] {
+      color: #2e3238; }
+      #file_dialog #bottom_widget QPushButton[disable=true][active=true] {
+        border-color: #22252a; }
   #file_dialog #tools {
     background: transparent; }
   #file_dialog #combo_box {
@@ -788,6 +879,17 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left
       background: #2f333a;
       color: #ffcc00;
       border-color: #5d5634; }
+    #properties #knob_editor #edit_tools QPushButton[active=true] {
+      background: #24272d;
+      border-color: #24272d;
+      color: #ffcc00;
+      border-color: #3f403e; }
+      #properties #knob_editor #edit_tools QPushButton[active=true]:hover {
+        background: #212429; }
+    #properties #knob_editor #edit_tools QPushButton[disable=true] {
+      color: #32363e; }
+      #properties #knob_editor #edit_tools QPushButton[disable=true][active=true] {
+        border-color: #24272d; }
   #properties #knob_editor #edit_tools #edit_label {
     color: #ffcc00; }
   #properties #knob_editor #edit_tools #edit_icon {
@@ -835,6 +937,17 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left
         background: #383d45;
         color: #ffcc00;
         border-color: #66613f; }
+      #script_editor #group_box QPushButton[active=true] {
+        background: #292c32;
+        border-color: #292c32;
+        color: #ffcc00;
+        border-color: #4a4d4b; }
+        #script_editor #group_box QPushButton[active=true]:hover {
+          background: #25282d; }
+      #script_editor #group_box QPushButton[disable=true] {
+        color: #3c424a; }
+        #script_editor #group_box QPushButton[disable=true][active=true] {
+          border-color: #292c32; }
     #script_editor #group_box #current_group_label {
       color: #ffcc00; }
 

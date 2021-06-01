@@ -80,4 +80,17 @@
         background: mix($b10, $color, 20)
         color: $base
         border-color: mix($base, $color, 20)
+    // active es cuando el boton esta 'checked'
+    &[ active = true ]
+        background: mix($b10, $color, 60)
+        border-color: mix($b10, $color, 60)
+        color: $base
+        border-color: mix($base, $color, 5)
+        &:hover
+            background: mix($b10, $color, 70)
+    &[ disable = true ]
+        color: mix($b10, $color, 10)
+        &[ active = true ]
+            border-color: mix($b10, $color, 60)
+
 

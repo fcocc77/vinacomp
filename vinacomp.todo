@@ -83,6 +83,7 @@ gui__node:
     ☐ node_gui: el nombre del node gui no cambia cuando el nodo cambia de nombre
     ☐ node_group: al crear nodos input y output que afecten a las entradas y salida del grupo en el nodo @hi
     ☐ separar knob_color para hacer una panel flotante de cambio de color del nodo
+    ☐ al abrir el menu con el click derecho el nodo deberia seleccionarse
 
 gui__knobs:
 	☐ que los qlineedit con boton derecho despliegue el menu de animacion

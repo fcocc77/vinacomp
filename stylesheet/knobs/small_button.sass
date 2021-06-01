@@ -1,14 +1,7 @@
+@import bases
+
 @mixin small_button
-    QPushButton
-        width: 25px
-        height: 22px
-        border-radius: 2px
-        background: $b25
-        &:hover
-            background: $b28
-        &[ active = true ]
-            background: $b15
-            &:hover
-                background: $b12
-        &[ disable = true ]
-            color: $b30
+    @include button($b25)
+    width: 25px
+    height: 22px
+    padding: 0

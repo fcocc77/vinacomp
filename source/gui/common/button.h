@@ -15,6 +15,7 @@ private:
 
     bool checkable;
     bool checked;
+    bool disable;
 
     void change_icon(QString name);
 
@@ -26,6 +27,8 @@ public:
     void set_icon(QString name, int size = 20);
     void set_hover_icon();
     void set_normal_icon();
+    void set_checked(bool checked);
+    void set_disable(bool disable);
 signals:
     void clicked(bool checked);
 };

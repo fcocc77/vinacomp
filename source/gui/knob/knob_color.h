@@ -13,6 +13,7 @@
 #include <qt.h>
 #include <color_picker.h>
 #include <knob_color_slider.h>
+#include <button.h>
 
 class knob_color : public knob
 {
@@ -30,12 +31,12 @@ private:
 
     color_picker *_color_picker;
 
-    QPushButton *color_sample_button;
-    QPushButton *palette_button;
-    QPushButton *mono_color_button;
-    QPushButton *rgb_button;
-    QPushButton *hsl_button;
-    QPushButton *picker_button;
+    button *color_sample_button;
+    button *palette_button;
+    button *mono_color_button;
+    button *rgb_button;
+    button *hsl_button;
+    button *picker_button;
 
     knob_color_slider *red_slider, *green_slider, *blue_slider, *alpha_slider;
     knob_color_slider *mono_slider;
