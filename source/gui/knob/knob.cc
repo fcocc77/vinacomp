@@ -411,7 +411,8 @@ knob *knob::get_knob(QString node_name, QString param_name) const
 {
     vinacomp *vina = static_cast<vinacomp *>(_vinacomp);
 
-    node *_node = vina->get_node_graph()->get_node_view()->get_node(node_name);
+    node *_node =
+        vina->get_main_node_graph()->get_node_view()->get_node(node_name);
 
     if (!_node)
         for (node_graph *group : *vina->get_groups_node_graph())

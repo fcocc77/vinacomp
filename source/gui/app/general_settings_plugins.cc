@@ -135,7 +135,7 @@ void general_settings::delete_plugin()
     os::remove(base_plugin_path + ".png");
 
     nodes_load *nodes_loaded = static_cast<vinacomp *>(_vinacomp)
-                                   ->get_node_graph()
+                                   ->get_main_node_graph()
                                    ->get_nodes_loaded();
 
     update_plugin_tree();

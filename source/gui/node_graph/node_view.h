@@ -98,7 +98,7 @@ public:
     void copy_nodes();
     void center_node(node *_node);
     void paste_nodes();
-    node *get_node(QString name);
+    node *get_node(QString name, bool search_in_all_groups = false);
     inline QMap<QString, node *> *get_nodes();
     input_wire *get_input_wire(node *_node, int input_index);
     void set_visible_ghost_dots(bool visible);

@@ -205,3 +205,13 @@ void vinacomp::update_render_all_viewer(bool clear_init_image) const
     for (viewer *_viewer : *viewers)
         _viewer->update_render(clear_init_image);
 }
+
+QMap<QString, node_graph *> vinacomp::get_all_node_graph() const
+{
+    QMap<QString, node_graph *> all_node_garph;
+    all_node_garph = *get_groups_node_graph();
+
+    all_node_garph.insert("main_node_graph", get_main_node_graph());
+
+    return all_node_garph;
+}

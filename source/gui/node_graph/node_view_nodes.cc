@@ -350,9 +350,27 @@ void node_view::paste_nodes()
     }
 }
 
-node *node_view::get_node(QString name)
+node *node_view::get_node(QString node_name, bool search_in_all_groups)
 {
-    return nodes->value(name);
+    node *_node = nodes->value(node_name);
+
+    if (!search_in_all_groups)
+        return _node;
+
+    if (_node)
+        return _node;
+
+    vinacomp *vina = static_cast<vinacomp *>(_vinacomp);
+
+    for (node_graph *group_graph : vina->get_all_node_graph())
+    {
+        node_view *group_node_view = group_graph->get_node_view();
+        _node = group_node_view->get_node(node_name);
+        if (_node)
+            return _node;
+    }
+
+    return nullptr;
 }
 
 bool node_view::rename_node(node *_node, QString new_name)

@@ -498,7 +498,8 @@ void node::add_handler_node(QString node_name)
     if (node_name.isEmpty())
         return;
 
-    add_handler_node(static_cast<node_view *>(_node_view)->get_node(node_name));
+    add_handler_node(
+        static_cast<node_view *>(_node_view)->get_node(node_name, true));
 }
 
 void node::remove_handler_node(QString node_name)
@@ -507,7 +508,7 @@ void node::remove_handler_node(QString node_name)
         return;
 
     remove_handler_node(
-        static_cast<node_view *>(_node_view)->get_node(node_name));
+        static_cast<node_view *>(_node_view)->get_node(node_name, true));
 }
 
 void node::unlink_all()
