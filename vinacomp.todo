@@ -81,6 +81,7 @@ gui:
         ☐ node_gui: el nombre del node gui no cambia cuando el nodo cambia de nombre
         ☐ node_group: al crear nodos input y output que afecten a las entradas y salida del grupo en el nodo @hi
         ☐ node_group: probar exportar un plugin dentro de otro grupo @hi
+        ☐ node_gui_plugin: al convertir a grupo, no copia los 'params' @hi
 
     knobs:
         ☐ que los qlineedit con boton derecho despliegue el menu de animacion
