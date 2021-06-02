@@ -5,7 +5,7 @@
 knob_color_slider::knob_color_slider(float min, float max, float default_value,
                                      bool centered_handler, QString _label)
     : layout(new QHBoxLayout(this))
-    , edit(new QLineEdit)
+    , edit(new line_edit(this))
     , _slider(new slider(min, max, default_value, true, centered_handler))
     , label(new QLabel(_label))
     , _colored_slider(nullptr)
@@ -15,13 +15,13 @@ knob_color_slider::knob_color_slider(float min, float max, float default_value,
 
     label->setFixedWidth(20);
     edit->setMaximumWidth(50);
-    edit->setText(QString::number(default_value));
+    edit->set_clamp_value(default_value);
 
     // Conecciones
     connect(_slider, &slider::moved, this, [this](float _value) {
         value = _value;
         changed(value);
-        edit->setText(QString::number(value));
+        edit->set_clamp_value(value);
 
         if (_colored_slider)
             _colored_slider->set_value(value);
@@ -67,7 +67,7 @@ void knob_color_slider::set_value(float _value, bool emmit_signal)
 {
     value = _value;
     _slider->set_value(value);
-    edit->setText(QString::number(value));
+    edit->set_clamp_value(value);
 
     if (_colored_slider)
         _colored_slider->set_value(value);

@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QLineEdit>
+#include <line_edit.h>
 #include <QHBoxLayout>
 
 #include <slider.h>
@@ -30,7 +31,7 @@ class knob_color_slider : public QWidget
     Q_OBJECT
 private:
     QHBoxLayout *layout;
-    QLineEdit *edit;
+    line_edit *edit;
     slider *_slider;
     QLabel *label;
     colored_slider *_colored_slider;

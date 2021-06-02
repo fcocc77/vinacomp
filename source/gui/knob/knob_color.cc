@@ -39,10 +39,10 @@ knob_color::knob_color(knob_props props, float min, float max, float r, float g,
     hsl_box = new QWidget(this);
     hsl_box_layout = new QVBoxLayout(hsl_box);
 
-    red_hedit = new QLineEdit(this);
-    green_hedit = new QLineEdit(this);
-    blue_hedit = new QLineEdit(this);
-    alpha_hedit = new QLineEdit(this);
+    red_hedit = new line_edit(this);
+    green_hedit = new line_edit(this);
+    blue_hedit = new line_edit(this);
+    alpha_hedit = new line_edit(this);
 
     mono_slider =
         new knob_color_slider(min, max, default_red, centered_handler);
@@ -353,10 +353,10 @@ void knob_color::set_color(float _red, float _green, float _blue, float _alpha,
     if (red == green && red == blue && red == alpha)
         mono_slider->set_value(red);
 
-    red_hedit->setText(QString::number(red));
-    green_hedit->setText(QString::number(green));
-    blue_hedit->setText(QString::number(blue));
-    alpha_hedit->setText(QString::number(alpha));
+    red_hedit->set_clamp_value(red);
+    green_hedit->set_clamp_value(green);
+    blue_hedit->set_clamp_value(blue);
+    alpha_hedit->set_clamp_value(alpha);
 
     if (update_sliders)
     {

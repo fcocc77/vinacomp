@@ -38,3 +38,18 @@ void line_edit::focusInEvent(QFocusEvent *event)
     QLineEdit::focusInEvent(event);
     QTimer::singleShot(0, this, &QLineEdit::selectAll);
 }
+
+void line_edit::set_clamp_value(float value)
+{
+    QStringList _value = QString::number(value).split('.');
+
+    QString number = _value.first();
+    QString decimal;
+
+    if (_value.count() == 2)
+        decimal = _value.last() + "00";
+    else
+        decimal = "00";
+
+    this->setText(number + '.' + decimal.left(2));
+}

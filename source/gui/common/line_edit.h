@@ -16,6 +16,7 @@ private:
 public:
     line_edit(QWidget *_knob);
     void set_menu(QMenu *_menu);
+    void set_clamp_value(float value);
 
 protected:
     void contextMenuEvent(QContextMenuEvent *event) override;

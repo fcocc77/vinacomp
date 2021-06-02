@@ -14,6 +14,7 @@
 #include <color_picker.h>
 #include <knob_color_slider.h>
 #include <button.h>
+#include <line_edit.h>
 
 class knob_color : public knob
 {
@@ -41,7 +42,7 @@ private:
     knob_color_slider *red_slider, *green_slider, *blue_slider, *alpha_slider;
     knob_color_slider *mono_slider;
     knob_color_slider *hue_slider, *sat_slider, *level_slider;
-    QLineEdit *red_hedit, *green_hedit, *blue_hedit, *alpha_hedit;
+    line_edit *red_hedit, *green_hedit, *blue_hedit, *alpha_hedit;
 
     float red, green, blue, alpha;
     float default_red, default_green, default_blue, default_alpha;
