@@ -25,6 +25,14 @@ node_group::~node_group()
 
         delete _node_graph;
     }
+    else
+    {
+        for (node_struct child_node :
+             props.project->get_children_nodes(get_name(), true))
+        {
+            node::unlink_all_invisible_node(props.vinacomp, child_node.name);
+        }
+    }
 }
 
 QMap<QString, node *> node_group::get_nodes() const

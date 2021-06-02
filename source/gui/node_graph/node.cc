@@ -504,11 +504,13 @@ void node::add_handler_node(QString node_name)
 
 void node::remove_handler_node(QString node_name)
 {
-    if (node_name.isEmpty())
+    node *handler_node =
+        static_cast<node_view *>(_node_view)->get_node(node_name, true);
+
+    if (!handler_node)
         return;
 
-    remove_handler_node(
-        static_cast<node_view *>(_node_view)->get_node(node_name, true));
+    remove_handler_node(handler_node);
 }
 
 void node::unlink_all()
@@ -529,6 +531,32 @@ void node::unlink_all()
             this->remove_handler_node(handler_node);
 
     props.project->unlink_all_knobs(get_name());
+}
+
+void node::unlink_all_invisible_node(QWidget *_vinacomp, QString node_name)
+{
+    // es lo mismo que 'unlink_all' pero este es un metodo estatico
+    // que desvincula todos los nodos 'handler' y 'slave' que estan creados,
+    // desde un nodos que no esta creado, sacando la informacion del proyecto
+
+    vinacomp *vina = static_cast<vinacomp *>(_vinacomp);
+    project_struct *project = vina->get_project();
+
+    node_view *main_node_view = vina->get_main_node_graph()->get_node_view();
+
+    node_struct &_node = project->nodes[node_name];
+
+    for (QString slave_node_name : project->get_slaves_nodes(&_node))
+    {
+        node *slave_node = main_node_view->get_node(slave_node_name, true);
+        if (!slave_node)
+            continue;
+
+        if (slave_node->get_trim_panel())
+            slave_node->get_trim_panel()->unlink_node_to_knobs(node_name);
+    }
+
+    project->unlink_all_knobs(node_name);
 }
 
 void node::add_slave_node(node *_node)

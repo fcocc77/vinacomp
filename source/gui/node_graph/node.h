@@ -107,6 +107,8 @@ public:
     ~node();
 
     void unlink_all();
+    static void unlink_all_invisible_node(QWidget *_vinacomp,
+                                          QString node_name);
     inline QJsonObject *get_params() const;
     virtual void set_name(QString name);
     void rename(QString name);
