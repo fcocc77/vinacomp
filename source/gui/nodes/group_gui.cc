@@ -86,10 +86,38 @@ QJsonObject group_gui::get_child_nodes() const
     return child_nodes;
 }
 
+QJsonObject group_gui::get_params() const
+{
+    trim_panel *panel = static_cast<trim_panel *>(_trim_panel);
+    QJsonObject params;
+
+    QStringList exclusive_group_params = {"name", "icon", "group",
+                                          "group_icon"};
+
+    for (QString key : panel->get_params()->keys())
+    {
+        QJsonValue value = panel->get_params()->value(key);
+        bool add = true;
+
+        for (QString exclusive_param : exclusive_group_params)
+            if (key.contains(exclusive_param))
+            {
+                add = false;
+                break;
+            }
+
+        if (add)
+            params.insert(key, value);
+    }
+
+    return params;
+}
+
 void group_gui::export_plugin()
 {
+    trim_panel *panel = static_cast<trim_panel *>(_trim_panel);
+
     knob_text *name_knob = static_cast<knob_text *>(get_knob("name"));
-    trim_panel *panel = static_cast<trim_panel *>(name_knob->get_panel());
 
     QString name = name_knob->get_value().simplified();
     QString icon_path = static_cast<knob_file *>(get_knob("icon"))->get_value();
@@ -132,6 +160,7 @@ void group_gui::export_plugin()
     plugin["label"] = name;
     plugin["icon"] = plugin_icon;
     plugin["knobs"] = *panel->custom_knobs;
+    plugin["params"] = get_params();
     plugin["nodes"] = get_child_nodes();
 
     jwrite(base_path + name + ".json", plugin);

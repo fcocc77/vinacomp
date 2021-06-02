@@ -80,6 +80,7 @@ gui:
         ☐ node_group: al exportar un plugin, verificar si el nombre ya existe en algun nodo, si no, enviar un mensaje @hi
         ☐ node_gui: el nombre del node gui no cambia cuando el nodo cambia de nombre
         ☐ node_group: al crear nodos input y output que afecten a las entradas y salida del grupo en el nodo @hi
+        ☐ node_group: probar exportar un plugin dentro de otro grupo @hi
 
     knobs:
         ☐ que los qlineedit con boton derecho despliegue el menu de animacion
@@ -88,7 +89,7 @@ gui:
         ☐ knob_color: falta un picker, gotero
         ✔ knob_color_slider: limitar decimal @done(2021-06-01 21:29)
         ☐ knob_color: el handler flecha no mantiene el color rgb
-        ☐ node_plugin_gui: crear los nodos hijos del plugin al grupo @hi
+        ✔ node_plugin_gui: crear los nodos hijos del plugin al grupo @hi @done(2021-06-02 15:17)
         ✔ al renombrar el nodo en un grupo, los link no cambian el nombre del grupo @hi @done(2021-06-02 10:02)
 
 engine:
