@@ -683,3 +683,11 @@ void file_dialog::set_image_sequence_option(bool enable)
     sequence_check->set_visible(enable);
     set_image_sequence(enable);
 }
+
+void file_dialog::keyPressEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Escape)
+        files.clear();
+
+    QDialog::keyPressEvent(event);
+}

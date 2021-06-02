@@ -5,7 +5,7 @@ general:
     ☐ file_dialog: iniciar con ruta por defecto
     ☐ panels_layout: la interface parpadea al cambiar de layout 'set_layout'
     ☐ file_dialog: al abrir un proyecto y luego cerrarlo, el nuevo proyecto no se puede guardar con otro nombre
-    ☐ file_dialog: al presionar escape mantiene igual el path, deberia cancelar
+    ✔ file_dialog: al presionar escape mantiene igual el path, deberia cancelar @done(2021-06-01 21:40)
 
 gui:
     settings_projects:
@@ -84,9 +84,9 @@ gui:
     knobs:
         ☐ que los qlineedit con boton derecho despliegue el menu de animacion
         ☐ en los knob linkeados ponerle otro color al label
-        ☐ knob_color: con la opcion de paleta activada, añadirle 2 opciones mas: hue correct en rgb, y hue correct con hsl
+        ✔ knob_color: con la opcion de paleta activada, añadirle 2 opciones mas: hue correct en rgb, y hue correct con hsl @done(2021-06-01 21:28)
         ☐ knob_color: falta un picker, gotero
-        ☐ knob_color_slider: limitar decimal
+        ✔ knob_color_slider: limitar decimal @done(2021-06-01 21:29)
         ☐ knob_color: el handler flecha no mantiene el color rgb
         ☐ node_plugin_gui: crear los nodos hijos del plugin al grupo @hi
         ☐ al renombrar el nodo en un grupo, los link no cambian el nombre del grupo @hi

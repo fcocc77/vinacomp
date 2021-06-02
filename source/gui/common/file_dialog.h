@@ -9,6 +9,7 @@
 #include <QLineEdit>
 #include <QTreeWidget>
 #include <QSplitter>
+#include <QKeyEvent>
 
 #include <tools.h>
 #include <combo_box.h>
@@ -82,6 +83,8 @@ private:
     void add_history(QString _path);
     QString size_format(int size);
     void set_path_edit(QString _path, bool last_slash);
+
+    void keyPressEvent(QKeyEvent *event) override;
 
 public:
     file_dialog(QWidget *parent);
