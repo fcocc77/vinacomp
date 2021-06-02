@@ -1,10 +1,11 @@
 #include <project_struct.h>
+#include <util.h>
 
 QString project_struct::replace_parent_name(QString node_name,
                                             QString parent_name,
                                             QString new_parent_name)
 {
-    if (!node_name.contains('.'))
+    if (!node_name.contains(parent_name))
         return node_name;
 
     return new_parent_name +
@@ -25,29 +26,30 @@ QJsonObject project_struct::replace_parent_name_to_params(
             if (key.contains("slaves_nodes"))
             {
                 QJsonArray slaves_nodes;
-                for (QJsonValue slaves_nodes_value : value.toArray())
+                for (QJsonValue slave_node_value : value.toArray())
                 {
-                    QJsonArray slave;
-                    for (QJsonValue slave_value : slaves_nodes_value.toArray())
-                    {
-                        slave.push_back(
-                            replace_parent_name(slave_value.toString(),
-                                                parent_name, new_parent_name));
-                    }
+                    QString slave_node_name = slave_node_value.toArray().at(0).toString();
+                    QString slave_param_name = slave_node_value.toArray().at(1).toString();
 
-                    slaves_nodes.push_back(slave);
+                    slave_node_name = replace_parent_name(
+                        slave_node_name, parent_name, new_parent_name);
+
+                    slaves_nodes.push_back(
+                        QJsonArray{slave_node_name, slave_param_name});
                 }
 
                 new_params.insert(key, slaves_nodes);
             }
             else
             {
-                QJsonArray linked;
-                for (QJsonValue linked_value : value.toArray())
-                    linked.push_back(replace_parent_name(
-                        linked_value.toString(), parent_name, new_parent_name));
+                QString handler_node_name = value.toArray().at(0).toString();
+                QString handler_parem_name = value.toArray().at(1).toString();
 
-                new_params.insert(key, linked);
+                handler_node_name = replace_parent_name(
+                    handler_node_name, parent_name, new_parent_name);
+
+                new_params.insert(
+                    key, QJsonArray{handler_node_name, handler_parem_name});
             }
         }
         else
@@ -87,15 +89,12 @@ QJsonObject project_struct::replace_parent_name_to_inputs(
 
 void project_struct::replace_parent_name_to_node(node_struct *node,
                                                  QString parent_name,
-                                                 QString new_parent_name,
-                                                 bool replace_to_name)
+                                                 QString new_parent_name)
 {
-    if (replace_to_name)
-        node->name =
-            replace_parent_name(node->name, parent_name, new_parent_name);
+    node->name = replace_parent_name(node->name, parent_name, new_parent_name);
 
     node->inputs = replace_parent_name_to_inputs(node->inputs, parent_name,
-                                                  new_parent_name);
+                                                 new_parent_name);
 
     node->handler_nodes = replace_parent_name_to_handlers(
         node->handler_nodes, parent_name, new_parent_name);
@@ -111,12 +110,16 @@ void project_struct::replace_parent_name_to_children(QString parent_name,
     {
         node_struct &_child = nodes[child.name];
 
-        replace_parent_name_to_node(&_child, parent_name, new_parent_name,
-                                    false);
+        _child.inputs = replace_parent_name_to_inputs(
+            _child.inputs, parent_name, new_parent_name);
+
+        _child.handler_nodes = replace_parent_name_to_handlers(
+            _child.handler_nodes, parent_name, new_parent_name);
 
         QString new_node_name =
             replace_parent_name(child.name, parent_name, new_parent_name);
 
+        // aqui se remplazan los links en los 'params'
         rename_node(child.name, new_node_name, false);
     }
 }

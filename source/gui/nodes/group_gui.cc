@@ -110,6 +110,10 @@ QJsonObject group_gui::get_params() const
             params.insert(key, value);
     }
 
+    QString tmp_group_name = "{{group_name}}";
+    params = project->replace_parent_name_to_params(params, get_name(),
+                                                    tmp_group_name);
+
     return params;
 }
 
