@@ -20,6 +20,13 @@ node_group::~node_group()
     {
         node_graph *_node_graph = static_cast<node_graph *>(group_node_graph);
 
+        // borra primero los nodos que no son grupo, para que no tengan
+        // problemas al desvincular los nodos, los grupos se borran despues en el
+        // 'delete _node_graph'
+        for (node *to_delete_node : get_nodes())
+            if (to_delete_node->get_type() != "group")
+                _node_graph->get_node_view()->delete_node(to_delete_node);
+
         _vinacomp->get_groups_node_graph()->remove(get_name());
         _vinacomp->get_panels_layout()->delete_node_graph_group(_node_graph);
 
