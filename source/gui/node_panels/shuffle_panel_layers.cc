@@ -1,4 +1,4 @@
-#include <shuffle_gui.h>
+#include <shuffle_panel.h>
 #include <combo_box.h>
 
 connector::connector(QString _layer, int _index, QColor _color)
@@ -44,7 +44,7 @@ void connector::set_connected(bool _connected)
     connected = _connected;
 }
 
-out_connector::out_connector(node_gui *_parent, QString _layer, int _index, QString label,
+out_connector::out_connector(node_panel *_parent, QString _layer, int _index, QString label,
                              QColor _color)
     : parent(_parent)
     , connector(_layer, _index, _color)
@@ -59,7 +59,7 @@ out_connector::out_connector(node_gui *_parent, QString _layer, int _index, QStr
     channel_label = new QLabel(label);
     channel_label->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-    shuffle_gui *__parent = static_cast<shuffle_gui *>(parent);
+    shuffle_panel *__parent = static_cast<shuffle_panel *>(parent);
 
     black_button = new QPushButton();
     connect(black_button, &QPushButton::clicked, this, [=]() {
@@ -244,7 +244,7 @@ QList<in_connector *> in_layer::get_connectors() const
     return {red_connector, green_connector, blue_connector, alpha_connector};
 }
 
-out_layer::out_layer(node_gui *parent, QString layer)
+out_layer::out_layer(node_panel *parent, QString layer)
 {
     this->setMaximumWidth(200);
     this->setMinimumWidth(200);

@@ -1,6 +1,6 @@
-#include <roto_gui.h>
+#include <roto_panel.h>
 
-roto_gui::roto_gui()
+roto_panel::roto_panel()
     : tree(new QTreeWidget)
 {
     tree->setAlternatingRowColors(true);
@@ -24,14 +24,14 @@ roto_gui::roto_gui()
     buttons_layout->addStretch();
 }
 
-roto_gui::~roto_gui()
+roto_panel::~roto_panel()
 {
     delete tree;
     delete add_button;
     delete remove_button;
 }
 
-void roto_gui::setup_knobs(QMap<QString, QVBoxLayout *> layouts)
+void roto_panel::setup_knobs(QMap<QString, QVBoxLayout *> layouts)
 {
     QVBoxLayout *controls_layout = layouts.value("Controls");
 
@@ -39,4 +39,4 @@ void roto_gui::setup_knobs(QMap<QString, QVBoxLayout *> layouts)
     controls_layout->addWidget(buttons);
 }
 
-void roto_gui::changed(knob *_knob) {}
+void roto_panel::changed(knob *_knob) {}

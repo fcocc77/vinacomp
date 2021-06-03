@@ -183,9 +183,9 @@ void setup_knobs(setup_knobs_props props)
             _knob->set_data();
             _knob->restore_param();
 
-            if (props._node_gui)
-                QObject::connect(_knob, &knob::to_node_gui, props._node_gui,
-                                 &node_gui::changed);
+            if (props._node_panel)
+                QObject::connect(_knob, &knob::to_node_panel, props._node_panel,
+                                 &node_panel::changed);
         }
 
         props.knobs->insert(name, _knob);

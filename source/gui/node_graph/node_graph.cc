@@ -81,9 +81,9 @@ void node_graph::save_nodes_attributes_to_project()
 
         if (panel)
         {
-            node_gui *_node_gui = panel->get_node_gui();
-            if (_node_gui)
-                __node.script = _node_gui->get_script();
+            node_panel *_node_panel = panel->get_node_panel();
+            if (_node_panel)
+                __node.script = _node_panel->get_script();
         }
     }
 }

@@ -6,7 +6,7 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
-#include <node_gui.h>
+#include <node_panel.h>
 #include <project_struct.h>
 
 struct setup_knobs_props
@@ -18,7 +18,7 @@ struct setup_knobs_props
     QGraphicsItem *this_node = nullptr;
     QWidget *knob_editor = nullptr;
     QJsonObject *params = nullptr;
-    node_gui *_node_gui = nullptr;
+    node_panel *_node_panel = nullptr;
     QMap<QString, knob *> *knobs;
     QJsonArray knobs_array;
     QVBoxLayout *layout;

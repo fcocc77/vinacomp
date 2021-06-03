@@ -168,7 +168,7 @@ void knob_slider::to_emmit_signal()
     changed(values.first, values.second); // Signal
     update_value(values.first);
     update_linked_knobs();
-    to_node_gui(this);
+    to_node_panel(this);
 }
 
 void knob_slider::update_linked_knobs()

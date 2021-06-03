@@ -1,12 +1,12 @@
-#ifndef ROTO_GUI_H
-#define ROTO_GUI_H
+#ifndef ROTO_PANEL_H
+#define ROTO_PANEL_H
 
 #include <QTreeWidget>
 
-#include <node_gui.h>
+#include <node_panel.h>
 #include <button.h>
 
-class roto_gui : public node_gui
+class roto_panel : public node_panel
 {
 private:
     QTreeWidget *tree;
@@ -17,10 +17,10 @@ private:
     void setup_knobs(QMap<QString, QVBoxLayout *> layouts) override;
 
 public:
-    roto_gui();
-    ~roto_gui();
+    roto_panel();
+    ~roto_panel();
 
     void changed(knob *_knob) override;
 };
 
-#endif // FRAME_RANGE_GUI_H
+#endif // ROTO_PANEL_H

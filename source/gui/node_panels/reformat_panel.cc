@@ -1,11 +1,11 @@
-#include <reformat_gui.h>
+#include <reformat_panel.h>
 #include <knob_choice.h>
 
-reformat_gui::reformat_gui() {}
+reformat_panel::reformat_panel() {}
 
-reformat_gui::~reformat_gui() {}
+reformat_panel::~reformat_panel() {}
 
-void reformat_gui::changed(knob *_knob)
+void reformat_panel::changed(knob *_knob)
 {
     QString param_name = _knob->get_name();
 

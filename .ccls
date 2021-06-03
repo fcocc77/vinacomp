@@ -21,7 +21,7 @@ clang++
 -I./source/gui/curve_editor
 -I./source/gui/knob
 -I./source/gui/layout
--I./source/gui/nodes
+-I./source/gui/node_panels
 -I./source/gui/open_gl_view
 -I./source/gui/properties
 -I./source/gui/release

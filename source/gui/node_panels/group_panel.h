@@ -1,11 +1,11 @@
-#ifndef GROUP_GUI_H
-#define GROUP_GUI_H
+#ifndef GROUP_PANEL_H
+#define GROUP_PANEL_H
 
-#include <node_gui.h>
-#include <node_plugin_gui.h>
+#include <node_panel.h>
+#include <plugin_panel.h>
 #include <nodes_load.h>
 
-class group_gui : public node_plugin_gui
+class group_panel : public plugin_panel
 {
 private:
     nodes_load *nodes_loaded;
@@ -18,10 +18,10 @@ private:
     QJsonObject get_params() const;
 
 public:
-    group_gui(nodes_load *nodes_loaded);
-    ~group_gui();
+    group_panel(nodes_load *nodes_loaded);
+    ~group_panel();
 
     void changed(knob *_knob) override;
 };
 
-#endif // GROUP_GUI_H
+#endif // GROUP_PANEL_H

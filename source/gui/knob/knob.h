@@ -125,7 +125,7 @@ public:
     int icon_size;
 
 signals:
-    void to_node_gui(knob *_knob);
+    void to_node_panel(knob *_knob);
 };
 
 inline void knob::rename_handler_node_name(QString handler_name,

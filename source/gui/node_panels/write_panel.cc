@@ -2,23 +2,23 @@
 #include <knob_intd.h>
 #include <knob_floating.h>
 #include <util.h>
-#include <write_gui.h>
+#include <write_panel.h>
 #include <write_node.h>
 #include <knob_choice.h>
 
-write_gui::write_gui(project_struct *_project)
+write_panel::write_panel(project_struct *_project)
 {
     _renderer = new renderer(_project);
     connect(_renderer, &renderer::finished_render, this,
-            &write_gui::finished_render);
+            &write_panel::finished_render);
 }
 
-write_gui::~write_gui()
+write_panel::~write_panel()
 {
     delete _renderer;
 }
 
-void write_gui::changed(knob *_knob)
+void write_panel::changed(knob *_knob)
 {
     QString param_name = _knob->get_name();
 
@@ -30,7 +30,7 @@ void write_gui::changed(knob *_knob)
         change_format(_knob);
 }
 
-void write_gui::change_format(knob *_file_type)
+void write_panel::change_format(knob *_file_type)
 {
     knob_choice *type_knob = static_cast<knob_choice *>(_file_type);
     QString type = type_knob->get_value().toString();
@@ -38,7 +38,7 @@ void write_gui::change_format(knob *_file_type)
     get_knob("jpeg_quality")->set_visible(type == "jpeg");
 }
 
-void write_gui::start_render()
+void write_panel::start_render()
 {
     render_data rdata;
     rdata.width = 1920;
@@ -50,7 +50,7 @@ void write_gui::start_render()
     _renderer->render(rdata);
 }
 
-void write_gui::finished_render(render_data _rdata)
+void write_panel::finished_render(render_data _rdata)
 {
     if (_rdata.frame > opt.last_frame)
         return;
@@ -63,7 +63,7 @@ void write_gui::finished_render(render_data _rdata)
     start_render();
 }
 
-int write_gui::get_progress() const
+int write_panel::get_progress() const
 {
     int count = opt.last_frame - opt.first_frame;
     int current_count = count - (opt.last_frame - opt.frame);
@@ -71,7 +71,7 @@ int write_gui::get_progress() const
     return (current_count * 100) / count;
 }
 
-void write_gui::render()
+void write_panel::render()
 {
     knob_file *file_knob = static_cast<knob_file *>(get_knob("filename"));
     knob_intd *frame_range_knob =
@@ -92,7 +92,7 @@ void write_gui::render()
     start_render();
 }
 
-void write_gui::reset_range()
+void write_panel::reset_range()
 {
     knob_intd *range_knob = static_cast<knob_intd *>(get_knob("frame_range"));
 

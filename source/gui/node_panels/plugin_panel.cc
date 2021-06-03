@@ -1,11 +1,11 @@
-#include <node_plugin_gui.h>
+#include <plugin_panel.h>
 #include <util.h>
 #include <knob_button.h>
 #include <vinacomp.h>
 #include <button.h>
 #include <maker.h>
 
-node_plugin_gui::node_plugin_gui(QString script_path)
+plugin_panel::plugin_panel(QString script_path)
     : open_script(false)
     , is_plugin(!script_path.isEmpty())
 {
@@ -15,9 +15,9 @@ node_plugin_gui::node_plugin_gui(QString script_path)
         script = "def main(node, param):\n    None";
 }
 
-node_plugin_gui::~node_plugin_gui() {}
+plugin_panel::~plugin_panel() {}
 
-void node_plugin_gui::setup_knobs(QMap<QString, QVBoxLayout *> layouts)
+void plugin_panel::setup_knobs(QMap<QString, QVBoxLayout *> layouts)
 {
     if (is_plugin)
     {
@@ -30,7 +30,7 @@ void node_plugin_gui::setup_knobs(QMap<QString, QVBoxLayout *> layouts)
         script = _script;
 }
 
-void node_plugin_gui::changed(knob *_knob)
+void plugin_panel::changed(knob *_knob)
 {
     QString name = _knob->get_name();
 
@@ -43,7 +43,7 @@ void node_plugin_gui::changed(knob *_knob)
         run_script(_knob->get_node_name(), name);
 }
 
-void node_plugin_gui::run_script(QString node_name, QString param_name)
+void plugin_panel::run_script(QString node_name, QString param_name)
 {
     script_editor *_script_editor =
         static_cast<vinacomp *>(_vinacomp)->get_script_editor();
@@ -65,7 +65,7 @@ void node_plugin_gui::run_script(QString node_name, QString param_name)
     }
 }
 
-void node_plugin_gui::convert_to_group()
+void plugin_panel::convert_to_group()
 {
     node_view *__node_view = static_cast<node_view *>(_node_view);
 

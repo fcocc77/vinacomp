@@ -1,12 +1,12 @@
 #include <trim_panel.h>
 #include <vinacomp.h>
-#include <shuffle_gui.h>
-#include <reformat_gui.h>
-#include <frame_range_gui.h>
-#include <group_gui.h>
-#include <write_gui.h>
-#include <roto_gui.h>
-#include <node_plugin_gui.h>
+#include <shuffle_panel.h>
+#include <reformat_panel.h>
+#include <frame_range_panel.h>
+#include <group_panel.h>
+#include <write_panel.h>
+#include <roto_panel.h>
+#include <plugin_panel.h>
 #include <knob_text.h>
 #include <knob_color.h>
 #include <knob_check_box.h>
@@ -34,7 +34,7 @@ trim_panel::trim_panel(properties *__properties, QString _name, QString _type,
 
     , is_maximize(true)
     , _properties(__properties)
-    , _node_gui(0)
+    , _node_panel(0)
     , name(_name)
     , type(_type)
     , icon_name(_icon_name)
@@ -96,8 +96,8 @@ trim_panel::trim_panel(properties *__properties, QString _name, QString _type,
 
     knobs_layouts["Node"] = add_tab("Node");
 
-    if (_node_gui)
-        _node_gui->setup_knobs(knobs_layouts);
+    if (_node_panel)
+        _node_panel->setup_knobs(knobs_layouts);
 
     update_custom_knobs();
 
@@ -128,8 +128,8 @@ trim_panel::~trim_panel()
 
     delete layout;
 
-    if (_node_gui)
-        delete _node_gui;
+    if (_node_panel)
+        delete _node_panel;
 
     if (float_dock)
         delete float_dock;
@@ -287,31 +287,31 @@ void trim_panel::setup_gui_panels()
     // por eso solo son algunos nodos y no todos
     QJsonObject knob_data;
 
-    _node_gui = nullptr;
+    _node_panel = nullptr;
 
     if (type == "frame_range")
-        _node_gui = new frame_range_gui();
+        _node_panel = new frame_range_panel();
     else if (type == "reformat")
-        _node_gui = new reformat_gui();
+        _node_panel = new reformat_panel();
     else if (type == "write")
-        _node_gui = new write_gui(project);
+        _node_panel = new write_panel(project);
     else if (type == "group")
-        _node_gui = new group_gui(nodes_loaded);
+        _node_panel = new group_panel(nodes_loaded);
     else if (type == "roto")
-        _node_gui = new roto_gui();
+        _node_panel = new roto_panel();
     else if (type == "shuffle")
     {
         // knob_data = _knobs[0].toObject();
-        _node_gui = new shuffle_gui();
+        _node_panel = new shuffle_panel();
     }
 
     QString script_path =
         nodes_loaded->get_effect(type).value("script").toString();
     if (!script_path.isEmpty())
-        _node_gui = new node_plugin_gui(script_path);
+        _node_panel = new plugin_panel(script_path);
 
-    if (_node_gui)
-        _node_gui->setup_env(this, _vinacomp, params, knob_data, name,
+    if (_node_panel)
+        _node_panel->setup_env(this, _vinacomp, params, knob_data, name,
                              _node_view, this_node);
 }
 
@@ -402,7 +402,7 @@ QVBoxLayout *trim_panel::add_tab(QString tab_name, int index)
     props.project = project;
     props.this_node = this_node;
     props.vinacomp = _vinacomp;
-    props._node_gui = _node_gui;
+    props._node_panel = _node_panel;
 
     // si el tab no existe lo crea
     tab *_tab = tabs->get_tab(tab_name);
@@ -599,8 +599,8 @@ void trim_panel::leave_properties(bool disable_edit_mode)
     this->hide();
     this->setParent(0);
 
-    if (_node_gui)
-        _node_gui->close();
+    if (_node_panel)
+        _node_panel->close();
 
     // a veces se queda pegado al presionar otros click cuando se esta
     // arrastrando el knob en el 'knob_editor', para evitar conflictos, finaliza

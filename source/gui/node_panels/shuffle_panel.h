@@ -1,11 +1,11 @@
-#ifndef SHUFFLE_GUI_H
-#define SHUFFLE_GUI_H
+#ifndef SHUFFLE_PANEL_H
+#define SHUFFLE_PANEL_H
 
 #include <QPainter>
 #include <QMouseEvent>
 #include <QWidget>
 
-#include <node_gui.h>
+#include <node_panel.h>
 
 class connector : public QWidget
 {
@@ -33,7 +33,7 @@ protected:
 class out_connector : public connector
 {
 private:
-    node_gui *parent;
+    node_panel *parent;
     connector *in_conn;
     QPushButton *black_button;
     QPushButton *white_button;
@@ -42,7 +42,7 @@ private:
     bool black, white;
 
 public:
-    out_connector(node_gui *parent, QString layer, int index, QString label, QColor color);
+    out_connector(node_panel *parent, QString layer, int index, QString label, QColor color);
     ~out_connector();
 
     void set_bw_button(bool _black, bool _white);
@@ -92,13 +92,13 @@ private:
     out_connector *alpha_connector;
 
 public:
-    out_layer(node_gui *parent, QString layer);
+    out_layer(node_panel *parent, QString layer);
     ~out_layer();
 
     QList<out_connector *> get_connectors() const;
 };
 
-class shuffle_gui : public node_gui
+class shuffle_panel : public node_panel
 {
     Q_OBJECT
 private:
@@ -126,8 +126,8 @@ private:
     void setup_knobs(QMap<QString, QVBoxLayout *> layouts) override;
 
 public:
-    shuffle_gui();
-    ~shuffle_gui();
+    shuffle_panel();
+    ~shuffle_panel();
 
     void emmit_signal();
 
@@ -139,4 +139,4 @@ protected:
     void mousePressEvent(QMouseEvent *event) override;
 };
 
-#endif // SHUFFLE_GUI_H
+#endif // SHUFFLE_PANEL_H

@@ -17,7 +17,7 @@
 #include <nodes_load.h>
 #include <properties.h>
 #include <tab_widget.h>
-#include <node_gui.h>
+#include <node_panel.h>
 #include <knob_curve_menu.h>
 
 // Engine
@@ -51,7 +51,7 @@ private:
     properties *_properties;
 
     QLineEdit *name_edit;
-    node_gui *_node_gui;
+    node_panel *_node_panel;
     QWidget *buttons;
 
     QString name;
@@ -116,7 +116,7 @@ public:
     void leave_properties(bool disable_edit_mode = true);
     void unlink_node_to_knobs(QString node_name);
     void unlink_all_knobs();
-    inline node_gui *get_node_gui() const;
+    inline node_panel *get_node_panel() const;
     inline QWidget *get_node_view() const;
 };
 
@@ -125,9 +125,9 @@ inline QWidget *trim_panel::get_node_view() const
     return _node_view;
 }
 
-inline node_gui *trim_panel::get_node_gui() const
+inline node_panel *trim_panel::get_node_panel() const
 {
-    return _node_gui;
+    return _node_panel;
 }
 
 inline knob_curve_menu *trim_panel::get_curve_menu() const

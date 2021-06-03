@@ -1,9 +1,9 @@
-#ifndef NODE_PLUGIN_GUI_H
-#define NODE_PLUGIN_GUI_H
+#ifndef PLUGIN_PANEL_H
+#define PLUGIN_PANEL_H
 
-#include <node_gui.h>
+#include <node_panel.h>
 
-class node_plugin_gui : public node_gui
+class plugin_panel : public node_panel
 {
 private:
     void convert_to_group();
@@ -18,27 +18,27 @@ protected:
     void setup_knobs(QMap<QString, QVBoxLayout *> layouts) override;
 
 public:
-    node_plugin_gui(QString script_path = "");
-    ~node_plugin_gui();
+    plugin_panel(QString script_path = "");
+    ~plugin_panel();
 
     inline QString get_script() const override;
     inline void save_script(QString script);
     inline void set_open_script(bool open);
 };
 
-inline QString node_plugin_gui::get_script() const
+inline QString plugin_panel::get_script() const
 {
     return script;
 }
 
-inline void node_plugin_gui::save_script(QString _script)
+inline void plugin_panel::save_script(QString _script)
 {
     script = _script;
 }
 
-inline void node_plugin_gui::set_open_script(bool open)
+inline void plugin_panel::set_open_script(bool open)
 {
     open_script = open;
 }
 
-#endif // NODE_PLUGIN_GUI_H
+#endif // PLUGIN_PANEL_H

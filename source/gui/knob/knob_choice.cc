@@ -16,7 +16,7 @@ knob_choice::knob_choice(knob_props props, QList<combo_box_item> items,
     choice->setToolTip(get_tips());
     connect(choice, &combo_box::changed, this, [=](QVariant value, int index) {
         changed(value, index);
-        to_node_gui(this);
+        to_node_panel(this);
         update_value(QJsonArray{index, value.toString()});
     });
 

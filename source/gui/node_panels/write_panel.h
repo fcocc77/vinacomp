@@ -1,15 +1,15 @@
-#ifndef WRITE_GUI_H
-#define WRITE_GUI_H
+#ifndef WRITE_PANEL_H
+#define WRITE_PANEL_H
 
 #include <knob_progress.h>
-#include <node_gui.h>
+#include <node_panel.h>
 #include <render_data.h>
 #include <renderer.h>
 
 // Engine
 #include <run_render.h>
 
-class write_gui : public node_gui
+class write_panel : public node_panel
 {
 private:
     void changed(knob *_knob) override;
@@ -27,8 +27,8 @@ private:
     void change_format(knob *_file_type);
 
 public:
-    write_gui(project_struct *project);
-    ~write_gui();
+    write_panel(project_struct *project);
+    ~write_panel();
 };
 
-#endif // WRITE_GUI_H
+#endif // WRITE_PANEL_H

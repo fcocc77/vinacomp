@@ -1,7 +1,7 @@
-#include <shuffle_gui.h>
+#include <shuffle_panel.h>
 #include <curve_utils.h>
 
-void shuffle_gui::draw_bezier(QPainter &painter, QPoint src, QPoint dst)
+void shuffle_panel::draw_bezier(QPainter &painter, QPoint src, QPoint dst)
 {
     float distance_x = dst.x() - src.x();
     float mid_distance_x = distance_x / 1.7;
@@ -22,7 +22,7 @@ void shuffle_gui::draw_bezier(QPainter &painter, QPoint src, QPoint dst)
     }
 }
 
-void shuffle_gui::paintEvent(QPaintEvent *event)
+void shuffle_panel::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
     painter.setRenderHints(QPainter::Antialiasing);

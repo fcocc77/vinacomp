@@ -1,5 +1,5 @@
-#ifndef NODE_GUI_H
-#define NODE_GUI_H
+#ifndef NODE_PANEL_H
+#define NODE_PANEL_H
 
 #include <QWidget>
 #include <QJsonObject>
@@ -10,7 +10,7 @@
 #include <renderer.h>
 #include <project_settings.h>
 
-class node_gui : public QWidget
+class node_panel : public QWidget
 {
 protected:
     QJsonObject knob_data;
@@ -31,8 +31,8 @@ protected:
     inline QJsonValue get_default() const;
 
 public:
-    node_gui();
-    ~node_gui();
+    node_panel();
+    ~node_panel();
 
     void setup_env(QWidget *_trim_panel, QWidget *_vinacomp,
                    QJsonObject *params, QJsonObject knob_data, QString name,
@@ -45,14 +45,14 @@ public:
     inline QString get_name() const;
 };
 
-inline QJsonValue node_gui::get_default() const
+inline QJsonValue node_panel::get_default() const
 {
     return knob_data.value("default");
 }
 
-inline QString node_gui::get_name() const
+inline QString node_panel::get_name() const
 {
     return name;
 }
 
-#endif // NODE_GUI_H
+#endif // NODE_PANEL_H

@@ -1,5 +1,5 @@
 #include <general_settings.h>
-#include <group_gui.h>
+#include <group_panel.h>
 #include <knob_choice.h>
 #include <knob_file.h>
 #include <knob_text.h>
@@ -11,14 +11,14 @@
 #include <vinacomp.h>
 #include <global.h>
 
-group_gui::group_gui(nodes_load *_nodes_loaded)
+group_panel::group_panel(nodes_load *_nodes_loaded)
     : nodes_loaded(_nodes_loaded)
 {
 }
 
-group_gui::~group_gui() {}
+group_panel::~group_panel() {}
 
-void group_gui::changed(knob *_knob)
+void group_panel::changed(knob *_knob)
 {
     QString name = _knob->get_name();
 
@@ -27,10 +27,10 @@ void group_gui::changed(knob *_knob)
     else if (name == "edit_script")
         edit_script();
 
-    node_plugin_gui::changed(_knob);
+    plugin_panel::changed(_knob);
 }
 
-void group_gui::close()
+void group_panel::close()
 {
     script_editor *_script_editor =
         static_cast<vinacomp *>(_vinacomp)->get_script_editor();
@@ -38,7 +38,7 @@ void group_gui::close()
     _script_editor->exit_group_edit();
 }
 
-void group_gui::edit_script()
+void group_panel::edit_script()
 {
     vinacomp *vina = static_cast<vinacomp *>(_vinacomp);
 
@@ -49,7 +49,7 @@ void group_gui::edit_script()
     _panels_layout->open_script_editor();
 }
 
-QJsonObject group_gui::get_child_nodes() const
+QJsonObject group_panel::get_child_nodes() const
 {
     QJsonObject child_nodes;
     QJsonObject nodes = project->get_project_json().value("nodes").toObject();
@@ -86,7 +86,7 @@ QJsonObject group_gui::get_child_nodes() const
     return child_nodes;
 }
 
-QJsonObject group_gui::get_params() const
+QJsonObject group_panel::get_params() const
 {
     trim_panel *panel = static_cast<trim_panel *>(_trim_panel);
     QJsonObject params;
@@ -117,7 +117,7 @@ QJsonObject group_gui::get_params() const
     return params;
 }
 
-void group_gui::export_plugin()
+void group_panel::export_plugin()
 {
     trim_panel *panel = static_cast<trim_panel *>(_trim_panel);
 

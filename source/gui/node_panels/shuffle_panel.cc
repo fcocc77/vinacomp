@@ -1,7 +1,7 @@
-#include <shuffle_gui.h>
+#include <shuffle_panel.h>
 #include <qt.h>
 
-shuffle_gui::shuffle_gui()
+shuffle_panel::shuffle_panel()
     : dragging_input(nullptr)
     , dragging(false)
 {
@@ -47,9 +47,9 @@ shuffle_gui::shuffle_gui()
     main_layout->addWidget(output_layer);
 }
 
-shuffle_gui::~shuffle_gui() {}
+shuffle_panel::~shuffle_panel() {}
 
-void shuffle_gui::setup_knobs(QMap<QString, QVBoxLayout *> layouts)
+void shuffle_panel::setup_knobs(QMap<QString, QVBoxLayout *> layouts)
 {
     QVBoxLayout *controls_layout = layouts.value("Controls");
 
@@ -57,13 +57,13 @@ void shuffle_gui::setup_knobs(QMap<QString, QVBoxLayout *> layouts)
     restore_param();
 }
 
-void shuffle_gui::restore_param()
+void shuffle_panel::restore_param()
 {
     QJsonValue value = get_param_value();
     restore_connections(value.toObject());
 }
 
-void shuffle_gui::restore_connections(QJsonObject data)
+void shuffle_panel::restore_connections(QJsonObject data)
 {
     QJsonArray in_a = data["a"].toArray();
     QJsonArray in_b = data["b"].toArray();
@@ -97,7 +97,7 @@ void shuffle_gui::restore_connections(QJsonObject data)
     last_data = get_data();
 }
 
-QJsonObject shuffle_gui::get_data() const
+QJsonObject shuffle_panel::get_data() const
 {
     auto out_a_conns = out_layer_a->get_connectors();
     auto out_b_conns = out_layer_b->get_connectors();
@@ -119,7 +119,7 @@ QJsonObject shuffle_gui::get_data() const
     return data;
 }
 
-void shuffle_gui::emmit_signal()
+void shuffle_panel::emmit_signal()
 {
     QJsonObject data = get_data();
     if (data == last_data)
@@ -128,7 +128,7 @@ void shuffle_gui::emmit_signal()
     update_value(data);
     last_data = data;
 }
-void shuffle_gui::to_connect(in_connector *in_conn, out_connector *out_conn)
+void shuffle_panel::to_connect(in_connector *in_conn, out_connector *out_conn)
 {
     if (in_conn && out_conn)
     {
@@ -177,7 +177,7 @@ void shuffle_gui::to_connect(in_connector *in_conn, out_connector *out_conn)
     emmit_signal();
 }
 
-in_connector *shuffle_gui::get_in_connector(QPoint position) const
+in_connector *shuffle_panel::get_in_connector(QPoint position) const
 {
     auto get_connector = [=](in_layer *layer) {
         in_connector *_conn = nullptr;
@@ -205,7 +205,7 @@ in_connector *shuffle_gui::get_in_connector(QPoint position) const
         return conn_b;
 }
 
-out_connector *shuffle_gui::get_out_connector(QPoint position) const
+out_connector *shuffle_panel::get_out_connector(QPoint position) const
 {
     auto get_connector = [=](out_layer *layer) {
         out_connector *_conn = nullptr;
@@ -232,7 +232,7 @@ out_connector *shuffle_gui::get_out_connector(QPoint position) const
         return conn_b;
 }
 
-void shuffle_gui::mousePressEvent(QMouseEvent *event)
+void shuffle_panel::mousePressEvent(QMouseEvent *event)
 {
     mouse_position = event->pos();
 
@@ -257,7 +257,7 @@ void shuffle_gui::mousePressEvent(QMouseEvent *event)
     update();
 }
 
-void shuffle_gui::mouseReleaseEvent(QMouseEvent *event)
+void shuffle_panel::mouseReleaseEvent(QMouseEvent *event)
 {
     out_connector *out_conn = get_out_connector(event->pos());
     to_connect(dragging_input, out_conn);
@@ -268,13 +268,13 @@ void shuffle_gui::mouseReleaseEvent(QMouseEvent *event)
     update();
 }
 
-void shuffle_gui::mouseMoveEvent(QMouseEvent *event)
+void shuffle_panel::mouseMoveEvent(QMouseEvent *event)
 {
     mouse_position = event->pos();
     update();
 }
 
-void shuffle_gui::mouseDoubleClickEvent(QMouseEvent *event)
+void shuffle_panel::mouseDoubleClickEvent(QMouseEvent *event)
 {
     in_connector *in_conn = get_in_connector(event->pos());
     out_connector *out_conn = get_out_connector(event->pos());

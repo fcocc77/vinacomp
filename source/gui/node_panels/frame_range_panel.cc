@@ -1,11 +1,11 @@
-#include <frame_range_gui.h>
+#include <frame_range_panel.h>
 #include <knob_intd.h>
 
-frame_range_gui::frame_range_gui() {}
+frame_range_panel::frame_range_panel() {}
 
-frame_range_gui::~frame_range_gui() {}
+frame_range_panel::~frame_range_panel() {}
 
-void frame_range_gui::changed(knob *_knob)
+void frame_range_panel::changed(knob *_knob)
 {
     QString param_name = _knob->get_name();
 
