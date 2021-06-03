@@ -18,7 +18,7 @@ node *node_view::create_node(node_struct node_data, bool basic_creation,
     if (node_data.params)
         params = *node_data.params;
 
-    project->insert_node(node_data, params, {}, !from_project);
+    project->insert_node(node_data, params, {}, from_project);
     //
 
     node_props props;

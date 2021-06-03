@@ -46,7 +46,7 @@ class project_struct
 {
 private:
     void create_base_children_for_group(node_struct node);
-    void create_children_plugin(node_struct node);
+    void create_children_plugin(node_struct node, bool from_project);
 
     node_struct get_node_from_object(QString name, QJsonObject node_obj) const;
 
@@ -59,8 +59,7 @@ public:
     int frame;
 
     void insert_node(node_struct node, QJsonObject _params = {},
-                     QJsonArray custom_knobs = {},
-                     bool base_children_for_group = false);
+                     QJsonArray custom_knobs = {}, bool from_project = false);
 
     void delete_node(QString name);
 

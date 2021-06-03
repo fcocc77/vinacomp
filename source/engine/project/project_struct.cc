@@ -10,8 +10,7 @@ project_struct::project_struct()
 project_struct::~project_struct() {}
 
 void project_struct::insert_node(node_struct node, QJsonObject _params,
-                                 QJsonArray custom_knobs,
-                                 bool base_children_for_group)
+                                 QJsonArray custom_knobs, bool from_project)
 {
     if (nodes.contains(node.name))
         return;
@@ -21,11 +20,11 @@ void project_struct::insert_node(node_struct node, QJsonObject _params,
 
     nodes.insert(node.name, node);
 
-    if (node.type == "group" && base_children_for_group)
+    if (node.type == "group" && !from_project)
         create_base_children_for_group(node);
 
     if (node.plugin)
-        create_children_plugin(node);
+        create_children_plugin(node, from_project);
 }
 
 void project_struct::create_base_children_for_group(node_struct node)
@@ -46,17 +45,18 @@ void project_struct::create_base_children_for_group(node_struct node)
     insert_node(output_props, {});
 }
 
-void project_struct::create_children_plugin(node_struct node)
+void project_struct::create_children_plugin(node_struct node, bool from_project)
 {
     QString plugin_path = PY_PLUGINS_PATH + '/' + node.type + ".json";
     QString plugin_text = fread(plugin_path);
 
     plugin_text.replace("{{group_name}}", node.name);
 
-    QJsonObject plugin_nodes = QJsonDocument::fromJson(plugin_text.toUtf8())
-                                   .object()
-                                   .value("nodes")
-                                   .toObject();
+    QJsonObject plugin = QJsonDocument::fromJson(plugin_text.toUtf8()).object();
+    QJsonObject plugin_nodes = plugin.value("nodes").toObject();
+
+    if (!from_project)
+        *node.params = plugin.value("params").toObject();
 
     for (QString node_name : plugin_nodes.keys())
     {
@@ -227,7 +227,8 @@ void project_struct::load_from_json(QJsonObject project)
         QJsonObject params = node_obj.value("params").toObject();
         QJsonArray custom_knobs = node_obj.value("knobs").toArray();
 
-        insert_node(get_node_from_object(name, node_obj), params, custom_knobs);
+        insert_node(get_node_from_object(name, node_obj), params, custom_knobs,
+                    true);
     }
     //
 
