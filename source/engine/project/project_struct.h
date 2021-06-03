@@ -79,7 +79,8 @@ public:
                                                      QString new_parent_name);
 
     void replace_parent_name_to_node(node_struct *node, QString parent_name,
-                                     QString new_parent_name);
+                                     QString new_parent_name,
+                                     bool replace_params = true);
 
     void replace_parent_name_to_children(QString parent_name,
                                          QString new_parent_name);
