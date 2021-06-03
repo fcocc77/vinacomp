@@ -78,7 +78,7 @@ gui:
         ☐ el snap a icono verticalmente no funciona si el nodo es ancho ancho
         ☐ el nodo tenga un ancho maximo y cuando cumpla ese tamaño maximo el nombre del nodo que quede con 3 puntos ...
         ☐ node_group: al exportar un plugin, verificar si el nombre ya existe en algun nodo, si no, enviar un mensaje @hi
-        ☐ node_gui: el nombre del node gui no cambia cuando el nodo cambia de nombre @hi
+        ✔ node_panel: el nombre del node panel no cambia cuando el nodo cambia de nombre @hi @done(2021-06-03 19:45)
         ☐ node_group: al crear nodos input y output que afecten a las entradas y salida del grupo en el nodo @hi
         ☐ node_group: probar exportar un plugin dentro de otro grupo @hi
         ✔ node_gui_plugin: al convertir a grupo, no copia los 'params' @hi @done(2021-06-02 21:37)

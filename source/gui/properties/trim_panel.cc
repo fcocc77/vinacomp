@@ -624,6 +624,16 @@ void trim_panel::unlink_all_knobs()
         _knob->remove_link();
 }
 
+void trim_panel::set_name(QString _name)
+{
+    name = _name;
+    name_edit->setToolTip(name);
+    set_label_by_name(name);
+
+    if (_node_panel)
+        _node_panel->set_name(name);
+}
+
 void trim_panel::mousePressEvent(QMouseEvent *event)
 {
     // a veces se queda pegado al presionar otros click cuando se esta

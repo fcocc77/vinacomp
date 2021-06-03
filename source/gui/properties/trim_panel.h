@@ -103,7 +103,7 @@ public:
     inline QString get_name() const;
     inline QString get_type() const;
     inline QColor get_color() const;
-    inline void set_name(QString _name);
+    void set_name(QString _name);
     inline knob *get_knob(QString name) const;
     inline bool maximized() const;
     inline QMap<QString, knob *> *get_knobs() const;
@@ -188,13 +188,6 @@ inline QString trim_panel::get_type() const
 inline QColor trim_panel::get_color() const
 {
     return color;
-}
-
-inline void trim_panel::set_name(QString _name)
-{
-    name = _name;
-    name_edit->setToolTip(name);
-    set_label_by_name(name);
 }
 
 inline void trim_panel::set_label_by_name(QString name)

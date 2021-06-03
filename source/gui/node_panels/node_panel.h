@@ -43,6 +43,7 @@ public:
     virtual void close();
     virtual QString get_script() const;
     inline QString get_name() const;
+    inline void set_name(QString name);
 };
 
 inline QJsonValue node_panel::get_default() const
@@ -53,6 +54,11 @@ inline QJsonValue node_panel::get_default() const
 inline QString node_panel::get_name() const
 {
     return name;
+}
+
+inline void node_panel::set_name(QString _name)
+{
+    name = _name;
 }
 
 #endif // NODE_PANEL_H
