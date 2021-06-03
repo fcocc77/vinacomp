@@ -88,7 +88,8 @@ void plugin_panel::convert_to_group()
 
     node_struct &__node = project->nodes[group->get_name()];
     *__node.custom_knobs = panel->base_knobs;
-    *__node.params = *panel->get_params();
+    *__node.params = project->replace_parent_name_to_params(
+        *panel->get_params(), name, group->get_name());
 
     // Copia los nodos hijos del plugin al grupo
     for (node_struct _node_ : project->get_children_nodes(name, true))
