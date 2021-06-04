@@ -10,7 +10,11 @@ class group_panel : public plugin_panel
 private:
     nodes_load *nodes_loaded;
 
-    void export_plugin();
+    bool check_name_and_group_name(QString *plugin_name = 0,
+                                   QString *group_name = 0) const;
+    void export_plugin_in_py_plugins();
+    void export_plugin(QString plugin_path);
+    void export_to_another_dir();
     void edit_script();
 
     void close() override;

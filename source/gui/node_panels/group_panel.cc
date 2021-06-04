@@ -1,4 +1,5 @@
 #include <general_settings.h>
+#include <global.h>
 #include <group_panel.h>
 #include <knob_choice.h>
 #include <knob_file.h>
@@ -9,7 +10,6 @@
 #include <trim_panel.h>
 #include <util.h>
 #include <vinacomp.h>
-#include <global.h>
 
 group_panel::group_panel(nodes_load *_nodes_loaded)
     : nodes_loaded(_nodes_loaded)
@@ -23,9 +23,11 @@ void group_panel::changed(knob *_knob)
     QString name = _knob->get_name();
 
     if (name == "export")
-        export_plugin();
+        export_plugin_in_py_plugins();
     else if (name == "edit_script")
         edit_script();
+    else if (name == "export_to_another")
+        export_to_another_dir();
 
     plugin_panel::changed(_knob);
 }
@@ -117,60 +119,102 @@ QJsonObject group_panel::get_params() const
     return params;
 }
 
-void group_panel::export_plugin()
+bool group_panel::check_name_and_group_name(QString *plugin_name_pointer,
+                                            QString *group_name_pointer) const
 {
-    trim_panel *panel = static_cast<trim_panel *>(_trim_panel);
-
-    knob_text *name_knob = static_cast<knob_text *>(get_knob("name"));
-
-    QString name = name_knob->get_value().simplified();
-    QString icon_path = static_cast<knob_file *>(get_knob("icon"))->get_value();
+    QString plugin_name =
+        static_cast<knob_text *>(get_knob("name"))->get_value().simplified();
 
     QString group_name =
         static_cast<knob_text *>(get_knob("group"))->get_value().simplified();
-    QString group_icon_path =
-        static_cast<knob_file *>(get_knob("group_icon"))->get_value();
 
-    QString base_path = PY_PLUGINS_PATH + "/";
-
-    if (name.isEmpty())
+    if (plugin_name.isEmpty())
     {
         QMessageBox::warning(_vinacomp, "Plugin Exporter",
                              "! Plugin Name is empty", QMessageBox::Ok);
-        return;
+        return false;
     }
     else if (group_name.isEmpty())
     {
         QMessageBox::warning(_vinacomp, "Plugin Exporter",
                              "! Group Name is empty", QMessageBox::Ok);
-        return;
+        return false;
     }
 
+    if (plugin_name_pointer)
+        *plugin_name_pointer = plugin_name;
+
+    if (group_name_pointer)
+        *group_name_pointer = group_name;
+
+    return true;
+}
+
+void group_panel::export_to_another_dir()
+{
+    if (!check_name_and_group_name())
+        return;
+
+    file_dialog *dialog = static_cast<vinacomp *>(_vinacomp)->get_file_dialog();
+
+    dialog->set_save_mode();
+    dialog->set_dir_mode();
+
+    if (!dialog->exec())
+        return;
+
+    QString dir = dialog->get_files().first();
+    export_plugin(dir);
+}
+
+void group_panel::export_plugin_in_py_plugins()
+{
+    export_plugin(PY_PLUGINS_PATH);
+}
+
+void group_panel::export_plugin(QString plugin_path)
+{
+    trim_panel *panel = static_cast<trim_panel *>(_trim_panel);
+
+    QString plugin_name, group_name;
+    if (!check_name_and_group_name(&plugin_name, &group_name))
+        return;
+
+    QString icon_path = static_cast<knob_file *>(get_knob("icon"))->get_value();
+
+    QString group_icon_path =
+        static_cast<knob_file *>(get_knob("group_icon"))->get_value();
+
+    QString base_path = plugin_path + "/";
+
     // copiado de icono
-    QString plugin_icon = base_path + name + ".png";
-    os::copy(icon_path, plugin_icon);
+    QString plugin_icon = base_path + plugin_name + ".png";
+
+    if (!icon_path.isEmpty())
+        os::copy(icon_path, plugin_icon);
 
     if (!os::isfile(plugin_icon))
         plugin_icon = "default_icon";
 
-    os::copy(group_icon_path, base_path + group_name + ".png");
+    if (!group_icon_path.isEmpty())
+        os::copy(group_icon_path, base_path + group_name + ".png");
 
     // copia los custom_knobs
     QJsonObject plugin;
     plugin["group"] = group_name;
-    plugin["id"] = name;
+    plugin["id"] = plugin_name;
     plugin["plugin"] = true;
-    plugin["script"] = base_path + name + ".py";
-    plugin["label"] = name;
+    plugin["script"] = base_path + plugin_name + ".py";
+    plugin["label"] = plugin_name;
     plugin["icon"] = plugin_icon;
     plugin["knobs"] = *panel->custom_knobs;
     plugin["params"] = get_params();
     plugin["nodes"] = get_child_nodes();
 
-    jwrite(base_path + name + ".json", plugin);
+    jwrite(base_path + plugin_name + ".json", plugin);
 
     // crea script para el nodo
-    fwrite(base_path + name + ".py", script);
+    fwrite(base_path + plugin_name + ".py", script);
 
     nodes_loaded->update_py_plugins();
 

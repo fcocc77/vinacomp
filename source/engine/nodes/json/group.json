@@ -86,6 +86,14 @@
             "tab": "Plugin Settings",
             "tooltip": "Export the plugin to the vinacomp \"plugins/py_plugins' folder",
             "type": "button"
+        },
+        {
+            "label": "Export to another directory",
+            "name": "export_to_another",
+            "over_line": true,
+            "tab": "Plugin Settings",
+            "tooltip": "Export the plugin to a specific directory",
+            "type": "button"
         }
     ]
 }
