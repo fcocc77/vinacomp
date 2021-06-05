@@ -8,6 +8,9 @@ general:
     ✔ file_dialog: al presionar escape mantiene igual el path, deberia cancelar @done(2021-06-01 21:40)
 
 gui:
+    videovina:
+        ☐ verificar si el proyecto tiene cambios antes de salir, crear dialogo preguntando si se guarda el proyecto antes de salir
+
     settings_projects:
         ☐ el proxy va a remplazar el rscale de videovina
         ☐ crear administrador de py_plugins para añadir, eliminar, cambiar iconos, y renombrar plugins
@@ -48,15 +51,19 @@ gui:
         ☐ timeline: Cambiarle el color a la seleccion
 
     properties:
-
-    trim_panel:
-        ☐ poner limite a lo mas chico que puede estar el trim_panel en lo ancho
         ✔ knob_editor: crear button que vincule el plugin de python con el 'script_editor' del panel @done(2021-06-01 21:50)
         ☐ knob_editor: crear un nuevo tab cuando el nodo no es un grupo
         ☐ knob_editor: en el botton de arrastre del knob, al arrastra y soltarlo en el mismo boton, la linea de divicion de queda pegada
         ☐ knob_editor: el knob de color al editar el default queda en 0 en la caja de edicion
         ☐ knob_editor: con la tecla tab que se valla cambiando el foco al siguiente QLineEdit y cuando de la vuelta que el foco quede en el primer line edit
         ☐ knob_editor: la linea de divicion queda pegada cuando el panel es flotante
+        ☐ knob_editor: crear nuevo knob para multidimension @hi
+        ☐ knob_editor: la division con & del choice no funcion @hi
+        ☐ knob_editor: agregar opcion de folder method al knob de file @hi
+
+    trim_panel:
+        ☐ poner limite a lo mas chico que puede estar el trim_panel en lo ancho
+        ☐ disminuir el espacio inicial cuando el 'init_space' cuando un label es muy largo
 
     node_graph:
         ☐ crear grilla que switchee con el boton de 'grid'

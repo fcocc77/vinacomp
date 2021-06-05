@@ -1,11 +1,11 @@
-#include <group_gui.h>
+#include <group_panel.h>
 #include <script_editor.h>
 #include <util.h>
 
-void script_editor::set_group_edit(QWidget *_group_gui)
+void script_editor::set_group_edit(QWidget *_group_panel)
 {
-    current_group = _group_gui;
-    group_gui *group = static_cast<group_gui *>(current_group);
+    current_group = _group_panel;
+    group_panel *group = static_cast<group_panel *>(current_group);
 
     group->set_open_script(true);
 
@@ -30,13 +30,13 @@ void script_editor::save_script()
     if (!current_group)
         return;
 
-    group_gui *group = static_cast<group_gui *>(current_group);
+    group_panel *group = static_cast<group_panel *>(current_group);
     group->save_script(editor->toPlainText());
 }
 
 void script_editor::exit_script()
 {
-    group_gui *group = static_cast<group_gui *>(current_group);
+    group_panel *group = static_cast<group_panel *>(current_group);
 
     if (editor->toPlainText() != group->get_script())
     {
@@ -57,7 +57,7 @@ void script_editor::save_and_exit()
 
 void script_editor::exit_group_edit()
 {
-    group_gui *group = static_cast<group_gui *>(current_group);
+    group_panel *group = static_cast<group_panel *>(current_group);
     if (group)
         group->set_open_script(false);
 
