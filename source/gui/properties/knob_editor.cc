@@ -5,6 +5,7 @@
 knob_editor::knob_editor(QWidget *__properties)
     : _properties(__properties)
     , insert_knob_or_tab(false)
+    , editing(false)
     , last_knob_under_cursor(nullptr)
     , dragging_knob(nullptr)
     , editing_knob(nullptr)
@@ -166,8 +167,8 @@ knob_editor::knob_editor(QWidget *__properties)
     choice_items_edit->setPlaceholderText("Item List");
     choice_items_edit->setToolTip(
         "Each element must be separated by a line break, each line must have 2 \n"
-        "values separated by the '&' sign, the first value is the name and the \n"
-        "second is the label, if you only put one value, the name and the \n"
+        "values separated by the '&' sign Ej: 'Titulo & value_name', the first value is the label and the \n"
+        "second is the name, if you only put one value, the name and the \n"
         "label will remain with that value");
 
     save_file_dialog_check = new knob_check_box({}, "Save File Dialog");

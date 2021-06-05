@@ -20,7 +20,8 @@ void knob_editor::push_knob_or_tab()
     add_knob(panel, get_params_from_edit_box(panel));
 }
 
-void knob_editor::add_knob(QWidget *panel, knob_params params, int index)
+void knob_editor::add_knob(QWidget *panel, knob_params params, int index,
+                           int over_line_index)
 {
     if (index == -2 || !panel)
         return;
@@ -150,12 +151,13 @@ void knob_editor::add_knob(QWidget *panel, knob_params params, int index)
     QJsonArray *knobs = _panel->custom_knobs;
 
     if (index == -1)
-        insert_knob_in_tab(knobs, knob_object, custom_tab);
+        insert_knob_in_tab(knobs, knob_object, custom_tab, over_line_index);
     else
     {
         if (knobs->count() < index)
             return;
-        insert_knob_in_tab(knobs, knob_object, custom_tab, index);
+        insert_knob_in_tab(knobs, knob_object, custom_tab, over_line_index,
+                           index);
     }
 
     _panel->update_custom_knobs();
@@ -183,6 +185,9 @@ void knob_editor::move_knob(QWidget *panel, int index)
     params.max = knob_data.value("max").toDouble();
     params.default_value = knob_data.value("default").toDouble();
     params.bidimensional = knob_data.value("bidimensional").toBool();
+    params.allowed_file_types = knob_data.value("allowed_file_types").toArray();
+    params.choice_items = knob_data.value("items").toArray();
+    params.save_file_dialog = knob_data.value("save_file_dialog").toBool();
 
     // cualquier knob que se mueva queda sin 'over_line'
     params.over_line = false;
@@ -209,7 +214,7 @@ void knob_editor::move_knob(QWidget *panel, int index)
 }
 
 void knob_editor::update_knob(knob *_knob, knob_params params, int index,
-                              bool keep_name)
+                              bool keep_name, int over_line_index)
 {
     trim_panel *_panel = static_cast<trim_panel *>(_knob->get_panel());
     QString name = _knob->get_name();
@@ -233,7 +238,7 @@ void knob_editor::update_knob(knob *_knob, knob_params params, int index,
     if (!param_exp.isUndefined())
         _panel->get_params()->insert(params.name + "_exp", param_exp);
 
-    add_knob(_panel, params, index);
+    add_knob(_panel, params, index, over_line_index);
 }
 
 QString knob_editor::disable_over_line_to_next_knob(QWidget *panel,
@@ -244,7 +249,7 @@ QString knob_editor::disable_over_line_to_next_knob(QWidget *panel,
     // el 'line_widget' se tiene que desabilitar el 'over_line'
     QString next_knob_name;
     auto brother_knobs = get_line_widget_knobs(panel, knob_name);
-    // bool is_line_widget = !brother_knobs.empty();
+
     if (brother_knobs.count() >= 2)
         next_knob_name = brother_knobs.value(1)->get_name();
 
@@ -265,7 +270,8 @@ QString knob_editor::disable_over_line_to_next_knob(QWidget *panel,
 }
 
 void knob_editor::insert_knob_in_tab(QJsonArray *knobs, QJsonObject knob_obj,
-                                     QString tab_name, int index)
+                                     QString tab_name, int over_line_index,
+                                     int index)
 {
     // inserta el knob en el index correcto, ya que todos los 'custom_knobs' van
     // a estar en una misma lista. Separando los knobs en 2 listas una del tab y
@@ -274,10 +280,12 @@ void knob_editor::insert_knob_in_tab(QJsonArray *knobs, QJsonObject knob_obj,
     QJsonArray knobs_other_tabs;
     auto knobs_from_tab = get_knobs_by_tab(*knobs, tab_name, &knobs_other_tabs);
 
+    bool last_over_line = over_line_index >= 0;
+
     // evita que el nuevo knob quede sobre otro knob que no es permitido que
     // este en una linea
     auto previous_knob_line = knobs_from_tab.value(index - 1);
-    if (!previous_knob_line.empty())
+    if (!last_over_line && !previous_knob_line.empty())
     {
         QStringList allowed_over_line = {"check_box", "choice",
                                          "floating_dimensions", "button"};
@@ -288,12 +296,31 @@ void knob_editor::insert_knob_in_tab(QJsonArray *knobs, QJsonObject knob_obj,
                 knob_obj["over_line"] = false;
     }
     //
-    //
 
     if (index == -1)
         knobs_from_tab.push_back({knob_obj});
     else
-        knobs_from_tab.insert(index, {knob_obj});
+    {
+        // inserta el objecto en la lista dependiendo si es unico knob o esta
+        // dentro de un over_line
+        if (editing && last_over_line)
+        {
+            if (over_line_index > 0)
+                knobs_from_tab[index].insert(over_line_index, knob_obj);
+            else
+            {
+                if (index >= knobs_from_tab.count())
+                {
+                    index--;
+                    over_line_index++;
+                }
+
+                knobs_from_tab[index].insert(over_line_index, knob_obj);
+            }
+        }
+        else
+            knobs_from_tab.insert(index, {knob_obj});
+    }
 
     // union de knobs
     *knobs = knobs_other_tabs;
@@ -494,9 +521,16 @@ void knob_editor::delete_knob(knob *_knob, bool cancel_editing_knob)
 
     trim_panel *panel = static_cast<trim_panel *>(_knob->get_panel());
 
+    if (editing)
+    {
+        panel->remove_custom_knob(_knob->get_name());
+        return;
+    }
+
     // traspasa el espacio inicial, al siguiente knob
     QString next_knob_name =
         disable_over_line_to_next_knob(_knob->get_panel(), _knob->get_name());
+
     if (!next_knob_name.isEmpty())
     {
         knob *next_knob = panel->get_knob(next_knob_name);
@@ -535,6 +569,8 @@ void knob_editor::edit_knob(knob *_knob)
 {
     if (editing_knob)
         editing_knob->set_editing_knob(false);
+
+    editing = true;
 
     editing_knob = _knob;
     _knob->set_editing_knob(true);
@@ -651,15 +687,17 @@ void knob_editor::finish_edit_knob()
     trim_panel *panel = static_cast<trim_panel *>(editing_knob->get_panel());
 
     QString tab_name = get_custom_tab_name(panel);
-    int index = get_index_knob(panel, editing_knob->get_name());
+    int over_line_index = -1;
+    int index = get_index_knob(panel, editing_knob->get_name(), &over_line_index);
 
     knob_params params = get_params_from_edit_box(panel);
     params.type = editing_knob->get_type();
 
     bool keep_name = editing_knob->get_name() == knob_name->text();
-    update_knob(editing_knob, params, index, keep_name);
+    update_knob(editing_knob, params, index, keep_name, over_line_index);
 
     editing_knob = nullptr;
+    editing = false;
 }
 
 void knob_editor::drag_knob(knob *_knob)

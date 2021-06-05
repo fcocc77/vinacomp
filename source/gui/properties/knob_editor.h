@@ -66,6 +66,7 @@ private:
     bool insert_knob_or_tab;
     action *add_action;
 
+    bool editing;
     knob *last_knob_under_cursor;
     knob *dragging_knob;
     knob *editing_knob;
@@ -82,14 +83,17 @@ private:
     knob_params get_params_from_edit_box(QWidget *panel) const;
     void edit_box_clear();
     void edit_box_close();
-    void add_knob(QWidget *panel, knob_params params, int index = -1);
+    void add_knob(QWidget *panel, knob_params params, int index = -1,
+                  int over_line_index = -1);
+
     void update_knob(knob *_knob, knob_params params, int index,
-                     bool keep_name = false);
+                     bool keep_name = false, int over_line_index = -1);
     void move_knob(QWidget *panel, int index = -1);
     void push_knob_or_tab();
 
     void insert_knob_in_tab(QJsonArray *knobs, QJsonObject knob_obj,
-                            QString tab_name, int index = -1);
+                            QString tab_name, int over_line_index = -1,
+                            int index = -1);
 
     QString get_icon_name_from_type(QString knob_type) const;
     QString disable_over_line_to_next_knob(QWidget *panel, QString knob_name);
@@ -104,7 +108,8 @@ private:
                                         QString knob_name) const;
 
     QVBoxLayout *get_layout_current_tab(QWidget *panel) const;
-    int get_index_knob(QWidget *panel, QString knob_name) const;
+    int get_index_knob(QWidget *panel, QString knob_name,
+                       int *over_line_check = 0) const;
     QWidget *get_panel_from_widget(QWidget *widget) const;
     QWidget *get_panel_under_cursor() const;
     QWidget *get_tab_widget_under_cursor() const;

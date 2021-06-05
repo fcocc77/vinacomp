@@ -310,7 +310,8 @@ QWidget *knob_editor::get_tab_widget_under_cursor() const
 
 }
 
-int knob_editor::get_index_knob(QWidget *panel, QString knob_name) const
+int knob_editor::get_index_knob(QWidget *panel, QString knob_name,
+                                int *over_line_index) const
 {
     if (!panel)
         return -2;
@@ -352,9 +353,25 @@ int knob_editor::get_index_knob(QWidget *panel, QString knob_name) const
     // encuentra el knob y retorna el index de la linea en la que esta el 'knob'
     for (int i = 0; i < lines_knobs.count(); i++)
     {
-        for (knob *_knob : lines_knobs.value(i))
+        auto line_knobs = lines_knobs.value(i);
+        bool has_over_line = line_knobs.count() >= 2;
+
+        for (int ii = 0; ii < line_knobs.count(); ii++)
+        {
+            knob *_knob = line_knobs.value(ii);
             if (_knob->get_name() == knob_name)
+            {
+                if (over_line_index)
+                {
+                    if (has_over_line)
+                        *over_line_index = ii;
+                    else
+                        *over_line_index = -1;
+                }
+
                 return i;
+            }
+        }
     }
 
     return -1;
