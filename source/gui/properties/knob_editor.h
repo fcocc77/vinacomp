@@ -126,6 +126,7 @@ private:
     void hide_all_dividing_line();
     void finish_edit_tab();
     void finish_edit_knob();
+    QString get_type_from_knob(knob *_knob) const;
 
     void mouseMoveEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;

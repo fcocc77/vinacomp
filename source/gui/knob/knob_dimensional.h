@@ -20,6 +20,7 @@ private:
     QList<float> values;
 
     bool floating;
+    int dimensions_count;
 
     void restore_default() override;
     void restore_param() override;
@@ -37,6 +38,12 @@ public:
     void set_value(float value, int dimension = 0);
     void set_values(QList<float> values, bool emmit_signal = true);
     void emmit_signal();
+    inline int get_dimensions_count() const;
 };
+
+inline int knob_dimensional::get_dimensions_count() const
+{
+    return dimensions_count;
+}
 
 #endif // KNOB_DIMENSIONAL_H

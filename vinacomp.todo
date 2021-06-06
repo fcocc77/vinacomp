@@ -57,10 +57,11 @@ gui:
         ☐ knob_editor: el knob de color al editar el default queda en 0 en la caja de edicion
         ☐ knob_editor: con la tecla tab que se valla cambiando el foco al siguiente QLineEdit y cuando de la vuelta que el foco quede en el primer line edit
         ☐ knob_editor: la linea de divicion queda pegada cuando el panel es flotante
-        ☐ knob_editor: crear nuevo knob para multidimension @hi
+        ✔ knob_editor: crear nuevo knob para multidimension @hi @done(2021-06-06 12:46)
         ✔ knob_editor: la division con & del choice no funcion @hi @done(2021-06-06 11:43)
         ✔ knob_editor: agregar opcion de folder method al knob de file @hi @done(2021-06-06 11:43)
         ☐ knob_editor: al mover el primer item de un 'over_line' deberia moverse toda la linea con el mismo
+        ☐ knob_editor: que 2d_position y 3d_position, funcione el 'over_line'
 
     trim_panel:
         ☐ poner limite a lo mas chico que puede estar el trim_panel en lo ancho

@@ -1,6 +1,7 @@
 #include <knob_editor.h>
 #include <qt.h>
 #include <trim_panel.h>
+#include <knob_floatd.h>
 
 knob_editor::knob_editor(QWidget *__properties)
     : _properties(__properties)
@@ -170,7 +171,8 @@ knob_editor::knob_editor(QWidget *__properties)
         add_knob_action("CheckBox Knob", "check_box");
         add_knob_action("Text Knob", "text");
         add_knob_action("File Knob", "file");
-        add_knob_action("Position Knob", "floating_dimensions");
+        add_knob_action("2D Position Knob", "2d_position");
+        add_knob_action("3D Position Knob", "3d_position");
 
         append_tools->add_separator();
 
@@ -237,25 +239,23 @@ void knob_editor::update_edit_options_from_type(bool visible, QString knob_type)
     dir_mode_check->hide();
     image_sequence_check->hide();
 
-    QStringList list_for_tips{"floating", "integer", "color",
-                              "button",   "choice",  "check_box",
-                              "text",     "file",    "floating_dimensions"};
+    QStringList list_for_tips{"floating",    "integer",    "color", "button",
+                              "choice",      "check_box",  "text",  "file",
+                              "2d_position", "3d_position"};
 
-    QStringList list_for_name{"floating", "integer", "color",
-                              "button",   "choice",  "check_box",
-                              "text",     "file",    "floating_dimensions",
-                              "label",    "group",   "tab",
-                              "separator"};
+    QStringList list_for_name{"floating",    "integer",     "color", "button",
+                              "choice",      "check_box",   "text",  "file",
+                              "2d_position", "3d_position", "label", "group",
+                              "tab",         "separator"};
 
-    QStringList list_for_label{"floating", "integer", "color",
-                               "button",   "choice",  "check_box",
-                               "text",     "file",    "floating_dimensions",
-                               "label",    "group"};
+    QStringList list_for_label{"floating",    "integer",     "color", "button",
+                               "choice",      "check_box",   "text",  "file",
+                               "2d_position", "3d_position", "label", "group"};
 
     QStringList list_for_min_max{"floating", "integer", "color"};
 
     QStringList list_for_over_line{"choice", "check_box", "button",
-                                   "floating_dimensions"};
+                                   "2d_position", "3d_position"};
 
     QStringList list_for_bidimensional{"floating", "integer"};
 
@@ -332,8 +332,11 @@ QString knob_editor::get_icon_name_from_type(QString knob_type) const
     else if (knob_type == "file")
         return "create_new_folder";
 
-    else if (knob_type == "floating_dimensions")
+    else if (knob_type == "2d_position")
         return "position";
+
+    else if (knob_type == "3d_position")
+        return "3d";
 
     else if (knob_type == "tab")
         return "tab";
@@ -346,6 +349,21 @@ QString knob_editor::get_icon_name_from_type(QString knob_type) const
 
     else if (knob_type == "separator")
         return "separator";
+}
+
+QString knob_editor::get_type_from_knob(knob *_knob) const
+{
+    knob_dimensional *knobd = dynamic_cast<knob_dimensional *>(_knob);
+
+    if (!knobd)
+        return _knob->get_type();
+
+    int dimensions = knobd->get_dimensions_count();
+
+    if (dimensions == 2)
+        return "2d_position";
+    else if (dimensions == 3)
+        return "3d_position";
 }
 
 void knob_editor::mouseMoveEvent(QMouseEvent *event)

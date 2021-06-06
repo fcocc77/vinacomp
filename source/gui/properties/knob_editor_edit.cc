@@ -117,7 +117,7 @@ void knob_editor::add_knob(QWidget *panel, knob_params params, int index,
                        {"default", ""},
                        {"tab", custom_tab}};
     }
-    else if (params.type == "floating_dimensions")
+    else if (params.type == "2d_position")
     {
         knob_object = {{"name", params.name},
                        {"type", "floating_dimensions"},
@@ -126,6 +126,17 @@ void knob_editor::add_knob(QWidget *panel, knob_params params, int index,
                        {"dimensions", 2},
                        {"over_line", params.over_line},
                        {"default", QJsonArray{0, 0}},
+                       {"tab", custom_tab}};
+    }
+    else if (params.type == "3d_position")
+    {
+        knob_object = {{"name", params.name},
+                       {"type", "floating_dimensions"},
+                       {"label", params.label},
+                       {"tooltip", params.tips},
+                       {"dimensions", 3},
+                       {"over_line", params.over_line},
+                       {"default", QJsonArray{0, 0, 0}},
                        {"tab", custom_tab}};
     }
     else if (params.type == "label")
@@ -180,7 +191,7 @@ void knob_editor::move_knob(QWidget *panel, int index)
     knob_params params;
     QString name = knob_data.value("name").toString();
 
-    params.type = knob_data.value("type").toString();
+    params.type = get_type_from_knob(dragging_knob);
     params.tips = knob_data.value("tooltip").toString();
     params.label = knob_data.value("label").toString();
     params.min = knob_data.value("min").toDouble();
@@ -292,7 +303,7 @@ void knob_editor::insert_knob_in_tab(QJsonArray *knobs, QJsonObject knob_obj,
     if (!last_over_line && !previous_knob_line.empty())
     {
         QStringList allowed_over_line = {"check_box", "choice",
-                                         "floating_dimensions", "button"};
+                                         "2d_position", "button"};
 
         QString prev_type = previous_knob_line.last().value("type").toString();
         for (QString allowed : allowed_over_line)
@@ -540,8 +551,8 @@ void knob_editor::delete_knob(knob *_knob, bool cancel_editing_knob)
         knob *next_knob = panel->get_knob(next_knob_name);
         next_knob->set_init_space(_knob->get_init_space_width());
 
-        QString type = next_knob->get_type();
-        if (type == "choice" || type == "floating_dimensions")
+        QString type = get_type_from_knob(next_knob);
+        if (type == "choice" || type == "2d_position")
             next_knob->set_init_label(true);
 
         next_knob->set_edit_mode(true);
@@ -623,12 +634,12 @@ void knob_editor::edit_knob(knob *_knob)
     image_sequence_check->set_check(image_sequence);
 
     edit_label->setText(_knob->get_name() + "' ...");
-    edit_icon->set_icon(get_icon_name_from_type(_knob->get_type()));
+    edit_icon->set_icon(get_icon_name_from_type(get_type_from_knob(_knob)));
 
     edit_tools->setVisible(true);
     append_tools->setVisible(false);
 
-    update_edit_options_from_type(true, _knob->get_type());
+    update_edit_options_from_type(true, get_type_from_knob(_knob));
 }
 
 void knob_editor::finish_edit(bool ok)
@@ -699,7 +710,7 @@ void knob_editor::finish_edit_knob()
     int index = get_index_knob(panel, editing_knob->get_name(), &over_line_index);
 
     knob_params params = get_params_from_edit_box(panel);
-    params.type = editing_knob->get_type();
+    params.type = get_type_from_knob(editing_knob);
 
     bool keep_name = editing_knob->get_name() == knob_name->text();
     update_knob(editing_knob, params, index, keep_name, over_line_index);
