@@ -20,7 +20,7 @@ private:
 
     QString default_value;
 
-    bool save_file_dialog;
+    bool save_file_dialog, dir_mode, allow_image_sequence;
     QJsonArray allowed_file_types;
 
     void open_file();

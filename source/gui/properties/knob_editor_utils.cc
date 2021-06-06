@@ -117,6 +117,8 @@ knob_params knob_editor::get_params_from_edit_box(QWidget *panel) const
     params.choice_items = choice_items;
 
     params.save_file_dialog = save_file_dialog_check->is_checked();
+    params.dir_mode = dir_mode_check->is_checked();
+    params.image_sequence = image_sequence_check->is_checked();
 
     return params;
 }

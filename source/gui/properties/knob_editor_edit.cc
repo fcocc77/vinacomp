@@ -110,6 +110,8 @@ void knob_editor::add_knob(QWidget *panel, knob_params params, int index,
                        {"type", "file"},
                        {"save_file_dialog", params.save_file_dialog},
                        {"allowed_file_types", params.allowed_file_types},
+                       {"dir_mode", params.dir_mode},
+                       {"image_sequence", params.image_sequence},
                        {"label", params.label},
                        {"tooltip", params.tips},
                        {"default", ""},
@@ -188,6 +190,8 @@ void knob_editor::move_knob(QWidget *panel, int index)
     params.allowed_file_types = knob_data.value("allowed_file_types").toArray();
     params.choice_items = knob_data.value("items").toArray();
     params.save_file_dialog = knob_data.value("save_file_dialog").toBool();
+    params.dir_mode = knob_data.value("dir_mode").toBool();
+    params.image_sequence = knob_data.value("image_sequence").toBool();
 
     // cualquier knob que se mueva queda sin 'over_line'
     params.over_line = false;
@@ -587,6 +591,8 @@ void knob_editor::edit_knob(knob *_knob)
     bool over_line = knob_data.value("over_line").toBool();
     bool bidimensional = knob_data.value("bidimensional").toBool();
     bool save_file_dialog = knob_data.value("save_file_dialog").toBool();
+    bool dir_mode = knob_data.value("dir_mode").toBool();
+    bool image_sequence = knob_data.value("image_sequence").toBool();
 
     QString _allowed_file_types;
     for (QJsonValue value : knob_data.value("allowed_file_types").toArray())
@@ -613,6 +619,8 @@ void knob_editor::edit_knob(knob *_knob)
     save_file_dialog_check->set_check(save_file_dialog);
     allowed_file_types->setText(_allowed_file_types);
     choice_items_edit->setText(choice_items);
+    dir_mode_check->set_check(dir_mode);
+    image_sequence_check->set_check(image_sequence);
 
     edit_label->setText(_knob->get_name() + "' ...");
     edit_icon->set_icon(get_icon_name_from_type(_knob->get_type()));

@@ -28,9 +28,11 @@ struct knob_params
     float default_value;
     bool over_line;
     bool bidimensional;
-    QJsonArray allowed_file_types;
     QJsonArray choice_items;
+    QJsonArray allowed_file_types;
     bool save_file_dialog;
+    bool dir_mode;
+    bool image_sequence;
 };
 
 class knob_editor : public QWidget
@@ -54,6 +56,8 @@ private:
     knob_check_box *over_line_check;
     knob_check_box *bidimensional_check;
     knob_check_box *save_file_dialog_check;
+    knob_check_box *dir_mode_check;
+    knob_check_box *image_sequence_check;
     QTextEdit *allowed_file_types;
     QTextEdit *choice_items_edit;
     QWidget *edit_tools;
