@@ -62,6 +62,9 @@ gui:
         ✔ knob_editor: agregar opcion de folder method al knob de file @hi @done(2021-06-06 11:43)
         ☐ knob_editor: al mover el primer item de un 'over_line' deberia moverse toda la linea con el mismo
         ☐ knob_editor: que 2d_position y 3d_position, funcione el 'over_line'
+        ☐ knob_editor: opcion a knob_color si es que incluye alpha
+        ☐ knob_editor: falta el default_value para el 'choice', 'check_box', 'text', 'file', 'position_2d', 'position_3d'
+        ☐ knob_editor: opcion a 'choice' y 'position' para mostrar o no el label inicial en over_line
 
     trim_panel:
         ☐ poner limite a lo mas chico que puede estar el trim_panel en lo ancho
@@ -105,6 +108,7 @@ gui:
         ✔ node_plugin_gui: crear los nodos hijos del plugin al grupo @hi @done(2021-06-02 15:17)
         ✔ al renombrar el nodo en un grupo, los link no cambian el nombre del grupo @hi @done(2021-06-02 10:02)
         ☐ slider: que el handler se note cuando se presione igual que en davinci
+        ☐ knob_group: corregir
 
 engine:
     nodes:
