@@ -23,13 +23,14 @@ void py_params::init_methods()
 {
     // el tamaño de la lista de metodos tiene que ser 1 mayor
     // a los metodos que existen
-    static struct PyMethodDef methods[6];
+    static struct PyMethodDef methods[7];
 
     init_py_module("__py_params__", methods,
                    {{"get_value", py_params::get_value},
                     {"get_index", py_params::get_index},
                     {"get_color", py_params::get_color},
                     {"set_value", py_params::set_value},
+                    {"set_index", py_params::set_index},
                     {"param_exists", param_exists}});
 }
 
@@ -136,6 +137,29 @@ PyObject *py_params::set_value(PyObject *self, PyObject *args)
         if (_knob)
         {
             _knob->set_value(value);
+            changed = true;
+        }
+    #endif
+
+    return py_bool(changed);
+}
+
+PyObject *py_params::set_index(PyObject *self, PyObject *args)
+{
+    const char *node_name, *param_name;
+    int index;
+
+    if (!PyArg_ParseTuple(args, "ssi", &node_name, &param_name, &index))
+        return 0;
+
+    bool changed = false;
+
+    #ifdef GUI
+        knob_choice *choice =
+            dynamic_cast<knob_choice *>(get_knob(node_name, param_name));
+        if (choice)
+        {
+            choice->set_index(index);
             changed = true;
         }
     #endif

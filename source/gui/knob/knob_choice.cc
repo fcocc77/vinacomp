@@ -52,12 +52,3 @@ void knob_choice::restore_param()
     choice->set_index(index, false);
 }
 
-int knob_choice::get_index() const
-{
-    return choice->get_index();
-}
-
-QVariant knob_choice::get_value() const
-{
-    return choice->get_value();
-}

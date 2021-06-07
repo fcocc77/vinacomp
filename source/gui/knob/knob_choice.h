@@ -23,11 +23,27 @@ public:
                 int default_index = 0);
     ~knob_choice();
 
-    int get_index() const;
-    QVariant get_value() const;
+    inline int get_index() const;
+    inline void set_index(int index);
+    inline QVariant get_value() const;
 
 signals:
     void changed(QVariant value, int index);
 };
+
+inline void knob_choice::set_index(int index)
+{
+    choice->set_index(index, false);
+}
+
+inline int knob_choice::get_index() const
+{
+    return choice->get_index();
+}
+
+inline QVariant knob_choice::get_value() const
+{
+    return choice->get_value();
+}
 
 #endif // KNOB_CHOICE_HPP

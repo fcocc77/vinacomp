@@ -16,6 +16,7 @@ struct py_params
     static PyObject *get_value(PyObject *self, PyObject *args);
     static PyObject *get_index(PyObject *self, PyObject *args);
     static PyObject *set_value(PyObject *self, PyObject *args);
+    static PyObject *set_index(PyObject *self, PyObject *args);
     static PyObject *get_color(PyObject *self, PyObject *args);
     static PyObject *param_exists(PyObject *self, PyObject *args);
 
