@@ -4,7 +4,8 @@ knob_separator::knob_separator(knob_props props)
     : knob(props)
 {
     this->setObjectName("knob_separator");
-    this->setMinimumHeight(25);
+    this->setFixedHeight(25);
+    this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->addWidget(init_space);

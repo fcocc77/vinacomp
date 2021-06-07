@@ -44,6 +44,8 @@ void properties::setup_ui()
 
     QScrollArea *scrollArea = new QScrollArea(this);
     scrollArea->setWidgetResizable(true);
+    scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+
     scrollArea->setWidget(trim_panels);
 
     layout->addWidget(scrollArea);

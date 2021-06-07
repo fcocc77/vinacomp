@@ -139,6 +139,7 @@ void setup_knobs(setup_knobs_props props)
                     line_widget = new QWidget(props.layout->widget());
                     line_widget->setSizePolicy(QSizePolicy::Expanding,
                                                QSizePolicy::Fixed);
+                    line_widget->setFixedHeight(25);
                     line_widget->setObjectName("line_widget");
 
                     line_layout = new QHBoxLayout(line_widget);

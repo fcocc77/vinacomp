@@ -4,6 +4,7 @@ knob_label::knob_label(knob_props props)
     : knob(props)
 {
     this->setObjectName("knob_label");
+    this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->addWidget(init_space);
@@ -11,14 +12,14 @@ knob_label::knob_label(knob_props props)
     layout->setContentsMargins(0, margin, 0, margin);
 
     label_widget = new QLabel(this);
-    label_widget->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+    label_widget->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
     QWidget *start_line = new QWidget(this);
     QWidget *end_line = new QWidget(this);
     start_line->setObjectName("start_line");
     end_line->setObjectName("end_line");
-    start_line->setMaximumHeight(1);
-    end_line->setMaximumHeight(1);
+    start_line->setFixedHeight(1);
+    end_line->setFixedHeight(1);
 
     layout->addWidget(start_line);
     layout->addWidget(label_widget);
