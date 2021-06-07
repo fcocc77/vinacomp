@@ -369,6 +369,7 @@ void knob_color::set_color(float _red, float _green, float _blue, float _alpha,
     {
         changed(red, green, blue, alpha); // Signal
         update_value(QJsonArray{red, green, blue, alpha});
+        to_node_panel(this);
     }
 
     if (_red < 0)
@@ -401,4 +402,13 @@ void knob_color::disable_alpha()
     alpha_slider->hide();
     alpha_hedit->hide();
     mono_color_button->setText("3");
+}
+
+void knob_color::get_color(float *r, float *g, float *b, float *a) const
+{
+    *r = red;
+    *g = green;
+    *b = blue;
+    if (a)
+        *a = alpha;
 }

@@ -95,6 +95,8 @@ public:
     void set_hsl(float hue, float sat, float level, bool emmit_signal = true,
                  bool update_sliders = true);
 
+    void get_color(float *r, float *g, float *b, float *a = 0) const;
+
     void disable_alpha();
 signals:
     void changed(float r, float g, float b, float a);

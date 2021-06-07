@@ -40,6 +40,7 @@ gui:
     script_editor:
         ☐ boton de arrastre para poder arrastrar el script como acceso directo a una barra de herramienta en la parte inferior del node graph
         ☐ cambiar el color del qtextedit a los colores de la interface
+        ☐ ponerle un limite de lineas en el output
 
     viewer:
         ☐ que todos los botones desaparescan cuando el viewer se esta achicando

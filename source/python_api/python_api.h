@@ -58,4 +58,21 @@ static PyObject *py_string(QString _string)
     return PyUnicode_FromString(_string.toStdString().c_str());
 }
 
+static PyObject *py_color(float r, float g, float b, float a = 0)
+{
+    PyObject *rgb_list = PyList_New(4);
+
+    PyObject *red = Py_BuildValue("f", r);
+    PyObject *green = Py_BuildValue("f", g);
+    PyObject *blue = Py_BuildValue("f", b);
+    PyObject *alpha = Py_BuildValue("f", a);
+
+    PyList_SetItem(rgb_list, 0, red);
+    PyList_SetItem(rgb_list, 1, green);
+    PyList_SetItem(rgb_list, 2, blue);
+    PyList_SetItem(rgb_list, 3, alpha);
+
+    return rgb_list;
+}
+
 #endif // PYTHON_API_H

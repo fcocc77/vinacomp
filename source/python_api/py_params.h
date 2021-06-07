@@ -14,7 +14,9 @@ struct py_params
 
     static void init_methods();
     static PyObject *get_value(PyObject *self, PyObject *args);
+    static PyObject *get_index(PyObject *self, PyObject *args);
     static PyObject *set_value(PyObject *self, PyObject *args);
+    static PyObject *get_color(PyObject *self, PyObject *args);
     static PyObject *param_exists(PyObject *self, PyObject *args);
 
     static QWidget *get_knob(QString node_name, QString parm_name);

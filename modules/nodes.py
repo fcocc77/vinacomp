@@ -1,4 +1,4 @@
-import __py_nodes__
+import __py_nodes__ #type: ignore
 import params
 
 class node:
