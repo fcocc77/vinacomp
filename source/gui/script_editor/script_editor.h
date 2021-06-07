@@ -28,6 +28,7 @@
 
 #include <action.h>
 #include <button.h>
+#include <general_settings.h>
 
 
 class script_editor : public QWidget
@@ -42,6 +43,7 @@ private:
     QTextEdit *output;
     QWidget *node_graph;
     QString script;
+    general_settings *settings;
 
     // expression
     bool expression_editor;
@@ -78,7 +80,8 @@ private:
 
 public:
     script_editor(QJsonObject *_project, QWidget *_node_graph,
-                  bool expression_editor = false);
+                  bool expression_editor = false,
+                  general_settings *settings = 0);
     ~script_editor();
 
     void run_script_from_editor(bool output_log = true);

@@ -17,6 +17,7 @@ gui:
 
     settings_general:
         ☐ plugins: crear otro QTreeWidget para directorios de plugins, para incluir otros directorios como los plugins de 'videovina' @hi
+        ☐ que los botones que estan en plugins transformarlos a 'tools' con acciones @hi
 
     gl_view:
         ☐ que el zoom con el scroll del mouse apunte donde esta el cursor y no en el centro como esta ahora

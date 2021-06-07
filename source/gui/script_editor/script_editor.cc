@@ -3,9 +3,11 @@
 #include <util.h>
 
 script_editor::script_editor(QJsonObject *_project, QWidget *_node_graph,
-                             bool _expression_editor)
+                             bool _expression_editor,
+                             general_settings *_settings)
     : project(_project)
     , node_graph(_node_graph)
+    , settings(_settings)
     , expression_editor(_expression_editor)
     , expression_editor_bar(nullptr)
     , exp_label(nullptr)

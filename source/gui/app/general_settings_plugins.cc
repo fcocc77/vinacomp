@@ -39,6 +39,7 @@ void general_settings::setup_plugins()
 
     button *remove_dir_button = new button();
     button *add_dir_button = new button();
+    button *reload_plugin_button = new button();
 
     button *remove_button = new button();
     button *edit_button = new button();
@@ -46,8 +47,12 @@ void general_settings::setup_plugins()
     connect(remove_button, &button::clicked, this,
             &general_settings::delete_plugin);
 
+    connect(reload_plugin_button, &button::clicked, this,
+            &general_settings::reload_plugin_directory);
+
     remove_dir_button->set_icon("delete");
     add_dir_button->set_icon("create_new_folder");
+    reload_plugin_button->set_icon("refresh");
 
     remove_button->set_icon("delete");
     edit_button->set_icon("edit");
@@ -59,6 +64,7 @@ void general_settings::setup_plugins()
 
     plugin_dirs_buttons_layout->addWidget(add_dir_button);
     plugin_dirs_buttons_layout->addWidget(remove_dir_button);
+    plugin_dirs_buttons_layout->addWidget(reload_plugin_button);
     plugin_dirs_buttons_layout->addStretch();
 
     layout->addWidget(plugin_dirs_tree); layout->addWidget(plugin_dirs_buttons);
@@ -140,4 +146,9 @@ void general_settings::delete_plugin()
 
     update_plugin_tree();
     nodes_loaded->update_py_plugins();
+}
+
+void general_settings::reload_plugin_directory()
+{
+    print("reload_plugin_directory");
 }

@@ -30,10 +30,11 @@ vinacomp::vinacomp()
 
     _properties = new properties(this);
     _node_graph = new node_graph(this, project, _properties);
-    _script_editor = new script_editor(project_old, _node_graph);
     _curve_editor = new curve_editor(this);
     _settings = new general_settings(this);
     _project_settings = new project_settings(this);
+    _script_editor =
+        new script_editor(project_old, _node_graph, false, _settings);
 
     _panels_layout =
         new panels_layout(this, _node_graph, empty_viewer, _script_editor,

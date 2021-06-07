@@ -37,6 +37,7 @@ public:
 
     // Plugins
     void update_plugin_tree();
+    void reload_plugin_directory();
 };
 
 #endif // GENERAL_SETTINGS_H

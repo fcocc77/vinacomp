@@ -44,6 +44,7 @@ QWidget *script_editor::tools_setup_ui()
 
     // Creacion
     action *clear_action = new action("Clear Output", "", "clear_script");
+    action *reload_plugins_dir_action = new action("Reload Plugins Directory", "", "reload_plugin");
     run_script_action = new action("Run Script", "", "run_script");
     save_action = new action("Save Script", "", "save");
     exit_action = new action("Exit Script", "", "exit");
@@ -84,6 +85,9 @@ QWidget *script_editor::tools_setup_ui()
 
     clear_action->connect_to(this, [=]() { output->clear(); });
     run_script_action->connect_to(this, [=]() { run_script_from_editor(); });
+    reload_plugins_dir_action->connect_to(this, [=]() {
+        settings->reload_plugin_directory();
+    });
 
     save_action->connect_to(this, [=]() { save_script(); });
     exit_action->connect_to(this, [=]() { exit_script(); });
@@ -106,6 +110,7 @@ QWidget *script_editor::tools_setup_ui()
 
     _tools->add_action(clear_action);
     _tools->add_action(run_script_action);
+    _tools->add_action(reload_plugins_dir_action);
 
     group_separator_1 = _tools->add_separator();
 
