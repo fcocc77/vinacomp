@@ -307,12 +307,10 @@ void file_dialog::update()
 
     if (save_mode && file_mode)
         open_save_button->setText("Save File");
-    else if (save_mode && !file_mode)
-        open_save_button->setText("Save Directory");
     else if (!save_mode && file_mode)
         open_save_button->setText("Open File");
-    else if (!save_mode && !file_mode)
-        open_save_button->setText("Open Folder");
+    else if (!file_mode)
+        open_save_button->setText("Set Folder");
 }
 
 void file_dialog::set_path_edit(QString _path, bool last_slash)
@@ -491,7 +489,7 @@ void file_dialog::open_or_save()
     if (save_mode && !os::isfile(current_path))
         current_path = path_edit->text();
 
-    if (os::isdir(current_path))
+    if (os::isdir(current_path) && file_mode)
     {
         enter_to_dir(current_dir + "/" + current_filename);
         return;

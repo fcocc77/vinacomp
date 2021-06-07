@@ -153,5 +153,5 @@ void general_settings::add_plugin_dir_dialog()
     if (!dialog->exec())
         return;
 
-    print("load");
+    print(dialog->get_files());
 }
