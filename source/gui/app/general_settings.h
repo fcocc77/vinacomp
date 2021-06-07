@@ -28,6 +28,7 @@ private:
     void setup_plugins();
     void load_plugins();
     void delete_plugin();
+    void add_plugin_dir_dialog();
 
     void showEvent(QShowEvent *event) override;
 

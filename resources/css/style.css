@@ -23,7 +23,7 @@ QPushButton {
     width: 0px; }
 
 QMainWindow {
-  qproperty-windowIcon: url("/home/pancho/Documents/develop/vinacomp/resources/images/vinacomp.png"); }
+  qproperty-windowIcon: url("{{path}}/resources/images/vinacomp.png"); }
 
 QMenu {
   background-color: #292d32;
@@ -1055,6 +1055,9 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left
     margin-bottom: 1px; }
 
 #settings #plugin_buttons {
+  background: none; }
+
+#settings #tools {
   background: none; }
 
 #tool_bar {

@@ -4,6 +4,7 @@
 #include <path_utils.h>
 #include <vinacomp.h>
 #include <global.h>
+#include <tools.h>
 
 void general_settings::setup_plugins()
 {
@@ -27,49 +28,40 @@ void general_settings::setup_plugins()
     plugin_tree->setColumnWidth(1, 100);
     plugin_tree->setColumnWidth(2, 100);
 
-    QWidget *plugin_buttons = new QWidget;
-    plugin_buttons->setObjectName("plugin_buttons");
-    QHBoxLayout *buttons_layout = new QHBoxLayout(plugin_buttons);
-    buttons_layout->setMargin(0);
+    tools *plugin_dirs_tools = new tools;
+    tools *plugin_tools = new tools;
 
-    QWidget *plugin_dirs_buttons = new QWidget;
-    plugin_dirs_buttons->setObjectName("plugin_buttons");
-    QHBoxLayout *plugin_dirs_buttons_layout = new QHBoxLayout(plugin_dirs_buttons);
-    plugin_dirs_buttons_layout->setMargin(0);
+    plugin_dirs_tools->get_layout()->setMargin(0);
+    plugin_tools->get_layout()->setMargin(0);
 
-    button *remove_dir_button = new button();
-    button *add_dir_button = new button();
-    button *reload_plugin_button = new button();
+    action *remove_dir_action = new action("Remove Dir", "", "delete");
+    action *add_dir_action =
+        new action("Add Plugin Dir", "", "create_new_folder");
+    action *reload_plugin_action =
+        new action("Reload Plugin Dirs", "", "refresh");
 
-    button *remove_button = new button();
-    button *edit_button = new button();
+    action *remove_action = new action("Remove Plugin", "", "delete");
+    action *edit_action = new action("Edit Plugin", "", "edit");
 
-    connect(remove_button, &button::clicked, this,
-            &general_settings::delete_plugin);
+    // Conecciones
+    remove_action->connect_to(this, [=]() { delete_plugin(); });
+    add_dir_action->connect_to(this, [=]() { add_plugin_dir_dialog(); });
 
-    connect(reload_plugin_button, &button::clicked, this,
-            &general_settings::reload_plugin_directory);
-
-    remove_dir_button->set_icon("delete");
-    add_dir_button->set_icon("create_new_folder");
-    reload_plugin_button->set_icon("refresh");
-
-    remove_button->set_icon("delete");
-    edit_button->set_icon("edit");
+    reload_plugin_action->connect_to(this,
+                                     [=]() { reload_plugin_directory(); });
 
     // Layout
-    buttons_layout->addWidget(edit_button);
-    buttons_layout->addWidget(remove_button);
-    buttons_layout->addStretch();
+    plugin_dirs_tools->add_action(add_dir_action);
+    plugin_dirs_tools->add_action(remove_dir_action);
+    plugin_dirs_tools->add_action(reload_plugin_action);
 
-    plugin_dirs_buttons_layout->addWidget(add_dir_button);
-    plugin_dirs_buttons_layout->addWidget(remove_dir_button);
-    plugin_dirs_buttons_layout->addWidget(reload_plugin_button);
-    plugin_dirs_buttons_layout->addStretch();
+    plugin_tools->add_action(remove_action);
+    plugin_tools->add_action(edit_action);
 
-    layout->addWidget(plugin_dirs_tree); layout->addWidget(plugin_dirs_buttons);
+    layout->addWidget(plugin_dirs_tree);
+    layout->addWidget(plugin_dirs_tools);
     layout->addWidget(plugin_tree);
-    layout->addWidget(plugin_buttons);
+    layout->addWidget(plugin_tools);
 
     load_plugins();
 }
@@ -151,4 +143,15 @@ void general_settings::delete_plugin()
 void general_settings::reload_plugin_directory()
 {
     print("reload_plugin_directory");
+}
+
+void general_settings::add_plugin_dir_dialog()
+{
+    file_dialog *dialog = static_cast<vinacomp *>(_vinacomp)->get_file_dialog();
+    dialog->set_dir_mode();
+
+    if (!dialog->exec())
+        return;
+
+    print("load");
 }
