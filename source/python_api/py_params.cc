@@ -1,9 +1,10 @@
-#include <py_params.h>
-#include <python_api.h>
-#include <knob_floating.h>
-#include <knob_integer.h>
+#include <knob_check_box.h>
 #include <knob_choice.h>
 #include <knob_color.h>
+#include <knob_floating.h>
+#include <knob_integer.h>
+#include <py_params.h>
+#include <python_api.h>
 
 #ifdef GUI
     #include "node.h"
@@ -63,6 +64,11 @@ PyObject *py_params::get_value(PyObject *self, PyObject *args)
             int value = static_cast<knob_integer *>(_knob)->get_value();
             return py_int(value);
         }
+        else if (type == "check_box")
+        {
+            bool value = static_cast<knob_check_box*>(_knob)->is_checked();
+            return py_bool(value);
+        }
         else if (type == "choice")
         {
             QString value = static_cast<knob_choice *>(_knob)->get_value().toString();
@@ -70,7 +76,7 @@ PyObject *py_params::get_value(PyObject *self, PyObject *args)
         }
     #endif
 
-    return py_float(0);
+    return py_int(-1);
 }
 
 PyObject *py_params::get_index(PyObject *self, PyObject *args)
@@ -80,7 +86,7 @@ PyObject *py_params::get_index(PyObject *self, PyObject *args)
     if (!PyArg_ParseTuple(args, "ss", &node_name, &param_name))
         return 0;
 
-    int index = 0;
+    int index = -1;
     #ifdef GUI
         knob_choice *choice =
             dynamic_cast<knob_choice *>(get_knob(node_name, param_name));
@@ -99,10 +105,10 @@ PyObject *py_params::get_color(PyObject *self, PyObject *args)
     if (!PyArg_ParseTuple(args, "ss", &node_name, &param_name))
         return 0;
 
-    float r = 0;
-    float g = 0;
-    float b = 0;
-    float a = 0;
+    float r = -1;
+    float g = -1;
+    float b = -1;
+    float a = -1;
 
     #ifdef GUI
         knob_color *color_knob =

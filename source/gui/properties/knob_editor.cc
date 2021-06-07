@@ -323,9 +323,6 @@ QString knob_editor::get_icon_name_from_type(QString knob_type) const
     else if (knob_type == "check_box")
         return "check_box";
 
-    else if (knob_type == "check_box")
-        return "check_box";
-
     else if (knob_type == "text")
         return "text";
 

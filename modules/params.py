@@ -11,7 +11,7 @@ class params:
     def get_value(self):
         return __py_params__.get_value(self.node_name, self.param_name);
 
-    def get_color(self):
+    def get_color(self) -> list:
         return __py_params__.get_color(self.node_name, self.param_name);
 
     def get_index(self) -> int:

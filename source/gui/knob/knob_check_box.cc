@@ -25,6 +25,7 @@ knob_check_box::knob_check_box(knob_props props, QString label,
         {
             changed(checked);
             update_value(checked);
+            to_node_panel(this);
         }
 
         // vulve al por defecto que es emitir señal
