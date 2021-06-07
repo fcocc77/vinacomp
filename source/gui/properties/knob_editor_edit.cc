@@ -99,9 +99,13 @@ void knob_editor::add_knob(QWidget *panel, knob_params params, int index,
     }
     else if (params.type == "text")
     {
-        knob_object = {{"name", params.name},   {"type", "text"},
-                       {"label", params.label}, {"tooltip", params.tips},
-                       {"default", ""},         {"tab", custom_tab}};
+        knob_object = {{"name", params.name},
+                       {"type", "text"},
+                       {"over_line", params.over_line},
+                       {"label", params.label},
+                       {"tooltip", params.tips},
+                       {"default", ""},
+                       {"tab", custom_tab}};
     }
     else if (params.type == "file")
     {
@@ -302,8 +306,8 @@ void knob_editor::insert_knob_in_tab(QJsonArray *knobs, QJsonObject knob_obj,
     auto previous_knob_line = knobs_from_tab.value(index - 1);
     if (!last_over_line && !previous_knob_line.empty())
     {
-        QStringList allowed_over_line = {"check_box", "choice",
-                                         "2d_position", "button"};
+        QStringList allowed_over_line = {"check_box", "choice", "2d_position",
+                                         "button", "text"};
 
         QString prev_type = previous_knob_line.last().value("type").toString();
         for (QString allowed : allowed_over_line)

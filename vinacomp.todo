@@ -65,7 +65,7 @@ gui:
         ☐ knob_editor: que 2d_position y 3d_position, funcione el 'over_line'
         ☐ knob_editor: opcion a knob_color si es que incluye alpha
         ☐ knob_editor: falta el default_value para el 'choice', 'check_box', 'text', 'file', 'position_2d', 'position_3d'
-        ☐ knob_editor: opcion a 'choice' y 'position' para mostrar o no el label inicial en over_line
+        ☐ knob_editor: opcion a 'choice' y 'position', 'text' para mostrar o no el label inicial en over_line
 
     trim_panel:
         ☐ poner limite a lo mas chico que puede estar el trim_panel en lo ancho
