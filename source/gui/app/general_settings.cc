@@ -79,4 +79,6 @@ void general_settings::restore_settings()
 
     for (knob *_knob : *knobs)
         _knob->restore_param();
+
+    update_plugin_dirs_tree();
 }

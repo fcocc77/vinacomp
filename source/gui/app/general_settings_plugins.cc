@@ -49,6 +49,7 @@ void general_settings::setup_plugins()
 
     reload_plugin_action->connect_to(this,
                                      [=]() { reload_plugin_directory(); });
+    remove_dir_action->connect_to(this, [=](){delete_plugin_dir();});
 
     // Layout
     plugin_dirs_tools->add_action(add_dir_action);
@@ -118,6 +119,50 @@ void general_settings::update_plugin_tree()
     load_plugins();
 }
 
+void general_settings::update_plugin_dirs_tree()
+{
+    for (auto *item : plugin_dirs_items)
+        delete item;
+
+    plugin_dirs_items.clear();
+    plugin_dirs_tree->clear();
+
+    QJsonObject plugin_dirs_list = data->value("plugin_dirs").toObject();
+
+    for (QJsonValue value: plugin_dirs_list)
+    {
+        QString dir = value.toString();
+        QString name = os::basename(dir);
+        int plugin_amount = 0;
+
+        QTreeWidgetItem *item = new QTreeWidgetItem;
+
+        item->setText(0, name);
+        item->setText(1, dir);
+        item->setText(2, QString::number(plugin_amount));
+
+        item->setIcon(0, QIcon("resources/images/reload_plugin_normal.png"));
+
+        plugin_dirs_tree->addTopLevelItem(item);
+        plugin_dirs_items.push_back(item);
+    }
+}
+
+void general_settings::delete_plugin_dir()
+{
+    if (plugin_dirs_tree->selectedItems().isEmpty())
+        return;
+
+    auto *item = plugin_dirs_tree->selectedItems().first();
+    QString plugin_dir_name = item->text(0);
+
+    QJsonObject plugin_dirs_list = data->value("plugin_dirs").toObject();
+    plugin_dirs_list.remove(plugin_dir_name);
+
+    data->insert("plugin_dirs", plugin_dirs_list);
+    update_plugin_dirs_tree();
+}
+
 void general_settings::delete_plugin()
 {
     if (plugin_tree->selectedItems().isEmpty())
@@ -153,5 +198,12 @@ void general_settings::add_plugin_dir_dialog()
     if (!dialog->exec())
         return;
 
-    print(dialog->get_files());
+    QString dir = dialog->get_files().first();
+    QString name = os::basename(dir);
+
+    QJsonObject plugin_dirs_list = data->value("plugin_dirs").toObject();
+    plugin_dirs_list.insert(name, dir);
+
+    data->insert("plugin_dirs", plugin_dirs_list);
+    update_plugin_dirs_tree();
 }

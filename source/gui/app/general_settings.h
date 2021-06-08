@@ -23,12 +23,14 @@ private:
     void restore_settings();
 
     // Plugins
-    QList<QTreeWidgetItem *> plugin_items;
+    QList<QTreeWidgetItem *> plugin_items, plugin_dirs_items;
     QTreeWidget *plugin_tree, *plugin_dirs_tree;
     void setup_plugins();
     void load_plugins();
     void delete_plugin();
     void add_plugin_dir_dialog();
+    void update_plugin_dirs_tree();
+    void delete_plugin_dir();
 
     void showEvent(QShowEvent *event) override;
 

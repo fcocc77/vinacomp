@@ -6,6 +6,8 @@ general:
     ☐ panels_layout: la interface parpadea al cambiar de layout 'set_layout'
     ☐ file_dialog: al abrir un proyecto y luego cerrarlo, el nuevo proyecto no se puede guardar con otro nombre
     ✔ file_dialog: al presionar escape mantiene igual el path, deberia cancelar @done(2021-06-01 21:40)
+    ☐ file_dialog: en dir_mode que solo funcione 'set_folder' en el boton y no en los item de carpetas, en los item debe abrirse solamente
+    ☐ file_dialog: que en 'dir_mode', la carpeta seleccionada quede en una variable aparte y no en 'files', crear funcion 'get_dir'
 
 gui:
     videovina:
@@ -18,6 +20,7 @@ gui:
     settings_general:
         ☐ plugins: crear otro QTreeWidget para directorios de plugins, para incluir otros directorios como los plugins de 'videovina' @hi
         ☐ que los botones que estan en plugins transformarlos a 'tools' con acciones @hi
+        ☐ que el split de settings se pueda escalar
 
     gl_view:
         ☐ que el zoom con el scroll del mouse apunte donde esta el cursor y no en el centro como esta ahora
