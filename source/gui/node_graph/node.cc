@@ -576,6 +576,11 @@ void node::set_visible_link(bool visible)
         links->set_visible(visible);
 }
 
+QWidget *node::get_node_graph() const
+{
+    return static_cast<node_view *>(_node_view)->get_node_graph();
+}
+
 void node::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
     make_panel(qt::control());

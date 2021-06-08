@@ -113,6 +113,7 @@ public:
     inline file_dialog *get_file_dialog() const;
     inline general_settings *get_general_settings() const;
     inline script_editor *get_script_editor() const;
+    node_graph *get_node_graph(QString node_graph_name) const;
 };
 
 inline script_editor *vinacomp::get_script_editor() const

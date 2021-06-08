@@ -4,10 +4,11 @@
 
 script_editor::script_editor(QJsonObject *_project, QWidget *_node_graph,
                              bool _expression_editor,
-                             general_settings *_settings)
+                             general_settings *_settings, QWidget *__vinacomp)
     : project(_project)
     , node_graph(_node_graph)
     , settings(_settings)
+    , _vinacomp(__vinacomp)
     , expression_editor(_expression_editor)
     , expression_editor_bar(nullptr)
     , exp_label(nullptr)

@@ -154,6 +154,7 @@ public:
     void set_visible_link(bool visible);
     inline QString get_group_name() const;
     inline QWidget *get_node_view() const;
+    QWidget *get_node_graph() const;
     inline output_wire *get_output_wire() const;
 };
 

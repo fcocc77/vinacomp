@@ -10,6 +10,7 @@
 #include <nodes.h>
 #endif
 
+#define GUI
 struct py_nodes
 {
 #ifdef GUI
@@ -25,6 +26,7 @@ struct py_nodes
     static PyObject *set_position(PyObject *self, PyObject *args);
     static PyObject *rename(PyObject *self, PyObject *args);
     static PyObject *node_exists(PyObject *self, PyObject *args);
+    static PyObject *get_node_graph_name(PyObject *self, PyObject *args);
 };
 
 #endif // PY_NODES_H

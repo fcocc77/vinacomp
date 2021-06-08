@@ -18,6 +18,7 @@ general_settings::general_settings(QWidget *_vinacomp)
     setup_appearance();
 
     set_content("Plugins");
+    restore_settings();
 }
 
 general_settings::~general_settings()

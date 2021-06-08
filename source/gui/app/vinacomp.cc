@@ -34,7 +34,7 @@ vinacomp::vinacomp()
     _settings = new general_settings(this);
     _project_settings = new project_settings(this);
     _script_editor =
-        new script_editor(project_old, _node_graph, false, _settings);
+        new script_editor(project_old, _node_graph, false, _settings, this);
 
     _panels_layout =
         new panels_layout(this, _node_graph, empty_viewer, _script_editor,
@@ -215,4 +215,13 @@ QMap<QString, node_graph *> vinacomp::get_all_node_graph() const
     all_node_garph.insert("main_node_graph", get_main_node_graph());
 
     return all_node_garph;
+}
+
+node_graph *vinacomp::get_node_graph(QString node_graph_name) const
+{
+    node_graph *__node_graph = get_all_node_graph().value(node_graph_name);
+    if (__node_graph)
+        return __node_graph;
+
+    return get_main_node_graph();
 }

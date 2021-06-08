@@ -1,5 +1,7 @@
 import __py_nodes__ #type: ignore
 import params
+import node_graph
+
 
 class node:
 
@@ -21,6 +23,11 @@ class node:
     def rename(self, name):
         __py_nodes__.rename(self.name, name)
         self.name = name
+
+    def get_node_graph(self):
+        node_graph_name: str = __py_nodes__.get_node_graph_name(self.name);
+        return node_graph.get_node_graph(node_graph_name)
+
 
 
 def create_node(node_name):
