@@ -10,7 +10,6 @@
 #include <nodes.h>
 #endif
 
-#define GUI
 struct py_nodes
 {
 #ifdef GUI

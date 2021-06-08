@@ -7,7 +7,6 @@
 #include <python.h>
 #include <util.h>
 
-#define GUI
 struct py_node_graph
 {
 #ifdef GUI

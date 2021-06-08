@@ -72,7 +72,7 @@ node *maker::create_fx(QString id, bool basic_creation)
     node_data.plugin = plugin;
 
     node *_node = _node_view->create_node(node_data, basic_creation);
-    if (id != "backdrop")
+    if (id != "backdrop" && !basic_creation)
         _node->make_panel();
 
     node_viewer *_node_viewer = dynamic_cast<node_viewer *>(_node);
