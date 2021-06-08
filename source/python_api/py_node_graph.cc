@@ -48,19 +48,22 @@ PyObject *py_node_graph::create_node(PyObject *self, PyObject *args)
     if (!PyArg_ParseTuple(args, "ssb", &node_graph_name, &node_id, &basic_creation))
         return 0;
 
-    bool created = false;
+    QString node_name;
 
     #ifdef GUI
         node_graph *_node_graph =
             static_cast<vinacomp *>(_vinacomp)->get_node_graph(node_graph_name);
         if (_node_graph)
         {
-            _node_graph->get_maker()->create_fx(node_id, basic_creation);
-            created = true;
+            node *_node =
+                _node_graph->get_maker()->create_fx(node_id, basic_creation);
+
+            if (_node)
+                node_name = _node->get_name();
         }
     #endif
 
-    return py_bool(created);
+    return py_string(node_name);
 }
 
 PyObject *py_node_graph::node_graph_exists(PyObject *self, PyObject *args)

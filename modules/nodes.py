@@ -1,6 +1,21 @@
 import __py_nodes__ #type: ignore
+import __py_node_graph__ #type: ignore
 import params
-import node_graph
+
+
+class node_graph:
+    def __init__(self, node_graph_name):
+        self.name = node_graph_name
+
+    def get_nodes(self) -> list:
+        return __py_node_graph__.get_nodes_list(self.name)
+
+    def create_node(self, node_id: str, basic_creation: bool = True):
+        node_name: str = __py_node_graph__.create_node(self.name, node_id, basic_creation)
+        return get_node(node_name)
+
+    def get_name(self) -> str:
+        return self.name
 
 
 class node:
@@ -26,9 +41,15 @@ class node:
 
     def get_node_graph(self):
         node_graph_name: str = __py_nodes__.get_node_graph_name(self.name);
-        return node_graph.get_node_graph(node_graph_name)
+        return get_node_graph(node_graph_name)
 
 
+def get_node_graph(node_graph_name: str):
+    if __py_node_graph__.node_graph_exists(node_graph_name):
+        return node_graph(node_graph_name)
+    else:
+        print('Error: The \'' + node_graph_name + '\' node_graph does not exist.')
+        return None
 
 def create_node(node_name):
     name = __py_nodes__.create_node(node_name)
