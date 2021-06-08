@@ -437,22 +437,25 @@ bool input_wire::safe_connection(QGraphicsItem *node_to_connect) const
     return true;
 }
 
-void input_wire::connect_node(QGraphicsItem *to_node, bool prevent_loop)
+bool input_wire::connect_node(QGraphicsItem *to_node, bool prevent_loop)
 {
+    if (index == 0 && !has_mask)
+        return false;
+
     if (!to_node)
-        return;
+        return false;
 
     node *_to_node = static_cast<node *>(to_node);
 
     if (_to_node->get_type() == "backdrop")
-        return;
+        return false;
 
     // verifica si los nodos de salida del nodo a conectar, no esta conectado a
     // este nodo, ya que en los nodos de salida solo puede tener 1 nodo
     // conectado, si existe este nodo retorna
     for (node *_output_node : *_to_node->get_output_nodes())
         if (_output_node == this_node)
-            return;
+            return false;
     //
 
     node *_this_node = static_cast<node *>(this_node);
@@ -460,7 +463,7 @@ void input_wire::connect_node(QGraphicsItem *to_node, bool prevent_loop)
     // evita que se provoque un bucle infinito
     if (prevent_loop)
         if (!safe_connection(_to_node))
-            return;
+            return false;
 
     disconnect_node();
 
@@ -479,6 +482,8 @@ void input_wire::connect_node(QGraphicsItem *to_node, bool prevent_loop)
     dragging = false;
     _to_node->refresh();
     _this_node->refresh();
+
+    return true;
 }
 
 void input_wire::disconnect_node()

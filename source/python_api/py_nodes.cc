@@ -27,7 +27,7 @@ void py_nodes::init_methods()
 {
     // el tamaño de la lista de metodos tiene que ser 1 mayor
     // a los metodos que existen
-    static struct PyMethodDef methods[7];
+    static struct PyMethodDef methods[8];
 
     init_py_module("__py_nodes__", methods,
                    {{"create_node", py_nodes::create_node},
@@ -35,6 +35,7 @@ void py_nodes::init_methods()
                     {"set_position", py_nodes::set_position},
                     {"rename", py_nodes::rename},
                     {"get_node_graph_name", py_nodes::get_node_graph_name},
+                    {"connect_input", py_nodes::connect_input},
                     {"node_exists", py_nodes::node_exists}});
 }
 
@@ -81,7 +82,7 @@ PyObject *py_nodes::set_position(PyObject *self, PyObject *args)
     #ifdef GUI
         node *_node = _node_graph->get_node_view()->get_node(name);
         if (_node)
-            _node->set_position(x, y);
+            _node->set_center_position(x, y);
     #endif
 
     return py_bool(true);
@@ -141,4 +142,37 @@ PyObject *py_nodes::get_node_graph_name(PyObject *self, PyObject *args)
     #endif
 
     return py_string(node_graph_name);
+}
+
+PyObject *py_nodes::connect_input(PyObject *self, PyObject *args)
+{
+    const char *src_node_name;
+    const char *dst_node_name;
+    int input_index;
+
+    if (!PyArg_ParseTuple(args, "ssi", &src_node_name, &dst_node_name, &input_index))
+        return 0;
+
+    bool connected = false;
+
+    #ifdef GUI
+        node *src_node =
+            _node_graph->get_node_view()->get_node(src_node_name, true);
+
+        if (src_node)
+        {
+            input_wire *input = src_node->get_input(input_index);
+            if (input)
+            {
+                node *dst_node =
+                    _node_graph->get_node_view()->get_node(dst_node_name, true);
+
+                if (dst_node)
+                    connected = input->connect_node(dst_node);
+                print(connected);
+            }
+        }
+    #endif
+
+    return py_bool(connected);
 }

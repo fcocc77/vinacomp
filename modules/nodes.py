@@ -43,6 +43,9 @@ class node:
         node_graph_name: str = __py_nodes__.get_node_graph_name(self.name);
         return get_node_graph(node_graph_name)
 
+    def connect_input(self, index: int, dst_node) -> bool:
+        return __py_nodes__.connect_input(self.name, dst_node.get_name(), index)
+
 
 def get_node_graph(node_graph_name: str):
     if __py_node_graph__.node_graph_exists(node_graph_name):

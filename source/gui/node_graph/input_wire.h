@@ -68,7 +68,7 @@ public:
 
     void refresh();
     void update_connection();
-    void connect_node(QGraphicsItem *_node, bool prevent_loop = true);
+    bool connect_node(QGraphicsItem *_node, bool prevent_loop = true);
     void disconnect_node();
     void set_selected(bool enable);
     void set_ghost_wire(bool visible, QPointF break_point = {});
