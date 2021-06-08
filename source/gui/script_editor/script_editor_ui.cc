@@ -86,7 +86,7 @@ QWidget *script_editor::tools_setup_ui()
     clear_action->connect_to(this, [=]() { output->clear(); });
     run_script_action->connect_to(this, [=]() { run_script_from_editor(); });
     reload_plugins_dir_action->connect_to(this, [=]() {
-        settings->reload_plugin_directory();
+        settings->reload_plugin_dirs();
     });
 
     save_action->connect_to(this, [=]() { save_script(); });

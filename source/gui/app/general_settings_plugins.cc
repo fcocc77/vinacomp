@@ -5,6 +5,7 @@
 #include <vinacomp.h>
 #include <global.h>
 #include <tools.h>
+#include <path_utils.h>
 
 void general_settings::setup_plugins()
 {
@@ -48,7 +49,7 @@ void general_settings::setup_plugins()
     add_dir_action->connect_to(this, [=]() { add_plugin_dir_dialog(); });
 
     reload_plugin_action->connect_to(this,
-                                     [=]() { reload_plugin_directory(); });
+                                     [=]() { reload_plugin_dirs(); });
     remove_dir_action->connect_to(this, [=](){delete_plugin_dir();});
 
     // Layout
@@ -185,9 +186,28 @@ void general_settings::delete_plugin()
     nodes_loaded->update_py_plugins();
 }
 
-void general_settings::reload_plugin_directory()
+void general_settings::reload_plugin_dirs()
 {
-    print("reload_plugin_directory");
+    QJsonObject plugin_dirs_list = data->value("plugin_dirs").toObject();
+    for (QJsonValue value : plugin_dirs_list)
+        reload_plugin_dir(value.toString());
+}
+
+void general_settings::reload_plugin_dir(QString plugin_dir)
+{
+    // lista de los '.py' que contengan la palabra 'VinaComp Plugin'
+    QStringList py_list;
+    for (QString file : os::listdir(plugin_dir, true))
+        if (path_util::get_ext(file) == "py")
+            if (read_first_line(file).contains("VinaComp Plugin"))
+                py_list.push_back(file);
+    //
+
+    script_editor *_script_editor =
+        static_cast<vinacomp *>(_vinacomp)->get_script_editor();
+
+    for (QString py_file : py_list)
+        _script_editor->load_module(py_file);
 }
 
 void general_settings::add_plugin_dir_dialog()

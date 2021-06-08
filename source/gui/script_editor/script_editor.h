@@ -75,6 +75,7 @@ private:
 
     // python
     void python_initialize();
+    void append_sys_path(QString path);
     std::string std_out_err;
     PyObject *python_module;
 
@@ -93,6 +94,7 @@ public:
     void set_knob(QWidget *knob);
     void set_group_edit(QWidget *_group_gui);
     void exit_group_edit();
+    void load_module(QString module_path);
 };
 
 #endif // SCRIPT_EDITOR_HPP

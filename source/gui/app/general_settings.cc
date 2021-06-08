@@ -17,7 +17,7 @@ general_settings::general_settings(QWidget *_vinacomp)
     setup_plugins();
     setup_appearance();
 
-    set_content("AutoSave");
+    set_content("Plugins");
 }
 
 general_settings::~general_settings()

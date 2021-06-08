@@ -31,6 +31,7 @@ private:
     void add_plugin_dir_dialog();
     void update_plugin_dirs_tree();
     void delete_plugin_dir();
+    void reload_plugin_dir(QString plugin_dir);
 
     void showEvent(QShowEvent *event) override;
 
@@ -40,7 +41,7 @@ public:
 
     // Plugins
     void update_plugin_tree();
-    void reload_plugin_directory();
+    void reload_plugin_dirs();
 };
 
 #endif // GENERAL_SETTINGS_H
