@@ -76,7 +76,7 @@ PyObject *py_nodes::set_position(PyObject *self, PyObject *args)
     int y;
     const char *name;
 
-    if (!PyArg_ParseTuple(args, "sll", &name, &x, &y))
+    if (!PyArg_ParseTuple(args, "sii", &name, &x, &y))
         return 0;
 
     #ifdef GUI
