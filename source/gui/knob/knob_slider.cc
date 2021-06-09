@@ -45,7 +45,7 @@ knob_slider::knob_slider(knob_props props, float min, float max,
     connect(_slider, &slider::moved, this, [=](float value) {
         values = {value, value};
 
-        value_1_edit->setText(QString::number(value));
+        value_1_edit->set_clamp_value(value);
         if (value_2_edit)
             value_2_edit->setText(QString::number(value));
 
@@ -198,9 +198,9 @@ void knob_slider::set_value_internal(float value, int dimension)
     if (dimensions)
     {
         if (dimension == 0)
-            value_1_edit->setText(QString::number(value));
+            value_1_edit->set_clamp_value(value);
         else
-            value_2_edit->setText(QString::number(value));
+            value_2_edit->set_clamp_value(value);
     }
     else
         set_value(value, dimension, true);
@@ -227,8 +227,8 @@ void knob_slider::separate_dimensions(bool separate)
     {
         float average = (values.first + values.second) / 2;
         values = {average, average};
-        value_1_edit->setText(QString::number(average));
-        value_2_edit->setText(QString::number(average));
+        value_1_edit->set_clamp_value(average);
+        value_2_edit->set_clamp_value(average);
         _slider->set_value(average);
     }
 }
@@ -243,13 +243,13 @@ void knob_slider::set_value(float value, int dimension, bool _emmit_signal)
     if (dimension == 0)
     {
         values.first = value;
-        value_1_edit->setText(QString::number(value));
+        value_1_edit->set_clamp_value(value);
         _slider->set_value(value);
     }
     else
     {
         values.second = value;
-        value_2_edit->setText(QString::number(value));
+        value_2_edit->set_clamp_value(value);
     }
 }
 

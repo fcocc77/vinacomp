@@ -18,8 +18,8 @@ gui:
         ☐ crear administrador de py_plugins para añadir, eliminar, cambiar iconos, y renombrar plugins
 
     settings_general:
-        ☐ plugins: crear otro QTreeWidget para directorios de plugins, para incluir otros directorios como los plugins de 'videovina' @hi
-        ☐ que los botones que estan en plugins transformarlos a 'tools' con acciones @hi
+        ✔ plugins: crear otro QTreeWidget para directorios de plugins, para incluir otros directorios como los plugins de 'videovina' @hi @done(2021-06-09 10:30)
+        ✔ que los botones que estan en plugins transformarlos a 'tools' con acciones @hi @done(2021-06-09 10:29)
         ☐ que el split de settings se pueda escalar
 
     gl_view:
@@ -101,7 +101,7 @@ gui:
         ✔ node_gui_plugin: al convertir a grupo, no copia los 'params' @hi @done(2021-06-02 21:37)
 
     node_panel:
-        ☐ panel_plugin: al convertir 2 veces a grupo, el segundo grupo convertido, cuando se elimina se cae @hi
+        ✔ panel_plugin: al convertir 2 veces a grupo, el segundo grupo convertido, cuando se elimina se cae @hi @done(2021-06-09 10:29)
 
     knobs:
         ☐ que los qlineedit con boton derecho despliegue el menu de animacion

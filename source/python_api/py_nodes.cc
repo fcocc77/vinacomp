@@ -169,7 +169,6 @@ PyObject *py_nodes::connect_input(PyObject *self, PyObject *args)
 
                 if (dst_node)
                     connected = input->connect_node(dst_node);
-                print(connected);
             }
         }
     #endif
