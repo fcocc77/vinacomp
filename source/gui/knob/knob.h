@@ -107,6 +107,8 @@ public:
     inline QString get_name() const;
     inline QString get_tips() const;
     inline QString get_label() const;
+    inline QString get_curve() const;
+    inline void set_curve(QString curve);
     inline bool is_animated() const;
     inline void set_visible(bool visible);
     inline QWidget *get_panel() const;
@@ -138,6 +140,11 @@ inline void knob::rename_handler_node_name(QString handler_name,
 inline QString knob::get_expression() const
 {
     return params->value(exp_name).toString();
+}
+
+inline QString knob::get_curve() const
+{
+    return params->value(curve_name).toString();
 }
 
 inline int knob::get_init_space_width() const
@@ -183,6 +190,11 @@ inline QString knob::get_label() const
 inline void knob::set_param_value(QJsonValue value)
 {
     (*params)[name] = value;
+}
+
+inline void knob::set_curve(QString curve)
+{
+    (*params)[curve_name] = curve;
 }
 
 inline bool knob::is_animated() const

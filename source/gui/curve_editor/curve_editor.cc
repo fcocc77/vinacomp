@@ -91,7 +91,7 @@ void curve_editor::update_param(curve *_curve)
     if (!_knob)
         return;
 
-    _knob->set_param_value(anim::curve_to_string(_curve));
+    _knob->set_curve(anim::curve_to_string(_curve));
 }
 
 knob *curve_editor::get_knob(QString node_name, QString param_name)
@@ -139,7 +139,7 @@ void curve_editor::update_curve(knob *_knob)
     QString node_name = _knob->get_node_name();
 
     QString curve_name = node_name + '.' + param_name;
-    QString curve = _knob->get_param_value().toString();
+    QString curve = _knob->get_curve();
 
     view->delete_curve(curve_name);
     view->create_curve(curve_name, Qt::cyan, anim::convert_curve(curve));

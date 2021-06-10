@@ -238,12 +238,12 @@ void knob::restore_param()
     if (!params)
         return;
 
-    bool _animated = false;
+     QString curve;
 
     if (params->contains(curve_name))
-        _animated = params->value(curve_name).toBool();
+        curve = params->value(curve_name).toString();
 
-    if (_animated)
+    if (!curve.isEmpty())
     {
         enable_animation();
         set_animated(true);
@@ -278,7 +278,7 @@ void knob::update_value(QJsonValue value)
         if (get_default() != value)
         {
             params->insert(name, value);
-            params->insert(curve_name, false);
+            params->insert(curve_name, "");
         }
         else
         {
@@ -288,8 +288,8 @@ void knob::update_value(QJsonValue value)
     }
     else
     {
-        params->insert(curve_name, true);
-        set_keyframe(false);
+        // params->insert(curve_name, true);
+        // set_keyframe(false);
         // params->insert(name,
         // anim::update_curve(params->value(name).toString(), _value,
         // project->frame));
@@ -315,8 +315,7 @@ void knob::disable_animation()
     // ! no unir estas 2'
     animated = false;
 
-    QString curve = get_param_value().toString();
-    float value = anim::get_value(curve, project->frame);
+    float value = anim::get_value(get_curve(), project->frame);
     update_value(value);
 
     static_cast<node_rect *>(this_node)->set_animated(false);
@@ -328,17 +327,17 @@ void knob::set_has_expression(bool expression) {}
 
 void knob::set_keyframe(bool auto_value)
 {
-    QString curve = get_param_value().toString();
+    float value = get_param_value().toDouble();
+    QString curve = get_curve();
     QString new_curve;
 
     if (curve.isEmpty() || !auto_value)
-        new_curve = anim::set_keyframe(curve, project->frame, false,
-                                       get_param_value().toDouble());
+        new_curve = anim::set_keyframe(curve, project->frame, false, value);
     else
         new_curve = anim::set_keyframe(curve, project->frame);
 
-    params->insert(name, new_curve);
-    params->insert(curve_name, true);
+    params->insert(name, -1);
+    params->insert(curve_name, new_curve);
 
     curve_editor *_curve_editor =
         static_cast<vinacomp *>(_vinacomp)->get_curve_editor();

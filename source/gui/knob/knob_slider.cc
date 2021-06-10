@@ -185,7 +185,7 @@ void knob_slider::update_animated()
 {
     int frame = project->frame;
 
-    QString curve = get_param_value().toString();
+    QString curve = get_curve();
     bool keyframe = false;
     float value = anim::get_value(curve, frame, &keyframe);
 
