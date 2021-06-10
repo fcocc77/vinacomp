@@ -1,4 +1,4 @@
-sudo yum -y install \
+sudo dnf -y install \
 	opencv-devel \
 	inkscape \
 	qt5-qtbase \

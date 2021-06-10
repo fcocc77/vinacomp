@@ -27,6 +27,9 @@ function run_gui() {
     qmake-qt5
     make -j 8
 
+    # Cambiar posicion despues de 2 segundos
+    sleep 3 && wmctrl -r "Untitled - VinaComp" -e 0,0,0,2560,800 &
+
     if [ -f $vinacomp ]; then
         if [ $1 == 'debug' ]; then
             log_file='/tmp/vinacomp.log'

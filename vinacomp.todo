@@ -24,6 +24,7 @@ gui:
 
     gl_view:
         ☐ que el zoom con el scroll del mouse apunte donde esta el cursor y no en el centro como esta ahora
+        ☐ achicar la linea de tiempo
 
     curve_view:
         ☐ limitar el tamaño del 'handler'
