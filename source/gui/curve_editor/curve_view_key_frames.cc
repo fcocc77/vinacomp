@@ -306,6 +306,8 @@ void curve_view::key_move(QPoint cursor_position)
 
 void curve_view::delete_selected_keyframes()
 {
+    // borrar directamente de la curva en QString y luego actualizar las curvar
+    // que cambiaron, !actualizar solo una vez
     for (key_frame *key: get_selected_keys())
     {
         print(key);
