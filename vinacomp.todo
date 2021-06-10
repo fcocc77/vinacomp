@@ -28,7 +28,7 @@ gui:
 
     curve_view:
         ☐ limitar el tamaño del 'handler'
-        ☐ que funcione el delete key
+        ☐ que funcione el delete key @1
         ☐ con el control-alt poder insertar keyframes
         ☐ con el control poder agrandar el handler
         ☐ poner nombre de curva al inicio de la curva

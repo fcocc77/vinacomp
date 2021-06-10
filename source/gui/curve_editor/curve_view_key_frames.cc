@@ -303,3 +303,11 @@ void curve_view::key_move(QPoint cursor_position)
 
     update();
 }
+
+void curve_view::delete_selected_keyframes()
+{
+    for (key_frame *key: get_selected_keys())
+    {
+        print(key);
+    }
+}

@@ -15,6 +15,7 @@ void curve_view::popup_setup_ui()
 
     // Edit : Delete Key Frames
     delete_keyframes_action = new action("Delete Keyframes", "Backspace", "close");
+    delete_keyframes_action->connect_to(this, [this]() { delete_selected_keyframes(); });
     popup->addAction(delete_keyframes_action);
     //
     //

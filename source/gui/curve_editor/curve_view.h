@@ -37,6 +37,7 @@ private:
     key_frame *get_previous_key(key_frame *key);
     key_frame *get_next_key(key_frame *key);
     void orient_linear_handler(key_frame *key);
+    void delete_selected_keyframes();
 
     QLineF get_handler_points(key_frame *key, bool infinite = false);
     //
