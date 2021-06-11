@@ -45,6 +45,9 @@ curve_editor ::curve_editor(QWidget *__vinacomp)
     connect(view, &curve_view::change_frame, this,
             [=](int frame) { update_viewers(frame); });
 
+    connect(view, &curve_view::delete_keyframes, this,
+            &curve_editor::delete_keyframes);
+
     view->setObjectName("graphics_view");
     // Curve View
 
@@ -92,6 +95,27 @@ void curve_editor::update_param(curve *_curve)
         return;
 
     _knob->set_curve(anim::curve_to_string(_curve));
+}
+
+void curve_editor::delete_keyframes(QMap<QString, QList<int>> curves)
+{
+    for (QString curve_name : curves.keys())
+    {
+        auto indexs_to_delete = curves[curve_name];
+
+        QStringList fullname = curve_name.split('.');
+        QString node_name = fullname[0];
+        QString param_name = fullname[1];
+
+        knob *_knob = get_knob(node_name, param_name);
+        if (!_knob)
+            continue;
+
+        QString curve = _knob->get_curve();
+
+        _knob->set_curve(anim::delete_keys_from_curve(curve, indexs_to_delete));
+        update_curve(_knob);
+    }
 }
 
 knob *curve_editor::get_knob(QString node_name, QString param_name)

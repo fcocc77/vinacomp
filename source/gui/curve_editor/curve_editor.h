@@ -25,6 +25,7 @@ private:
     knob *get_knob(QString node_name, QString param_name);
     void update_viewers(int frame);
     void delete_node_item(QString node_name);
+    void delete_keyframes(QMap<QString, QList<int>> curves);
 
 public:
     curve_editor(QWidget *_vinacomp);

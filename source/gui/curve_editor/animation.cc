@@ -203,3 +203,17 @@ QString anim::curve_to_string(curve *_curve)
 
     return str_curve;
 }
+
+QString anim::delete_keys_from_curve(QString curve, QList<int> indexs_to_delete)
+{
+    auto keys_data = convert_curve(curve);
+    QList<key_data> new_keys_data;
+
+    for (int i = 0; i < keys_data.count(); i++)
+    {
+        if (!indexs_to_delete.contains(i))
+            new_keys_data.push_back(keys_data.value(i));
+    }
+
+    return curve_data_to_string(new_keys_data);
+}
