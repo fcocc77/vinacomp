@@ -26,7 +26,6 @@ private:
 
     void update_tree();
     void create_node();
-    void select_first_item();
     QTreeWidgetItem *get_item(QString key) const;
 
     void keyPressEvent(QKeyEvent *event) override;

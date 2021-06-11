@@ -7,10 +7,10 @@ node_finder::node_finder(QWidget *__node_view, nodes_load *_nodes)
     : QWidget(__node_view)
     , nodes(_nodes)
     , _node_view(__node_view)
-    , size(QSize(200, 200))
+    , size(QSize(300, 150))
 {
     this->setObjectName("node_finder");
-    this->setMinimumSize(size);
+    this->setFixedSize(size);
 
     search_field = new QLineEdit(this);
     connect(search_field, &QLineEdit::textChanged, this, [=]() {
@@ -27,6 +27,8 @@ node_finder::node_finder(QWidget *__node_view, nodes_load *_nodes)
         [=](QTreeWidgetItem *item) { search_field->setText(item->text(0)); });
 
     layout = new QVBoxLayout();
+    layout->setSpacing(0);
+    layout->setAlignment(Qt::AlignCenter | Qt::AlignTop);
     this->setLayout(layout);
 
     layout->addWidget(search_field);
@@ -69,20 +71,6 @@ node_finder::~node_finder()
     delete search_field;
 }
 
-void node_finder::select_first_item()
-{
-    // selecciona el primer item visible
-    for (int i = 0; i < tree->topLevelItemCount(); i++)
-    {
-        QTreeWidgetItem *item = tree->topLevelItem(i);
-        if (!item->isHidden())
-        {
-            item->setSelected(true);
-            return;
-        }
-    }
-}
-
 QTreeWidgetItem *node_finder::get_item(QString key) const
 {
     key = key.toUpper();
@@ -103,20 +91,32 @@ void node_finder::update_tree()
 
     tree->clearSelection();
 
+    int items_visible = 0;
+
     for (int i = 0; i < tree->topLevelItemCount(); i++)
     {
         QTreeWidgetItem *item = tree->topLevelItem(i);
 
-        if (item->text(0).toUpper().contains(text))
-            item->setHidden(false);
-        else
-            item->setHidden(true);
+        bool hidden = false;
+        if (!item->text(0).toUpper().contains(text))
+            hidden = true;
 
         if (text.isEmpty())
-            item->setHidden(false);
-    }
+            hidden = false;
 
-    select_first_item();
+        item->setHidden(hidden);
+
+        if (!hidden)
+            items_visible ++;
+    }
+    
+    int item_height = 21;
+    int items_height = items_visible * item_height;
+
+    if (items_height < size.height())
+        tree->setFixedHeight(items_height);
+    else
+        tree->setFixedHeight(QWIDGETSIZE_MAX);
 }
 
 void node_finder::show_finder()
@@ -137,18 +137,32 @@ void node_finder::show_finder()
     this->set_focus();
     QPoint position = _node_view->mapFromGlobal(QCursor::pos());
 
-    bool reverse = position.y() + 100 > _node_view->height();
-    int mid_width = 130;
+    int mid_width = size.width() / 2;
 
+    int pos_x = position.x() - mid_width;
+    int pos_y = position.y();
+
+    if (pos_y < 0)
+        pos_y = 0;
+
+    if (position.x() < mid_width)
+        pos_x = 0;
+
+    if ((position.x() + mid_width) > _node_view->width())
+        pos_x = _node_view->width() - size.width();
+
+    bool reverse = (position.y() + size.height()) > _node_view->height();
     if (reverse)
     {
         layout->setDirection(QBoxLayout::BottomToTop);
-        this->move(position.x() - mid_width, position.y() - 240);
+        layout->setAlignment(Qt::AlignCenter | Qt::AlignBottom);
+        this->move(pos_x, pos_y - size.height());
     }
     else
     {
         layout->setDirection(QBoxLayout::TopToBottom);
-        this->move(position.x() - mid_width, position.y());
+        layout->setAlignment(Qt::AlignCenter | Qt::AlignTop);
+        this->move(pos_x, pos_y);
     }
     this->show();
 }

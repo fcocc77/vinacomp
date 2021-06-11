@@ -58,7 +58,7 @@ gui:
 
     properties:
         ✔ knob_editor: crear button que vincule el plugin de python con el 'script_editor' del panel @done(2021-06-01 21:50)
-        ☐ knob_editor: crear un nuevo tab cuando el nodo no es un grupo
+        ✔ knob_editor: crear un nuevo tab cuando el nodo no es un grupo @done(2021-06-10 19:09)
         ☐ knob_editor: en el botton de arrastre del knob, al arrastra y soltarlo en el mismo boton, la linea de divicion de queda pegada
         ☐ knob_editor: el knob de color al editar el default queda en 0 en la caja de edicion
         ☐ knob_editor: con la tecla tab que se valla cambiando el foco al siguiente QLineEdit y cuando de la vuelta que el foco quede en el primer line edit
@@ -84,7 +84,7 @@ gui:
         ☐ al usar 'fit_view_to_nodes' y el nodo esta presionado, el nodo se mueve con el puntero del mouse
         ☐ calcular el backdrop con la profundidad mas cercana, al restaurar el proyecto y ponerla en 'current_z_value'
         ☐ ordenado de nodos
-        ☐ node_finder: buscar forma para que siempre quede dentro del node view, y el line edit siempre quede en la parte superior
+        ✔ node_finder: buscar forma para que siempre quede dentro del node view, y el line edit siempre quede en la parte superior @done(2021-06-10 20:32)
         ☐ terminal undo redo
         ☐ el node finder ni el rename dialog funcionan cuando hay 2 o mas node_graph abiertos al mismo tiempo
 
