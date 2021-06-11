@@ -13,6 +13,9 @@ gui:
     videovina:
         ☐ verificar si el proyecto tiene cambios antes de salir, crear dialogo preguntando si se guarda el proyecto antes de salir
 
+    layout:
+        ☐ al presionar 'space' cuando el cursor esta en un split, no se selecciona ningun panel, solo queda en negro
+
     settings_projects:
         ☐ el proxy va a remplazar el rscale de videovina
         ☐ crear administrador de py_plugins para añadir, eliminar, cambiar iconos, y renombrar plugins
