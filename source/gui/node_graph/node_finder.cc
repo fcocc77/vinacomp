@@ -90,6 +90,20 @@ QTreeWidgetItem *node_finder::get_item(QString key) const
     return nullptr;
 }
 
+void node_finder::select_first_item()
+{
+    // selecciona el primer item visible
+    for (int i = 0; i < tree->topLevelItemCount(); i++)
+    {
+        QTreeWidgetItem *item = tree->topLevelItem(i);
+        if (!item->isHidden())
+        {
+            item->setSelected(true);
+            return;
+        }
+    }
+}
+
 void node_finder::highlight_finded_char(QTreeWidgetItem *item, QString search_word)
 {
     QLabel *label = static_cast<QLabel *>(tree->itemWidget(item, 0));
@@ -219,7 +233,11 @@ void node_finder::create_node()
 void node_finder::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Down || event->key() == Qt::Key_Up)
+    {
+        if (!tree->hasFocus())
+            select_first_item();
         tree->setFocus();
+    }
     else if (event->key() == Qt::Key_Return)
         create_node();
     else if (event->modifiers() == Qt::ControlModifier &&

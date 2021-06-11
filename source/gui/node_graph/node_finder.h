@@ -29,6 +29,7 @@ private:
     QTreeWidgetItem *get_item(QString key) const;
 
     void highlight_finded_char(QTreeWidgetItem *item, QString search_word);
+    void select_first_item();
 
     void keyPressEvent(QKeyEvent *event) override;
 
