@@ -28,6 +28,8 @@ private:
     void create_node();
     QTreeWidgetItem *get_item(QString key) const;
 
+    void highlight_finded_char(QTreeWidgetItem *item, QString search_word);
+
     void keyPressEvent(QKeyEvent *event) override;
 
 public:
