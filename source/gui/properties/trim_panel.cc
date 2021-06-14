@@ -610,6 +610,9 @@ void trim_panel::leave_properties(bool disable_edit_mode)
     _knob_editor->finish_insertion(false);
     _knob_editor->finish_edit(false);
     //
+
+    auto _curve_editor = static_cast<vinacomp *>(_vinacomp)->get_curve_editor();
+    _curve_editor->delete_panel(this);
 }
 
 void trim_panel::unlink_node_to_knobs(QString node_name)
