@@ -46,6 +46,9 @@ gui:
         ☐ opcion de simetria para que los 2 puntos del manejador se escalen igual
         ☐ el transform_box esta repetido, integrar el que esta en gl_view
         ☐ curve_tree: separar la dimesion del parametro con un punto
+        ☐ al borrar todos los keyframes el knob sigue en animacion @hi
+        ☐ al ponerle 'No Animation' en el knob, el panel no se borra @hi
+        ☐ al borrar los frames la caja de reescalado no desaparece @hi
 
     script_editor:
         ☐ boton de arrastre para poder arrastrar el script como acceso directo a una barra de herramienta en la parte inferior del node graph

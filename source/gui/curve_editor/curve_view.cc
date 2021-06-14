@@ -1,8 +1,9 @@
 #include <curve_view.h>
 #include <qt.h>
+#include <vinacomp.h>
 
-curve_view::curve_view(project_struct *_project)
-    : project(_project)
+curve_view::curve_view(QWidget *__vinacomp)
+    : _vinacomp(__vinacomp)
     , drag_key_frame(nullptr)
     , dragging(false)
     , text_visible(false)
@@ -13,6 +14,8 @@ curve_view::curve_view(project_struct *_project)
     , selecting(false)
     , transforming(false)
 {
+    project = static_cast<vinacomp *>(_vinacomp)->get_project();
+
     popup_setup_ui();
 
     qt::shortcut("+", this, [this]() {
@@ -60,19 +63,35 @@ void curve_view::fit_viewport_to_keyframes()
     auto selected = get_selected_keys();
 
     QLineF rect;
-
     if (selected.count() > 1)
         rect = get_rectangle_of_keyframes(selected);
-    else if (!all_key_frames.empty())
+    else if (all_key_frames.count() > 1)
         rect = get_rectangle_of_keyframes(all_key_frames);
+
+    float x_distance, y_distance;
+
+    if (!rect.isNull())
+    {
+        x_distance = (rect.x2() - rect.x1()) * get_aspect();
+        y_distance = rect.y2() - rect.y1();
+    }
     else
     {
-        set_default();
-        return;
+        project_settings *settings =
+            static_cast<vinacomp *>(_vinacomp)->get_project_settings();
+
+        int first_frame = settings->get_first_frame();
+        int last_frame = settings->get_last_frame();
+
+        x_distance = last_frame - first_frame;
+        y_distance = 1;
+
+        rect.setP1({(float)first_frame, 0});
+        rect.setP2({(float)last_frame, y_distance});
     }
 
-    float x_distance = (rect.x2() - rect.x1()) * get_aspect();
-    float y_distance = rect.y2() - rect.y1();
+    if (y_distance == 0)
+        y_distance = 1;
 
     float padding_x = (padding_percent * x_distance) / 100.0;
     float padding_y = (padding_percent * y_distance) / 100.0;

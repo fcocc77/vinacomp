@@ -35,9 +35,8 @@ curve_editor ::curve_editor(QWidget *__vinacomp)
     // Curve Tree
 
     // Curve View
-    project_struct *project = static_cast<vinacomp *>(_vinacomp)->get_project();
 
-    view = new curve_view(project);
+    view = new curve_view(_vinacomp);
 
     connect(view, &curve_view::change_curve, this,
             [=](curve *_curve) { update_param(_curve); });
