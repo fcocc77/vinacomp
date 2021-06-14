@@ -131,11 +131,8 @@ knob *curve_editor::get_knob(QString node_name, QString param_name)
 
 void curve_editor::update_from_trim_panel(trim_panel *panel)
 {
-    QString node_name = panel->get_name();
-
     delete_panel(panel);
 
-    bool animated = false;
     for (QString key : panel->get_knobs()->keys())
     {
         knob *_knob = panel->get_knobs()->value(key);
@@ -144,16 +141,18 @@ void curve_editor::update_from_trim_panel(trim_panel *panel)
         if (!_knob->is_animated())
             continue;
 
-        QString param_name = _knob->get_name();
-
-        QString dimension = "r";
-
-        knobs_tree->add_item(node_name, param_name, dimension,
-                             panel->get_color());
-        animated = true;
+        update_panel(panel, _knob->get_name());
     }
+}
 
-    if (animated)
+void curve_editor::update_panel(trim_panel *panel, QString param_name)
+{
+    QString node_name = panel->get_name();
+    QString dimension = "r";
+
+    knobs_tree->add_item(node_name, param_name, dimension, panel->get_color());
+
+    if (!panels.contains(node_name))
         panels.insert(node_name, panel);
 }
 
@@ -164,6 +163,8 @@ void curve_editor::update_curve(knob *_knob)
 
     QString curve_name = node_name + '.' + param_name;
     QString curve = _knob->get_curve();
+
+    update_panel(static_cast<trim_panel *>(_knob->get_panel()), param_name);
 
     view->delete_curve(curve_name);
     view->create_curve(curve_name, Qt::cyan, anim::convert_curve(curve));
