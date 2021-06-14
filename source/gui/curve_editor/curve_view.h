@@ -31,6 +31,7 @@ private:
 
     bool is_point_in_rectangle(QPointF point, QLineF rectangle);
     void fit_viewport_to_keyframes();
+    void fit_viewport_to_frame_range();
     void select_all_key_frames();
     void set_interpolation_to_selected(int number);
     void key_press(QPoint cursor_position);

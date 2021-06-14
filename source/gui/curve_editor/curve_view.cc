@@ -37,6 +37,8 @@ curve_view::curve_view(QWidget *__vinacomp)
 
         update();
     });
+
+    fit_viewport_to_frame_range();
 }
 
 curve_view::~curve_view() {}
@@ -67,28 +69,14 @@ void curve_view::fit_viewport_to_keyframes()
         rect = get_rectangle_of_keyframes(selected);
     else if (all_key_frames.count() > 1)
         rect = get_rectangle_of_keyframes(all_key_frames);
-
-    float x_distance, y_distance;
-
-    if (!rect.isNull())
-    {
-        x_distance = (rect.x2() - rect.x1()) * get_aspect();
-        y_distance = rect.y2() - rect.y1();
-    }
     else
     {
-        project_settings *settings =
-            static_cast<vinacomp *>(_vinacomp)->get_project_settings();
-
-        int first_frame = settings->get_first_frame();
-        int last_frame = settings->get_last_frame();
-
-        x_distance = last_frame - first_frame;
-        y_distance = 1;
-
-        rect.setP1({(float)first_frame, 0});
-        rect.setP2({(float)last_frame, y_distance});
+        fit_viewport_to_frame_range();
+        return;
     }
+
+    float x_distance = (rect.x2() - rect.x1()) * get_aspect();
+    float y_distance = rect.y2() - rect.y1();
 
     if (y_distance == 0)
         y_distance = 1;
@@ -98,6 +86,30 @@ void curve_view::fit_viewport_to_keyframes()
 
     set_ortho(rect.x1() - padding_x, rect.x2() + padding_x, rect.y1() - padding_y,
               rect.y2() + padding_y);
+}
+
+void curve_view::fit_viewport_to_frame_range()
+{
+    int padding_percent = 20;
+
+    project_settings *settings =
+        static_cast<vinacomp *>(_vinacomp)->get_project_settings();
+
+    int first_frame = settings->get_first_frame();
+    int last_frame = settings->get_last_frame();
+
+    float x_distance = last_frame - first_frame;
+    float y_distance = 1;
+
+    QLineF rect;
+    rect.setP1({(float)first_frame, 0});
+    rect.setP2({(float)last_frame, y_distance});
+
+    float padding_x = (padding_percent * x_distance) / 300.0;
+    float padding_y = (padding_percent * y_distance) / 100.0;
+
+    set_ortho(rect.x1() - padding_x, rect.x2() + padding_x,
+              rect.y1() - padding_y, rect.y2() + padding_y);
 }
 
 void curve_view::mousePressEvent(QMouseEvent *event)
