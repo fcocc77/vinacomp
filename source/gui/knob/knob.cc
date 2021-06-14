@@ -288,11 +288,8 @@ void knob::update_value(QJsonValue value)
     }
     else
     {
-        // params->insert(curve_name, true);
-        // set_keyframe(false);
-        // params->insert(name,
-        // anim::update_curve(params->value(name).toString(), _value,
-        // project->frame));
+        float _value = value.toDouble();
+        set_keyframe(&_value);
     }
 
     if (_vinacomp)
@@ -325,20 +322,30 @@ void knob::set_animated(bool _animated) {}
 
 void knob::set_has_expression(bool expression) {}
 
-void knob::set_keyframe(bool auto_value)
+void knob::set_keyframe(float *value_ptr)
 {
     float value = get_param_value().toDouble();
+    if (value_ptr)
+        value = *value_ptr;
+
     QString curve = get_curve();
     QString new_curve;
 
-    if (curve.isEmpty() || !auto_value)
+    if (curve.isEmpty())
         new_curve = anim::set_keyframe(curve, project->frame, false, value);
+    else if (value_ptr)
+        new_curve = anim::set_keyframe(curve, project->frame, false, value, true);
     else
         new_curve = anim::set_keyframe(curve, project->frame);
 
     params->insert(name, -1);
     params->insert(curve_name, new_curve);
 
+    update_knob_in_curve_editor();
+}
+
+void knob::update_knob_in_curve_editor()
+{
     curve_editor *_curve_editor =
         static_cast<vinacomp *>(_vinacomp)->get_curve_editor();
 

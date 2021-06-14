@@ -89,12 +89,13 @@ float anim::get_value(QString curve, int frame, bool *is_keyframe)
     return bezier.y();
 }
 
-QString anim::set_keyframe(QString curve, int frame, bool calc_value, float value)
+QString anim::set_keyframe(QString curve, int frame, bool calc_value,
+                           float value, bool force)
 {
     bool keyframe_exist = false;
     float _value = get_value(curve, frame, &keyframe_exist);
 
-    if (keyframe_exist)
+    if (keyframe_exist && !force)
         return curve;
 
     if (calc_value)
@@ -106,17 +107,28 @@ QString anim::set_keyframe(QString curve, int frame, bool calc_value, float valu
 
     auto keys = convert_curve(curve);
 
-    // encuentra el index donde corresponda insertar el nuevo keyframe
-    int index_to_insert = 0;
-    for (key_data key : keys)
+    if (keyframe_exist)
     {
-        if (key.frame > frame)
-            break;
-        index_to_insert++;
+        int index = 0;
+        for (key_data key : keys)
+        {
+            if (key.frame == frame)
+                break;
+            index++;
+        }
+        keys[index].value = value;
     }
-    //
-
-    keys.insert(index_to_insert, new_key);
+    else
+    {
+        int index_to_insert = 0;
+        for (key_data key : keys)
+        {
+            if (key.frame > frame)
+                break;
+            index_to_insert++;
+        }
+        keys.insert(index_to_insert, new_key);
+    }
 
     return curve_data_to_string(keys);
 }
@@ -161,8 +173,6 @@ QList<anim::key_data> anim::convert_curve(QString curve)
 
     return data;
 }
-
-QString anim::update_curve(QString curve, float value, int frame) {}
 
 QString anim::curve_data_to_string(QList<anim::key_data> keys)
 {

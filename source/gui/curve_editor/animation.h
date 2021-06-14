@@ -19,12 +19,11 @@ struct key_data
 };
 
 float get_value(QString curve, int frame, bool *is_keyframe = nullptr);
-QString update_curve(QString curve, float value, int frame);
 
 key_data get_keyframe(QString frame_string);
 QList<key_data> convert_curve(QString curve);
 QString set_keyframe(QString curve, int frame, bool calc_value = true,
-                     float value = 0);
+                     float value = 0, bool force = false);
 
 QString curve_data_to_string(QList<key_data> _curve);
 QString curve_to_string(curve *_curve);

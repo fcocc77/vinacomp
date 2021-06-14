@@ -29,7 +29,7 @@ gui:
         ☐ que el zoom con el scroll del mouse apunte donde esta el cursor y no en el centro como esta ahora
         ☐ achicar la linea de tiempo
 
-    curve_view:
+    curve_editor:
         ☐ limitar el tamaño del 'handler'
         ✔ que funcione el delete key @1 @done(2021-06-11 17:29)
         ☐ con el control-alt poder insertar keyframes
@@ -37,9 +37,10 @@ gui:
         ☐ poner nombre de curva al inicio de la curva
         ☐ cuando hay keyframes de dos curvas seleccionadas, no funciona la escala
         ☐ crear lineas verticales de entrada y salida
-        ☐ crear cursor de linea de tiempo
+        ✔ crear cursor de linea de tiempo @done(2021-06-11 17:33)
         ☐ que funcione el snap en horizontal por frame
         ☐ que el keyframe solo se pueda mover en una direccion a la vez, y con el control presionado poder mover omnidireccional
+        ☐ actualizar curve_view al eliminar un nodo
         ☐ los botones de curvas del toolbar deben ser checkeables segun la actual interpolacion del keyframe seleccionado
         ☐ opcion para bloquear o desbloquear el tamaño del manejador
         ☐ opcion de simetria para que los 2 puntos del manejador se escalen igual
@@ -181,38 +182,38 @@ Archive:
     ✔ crear entrada de 'mask' @done(2021-04-20 17:37)
     ✔ crear dot y que se pueda insertar presionado control @done(2021-04-20 17:37)
     ✔ que el boton de keyframe despliegue un menu con las opciones de animacion @done(2021-03-17 17:30)
-	✔ que los botones tengan hover @done(2021-01-08 15:18)
-	✔ knob_color: que el icono de paleta cuando este activado tenga otro color @done(2021-01-08 15:03)
-	✔ knob_color: que el boton de '4' con color de actvado y desabilitado cuando la paleta este activa @done(2021-01-08 15:03)
-	✔ knob_color: que el boton de color se agrande cuando la paleta este activa @done(2021-01-08 15:17)
-	✔ terminar checkbox knob' @done(2021-01-06 17:26)
-	✔ terminar group knob' @done(2021-01-07 15:38)
-	✔ terminar label knob' @done(2021-01-07 09:04)
-	✔ terminar separator knob' @today @done(2021-01-06 20:11)
-	✔ modificar 'slider.cc' @today @done(2020-12-29 15:50)
-	✔ terminar color knob' @today @done(2021-01-05 17:42)
-	✔ terminar floating knob' @today @done(2020-12-29 16:27)
-	✔ que el ajuste funcione, con la tecla f que se ajuste a la resolucion actual. @today @done(2020-12-12 12:59)
-	✔ shortcut control-flecha saltar cada 10 frame, o el numero que este puesto en el player control @today @done(2020-12-23 13:47)
-	✔ shortcut alt-flecha mover al inicio o al final del rango @today @done(2020-12-23 16:34)
-	✔ cambiar el color del fondo al color de la interface @today @done(2020-12-24 12:45)
-	✔ crear botones de entrada y salida, al inicio y al final. @done(2020-12-28 16:23)
-	✔ que los botones tengan una forma cuadrada @today @done(2020-12-28 16:23)
-	✔ mejorar el disenio de lo qlineedit y botones @today @done(2020-12-28 16:24)
-	✔ el cursor fantasma le falta la linea inferior @today @done(2020-12-05 10:32))
-	✔ al dar 1 solo click, no cambia el frame, solo funciona cuando lo arrastramos @today @done(2020-12-05 11:55))
-	✔ usar flechas derecha e izquierda para mover el cursor @today @done(2020-12-04 17:56)
-	✔ al mover un nodo y esta presionado el escape, el link no se mueve con el nodo  @done(2020-12-03 19:35)
-	✔ que el nodo tenga un tamaño minimo, y si el texto es mas grande que el tamaño minimo, que el nodo se agrande, asi siempre el texto quedara dentro del nodo.  @done(2020-12-03 19:33)
-	✔ crear toolbar  @done(2020-12-03 19:35)
-	✔ con el shortcut 'F' ajustar el rango de frames @today  @done(2020-12-03 19:37)
-	✔ que el area dentro del rango quede de color gris y fuera negro @today  @done(2020-12-03 19:37)
-	✔ crear input y output  @done(2020-12-03 19:37)
-	✔ terminar triangulo @today  @done(2020-12-03 19:37)
-	✔ que el cursor fantasma desaparesca cuando se esta escalando el viewer  @done(2020-12-03 19:37)
-	✔ seleccionar una area con el click derecho y el central, y ajustar el viewer al area seleccionada  @done(2020-12-03 19:37)
-	✔ con el click derecho switch entre el area seleccionada y el ajuste completo  @done(2020-12-03 19:37)
-	✔ no tiene que cambiar el frame cuando presionamos el alt con el boton central  @done(2020-12-03 19:37)
-	✔ con el control click cambiar la entrada y la salida  @done(2020-12-03 19:37)
-	✔ poder arrastrar el input y la salida, y con el control presionado arrastrar los 2  @done(2020-12-03 19:37)
+    ✔ que los botones tengan hover @done(2021-01-08 15:18)
+    ✔ knob_color: que el icono de paleta cuando este activado tenga otro color @done(2021-01-08 15:03)
+    ✔ knob_color: que el boton de '4' con color de actvado y desabilitado cuando la paleta este activa @done(2021-01-08 15:03)
+    ✔ knob_color: que el boton de color se agrande cuando la paleta este activa @done(2021-01-08 15:17)
+    ✔ terminar checkbox knob' @done(2021-01-06 17:26)
+    ✔ terminar group knob' @done(2021-01-07 15:38)
+    ✔ terminar label knob' @done(2021-01-07 09:04)
+    ✔ terminar separator knob' @today @done(2021-01-06 20:11)
+    ✔ modificar 'slider.cc' @today @done(2020-12-29 15:50)
+    ✔ terminar color knob' @today @done(2021-01-05 17:42)
+    ✔ terminar floating knob' @today @done(2020-12-29 16:27)
+    ✔ que el ajuste funcione, con la tecla f que se ajuste a la resolucion actual. @today @done(2020-12-12 12:59)
+    ✔ shortcut control-flecha saltar cada 10 frame, o el numero que este puesto en el player control @today @done(2020-12-23 13:47)
+    ✔ shortcut alt-flecha mover al inicio o al final del rango @today @done(2020-12-23 16:34)
+    ✔ cambiar el color del fondo al color de la interface @today @done(2020-12-24 12:45)
+    ✔ crear botones de entrada y salida, al inicio y al final. @done(2020-12-28 16:23)
+    ✔ que los botones tengan una forma cuadrada @today @done(2020-12-28 16:23)
+    ✔ mejorar el disenio de lo qlineedit y botones @today @done(2020-12-28 16:24)
+    ✔ el cursor fantasma le falta la linea inferior @today @done(2020-12-05 10:32))
+    ✔ al dar 1 solo click, no cambia el frame, solo funciona cuando lo arrastramos @today @done(2020-12-05 11:55))
+    ✔ usar flechas derecha e izquierda para mover el cursor @today @done(2020-12-04 17:56)
+    ✔ al mover un nodo y esta presionado el escape, el link no se mueve con el nodo  @done(2020-12-03 19:35)
+    ✔ que el nodo tenga un tamaño minimo, y si el texto es mas grande que el tamaño minimo, que el nodo se agrande, asi siempre el texto quedara dentro del nodo.  @done(2020-12-03 19:33)
+    ✔ crear toolbar  @done(2020-12-03 19:35)
+    ✔ con el shortcut 'F' ajustar el rango de frames @today  @done(2020-12-03 19:37)
+    ✔ que el area dentro del rango quede de color gris y fuera negro @today  @done(2020-12-03 19:37)
+    ✔ crear input y output  @done(2020-12-03 19:37)
+    ✔ terminar triangulo @today  @done(2020-12-03 19:37)
+    ✔ que el cursor fantasma desaparesca cuando se esta escalando el viewer  @done(2020-12-03 19:37)
+    ✔ seleccionar una area con el click derecho y el central, y ajustar el viewer al area seleccionada  @done(2020-12-03 19:37)
+    ✔ con el click derecho switch entre el area seleccionada y el ajuste completo  @done(2020-12-03 19:37)
+    ✔ no tiene que cambiar el frame cuando presionamos el alt con el boton central  @done(2020-12-03 19:37)
+    ✔ con el control click cambiar la entrada y la salida  @done(2020-12-03 19:37)
+    ✔ poder arrastrar el input y la salida, y con el control presionado arrastrar los 2  @done(2020-12-03 19:37)
     ✔ que los nodes de py_plugins tengan un boton para convertir a grupo y biseversa @done(2021-05-26 17:48)

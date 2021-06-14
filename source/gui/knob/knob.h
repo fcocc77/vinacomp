@@ -43,7 +43,8 @@ private:
     bool linked;
     QString handler_knob_node_name, handler_knob_name;
 
-    void set_keyframe(bool auto_value = true);
+    void set_keyframe(float *value = 0);
+    void update_knob_in_curve_editor();
 
 protected:
     QWidget *_vinacomp;
