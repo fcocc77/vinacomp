@@ -163,7 +163,7 @@ void curve_editor::remove_param_item(trim_panel *panel, QString param_name)
     knobs_tree->delete_item(node_name, param_name);
 }
 
-void curve_editor::update_curve(knob *_knob)
+void curve_editor::update_curve(knob *_knob, bool from_knob)
 {
     QString param_name = _knob->get_name();
     QString node_name = _knob->get_node_name();
@@ -175,7 +175,14 @@ void curve_editor::update_curve(knob *_knob)
     trim_panel *panel = static_cast<trim_panel *>(_knob->get_panel());
 
     if (keys.empty())
+    {
         remove_param_item(panel, param_name);
+        if (!from_knob)
+        {
+            _knob->disable_animation();
+            _knob->set_animated(false);
+        }
+    }
     else
         add_param_item(panel, param_name);
 

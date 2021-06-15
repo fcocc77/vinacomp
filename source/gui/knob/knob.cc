@@ -350,7 +350,7 @@ void knob::update_knob_in_curve_editor()
     curve_editor *_curve_editor =
         static_cast<vinacomp *>(_vinacomp)->get_curve_editor();
 
-    _curve_editor->update_curve(this);
+    _curve_editor->update_curve(this, true);
 }
 
 void knob::set_expression(QString expression)
