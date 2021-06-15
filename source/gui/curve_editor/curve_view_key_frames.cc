@@ -110,6 +110,7 @@ void curve_view::delete_curve(QString name)
     delete curves.value(name);
     curves.remove(name);
 
+    transform_box_visible = false;
     update();
 }
 
@@ -320,4 +321,7 @@ void curve_view::delete_selected_keyframes()
     }
 
     delete_keyframes(curve_list);
+
+    transform_box_visible = false;
+    update();
 }

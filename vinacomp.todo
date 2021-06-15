@@ -48,8 +48,9 @@ gui:
         ☐ curve_tree: separar la dimesion del parametro con un punto
         ☐ al borrar todos los keyframes el knob sigue en animacion @hi
         ☐ al ponerle 'No Animation' en el knob, el panel no se borra @hi
-        ☐ al borrar los frames la caja de reescalado no desaparece @hi
-        ☐ no desaparece la caja de reescalado al eliminar o cerrar el nodo @hi
+        ✔ al borrar los frames la caja de reescalado no desaparece @hi @done(2021-06-15 11:28)
+        ✔ no desaparece la caja de reescalado al eliminar o cerrar el nodo @hi @done(2021-06-15 11:27)
+        ☐ que al primer keyframe, ajustar el curve_view al alto del tamaño maximo del parametro
 
     script_editor:
         ☐ boton de arrastre para poder arrastrar el script como acceso directo a una barra de herramienta en la parte inferior del node graph
