@@ -20,7 +20,7 @@ public:
 
     void add_item(QString node_name, QString param_name, QString dimension,
                   QColor color);
-    void delete_item(QString node_name);
+    void delete_item(QString node_name, QString param_name = "");
 
 signals:
     void clicked(QString node_name, QList<QString> params_name);

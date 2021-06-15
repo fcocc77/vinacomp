@@ -97,15 +97,21 @@ void curve_tree::add_item(QString node_name, QString param_name,
     // param_item->addChild(dimension_item);
 }
 
-void curve_tree::delete_item(QString node_name)
+void curve_tree::delete_item(QString node_name, QString param_name)
 {
     QTreeWidgetItem *node_item = get_node_item(node_name);
-    if (node_item)
+    if (!node_item)
+        return;
+
+    QTreeWidgetItem *param_item = get_param_item(node_item, param_name);
+    if (param_item)
+        delete param_item;
+
+    if (param_name.isEmpty() || !node_item->childCount())
     {
         this->invisibleRootItem()->removeChild(node_item);
-
-        // al eliminar item 'delete', elimina todos los hijos (ya comprobado)
-        delete node_item;
+        delete node_item; // al eliminar item 'delete', elimina todos los hijos
+                          // ya comprobado
     }
 }
 

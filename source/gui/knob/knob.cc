@@ -316,6 +316,7 @@ void knob::disable_animation()
     update_value(value);
 
     static_cast<node_rect *>(this_node)->set_animated(false);
+    update_knob_in_curve_editor();
 }
 
 void knob::set_animated(bool _animated) {}

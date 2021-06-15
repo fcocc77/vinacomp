@@ -27,7 +27,8 @@ private:
     void delete_node_item(QString node_name);
     void delete_keyframes(QMap<QString, QList<int>> curves);
 
-    void update_panel(trim_panel *panel, QString param_name);
+    void add_param_item(trim_panel *panel, QString param_name);
+    void remove_param_item(trim_panel *panel, QString param_name);
 
 public:
     curve_editor(QWidget *_vinacomp);
