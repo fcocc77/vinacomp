@@ -36,7 +36,7 @@ curve_editor ::curve_editor(QWidget *__vinacomp)
 
     // Curve View
 
-    view = new curve_view(_vinacomp);
+    view = new curve_view(_vinacomp, this);
 
     connect(view, &curve_view::change_curve, this,
             [=](curve *_curve) { update_param(_curve); });

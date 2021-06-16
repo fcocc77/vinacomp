@@ -17,6 +17,7 @@ private:
     QPoint click_position;
     project_struct *project;
     QWidget *_vinacomp;
+    QWidget *_curve_editor;
 
     // Drag KeyFrame
     int drag_handler;
@@ -109,7 +110,7 @@ private:
     //
 
 public:
-    curve_view(QWidget *_vinacomp);
+    curve_view(QWidget *_vinacomp, QWidget *_curve_editor);
     ~curve_view();
 
     // Acciones

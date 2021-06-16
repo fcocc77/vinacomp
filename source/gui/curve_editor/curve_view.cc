@@ -2,8 +2,9 @@
 #include <qt.h>
 #include <vinacomp.h>
 
-curve_view::curve_view(QWidget *__vinacomp)
+curve_view::curve_view(QWidget *__vinacomp, QWidget *__curve_editor)
     : _vinacomp(__vinacomp)
+    , _curve_editor(__curve_editor)
     , drag_key_frame(nullptr)
     , dragging(false)
     , text_visible(false)

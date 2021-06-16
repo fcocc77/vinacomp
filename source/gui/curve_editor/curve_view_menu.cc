@@ -55,7 +55,7 @@ void curve_view::popup_setup_ui()
 
     // View : Center To Curve
     center_action = new action("Center To Curve", "F", "fit_curve");
-    center_action->connect_to(this, [this]() { fit_viewport_to_keyframes(); });
+    center_action->connect_to(_curve_editor, [this]() { fit_viewport_to_keyframes(); });
     popup->addAction(center_action);
     //
     //
