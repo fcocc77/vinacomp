@@ -53,6 +53,7 @@ gui:
         ☐ que al primer keyframe, ajustar el curve_view al alto del tamaño maximo del parametro
         ☐ ocultaritem de 'curve_tree' si el panel esta minimizado
         ☐ que el ajuste al los keyframe funcione tambien cuando el cursor este sobre el 'curve_tree'
+        ✔ cuando solo hay un keyframe el 'fit to keys' no se ajustar a la posicion en 'y' @hi @done(2021-06-16 11:31)
 
     script_editor:
         ☐ boton de arrastre para poder arrastrar el script como acceso directo a una barra de herramienta en la parte inferior del node graph

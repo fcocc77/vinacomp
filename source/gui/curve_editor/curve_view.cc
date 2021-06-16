@@ -69,6 +69,12 @@ void curve_view::fit_viewport_to_keyframes()
         rect = get_rectangle_of_keyframes(selected);
     else if (all_key_frames.count() > 1)
         rect = get_rectangle_of_keyframes(all_key_frames);
+    else if (!all_key_frames.empty())
+    {
+        key_frame *alone_key = all_key_frames[0];
+        fit_viewport_to_frame_range({alone_key->x(), alone_key->y()});
+        return;
+    }
     else
     {
         fit_viewport_to_frame_range();
@@ -88,22 +94,25 @@ void curve_view::fit_viewport_to_keyframes()
               rect.y2() + padding_y);
 }
 
-void curve_view::fit_viewport_to_frame_range()
+void curve_view::fit_viewport_to_frame_range(QPointF offset)
 {
     int padding_percent = 20;
 
     project_settings *settings =
         static_cast<vinacomp *>(_vinacomp)->get_project_settings();
 
-    int first_frame = settings->get_first_frame();
-    int last_frame = settings->get_last_frame();
+    float x1 = settings->get_first_frame() + offset.x();
+    float x2 = settings->get_last_frame() + offset.x();
 
-    float x_distance = last_frame - first_frame;
-    float y_distance = 1;
+    float y1 = offset.y();
+    float y2 = offset.y() + 1;
+
+    float x_distance = x2 - x1;
+    float y_distance = y2 - y1;
 
     QLineF rect;
-    rect.setP1({(float)first_frame, 0});
-    rect.setP2({(float)last_frame, y_distance});
+    rect.setP1({x1, y1});
+    rect.setP2({x2, y2});
 
     float padding_x = (padding_percent * x_distance) / 300.0;
     float padding_y = (padding_percent * y_distance) / 100.0;
