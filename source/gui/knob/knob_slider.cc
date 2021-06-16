@@ -88,7 +88,8 @@ knob_slider::knob_slider(knob_props props, float min, float max,
     if (bidimensional)
         layout->addWidget(show_dimensions);
 
-    set_value(default_value);
+    set_value(default_value, 0, false);
+    set_value(default_value, 1, false);
 }
 
 knob_slider::~knob_slider()

@@ -32,7 +32,7 @@ gui:
     curve_editor:
         ☐ limitar el tamaño del 'handler'
         ✔ que funcione el delete key @1 @done(2021-06-11 17:29)
-        ☐ con el control-alt poder insertar keyframes
+        ☐ con el control-alt poder insertar keyframes @hi
         ☐ con el control poder agrandar el handler
         ☐ poner nombre de curva al inicio de la curva
         ☐ cuando hay keyframes de dos curvas seleccionadas, no funciona la escala
@@ -54,6 +54,7 @@ gui:
         ☐ ocultar item de 'curve_tree' si el panel esta minimizado
         ✔ que el ajuste al los keyframe funcione tambien cuando el cursor este sobre el 'curve_tree' @done(2021-06-16 11:38)
         ✔ cuando solo hay un keyframe el 'fit to keys' no se ajustar a la posicion en 'y' @hi @done(2021-06-16 11:31)
+        ☐ animacion en cada dimension por separado @hi
 
     script_editor:
         ☐ boton de arrastre para poder arrastrar el script como acceso directo a una barra de herramienta en la parte inferior del node graph
@@ -129,6 +130,7 @@ gui:
         ☐ slider: que el handler se note cuando se presione igual que en davinci
         ☐ knob_group: corregir
         ☐ el knob no cambia a el color de keyframe de animacion al añdirle un nuevo keyframe @hi
+        ☐ line_edit: con el control flecha cambiar el valor del caracter seleccionado como en el nuke
 
 engine:
     nodes:
