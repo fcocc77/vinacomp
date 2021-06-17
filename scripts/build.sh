@@ -35,7 +35,7 @@ function run_gui() {
 
     if [ -f $vinacomp ]; then
         if [ $1 == 'debug' ]; then
-            sleep 3 && change_pos &
+            sleep 4 && change_pos &
 
             log_file='/tmp/vinacomp.log'
 

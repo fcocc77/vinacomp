@@ -7,6 +7,7 @@
 knob_curve_menu::knob_curve_menu(QWidget *_panel)
     : QMenu(_panel)
     , current_knob(0)
+    , current_dimension(-1)
     , panel(_panel)
 {
     action *set_key_action = new action("Set Key", "", "key");
@@ -89,7 +90,7 @@ knob_curve_menu::~knob_curve_menu() {}
 void knob_curve_menu::set_key()
 {
     current_knob->enable_animation();
-    current_knob->set_animated(true);
+    current_knob->set_animated(true, current_dimension);
 }
 
 void knob_curve_menu::no_animation()

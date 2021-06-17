@@ -58,6 +58,9 @@ node::node(node_props _props, QMap<QString, node *> *_selected_nodes,
         _inputs.push_front("mask");
         bool has_mask = node_fx.value("mask").toBool();
 
+        for (int i = 0; i < _inputs.count(); i++)
+            connected_indexs.push_back(false);
+
         // Crea los inputs para el nodo
         inputs = new QList<input_wire *>;
         for (int i = 0; i < _inputs.count(); i++)
@@ -69,7 +72,6 @@ node::node(node_props _props, QMap<QString, node *> *_selected_nodes,
                 props.project, props.vinacomp, _node_graph);
 
             inputs->push_back(input);
-            connected_indexs.push_back(false);
         }
     }
 

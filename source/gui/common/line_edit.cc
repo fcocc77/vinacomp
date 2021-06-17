@@ -5,9 +5,10 @@
 #include <line_edit.h>
 #include <util.h>
 
-line_edit::line_edit(QWidget *__knob)
+line_edit::line_edit(QWidget *__knob, int _dimension)
     : menu(nullptr)
     , _knob(__knob)
+    , dimension(_dimension)
 {
 }
 
@@ -24,7 +25,7 @@ void line_edit::contextMenuEvent(QContextMenuEvent *event)
     if (menu)
     {
         static_cast<knob_curve_menu *>(menu)->set_knob(
-            static_cast<knob *>(_knob));
+            static_cast<knob *>(_knob), dimension);
 
         menu->move(global);
         menu->show();

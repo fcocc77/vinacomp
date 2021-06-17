@@ -43,7 +43,7 @@ private:
     bool linked;
     QString handler_knob_node_name, handler_knob_name;
 
-    void set_keyframe(float *value = 0);
+    void set_keyframe(float *value = nullptr, int dimension = -1);
     void update_knob_in_curve_editor();
 
 protected:
@@ -72,7 +72,7 @@ public:
     ~knob();
 
     virtual void set_error(bool error);
-    virtual void set_animated(bool _animated);
+    virtual void set_animated(bool _animated, int dimension = -1);
     virtual void set_disable(bool disable);
     void add_slave_knob(QString node_name, QString param_name);
     void remove_slave_knob(QString node_name, QString param_name);
@@ -108,7 +108,7 @@ public:
     inline QString get_name() const;
     inline QString get_tips() const;
     inline QString get_label() const;
-    inline QString get_curve() const;
+    inline QString get_curve(int dimension = 0) const;
     inline void set_curve(QString curve);
     inline bool is_animated() const;
     inline void set_visible(bool visible);
@@ -143,9 +143,9 @@ inline QString knob::get_expression() const
     return params->value(exp_name).toString();
 }
 
-inline QString knob::get_curve() const
+inline QString knob::get_curve(int dimension) const
 {
-    return params->value(curve_name).toString();
+    return params->value(curve_name).toArray()[dimension].toString();
 }
 
 inline int knob::get_init_space_width() const

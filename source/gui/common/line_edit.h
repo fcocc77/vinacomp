@@ -10,11 +10,12 @@ class line_edit : public QLineEdit
 private:
     QMenu *menu;
     QWidget *_knob;
+    int dimension;
 
     void focusInEvent(QFocusEvent *event) override;
 
 public:
-    line_edit(QWidget *_knob);
+    line_edit(QWidget *_knob, int dimension = 0);
     void set_menu(QMenu *_menu);
     void set_clamp_value(float value);
 

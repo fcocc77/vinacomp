@@ -8,6 +8,7 @@ class knob_curve_menu : public QMenu
 {
 private:
     knob *current_knob;
+    int current_dimension;
     QWidget *panel;
 
     void set_key();
@@ -24,12 +25,13 @@ public:
     knob_curve_menu(QWidget *panel);
     ~knob_curve_menu();
 
-    inline void set_knob(knob *_knob);
+    inline void set_knob(knob *_knob, int dimension = -1);
 };
 
-inline void knob_curve_menu::set_knob(knob *_knob)
+inline void knob_curve_menu::set_knob(knob *_knob, int dimension)
 {
     current_knob = _knob;
+    current_dimension = dimension;
 }
 
 #endif // KNOB_CURVE_MENU_H

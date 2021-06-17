@@ -29,7 +29,7 @@ knob_slider::knob_slider(knob_props props, float min, float max,
         curve_menu = static_cast<trim_panel *>(props.panel)->get_curve_menu();
 
     // value 1
-    value_1_edit = new line_edit(this);
+    value_1_edit = new line_edit(this, 0);
     value_1_edit->set_menu(curve_menu);
     connect(value_1_edit, &line_edit::editingFinished, this, [=]() {
         values.first = value_1_edit->text().toDouble();
@@ -58,7 +58,7 @@ knob_slider::knob_slider(knob_props props, float min, float max,
     if (bidimensional)
     {
         // value 2
-        value_2_edit = new line_edit(this);
+        value_2_edit = new line_edit(this, 1);
         value_2_edit->set_menu(curve_menu);
         value_2_edit->hide();
 
@@ -90,6 +90,7 @@ knob_slider::knob_slider(knob_props props, float min, float max,
 
     set_value(default_value, 0, false);
     set_value(default_value, 1, false);
+
 }
 
 knob_slider::~knob_slider()
@@ -117,21 +118,40 @@ void knob_slider::restore_param()
 {
     knob::restore_param();
 
-    QJsonValue param_value = get_param_value();
-    float value;
+    QJsonArray param_value = get_param_value().toArray();
 
+    QJsonValue _value_1 = param_value[0];
+    QJsonValue _value_2 = param_value[1];
+
+
+    float value_1, value_2;
     if (animated)
-        value = anim::get_value(param_value.toString(), project->frame);
+    {
+        value_1 = anim::get_value(_value_1.toString(), project->frame);
+        value_2 = anim::get_value(_value_2.toString(), project->frame);
+    }
     else
-        value = param_value.toDouble();
+    {
+        value_1 = _value_1.toDouble();
+        value_2 = _value_2.toDouble();
+    }
 
-    set_value(value);
+    set_values({value_1, value_2}, false);
 }
 
-void knob_slider::set_animated(bool animated)
+void knob_slider::set_animated(bool animated, int dimension)
 {
-    qt::set_property(value_1_edit, "animated", animated);
-    knob::set_animated(animated);
+    if (dimension == -1)
+    {
+        qt::set_property(value_1_edit, "animated", animated);
+        qt::set_property(value_2_edit, "animated", animated);
+    }
+    else if (dimension == 0)
+        qt::set_property(value_1_edit, "animated", animated);
+    else if (dimension == 1)
+        qt::set_property(value_2_edit, "animated", animated);
+
+    knob::set_animated(animated, dimension);
 }
 
 void knob_slider::set_disable(bool disable)
@@ -167,7 +187,7 @@ void knob_slider::to_emmit_signal()
 
     update_handler();
     changed(values.first, values.second); // Signal
-    update_value(values.first);
+    update_value(QJsonArray{values.first, values.second});
     update_linked_knobs();
     to_node_panel(this);
 }
