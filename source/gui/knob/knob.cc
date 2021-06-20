@@ -314,19 +314,45 @@ void knob::enable_animation()
     static_cast<node_rect *>(this_node)->set_animated(true);
 }
 
-void knob::disable_animation()
+void knob::disable_animation(int _dimension)
 {
     // el 'set_animated' solo funciona como virtual para las subclases,
     // y 'enable_animation' y 'disable_animation' se usan aqui ya que estas
     // intervienen el 'params' del proyecto, y cuando se usa el 'restore_param'
     // da conflicto ya que guarda el proyecto antes de lo necesario.
     // ! no unir estas 2'
-    animated = false;
 
-    float value = anim::get_value(get_curve(), project->frame);
-    update_value(value);
+    QList<int> dimensions_to_disable;
 
-    static_cast<node_rect *>(this_node)->set_animated(false);
+    if (_dimension == -1)
+        for (int i = 0; i < 2; i++)
+            dimensions_to_disable.push_back(i);
+    else
+        dimensions_to_disable.push_back(_dimension);
+
+    for (int dimension : dimensions_to_disable)
+    {
+        float value = anim::get_value(get_curve(dimension), project->frame);
+        QJsonArray values = get_param_value().toArray();
+
+        set_curve("", dimension);
+        values[dimension] = value;
+
+        // cantidad de dimensiones animadas
+        int animated_dimensions = 0;
+        QJsonArray curves = params->value(curve_name).toArray();
+        for (QJsonValue curve : curves)
+            if (!curve.toString().isEmpty())
+                animated_dimensions++;
+
+        if (!animated_dimensions)
+        {
+            animated = false;
+            update_value(value);
+            static_cast<node_rect *>(this_node)->set_animated(false);
+        }
+    }
+
     update_knob_in_curve_editor();
 }
 

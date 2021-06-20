@@ -96,8 +96,8 @@ void knob_curve_menu::set_key()
 
 void knob_curve_menu::no_animation()
 {
-    current_knob->disable_animation();
-    current_knob->set_animated(false);
+    current_knob->disable_animation(current_dimension);
+    current_knob->set_animated(false, current_dimension);
 }
 
 void knob_curve_menu::edit_expression()

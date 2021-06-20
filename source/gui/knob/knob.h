@@ -84,7 +84,7 @@ public:
                                          QString new_handler_name);
     void restore_slaves_konbs();
     void enable_animation();
-    void disable_animation();
+    void disable_animation(int dimension = -1);
     void update_keyframe(float value, int dimension, bool force = false);
     void set_keyframe(int dimension = -1);
 
