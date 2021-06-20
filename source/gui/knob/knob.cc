@@ -239,12 +239,7 @@ void knob::restore_param()
     if (!params)
         return;
 
-     QString curve;
-
-    if (params->contains(curve_name))
-        curve = params->value(curve_name).toString();
-
-    if (!curve.isEmpty())
+    if (is_animated_some_dimension())
     {
         enable_animation();
         set_animated(true);
@@ -348,14 +343,7 @@ void knob::disable_animation(int _dimension)
         values[dimension] = value;
         set_curve("", dimension);
 
-        // cantidad de dimensiones animadas
-        int animated_dimensions = 0;
-        QJsonArray curves = params->value(curve_name).toArray();
-        for (QJsonValue curve : curves)
-            if (!curve.toString().isEmpty())
-                animated_dimensions++;
-
-        if (!animated_dimensions)
+        if (!is_animated_some_dimension())
         {
             animated = false;
             static_cast<node_rect *>(this_node)->set_animated(false);
@@ -589,4 +577,17 @@ void knob::restore_default()
 QWidget *knob::get_node_view() const
 {
     return static_cast<node *>(this_node)->get_node_view();
+}
+
+bool knob::is_animated_some_dimension() const
+{
+    int animated_dimensions = 0;
+    for (QJsonValue curve : params->value(curve_name).toArray())
+        if (!curve.toString().isEmpty())
+            animated_dimensions++;
+
+    if (animated_dimensions)
+        return true;
+
+    return false;
 }

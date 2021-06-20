@@ -113,6 +113,7 @@ public:
     inline QString get_curve(int dimension = 0) const;
     inline void set_curve(QString curve, int dimension = 0);
     inline bool is_animated() const;
+    bool is_animated_some_dimension() const;
     inline void set_visible(bool visible);
     inline QWidget *get_panel() const;
     void set_param_value(QJsonValue value);

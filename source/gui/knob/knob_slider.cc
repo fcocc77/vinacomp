@@ -122,22 +122,22 @@ void knob_slider::restore_param()
 {
     knob::restore_param();
 
-    QJsonArray param_value = get_param_value().toArray();
-
-    QJsonValue _value_1 = param_value[0];
-    QJsonValue _value_2 = param_value[1];
-
-
     float value_1, value_2;
+
     if (animated)
     {
-        value_1 = anim::get_value(_value_1.toString(), project->frame);
-        value_2 = anim::get_value(_value_2.toString(), project->frame);
+        value_1 = anim::get_value(get_curve(0), project->frame);
+        value_2 = anim::get_value(get_curve(1), project->frame);
     }
     else
     {
-        value_1 = _value_1.toDouble();
-        value_2 = _value_2.toDouble();
+        QJsonArray param_value = get_param_value().toArray();
+
+        QJsonValue _value_1 = param_value[0];
+        QJsonValue _value_2 = param_value[1];
+
+        value_1 = param_value[0].toDouble();
+        value_2 = param_value[1].toDouble();
     }
 
     set_values({value_1, value_2}, false);
