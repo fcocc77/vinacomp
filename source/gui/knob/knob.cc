@@ -273,28 +273,35 @@ void knob::update_value(QJsonValue value)
     if (!params)
         return;
 
-    if (!animated)
+    if (!animated && get_default() == value)
     {
-        if (get_default() != value)
-        {
-            params->insert(name, value);
-            params->insert(curve_name, "");
-        }
-        else
-        {
-            params->remove(name);
-            params->remove(curve_name);
-        }
+        params->remove(name);
+        params->remove(curve_name);
     }
     else
     {
-        QJsonArray values = value.toArray();
-        for (int i = 0; i < values.count(); i++)
+        if (type == "floating")
         {
-            float _value = values[i].toDouble();
-            set_keyframe(&_value, i);
-        }
+            QJsonArray values = value.toArray();
+            QJsonArray curves = params->value(curve_name).toArray();
 
+            for (int dimension = 0; dimension < values.count(); dimension++)
+            {
+                QString curve = curves[dimension].toString();
+                if (!curve.isEmpty())
+                {
+                    update_keyframe(values[dimension].toDouble(), dimension, true);
+                    values[dimension] = -1000000000;
+                }
+            }
+
+            params->insert(name, values);
+        }
+        else
+        {
+            params->insert(name, value);
+            params->insert(curve_name, {});
+        }
     }
 
     if (_vinacomp)
@@ -304,7 +311,6 @@ void knob::update_value(QJsonValue value)
 void knob::enable_animation()
 {
     animated = true;
-    set_keyframe();
     static_cast<node_rect *>(this_node)->set_animated(true);
 }
 
@@ -328,30 +334,44 @@ void knob::set_animated(bool _animated, int dimension) {}
 
 void knob::set_has_expression(bool expression) {}
 
-void knob::set_keyframe(float *value_ptr, int dimension)
+void knob::update_keyframe(float value, int dimension, bool force)
 {
-    QJsonArray values = get_param_value().toArray();
-    float value = values[dimension].toDouble();
-    if (value_ptr)
-        value = *value_ptr;
-
     QString curve = get_curve(dimension);
     QString new_curve;
 
     if (curve.isEmpty())
         new_curve = anim::set_keyframe(curve, project->frame, false, value);
-    else if (value_ptr)
+    else if (force)
         new_curve = anim::set_keyframe(curve, project->frame, false, value, true);
     else
         new_curve = anim::set_keyframe(curve, project->frame);
 
-    params->insert(name, -1);
+    QJsonArray curves = params->value(curve_name).toArray();
 
-    print(new_curve);
-    // values[dimension] = new_curve;
-    params->insert(curve_name, values);
+    // inicializa el array si esta vacia
+    if (curves.empty())
+    {
+        int dimensions = 2;
+        for (int i = 0; i < dimensions; i++)
+            curves.push_back("");
+    }
+
+    curves[dimension] = new_curve;
+    params->insert(curve_name, curves);
 
     update_knob_in_curve_editor();
+
+}
+
+void knob::set_keyframe(int dimension)
+{
+    QJsonArray values = get_param_value().toArray();
+    float value = values[dimension].toDouble();
+
+    values[dimension] = -1;
+    params->insert(name, values);
+
+    update_keyframe(value, dimension);
 }
 
 void knob::update_knob_in_curve_editor()

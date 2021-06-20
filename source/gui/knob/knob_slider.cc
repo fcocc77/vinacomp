@@ -12,7 +12,6 @@ knob_slider::knob_slider(knob_props props, float min, float max,
     , dimensions(false)
     , bidimensional(_bidimensional)
     , show_dimensions(nullptr)
-    , emmit_signal(true)
     , empty_widget(nullptr)
     , default_value(_default_value)
 
@@ -33,9 +32,11 @@ knob_slider::knob_slider(knob_props props, float min, float max,
     value_1_edit->set_menu(curve_menu);
     connect(value_1_edit, &line_edit::editingFinished, this, [=]() {
         values.first = value_1_edit->text().toDouble();
+
         if (!floating)
             values.first = round(values.first);
-        set_value_internal(values.first, 0);
+
+        set_value(values.first, 0);
     });
 
     value_1_edit->setMaximumWidth(50);
@@ -50,7 +51,6 @@ knob_slider::knob_slider(knob_props props, float min, float max,
             value_2_edit->setText(QString::number(value));
 
         to_emmit_signal();
-        emmit_signal = true;
     });
 
     layout->addWidget(value_1_edit);
@@ -66,7 +66,8 @@ knob_slider::knob_slider(knob_props props, float min, float max,
             values.second = value_2_edit->text().toDouble();
             if (!floating)
                 values.second = round(values.second);
-            set_value_internal(values.second, 1);
+
+            set_value(values.second, 1);
         });
         value_2_edit->setMaximumWidth(50);
 
@@ -182,9 +183,6 @@ void knob_slider::set_has_expression(bool expression)
 
 void knob_slider::to_emmit_signal()
 {
-    if (!emmit_signal)
-        return;
-
     update_handler();
     changed(values.first, values.second); // Signal
     update_value(QJsonArray{values.first, values.second});
@@ -214,24 +212,9 @@ void knob_slider::update_animated()
     set_value(value, 0, false);
 }
 
-void knob_slider::set_value_internal(float value, int dimension)
-{
-    if (dimensions)
-    {
-        if (dimension == 0)
-            value_1_edit->set_clamp_value(value);
-        else
-            value_2_edit->set_clamp_value(value);
-    }
-    else
-        set_value(value, dimension, true);
-
-    to_emmit_signal();
-}
-
 void knob_slider::separate_dimensions(bool separate)
 {
-    if (separate == dimensions)
+    if (separate == dimensions || !bidimensional)
         return;
 
     qt::set_property(show_dimensions, "active", separate);
@@ -254,12 +237,10 @@ void knob_slider::separate_dimensions(bool separate)
     }
 }
 
-void knob_slider::set_value(float value, int dimension, bool _emmit_signal)
+void knob_slider::set_value(float value, int dimension, bool emmit_signal)
 {
     if (!bidimensional && dimension >= 1)
         return;
-
-    emmit_signal = _emmit_signal;
 
     if (dimension == 0)
     {
@@ -272,11 +253,13 @@ void knob_slider::set_value(float value, int dimension, bool _emmit_signal)
         values.second = value;
         value_2_edit->set_clamp_value(value);
     }
+
+    if (emmit_signal)
+        to_emmit_signal();
 }
 
-void knob_slider::set_values(pair<float, float> _values, bool _emmit_signal)
+void knob_slider::set_values(pair<float, float> _values, bool emmit_signal)
 {
-    emmit_signal = _emmit_signal;
     values = _values;
 
     separate_dimensions(values.first != values.second);
@@ -286,6 +269,9 @@ void knob_slider::set_values(pair<float, float> _values, bool _emmit_signal)
 
     if (value_2_edit)
         value_2_edit->setText(QString::number(values.second));
+
+    if (emmit_signal)
+        to_emmit_signal();
 }
 
 float knob_slider::get_value(int dimension) const

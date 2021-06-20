@@ -24,14 +24,12 @@ private:
     bool dimensions;
     bool bidimensional;
     button *show_dimensions;
-    bool emmit_signal;
     QWidget *empty_widget;
     float default_value;
 
     pair<float, float> values;
 
     void separate_dimensions(bool separate);
-    void set_value_internal(float value, int dimension);
     void to_emmit_signal();
     void update_linked_knobs();
 

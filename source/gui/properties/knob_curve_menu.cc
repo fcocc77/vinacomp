@@ -90,6 +90,7 @@ knob_curve_menu::~knob_curve_menu() {}
 void knob_curve_menu::set_key()
 {
     current_knob->enable_animation();
+    current_knob->set_keyframe(current_dimension);
     current_knob->set_animated(true, current_dimension);
 }
 

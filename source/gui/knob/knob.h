@@ -43,7 +43,6 @@ private:
     bool linked;
     QString handler_knob_node_name, handler_knob_name;
 
-    void set_keyframe(float *value = nullptr, int dimension = -1);
     void update_knob_in_curve_editor();
 
 protected:
@@ -86,6 +85,8 @@ public:
     void restore_slaves_konbs();
     void enable_animation();
     void disable_animation();
+    void update_keyframe(float value, int dimension, bool force = false);
+    void set_keyframe(int dimension = -1);
 
     void set_edit_mode(bool enable);
     void set_editing_knob(bool editing);
@@ -109,7 +110,7 @@ public:
     inline QString get_tips() const;
     inline QString get_label() const;
     inline QString get_curve(int dimension = 0) const;
-    inline void set_curve(QString curve);
+    inline void set_curve(QString curve, int dimension = 0);
     inline bool is_animated() const;
     inline void set_visible(bool visible);
     inline QWidget *get_panel() const;
@@ -141,11 +142,6 @@ inline void knob::rename_handler_node_name(QString handler_name,
 inline QString knob::get_expression() const
 {
     return params->value(exp_name).toString();
-}
-
-inline QString knob::get_curve(int dimension) const
-{
-    return params->value(curve_name).toArray()[dimension].toString();
 }
 
 inline int knob::get_init_space_width() const
@@ -193,9 +189,16 @@ inline void knob::set_param_value(QJsonValue value)
     (*params)[name] = value;
 }
 
-inline void knob::set_curve(QString curve)
+inline QString knob::get_curve(int dimension) const
 {
-    (*params)[curve_name] = curve;
+    return params->value(curve_name).toArray()[dimension].toString();
+}
+
+inline void knob::set_curve(QString curve, int dimension)
+{
+    QJsonArray curves = params->value(curve_name).toArray();
+    curves[dimension] = curve;
+    (*params)[curve_name] = curves;
 }
 
 inline bool knob::is_animated() const
