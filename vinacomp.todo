@@ -8,6 +8,7 @@ general:
     ✔ file_dialog: al presionar escape mantiene igual el path, deberia cancelar @done(2021-06-01 21:40)
     ☐ file_dialog: en dir_mode que solo funcione 'set_folder' en el boton y no en los item de carpetas, en los item debe abrirse solamente
     ☐ file_dialog: que en 'dir_mode', la carpeta seleccionada quede en una variable aparte y no en 'files', crear funcion 'get_dir'
+    ☐ usar openGL opcion en cada nodo
 
 gui:
     videovina:
