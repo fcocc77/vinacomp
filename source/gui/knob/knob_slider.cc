@@ -23,6 +23,9 @@ knob_slider::knob_slider(knob_props props, float min, float max,
     this->set_knob_layout(layout);
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
+    if (_bidimensional)
+        knob::set_dimensions(2);
+
     QMenu *curve_menu = nullptr;
     if (props.panel)
         curve_menu = static_cast<trim_panel *>(props.panel)->get_curve_menu();
@@ -145,7 +148,8 @@ void knob_slider::set_animated(bool animated, int dimension)
     if (dimension == -1)
     {
         qt::set_property(value_1_edit, "animated", animated);
-        qt::set_property(value_2_edit, "animated", animated);
+        if (bidimensional)
+            qt::set_property(value_2_edit, "animated", animated);
     }
     else if (dimension == 0)
         qt::set_property(value_1_edit, "animated", animated);
@@ -185,7 +189,12 @@ void knob_slider::to_emmit_signal()
 {
     update_handler();
     changed(values.first, values.second); // Signal
-    update_value(QJsonArray{values.first, values.second});
+
+    if (bidimensional)
+        update_value(QJsonArray{values.first, values.second});
+    else
+        update_value(QJsonArray{values.first});
+
     update_linked_knobs();
     to_node_panel(this);
 }

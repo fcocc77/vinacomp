@@ -51,6 +51,7 @@ protected:
     QString name, label, tips, type;
     QString curve_name, exp_name, handler_name, slaves_name;
     QWidget *over_line_widget;
+    int dimensions;
 
     QJsonArray slaves_knobs;
 
@@ -119,6 +120,7 @@ public:
     inline QJsonObject get_knob_data() const;
     inline int get_init_space_width() const;
     QWidget *get_node_view() const;
+    inline void set_dimensions(int dimensions);
 
     virtual void update_animated();
     virtual void restore_param();
@@ -131,6 +133,11 @@ public:
 signals:
     void to_node_panel(knob *_knob);
 };
+
+inline void knob::set_dimensions(int _dimensions)
+{
+    dimensions = _dimensions;
+}
 
 inline void knob::rename_handler_node_name(QString handler_name,
                                            QString new_handler_name)
