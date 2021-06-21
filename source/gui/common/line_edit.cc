@@ -10,6 +10,10 @@ line_edit::line_edit(QWidget *__knob, int _dimension)
     , _knob(__knob)
     , dimension(_dimension)
 {
+    connect(this, &QLineEdit::editingFinished, this, [=]() {
+        float value = this->text().toDouble();
+        changed(value);
+    });
 }
 
 void line_edit::set_menu(QMenu *_menu)

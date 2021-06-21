@@ -26,15 +26,11 @@ knob_slider::knob_slider(knob_props props, float min, float max,
     if (_bidimensional)
         knob::set_dimensions(2);
 
-    QMenu *curve_menu = nullptr;
-    if (props.panel)
-        curve_menu = static_cast<trim_panel *>(props.panel)->get_curve_menu();
-
     // value 1
     value_1_edit = new line_edit(this, 0);
     value_1_edit->set_menu(curve_menu);
-    connect(value_1_edit, &line_edit::editingFinished, this, [=]() {
-        values.first = value_1_edit->text().toDouble();
+    connect(value_1_edit, &line_edit::changed, this, [=](float value) {
+        values.first = value;
 
         if (!floating)
             values.first = round(values.first);
@@ -65,8 +61,8 @@ knob_slider::knob_slider(knob_props props, float min, float max,
         value_2_edit->set_menu(curve_menu);
         value_2_edit->hide();
 
-        connect(value_2_edit, &line_edit::editingFinished, this, [=]() {
-            values.second = value_2_edit->text().toDouble();
+        connect(value_2_edit, &line_edit::changed, this, [=](float value) {
+            values.second = value;
             if (!floating)
                 values.second = round(values.second);
 

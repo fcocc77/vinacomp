@@ -22,12 +22,16 @@ knob::knob(knob_props props)
     , _vinacomp(props._vinacomp)
     , over_line_widget(nullptr)
     , dimensions(1)
+    , curve_menu(nullptr)
     , knob_data(props.knob_data)
     , params(props.params)
     , init_space_width(0)
     , project(props.project)
     , animated(false)
 {
+    if (props.panel)
+        curve_menu = static_cast<trim_panel *>(props.panel)->get_curve_menu();
+
     // name and type
     name = knob_data.value("name").toString();
     type = knob_data.value("type").toString();
@@ -214,13 +218,12 @@ void knob::set_animatable(bool _animatable)
     animation_button->set_icon("key", icon_size);
     knob_layout->addWidget(animation_button);
 
-    knob_curve_menu *curve_menu =
-        static_cast<trim_panel *>(panel)->get_curve_menu();
+    knob_curve_menu *_curve_menu = static_cast<knob_curve_menu *>(curve_menu);
 
     connect(animation_button, &button::pressed, this,
-            [=]() { curve_menu->set_knob(this); });
+            [=]() { _curve_menu->set_knob(this); });
 
-    animation_button->setMenu(curve_menu);
+    animation_button->setMenu(_curve_menu);
 }
 
 QJsonValue knob::get_param_value() const

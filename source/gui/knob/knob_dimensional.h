@@ -10,12 +10,13 @@
 #include <knob.h>
 #include <qt.h>
 #include <slider.h>
+#include <line_edit.h>
 
 class knob_dimensional : public knob
 {
     Q_OBJECT
 private:
-    QList<QLineEdit *> dimensions_edits;
+    QList<line_edit *> dimensions_edits;
     QList<float> default_values;
     QList<float> values;
 
@@ -24,6 +25,7 @@ private:
 
     void restore_default() override;
     void restore_param() override;
+    void set_animated(bool animated, int dimension = -1) override;
 
     virtual void changed_values(QList<float> values);
 

@@ -13,13 +13,16 @@ knob_dimensional::knob_dimensional(knob_props props, int _dimensions_count,
     layout->setMargin(0);
 
     layout->addWidget(init_space);
+    knob::set_dimensions(dimensions_count);
 
-    for (int i = 0; i < dimensions_count; i++)
+    for (int dimension = 0; dimension < dimensions_count; dimension++)
     {
-        float value = default_values.value(i);
-        QLineEdit *dimension_edit = new QLineEdit(QString::number(value));
+        float value = default_values.value(dimension);
+        line_edit *dimension_edit = new line_edit(this, dimension);
+        dimension_edit->set_menu(curve_menu);
+        dimension_edit->set_clamp_value(value);
 
-        connect(dimension_edit, &QLineEdit::editingFinished, this, [=]() {
+        connect(dimension_edit, &line_edit::changed, this, [=](float value) {
             values.clear();
             for (int i = 0; i < dimensions_count; i++)
                 values.push_back(get_value(i));
@@ -61,6 +64,21 @@ void knob_dimensional::restore_param()
     set_values(default_dimensions, false);
 }
 
+void knob_dimensional::set_animated(bool animated, int dimension)
+{
+    if (dimension == -1)
+    {
+        for (line_edit *edit : dimensions_edits)
+            qt::set_property(edit, "animated", animated);
+    }
+    else
+    {
+        qt::set_property(dimensions_edits[dimension], "animated", animated);
+    }
+
+    knob::set_animated(animated, dimension);
+}
+
 void knob_dimensional::emmit_signal()
 {
     changed_values(values); // Signal
@@ -84,7 +102,7 @@ float knob_dimensional::get_value(int dimension) const
     if (dimension >= dimensions_edits.count())
         return 0;
 
-    return dimensions_edits.value(dimension)->text().toInt();
+    return dimensions_edits.value(dimension)->get_value();
 }
 
 QList<float> knob_dimensional::get_values() const

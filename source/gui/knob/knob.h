@@ -52,6 +52,7 @@ protected:
     QString curve_name, exp_name, handler_name, slaves_name;
     QWidget *over_line_widget;
     int dimensions;
+    QMenu *curve_menu;
 
     QJsonArray slaves_knobs;
 
