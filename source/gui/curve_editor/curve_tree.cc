@@ -19,19 +19,26 @@ curve_tree::curve_tree()
         // los parametros y retorna
         if (!parent)
         {
-            QList<QString> params_name;
+            QList<QList<QString>> params;
             for (auto child : get_children(item))
             {
-                params_name.push_back(child->text(0));
+                QString param_dimension_name = child->text(0);
+                QString param_name = param_dimension_name.split('.')[0];
+                QString dimension_name = param_dimension_name.split('.')[1];
+
+                params.push_back({param_name, dimension_name});
                 child->setSelected(true);
             }
-            clicked(item->text(0), params_name);
+            clicked(item->text(0), params);
             return;
         }
 
         QString node_name = parent->text(0);
-        QString param_name = item->text(0);
-        clicked(node_name, {param_name});
+        QString param_dimension_name = item->text(0);
+        QString param_name = param_dimension_name.split('.')[0];
+        QString dimension_name = param_dimension_name.split('.')[1];
+
+        clicked(node_name, {{param_name, dimension_name}});
     });
 }
 
@@ -68,7 +75,7 @@ QTreeWidgetItem *curve_tree::get_param_item(QTreeWidgetItem *node_item,
 }
 
 void curve_tree::add_item(QString node_name, QString param_name,
-                          QString dimension, QColor color)
+                          QString dimension_name, QColor color)
 {
     QTreeWidgetItem *node_item = get_node_item(node_name);
     if (!node_item)
@@ -81,29 +88,31 @@ void curve_tree::add_item(QString node_name, QString param_name,
     }
     node_item->setBackgroundColor(0, color);
 
-    QTreeWidgetItem *param_item = get_param_item(node_item, param_name);
+    QString param_dimension_name = param_name + '.' + dimension_name;
+
+    QTreeWidgetItem *param_item =
+        get_param_item(node_item, param_dimension_name);
+
     if (!param_item)
     {
         param_item = new QTreeWidgetItem(node_item);
-        param_item->setText(0, param_name);
+        param_item->setText(0, param_dimension_name);
 
         node_item->addChild(param_item);
         param_item->setExpanded(true);
     }
-
-    // QTreeWidgetItem *dimension_item = new QTreeWidgetItem();
-    // dimension_item->setText(0, "x");
-
-    // param_item->addChild(dimension_item);
 }
 
-void curve_tree::delete_item(QString node_name, QString param_name)
+void curve_tree::delete_item(QString node_name, QString param_name,
+                             QString dimension_name)
 {
     QTreeWidgetItem *node_item = get_node_item(node_name);
     if (!node_item)
         return;
 
-    QTreeWidgetItem *param_item = get_param_item(node_item, param_name);
+    QString param_dimension_name = param_name + '.' + dimension_name;
+    QTreeWidgetItem *param_item = get_param_item(node_item, param_dimension_name);
+
     if (param_item)
         delete param_item;
 

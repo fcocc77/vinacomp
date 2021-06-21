@@ -27,15 +27,15 @@ private:
     void delete_node_item(QString node_name);
     void delete_keyframes(QMap<QString, QList<int>> curves);
 
-    void add_param_item(trim_panel *panel, QString param_name);
-    void remove_param_item(trim_panel *panel, QString param_name);
+    void add_param_item(trim_panel *panel, QString param_name, QString dimension_name);
+    void remove_param_item(trim_panel *panel, QString param_name, QString dimension_name);
 
 public:
     curve_editor(QWidget *_vinacomp);
     ~curve_editor();
 
     void update_from_trim_panel(trim_panel *_trim_panel);
-    void update_curve(knob *_knob, bool from_knob = false);
+    void update_curve(knob *_knob, int dimension = 0, bool from_knob = false);
     void delete_panel(trim_panel *panel);
     inline curve_view *get_curve_view() const;
 };

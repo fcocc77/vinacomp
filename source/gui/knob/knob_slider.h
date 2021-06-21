@@ -21,7 +21,7 @@ private:
     slider *_slider;
     number_box *value_1_edit;
     number_box *value_2_edit;
-    bool dimensions;
+    bool separate_dimensions;
     bool bidimensional;
     button *show_dimensions;
     QWidget *empty_widget;
@@ -29,7 +29,7 @@ private:
 
     pair<float, float> values;
 
-    void separate_dimensions(bool separate);
+    void set_separate_dimensions(bool separate);
     void to_emmit_signal();
     void update_linked_knobs();
 

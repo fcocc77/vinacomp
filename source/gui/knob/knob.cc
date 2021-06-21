@@ -352,9 +352,9 @@ void knob::disable_animation(int _dimension)
         }
 
         update_value(values);
-    }
 
-    update_knob_in_curve_editor();
+        update_knob_in_curve_editor(dimension);
+    }
 }
 
 void knob::set_animated(bool _animated, int dimension) {}
@@ -385,8 +385,7 @@ void knob::update_keyframe(float value, int dimension, bool force)
     curves[dimension] = new_curve;
     params->insert(curve_name, curves);
 
-    update_knob_in_curve_editor();
-
+    update_knob_in_curve_editor(dimension);
 }
 
 void knob::set_keyframe(int _dimension)
@@ -411,12 +410,25 @@ void knob::set_keyframe(int _dimension)
     }
 }
 
-void knob::update_knob_in_curve_editor()
+void knob::update_knob_in_curve_editor(int dimension)
 {
     curve_editor *_curve_editor =
         static_cast<vinacomp *>(_vinacomp)->get_curve_editor();
 
-    _curve_editor->update_curve(this, true);
+    _curve_editor->update_curve(this, dimension, true);
+}
+
+QString knob::get_dimension_name(int dimension) const
+{
+    // ! falta buscar el nombre correcto de la dimension
+    return "dim_" + QString::number(dimension);
+}
+
+int knob::get_dimension_by_name(QString dimension_name) const
+{
+    // ! crear lista de dimensiones de nombre
+    QList<QString> dimensions_name = {"dim_0", "dim_1", "dim_2"};
+    return dimensions_name.indexOf(dimension_name);
 }
 
 void knob::set_expression(QString expression)
@@ -592,4 +604,13 @@ bool knob::is_animated_some_dimension() const
         return true;
 
     return false;
+}
+
+bool knob::is_animated(int dimension) const
+{
+    if (dimension == -1)
+        return animated;
+
+    QString curve = params->value(curve_name).toArray()[dimension].toString();
+    return !curve.isEmpty();
 }

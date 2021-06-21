@@ -43,7 +43,7 @@ private:
     bool linked;
     QString handler_knob_node_name, handler_knob_name;
 
-    void update_knob_in_curve_editor();
+    void update_knob_in_curve_editor(int dimension);
 
 protected:
     QWidget *_vinacomp;
@@ -89,6 +89,8 @@ public:
     void disable_animation(int dimension = -1);
     void update_keyframe(float value, int dimension, bool force = false);
     void set_keyframe(int dimension = -1);
+    QString get_dimension_name(int dimension) const;
+    int get_dimension_by_name(QString dimension_name) const;
 
     void set_edit_mode(bool enable);
     void set_editing_knob(bool editing);
@@ -113,7 +115,7 @@ public:
     inline QString get_label() const;
     inline QString get_curve(int dimension = 0) const;
     inline void set_curve(QString curve, int dimension = 0);
-    inline bool is_animated() const;
+    bool is_animated(int dimension = -1) const;
     bool is_animated_some_dimension() const;
     inline void set_visible(bool visible);
     inline QWidget *get_panel() const;
@@ -123,6 +125,7 @@ public:
     inline int get_init_space_width() const;
     QWidget *get_node_view() const;
     inline void set_dimensions(int dimensions);
+    inline int get_dimensions() const;
 
     virtual void update_animated();
     virtual void restore_param();
@@ -135,6 +138,11 @@ public:
 signals:
     void to_node_panel(knob *_knob);
 };
+
+inline int knob::get_dimensions() const
+{
+    return dimensions;
+}
 
 inline void knob::set_dimensions(int _dimensions)
 {
@@ -208,11 +216,6 @@ inline void knob::set_curve(QString curve, int dimension)
     QJsonArray curves = params->value(curve_name).toArray();
     curves[dimension] = curve;
     (*params)[curve_name] = curves;
-}
-
-inline bool knob::is_animated() const
-{
-    return animated;
 }
 
 inline void knob::set_knob_layout(QHBoxLayout *layout)

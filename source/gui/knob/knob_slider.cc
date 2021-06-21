@@ -9,7 +9,7 @@ knob_slider::knob_slider(knob_props props, float min, float max,
                          bool floating, bool centered_handler)
     : knob(props)
     , value_2_edit(nullptr)
-    , dimensions(false)
+    , separate_dimensions(false)
     , bidimensional(_bidimensional)
     , show_dimensions(nullptr)
     , empty_widget(nullptr)
@@ -74,7 +74,7 @@ knob_slider::knob_slider(knob_props props, float min, float max,
         show_dimensions = new button();
         show_dimensions->setText("2");
         connect(show_dimensions, &QPushButton::clicked, this,
-                [=]() { separate_dimensions(!dimensions); });
+                [=]() { set_separate_dimensions(!separate_dimensions); });
 
         empty_widget = new QWidget();
         empty_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -111,7 +111,7 @@ void knob_slider::restore_default()
     set_animated(false);
     set_value(default_value, 0, false);
     set_value(default_value, 1, false);
-    separate_dimensions(false);
+    set_separate_dimensions(false);
 }
 
 void knob_slider::restore_param()
@@ -209,17 +209,24 @@ void knob_slider::update_animated()
 {
     int frame = project->frame;
 
-    QString curve = get_curve();
-    bool keyframe = false;
-    float value = anim::get_value(curve, frame, &keyframe);
+    for (int dimension = 0; dimension < dimensions; dimension++)
+    {
+        QString curve = get_curve(dimension);
+        bool keyframe = false;
+        float value = anim::get_value(curve, frame, &keyframe);
 
-    qt::set_property(value_1_edit, "keyframe", keyframe);
-    set_value(value, 0, false);
+        if (dimension == 0)
+            qt::set_property(value_1_edit, "keyframe", keyframe);
+        else
+            qt::set_property(value_2_edit, "keyframe", keyframe);
+
+        set_value(value, dimension, false);
+    }
 }
 
-void knob_slider::separate_dimensions(bool separate)
+void knob_slider::set_separate_dimensions(bool separate)
 {
-    if (separate == dimensions || !bidimensional)
+    if (separate == separate_dimensions || !bidimensional)
         return;
 
     qt::set_property(show_dimensions, "active", separate);
@@ -228,7 +235,7 @@ void knob_slider::separate_dimensions(bool separate)
     value_2_edit->setVisible(separate);
     empty_widget->setVisible(separate);
 
-    dimensions = separate;
+    separate_dimensions = separate;
 
     // si las dimensiones no son separadas, calcula el promedio de las 2
     // dimensiones
@@ -267,7 +274,7 @@ void knob_slider::set_values(pair<float, float> _values, bool emmit_signal)
 {
     values = _values;
 
-    separate_dimensions(values.first != values.second);
+    set_separate_dimensions(values.first != values.second);
 
     value_1_edit->setText(QString::number(values.first));
     _slider->set_value(_values.first);
