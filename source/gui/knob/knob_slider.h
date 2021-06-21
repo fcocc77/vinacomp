@@ -30,7 +30,7 @@ private:
     pair<float, float> values;
 
     void set_separate_dimensions(bool separate);
-    void to_emmit_signal();
+    void to_emmit_signal(int dimension = -1);
     void update_linked_knobs();
 
     void restore_param() override;

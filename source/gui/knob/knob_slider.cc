@@ -181,15 +181,15 @@ void knob_slider::set_has_expression(bool expression)
     _slider->set_disable(expression);
 }
 
-void knob_slider::to_emmit_signal()
+void knob_slider::to_emmit_signal(int dimension)
 {
     update_handler();
     changed(values.first, values.second); // Signal
 
     if (bidimensional)
-        update_value(QJsonArray{values.first, values.second});
+        update_value(QJsonArray{values.first, values.second}, dimension);
     else
-        update_value(QJsonArray{values.first});
+        update_value(QJsonArray{values.first}, dimension);
 
     update_linked_knobs();
     to_node_panel(this);
@@ -211,6 +211,9 @@ void knob_slider::update_animated()
 
     for (int dimension = 0; dimension < dimensions; dimension++)
     {
+        if (!is_animated(dimension))
+            continue;
+
         QString curve = get_curve(dimension);
         bool keyframe = false;
         float value = anim::get_value(curve, frame, &keyframe);
@@ -267,7 +270,7 @@ void knob_slider::set_value(float value, int dimension, bool emmit_signal)
     }
 
     if (emmit_signal)
-        to_emmit_signal();
+        to_emmit_signal(dimension);
 }
 
 void knob_slider::set_values(pair<float, float> _values, bool emmit_signal)

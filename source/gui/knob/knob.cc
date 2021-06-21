@@ -266,7 +266,7 @@ void knob::restore_slaves_konbs()
     slaves_knobs = params->value(slaves_name).toArray();
 }
 
-void knob::update_value(QJsonValue value)
+void knob::update_value(QJsonValue value, int dimension)
 {
     if (!params)
         return;
@@ -283,20 +283,30 @@ void knob::update_value(QJsonValue value)
             QJsonArray values_dimensions = value.toArray();
             QJsonArray curves = params->value(curve_name).toArray();
 
+            // si existe alguna dimension animada deja la dimension no animada
+            // en -1000000000
             QJsonArray values;
-
-            for (int dimension = 0; dimension < dimensions; dimension++)
+            for (int d = 0; d < dimensions; d++)
             {
-                QString curve = curves[dimension].toString();
-                if (!curve.isEmpty())
-                {
-                    update_keyframe(values_dimensions[dimension].toDouble(), dimension, true);
+                if (is_animated(d))
                     values.push_back(-1000000000);
-                }
                 else
-                {
-                    values.push_back(values_dimensions[dimension]);
-                }
+                    values.push_back(values_dimensions[d]);
+            }
+            //
+
+            if (dimension == -1)
+            {
+                for (int d = 0; d < dimensions; d++)
+                    if (!curves[d].toString().isEmpty())
+                        update_keyframe(values_dimensions[d].toDouble(),
+                                        dimension, true);
+            }
+            else
+            {
+                if (!curves[dimension].toString().isEmpty())
+                    update_keyframe(values_dimensions[dimension].toDouble(),
+                                    dimension, true);
             }
 
             params->insert(name, values);

@@ -64,7 +64,7 @@ protected:
     bool animated;
 
     void update_handler();
-    void update_value(QJsonValue value);
+    void update_value(QJsonValue value, int dimension = -1);
     inline QJsonValue get_default() const;
     virtual void set_has_expression(bool expression);
 
