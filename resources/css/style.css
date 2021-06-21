@@ -23,7 +23,7 @@ QPushButton {
     width: 0px; }
 
 QMainWindow {
-  qproperty-windowIcon: url("{{path}}/resources/images/vinacomp.png"); }
+  qproperty-windowIcon: url("/home/pancho/Documents/develop/vinacomp/resources/images/vinacomp.png"); }
 
 QMenu {
   background-color: #292d32;
@@ -141,49 +141,49 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left
   #slider #slider_handler[disable=false]:hover {
     background: #ffcc00; }
 
-#knob_floating #init_space, #knob_integer #init_space, #knob_dimensions #init_space {
+#knob_floating #init_space, #knob_integer #init_space, #knob_dimensions #init_space, #knob_color #init_space {
   background: None; }
 
-#knob_floating QLineEdit, #knob_integer QLineEdit, #knob_dimensions QLineEdit {
+#knob_floating QLineEdit, #knob_integer QLineEdit, #knob_dimensions QLineEdit, #knob_color QLineEdit {
   color: #aeb4bc;
   padding: 3px;
   border-radius: 2px;
   background: #1e2024;
   border: 1px solid #1e2024; }
-  #knob_floating QLineEdit:focus, #knob_integer QLineEdit:focus, #knob_dimensions QLineEdit:focus {
+  #knob_floating QLineEdit:focus, #knob_integer QLineEdit:focus, #knob_dimensions QLineEdit:focus, #knob_color QLineEdit:focus {
     border-color: #8f7612; }
-  #knob_floating QLineEdit[animated=true], #knob_integer QLineEdit[animated=true], #knob_dimensions QLineEdit[animated=true] {
+  #knob_floating QLineEdit[animated=true], #knob_integer QLineEdit[animated=true], #knob_dimensions QLineEdit[animated=true], #knob_color QLineEdit[animated=true] {
     background-color: #3a414b;
     border-color: #5b758d;
     color: #95cfff; }
-    #knob_floating QLineEdit[animated=true]:focus, #knob_integer QLineEdit[animated=true]:focus, #knob_dimensions QLineEdit[animated=true]:focus {
+    #knob_floating QLineEdit[animated=true]:focus, #knob_integer QLineEdit[animated=true]:focus, #knob_dimensions QLineEdit[animated=true]:focus, #knob_color QLineEdit[animated=true]:focus {
       border-color: #95cfff; }
-  #knob_floating QLineEdit[keyframe=true], #knob_integer QLineEdit[keyframe=true], #knob_dimensions QLineEdit[keyframe=true] {
+  #knob_floating QLineEdit[keyframe=true], #knob_integer QLineEdit[keyframe=true], #knob_dimensions QLineEdit[keyframe=true], #knob_color QLineEdit[keyframe=true] {
     background-color: #304154;
     border-color: #0b7bd9;
     color: #66baff; }
-    #knob_floating QLineEdit[keyframe=true]:focus, #knob_integer QLineEdit[keyframe=true]:focus, #knob_dimensions QLineEdit[keyframe=true]:focus {
+    #knob_floating QLineEdit[keyframe=true]:focus, #knob_integer QLineEdit[keyframe=true]:focus, #knob_dimensions QLineEdit[keyframe=true]:focus, #knob_color QLineEdit[keyframe=true]:focus {
       border-color: #008cff; }
-  #knob_floating QLineEdit[expression=true], #knob_integer QLineEdit[expression=true], #knob_dimensions QLineEdit[expression=true] {
+  #knob_floating QLineEdit[expression=true], #knob_integer QLineEdit[expression=true], #knob_dimensions QLineEdit[expression=true], #knob_color QLineEdit[expression=true] {
     background-color: #3b3e41;
     border-color: #726741;
     color: #ffd342; }
-    #knob_floating QLineEdit[expression=true]:focus, #knob_integer QLineEdit[expression=true]:focus, #knob_dimensions QLineEdit[expression=true]:focus {
+    #knob_floating QLineEdit[expression=true]:focus, #knob_integer QLineEdit[expression=true]:focus, #knob_dimensions QLineEdit[expression=true]:focus, #knob_color QLineEdit[expression=true]:focus {
       border-color: #ffd342; }
-  #knob_floating QLineEdit[disable=true], #knob_integer QLineEdit[disable=true], #knob_dimensions QLineEdit[disable=true] {
+  #knob_floating QLineEdit[disable=true], #knob_integer QLineEdit[disable=true], #knob_dimensions QLineEdit[disable=true], #knob_color QLineEdit[disable=true] {
     background-color: #25282d;
     border-color: #3c4149;
     color: #474d57; }
-    #knob_floating QLineEdit[disable=true]:focus, #knob_integer QLineEdit[disable=true]:focus, #knob_dimensions QLineEdit[disable=true]:focus {
+    #knob_floating QLineEdit[disable=true]:focus, #knob_integer QLineEdit[disable=true]:focus, #knob_dimensions QLineEdit[disable=true]:focus, #knob_color QLineEdit[disable=true]:focus {
       border-color: #3c4149; }
-  #knob_floating QLineEdit[error=true], #knob_integer QLineEdit[error=true], #knob_dimensions QLineEdit[error=true] {
+  #knob_floating QLineEdit[error=true], #knob_integer QLineEdit[error=true], #knob_dimensions QLineEdit[error=true], #knob_color QLineEdit[error=true] {
     background-color: #44333b;
     border-color: #9c1114;
     color: #c80000; }
-    #knob_floating QLineEdit[error=true]:focus, #knob_integer QLineEdit[error=true]:focus, #knob_dimensions QLineEdit[error=true]:focus {
+    #knob_floating QLineEdit[error=true]:focus, #knob_integer QLineEdit[error=true]:focus, #knob_dimensions QLineEdit[error=true]:focus, #knob_color QLineEdit[error=true]:focus {
       border-color: #c80000; }
 
-#knob_floating QPushButton, #knob_integer QPushButton, #knob_dimensions QPushButton {
+#knob_floating QPushButton, #knob_integer QPushButton, #knob_dimensions QPushButton, #knob_color QPushButton {
   padding: 7px;
   border-radius: 2px;
   background: #3c4149;
@@ -191,24 +191,24 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left
   width: 25px;
   height: 22px;
   padding: 0; }
-  #knob_floating QPushButton::hover, #knob_integer QPushButton::hover, #knob_dimensions QPushButton::hover {
+  #knob_floating QPushButton::hover, #knob_integer QPushButton::hover, #knob_dimensions QPushButton::hover, #knob_color QPushButton::hover {
     color: white;
     border-color: #444950;
     background: #444950; }
-  #knob_floating QPushButton::pressed, #knob_integer QPushButton::pressed, #knob_dimensions QPushButton::pressed {
+  #knob_floating QPushButton::pressed, #knob_integer QPushButton::pressed, #knob_dimensions QPushButton::pressed, #knob_color QPushButton::pressed {
     background: #353941;
     color: #ffcc00;
     border-color: #635d3a; }
-  #knob_floating QPushButton[active=true], #knob_integer QPushButton[active=true], #knob_dimensions QPushButton[active=true] {
+  #knob_floating QPushButton[active=true], #knob_integer QPushButton[active=true], #knob_dimensions QPushButton[active=true], #knob_color QPushButton[active=true] {
     background: #272a30;
     border-color: #272a30;
     color: #ffcc00;
     border-color: #464845; }
-    #knob_floating QPushButton[active=true]:hover, #knob_integer QPushButton[active=true]:hover, #knob_dimensions QPushButton[active=true]:hover {
+    #knob_floating QPushButton[active=true]:hover, #knob_integer QPushButton[active=true]:hover, #knob_dimensions QPushButton[active=true]:hover, #knob_color QPushButton[active=true]:hover {
       background: #24262c; }
-  #knob_floating QPushButton[disable=true], #knob_integer QPushButton[disable=true], #knob_dimensions QPushButton[disable=true] {
+  #knob_floating QPushButton[disable=true], #knob_integer QPushButton[disable=true], #knob_dimensions QPushButton[disable=true], #knob_color QPushButton[disable=true] {
     color: #393d45; }
-    #knob_floating QPushButton[disable=true][active=true], #knob_integer QPushButton[disable=true][active=true], #knob_dimensions QPushButton[disable=true][active=true] {
+    #knob_floating QPushButton[disable=true][active=true], #knob_integer QPushButton[disable=true][active=true], #knob_dimensions QPushButton[disable=true][active=true], #knob_color QPushButton[disable=true][active=true] {
       border-color: #272a30; }
 
 #knob_check_box QPushButton, #knob_text QPushButton, #knob_choice QPushButton, #knob_file QPushButton, #knob_group QPushButton, #knob_separator QPushButton, #knob_label QPushButton {

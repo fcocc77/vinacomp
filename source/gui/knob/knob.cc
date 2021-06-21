@@ -204,8 +204,7 @@ void knob::set_edit_mode(bool enable)
 
 void knob::update_animated() {}
 
-void knob::set_animatable(bool _animatable)
-{
+void knob::set_animatable(bool _animatable) {
     if (!_animatable)
         return;
 
@@ -279,7 +278,7 @@ void knob::update_value(QJsonValue value)
     }
     else
     {
-        if (type == "floating")
+        if (dimensions > 1)
         {
             QJsonArray values_dimensions = value.toArray();
             QJsonArray curves = params->value(curve_name).toArray();

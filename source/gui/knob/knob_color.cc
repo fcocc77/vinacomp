@@ -19,6 +19,7 @@ knob_color::knob_color(knob_props props, float min, float max, float r, float g,
     , hue_option(false)
     , color_picker_option(false)
 {
+    knob::set_dimensions(4);
     this->setObjectName("knob_color");
 
     main_layout = new QHBoxLayout(this);
@@ -39,20 +40,30 @@ knob_color::knob_color(knob_props props, float min, float max, float r, float g,
     hsl_box = new QWidget(this);
     hsl_box_layout = new QVBoxLayout(hsl_box);
 
-    red_hedit = new line_edit(this);
-    green_hedit = new line_edit(this);
-    blue_hedit = new line_edit(this);
-    alpha_hedit = new line_edit(this);
+    red_hedit = new line_edit(this, 0);
+    green_hedit = new line_edit(this, 1);
+    blue_hedit = new line_edit(this, 2);
+    alpha_hedit = new line_edit(this, 3);
 
-    mono_slider =
-        new knob_color_slider(min, max, default_red, centered_handler);
-    red_slider = new knob_color_slider(min, max, default_red, centered_handler, "R");
-    green_slider =
-        new knob_color_slider(min, max, default_green, centered_handler, "G");
-    blue_slider =
-        new knob_color_slider(min, max, default_blue, centered_handler, "B");
-    alpha_slider =
-        new knob_color_slider(min, max, default_alpha, centered_handler, "A");
+    red_hedit->set_menu(knob::curve_menu);
+    green_hedit->set_menu(knob::curve_menu);
+    blue_hedit->set_menu(knob::curve_menu);
+    alpha_hedit->set_menu(knob::curve_menu);
+
+    mono_slider = new knob_color_slider(min, max, default_red, centered_handler,
+                                        "", this, -1, curve_menu);
+
+    red_slider = new knob_color_slider(min, max, default_red, centered_handler,
+                                       "R", this, 0, curve_menu);
+
+    green_slider = new knob_color_slider(
+        min, max, default_green, centered_handler, "G", this, 1, curve_menu);
+
+    blue_slider = new knob_color_slider(
+        min, max, default_blue, centered_handler, "B", this, 2, curve_menu);
+
+    alpha_slider = new knob_color_slider(
+        min, max, default_alpha, centered_handler, "A", this, 3, curve_menu);
 
     hue_slider = new knob_color_slider(0, 360, 0, centered_handler, "H º");
     sat_slider = new knob_color_slider(0, 1, 1, centered_handler, "S %");
@@ -135,6 +146,52 @@ void knob_color::restore_default()
 {
     knob::restore_default();
     set_color(default_red, default_green, default_blue, default_alpha, false);
+}
+
+void knob_color::set_animated(bool animated, int dimension)
+{
+    if (dimension == -1)
+    {
+        qt::set_property(red_hedit, "animated", animated);
+        qt::set_property(green_hedit, "animated", animated);
+        qt::set_property(blue_hedit, "animated", animated);
+        qt::set_property(alpha_hedit, "animated", animated);
+
+        qt::set_property(red_slider->get_line_edit(), "animated", animated);
+        qt::set_property(green_slider->get_line_edit(), "animated", animated);
+        qt::set_property(blue_slider->get_line_edit(), "animated", animated);
+        qt::set_property(alpha_slider->get_line_edit(), "animated", animated);
+
+        qt::set_property(mono_slider->get_line_edit(), "animated", animated);
+    }
+    else
+    {
+        if (dimension == 0)
+        {
+            qt::set_property(red_hedit, "animated", animated);
+            qt::set_property(red_slider->get_line_edit(), "animated", animated);
+        }
+        else if (dimension == 1)
+        {
+            qt::set_property(green_hedit, "animated", animated);
+            qt::set_property(green_slider->get_line_edit(), "animated",
+                             animated);
+        }
+        else if (dimension == 2)
+        {
+            qt::set_property(blue_hedit, "animated", animated);
+            qt::set_property(blue_slider->get_line_edit(), "animated",
+                             animated);
+        }
+        else if (dimension == 3)
+        {
+            qt::set_property(alpha_hedit, "animated", animated);
+            qt::set_property(alpha_slider->get_line_edit(), "animated",
+                             animated);
+        }
+    }
+
+    knob::set_animated(animated, dimension);
 }
 
 void knob_color::restore_param()

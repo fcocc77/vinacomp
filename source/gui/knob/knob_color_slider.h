@@ -5,6 +5,7 @@
 #include <QLineEdit>
 #include <line_edit.h>
 #include <QHBoxLayout>
+#include <QMenu>
 
 #include <slider.h>
 
@@ -40,7 +41,9 @@ private:
 
 public:
     knob_color_slider(float min, float max, float default_value,
-                      bool centered_handler, QString label = "");
+                      bool centered_handler, QString label,
+                      QWidget *knob = nullptr, int dimension = -1,
+                      QMenu *curve_menu = nullptr);
     ~knob_color_slider();
 
     void set_value(float value, bool emmit_signal = true);
@@ -49,10 +52,16 @@ public:
     void set_hsl(float hue, float sat, float level);
 
     void set_colored_slider(QString hsl_type);
+    inline line_edit *get_line_edit() const;
 
 signals:
     void changed(float value);
 };
+
+inline line_edit *knob_color_slider::get_line_edit() const
+{
+    return edit;
+}
 
 inline float knob_color_slider::get_value() const
 {

@@ -3,14 +3,18 @@
 #include <util.h>
 
 knob_color_slider::knob_color_slider(float min, float max, float default_value,
-                                     bool centered_handler, QString _label)
+                                     bool centered_handler, QString _label,
+                                     QWidget *knob, int dimension,
+                                     QMenu *curve_menu)
     : layout(new QHBoxLayout(this))
-    , edit(new line_edit(this))
+    , edit(new line_edit(knob, dimension))
     , _slider(new slider(min, max, default_value, true, centered_handler))
     , label(new QLabel(_label))
     , _colored_slider(nullptr)
     , value(default_value)
 {
+    edit->set_menu(curve_menu);
+
     layout->setMargin(0);
 
     label->setFixedWidth(20);

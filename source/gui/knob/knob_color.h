@@ -69,6 +69,7 @@ private:
 
     void restore_default() override;
     void restore_param() override;
+    void set_animated(bool animated, int dimension = -1) override;
 
     void update_hsl_sliders();
     void update_rgb_sliders();
