@@ -10,13 +10,13 @@
 #include <knob.h>
 #include <qt.h>
 #include <slider.h>
-#include <line_edit.h>
+#include <number_box.h>
 
 class knob_dimensional : public knob
 {
     Q_OBJECT
 private:
-    QList<line_edit *> dimensions_edits;
+    QList<number_box *> dimensions_edits;
     QList<float> default_values;
     QList<float> values;
 

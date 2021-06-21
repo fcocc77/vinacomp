@@ -1,28 +1,37 @@
 #include <QTimer>
+#include <QDoubleValidator>
 
 #include <knob.h>
 #include <knob_curve_menu.h>
-#include <line_edit.h>
+#include <number_box.h>
 #include <util.h>
 
-line_edit::line_edit(QWidget *__knob, int _dimension)
+number_box::number_box(QWidget *__knob, int _dimension)
     : menu(nullptr)
     , _knob(__knob)
     , dimension(_dimension)
+    , value(0)
 {
+    // permite solo numeros
+    QDoubleValidator *validator = new QDoubleValidator();
+    this->setValidator(validator);
+
     connect(this, &QLineEdit::editingFinished, this, [=]() {
-        float value = this->text().toDouble();
+        if (this->text() == string_value)
+            return;
+
+        value = this->text().toDouble();
         changed(value);
     });
 }
 
-void line_edit::set_menu(QMenu *_menu)
+void number_box::set_menu(QMenu *_menu)
 {
     if (!menu)
         menu = _menu;
 }
 
-void line_edit::contextMenuEvent(QContextMenuEvent *event)
+void number_box::contextMenuEvent(QContextMenuEvent *event)
 {
     QPoint global = this->mapToGlobal(event->pos());
 
@@ -38,13 +47,13 @@ void line_edit::contextMenuEvent(QContextMenuEvent *event)
         QLineEdit::contextMenuEvent(event);
 }
 
-void line_edit::focusInEvent(QFocusEvent *event)
+void number_box::focusInEvent(QFocusEvent *event)
 {
     QLineEdit::focusInEvent(event);
     QTimer::singleShot(0, this, &QLineEdit::selectAll);
 }
 
-void line_edit::set_clamp_value(float value)
+QString number_box::clamp_value(float value)
 {
     QStringList _value = QString::number(value).split('.');
 
@@ -56,5 +65,13 @@ void line_edit::set_clamp_value(float value)
     else
         decimal = "00";
 
-    this->setText(number + '.' + decimal.left(2));
+    return (number + '.' + decimal.left(2));
 }
+
+void number_box::set_value(float _value)
+{
+    value = _value;
+    string_value = clamp_value(value);
+    this->setText(string_value);
+}
+

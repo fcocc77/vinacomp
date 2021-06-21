@@ -7,7 +7,7 @@ knob_color_slider::knob_color_slider(float min, float max, float default_value,
                                      QWidget *knob, int dimension,
                                      QMenu *curve_menu)
     : layout(new QHBoxLayout(this))
-    , edit(new line_edit(knob, dimension))
+    , edit(new number_box(knob, dimension))
     , _slider(new slider(min, max, default_value, true, centered_handler))
     , label(new QLabel(_label))
     , _colored_slider(nullptr)
@@ -19,13 +19,13 @@ knob_color_slider::knob_color_slider(float min, float max, float default_value,
 
     label->setFixedWidth(20);
     edit->setMaximumWidth(50);
-    edit->set_clamp_value(default_value);
+    edit->set_value(default_value);
 
     // Conecciones
     connect(_slider, &slider::moved, this, [this](float _value) {
         value = _value;
         changed(value);
-        edit->set_clamp_value(value);
+        edit->set_value(value);
 
         if (_colored_slider)
             _colored_slider->set_value(value);
@@ -71,7 +71,7 @@ void knob_color_slider::set_value(float _value, bool emmit_signal)
 {
     value = _value;
     _slider->set_value(value);
-    edit->set_clamp_value(value);
+    edit->set_value(value);
 
     if (_colored_slider)
         _colored_slider->set_value(value);

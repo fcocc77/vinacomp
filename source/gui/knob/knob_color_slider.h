@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <QLineEdit>
-#include <line_edit.h>
+#include <number_box.h>
 #include <QHBoxLayout>
 #include <QMenu>
 
@@ -32,7 +32,7 @@ class knob_color_slider : public QWidget
     Q_OBJECT
 private:
     QHBoxLayout *layout;
-    line_edit *edit;
+    number_box *edit;
     slider *_slider;
     QLabel *label;
     colored_slider *_colored_slider;
@@ -52,13 +52,13 @@ public:
     void set_hsl(float hue, float sat, float level);
 
     void set_colored_slider(QString hsl_type);
-    inline line_edit *get_line_edit() const;
+    inline number_box *get_number_box() const;
 
 signals:
     void changed(float value);
 };
 
-inline line_edit *knob_color_slider::get_line_edit() const
+inline number_box *knob_color_slider::get_number_box() const
 {
     return edit;
 }

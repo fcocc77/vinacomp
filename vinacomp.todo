@@ -132,6 +132,7 @@ gui:
         ☐ knob_group: corregir
         ☐ el knob no cambia a el color de keyframe de animacion al añdirle un nuevo keyframe @hi
         ☐ line_edit: con el control flecha cambiar el valor del caracter seleccionado como en el nuke
+        ☐ knob_color: corregir color de animacion cuando de hace switch al boton de dimension, dejarlo como esta en nuke
 
 engine:
     nodes:

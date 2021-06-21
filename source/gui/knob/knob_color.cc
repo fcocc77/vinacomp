@@ -40,10 +40,10 @@ knob_color::knob_color(knob_props props, float min, float max, float r, float g,
     hsl_box = new QWidget(this);
     hsl_box_layout = new QVBoxLayout(hsl_box);
 
-    red_hedit = new line_edit(this, 0);
-    green_hedit = new line_edit(this, 1);
-    blue_hedit = new line_edit(this, 2);
-    alpha_hedit = new line_edit(this, 3);
+    red_hedit = new number_box(this, 0);
+    green_hedit = new number_box(this, 1);
+    blue_hedit = new number_box(this, 2);
+    alpha_hedit = new number_box(this, 3);
 
     red_hedit->set_menu(knob::curve_menu);
     green_hedit->set_menu(knob::curve_menu);
@@ -157,36 +157,36 @@ void knob_color::set_animated(bool animated, int dimension)
         qt::set_property(blue_hedit, "animated", animated);
         qt::set_property(alpha_hedit, "animated", animated);
 
-        qt::set_property(red_slider->get_line_edit(), "animated", animated);
-        qt::set_property(green_slider->get_line_edit(), "animated", animated);
-        qt::set_property(blue_slider->get_line_edit(), "animated", animated);
-        qt::set_property(alpha_slider->get_line_edit(), "animated", animated);
+        qt::set_property(red_slider->get_number_box(), "animated", animated);
+        qt::set_property(green_slider->get_number_box(), "animated", animated);
+        qt::set_property(blue_slider->get_number_box(), "animated", animated);
+        qt::set_property(alpha_slider->get_number_box(), "animated", animated);
 
-        qt::set_property(mono_slider->get_line_edit(), "animated", animated);
+        qt::set_property(mono_slider->get_number_box(), "animated", animated);
     }
     else
     {
         if (dimension == 0)
         {
             qt::set_property(red_hedit, "animated", animated);
-            qt::set_property(red_slider->get_line_edit(), "animated", animated);
+            qt::set_property(red_slider->get_number_box(), "animated", animated);
         }
         else if (dimension == 1)
         {
             qt::set_property(green_hedit, "animated", animated);
-            qt::set_property(green_slider->get_line_edit(), "animated",
+            qt::set_property(green_slider->get_number_box(), "animated",
                              animated);
         }
         else if (dimension == 2)
         {
             qt::set_property(blue_hedit, "animated", animated);
-            qt::set_property(blue_slider->get_line_edit(), "animated",
+            qt::set_property(blue_slider->get_number_box(), "animated",
                              animated);
         }
         else if (dimension == 3)
         {
             qt::set_property(alpha_hedit, "animated", animated);
-            qt::set_property(alpha_slider->get_line_edit(), "animated",
+            qt::set_property(alpha_slider->get_number_box(), "animated",
                              animated);
         }
     }
@@ -410,10 +410,10 @@ void knob_color::set_color(float _red, float _green, float _blue, float _alpha,
     if (red == green && red == blue && red == alpha)
         mono_slider->set_value(red);
 
-    red_hedit->set_clamp_value(red);
-    green_hedit->set_clamp_value(green);
-    blue_hedit->set_clamp_value(blue);
-    alpha_hedit->set_clamp_value(alpha);
+    red_hedit->set_value(red);
+    green_hedit->set_value(green);
+    blue_hedit->set_value(blue);
+    alpha_hedit->set_value(alpha);
 
     if (update_sliders)
     {

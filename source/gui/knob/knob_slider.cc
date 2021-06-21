@@ -27,9 +27,9 @@ knob_slider::knob_slider(knob_props props, float min, float max,
         knob::set_dimensions(2);
 
     // value 1
-    value_1_edit = new line_edit(this, 0);
+    value_1_edit = new number_box(this, 0);
     value_1_edit->set_menu(curve_menu);
-    connect(value_1_edit, &line_edit::changed, this, [=](float value) {
+    connect(value_1_edit, &number_box::changed, this, [=](float value) {
         values.first = value;
 
         if (!floating)
@@ -45,7 +45,7 @@ knob_slider::knob_slider(knob_props props, float min, float max,
     connect(_slider, &slider::moved, this, [=](float value) {
         values = {value, value};
 
-        value_1_edit->set_clamp_value(value);
+        value_1_edit->set_value(value);
         if (value_2_edit)
             value_2_edit->setText(QString::number(value));
 
@@ -57,11 +57,11 @@ knob_slider::knob_slider(knob_props props, float min, float max,
     if (bidimensional)
     {
         // value 2
-        value_2_edit = new line_edit(this, 1);
+        value_2_edit = new number_box(this, 1);
         value_2_edit->set_menu(curve_menu);
         value_2_edit->hide();
 
-        connect(value_2_edit, &line_edit::changed, this, [=](float value) {
+        connect(value_2_edit, &number_box::changed, this, [=](float value) {
             values.second = value;
             if (!floating)
                 values.second = round(values.second);
@@ -236,8 +236,8 @@ void knob_slider::separate_dimensions(bool separate)
     {
         float average = (values.first + values.second) / 2;
         values = {average, average};
-        value_1_edit->set_clamp_value(average);
-        value_2_edit->set_clamp_value(average);
+        value_1_edit->set_value(average);
+        value_2_edit->set_value(average);
         _slider->set_value(average);
     }
 }
@@ -250,13 +250,13 @@ void knob_slider::set_value(float value, int dimension, bool emmit_signal)
     if (dimension == 0)
     {
         values.first = value;
-        value_1_edit->set_clamp_value(value);
+        value_1_edit->set_value(value);
         _slider->set_value(value);
     }
     else
     {
         values.second = value;
-        value_2_edit->set_clamp_value(value);
+        value_2_edit->set_value(value);
     }
 
     if (emmit_signal)

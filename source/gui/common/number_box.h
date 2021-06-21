@@ -1,11 +1,11 @@
-#ifndef LINE_EDIT_H
-#define LINE_EDIT_H
+#ifndef NUMBER_BOX_H
+#define NUMBER_BOX_H
 
 #include <QContextMenuEvent>
 #include <QLineEdit>
 #include <QMenu>
 
-class line_edit : public QLineEdit
+class number_box : public QLineEdit
 {
     Q_OBJECT
 private:
@@ -13,12 +13,16 @@ private:
     QWidget *_knob;
     int dimension;
 
+    float value;
+    QString string_value;
+
     void focusInEvent(QFocusEvent *event) override;
+    QString clamp_value(float value);
 
 public:
-    line_edit(QWidget *_knob, int dimension = 0);
+    number_box(QWidget *_knob, int dimension = 0);
     void set_menu(QMenu *_menu);
-    void set_clamp_value(float value);
+    void set_value(float value);
     inline float get_value() const;
 
 protected:
@@ -28,9 +32,9 @@ signals:
     void changed(float value);
 };
 
-inline float line_edit::get_value() const
+inline float number_box::get_value() const
 {
-    return this->text().toDouble();
+    return value;
 }
 
-#endif // LINE_EDIT_H
+#endif // NUMBER_BOX_H

@@ -8,7 +8,7 @@
 
 #include <button.h>
 #include <knob.h>
-#include <line_edit.h>
+#include <number_box.h>
 #include <qt.h>
 #include <slider.h>
 
@@ -19,8 +19,8 @@ private:
     QHBoxLayout *layout;
     QString label;
     slider *_slider;
-    line_edit *value_1_edit;
-    line_edit *value_2_edit;
+    number_box *value_1_edit;
+    number_box *value_2_edit;
     bool dimensions;
     bool bidimensional;
     button *show_dimensions;

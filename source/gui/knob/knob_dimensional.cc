@@ -18,11 +18,11 @@ knob_dimensional::knob_dimensional(knob_props props, int _dimensions_count,
     for (int dimension = 0; dimension < dimensions_count; dimension++)
     {
         float value = default_values.value(dimension);
-        line_edit *dimension_edit = new line_edit(this, dimension);
+        number_box *dimension_edit = new number_box(this, dimension);
         dimension_edit->set_menu(curve_menu);
-        dimension_edit->set_clamp_value(value);
+        dimension_edit->set_value(value);
 
-        connect(dimension_edit, &line_edit::changed, this, [=](float value) {
+        connect(dimension_edit, &number_box::changed, this, [=](float value) {
             values.clear();
             for (int i = 0; i < dimensions_count; i++)
                 values.push_back(get_value(i));
@@ -68,7 +68,7 @@ void knob_dimensional::set_animated(bool animated, int dimension)
 {
     if (dimension == -1)
     {
-        for (line_edit *edit : dimensions_edits)
+        for (number_box *edit : dimensions_edits)
             qt::set_property(edit, "animated", animated);
     }
     else
