@@ -341,7 +341,7 @@ void knob::disable_animation(int _dimension, bool from_curve_editor)
 
     QList<int> dimensions_to_disable;
 
-    if (_dimension == -1)
+    if (_dimension == -1 || !separate_dimensions)
         for (int i = 0; i < dimensions; i++)
             dimensions_to_disable.push_back(i);
     else
@@ -371,6 +371,23 @@ void knob::disable_animation(int _dimension, bool from_curve_editor)
         else
             update_knob_in_curve_editor(dimension);
     }
+}
+
+void knob::set_curve(QString curve, int dimension)
+{
+    QJsonArray curves = params->value(curve_name).toArray();
+    QList<int> dimensions_list;
+
+    if (dimension == -1)
+        for (int d = 1; d < dimensions; d++)
+            dimensions_list.push_back(d);
+    else
+        dimensions_list = {dimension};
+
+    for (int d : dimensions_list)
+        curves[d] = curve;
+
+    (*params)[curve_name] = curves;
 }
 
 void knob::set_animated(bool _animated, int dimension) {}

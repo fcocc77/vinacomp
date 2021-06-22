@@ -117,7 +117,7 @@ public:
     inline QString get_tips() const;
     inline QString get_label() const;
     inline QString get_curve(int dimension = 0) const;
-    inline void set_curve(QString curve, int dimension = 0);
+    void set_curve(QString curve, int dimension = 0);
     bool is_animated(int dimension = -1) const;
     bool is_animated_some_dimension() const;
     inline void set_visible(bool visible);
@@ -218,13 +218,6 @@ inline void knob::set_param_value(QJsonValue value)
 inline QString knob::get_curve(int dimension) const
 {
     return params->value(curve_name).toArray()[dimension].toString();
-}
-
-inline void knob::set_curve(QString curve, int dimension)
-{
-    QJsonArray curves = params->value(curve_name).toArray();
-    curves[dimension] = curve;
-    (*params)[curve_name] = curves;
 }
 
 inline void knob::set_knob_layout(QHBoxLayout *layout)
