@@ -141,16 +141,23 @@ void knob_slider::restore_param()
 
 void knob_slider::set_animated(bool animated, int dimension)
 {
-    if (dimension == -1)
-    {
-        qt::set_property(value_1_edit, "animated", animated);
-        if (bidimensional)
-            qt::set_property(value_2_edit, "animated", animated);
-    }
+    QList<number_box *> number_boxs;
+
+    if (!bidimensional)
+        number_boxs = {value_1_edit};
+    else if (dimension == -1)
+        number_boxs = {value_1_edit, value_2_edit};
     else if (dimension == 0)
-        qt::set_property(value_1_edit, "animated", animated);
+        number_boxs = {value_1_edit};
     else if (dimension == 1)
-        qt::set_property(value_2_edit, "animated", animated);
+        number_boxs = {value_2_edit};
+
+    for (number_box *edit : number_boxs)
+    {
+        qt::set_property(edit, "animated", animated);
+        if (!animated)
+            qt::set_property(edit, "keyframe", false);
+    }
 
     knob::set_animated(animated, dimension);
 }

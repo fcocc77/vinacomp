@@ -28,7 +28,8 @@ QString set_keyframe(QString curve, int frame, bool calc_value = true,
 QString curve_data_to_string(QList<key_data> _curve);
 QString curve_to_string(curve *_curve);
 
-QString delete_keys_from_curve(QString curve, QList<int> indexs_to_delete);
+QString delete_keys_from_curve(QString curve, QList<int> indexs_to_delete,
+                               int *key_count = 0);
 
 }; // namespace anim
 

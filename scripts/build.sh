@@ -47,7 +47,7 @@ function run_gui() {
                 -ex q \
                 "$vinacomp"
         else
-            sleep 0.5 && change_pos &
+            sleep 1 && change_pos &
             $vinacomp
         fi
     fi

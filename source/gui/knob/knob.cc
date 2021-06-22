@@ -362,7 +362,7 @@ void knob::disable_animation(int _dimension, bool from_curve_editor)
             static_cast<node_rect *>(this_node)->set_animated(false);
         }
 
-        update_value(values, -1, !from_curve_editor);
+        update_value(values, dimension, !from_curve_editor);
 
         if (from_curve_editor)
             set_animated(false, dimension);
@@ -434,7 +434,7 @@ void knob::update_knob_in_curve_editor(int dimension)
     curve_editor *_curve_editor =
         static_cast<vinacomp *>(_vinacomp)->get_curve_editor();
 
-    _curve_editor->update_curve(this, dimension, true);
+    _curve_editor->update_curve(this, dimension);
 }
 
 QString knob::get_dimension_name(int dimension) const

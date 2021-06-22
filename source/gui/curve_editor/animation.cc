@@ -214,7 +214,8 @@ QString anim::curve_to_string(curve *_curve)
     return str_curve;
 }
 
-QString anim::delete_keys_from_curve(QString curve, QList<int> indexs_to_delete)
+QString anim::delete_keys_from_curve(QString curve, QList<int> indexs_to_delete,
+                                     int *key_count)
 {
     auto keys_data = convert_curve(curve);
     QList<key_data> new_keys_data;
@@ -224,6 +225,9 @@ QString anim::delete_keys_from_curve(QString curve, QList<int> indexs_to_delete)
         if (!indexs_to_delete.contains(i))
             new_keys_data.push_back(keys_data.value(i));
     }
+
+    if (key_count)
+        *key_count = new_keys_data.count();
 
     return curve_data_to_string(new_keys_data);
 }
