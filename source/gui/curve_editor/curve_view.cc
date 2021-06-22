@@ -87,6 +87,8 @@ void curve_view::fit_viewport_to_keyframes()
 
     if (y_distance == 0)
         y_distance = 1;
+    if (x_distance == 0)
+        x_distance = 1;
 
     float padding_x = (padding_percent * x_distance) / 100.0;
     float padding_y = (padding_percent * y_distance) / 100.0;

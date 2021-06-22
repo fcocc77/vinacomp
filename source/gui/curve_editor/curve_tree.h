@@ -25,7 +25,7 @@ public:
                      QString dimension_name = "");
 
 signals:
-    void clicked(QString node_name, QList<QList<QString>> params);
+    void clicked(QString node_name, QList<QStringList> params);
     void outside_clicked();
 };
 

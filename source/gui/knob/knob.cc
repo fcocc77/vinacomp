@@ -22,6 +22,7 @@ knob::knob(knob_props props)
     , _vinacomp(props._vinacomp)
     , over_line_widget(nullptr)
     , dimensions(1)
+    , separate_dimensions(false)
     , curve_menu(nullptr)
     , knob_data(props.knob_data)
     , params(props.params)
@@ -279,7 +280,8 @@ void knob::update_value(QJsonValue value, int dimension,
     }
     else
     {
-        if (dimensions > 1)
+        if (type == "floating" || type == "color" ||
+            type == "floating_dimensions")
         {
             QJsonArray values_dimensions = value.toArray();
             QJsonArray curves = params->value(curve_name).toArray();
@@ -409,6 +411,9 @@ void knob::update_keyframe(float value, int dimension, bool force,
 
 void knob::set_keyframe(int _dimension)
 {
+    if (!separate_dimensions)
+        _dimension = 0;
+
     QList<int> dimensions_to_set_key;
 
     if (_dimension == -1)

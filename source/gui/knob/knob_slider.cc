@@ -9,7 +9,6 @@ knob_slider::knob_slider(knob_props props, float min, float max,
                          bool floating, bool centered_handler)
     : knob(props)
     , value_2_edit(nullptr)
-    , separate_dimensions(false)
     , bidimensional(_bidimensional)
     , show_dimensions(nullptr)
     , empty_widget(nullptr)

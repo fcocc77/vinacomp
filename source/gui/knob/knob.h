@@ -52,6 +52,7 @@ protected:
     QString curve_name, exp_name, handler_name, slaves_name;
     QWidget *over_line_widget;
     int dimensions;
+    bool separate_dimensions;
     QMenu *curve_menu;
 
     QJsonArray slaves_knobs;
@@ -128,6 +129,7 @@ public:
     QWidget *get_node_view() const;
     inline void set_dimensions(int dimensions);
     inline int get_dimensions() const;
+    inline bool has_separate_dimensions() const;
 
     virtual void update_animated();
     virtual void restore_param();
@@ -140,6 +142,11 @@ public:
 signals:
     void to_node_panel(knob *_knob);
 };
+
+inline bool knob::has_separate_dimensions() const
+{
+    return separate_dimensions;
+}
 
 inline int knob::get_dimensions() const
 {

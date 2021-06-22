@@ -21,7 +21,6 @@ private:
     slider *_slider;
     number_box *value_1_edit;
     number_box *value_2_edit;
-    bool separate_dimensions;
     bool bidimensional;
     button *show_dimensions;
     QWidget *empty_widget;
