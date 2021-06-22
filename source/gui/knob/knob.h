@@ -64,7 +64,8 @@ protected:
     bool animated;
 
     void update_handler();
-    void update_value(QJsonValue value, int dimension = -1);
+    void update_value(QJsonValue value, int dimension = -1,
+                      bool update_curve_editor = true);
     inline QJsonValue get_default() const;
     virtual void set_has_expression(bool expression);
 
@@ -86,8 +87,9 @@ public:
                                          QString new_handler_name);
     void restore_slaves_konbs();
     void enable_animation();
-    void disable_animation(int dimension = -1);
-    void update_keyframe(float value, int dimension, bool force = false);
+    void disable_animation(int dimension = -1, bool from_curve_editor = false);
+    void update_keyframe(float value, int dimension, bool force = false,
+                         bool update_curve_editor = true);
     void set_keyframe(int dimension = -1);
     QString get_dimension_name(int dimension) const;
     int get_dimension_by_name(QString dimension_name) const;

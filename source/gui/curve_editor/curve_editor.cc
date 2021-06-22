@@ -111,15 +111,19 @@ void curve_editor::delete_keyframes(QMap<QString, QList<int>> curves)
         QStringList fullname = curve_name.split('.');
         QString node_name = fullname[0];
         QString param_name = fullname[1];
+        QString dimension_name = fullname[2];
 
         knob *_knob = get_knob(node_name, param_name);
         if (!_knob)
             continue;
 
-        QString curve = _knob->get_curve();
+        int dimension = _knob->get_dimension_by_name(dimension_name);
+        QString curve = _knob->get_curve(dimension);
 
-        _knob->set_curve(anim::delete_keys_from_curve(curve, indexs_to_delete));
-        update_curve(_knob);
+        _knob->set_curve(anim::delete_keys_from_curve(curve, indexs_to_delete),
+                         dimension);
+
+        update_curve(_knob, dimension);
     }
 }
 
@@ -191,14 +195,12 @@ void curve_editor::update_curve(knob *_knob, int dimension, bool from_knob)
     auto keys = anim::convert_curve(curve);
     trim_panel *panel = static_cast<trim_panel *>(_knob->get_panel());
 
+    print(curve_name, dimension_name, keys.count());
     if (keys.empty())
     {
         remove_param_item(panel, param_name, dimension_name);
         if (!from_knob)
-        {
-            _knob->disable_animation(dimension);
-            _knob->set_animated(false);
-        }
+            _knob->disable_animation(dimension, true);
     }
     else
         add_param_item(panel, param_name, dimension_name);

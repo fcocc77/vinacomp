@@ -266,7 +266,8 @@ void knob::restore_slaves_konbs()
     slaves_knobs = params->value(slaves_name).toArray();
 }
 
-void knob::update_value(QJsonValue value, int dimension)
+void knob::update_value(QJsonValue value, int dimension,
+                        bool update_curve_editor)
 {
     if (!params)
         return;
@@ -299,14 +300,14 @@ void knob::update_value(QJsonValue value, int dimension)
             {
                 for (int d = 0; d < dimensions; d++)
                     if (!curves[d].toString().isEmpty())
-                        update_keyframe(values_dimensions[d].toDouble(),
-                                        dimension, true);
+                        update_keyframe(values_dimensions[d].toDouble(), d,
+                                        true, update_curve_editor);
             }
             else
             {
                 if (!curves[dimension].toString().isEmpty())
                     update_keyframe(values_dimensions[dimension].toDouble(),
-                                    dimension, true);
+                                    dimension, true, update_curve_editor);
             }
 
             params->insert(name, values);
@@ -328,13 +329,13 @@ void knob::enable_animation()
     static_cast<node_rect *>(this_node)->set_animated(true);
 }
 
-void knob::disable_animation(int _dimension)
+void knob::disable_animation(int _dimension, bool from_curve_editor)
 {
     // el 'set_animated' solo funciona como virtual para las subclases,
     // y 'enable_animation' y 'disable_animation' se usan aqui ya que estas
     // intervienen el 'params' del proyecto, y cuando se usa el 'restore_param'
     // da conflicto ya que guarda el proyecto antes de lo necesario.
-    // ! no unir estas 2'
+    // ! no unir estas 2' y si se usa en otro lugar usar 'auto_set_animated'
 
     QList<int> dimensions_to_disable;
 
@@ -361,9 +362,12 @@ void knob::disable_animation(int _dimension)
             static_cast<node_rect *>(this_node)->set_animated(false);
         }
 
-        update_value(values);
+        update_value(values, -1, !from_curve_editor);
 
-        update_knob_in_curve_editor(dimension);
+        if (from_curve_editor)
+            set_animated(false, dimension);
+        else
+            update_knob_in_curve_editor(dimension);
     }
 }
 
@@ -371,8 +375,12 @@ void knob::set_animated(bool _animated, int dimension) {}
 
 void knob::set_has_expression(bool expression) {}
 
-void knob::update_keyframe(float value, int dimension, bool force)
+void knob::update_keyframe(float value, int dimension, bool force,
+                           bool update_curve_editor)
 {
+    if (dimension == -1)
+        return;
+
     QString curve = get_curve(dimension);
     QString new_curve;
 
@@ -395,7 +403,8 @@ void knob::update_keyframe(float value, int dimension, bool force)
     curves[dimension] = new_curve;
     params->insert(curve_name, curves);
 
-    update_knob_in_curve_editor(dimension);
+    if (update_curve_editor)
+        update_knob_in_curve_editor(dimension);
 }
 
 void knob::set_keyframe(int _dimension)

@@ -317,7 +317,8 @@ void curve_view::delete_selected_keyframes()
             if (key->selected())
                 indexs_to_delete.push_back(key->get_index());
 
-        curve_list.insert(_curve->get_name(), indexs_to_delete);
+        if (!indexs_to_delete.isEmpty())
+            curve_list.insert(_curve->get_name(), indexs_to_delete);
     }
 
     delete_keyframes(curve_list);
