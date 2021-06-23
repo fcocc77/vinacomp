@@ -43,8 +43,6 @@ private:
     bool linked;
     QString handler_knob_node_name, handler_knob_name;
 
-    void update_knob_in_curve_editor(int dimension);
-
 protected:
     QWidget *_vinacomp;
 
@@ -69,6 +67,7 @@ protected:
                       bool update_curve_editor = true);
     inline QJsonValue get_default() const;
     virtual void set_has_expression(bool expression);
+    void update_knob_in_curve_editor(int dimension = -1);
 
 public:
     knob(knob_props props = {});

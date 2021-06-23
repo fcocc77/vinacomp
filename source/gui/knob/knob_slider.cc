@@ -26,6 +26,9 @@ knob_slider::knob_slider(knob_props props, float min, float max,
         knob::set_dimensions(2);
 
     // value 1
+    value_1_label = new QLabel(get_dimension_name(0));
+    value_1_label->hide();
+
     value_1_edit = new number_box(this, 0);
     value_1_edit->set_menu(curve_menu);
     connect(value_1_edit, &number_box::changed, this, [=](float value) {
@@ -51,11 +54,15 @@ knob_slider::knob_slider(knob_props props, float min, float max,
         to_emmit_signal();
     });
 
+    layout->addWidget(value_1_label);
     layout->addWidget(value_1_edit);
 
     if (bidimensional)
     {
         // value 2
+        value_2_label = new QLabel(get_dimension_name(1));
+        value_2_label->hide();
+
         value_2_edit = new number_box(this, 1);
         value_2_edit->set_menu(curve_menu);
         value_2_edit->hide();
@@ -79,6 +86,7 @@ knob_slider::knob_slider(knob_props props, float min, float max,
         empty_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
         empty_widget->hide();
 
+        layout->addWidget(value_2_label);
         layout->addWidget(value_2_edit);
         layout->addWidget(empty_widget);
     }
@@ -95,11 +103,13 @@ knob_slider::knob_slider(knob_props props, float min, float max,
 knob_slider::~knob_slider()
 {
     delete value_1_edit;
+    delete value_1_label;
     delete _slider;
     delete layout;
     if (bidimensional)
     {
         delete value_2_edit;
+        delete value_2_label;
         delete empty_widget;
     }
 }
@@ -241,7 +251,9 @@ void knob_slider::set_separate_dimensions(bool separate)
     qt::set_property(show_dimensions, "active", separate);
 
     _slider->setVisible(!separate);
+    value_1_label->setVisible(separate);
     value_2_edit->setVisible(separate);
+    value_2_label->setVisible(separate);
     empty_widget->setVisible(separate);
 
     separate_dimensions = separate;
@@ -256,6 +268,8 @@ void knob_slider::set_separate_dimensions(bool separate)
         value_2_edit->set_value(average);
         _slider->set_value(average);
     }
+
+    update_knob_in_curve_editor();
 }
 
 void knob_slider::set_value(float value, int dimension, bool emmit_signal)

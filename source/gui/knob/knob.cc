@@ -379,7 +379,7 @@ void knob::set_curve(QString curve, int dimension)
     QList<int> dimensions_list;
 
     if (dimension == -1)
-        for (int d = 1; d < dimensions; d++)
+        for (int d = 0; d < dimensions; d++)
             dimensions_list.push_back(d);
     else
         dimensions_list = {dimension};
@@ -428,9 +428,6 @@ void knob::update_keyframe(float value, int dimension, bool force,
 
 void knob::set_keyframe(int _dimension)
 {
-    if (!separate_dimensions)
-        _dimension = 0;
-
     QList<int> dimensions_to_set_key;
 
     if (_dimension == -1)
@@ -456,20 +453,29 @@ void knob::update_knob_in_curve_editor(int dimension)
     curve_editor *_curve_editor =
         static_cast<vinacomp *>(_vinacomp)->get_curve_editor();
 
-    _curve_editor->update_curve(this, dimension);
+    if (dimension == -1)
+        _curve_editor->update_all_dimensions(this);
+    else
+        _curve_editor->update_curve(this, dimension);
 }
 
 QString knob::get_dimension_name(int dimension) const
 {
-    // ! falta buscar el nombre correcto de la dimension
-    return "dim_" + QString::number(dimension);
+    QJsonArray name_dimensions = knob_data.value("name_dimensions").toArray();
+    QString name = name_dimensions[dimension].toString();
+
+    return name.isEmpty() ? QString::number(dimension) : name;
 }
 
 int knob::get_dimension_by_name(QString dimension_name) const
 {
-    // ! crear lista de dimensiones de nombre
-    QList<QString> dimensions_name = {"dim_0", "dim_1", "dim_2"};
-    return dimensions_name.indexOf(dimension_name);
+    QJsonArray name_dimensions = knob_data.value("name_dimensions").toArray();
+
+    QStringList dimensions;
+    for (QJsonValue value : name_dimensions)
+        dimensions.push_back(value.toString());
+
+    return dimensions.indexOf(dimension_name);
 }
 
 void knob::set_expression(QString expression)

@@ -233,6 +233,46 @@ void curve_editor::update_curve(knob *_knob, int dimension)
     view->create_curve(curve_name, Qt::cyan, keys);
 }
 
+void curve_editor::update_all_dimensions(knob *_knob)
+{
+    delete_dimensions_knob(_knob);
+
+    if (_knob->has_separate_dimensions())
+    {
+        for (int d = 0; d < _knob->get_dimensions(); d++)
+            update_curve(_knob, d);
+    }
+    else
+    {
+        update_curve(_knob, 0);
+    }
+}
+
+void curve_editor::delete_dimensions_knob(knob *_knob)
+{
+    // borra todas las curvas y items de todas las dimensiones de un knob
+    // separado o no
+
+    QString param_name = _knob->get_name();
+    QString node_name = _knob->get_node_name();
+    QString curve_name = node_name + '.' + param_name;
+    QString dimension_name;
+
+    trim_panel *panel = static_cast<trim_panel *>(_knob->get_panel());
+
+    view->delete_curve(curve_name);
+    remove_param_item(panel, param_name, dimension_name);
+
+    for (int d = 0; d < _knob->get_dimensions(); d++)
+    {
+        dimension_name = _knob->get_dimension_name(d);
+        QString _curve_name = curve_name + '.' + dimension_name;
+
+        view->delete_curve(_curve_name);
+        remove_param_item(panel, param_name, dimension_name);
+    }
+}
+
 void curve_editor::delete_node_item(QString node_name)
 {
     knobs_tree->delete_item(node_name);

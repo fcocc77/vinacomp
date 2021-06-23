@@ -16,7 +16,11 @@
                 0,
                 0
             ],
-            "bidimensional": true
+            "bidimensional": true,
+            "name_dimensions": [
+                "w",
+                "h"
+            ]
         },
         {
             "name": "filter",

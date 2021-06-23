@@ -19,8 +19,8 @@ private:
     QHBoxLayout *layout;
     QString label;
     slider *_slider;
-    number_box *value_1_edit;
-    number_box *value_2_edit;
+    number_box *value_1_edit, *value_2_edit;
+    QLabel *value_1_label, *value_2_label;
     bool bidimensional;
     button *show_dimensions;
     QWidget *empty_widget;

@@ -36,7 +36,9 @@ public:
     ~curve_editor();
 
     void update_from_trim_panel(trim_panel *_trim_panel);
-    void update_curve(knob *_knob, int dimension = 0);
+    void update_curve(knob *_knob, int dimension);
+    void delete_dimensions_knob(knob *_knob);
+    void update_all_dimensions(knob *_knob);
     void delete_panel(trim_panel *panel);
     inline curve_view *get_curve_view() const;
 };
