@@ -164,14 +164,21 @@ void curve_editor::update_from_trim_panel(trim_panel *panel)
         if (!_knob->is_animated())
             continue;
 
-        for (int dimension = 0; dimension < _knob->get_dimensions();
-             dimension++)
+        if (_knob->has_separate_dimensions())
         {
-            if (!_knob->is_animated(dimension))
-                continue;
+            for (int dimension = 0; dimension < _knob->get_dimensions();
+                    dimension++)
+            {
+                if (!_knob->is_animated(dimension))
+                    continue;
 
-            QString dimension_name = _knob->get_dimension_name(dimension);
-            add_param_item(panel, _knob->get_name(), dimension_name);
+                QString dimension_name = _knob->get_dimension_name(dimension);
+                add_param_item(panel, _knob->get_name(), dimension_name);
+            }
+        }
+        else
+        {
+            add_param_item(panel, _knob->get_name());
         }
     }
 }
@@ -245,13 +252,21 @@ void curve_editor::delete_panel(trim_panel *panel)
         if (!_knob->is_animated())
             continue;
 
-        for (int dimension = 0; dimension < _knob->get_dimensions();
-             dimension++)
-        {
-            QString dimension_name = _knob->get_dimension_name(dimension);
-            QString curve_name =
-                node_name + '.' + _knob->get_name() + '.' + dimension_name;
+        QString curve_name = node_name + '.' + _knob->get_name();
 
+        if (_knob->has_separate_dimensions())
+        {
+            for (int dimension = 0; dimension < _knob->get_dimensions();
+                 dimension++)
+            {
+                QString curve_name_with_dimension =
+                    curve_name + '.' + _knob->get_dimension_name(dimension);
+
+                view->delete_curve(curve_name_with_dimension);
+            }
+        }
+        else
+        {
             view->delete_curve(curve_name);
         }
     }
