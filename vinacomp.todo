@@ -39,8 +39,8 @@ gui:
         ☐ cuando hay keyframes de dos curvas seleccionadas, no funciona la escala
         ✔ crear lineas verticales de entrada y salida @hi @done(2021-06-24 14:59)
         ✔ crear cursor de linea de tiempo @done(2021-06-11 17:33)
-        ☐ que funcione el snap en horizontal por frame @hi
-        ☐ que el keyframe solo se pueda mover en una direccion a la vez, y con el control presionado poder mover omnidireccional
+        ✔ que funcione el snap en horizontal por frame @hi @done(2021-06-24 16:58)
+        ✔ que el keyframe solo se pueda mover en una direccion a la vez, y con el control presionado poder mover omnidireccional @done(2021-06-24 17:46)
         ✔ actualizar curve_view al eliminar un nodo @done(2021-06-24 14:55)
         ☐ los botones de curvas del toolbar deben ser checkeables segun la actual interpolacion del keyframe seleccionado
         ☐ opcion para bloquear o desbloquear el tamaño del manejador

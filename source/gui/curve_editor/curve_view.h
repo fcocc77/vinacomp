@@ -29,6 +29,7 @@ private:
     // Key Frames
     QMap<QString, curve *> curves;
     bool text_visible;
+    int locked_axis;
 
     bool is_point_in_rectangle(QPointF point, QLineF rectangle);
     void fit_viewport_to_keyframes();
@@ -37,6 +38,8 @@ private:
     void set_interpolation_to_selected(int number);
     void key_press(QPoint cursor_position);
     void key_move(QPoint cursor_position);
+    void lock_direction(QPoint cursor_position, key_frame *key,
+                        QPointF *coords);
     key_frame *get_previous_key(key_frame *key);
     key_frame *get_next_key(key_frame *key);
     void orient_linear_handler(key_frame *key);

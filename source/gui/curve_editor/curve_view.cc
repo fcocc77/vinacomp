@@ -8,6 +8,7 @@ curve_view::curve_view(QWidget *__vinacomp, QWidget *__curve_editor)
     , drag_key_frame(nullptr)
     , dragging(false)
     , text_visible(false)
+    , locked_axis(-1)
     , dragging_cursor(false)
     , player_cursor_visible(true)
     , transform_box_visible(false)
@@ -171,6 +172,7 @@ void curve_view::mouseReleaseEvent(QMouseEvent *event)
     transforming = false;
     drag_key_frame = nullptr;
     dragging_cursor = false;
+    locked_axis = -1;
 
     this->setCursor(Qt::ArrowCursor);
 

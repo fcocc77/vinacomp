@@ -2,6 +2,7 @@
 #include <curve_view.h>
 #include <vinacomp_namespace.h>
 #include <util.h>
+#include <qt.h>
 
 QLineF curve_view::get_handler_points(key_frame *key, bool infinite)
 {
@@ -224,9 +225,39 @@ void curve_view::key_press(QPoint cursor_position)
     }
 }
 
+void curve_view::lock_direction(QPoint cursor_position, key_frame *key,
+                                QPointF *coords)
+{
+    // bloquea la direccion en eje x o y, se obtiene el resultado calculando la
+    // distancia de x o y, se bloquea en el eje mas separado
+
+    if (qt::control())
+        return;
+
+    QPointF last_coords = key->get_last_position();
+
+    if (locked_axis == 0)
+    {
+        *coords = {last_coords.x(), coords->y()};
+        return;
+    }
+    else if (locked_axis == 1)
+    {
+        *coords = {coords->x(), last_coords.y()};
+        return;
+    }
+
+    int x = abs(cursor_position.x() - click_position.x());
+    int y = abs(cursor_position.y() - click_position.y());
+
+    if (y > x)
+        locked_axis = 0;
+    if (x > y)
+        locked_axis = 1;
+}
+
 void curve_view::key_move(QPoint cursor_position)
 {
-
     // cambia el cursor si esta sobre algun key frame
     if (!transform_box_visible)
         for (curve *_curve : curves)
@@ -298,7 +329,12 @@ void curve_view::key_move(QPoint cursor_position)
         //
         //
 
+        // limita la cordenada x a cada frame
+        coords.setX(round(coords.x()));
+
+        lock_direction(cursor_position, key, &coords);
         key->set_pos(coords);
+
         orient_linear_handler(key);
     }
 
