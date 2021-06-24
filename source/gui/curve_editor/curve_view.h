@@ -60,6 +60,7 @@ private:
     void draw_selector();
     void draw_transform_box();
     void draw_cursor();
+    void draw_range();
     //
     //
     //

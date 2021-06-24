@@ -1,6 +1,8 @@
 #include <curve_view.h>
 #include <curve_utils.h>
+#include <project_settings.h>
 #include <qt.h>
+#include <vinacomp.h>
 
 void curve_view::initializeGL()
 {
@@ -17,7 +19,25 @@ void curve_view::paintGL()
     draw_curve();
     draw_selector();
     draw_transform_box();
+    draw_range();
     draw_cursor();
+}
+
+void curve_view::draw_range()
+{
+    project_settings *psettings =
+        static_cast<vinacomp *>(_vinacomp)->get_project_settings();
+
+    float first_frame = psettings->get_first_frame();
+    float last_frame = psettings->get_last_frame();
+
+    float top_y = get_coordsf({0, 0}).y();
+    float bottom_y = get_coordsf({0, (float)height()}).y();
+
+    QColor color = QColor(150, 0, 0);
+
+    draw_line({first_frame, top_y}, {first_frame, bottom_y}, color);
+    draw_line({last_frame, top_y}, {last_frame, bottom_y}, color);
 }
 
 void curve_view::draw_grid()
