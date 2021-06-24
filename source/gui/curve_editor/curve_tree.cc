@@ -12,38 +12,70 @@ curve_tree::curve_tree()
     this->setSelectionMode(QAbstractItemView::ExtendedSelection);
     this->setAlternatingRowColors(true);
 
-    connect(this, &QTreeWidget::itemClicked, this, [=](QTreeWidgetItem *item) {
+    connect(this, &QTreeWidget::itemClicked, this, [=]() {
+        clicked(get_selected_param_items());
+    });
+}
+
+QList<clicked_param> curve_tree::get_selected_param_items() const
+{
+    // obtiene los items seleccionados 'params', y si el item es el padre
+    // 'node_name' inserta todos los hijos a la lista
+
+    auto get_param = [](QTreeWidgetItem *item, QString node_name) {
+        QStringList param_dimension_name = item->text(0).split('.');
+
+        QString param_name = param_dimension_name[0];
+        QString dimension_name;
+
+        if (param_dimension_name.count() == 2)
+            dimension_name = param_dimension_name[1];
+
+        return clicked_param{node_name, param_name, dimension_name};
+    };
+
+    QList<clicked_param> selected_list;
+
+    auto contains_param = [&](clicked_param param) {
+        for (auto _param : selected_list)
+            if (param.name == _param.name &&
+                param.node_name == _param.node_name &&
+                param.dimension_name == _param.dimension_name)
+                return true;
+
+        return false;
+    };
+
+    for (auto *item : selectedItems())
+    {
         auto parent = item->parent();
 
-        auto get_param = [](QTreeWidgetItem *item) {
-            QStringList param_dimension_name = item->text(0).split('.');
-
-            QString param_name = param_dimension_name[0];
-            QString dimension_name;
-
-            if (param_dimension_name.count() == 2)
-                dimension_name = param_dimension_name[1];
-
-            return QStringList{param_name, dimension_name};
-        };
-
-        // si se selecciono el padre, envia una lista con todos
-        // los parametros y retorna
         if (!parent)
         {
-            QList<QStringList> params;
             for (auto child : get_children(item))
             {
-                params.push_back(get_param(child));
+                QString node_name = item->text(0);
+                auto param = get_param(child, node_name);
+
+                if (!contains_param(param))
+                    selected_list.push_back(param);
+
                 child->setSelected(true);
             }
-            clicked(item->text(0), params);
-            return;
-        }
 
-        QString node_name = parent->text(0);
-        clicked(node_name, {get_param(item)});
-    });
+            continue;
+        }
+        else
+        {
+            QString node_name = parent->text(0);
+            auto param = get_param(item, node_name);
+
+            if (!contains_param(param))
+                selected_list.push_back(param);
+        }
+    }
+
+    return selected_list;
 }
 
 QList<QTreeWidgetItem *> curve_tree::get_children(QTreeWidgetItem *item) const

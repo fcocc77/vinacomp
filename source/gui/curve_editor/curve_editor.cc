@@ -20,18 +20,15 @@ curve_editor ::curve_editor(QWidget *__vinacomp)
             [=]() { view->clear(); });
 
     connect(knobs_tree, &curve_tree::clicked, this,
-            [=](QString node_name, QList<QStringList> params) {
+            [=](QList<clicked_param> params) {
                 view->clear();
 
                 for (auto param : params)
                 {
-                    QString param_name = param[0];
-                    QString dimension_name = param[1];
-
-                    knob *_knob = get_knob(node_name, param_name);
+                    knob *_knob = get_knob(param.node_name, param.name);
                     if (_knob)
                         update_curve(_knob, _knob->get_dimension_by_name(
-                                                dimension_name));
+                                                param.dimension_name));
                 }
             });
 

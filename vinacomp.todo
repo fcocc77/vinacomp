@@ -39,7 +39,7 @@ gui:
         ☐ cuando hay keyframes de dos curvas seleccionadas, no funciona la escala
         ☐ crear lineas verticales de entrada y salida
         ✔ crear cursor de linea de tiempo @done(2021-06-11 17:33)
-        ☐ que funcione el snap en horizontal por frame
+        ☐ que funcione el snap en horizontal por frame @hi
         ☐ que el keyframe solo se pueda mover en una direccion a la vez, y con el control presionado poder mover omnidireccional
         ☐ actualizar curve_view al eliminar un nodo
         ☐ los botones de curvas del toolbar deben ser checkeables segun la actual interpolacion del keyframe seleccionado
@@ -56,6 +56,7 @@ gui:
         ✔ que el ajuste al los keyframe funcione tambien cuando el cursor este sobre el 'curve_tree' @done(2021-06-16 11:38)
         ✔ cuando solo hay un keyframe el 'fit to keys' no se ajustar a la posicion en 'y' @hi @done(2021-06-16 11:31)
         ✔ animacion en cada dimension por separado @hi @done(2021-06-24 11:25)
+        ✔ al seleccionar multiples item de 'params' no se muestran las curvas, solo se muestran cuando se selecciona el padre @hi @done(2021-06-24 14:44)
 
     script_editor:
         ☐ boton de arrastre para poder arrastrar el script como acceso directo a una barra de herramienta en la parte inferior del node graph
