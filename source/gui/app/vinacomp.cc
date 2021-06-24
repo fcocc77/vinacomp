@@ -80,6 +80,8 @@ vinacomp::~vinacomp() {}
 void vinacomp::setup_style()
 {
     QString style = fread("./resources/css/style.css");
+
+    this->setStyleSheet("");
     this->setStyleSheet(style.toStdString().c_str());
 
     // Titulo de ventana principal
