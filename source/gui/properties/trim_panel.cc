@@ -534,6 +534,9 @@ void trim_panel::maximize(bool _maximize)
 
     for (QWidget *vgl : *viewers_gl)
         static_cast<viewer_gl *>(vgl)->handlers_update();
+
+    auto _curve_editor = static_cast<vinacomp *>(_vinacomp)->get_curve_editor();
+    _curve_editor->update_from_trim_panel(this);
 }
 
 void trim_panel::update_render()

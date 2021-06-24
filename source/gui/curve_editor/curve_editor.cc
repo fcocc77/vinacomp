@@ -156,6 +156,9 @@ void curve_editor::update_from_trim_panel(trim_panel *panel)
 {
     delete_panel(panel);
 
+    if (!panel->maximized() || !panel->isVisible())
+        return;
+
     for (QString key : panel->get_knobs()->keys())
     {
         knob *_knob = panel->get_knobs()->value(key);
