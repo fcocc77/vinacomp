@@ -23,7 +23,7 @@ QPushButton {
     width: 0px; }
 
 QMainWindow {
-  qproperty-windowIcon: url("{{path}}/resources/images/vinacomp.png"); }
+  qproperty-windowIcon: url("/home/pancho/Documents/develop/vinacomp/resources/images/vinacomp.png"); }
 
 QMenu {
   background-color: #292d32;
@@ -840,15 +840,15 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical, QScrollBar::left
     #curve_editor #knobs_tree::branch:selected {
       background: #3e3f37; }
     #curve_editor #knobs_tree::branch:has-children:open {
-      image: url("{{path}}/resources/images/arrow_down_normal.png"); }
+      image: url("/home/pancho/Documents/develop/vinacomp/resources/images/arrow_down_normal.png"); }
     #curve_editor #knobs_tree::branch:has-children:closed {
-      image: url("{{path}}/resources/images/arrow_right_normal.png"); }
+      image: url("/home/pancho/Documents/develop/vinacomp/resources/images/arrow_right_normal.png"); }
     #curve_editor #knobs_tree::branch:has-children:selected {
       background: #564e2a; }
       #curve_editor #knobs_tree::branch:has-children:selected:open {
-        image: url("{{path}}/resources/images/arrow_down_checked.png"); }
+        image: url("/home/pancho/Documents/develop/vinacomp/resources/images/arrow_down_checked.png"); }
       #curve_editor #knobs_tree::branch:has-children:selected:closed {
-        image: url("{{path}}/resources/images/arrow_right_checked.png"); }
+        image: url("/home/pancho/Documents/develop/vinacomp/resources/images/arrow_right_checked.png"); }
   #curve_editor #graphics_view {
     background: #121416; }
 
