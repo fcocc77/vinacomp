@@ -1,6 +1,6 @@
 #include <knob_slider.h>
 #include <vinacomp.h>
-#include "node.h"
+#include "./node.h"
 #include <animation.h>
 #include <trim_panel.h>
 

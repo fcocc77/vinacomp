@@ -5,7 +5,7 @@ TARGET = "vinacomp"
 
 INCLUDEPATH += $$files(*)
 INCLUDEPATH += ../../libs/QCodeEditor/includes
-INCLUDEPATH += ../../utils/c++
+INCLUDEPATH += ../../utils
 INCLUDEPATH += ../python_api
 INCLUDEPATH += ../ofx
 INCLUDEPATH += ../global
@@ -22,7 +22,7 @@ QT += core gui widgets multimedia
 DEFINES += "GUI"
 
 HEADERS +=  $$system(ls */*.h) \
-            ../../utils/c++/*.h \
+            ../../utils/*.h \
             ../../libs/QCodeEditor/includes/* \
             ../../libs/ofx/include/*.h \
             ../python_api/*.h \
@@ -33,7 +33,7 @@ HEADERS +=  $$system(ls */*.h) \
 			../engine/nodes/*.h \
 
 SOURCES += 	 $$system(ls */*.cc) \
-            ../../utils/c++/*.cc \
+            ../../utils/*.cc \
             ../../libs/QCodeEditor/src/* \
             ../python_api/*.cc \
             ../ofx/*.cc \

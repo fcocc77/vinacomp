@@ -1,8 +1,7 @@
-[submodule "utils"]
-	path = utils
-	url = https://github.com/fcocc77/utils.git
-
-
 [submodule "libs/ofx"]
 	path = libs/ofx
 	url = https://github.com/ofxa/openfx.git
+
+[submodule "utils"]
+	path = utils
+	url = https://github.com/fcocc77/cpp_util.git

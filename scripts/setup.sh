@@ -9,4 +9,6 @@ sudo dnf -y install \
     qt5-qtmultimedia-devel.x86_64 \
 
 
-sudo pip3 install -r requirements.txt
+pip3 install -r requirements.txt
+
+git submodule update --init --recursive

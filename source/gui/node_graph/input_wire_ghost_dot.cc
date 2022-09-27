@@ -1,5 +1,5 @@
 #include <maker.h>
-#include <node.h>
+#include "node.h"
 #include <node_graph.h>
 #include <input_wire_ghost_dot.h>
 #include <node_view.h>
